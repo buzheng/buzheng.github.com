@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新" />
+<meta property="og:description" content="定期更新 Ubuntu 系统是保证系统安全性最重要的方法之一。如果不使用最新的安全修补程序更新操作系统的软件包，则计算机很容易受到攻击。
+
+如果您手动管理多个 Ubuntu 机器，更新系统软件包可能非常耗时。即使您管理单个 Ubuntu 安装，有时您可能会忽略重要更新。这是无人值守自动更新的便利之处。
+
+在本教程中，我们将介绍如何在 Ubuntu 18.04 上安装和配置无人值守自动更新。相同的步骤适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-10T20:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-10T20:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新">
+<meta itemprop="description" content="定期更新 Ubuntu 系统是保证系统安全性最重要的方法之一。如果不使用最新的安全修补程序更新操作系统的软件包，则计算机很容易受到攻击。
+
+如果您手动管理多个 Ubuntu 机器，更新系统软件包可能非常耗时。即使您管理单个 Ubuntu 安装，有时您可能会忽略重要更新。这是无人值守自动更新的便利之处。
+
+在本教程中，我们将介绍如何在 Ubuntu 18.04 上安装和配置无人值守自动更新。相同的步骤适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。">
+
+
+<meta itemprop="datePublished" content="2019-03-10T20:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-10T20:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="227">
+
+
+
+<meta itemprop="keywords" content="ubuntu,apt," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新"/>
+<meta name="twitter:description" content="定期更新 Ubuntu 系统是保证系统安全性最重要的方法之一。如果不使用最新的安全修补程序更新操作系统的软件包，则计算机很容易受到攻击。
+
+如果您手动管理多个 Ubuntu 机器，更新系统软件包可能非常耗时。即使您管理单个 Ubuntu 安装，有时您可能会忽略重要更新。这是无人值守自动更新的便利之处。
+
+在本教程中，我们将介绍如何在 Ubuntu 18.04 上安装和配置无人值守自动更新。相同的步骤适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-10T20:00:00Z">March 10, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>定期更新 Ubuntu 系统是保证系统安全性最重要的方法之一。如果不使用最新的安全修补程序更新操作系统的软件包，则计算机很容易受到攻击。</p>
+
+<p>如果您手动管理多个 Ubuntu 机器，更新系统软件包可能非常耗时。即使您管理单个 Ubuntu 安装，有时您可能会忽略重要更新。这是无人值守自动更新的便利之处。</p>
+
+<p>在本教程中，我们将介绍如何在 Ubuntu 18.04 上安装和配置无人值守自动更新。相同的步骤适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="安装-unattended-upgrades-升级包">安装 <code>unattended-upgrades</code> 升级包</h2>
+
+<p>这个包 <code>unattended-upgrades</code> 用于自动安装更新的软件包。有可能这个软件包已经安装在您的 Ubuntu 系统上，如果没有，您可以通过在终端中输入以下命令来安装软件包：</p>
+
+<pre><code class="language-bash">sudo apt install unattended-upgrades
+</code></pre>
+
+<p>安装完成后，该服务并自动启动并开启了随机自启动。您可以输入以下命令进行验证：</p>
+
+<pre><code class="language-bash">systemctl status unattended-upgrades
+</code></pre>
+
+<pre><code class="language-bash">● unattended-upgrades.service - Unattended Upgrades Shutdown
+   Loaded: loaded (/lib/systemd/system/unattended-upgrades.service; enab
+   Active: active (running) since Sun 2019-03-10 07:52:08 UTC; 2min 35s 
+     Docs: man:unattended-upgrade(8)
+   CGroup: /system.slice/unattended-upgrades.serviceq
+</code></pre>
+
+<h2 id="配置无人值守自动更新">配置无人值守自动更新</h2>
+
+<p>我们可以通过编辑 <code>/etc/apt/apt.conf.d/50unattended-upgrades</code> 文件来配置 <code>unattended-upgrades</code> 。默认配置一般适用于大多数用户，但您可以打开文件并根据需要进行更改。</p>
+
+<p>无人值守升级包，可以配置为更新所有包或仅更新安全更新。第一部分定义了哪些类型的包将自动更新。默认情况下，它将仅安装安全更新，如果要从其他存储库启用更新，则可以通过从行开头删除双斜杠 <code>//</code> 来取消注释相应的存储库。 配置文件中每行 <code>//</code> 之后的任何内容都是注释，不会被读取。</p>
+
+<p>文件 <code>/etc/apt/apt.conf.d/50unattended-upgrades</code></p>
+
+<pre><code class="language-bash">Unattended-Upgrade::Allowed-Origins {
+  &quot;${distro_id}:${distro_codename}&quot;;
+	&quot;${distro_id}:${distro_codename}-security&quot;;
+	// Extended Security Maintenance; doesn't necessarily exist for
+	// every release and this system may not have it installed, but if
+	// available, the policy for updates is such that unattended-upgrades
+	// should also install from here by default.
+	&quot;${distro_id}ESM:${distro_codename}&quot;;
+//	&quot;${distro_id}:${distro_codename}-updates&quot;;
+//	&quot;${distro_id}:${distro_codename}-proposed&quot;;
+//	&quot;${distro_id}:${distro_codename}-backports&quot;;
+};
+</code></pre>
+
+<p>如果由于任何原因您想要禁用某些软件包自动更新，只需添加到软件包黑名单中：</p>
+
+<pre><code class="language-bash">Unattended-Upgrade::Package-Blacklist {
+//      &quot;vim&quot;;
+//      &quot;libc6&quot;;
+//      &quot;libc6-dev&quot;;
+//      &quot;libc6-i686&quot;;
+};
+</code></pre>
+
+<p>如果由于某种原因自动更新出现问题，您可能还希望收到电子邮件通知。为此，请取消以下两行注释并输入您的电子邮件地址。确保系统上有一个可以发送电子邮件的工具，例如 <code>mailx</code> 或 <code>postfix</code> 。</p>
+
+<pre><code class="language-bash">Unattended-Upgrade::Mail &quot;your@email.com&quot;;
+Unattended-Upgrade::MailOnlyOnError &quot;true&quot;;
+</code></pre>
+
+<h2 id="启用无人值守自动更新">启用无人值守自动更新</h2>
+
+<p>要启用自动更新，您需要确保 apt 配置文件 <code>/etc/apt/apt.conf.d/20auto-upgrades</code> 中至少包含以下两行，默认情况下应包含这两行：</p>
+
+<pre><code class="language-bash">APT::Periodic::Update-Package-Lists &quot;1&quot;;
+APT::Periodic::Unattended-Upgrade &quot;1&quot;;
+</code></pre>
+
+<p>以上配置会每天更新包列表，并安装可用更新。</p>
+
+<p>您还可以在文件 <code>/etc/apt/apt.conf.d/20auto-upgrades</code> 添加以下行，该行每 7 天清理一次本地下载的档案。</p>
+
+<pre><code class="language-bash">APT::Periodic::AutocleanInterval &quot;7&quot;;
+</code></pre>
+
+<p>启用/禁用自动更新的另一种方法是运行以下命令，该命令将修改（如果不存在或创建）文件 <code>/etc/apt/apt.conf.d/20auto-upgrades</code> 。</p>
+
+<pre><code class="language-bash">sudo dpkg-reconfigure -plow unattended-upgrades
+</code></pre>
+
+<h2 id="测试">测试</h2>
+
+<p>要测试自动升级是否工作请直接测试运行，如下面命令所示：</p>
+
+<pre><code class="language-bash">sudo unattended-upgrades --dry-run --debug
+</code></pre>
+
+<p>输出应该如下所示：</p>
+
+<pre><code class="language-bash">...
+pkgs that look like they should be upgraded: 
+Fetched 0 B in 0s (0 B/s)                                                                                             
+fetch.run() result: 0
+blacklist: []
+whitelist: []
+No packages found that can be upgraded unattended and no pending auto-removals
+</code></pre>
+
+<p>无人值守自动升级的历史记录记录在 <code>/var/log/unattended-upgrades/unattended-upgrades.log</code> 文件中。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何自动安装更新的软件包，并保持系统启用最新的安全更新。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apt" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apt</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-and-disable-root-user-account-in-ubuntu/">如何在 Ubuntu 中启用和禁用 root 帐户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/set-up-an-email-server-with-postfixadmin/">使用 PostfixAdmin 设置邮件服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

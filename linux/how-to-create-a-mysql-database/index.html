@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何创建 MySQL 数据库</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何创建 MySQL 数据库" />
+<meta property="og:description" content="本教程介绍如何通过命令行创建 MySQL 或 MariaDB 数据库。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-create-a-mysql-database/" />
+<meta property="article:published_time" content="2019-04-20T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-20T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何创建 MySQL 数据库">
+<meta itemprop="description" content="本教程介绍如何通过命令行创建 MySQL 或 MariaDB 数据库。">
+
+
+<meta itemprop="datePublished" content="2019-04-20T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-20T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="215">
+
+
+
+<meta itemprop="keywords" content="mysql,mariadb," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何创建 MySQL 数据库"/>
+<meta name="twitter:description" content="本教程介绍如何通过命令行创建 MySQL 或 MariaDB 数据库。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何创建 MySQL 数据库</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-20T05:00:00Z">April 20, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程介绍如何通过命令行创建 MySQL 或 MariaDB 数据库。</p>
+
+<h2 id="在你开始之前">在你开始之前</h2>
+
+<p>在开始本教程之前，我们假设您已经在系统上安装了 MySQL 或 MariaDB 服务器。如果您的服务器上没有安装 MySQL 或 MariaDB ，可以按照以下教程快速安装它：</p>
+
+<ul>
+<li>如何在<a href="/linux/install-mysql-on-centos-7/"> CentOS 7</a>  ， <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">Ubuntu 18.04</a> ， <a href="/linux/how-to-install-mysql-on-debian-9/">Debian 9</a> 上安装 MySQL。</li>
+<li>如何在 <a href="/linux/install-mariadb-on-centos-7/">CentOS 7</a> ， <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">Ubuntu 18.04</a> ， <!--link:how-to-install-mariadb-on-debian-9-->Debian 9<!--link--> 上安装 MariaDB</li>
+</ul>
+
+<p>所有命令都将作为管理用户(创建新数据库所需的最低<a href="https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html">权限</a>是 <code>CREATE</code>) 或 root 帐户在 MySQL shell 中执行。</p>
+
+<p>要访问 MySQL shell ，请键入以下命令，并在出现提示时输入您的 MySQL root 用户密码：</p>
+
+<pre><code class="language-console-bash">mysql -u root -p
+</code></pre>
+
+<p>如果您尚未为 MySQL root 用户设置密码，则可以省略 <code>-p</code> 选项。</p>
+
+<blockquote>
+<p>如果您需要更改 MySQL root 密码，请按照本教程通过命令行<a href="/linux/how-to-reset-a-mysql-root-password/">重置 MySQL root 密码</a>。</p>
+</blockquote>
+
+<h2 id="创建一个-mysql-数据库">创建一个 MySQL 数据库</h2>
+
+<p>要创建新的 MySQL 或 MariaDB 数据库，请发出以下命令，其中 <code>database_name</code> 是要创建的数据库的名称：</p>
+
+<pre><code class="language-console-mysql">CREATE DATABASE database_name;
+</code></pre>
+
+<pre><code class="language-output">Query OK, 1 row affected (0.00 sec)
+</code></pre>
+
+<p>如果您尝试创建已存在的数据库，您将看到以下错误消息：</p>
+
+<pre><code class="language-output">ERROR 1007 (HY000): Can't create database 'database_name'; database exists
+</code></pre>
+
+<p>为了避免在创建数据库时如果存在与您尝试创建的名称相同的数据库的错误提示，您可以使用以下命令：</p>
+
+<pre><code class="language-console-mysql">CREATE DATABASE IF NOT EXISTS database_name;
+</code></pre>
+
+<pre><code class="language-output">Query OK, 1 row affected, 1 warning (0.00 sec)
+</code></pre>
+
+<p>在上面的输出中，您可以看到 <code>Query OK</code> 哪个查询成功， <code>1 warning</code> 哪个告诉我们数据库已经存在且没有创建新数据库。</p>
+
+<p>在 Linux 上， MySQL 数据库和表名称区分大小写。</p>
+
+<h2 id="查看所有-mysql-数据库">查看所有 MySQL 数据库</h2>
+
+<p>要查看您创建的数据库，请在 MySQL shell 中执行以下命令：</p>
+
+<pre><code class="language-console-mysql">SHOW DATABASES;
+</code></pre>
+
+<p>上面的命令将打印服务器上所有数据库的列表。输出应该类似于：</p>
+
+<pre><code class="language-output">+--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| database_name      |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+</code></pre>
+
+<h2 id="选择一个mysql数据库">选择一个MySQL数据库</h2>
+
+<p>创建数据库时，不会选择使用新数据库。要在开始 MySQL 会话之前选择数据库，请使用以下命令：</p>
+
+<pre><code class="language-console-mysql">USE database_name;
+</code></pre>
+
+<pre><code class="language-output">Database changed
+</code></pre>
+
+<p>选择数据库后，将在所选数据库上执行所有后续操作（如创建表）。</p>
+
+<h2 id="使用-mysqladmin-创建-mysql-数据库">使用 mysqladmin 创建 MySQL 数据库</h2>
+
+<p>您还可以使用 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqladmin.html">mysqladmin</a> 实用程序从 Linux 终端创建新的 MySQL 数据库。</p>
+
+<p>例如，要创建名为的数据库 <code>database_name</code> ，请键入以下命令，并在出现提示时输入您的 MySQL root 用户密码：</p>
+
+<pre><code class="language-console-bash">mysqladmin -u root -p create database_name
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何创建 MySQL 数据库。我们将在下一篇文章中更全面地介绍 MySQL 服务器管理。</p>
+
+<p>您还可以查看以下教程：</p>
+
+<ul>
+<li><a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何管理 MySQL 用户帐户和数据库</a></li>
+<li><a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a></li>
+<li><a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a></li>
+</ul><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何从命令行管理 MySQL 数据库和用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-debian-9/">如何在 Debian 9 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cut-command/">Linux Cut 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mysql-on-centos-7/">在 CentOS 7 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

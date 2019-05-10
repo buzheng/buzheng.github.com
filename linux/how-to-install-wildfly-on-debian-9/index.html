@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Debian 9 上安装 WildFly (JBoss)</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上安装 WildFly (JBoss)" />
+<meta property="og:description" content="WildFly ，以前称为 JBoss ，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。
+
+在本教程中，我们将带您完成在 Debian 9 上安装 WildFly 应用服务器所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-wildfly-on-debian-9/" />
+<meta property="article:published_time" content="2019-03-16T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-16T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上安装 WildFly (JBoss)">
+<meta itemprop="description" content="WildFly ，以前称为 JBoss ，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。
+
+在本教程中，我们将带您完成在 Debian 9 上安装 WildFly 应用服务器所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-03-16T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-16T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="724">
+
+
+
+<meta itemprop="keywords" content="debian,java,wildfly," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上安装 WildFly (JBoss)"/>
+<meta name="twitter:description" content="WildFly ，以前称为 JBoss ，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。
+
+在本教程中，我们将带您完成在 Debian 9 上安装 WildFly 应用服务器所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 WildFly (JBoss)</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-16T08:00:00Z">March 16, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="http://wildfly.org/about/">WildFly</a> ，以前称为 JBoss ，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。</p>
+
+<p>在本教程中，我们将带您完成在 Debian 9 上安装 WildFly 应用服务器所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您登录的用户必须<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限</a>才能安装软件包。</p>
+
+<h2 id="安装-java-openjdk">安装 Java OpenJDK</h2>
+
+<p>WildFly 需要安装 Java 。我们将安装 OpenJDK ，它是 Debian 9 中的默认 Java 开发和运行时：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install default-jdk
+</code></pre>
+
+<blockquote>
+<p>如果要使用 Oracle Java 而不是 OpenJDK ，请参考这个<a href="/linux/install-java-on-ubuntu-18-04/">说明</a>进行安装。</p>
+</blockquote>
+
+<h2 id="创建用户">创建用户</h2>
+
+<p><!--link:how-to-create-users-in-linux-using-the-useradd-command-->创建一个新的系统用户和组<!--link-->来运行 WildFly 服务， 用户名为 <code>wildfly</code>, 用户主目录是 <code>/opt/wildfly</code> ：</p>
+
+<pre><code class="language-bash">sudo groupadd -r wildfly
+sudo useradd -r -g wildfly -d /opt/wildfly -s /sbin/nologin wildfly
+</code></pre>
+
+<h2 id="安装-wildfly">安装 WildFly</h2>
+
+<p>在撰写本文时，最新版本的 WildFly 是 16.0.0 。在继续下一步之前，您应该从<a href="http://wildfly.org/downloads/">下载页面</a>检查是否有新版本。如果有新版本，请替换下面的命令中的变量 <code>WILDFLY_VERSION</code> 。</p>
+
+<p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a> 在目录 <code>/tmp</code> 中下载 WildFly 存档：</p>
+
+<pre><code class="language-bash">WILDFLY_VERSION=16.0.0.Final
+wget https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz -P /tmp
+</code></pre>
+
+<p>下载完成后，<!--link:how-to-extract-unzip-tar-gz-file-->解压缩 <code>tar.gz</code> 文件<!--link-->并将其移至 <code>/opt</code> 目录：</p>
+
+<pre><code class="language-bash">sudo tar xf /tmp/wildfly-$WILDFLY_VERSION.tar.gz -C /opt/
+</code></pre>
+
+<p>创建一个指向 WildFly 安装目录的<!--link:how-to-create-symbolic-links-in-linux-using-the-ln-command-->符号链接<!--link-->  <code>wildfly</code> ：</p>
+
+<pre><code class="language-bash">sudo ln -s /opt/wildfly-$WILDFLY_VERSION /opt/wildfly
+</code></pre>
+
+<p>WildFly 运行在用户 <code>wildfly</code> 下， <code>wildfly</code> 需要访问 WildFly 安装目录。将<!--link:linux-chown-command-->目录所有权<!--link-->更改为用户和组 <code>wildfly</code> ：</p>
+
+<pre><code class="language-bash">sudo chown -RH wildfly: /opt/wildfly
+</code></pre>
+
+<h2 id="配置-systemd">配置 Systemd</h2>
+
+<p>WildFly 包中包含将 WildFly 作为服务运行所必需的文件。</p>
+
+<p>首先<!--link:how-to-create-directories-in-linux-with-the-mkdir-command-->创建一个目录<!--link--> <code>/etc/wildfly</code> 用来存放 WildFly 配置文件</p>
+
+<pre><code class="language-bash">sudo mkdir -p /etc/wildfly
+</code></pre>
+
+<p>将配置文件复制到 <code>/etc/wildfly</code> 目录：</p>
+
+<pre><code class="language-bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
+</code></pre>
+
+<p>在此配置文件 <code>/etc/wildfly/wildfly.conf</code> 中允许您指定 WildFly 模式和绑定地址。默认情况下， WildFly 将以独立模式运行，并将侦听所有接口。根据您的需要编辑文件。</p>
+
+<pre><code class="language-conf"># The configuration you want to run
+WILDFLY_CONFIG=standalone.xml
+
+# The mode you want to run
+WILDFLY_MODE=standalone
+
+# The address to bind to
+WILDFLY_BIND=0.0.0.0
+</code></pre>
+
+<p>接下来，将 WildFly <code>launch.sh</code> 脚本复制到 <code>/opt/wildfly/bin/</code> 目录：</p>
+
+<pre><code class="language-bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/launch.sh /opt/wildfly/bin/
+</code></pre>
+
+<p><code>bin</code> 目录中的脚本需要具有可执行权限：</p>
+
+<pre><code class="language-bash">sudo sh -c 'chmod +x /opt/wildfly/bin/*.sh'
+</code></pre>
+
+<p>最后一步是将 systemd 单元文件复制到 <code>/etc/systemd/system/</code> 目录：</p>
+
+<pre><code class="language-bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/
+</code></pre>
+
+<p>重新加载 systemd 管理配置：</p>
+
+<pre><code class="language-bash">sudo systemctl daemon-reload
+</code></pre>
+
+<p>启动 WildFly 服务并启用随机启动：</p>
+
+<pre><code class="language-bash">sudo systemctl start wildfly
+sudo systemctl enable wildfly
+</code></pre>
+
+<p>使用以下命令检查服务状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status wildfly
+</code></pre>
+
+<pre><code class="language-bash">* wildfly.service - The WildFly Application Server
+   Loaded: loaded (/etc/systemd/system/wildfly.service; disabled; vendor preset: enabled)
+   Active: active (running) since Sun 2019-02-17 04:59:39 PST; 2s ago
+ Main PID: 10005 (launch.sh)
+    Tasks: 62 (limit: 2319)
+   CGroup: /system.slice/wildfly.service
+</code></pre>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果您的服务器<!--link:how-to-setup-a-firewall-with-ufw-on-debian-9-->受防火墙保护<!--link-->，并且您想从本地网络外部访问 WildFly 接口，则需要打开端口 8080 。</p>
+
+<p>要允许端口 <code>8080</code> 上的访问，请键入以下命令：</p>
+
+<pre><code class="language-bash">sudo ufw allow 8080/tcp
+</code></pre>
+
+<blockquote>
+<p>在生产环境中运行 WildFly 应用程序时，您很可能会拥有负载均衡器或<!--link:nginx-reverse-proxy-->反向代理<!--link-->，最佳做法是仅将端口 8080 的访问权限限制到内部网络。</p>
+</blockquote>
+
+<h2 id="配置-wildfly-身份验证">配置 WildFly 身份验证</h2>
+
+<p>现在 WildFly 已安装并运行，下一步是创建一个用户，能够使用管理控制台进行连接或使用 CLI 远程连接。</p>
+
+<p>要添加新用户，请使用位于 WildFly 的 bin 目录中的脚本： <code>add-user.sh</code></p>
+
+<pre><code class="language-bash">sudo /opt/wildfly/bin/add-user.sh
+</code></pre>
+
+<p>系统会询问您要添加的用户类型：</p>
+
+<pre><code class="language-bash">What type of user do you wish to add? 
+ a) Management User (mgmt-users.properties) 
+ b) Application User (application-users.properties)
+(a):
+</code></pre>
+
+<p>选择 <code>a</code> 并点击 <code>Enter</code> ：</p>
+
+<p>接下来，该脚本将提示您输入新用户的详细信息：</p>
+
+<pre><code class="language-bash">Enter the details of the new user to add.
+Using realm 'ManagementRealm' as discovered from the existing property files.
+Username : buzheng
+Password recommendations are listed below. To modify these restrictions edit the add-user.properties configuration file.
+ - The password should be different from the username
+ - The password should not be one of the following restricted values {root, admin, administrator}
+ - The password should contain at least 8 characters, 1 alphabetic character(s), 1 digit(s), 1 non-alphanumeric symbol(s)
+Password : 
+Re-enter Password : 
+What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]: 
+About to add user 'buzheng' for realm 'ManagementRealm'
+Is this correct yes/no? yes
+Added user 'buzheng' to file '/opt/wildfly-16.0.0.Final/standalone/configuration/mgmt-users.properties'
+Added user 'buzheng' to file '/opt/wildfly-16.0.0.Final/domain/configuration/mgmt-users.properties'
+Added user 'buzheng' with groups  to file '/opt/wildfly-16.0.0.Final/standalone/configuration/mgmt-groups.properties'
+Added user 'buzheng' with groups  to file '/opt/wildfly-16.0.0.Final/domain/configuration/mgmt-groups.properties'
+Is this new user going to be used for one AS process to connect to another AS process? 
+e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.
+yes/no? yes
+To represent the user add the following to the server-identities definition &lt;secret value=&quot;UGFuMjNkZWo3NyNA&quot; /&gt;
+</code></pre>
+
+<p>新用户将添加到用于身份验证的属性文件中。</p>
+
+<h2 id="测试-wildfly-安装">测试 WildFly 安装</h2>
+
+<p>要访问默认的 WildFly 页面，请打开<!--link:how-to-install-google-chrome-web-browser-on-debian-9-->浏览器<!--link-->并键入： <code>http://&lt;your_domain_or_IP_address&gt;:8080</code></p>
+
+<p>如果安装成功，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/how-to-install-wildfly-on-debian-9/wildfly-home.jpg" alt="" /></p>
+
+<h2 id="访问-wildfly-管理控制台">访问 WildFly 管理控制台</h2>
+
+<h3 id="命令行界面">命令行界面</h3>
+
+<p>要从命令行访问 WildFly 管理控制台，您可以使用 <code>jboss-cli.sh</code> 脚本。</p>
+
+<p>进入到 WildFly 的 <code>bin</code> 目录并使用 <code>--connect</code> 选项运行脚本：</p>
+
+<pre><code class="language-bash">cd /opt/wildfly/bin/
+./jboss-cli.sh --connect
+</code></pre>
+
+<p>系统将要求您输入管理用户名和密码（已在上述步骤中创建）：</p>
+
+<pre><code class="language-bash">Authenticating against security realm: ManagementRealm
+Username: buzheng
+Password:
+</code></pre>
+
+<p>登录后，控制台提示符将变为 <code>[standalone@localhost:9990 /]</code> 。键入 <code>help</code> 以获取命令和命令语法列表。</p>
+
+<p>从这里，您可以部署和取消部署应用程序，管理用户和组以及配置和监视 WildFly 服务器。</p>
+
+<h2 id="web-界面">Web 界面</h2>
+
+<p>如果您更喜欢从 GUI 管理服务器， WildFly 还提供基于 Web 的控制台。</p>
+
+<p>默认情况下， WildFly 管理控制台仅在 localhost 中可用 <code>http://localhost:9990/console</code> 。使用您在上述步骤中创建的用户登录。</p>
+
+<p><img src="/images/linux/how-to-install-wildfly-on-debian-9/wildfly-console.jpg" alt="" /></p>
+
+<p>如果你想从远程地点访问控制台，您需要稍微修改 <code>wildfly.service</code> ， <code>wildfly.conf</code> 和 <code>launch.sh</code> 文件。</p>
+
+<p>打开 <code>/etc/wildfly/wildfly.conf</code> 并附加到 <code>WILDFLY_CONSOLE_BIND=0.0.0.0</code>文件的末尾。</p>
+
+<pre><code class="language-bash"># The configuration you want to run
+WILDFLY_CONFIG=standalone.xml
+
+# The mode you want to run
+WILDFLY_MODE=standalone
+
+# The address to bind to
+WILDFLY_BIND=0.0.0.0
+
+# The address console to bind to
+WILDFLY_CONSOLE_BIND=0.0.0.0
+</code></pre>
+
+<p>打开 <code>/opt/wildfly/bin/launch.sh</code> 并编辑最后几行：</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+if [ &quot;x$WILDFLY_HOME&quot; = &quot;x&quot; ]; then
+    WILDFLY_HOME=&quot;/opt/wildfly&quot;
+fi
+
+if [[ &quot;$1&quot; == &quot;domain&quot; ]]; then
+    $WILDFLY_HOME/bin/domain.sh -c $2 -b $3 -bmanagement $4
+else
+    $WILDFLY_HOME/bin/standalone.sh -c $2 -b $3 -bmanagement $4
+fi
+</code></pre>
+
+<p>重新启动服务以使更改生效：</p>
+
+<pre><code class="language-bash">sudo systemctl restart wildfly
+</code></pre>
+
+<p>打开 <code>/etc/systemd/system/wildfly.service</code> 并编辑 <code>ExecStart</code> 行：</p>
+
+<pre><code class="language-conf">[Unit]
+Description=The WildFly Application Server
+After=syslog.target network.target
+Before=httpd.service
+
+[Service]
+Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
+EnvironmentFile=-/etc/wildfly/wildfly.conf
+User=wildfly
+LimitNOFILE=102642
+PIDFile=/var/run/wildfly/wildfly.pid
+ExecStart=/opt/wildfly/bin/launch.sh $WILDFLY_MODE $WILDFLY_CONFIG $WILDFLY_BIND $WILDFLY_CONSOLE_BIND
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>重新加载 systemd 管理器配置：</p>
+
+<pre><code class="language-bash">sudo systemctl daemon-reload
+</code></pre>
+
+<p>运行以下命令重新启动 WildFly 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart wildfly
+</code></pre>
+
+<p>假设您的防火墙没有阻止端口 9990 ，您应该能够访问 WildFly 管理控制台 <code>http://&lt;your_domain_or_IP_address&gt;:9990/console</code> 。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Debian 9 服务器上成功安装了 WildFly 。您还可以访问官方 <a href="http://docs.wildfly.org/15/">WildFly 文档</a>并了解有关 WildFly 功能的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/wildfly" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">wildfly</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-debian-9/">如何在 Debian 9 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-centos-7/">如何在 CentOS 7 上安装 WildFly(JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-or-change-timezone-on-debian-9/">如何在 Debian 9 上设置或更改时区</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-add-and-delete-users-on-debian-9/">如何在 Debian 9 上添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-centos-7/">如何在 CentOS 7 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-debian-9/">如何在 Debian 9 上安装 Plex 媒体服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

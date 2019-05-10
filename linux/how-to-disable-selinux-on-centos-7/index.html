@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 CentOS 7 上禁用 SELinux</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上禁用 SELinux" />
+<meta property="og:description" content="SELinux(安全增强型 Linux) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-disable-selinux-on-centos-7/" />
+<meta property="article:published_time" content="2019-04-28T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-28T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上禁用 SELinux">
+<meta itemprop="description" content="SELinux(安全增强型 Linux) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。">
+
+
+<meta itemprop="datePublished" content="2019-04-28T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-28T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="217">
+
+
+
+<meta itemprop="keywords" content="centos,security," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上禁用 SELinux"/>
+<meta name="twitter:description" content="SELinux(安全增强型 Linux) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 CentOS 7 上禁用 SELinux</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-28T05:00:00Z">April 28, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>SELinux(<a href="https://selinuxproject.org/page/Main_Page">安全增强型 Linux</a>) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。</p>
+
+<p>SELinux 策略规则对顶进程和用户如何相互交互以及进程和用户如何与文件交互。</p>
+
+<p>如果没有专门允许访问的 SELinux 策略规则，例如打开文件的进程，则拒绝访问。</p>
+
+<p>SELinux 有三种模式：</p>
+
+<ul>
+<li>Enforcing： SELinux 允许基于 SELinux 策略规则进行访问。</li>
+<li>Permissive： SELinux 仅记录在强制模式下运行时将被拒绝的操作。</li>
+<li>Disabled：未加载 SELinux 策略。</li>
+</ul>
+
+<p>默认情况下，在 CentOS 7 中， SELinux 已启用并处于强制模式。</p>
+
+<p>建议将 SELinux 保持在强制模式，但在某些情况下，您可能需要将其设置为许可模式或完全禁用它。</p>
+
+<p>在本教程中，我们将向您展示如何在 CentOS 7 系统上禁用 SELinux 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="检查-selinux-状态">检查 SELinux 状态</h2>
+
+<p>要查看当前 SELinux 状态以及系统上正在使用的 SELinux 策略，可以使用以下 <code>sestatus</code> 命令：</p>
+
+<pre><code class="language-console-bash">sestatus
+</code></pre>
+
+<pre><code class="language-output">SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Max kernel policy version:      31
+</code></pre>
+
+<p>您可以从上面的输出中看到 SELinux 已启用并设置为强制模式。</p>
+
+<h2 id="禁用-selinux">禁用 SELinux</h2>
+
+<p>你可以暂时 SELinux 的模式从改变 <code>targeted</code> 到 <code>permissive</code> 使用下面的命令：</p>
+
+<pre><code class="language-console-bash">sudo setenforce 0
+</code></pre>
+
+<p>但是，此更改仅对当前运行时会话有效。</p>
+
+<p>要在 CentOS 7 系统上永久禁用 SELinux ，请执行以下步骤：</p>
+
+<ol>
+<li><p>打开 <code>/etc/selinux/config</code> 文件并将 <code>SELINUX</code> 设置为 <code>disabled</code> ：</p>
+
+<pre><code class="language-config">    # This file controls the state of SELinux on the system.
+    # SELINUX= can take one of these three values:
+    #       enforcing - SELinux security policy is enforced.
+    #       permissive - SELinux prints warnings instead of enforcing.
+    #       disabled - No SELinux policy is loaded.
+    SELINUX=disabled
+    # SELINUXTYPE= can take one of these two values:
+    #       targeted - Targeted processes are protected,
+    #       mls - Multi Level Security protection.
+    SELINUXTYPE=targeted
+
+</code></pre>
+
+<ol>
+<li>保存文件并重新启动 CentOS 系统：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo shutdown -r now
+</code></pre></li>
+
+<li><p>系统启动后，使用以下 <code>sestatus</code> 命令验证更改：</p>
+
+<pre><code class="language-console-bash">sestatus
+</code></pre>
+
+<p>输出应如下所示：</p>
+
+<pre><code class="language-output">SELinux status:                 disabled
+</code></pre></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何在 CentOS 7 计算机上永久禁用 SELinux 。</p>
+
+<p>您可以访问 <a href="https://wiki.centos.org/HowTos/SELinux">CentOS SELinux</a> 指南，了解有关 SELinux 强大功能的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/security" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-centos-7/">如何在 CentOS 7 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-centos-7/">如何在 CentOS 7 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/creating-a-self-signed-ssl-certificate/">创建自签名的 SSL 证书</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 CentOS 7 上使用 FirewallD 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-edit-your-hosts-file/">如何编辑 hosts 文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-centos-7/">如何在 CentOS 7 上安装 Plex Media Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-sftp-chroot-jail/">如何设置 SFTP Chroot Jail</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-centos-7/">如何在 CentOS 7 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-centos-7/">如何在 CentOS 7 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-7/">如何在 CentOS 7 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-centos-7/">如何在 CentOS 7 上安装 Apache Cassandra</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

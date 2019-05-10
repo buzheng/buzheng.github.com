@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | ZooKeeper 集群安装笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="ZooKeeper 集群安装笔记" />
+<meta property="og:description" content="本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/20160716-zookeeper-install-notes/" />
+<meta property="article:published_time" content="2016-07-16T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-07-16T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="ZooKeeper 集群安装笔记">
+<meta itemprop="description" content="本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。">
+
+
+<meta itemprop="datePublished" content="2016-07-16T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-07-16T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="734">
+
+
+
+<meta itemprop="keywords" content="ZooKeeper,分布式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ZooKeeper 集群安装笔记"/>
+<meta name="twitter:description" content="本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">ZooKeeper 集群安装笔记</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-07-16T00:00:00Z">July 16, 2016</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。</p>
+
+<h2 id="安装-java-环境">安装 Java 环境</h2>
+
+<p>zookeeper 需要 Java 环境的支持，所以先要有 java 环境，刚好以前写过一篇如何安装java的笔记，参看：<a href="https://buzheng.org/centos-65-install-oracle-jdk-8.html">https://buzheng.org/centos-65-install-oracle-jdk-8.html</a></p>
+
+<h2 id="创建用户">创建用户</h2>
+
+<p>为了方便演示，所有的操作都在 zookeeper 用户下进行。</p>
+
+<pre><code class="language-shell">useradd zookeeper
+</code></pre>
+
+<h2 id="下载-安装">下载 &amp; 安装</h2>
+
+<pre><code class="language-bash">wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz
+</code></pre>
+
+<p>下载完成后解压到 ~/apps/zookeeper-3.4.8</p>
+
+<h2 id="配置集群">配置集群</h2>
+
+<p>这里安装是 zookeeper 集群， 由于服务器有限，多个节点安装在一台服务器上，每个节点通过端口来区分.</p>
+
+<h3 id="创建节点目录">创建节点目录</h3>
+
+<pre><code class="language-shell">mkdir /home/zookeeper/nodes/zk1
+mkdir /home/zookeeper/nodes/zk2
+mkdir /home/zookeeper/nodes/zk3
+</code></pre>
+
+<h3 id="为节点创建-myid-文件">为节点创建 myid 文件</h3>
+
+<p>myid 文件用来存储本节点服务器ID，这个ID与后面配置文件中 server.ID 必须保持一致。</p>
+
+<pre><code class="language-shell">echo &quot;1&quot; &gt; /home/zookeeper/nodes/zk1/myid
+echo &quot;2&quot; &gt; /home/zookeeper/nodes/zk2/myid
+echo &quot;3&quot; &gt; /home/zookeeper/nodes/zk3/myid
+</code></pre>
+
+<h3 id="配置文件">配置文件</h3>
+
+<p><strong>节点1</strong></p>
+
+<p>节点1的对外服务端口为 2181。</p>
+
+<p>集群的配置格式为：server.ID:NODE_HOST:port1:port2 , 说明如下：
+- ID 与每个节点 myid 中的配置必须保持一致
+- NODE_HOST 每个节点的主机地址
+- port1 为 follower 节点连接到 leader 节点的端口号
+- port2 为 leadership 选举的端口号</p>
+
+<pre><code>vi /home/zookeeper/nodes/zk1/zoo.cfg
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/home/zookeeper/nodes/zk1
+clientPort=2181
+
+server.1=192.168.0.211:2888:3888
+server.2=192.168.0.211:2889:3889
+server.3=192.168.0.211:2890:3890
+</code></pre>
+
+<p><strong>节点2</strong></p>
+
+<pre><code>vi /home/zookeeper/nodes/zk2/zoo.cfg
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/home/zookeeper/nodes/zk2
+clientPort=2182
+
+server.1=192.168.0.211:2888:3888
+server.2=192.168.0.211:2889:3889
+server.3=192.168.0.211:2890:3890
+</code></pre>
+
+<p><strong>节点2</strong></p>
+
+<pre><code>vi /home/zookeeper/nodes/zk3/zoo.cfg
+tickTime=2000
+initLimit=10
+syncLimit=5
+dataDir=/home/zookeeper/nodes/zk3
+clientPort=2183
+
+server.1=192.168.0.211:2888:3888
+server.2=192.168.0.211:2889:3889
+server.3=192.168.0.211:2890:3890
+</code></pre>
+
+<h2 id="操作命令">操作命令</h2>
+
+<p>操作命令位于 bin目录下： /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh</p>
+
+<p>命令用法： zkServer.sh 操作选项 [配置文件] , 配置文件会默认使用安装目录下 conf 下的 zoo.cfg</p>
+
+<p>关于操作选项，有下面几个选项</p>
+
+<ul>
+<li>start 后台启动服务器</li>
+<li>start-foreground 前台启动服务器，如果服务器不正常的时候，可以前台启用来排错</li>
+<li>stop 停止服务器</li>
+<li>restart 重新启动服务器</li>
+<li>status 查看状态</li>
+<li>upgrade 升级</li>
+</ul>
+
+<h3 id="启动">启动</h3>
+
+<p>以下命令逐个启动每个节点</p>
+
+<pre><code class="language-shell">/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk1/zoo.cfg
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk2/zoo.cfg
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk3/zoo.cfg
+</code></pre>
+
+<p>输入如下：</p>
+
+<pre><code class="language-shell">[zookeeper@localhost ~]$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk1/zoo.cfg
+ZooKeeper JMX enabled by default
+Using config: /home/zookeeper/nodes/zk1/zoo.cfg
+Starting zookeeper ... STARTED
+[zookeeper@localhost ~]$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk2/zoo.cfg
+ZooKeeper JMX enabled by default
+Using config: /home/zookeeper/nodes/zk2/zoo.cfg
+Starting zookeeper ... STARTED
+[zookeeper@localhost ~]$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk3/zoo.cfg
+ZooKeeper JMX enabled by default
+Using config: /home/zookeeper/nodes/zk3/zoo.cfg
+Starting zookeeper ... STARTED
+</code></pre>
+
+<p>注意 STARTED 是表示启动成功了，有时候启动成功了，并不表示各个节点之间的集群通信没有问题，如果需要排查错误，请使用 start-foreground 选项，这样就能一目了然的发现问题。</p>
+
+<h3 id="查看状态">查看状态</h3>
+
+<pre><code class="language-shell">/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk1/zoo.cfg
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk2/zoo.cfg
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk3/zoo.cfg
+</code></pre>
+
+<p>输出如下：</p>
+
+<pre><code class="language-shell">[zookeeper@localhost ~]$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk1/zoo.cfg
+okeeper/nodes/zk3/zoo.cfg
+ZooKeeper JMX enabled by default
+Using config: /home/zookeeper/nodes/zk1/zoo.cfg
+Mode: follower
+[zookeeper@localhost ~]$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk2/zoo.cfg
+ZooKeeper JMX enabled by default
+Using config: /home/zookeeper/nodes/zk2/zoo.cfg
+Mode: leader
+[zookeeper@localhost ~]$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk3/zoo.cfg
+ZooKeeper JMX enabled by default
+Using config: /home/zookeeper/nodes/zk3/zoo.cfg
+Mode: follower
+</code></pre>
+
+<p>从这里看出，节点2被选为leader。</p>
+
+<h3 id="停止">停止</h3>
+
+<pre><code>/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk1/zoo.cfg
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk2/zoo.cfg
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk3/zoo.cfg
+</code></pre>
+
+<h2 id="开通端口">开通端口</h2>
+
+<p>为了对外提供服务，别忘了把端口好都加入到防火墙中</p>
+
+<pre><code class="language-shell">iptables -I INPUT 5 -m state --state NEW,ESTABLISHED -p tcp --dport 2181 -j ACCEPT
+iptables -I INPUT 6 -m state --state NEW,ESTABLISHED -p tcp --dport 2182 -j ACCEPT
+iptables -I INPUT 7 -m state --state NEW,ESTABLISHED -p tcp --dport 2183 -j ACCEPT
+iptables -I INPUT 8 -m state --state NEW,ESTABLISHED -p tcp --dport 2888 -j ACCEPT
+iptables -I INPUT 9 -m state --state NEW,ESTABLISHED -p tcp --dport 3888 -j ACCEPT
+iptables -I INPUT 10 -m state --state NEW,ESTABLISHED -p tcp --dport 2889 -j ACCEPT
+iptables -I INPUT 11 -m state --state NEW,ESTABLISHED -p tcp --dport 3889 -j ACCEPT
+iptables -I INPUT 12 -m state --state NEW,ESTABLISHED -p tcp --dport 2890 -j ACCEPT
+iptables -I INPUT 13 -m state --state NEW,ESTABLISHED -p tcp --dport 3890 -j ACCEPT
+</code></pre>
+
+<h2 id="连接-zookeeper">连接 zookeeper</h2>
+
+<p>zookeeper 带了客户端程序能方便的连接到 zookeeper 服务 ： ~/apps/zookeeper-3.4.8/bin/zkCli.sh</p>
+
+<p>用法为 zkCli.sh -server SERVER_HOST:PORT</p>
+
+<pre><code class="language-shell">[zookeeper@localhost ~]$ zkCli.sh -server 127.0.0.1:2181
+Connecting to 127.0.0.1:2181
+2016-07-08 02:17:23,255 [myid:] - INFO  [main:Environment@100] - Client environment:zookeeper.version=3.4.8--1, built on 02/06/2016 03:18 GMT
+2016-07-08 02:17:23,258 [myid:] - INFO  [main:Environment@100] - Client environment:host.name=localhost
+2016-07-08 02:17:23,258 [myid:] - INFO  [main:Environment@100] - Client environment:java.version=1.8.0_92
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:java.vendor=Oracle Corporation
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:java.home=/opt/java/jdk1.8.0_92/jre
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:java.class.path=/home/zookeeper/apps/zookeeper-3.4.8/bin/../build/classes:/home/zookeeper/apps/zookeeper-3.4.8/bin/../build/lib/*.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/slf4j-log4j12-1.6.1.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/slf4j-api-1.6.1.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/netty-3.7.0.Final.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/log4j-1.2.16.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/jline-0.9.94.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../zookeeper-3.4.8.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../src/java/lib/*.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../conf:.
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:java.io.tmpdir=/tmp
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:java.compiler=&lt;NA&gt;
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:os.name=Linux
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:os.arch=amd64
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:os.version=3.10.0-327.22.2.el7.x86_64
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:user.name=zookeeper
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:user.home=/home/zookeeper
+2016-07-08 02:17:23,260 [myid:] - INFO  [main:Environment@100] - Client environment:user.dir=/home/zookeeper
+2016-07-08 02:17:23,261 [myid:] - INFO  [main:ZooKeeper@438] - Initiating client connection, connectString=127.0.0.1:2181 sessionTimeout=30000 watcher=org.apache.zookeeper.ZooKeeperMain$MyWatcher@506c589e
+Welcome to ZooKeeper!
+2016-07-08 02:17:23,336 [myid:] - INFO  [main-SendThread(127.0.0.1:2181):ClientCnxn$SendThread@1032] - Opening socket connection to server 127.0.0.1/127.0.0.1:2181. Will not attempt to authenticate using SASL (unknown error)
+JLine support is enabled
+2016-07-08 02:17:23,390 [myid:] - INFO  [main-SendThread(127.0.0.1:2181):ClientCnxn$SendThread@876] - Socket connection established to 127.0.0.1/127.0.0.1:2181, initiating session
+[zk: 127.0.0.1:2181(CONNECTING) 0] 2016-07-08 02:17:23,644 [myid:] - INFO  [main-SendThread(127.0.0.1:2181):ClientCnxn$SendThread@1299] - Session establishment complete on server 127.0.0.1/127.0.0.1:2181, sessionid = 0x155c91f63ed0000, negotiated timeout = 30000
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+ 
+[zk: 127.0.0.1:2181(CONNECTED) 0] 
+</code></pre>
+
+<p>已经连接成功了, 迫不及待拿几个命令试一下</p>
+
+<pre><code class="language-shell">[zk: 127.0.0.1:2181(CONNECTED) 0] ls /
+[note, conf, sgroup, servers, zookeeper]
+[zk: 127.0.0.1:2181(CONNECTED) 4] create /test &quot;this is a test node&quot;
+Created /test
+[zk: 127.0.0.1:2181(CONNECTED) 5] get /test
+this is a test node
+cZxid = 0x800000002
+ctime = Fri Jul 08 02:22:58 EDT 2016
+mZxid = 0x800000002
+mtime = Fri Jul 08 02:22:58 EDT 2016
+pZxid = 0x800000002
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 19
+numChildren = 0
+</code></pre>
+
+<p>到此, 结束了.</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/zookeeper" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ZooKeeper</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">分布式</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

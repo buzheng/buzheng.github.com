@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Linux 中查看用户列表</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Linux 中查看用户列表" />
+<meta property="og:description" content="您是否想要列出 Linux 系统中的所有用户或计算系统中的用户数？有命令可以创建用户，删除用户，列出登录用户，但是列出 Linux 中所有用户的命令是什么？
+
+本教程将向您展示如何在 Linux 系统中列出用户。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-list-users-in-linux/" />
+<meta property="article:published_time" content="2019-04-02T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-02T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Linux 中查看用户列表">
+<meta itemprop="description" content="您是否想要列出 Linux 系统中的所有用户或计算系统中的用户数？有命令可以创建用户，删除用户，列出登录用户，但是列出 Linux 中所有用户的命令是什么？
+
+本教程将向您展示如何在 Linux 系统中列出用户。">
+
+
+<meta itemprop="datePublished" content="2019-04-02T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-02T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="270">
+
+
+
+<meta itemprop="keywords" content="linux,terminal,user," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Linux 中查看用户列表"/>
+<meta name="twitter:description" content="您是否想要列出 Linux 系统中的所有用户或计算系统中的用户数？有命令可以创建用户，删除用户，列出登录用户，但是列出 Linux 中所有用户的命令是什么？
+
+本教程将向您展示如何在 Linux 系统中列出用户。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Linux 中查看用户列表</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-02T05:00:00Z">April 2, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>您是否想要列出 Linux 系统中的所有用户或计算系统中的用户数？有命令可以创建用户，删除用户，列出登录用户，但是列出 Linux 中所有用户的命令是什么？</p>
+
+<p>本教程将向您展示如何在 Linux 系统中列出用户。</p>
+
+<h2 id="使用-etc-passwd-文件获取所有用户列表">使用 <code>/etc/passwd</code> 文件获取所有用户列表</h2>
+
+<p>本地用户信息存储在 <code>/etc/passwd</code> 文件中。此文件中的每一行代表一个用户的登录信息。要打开文件，您可以使用 <code>cat</code> 或 <code>less</code> ：</p>
+
+<pre><code class="language-console-bash">less /etc/passwd
+</code></pre>
+
+<p><img src="/images/linux/how-to-list-users-in-linux/linux-etc-passwd-list-users.jpg" alt="" /></p>
+
+<p>从上面的输出中可以看出，每行有七个以冒号分隔的字段，其中包含以下信息：</p>
+
+<ul>
+<li>用户名</li>
+<li>加密密码 (<code>x</code> 表示密码存储在 <code>/etc/shadow</code> 文件中)</li>
+<li>用户 ID 号 (UID)</li>
+<li>用户的组 ID 号 (GID)</li>
+<li>用户的全名 (GECOS)</li>
+<li>用户主目录</li>
+<li>登录 shell （默认为 <code>/bin/bash</code>)</li>
+</ul>
+
+<p>如果您只想显示您可以使用的用户名， <code>awk</code> 或者 <code>cut</code> 只打印包含用户名的第一个字段的命令：</p>
+
+<pre><code class="language-console-bash">awk -F: '{ print $1}' /etc/passwd
+</code></pre>
+
+<pre><code class="language-console-bash">cut -d: -f1 /etc/passwd
+</code></pre>
+
+<pre><code class="language-output">root
+daemon
+bin
+sys
+sync
+...
+...
+sshd
+vagrant
+jack
+anne
+</code></pre>
+
+<h2 id="使用-getent-命令获取所有用户的列表">使用 getent 命令获取所有用户的列表</h2>
+
+<p><code>getent</code> 命令用来显示在 <code>/etc/nsswitch.conf</code> 文件中配置的数据库中的条目，其中包括 <code>passwd</code> 数据库，该数据库可用于查询所有的用户列表。</p>
+
+<p>要获取所有 Linux 用户的列表，请键入以下命令：</p>
+
+<pre><code class="language-console-bash">getent passwd
+</code></pre>
+
+<p><img src="/images/linux/how-to-list-users-in-linux/linux-getent-list-users.jpg" alt="" /></p>
+
+<p>如您所见，输出与显示 <code>/etc/passwd</code> 文件内容时的输出相同。如果使用 LDAP 进行用户身份验证， <code>getent</code> 则将显示 <code>/etc/passwd</code> 文件和 LDAP 数据库中的所有 Linux 用户。</p>
+
+<p>您还可以使用 <code>awk</code> 或 <code>cut</code> 仅打印包含用户名的第一个字段：</p>
+
+<pre><code class="language-console-bash">getent passwd | awk -F: '{ print $1}'
+</code></pre>
+
+<pre><code class="language-console-bash">getent passwd | cut -d: -f1
+</code></pre>
+
+<h2 id="检查-linux-系统中是否存在用户">检查 Linux 系统中是否存在用户</h2>
+
+<p>现在我们已经知道如何列出所有用户，如果要检查用户是否存在于我们的 Linux 系统中，我们可以通过将所有用户的列表传递给 grep 命令来过滤用户列表。</p>
+
+<p>例如，要查明我们的 Linux 系统中是否存在具有 <code>jack</code> 名称的用户，我们可以使用以下命令：</p>
+
+<pre><code class="language-console-bash">getent passwd | grep jack
+</code></pre>
+
+<p><img src="/images/linux/how-to-list-users-in-linux/check-whether-a-user-exists-in-the-linux-system.jpg" alt="" /></p>
+
+<p>如果用户存在，则上面的命令将打印用户的登录信息。如果没有输出则表示用户不存在。</p>
+
+<p>我们还可以在不使用 <code>grep</code> 命令的情况下检查用户是否存在，如下所示：</p>
+
+<pre><code class="language-console-bash">getent passwd jack
+</code></pre>
+
+<p>与之前相同，如果用户存在，该命令将显示用户的登录信息。</p>
+
+<p>如果要查找系统上有多少用户帐户，请将 <code>getent passwd</code> 输出通过管道传递给 <code>wc</code> 命令：</p>
+
+<pre><code class="language-console-bash">getent passwd | wc -l
+</code></pre>
+
+<pre><code class="language-output">33
+</code></pre>
+
+<p>从上面的输出可以看出，我的 Linux 系统有 33 个用户帐户。</p>
+
+<h2 id="系统和普通用户">系统和普通用户</h2>
+
+<p>系统用户与常规（普通) 用户之间没有真正的技术差异。通常，在安装操作系统和新软件包时会创建系统用户。在某些情况下，您可以创建将由某个应用程序使用的系统用户。</p>
+
+<p>普通用户是由 root 用户或具有 sudo 权限的其他用户创建的用户。通常，普通用户具有真实的登录 shell 和主目录。</p>
+
+<p>每个用户都有一个名为 UID 的数字用户 ID 。如果在使用 <code>useradd</code> 命令创建新用户时未指定，则将根据 <code>UID_MIN</code> 和 <code>UID_MIN</code> 值自动从文件 <code>/etc/login.defs</code> 中选择 UID  。</p>
+
+<p>要检查系统上的 <code>UID_MIN</code> 和 <code>UID_MIN</code> 的值，可以使用以下命令：</p>
+
+<pre><code class="language-console-bash">grep -E '^UID_MIN|^UID_MAX' /etc/login.defs
+</code></pre>
+
+<pre><code class="language-output">UID_MIN          1000
+UID_MAX         60000
+</code></pre>
+
+<p>从上面的输出中，我们可以看到所有普通用户都应该具有 1000 到 60000 之间的 UID 。了解最小值和最大值允许我们查询系统中所有普通用户的列表。</p>
+
+<p>以下命令将列出 Linux 系统中的所有普通用户：</p>
+
+<pre><code class="language-console-bash">getent passwd {1000..60000}
+</code></pre>
+
+<p><img src="/images/linux/how-to-list-users-in-linux/linux-system-and-normal-users.jpg" alt="" /></p>
+
+<pre><code class="language-output">vagrant:x:1000:1000:vagrant,,,:/home/vagrant:/bin/bash
+jack:x:1001:1001:,,,:/home/jack:/bin/bash
+anne:x:1002:1002:Anne Stone,,,:/home/anne:/bin/bash
+patrick:x:1003:1003:Patrick Star,,,:/home/patrick:/usr/sbin/nologin
+</code></pre>
+
+<p>您的系统 <code>UID_MIN</code> 和 <code>UID_MIN</code> 值可能不同，因此上面命令的更通用版本将是：</p>
+
+<pre><code class="language-console-bash">eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)}
+</code></pre>
+
+<p>如果只想打印用户名，只需将输出传递给 <code>cut</code> 命令：</p>
+
+<pre><code class="language-console-bash">eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} | cut -d: -f1
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何列出和过滤 Linux 系统中的用户以及系统和普通 Linux 用户之间的主要区别。</p>
+
+<p>相同的命令适用于任何 Linux 发行版，包括 Ubuntu ， CentOS ， RHEL ， Debian 和 Linux Mint 。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/user" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">user</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">如何使用 rsync 进行本地和远程数据传输和同步</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/get-cpu-information-on-linux/">获取 Linux 上的 CPU 信息</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-user-password-in-linux/">如何在 Linux 中更改用户密码</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-users-in-linux-using-the-userdel-command/">如何使用 userdel 命令在 Linux 中删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-shutdown-command/">Linux shutdown 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-centos-7/">如何在 CentOS 7 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-debian/">如何在 Debian 上创建 sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-concatenate-strings/">在 Bash 中拼接字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/wget-command-examples/">wget 命令示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-passwordless-ssh-login/">如何设置 SSH 免密登录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-find-files-in-linux-using-the-command-line/">如何使用命令行在 Linux 中查找文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-linux-screen/">如何使用 Linux  screen</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-zip-files-and-directories-in-linux/">如何在 Linux 中压缩文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-ssh-port-in-linux/">如何在 Linux 中更改 SSH 端口</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-check-if-file-exists/">Bash 中如何检查文件或目录是否存在</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

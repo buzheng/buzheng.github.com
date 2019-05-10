@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 Ubuntu 18.04 上安装 OpenCart</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Ubuntu 18.04 上安装 OpenCart" />
+<meta property="og:description" content="OpenCart 是一个免费的开源 PHP 电子商务平台，同时具有强大的功能，灵活性和用户友好的界面。
+
+因为本身带有的用户管理，多商店，关联企业，折扣，产品评论，多语言支持和多个支付网关支持等功能， OpenCart 成为许多在线商家的首选平台。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 OpenCart 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2和 MySQL / MariaDB 作为数据库服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/install-opencart-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-02-26T18:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-02-26T18:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 Ubuntu 18.04 上安装 OpenCart">
+<meta itemprop="description" content="OpenCart 是一个免费的开源 PHP 电子商务平台，同时具有强大的功能，灵活性和用户友好的界面。
+
+因为本身带有的用户管理，多商店，关联企业，折扣，产品评论，多语言支持和多个支付网关支持等功能， OpenCart 成为许多在线商家的首选平台。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 OpenCart 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2和 MySQL / MariaDB 作为数据库服务器。">
+
+
+<meta itemprop="datePublished" content="2019-02-26T18:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-02-26T18:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="514">
+
+
+
+<meta itemprop="keywords" content="linux,ubuntu,opencart,教程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 Ubuntu 18.04 上安装 OpenCart"/>
+<meta name="twitter:description" content="OpenCart 是一个免费的开源 PHP 电子商务平台，同时具有强大的功能，灵活性和用户友好的界面。
+
+因为本身带有的用户管理，多商店，关联企业，折扣，产品评论，多语言支持和多个支付网关支持等功能， OpenCart 成为许多在线商家的首选平台。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 OpenCart 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2和 MySQL / MariaDB 作为数据库服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 Ubuntu 18.04 上安装 OpenCart</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-02-26T18:00:00Z">February 26, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>OpenCart 是一个免费的开源 PHP 电子商务平台，同时具有强大的功能，灵活性和用户友好的界面。</p>
+
+<p>因为本身带有的用户管理，多商店，关联企业，折扣，产品评论，多语言支持和多个支付网关支持等功能， OpenCart 成为许多在线商家的首选平台。</p>
+
+<p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 OpenCart 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2和 MySQL / MariaDB 作为数据库服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>有一个指向您的公共服务器 IP 的域名。我们会用 example.com。</li>
+<li>按照这些说明在您的 Ubuntu 服务器上安装 Nginx  。</li>
+<li>为您的域安装的 SSL 证书，用于加密用户的信息。您可以按照这些说明安装免费的 Let’s Encrypt SSL 证书。</li>
+</ul>
+
+<p>将系统软件包更新到最新版本并安装解压缩实用程序 unzip ：</p>
+
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
+sudo apt install unzip
+</code></pre>
+
+<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
+
+<p>如果您的服务器上安装了MySQL或MariaDB，则可以跳过此步骤，否则可以通过键入以下命令从 Ubuntu 的默认存储库安装 MySQL 5.7 服务器包：</p>
+
+<pre><code class="language-bash">sudo apt install mysql-server mysql-client
+</code></pre>
+
+<p>对于全新的 MySQL 安装，建议运行该 <code>mysql_secure_installation</code> 命令以提高 MySQL 服务器的安全性。</p>
+
+<p>使用以下命令登录MySQL shell：</p>
+
+<pre><code class="language-bash">sudo mysql
+</code></pre>
+
+<p>在 mysql 控制台内部，运行以下 SQL 语句以创建名为的新数据库 opencart：</p>
+
+<pre><code class="language-sql">CREATE DATABASE opencart;
+</code></pre>
+
+<p>接下来，创建一个名为的 MySQL 用户帐户 opencart 并通过运行以下命令向这个用户授予需要的权限：</p>
+
+<pre><code class="language-sql">GRANT ALL ON opencart.* TO 'opencart'@'localhost' IDENTIFIED BY 'change-with-strong-password';
+</code></pre>
+
+<blockquote>
+<p>注意, 请使用你自己的强密码来替换上面命令中的 change-with-strong-password 。</p>
+</blockquote>
+
+<p>完成后，键入以下命令退出mysql控制台：</p>
+
+<pre><code class="language-sql">EXIT;
+</code></pre>
+
+<h3 id="安装和配置php">安装和配置PHP</h3>
+
+<p>PHP 7.2 是 Ubuntu 18.04中的默认 PHP 版本，完全支持并推荐用于 OpenCart。由于我们将使用 Nginx 作为 Web 服务器，因此我们还将安装 PHP-FPM 软件包。</p>
+
+<p>运行以下命令以安装 PHP 和所有必需的 PHP 模块：</p>
+
+<pre><code class="language-bash">sudo apt install php7.2-common php7.2-cli php7.2-fpm php7.2-opcache php7.2-gd php7.2-mysql php7.2-curl php7.2-intl php7.2-xsl php7.2-mbstring php7.2-zip php7.2-bcmath php7.2-soap
+</code></pre>
+
+<p>安装过程完成后，PHP-FPM服务将自动启动，您可以通过打印服务状态来验证它：</p>
+
+<pre><code class="language-bash">sudo systemctl status php7.2-fpm
+</code></pre>
+
+<p>输出应指示fpm服务处于活动状态并正在运行。</p>
+
+<pre><code class="language-bash"> php7.2-fpm.service - The PHP 7.2 FastCGI Process Manager
+   Loaded: loaded (/lib/systemd/system/php7.2-fpm.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2019-02-25 10:45:42 UTC; 53s ago
+     Docs: man:php-fpm7.2(8)
+ Main PID: 27446 (php-fpm7.2)
+   Status: &quot;Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0req/sec&quot;
+    Tasks: 3 (limit: 505)
+   CGroup: /system.slice/php7.2-fpm.service
+           ├─27446 php-fpm: master process (/etc/php/7.2/fpm/php-fpm.conf)
+</code></pre>
+
+<p>设置必需和推荐的PHP选项：</p>
+
+<pre><code class="language-bash">sudo sed -i &quot;s/memory_limit = .*/memory_limit = 1024M/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/upload_max_filesize = .*/upload_max_filesize = 256M/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/zlib.output_compression = .*/zlib.output_compression = on/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/max_execution_time = .*/max_execution_time = 18000/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/;opcache.save_comments.*/opcache.save_comments = 1/&quot; /etc/php/7.2/fpm/php.ini
+</code></pre>
+
+<h2 id="安装opencart">安装OpenCart</h2>
+
+<p>在撰写本文时，OpenCart的最新稳定版本是版本3.0.3.1。</p>
+
+<p>在下载 OpenCart 存档之前，首先要创建一个保存 OpenCart 文件的目录：</p>
+
+<pre><code class="language-bash">sudo mkdir -p /var/www/html/example.com
+</code></pre>
+
+<p>使用以下 wget 命令从 <a href="https://github.com/opencart">OpenCart Github</a> 存储库下载最新版本的 OpenCart ：</p>
+
+<pre><code class="language-bash">cd /tmp
+wget https://github.com/opencart/opencart/releases/download/3.0.3.1/opencart-3.0.3.1.zip
+</code></pre>
+
+<p>下载完成后，解压缩 opencart 存档并将提取的文件移动到域的文档根目录中：</p>
+
+<pre><code class="language-bash">unzip opencart-*.zip
+sudo mv /tmp/upload/* /var/www/html/example.com/
+</code></pre>
+
+<p>复制配置文件：</p>
+
+<pre><code class="language-bash">sudo cp /var/www/html/example.com/{config-dist.php,config.php}
+sudo cp /var/www/html/example.com/admin/{config-dist.php,config.php}
+</code></pre>
+
+<p>设置正确的权限，以便Web服务器可以使用以下chown命令对站点的文件和目录具有完全访问权限：</p>
+
+<pre><code class="language-bash">sudo chown -R www-data: /var/www/html
+</code></pre>
+
+<h2 id="配置nginx">配置Nginx</h2>
+
+<p>到目前为止，您应该已经在Ubuntu服务器上安装了具有 SSL 证书的 Nginx，如果没有检查本教程的先决条件。</p>
+
+<p>打开文本编辑器并创建以下文件：</p>
+
+<pre><code class="language-bash">sudo vi /etc/nginx/sites-available/example.com
+</code></pre>
+
+<p>以下是文件 /etc/nginx/sites-available/example.com 的文件内容</p>
+
+<pre><code># Redirect HTTP -&gt; HTTPS
+server {
+    listen 80;
+    server_name www.example.com example.com;
+
+    include snippets/letsencrypt.conf;
+    return 301 https://example.com$request_uri;
+}
+
+# Redirect WWW -&gt; NON WWW
+server {
+    listen 443 ssl http2;
+    server_name www.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    return 301 https://example.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    root /var/www/html/example.com;
+    index index.php;
+
+    # SSL parameters
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+    include snippets/letsencrypt.conf;
+
+    # log files
+    access_log /var/log/nginx/example.com.access.log;
+    error_log /var/log/nginx/example.com.error.log;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires max;
+        log_not_found off;
+    }
+
+}
+</code></pre>
+
+<blockquote>
+<p>不要忘记将 example.com 替换为您的 OpenCart 域名，并设置 SSL 证书文件的正确路径。此配置中使用的片段在本指南中创建。</p>
+</blockquote>
+
+<p>在重新启动 Nginx 服务之前，请先通过以下命令对配置文件进行测试以确保没有语法错误：</p>
+
+<pre><code class="language-bash">sudo nginx -t
+</code></pre>
+
+<p>如果没有错误，输出应如下所示：</p>
+
+<pre><code class="language-bash">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+</code></pre>
+
+<p>最后，键入以下命令重启 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart nginx
+</code></pre>
+
+<h2 id="完成-opencart-安装">完成 OpenCart 安装</h2>
+
+<p>现在已经下载了 OpenCart 并且服务器配置已完成，您可以通过 OpenCart 提供的 Web 界面完成安装。</p>
+
+<p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
+
+<p><img src="/images/linux/install-opencart-on-ubuntu-18-04/install-opencart-licence.jpg" alt="" /></p>
+
+<p>阅读OpenCart许可协议，选择您要使用的语言，然后单击Continue按钮。</p>
+
+<p>接下来，您将看到以下信息页面：</p>
+
+<p><img src="/images/linux/install-opencart-on-ubuntu-18-04/install-opencart-pre-installation.jpg" alt="" /></p>
+
+<p>确保满足所有预安装要求，然后单击Continue按钮。</p>
+
+<p>在下一个屏幕上，安装向导将要求您输入数据库连接详细信息。输入您之前创建的MySQL用户和数据库详细信息。</p>
+
+<p><img src="/images/linux/install-opencart-on-ubuntu-18-04/install-opencart-configuration.jpg" alt="" /></p>
+
+<p>输入管理的用户名，密码和电子邮件地址，然后单击 Continue 按钮开始安装。</p>
+
+<p>安装完成后，您将进入一个页面，通知您已安装 OpenCart。</p>
+
+<p><img src="/images/linux/install-opencart-on-ubuntu-18-04/install-opencart-installed.jpg" alt="" /></p>
+
+<p>要访问OpenCart管理仪表板，请单击Login to your Administration按钮。输入您的用户名和密码，您将被重定向到管理仪表板。</p>
+
+<p>第一次登录时，会出现一个弹出窗口，要求您将存储目录移到Web目录之外。</p>
+
+<p><img src="/images/linux/install-opencart-on-ubuntu-18-04/install-opencart-move-storage.jpg" alt="" /></p>
+
+<p>保持默认Automatically Move选项，然后单击红色Move按钮。storageWeb服务器必须可以访问您移动目录的目录。</p>
+
+<p>从这里开始，您可以开始自定义OpenCart安装并添加新产品。</p>
+
+<p>您还需要删除安装目录。为此，请返回终端并输入以下命令：</p>
+
+<pre><code class="language-bash">sudo rm -rf /var/www/html/example.com/install
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在Ubuntu 18.04服务器上成功安装了OpenCart。</p>
+
+<p>如果想了解更多关于如何安装和管理 OpenCart 信息， 阅读 <a href="http://docs.opencart.com/en-gb/introduction/">OpenCart 文档</a>是一个很好的起点。</p>
+
+<!-- how-to-install-opencart-on-ubuntu-18-04 --><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/opencart" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">opencart</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%95%99%E7%A8%8B" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">教程</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

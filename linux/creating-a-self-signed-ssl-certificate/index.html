@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 创建自签名的 SSL 证书</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="创建自签名的 SSL 证书" />
+<meta property="og:description" content="本文介绍如何使用 openssl 工具创建自签名的 SSL 证书。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/creating-a-self-signed-ssl-certificate/" />
+<meta property="article:published_time" content="2019-04-19T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-19T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="创建自签名的 SSL 证书">
+<meta itemprop="description" content="本文介绍如何使用 openssl 工具创建自签名的 SSL 证书。">
+
+
+<meta itemprop="datePublished" content="2019-04-19T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-19T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="334">
+
+
+
+<meta itemprop="keywords" content="bash,security,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="创建自签名的 SSL 证书"/>
+<meta name="twitter:description" content="本文介绍如何使用 openssl 工具创建自签名的 SSL 证书。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">创建自签名的 SSL 证书</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-19T08:00:00Z">April 19, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文介绍如何使用 openssl 工具创建自签名的 SSL 证书。</p>
+
+<h2 id="什么是自签名的-ssl-证书">什么是自签名的 SSL 证书？</h2>
+
+<p>自签名的 SSL 证书是由创建它的人签名而不是受信任的证书颁发机构签署的证书。自签名的证书可以与受信任的 CA 签名 SSL 证书具有相同的加密级别。</p>
+
+<p>自签名的证书能够被任何浏览器按照有效的证书进行管理。如果您使用的是自签名的证书，则 Web 浏览器将向访问者显示无法验证网站证书的警告。</p>
+
+<p>自签名的证书主要用于测试目的或内部使用。您不应在暴露于 Internet 的生产系统中使用自签名的证书。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>openssl 是生成自签名的证书所必需的工具包。</p>
+
+<p>要检查 Linux 系统上是否安装了 openssl 软件包，请打开终端，键入 <code>openssl version</code> ，然后按回车键。如果安装了软件包，系统将打印 OpenSSL 版本，否则你会看到类似<code>openssl command not found</code> 的提示 。</p>
+
+<p>如果系统上未安装 openssl 软件包，则可以通过运行以下命令来安装它：</p>
+
+<ul>
+<li><p>Ubuntu 和 Debian</p>
+
+<pre><code class="language-console-bash">sudo apt install openssl
+</code></pre>
+
+<ul>
+<li>Centos 和 Fedora</li>
+</ul>
+
+<pre><code class="language-console-bash">sudo yum install openssl
+</code></pre></li>
+</ul>
+
+<h2 id="创建自签名的-ssl-证书">创建自签名的 SSL 证书</h2>
+
+<p>要创建新的自签名的 SSL 证书，请使用以下 <code>openssl req</code> 命令：</p>
+
+<pre><code class="language-sh">openssl req -newkey rsa:4096 \
+            -x509 \
+            -sha256 \
+            -days 3650 \
+            -nodes \
+            -out example.crt \
+            -keyout example.key
+</code></pre>
+
+<p>让我们分解命令并理解每个选项的含义：</p>
+
+<ul>
+<li><code>-newkey rsa:4096</code> - 创建新的证书请求和 4096 位 RSA 密钥。默认值为 2048 位。</li>
+<li><code>-x509</code> - 创建 X.509 证书。</li>
+<li><code>-sha256</code> - 使用 265 位 SHA （安全散列算法）。</li>
+<li><code>-days 3650</code> - 证明证书的天数。 3650 年是 10 年。您可以使用任何正整数。</li>
+<li><code>-nodes</code> - 创建没有密码的密钥。</li>
+<li><code>-out example.crt</code> - 指定要将新创建的证书写入的文件名。您可以指定任何文件名。</li>
+<li><code>-keyout example.key</code> - 指定要将新创建的私钥写入的文件名。您可以指定任何文件名。</li>
+</ul>
+
+<p>有关 <code>openssl req</code> 命令选项的更多信息，请访问 <a href="https://www.openssl.org/docs/manmaster/man1/openssl-req.html">OpenSSL req 文档页面。</a></p>
+
+<p>点击回车后，该命令将生成私钥并询问您将用于生成证书的一系列问题。</p>
+
+<pre><code class="language-output">Generating a RSA private key
+......................................................................++++
+........++++
+writing new private key to 'example.key'
+-----
+You are about to be asked to回车information that will be incorporated
+into your certificate request.
+What you are about to回车is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you回车'.', the field will be left blank.
+-----
+</code></pre>
+
+<p>输入所需信息，然后按回车键。</p>
+
+<pre><code class="language-output">Country Name (2 letter code) [AU]:US
+State or Province Name (full name) [Some-State]:Alabama
+Locality Name (eg, city) []:Montgomery
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Linuxize
+Organizational Unit Name (eg, section) []:Marketing
+Common Name (e.g. server FQDN or YOUR name) []:linuxize.com
+Email Address []:hello@linuxize.com
+</code></pre>
+
+<p>将在指定位置创建证书和私钥。使用 ls 命令验证文件是否已创建：</p>
+
+<pre><code class="language-console-bash">ls
+</code></pre>
+
+<pre><code class="language-output">example.crt example.key
+</code></pre>
+
+<p>到这里，您已生成一个新的自签名的 SSL 证书。</p>
+
+<p>将新证书和密钥备份到外部存储始终是一个好主意。</p>
+
+<h3 id="在没有提示的情况下创建自签名的-ssl-证书">在没有提示的情况下创建自签名的 SSL 证书</h3>
+
+<p>如果要生成自签名的 SSL 证书而不提示任何问题，请使用该 <code>-subj</code> 选项并指定所有主题信息：</p>
+
+<pre><code class="language-sh">openssl req -newkey rsa:4096 \
+            -x509 \
+            -sha256 \
+            -days 3650 \
+            -nodes \
+            -out example.crt \
+            -keyout example.key \
+            -subj &quot;/C=SI/ST=Ljubljana/L=Ljubljana/O=Security/OU=IT Department/CN=www.example.com&quot;
+</code></pre>
+
+<pre><code class="language-output">Generating a RSA private key
+......................................................................++++
+........++++
+writing new private key to 'example.key'
+-----
+</code></pre>
+
+<p><code>-subj</code> 行中指定的字段如下所示：</p>
+
+<ul>
+<li><code>C=</code>- 国家的名字。两个字母的 ISO 缩写。</li>
+<li><code>ST=</code> - 州或省名称。</li>
+<li><code>L=</code> - 地点名称。您所在城市的名称。</li>
+<li><code>O=</code> - 您组织的全名。</li>
+<li><code>OU=</code> - 组织单元。</li>
+<li><code>CN=</code> - 完全合格的域名。</li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>在本指南中，我们向您展示了如何使用 openssl 工具生成自签名的 SSL 证书。现在您已拥有证书，您可以配置应用程序以使用它。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/bash" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">bash</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/security" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/echo-command-in-linux-with-examples/">Linux 中的 Echo 命令用法与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/current-working-directory/">使用 pwd 命令在 Linux 中确定当前的工作目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-concatenate-strings/">在 Bash 中拼接字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-check-if-file-exists/">Bash 中如何检查文件或目录是否存在</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ip-command/">Linux ip 命令与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">如何在 Linux 中设置和查看环境变量</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-sftp-chroot-jail/">如何设置 SFTP Chroot Jail</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-linux-version/">如何检查 Linux 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-get-size-of-file-directory-linux/">如何在 Linux 中获取目录的大小</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-curl-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 curl</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-users-in-linux/">如何在 Linux 中查看用户列表</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">如何使用 rsync 进行本地和远程数据传输和同步</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/get-cpu-information-on-linux/">获取 Linux 上的 CPU 信息</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-until-loop/">Bash 中 until loop 用法</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

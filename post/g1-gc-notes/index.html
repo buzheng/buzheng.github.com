@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 垃圾优先垃圾回收器(G1 GC)使用笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="垃圾优先垃圾回收器(G1 GC)使用笔记" />
+<meta property="og:description" content="G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/g1-gc-notes/" />
+<meta property="article:published_time" content="2015-10-20T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-10-20T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="垃圾优先垃圾回收器(G1 GC)使用笔记">
+<meta itemprop="description" content="G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。">
+
+
+<meta itemprop="datePublished" content="2015-10-20T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-10-20T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="123">
+
+
+
+<meta itemprop="keywords" content="Java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="垃圾优先垃圾回收器(G1 GC)使用笔记"/>
+<meta name="twitter:description" content="G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">垃圾优先垃圾回收器(G1 GC)使用笔记</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2015-10-20T00:00:00Z">October 20, 2015</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。</p>
+
+<p>这里不谈 G1 的具体的实现思路，只记录一下如何配置和使用。</p>
+
+<h2 id="启动-g1-gc">启动 G1 GC</h2>
+
+<pre><code class="language-shell">-XX:+UseG1GC
+</code></pre>
+
+<h2 id="几个参数及默认值">几个参数及默认值</h2>
+
+<ul>
+<li><code>-XX:MaxGCPauseMillis=200</code> 最大停顿时间, 这是一个目标值，JVM会尽量向此目标靠近，默认值为 200。</li>
+<li><code>-XX:G1HeapRegionSize=n</code> G1 的区域块大小，1M-32M 之间，必须是2的幂，G1 会根据块大小规划出不大于 2048 个块。</li>
+<li><code>-XX:G1NewSizePercent=5</code> 年轻代在堆中最小百分比，默认值是 5%</li>
+<li><code>-XX:G1MaxNewSizePercent=60</code> 年轻代在堆中的最大百分比，默认值是 60%</li>
+<li><code>-XX:ParallelGCThreads=n</code> 设置 STW 工作线程数的值。将 n 的值设置为逻辑处理器的数量。n 的值与逻辑处理器的数量相同，最多为 8。如果逻辑处理器不止八个，则将 n 的值设置为逻辑处理器数的 <sup>5</sup>&frasl;<sub>8</sub> 左右。这适用于大多数情况，除非是较大的 SPARC 系统，其中 n 的值可以是逻辑处理器数的 <sup>5</sup>&frasl;<sub>16</sub> 左右。</li>
+<li><code>-XX:ConcGCThreads=n</code> 设置并行标记的线程数。将 n 设置为并行垃圾回收线程数 (ParallelGCThreads) 的 <sup>1</sup>&frasl;<sub>4</sub> 左右。</li>
+<li><code>-XX:InitiatingHeapOccupancyPercent=45</code> 标记垃圾阀值， 默认45%</li>
+<li><code>-XX:G1ReservePercent=10</code> 设置作为空闲空间的预留内存百分比，以降低目标空间溢出的风险。默认值是 10%。</li>
+</ul>
+
+<h2 id="建议">建议</h2>
+
+<ul>
+<li>避免使用 -Xmn 选项或 -XX:NewRatio 等其他相关选项显式设置年轻代大小。固定年轻代的大小会覆盖暂停时间目标。</li>
+<li>暂停时间目标不要太小，因为暂停时间与吞吐量是一个相互矛盾的指标。</li>
+</ul>
+
+<h2 id="例子">例子</h2>
+
+<p>这是 tomcat 启动的一个简单配置</p>
+
+<pre><code class="language-shell">export CATALINA_OPTS=&quot;$CATALINA_OPTS -Xms10g&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -Xmx10g&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -Xss512k&quot;
+
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:+DisableExplicitGC&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:+HeapDumpOnOutOfMemoryError&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions&quot;
+
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:+UseG1GC&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:MaxGCPauseMillis=200&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:G1NewSizePercent=40&quot;
+export CATALINA_OPTS=&quot;$CATALINA_OPTS -XX:G1MaxNewSizePercent=80&quot;
+</code></pre>
+
+<blockquote>
+<p><code>G1NewSizePercent</code> 和 <code>G1MaxNewSizePercent</code> 为实验属性，所以请先 通过 <code>-XX:+UnlockExperimentalVMOptions</code> 打开实验选项。</p>
+</blockquote>
+
+<p>Done.</p>
+
+<p>参考：</p>
+
+<ul>
+<li><a href="http://www.oracle.com/technetwork/cn/articles/java/g1gc-1984535-zhs.html">http://www.oracle.com/technetwork/cn/articles/java/g1gc-1984535-zhs.html</a></li>
+</ul><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/slf4j-log4j2-configure/">slf4j &#43; log4j 2 配置</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-65-install-oracle-jdk-8/">centos 6.5 安装 oracle jdk 8u40</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/cxf-wsdl2java-simple-usage/">Apache CXF wsdl2java 生成客户端简单用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/file-separator-vs-pathseparator/">File 对象的 separator 与  pathSeparator</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/maven-profile-for-multiple-enviroments/">Maven多环境配置管理几种方案</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/instanceof-isinstance-isassignablefrom/">instanceof, isInstance, isAssignableFroms</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/mybatis-pageable-plugin/">MyBatis 物理分页插件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/keytools-tomcat-7-ssl/">使用keytools 为 tomcat 7 配置ssl 双向认证</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/eclipse-tomcat-maven-web/">在 Eclipse 中用 tomcat 调试 maven web 工程</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/java-notes-one-by-one/">JAVA 一些基础知识点滴</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

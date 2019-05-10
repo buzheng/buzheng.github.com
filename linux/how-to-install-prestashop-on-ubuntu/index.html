@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装 PrestaShop</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 PrestaShop" />
+<meta property="og:description" content="PrestaShop 是一个免费的开源电子商务平台。它基于 PHP 和 MySQL ，可以使用免费和高级插件和主题进行扩展。
+
+凭借直观的管理界面，多种支付网关，多语言，分析和报告等功能， PrestaShop 成为众多在线商家的首选平台。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 PrestaShop 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-prestashop-on-ubuntu/" />
+<meta property="article:published_time" content="2019-03-25T10:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-25T10:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 PrestaShop">
+<meta itemprop="description" content="PrestaShop 是一个免费的开源电子商务平台。它基于 PHP 和 MySQL ，可以使用免费和高级插件和主题进行扩展。
+
+凭借直观的管理界面，多种支付网关，多语言，分析和报告等功能， PrestaShop 成为众多在线商家的首选平台。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 PrestaShop 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。">
+
+
+<meta itemprop="datePublished" content="2019-03-25T10:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-25T10:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="532">
+
+
+
+<meta itemprop="keywords" content="debian,plex,媒体服务器," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 PrestaShop"/>
+<meta name="twitter:description" content="PrestaShop 是一个免费的开源电子商务平台。它基于 PHP 和 MySQL ，可以使用免费和高级插件和主题进行扩展。
+
+凭借直观的管理界面，多种支付网关，多语言，分析和报告等功能， PrestaShop 成为众多在线商家的首选平台。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 PrestaShop 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 PrestaShop</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-25T10:00:00Z">March 25, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://www.prestashop.com/en">PrestaShop</a> 是一个免费的开源电子商务平台。它基于 PHP 和 MySQL ，可以使用免费和高级插件和主题进行扩展。</p>
+
+<p>凭借直观的管理界面，多种支付网关，多语言，分析和报告等功能， PrestaShop 成为众多在线商家的首选平台。</p>
+
+<p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 PrestaShop 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>有一个指向您的公共服务器 IP 的域名。我们会用 <code>example.com</code> 。</li>
+<li>按照<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">这些说明</a>在您的 Ubuntu 服务器上安装 Nginx  。</li>
+<li>为您的域安装的 SSL 证书，用于加密用户的信息。您可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">这些说明</a>安装免费的 Let&rsquo;s Encrypt SSL证书。</li>
+</ul>
+
+<p>将系统软件包更新到最新版本并安装<!--link:how-to-unzip-files-in-linux--> unzip 解压缩实用程序<!--link-->：</p>
+
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
+sudo apt install unzip
+</code></pre>
+
+<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
+
+<p>PrestaShop 将其信息存储在 MySQL 数据库中。</p>
+
+<p>如果您的服务器上安装了 <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">MySQL</a> 或 <!--link:how-to-install-mariadb-on-ubuntu-18-04-->MariaDB<!--link--> ，则可以跳过此步骤，否则可以通过键入以下命令从 Ubuntu 的默认存储库安装 MySQL 5.7 服务器包：</p>
+
+<pre><code class="language-bash">sudo apt install mysql-server mysql-client
+</code></pre>
+
+<blockquote>
+<p>对于全新的 MySQL 安装，建议运行 <code>mysql_secure_installation</code> 命令以提高 MySQL 服务器的安全性。</p>
+</blockquote>
+
+<p>要创建数据库，请登录 mysql shell ：</p>
+
+<pre><code class="language-bash">sudo mysql
+</code></pre>
+
+<p>在 mysql 控制台内部，运行以下 SQL 语句以<!--link:how-to-create-a-mysql-database-->创建名为的新数据库<!--link--> <code>prestashop：</code></p>
+
+<pre><code class="language-sql">CREATE DATABASE prestashop;
+</code></pre>
+
+<p>接下来，通过运行以下命令创建一个名为 <code>prestashop</code> 的 MySQL 用户帐户，并<!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->向用户授予必要的权限<!--link-->：</p>
+
+<pre><code class="language-sql">GRANT ALL ON prestashop.* TO 'prestashop'@'localhost' IDENTIFIED BY 'change-with-strong-password';
+</code></pre>
+
+<blockquote>
+<p>不要忘记把 <code>change-with-strong-password</code> 更改为强密码。</p>
+</blockquote>
+
+<p>完成后，键入以下命令退出 mysql 控制台：</p>
+
+<pre><code class="language-bash">EXIT;
+</code></pre>
+
+<h2 id="安装和配置-php">安装和配置 PHP</h2>
+
+<p><a href="/linux/how-to-install-php-on-ubuntu-18-04/">PHP 7.2</a> 是 Ubuntu 18.04 中的默认 PHP 版本，PrestaShop 完全支持并推荐使用。</p>
+
+<p>运行以下命令以安装 PHP 和所有必需的 PHP 模块：</p>
+
+<pre><code class="language-bash">sudo apt install php7.2-common php7.2-cli php7.2-fpm php7.2-opcache php7.2-gd php7.2-mysql php7.2-curl php7.2-intl php7.2-xsl php7.2-mbstring php7.2-zip php7.2-bcmath php7.2-soap
+</code></pre>
+
+<p>安装过程完成后， PHP-FPM 服务将自动启动。您可以输入以下命令进行验证：</p>
+
+<pre><code class="language-bash">sudo systemctl status php7.2-fpm
+</code></pre>
+
+<p>输出应该如下所示：</p>
+
+<pre><code class="language-bash">* php7.2-fpm.service - The PHP 7.2 FastCGI Process Manager
+   Loaded: loaded (/lib/systemd/system/php7.2-fpm.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2019-03-24 11:53:33 PDT; 14s ago
+     Docs: man:php-fpm7.2(8)
+ Main PID: 15853 (php-fpm7.2)
+   Status: &quot;Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0req/sec&quot;
+</code></pre>
+
+<p>运行以下命令以设置推荐的PHP选项：</p>
+
+<pre><code class="language-bash">sudo sed -i &quot;s/memory_limit = .*/memory_limit = 1024M/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/upload_max_filesize = .*/upload_max_filesize = 256M/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/zlib.output_compression = .*/zlib.output_compression = on/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/max_execution_time = .*/max_execution_time = 18000/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/fpm/php.ini
+sudo sed -i &quot;s/;opcache.save_comments.*/opcache.save_comments = 1/&quot; /etc/php/7.2/fpm/php.ini
+</code></pre>
+
+<h2 id="下载-prestashop">下载 PrestaShop</h2>
+
+<p>在撰写本文时， PrestaShop 的最新稳定版本是版本 1.7.5.1 。</p>
+
+<p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>从 <a href="https://www.prestashop.com/en/download">PrestaShop 下载页面</a>下载最新版本的 PrestaShop  ：</p>
+
+<pre><code class="language-bash">cd /tmp
+wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip
+</code></pre>
+
+<p>下载完成后，创建一个目录用来存放 PrestaShop 的文件：</p>
+
+<pre><code class="language-bash">sudo mkdir -p /var/www/html/example.com
+</code></pre>
+
+<p>接下来，<!--link:how-to-create-and-extract-archives-using-the-tar-command-in-linux-->解压缩 PrestaShop 文档<!--link-->：</p>
+
+<pre><code class="language-bash">unzip prestashop_*.zip
+</code></pre>
+
+<p>此存档包含另一个 <a href="/linux/how-to-zip-files-and-directories-in-linux/">zip</a> 文件 <code>prestashop.zip</code> ，其中包含所有 PrestaShop 文件。将文件解压缩到网站的文档根目录：</p>
+
+<pre><code class="language-bash">sudo unzip prestashop.zip -d /var/www/html/example.com
+</code></pre>
+
+<p>使用以下 <!--link:linux-chown-command-->chown 命令设置正确的权限<!--link-->，以便 Web 服务器对站点的文件和目录具有完全访问权限：</p>
+
+<pre><code class="language-bash">sudo chown -R www-data: /var/www/html
+</code></pre>
+
+<h2 id="配置-nginx">配置 Nginx</h2>
+
+<p>到目前为止，您应该已经在 Ubuntu 服务器上安装了具有 SSL 证书的 Nginx ，如果没有检查本教程的先决条件。</p>
+
+<p>打开文本编辑器并创建以下文件 <code>/etc/nginx/sites-available/example.com</code> ：</p>
+
+<pre><code class="language-bash">sudo nano /etc/nginx/sites-available/example.com
+</code></pre>
+
+<pre><code class="language-nginx"># Redirect HTTP -&gt; HTTPS
+server {
+    listen 80;
+    server_name www.example.com example.com;
+
+    include snippets/letsencrypt.conf;
+    return 301 https://example.com$request_uri;
+}
+
+# Redirect WWW -&gt; NON WWW
+server {
+    listen 443 ssl http2;
+    server_name www.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    return 301 https://example.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    root /var/www/html/example.com;
+    index index.php;
+
+    # SSL parameters
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+    include snippets/letsencrypt.conf;
+
+    # log files
+    access_log /var/log/nginx/example.com.access.log;
+    error_log /var/log/nginx/example.com.error.log;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires max;
+        log_not_found off;
+    }
+
+}
+</code></pre>
+
+<blockquote>
+<p>不要忘记将 <code>example.com</code> 替换为 PrestaShop 域，并设置 SSL 证书文件的正确路径。此配置中使用的片段在本指南中创建。</p>
+</blockquote>
+
+<p>在重新启动 Nginx 服务之前，请进行测试以确保没有语法错误：</p>
+
+<pre><code class="language-bash">sudo nginx -t
+</code></pre>
+
+<p>如果没有错误，输出应如下所示：</p>
+
+<pre><code class="language-bash">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+</code></pre>
+
+<p>最后，键入以下命令重启 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart nginx
+</code></pre>
+
+<h2 id="安装-prestashop">安装 PrestaShop</h2>
+
+<p>现在已下载 PrestaShop 并完成服务器配置，您可以通过 Web 界面完成安装。</p>
+
+<p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-language.jpg" alt="" /></p>
+
+<p>选择您要使用的语言，然后单击“下一步”按钮。</p>
+
+<p>在下一个屏幕上，您将看到 PrestaShop 许可协议。阅读许可并选择“我同意上述条款和条件。”，然后继续：</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-licence.jpg" alt="" /></p>
+
+<p>接下来，您将看到以下信息页面：</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-compatibility.jpg" alt="" /></p>
+
+<p>确保满足所有预安装要求，并且您的系统与 PrestaShop 兼容。</p>
+
+<p>在下一个屏幕上，您需要输入商店详细信息。电子邮件地址是访问 PrestaShop 管理后端的用户名。</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-details.jpg" alt="" /></p>
+
+<p>接下来，安装向导将要求您输入数据库连接详细信息。输入您之前创建的 MySQL 用户和数据库详细信息：</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-database.jpg" alt="" /></p>
+
+<p>单击“下一步”按钮，安装将开始：</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-assistant.jpg" alt="" /></p>
+
+<p>安装可能需要几分钟，一旦完成，将显示以下页面，告诉您已安装 PrestaShop 。</p>
+
+<p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-installed.jpg" alt="" /></p>
+
+<p>出于安全原因，您需要删除安装目录。为此，请返回终端并输入以下命令：</p>
+
+<pre><code class="language-bash">sudo rm -rf /var/www/html/example.com/install
+</code></pre>
+
+<p>要访问 PrestaShop 管理仪表板，请单击“管理您的商店”按钮。输入您的电子邮件和密码，您将被重定向到管理仪表板。</p>
+
+<p>现在开始，您可以开始自定义 PrestaShop 并添加新产品。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Ubuntu 18.04 服务器上成功安装了 PrestaShop 。 <a href="https://www.prestashop.com/en/resources/documentations">PrestaShop 文档</a>是一个很好的起点，可以了解有关如何管理 PrestaShop 安装的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/plex" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">plex</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">媒体服务器</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-debian-9/">如何在 Debian 9 上安装 Plex 媒体服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-debian/">如何在 Debian 上创建 sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-debian-9/">如何在 Debian 9 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-an-openvpn-server-on-debian-9/">如何在 Debian 9 上设置 OpenVPN 服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-debian-9/">如何在 Debian 9 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-debian-9/">如何在 Debian 9 上安装 WildFly (JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-or-change-timezone-on-debian-9/">如何在 Debian 9 上设置或更改时区</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-add-and-delete-users-on-debian-9/">如何在 Debian 9 上添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-debian-9/">如何在 Debian 9 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

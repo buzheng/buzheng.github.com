@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何查看 MySQL 中的用户</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何查看 MySQL 中的用户" />
+<meta property="og:description" content="您是否曾想获得 MySQL 服务器中所有用户的列表？有显示 MySQL 数据库和表的命令，但没有显示用户的 “show users” 的命令。
+
+本教程介绍如何通过命令行列出 MySQL 数据库服务器中的所有用户帐户。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-show-mysql-users/" />
+<meta property="article:published_time" content="2019-05-08T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-08T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何查看 MySQL 中的用户">
+<meta itemprop="description" content="您是否曾想获得 MySQL 服务器中所有用户的列表？有显示 MySQL 数据库和表的命令，但没有显示用户的 “show users” 的命令。
+
+本教程介绍如何通过命令行列出 MySQL 数据库服务器中的所有用户帐户。">
+
+
+<meta itemprop="datePublished" content="2019-05-08T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-08T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="257">
+
+
+
+<meta itemprop="keywords" content="mysql,mariadb," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何查看 MySQL 中的用户"/>
+<meta name="twitter:description" content="您是否曾想获得 MySQL 服务器中所有用户的列表？有显示 MySQL 数据库和表的命令，但没有显示用户的 “show users” 的命令。
+
+本教程介绍如何通过命令行列出 MySQL 数据库服务器中的所有用户帐户。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何查看 MySQL 中的用户</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-08T05:00:00Z">May 8, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>您是否曾想获得 MySQL 服务器中所有用户的列表？有显示 MySQL 数据库和表的命令，但没有显示用户的 “show users” 的命令。</p>
+
+<p>本教程介绍如何通过命令行列出 MySQL 数据库服务器中的所有用户帐户。</p>
+
+<h2 id="在你开始之前">在你开始之前</h2>
+
+<p>在开始本教程之前，我们假设您已经在系统上安装了 MySQL 或 MariaDB 服务器。如果没有，您可以按照以下教程之一轻松安装它：</p>
+
+<ul>
+<li>在<a href="/linux/install-mysql-on-centos-7/">CentOS 7</a> ，<a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">Ubuntu 18.04</a> ， <a href="/linux/how-to-install-mysql-on-debian-9/">Debian 9</a> 上安装MySQL 。</li>
+<li>在<a href="/linux/install-mariadb-on-centos-7/">CentOS 7</a> ，<a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">Ubuntu 18.04</a>， <!--link:how-to-install-mariadb-on-debian-9-->Debian 9<!--link--> 上安装MariaDB。</li>
+</ul>
+
+<p>所有命令都将作为 root 用户在 MySQL shell 中执行。</p>
+
+<p>要访问 MySQL shell ，请键入以下命令，并在出现提示时输入您的 MySQL root 用户密码：</p>
+
+<pre><code class="language-console-bash">mysql -u root -p
+</code></pre>
+
+<p>如果您尚未为 MySQL root 用户设置密码，则可以省略 <code>-p</code> 选项。</p>
+
+<blockquote>
+<p>如果您忘记了 MySQL root 密码，可以按照<a href="/linux/how-to-reset-a-mysql-root-password/">这些说明</a>重置密码。</p>
+</blockquote>
+
+<h2 id="显示-mysql-用户">显示 MySQL 用户</h2>
+
+<p>MySQL 将有关用户的信息存储在 <code>mysql</code> 数据库中 <code>user</code> 表中。要获取所有 MySQL 用户帐户的列表，我们可以使用该 <code>SELECT</code> 语句并从 <code>mysql.users</code> 表中检索所有行：</p>
+
+<pre><code class="language-console-mysql">SELECT User, Host FROM mysql.user;
+</code></pre>
+
+<p>输出应类似于以下内容：</p>
+
+<pre><code class="language-output">+------------------+-----------+
+| user             | host      |
++------------------+-----------+
+| root             | localhost |
+| luke             | %         |
+| yoda             | %         |
+| jabba            | 10.10.0.6 |
+| jabba            | 10.10.0.9 |
+| chewbacca        | localhost |
+| leia             | localhost |
+| han              | localhost |
++------------------+-----------+
+8 rows in set (0.00 sec)
+</code></pre>
+
+<p>上面的命令仅示出了 <code>mysql.user</code> 表中的两列 <code>User</code>和<code>Host</code>，该表包含超过 40 列如 <code>Password</code> ， <code>Select_priv</code> ， <code>Update_priv</code>&hellip; 等</p>
+
+<p>MySQL 中的<a href="https://dev.mysql.com/doc/refman/8.0/en/user-names.html">用户帐户</a>由用户名和主机名部分组成。</p>
+
+<p>您可以使用该 <code>desc mysql.user;</code> 语句显示有关每个表列的信息。知道列名称后，再选定数据运行查询。</p>
+
+<p>例如，要获取所有 MySQL 用户帐户的列表，包括有关密码以及密码是活动还是已过期的信息，您可以使用以下查询：</p>
+
+<pre><code class="language-console-mysql">SELECT User, Host, Password, password_expired FROM mysql.user;
+</code></pre>
+
+<pre><code class="language-output">+----------------+-----------+-------------------------------------------+------------------+
+| User           | Host      | Password                                  | password_expired |
++----------------+-----------+-------------------------------------------+------------------+
+| root           | localhost |                                           | N                |
+| luke           | %         | *ADC3B5B27617732CD6320A2DA976258E149A7EC8 | N                |
+| yoda           | %         | *9550E004046348198A143A115550E1262209FB6F | N                |
+| jabba          | 10.10.0.6 | *F91C86B486B945C083B61A05FF6E197560D187EC | Y                |
+| jabba          | 10.10.0.9 |                                           | Y                |
+| chewbacca      | localhost | *17F2B1E48029294841AD66772BEBB7E6E6A005AF | N                |
+| leia           | localhost | *74409C8DB55AC1A6829D801915981C46EDBFC64A | N                |
+| han            | localhost | *7B3022FCAEC3534CE67C68322D8AF0C240D95745 | N                |
++----------------+-----------+-------------------------------------------+------------------+
+8 rows in set (0.00 sec)
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了如何通过从 mysql 数据库中的用户表中检索数据来获取所有 MySQL 用户帐户的列表。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-a-mysql-database/">如何在Linux上通过命令行删除 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-mysql-database/">如何创建 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何从命令行管理 MySQL 数据库和用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-debian-9/">如何在 Debian 9 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cut-command/">Linux Cut 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mysql-on-centos-7/">在 CentOS 7 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

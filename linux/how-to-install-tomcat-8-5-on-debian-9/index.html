@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Debian 9 上安装 Tomcat 8.5</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上安装 Tomcat 8.5" />
+<meta property="og:description" content="Apache Tomcat 是一个开源应用服务器，支持 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。
+
+本教程将向您展示如何在 Debian 9 上安装 Apache Tomcat 8.5 并配置 Tomcat Web 管理界面。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-tomcat-8-5-on-debian-9/" />
+<meta property="article:published_time" content="2019-03-19T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-19T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上安装 Tomcat 8.5">
+<meta itemprop="description" content="Apache Tomcat 是一个开源应用服务器，支持 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。
+
+本教程将向您展示如何在 Debian 9 上安装 Apache Tomcat 8.5 并配置 Tomcat Web 管理界面。">
+
+
+<meta itemprop="datePublished" content="2019-03-19T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-19T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="455">
+
+
+
+<meta itemprop="keywords" content="debian,java,tomcat," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上安装 Tomcat 8.5"/>
+<meta name="twitter:description" content="Apache Tomcat 是一个开源应用服务器，支持 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。
+
+本教程将向您展示如何在 Debian 9 上安装 Apache Tomcat 8.5 并配置 Tomcat Web 管理界面。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 Tomcat 8.5</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-19T06:00:00Z">March 19, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache Tomcat 是一个开源应用服务器，支持 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。</p>
+
+<p>本教程将向您展示如何在 Debian 9 上安装 Apache Tomcat 8.5 并配置 Tomcat Web 管理界面。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以具有 <a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo 权限的用户身份登录</a>。</p>
+
+<p>我们将使用 <a href="/linux/wget-command-examples/">wget</a> 实用程序下载 Tomcat zip 文件，并使用 <!--link:how-to-unzip-files-in-linux-->unzip<!--link--> 解压缩下载的存档。</p>
+
+<p>如果您的系统上没有安装这些实用程序，可以输入以下命令：</p>
+
+<pre><code class="language-bash">sudo apt install unzip wget
+</code></pre>
+
+<h2 id="安装-openjdk">安装 OpenJDK</h2>
+
+<p>Tomcat 8.5 需要 Java SE 7 或更高版本。要从 Debian 9 存储库安装默认的 OpenJDK 软件包，请运行以下命令：</p>
+
+<pre><code class="language-bash">sudo apt install default-jdk
+</code></pre>
+
+<blockquote>
+<p>如果您更喜欢 Oracle Java 而不是 OpenJDK ，可以按照<a href="/linux/install-java-on-debian-9/">这些说明</a>进行安装。</p>
+</blockquote>
+
+<h2 id="创建-tomcat-用户">创建 Tomcat 用户</h2>
+
+<p>不建议使用以 root 用户身份运行 Tomcat， 因为存在安全风险，。</p>
+
+<p>我们要为 Tomcat 实例<!--link:how-to-create-users-in-linux-using-the-useradd-command-->创建新的系统用户和组<!--link-->，用户的主目录是 <code>/opt/tomcat</code>。 请运行以下命令：</p>
+
+<pre><code class="language-bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
+</code></pre>
+
+<h2 id="下载-tomcat">下载 Tomcat</h2>
+
+<p>我们将从 <a href="https://tomcat.apache.org/download-80.cgi">Tomcat 下载页面</a>下载最新版本的 Tomcat 8.5.x 。在撰写本文时，最新版本为 8.5.37 。在下载 zip 文件之前，您应该检查下载页面以获取最新版本。</p>
+
+<p>切换到 <code>/tmp</code> 目录并使用 wget 下载 zip 文件：</p>
+
+<pre><code class="language-bash">cd /tmp
+wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.zip
+</code></pre>
+
+<p>下载完成后，运行以下命令以<!--link:how-to-unzip-files-in-linux-->解压缩 zip 文件<!--link-->并将其移动到 <code>/opt/tomcat</code> 目录：</p>
+
+<pre><code class="language-bash">unzip apache-tomcat-*.zip
+sudo mkdir -p /opt/tomcat
+sudo mv apache-tomcat-8.5.37 /opt/tomcat/
+</code></pre>
+
+<p>为了更好地控制 Tomcat 版本和更新，我们将创建一个名为 <code>latest</code> 的符号链接指向 Tomcat 安装目录：</p>
+
+<pre><code class="language-bash">sudo ln -s /opt/tomcat/apache-tomcat-8.5.37 /opt/tomcat/latest
+</code></pre>
+
+<p>以后当您要升级 Tomcat 版本时，您只需解压缩较新版本并更改符号链接以指向最新版本。</p>
+
+<p><!--link:linux-chown-command-->更改目录 <code>/opt/tomcat</code> 的所有权<!--link-->为用户和组 <code>tomcat</code>, 以便用户可以访问 tomcat 安装：</p>
+
+<pre><code class="language-bash">sudo chown -R tomcat: /opt/tomcat
+</code></pre>
+
+<p>还要使 <code>bin</code> 目录中的脚本可执行：</p>
+
+<pre><code class="language-bash">sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
+</code></pre>
+
+<h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
+
+<p>使用以下内容在 <code>/etc/systemd/system/</code> 目录中创建新的单元文件 <code>tomcat.service</code> 。</p>
+
+<p>文件 <code>/etc/systemd/system/tomcat.service</code></p>
+
+<pre><code class="language-conf">[Unit]
+Description=Tomcat 8.5 servlet container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment=&quot;JAVA_HOME=/usr/lib/jvm/default-java&quot;
+Environment=&quot;JAVA_OPTS=-Djava.security.egd=file:///dev/urandom&quot;
+
+Environment=&quot;CATALINA_BASE=/opt/tomcat/latest&quot;
+Environment=&quot;CATALINA_HOME=/opt/tomcat/latest&quot;
+Environment=&quot;CATALINA_PID=/opt/tomcat/latest/temp/tomcat.pid&quot;
+Environment=&quot;CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC&quot;
+
+ExecStart=/opt/tomcat/latest/bin/startup.sh
+ExecStop=/opt/tomcat/latest/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>让 <code>systemd</code> 重新加载单元文件并通过执行以下命令启动 Tomcat 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl start tomcat
+</code></pre>
+
+<p>输入以下命令检查 Tomcat 服务状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status tomcat
+</code></pre>
+
+<pre><code class="language-bash">● tomcat.service
+   Loaded: loaded (/etc/systemd/system/tomcat.service; disabled; vendor preset: enabled)
+   Active: active (running) since Wed 2018-06-06 10:51:36 UTC; 3s ago
+  Process: 21187 ExecStart=/opt/tomcat/latest/bin/startup.sh (code=exited, status=0/SUCCESS)
+ Main PID: 21195 (java)
+    Tasks: 44 (limit: 4915)
+   CGroup: /system.slice/tomcat.service
+</code></pre>
+
+<p>如果没有错误，您可以启用 Tomcat 服务在引导时自动启动：</p>
+
+<pre><code class="language-bash">sudo systemctl enable tomcat
+</code></pre>
+
+<p>您可以像操作任何其他 <code>systemd</code> 单元服务一样启动、停止、重新启动 Tomcat ：</p>
+
+<pre><code class="language-bash">sudo systemctl start tomcat
+sudo systemctl stop tomcat
+sudo systemctl restart tomcat
+</code></pre>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果<!--link:how-to-setup-a-firewall-with-ufw-on-debian-9-->防火墙运行在 Debian 系统上<!--link-->，并且您想从本地网络外部访问 tomcat 接口，则需要打开端口 <code>8080</code> ：</p>
+
+<pre><code class="language-bash">sudo ufw allow 8080/tcp
+</code></pre>
+
+<blockquote>
+<p>在生产环境中运行 Tomcat 应用程序时，很可能您将拥有负载平衡器或<!--link:nginx-reverse-proxy-->反向代理<!--link-->，最佳做法是仅将端口 8080 的访问限制到内部网络。</p>
+</blockquote>
+
+<h2 id="配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</h2>
+
+<p>现在，已经在 Debian 服务器上安装了 Tomcat ，下一步是创建一个可以访问 Web 管理界面的用户。</p>
+
+<p>Tomcat 用户及其角色在 <code>tomcat-users.xml</code> 文件中定义。</p>
+
+<p>如果您打开该文件，您会注意到它中充满了描述如何配置文件的注释和示例。</p>
+
+<pre><code class="language-bash">sudo vim /opt/tomcat/latest/conf/tomcat-users.xml
+</code></pre>
+
+<p>我们将在如下所示的文件 <code>/opt/tomcat/latest/conf/tomcat-users.xml</code> 中定义我们的新用户，他们访问 Tomcat web 界面（ manager-gui 和 admin-gui ）。请务必将用户名和密码更改为更安全的内容：</p>
+
+<pre><code class="language-xml">&lt;tomcat-users&gt;
+&lt;!--
+    Comments
+--&gt;
+   &lt;role rolename=&quot;admin-gui&quot;/&gt;
+   &lt;role rolename=&quot;manager-gui&quot;/&gt;
+   &lt;user username=&quot;admin&quot; password=&quot;admin_password&quot; roles=&quot;admin-gui,manager-gui&quot;/&gt;
+&lt;/tomcat-users&gt;
+</code></pre>
+
+<p>默认情况下， Tomcat Web 管理界面仅允许从 localhost 访问。如果要从远程 IP 或任何不推荐 (因为存在安全风险) 的地方访问 Web 界面，您可以打开以下文件并进行以下更改。</p>
+
+<p>如果您需要从任何地方访问 Web 界面，请打开以下文件并注释或删除下面显示的行。</p>
+
+<p>文件：<code>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</code></p>
+
+<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
+&lt;!--
+  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
+         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1&quot; /&gt;
+--&gt;
+&lt;/Context&gt;
+</code></pre>
+
+<p>文件: <code>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</code></p>
+
+<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
+&lt;!--
+  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
+         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1&quot; /&gt;
+--&gt;
+&lt;/Context&gt;
+</code></pre>
+
+<p>如果您只需要从特定 IP 访问 Web 界面，不要注释掉上面的内容，请将您的公共 IP 添加到列表中。假设您的公共 IP 是 <code>32.32.32.32</code> 并且您希望仅允许来自该 IP 的访问：</p>
+
+<p>文件: <code>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</code></p>
+
+<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
+  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
+         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1|32.32.32.32&quot; /&gt;
+&lt;/Context&gt;
+</code></pre>
+
+<p>文件: <code>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</code></p>
+
+<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
+  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
+         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1|32.32.32.32&quot; /&gt;
+&lt;/Context&gt;
+</code></pre>
+
+<p>允许的 IP 地址列表是用竖线 <code>|</code> 分隔的。您可以添加单个 IP 地址或使用正则表达式。</p>
+
+<p>重新启动 Tomcat 服务以使更改生效：</p>
+
+<pre><code class="language-bash">sudo systemctl restart tomcat
+</code></pre>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8080</code></p>
+
+<p>如果安装成功，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/how-to-install-tomcat-8-5-on-debian-9/tomcat-home.jpg" alt="" /></p>
+
+<p>Tomcat Web 应用程序管理器仪表板可在以下位置查看 <code>http://&lt;your_domain_or_IP_address&gt;:8080/manager/html</code> 。从这里，您可以部署，取消部署，启动，停止和重新加载您的应用程序。</p>
+
+<p><img src="/images/linux/how-to-install-tomcat-8-5-on-debian-9/tomcat-manager.jpg" alt="" /></p>
+
+<p>Tomcat 虚拟主机管理器仪表板可在以下位置查看 <code>http://&lt;your_domain_or_IP_address&gt;:8080/host-manager/html</code> 。从这里，您可以创建，删除和管理 Tomcat 虚拟主机。</p>
+
+<p><img src="/images/linux/how-to-install-tomcat-8-5-on-debian-9/tomcat-host-manager.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Debian 9 系统上成功安装了 Tomcat 8.5 。您现在还可以访问 <a href="https://tomcat.apache.org/tomcat-8.5-doc/index.html">Apache Tomcat 8 官方文档</a>，并了解有关 Apache Tomcat 功能的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/tomcat" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tomcat</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-debian-9/">如何在 Debian 9 上安装 WildFly (JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-debian-9/">如何在 Debian 9 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-centos-7/">如何在 CentOS 7 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-or-change-timezone-on-debian-9/">如何在 Debian 9 上设置或更改时区</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-add-and-delete-users-on-debian-9/">如何在 Debian 9 上添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-debian-9/">如何在 Debian 9 上安装 Plex 媒体服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-centos-7/">如何在 CentOS 7 上安装 WildFly(JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Debian 9 上安装 go</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上安装 go" />
+<meta property="og:description" content="Go 是一种由 Google 创建的现代开源编程语言，用于构建可靠，简单，快速和高效的软件。许多流行的应用程序，包括 Kubernetes ， Docker ， Teraform 和 Grafana ，都是用 Go 编写的。
+
+在本教程中，我们将引导您完成在 Debian 9 系统上下载和安装 Go 所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-go-on-debian-9/" />
+<meta property="article:published_time" content="2019-04-17T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-17T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上安装 go">
+<meta itemprop="description" content="Go 是一种由 Google 创建的现代开源编程语言，用于构建可靠，简单，快速和高效的软件。许多流行的应用程序，包括 Kubernetes ， Docker ， Teraform 和 Grafana ，都是用 Go 编写的。
+
+在本教程中，我们将引导您完成在 Debian 9 系统上下载和安装 Go 所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-04-17T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-17T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="179">
+
+
+
+<meta itemprop="keywords" content="debian,go," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上安装 go"/>
+<meta name="twitter:description" content="Go 是一种由 Google 创建的现代开源编程语言，用于构建可靠，简单，快速和高效的软件。许多流行的应用程序，包括 Kubernetes ， Docker ， Teraform 和 Grafana ，都是用 Go 编写的。
+
+在本教程中，我们将引导您完成在 Debian 9 系统上下载和安装 Go 所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 go</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-17T05:00:00Z">April 17, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Go 是一种由 Google 创建的现代开源编程语言，用于构建可靠，简单，快速和高效的软件。许多流行的应用程序，包括 Kubernetes ， Docker ， Teraform 和 Grafana ，都是用 Go 编写的。</p>
+
+<p>在本教程中，我们将引导您完成在 Debian 9 系统上下载和安装 Go 所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="如何安装-go">如何安装 Go</h2>
+
+<p>在撰写本文时， Go 的最新稳定版本是 1.10.3 版本。在下载 tarball 之前，请访问官方 Go  <a href="https://golang.org/dl/">下载页面</a>并检查是否有新版本可用。</p>
+
+<p>按照以下步骤在 Debian 9 安装 Go ：</p>
+
+<ol>
+<li><p>下载 Go 。</p>
+
+<p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载 Go tarball ：</p>
+
+<pre><code class="language-console-bash">wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
+</code></pre>
+
+<ol>
+<li>验证 Go tarball 。</li>
+</ol>
+
+<p>使用实用程序 <code>sha256sum</code> 验证下载的文件校验和：</p>
+
+<pre><code class="language-console-bash">sha256sum go1.10.3.linux-amd64.tar.gz
+</code></pre>
+
+<pre><code class="language-output">fa1b0e45d3b647c252f51f5e1204aba049cde4af177ef9f2181f43004f901035  go1.10.3.linux-amd64.tar.gz
+</code></pre>
+
+<p>确保从上面的命令打印的哈希与 <a href="https://golang.org/dl/">Go 下载页面中</a>的哈希匹配。</p>
+
+<ol>
+<li>提取 Go tarball 。</li>
+</ol>
+
+<p>以下命令将 tarball 解压缩到 <code>/usr/local</code> 目录：</p>
+
+<pre><code class="language-console-bash">sudo tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz
+</code></pre></li>
+
+<li><p>调整路径变量。</p>
+
+<p>现在，当提取 Go tarball 完成后，我们需要编辑 PATH 环境变量，以便我们的系统知道 Go 可执行二进制文件所在的位置。我们可以通过将以下行附加到 <code>/etc/profile</code> 文件（用于系统范围的安装）或 <code>$HOME/.profile</code> 文件（用于当前用户安装）：</p>
+
+<p><code>〜/.profile</code> 文件</p>
+
+<pre><code class="language-sh">export PATH=$PATH:/usr/local/go/bin
+</code></pre>
+
+<p>保存文件，并将新的 PATH 环境变量应用于当前的 shell 会话：</p>
+
+<pre><code class="language-console-bash">source ~/.profile
+</code></pre></li>
+</ol>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>为了测试 Go 是否在我们的机器上正确安装，我们将设置一个工作区并构建一个简单的 “Hello world” 程序。</p>
+
+<ol>
+<li><p>创建工作区目录</p>
+
+<p>默认情况下，工作空间目录设置为 <code>$HOME/go</code> ，输入以下命令以创建目录：</p>
+
+<pre><code class="language-console-bash">mkdir ~/go
+</code></pre>
+
+<ol>
+<li>创建一个简单的 “Hello World” Go文件。</li>
+</ol>
+
+<p>在工作区内创建一个新目录 <code>src/hello</code></p>
+
+<pre><code class="language-console-bash">mkdir -p ~/go/src/hello
+</code></pre>
+
+<p>并在该目录中创建一个名为 <code>hello.go</code> 的文件</p>
+
+<p>文件 <code>〜/go/src/hello/hello.go</code></p>
+
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func main() {
+    fmt.Printf(&quot;Hello, World\n&quot;)
+}
+</code></pre>
+
+<p>要了解有关 Go workspace 目录层次结构的更多信息，请访问 <a href="https://golang.org/doc/code.html#Workspaces">Go Documentation</a> 页面。</p>
+
+<ol>
+<li>构建 hello.go 文件：</li>
+</ol>
+
+<p>要构建文件，请切换到 <code>~/go/src/hello</code> 目录并运行 <code>go build</code> ：</p>
+
+<pre><code class="language-console-bash">cd ~/go/src/hellogo build
+</code></pre>
+
+<p>上面的命令将建立一个名为 <code>hello</code> 可执行文件。</p></li>
+
+<li><p>运行可执行文件：</p>
+
+<p>您只需执行以下命令即可运行可执行文件：</p>
+
+<pre><code class="language-console-bash">./hello
+</code></pre>
+
+<pre><code class="language-output">Hello, World
+</code></pre>
+
+<p>如果您看到与上面相同的输出，那么您已成功安装 Go 。</p></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>现在您已经在你的 Debian 机器下载并安装了 Go，您可以开始使用 Go 项目。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/go" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">go</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cut-command/">Linux Cut 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-debian-9/">如何在 Debian 9 上安装 Minecraft Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-centos-7/">如何在 CentOS 7 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-python-3-7-on-debian-9/">如何在 Debian 9 上安装 Python 3.7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-debian-9/">如何在 Debian 9 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-prestashop-on-ubuntu/">如何在 Ubuntu 18.04 上安装 PrestaShop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-debian/">如何在 Debian 上创建 sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-debian-9/">如何在 Debian 9 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-an-openvpn-server-on-debian-9/">如何在 Debian 9 上设置 OpenVPN 服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-debian-9/">如何在 Debian 9 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-debian-9/">如何在 Debian 9 上安装 WildFly (JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-or-change-timezone-on-debian-9/">如何在 Debian 9 上设置或更改时区</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-add-and-delete-users-on-debian-9/">如何在 Debian 9 上添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

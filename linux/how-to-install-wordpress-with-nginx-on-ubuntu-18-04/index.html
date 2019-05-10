@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress" />
+<meta property="og:description" content="WordPress 是迄今为止最受欢迎的开源博客和 CMS 平台，全球四分之一的网站都用他构建。它基于 PHP 和 MySQL ，包含大量可以通过免费和高级插件和主题扩展的功能。 WordPress 是创建在线商店，网站或博客的最简单方式。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 WordPress 。这是一个相当简单的过程，完成时间不到十分钟。
+
+我们将使用带有 Nginx 作为 Web 服务器， SSL 证书，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-05-03T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-03T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress">
+<meta itemprop="description" content="WordPress 是迄今为止最受欢迎的开源博客和 CMS 平台，全球四分之一的网站都用他构建。它基于 PHP 和 MySQL ，包含大量可以通过免费和高级插件和主题扩展的功能。 WordPress 是创建在线商店，网站或博客的最简单方式。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 WordPress 。这是一个相当简单的过程，完成时间不到十分钟。
+
+我们将使用带有 Nginx 作为 Web 服务器， SSL 证书，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。">
+
+
+<meta itemprop="datePublished" content="2019-05-03T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-03T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="463">
+
+
+
+<meta itemprop="keywords" content="ubuntu,wordpress,mysql,mariadb,cms,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress"/>
+<meta name="twitter:description" content="WordPress 是迄今为止最受欢迎的开源博客和 CMS 平台，全球四分之一的网站都用他构建。它基于 PHP 和 MySQL ，包含大量可以通过免费和高级插件和主题扩展的功能。 WordPress 是创建在线商店，网站或博客的最简单方式。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 WordPress 。这是一个相当简单的过程，完成时间不到十分钟。
+
+我们将使用带有 Nginx 作为 Web 服务器， SSL 证书，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-03T05:00:00Z">May 3, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>WordPress 是迄今为止最受欢迎的开源博客和 CMS 平台，全球四分之一的网站都用他构建。它基于 PHP 和 MySQL ，包含大量可以通过免费和高级插件和主题扩展的功能。 WordPress 是创建在线商店，网站或博客的最简单方式。</p>
+
+<p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 WordPress 。这是一个相当简单的过程，完成时间不到十分钟。</p>
+
+<p>我们将使用带有 Nginx 作为 Web 服务器， SSL 证书，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保您已满足以下先决条件：</p>
+
+<ul>
+<li>您有一个指向您的服务器公共 IP 的域名，本例中是用 <code>example.com</code> 。</li>
+<li>您以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</li>
+<li>您已经<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">按照说明安装了 Nginx</a> 。</li>
+<li>为您的域名配置的 SSL 证书。您可以<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">按照说明安装免费的 Let&rsquo;s Encrypt SSL 证书</a>。</li>
+</ul>
+
+<p>将软件包索引和系统软件包更新到最新版本：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+sudo apt upgrade
+</code></pre>
+
+<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
+
+<p>WordPress 使用 MySQL 数据库存储其所有数据。我们的第一步是创建一个 MySQL 数据库和 <!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->MySQL 用户帐户并授予对数据库的访问权限<!--link-->。</p>
+
+<p>如果您还没有在 Ubuntu 服务器上安装 MySQL 或 MariaDB ，可以按照以下说明之一进行安装：</p>
+
+<ul>
+<li><a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 MySQL</a></li>
+<li><a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 MariaDB</a></li>
+</ul>
+
+<p>键入以下命令登录 MySQL shell ，并在出现提示时输入密码：</p>
+
+<pre><code class="language-console-bash">mysql -u root -p
+</code></pre>
+
+<p>在 MySQL shell 中，运行以下 SQL 语句以<a href="/linux/how-to-create-a-mysql-database/">创建 Mysql 数据库</a>名为 <code>wordpress</code>， 创建用户 <code>wordpressuser</code> 并向用户授予所有必要的权限：</p>
+
+<pre><code class="language-console-mysql">CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost' IDENTIFIED BY 'change-with-strong-password';FLUSH PRIVILEGES;EXIT;
+</code></pre>
+
+<p>运行上面的命令后，您将拥有一个新的 MySQL 数据库和用户帐户，将由您的 WordPress 实例使用。</p>
+
+<h2 id="安装-php">安装 PHP</h2>
+
+<p>PHP 7.2 是 Ubuntu 18.04 中的默认 PHP 版本，WordPress 完全支持并推荐使用。</p>
+
+<p>要<a href="/linux/how-to-install-php-on-ubuntu-18-04/">安装 PHP</a> 和所有必需的 PHP 扩展，请运行以下命令：</p>
+
+<pre><code class="language-console-bash">sudo apt install php7.2-cli php7.2-fpm php7.2-mysql php7.2-json php7.2-opcache php7.2-mbstring php7.2-xml php7.2-gd php7.2-curl
+</code></pre>
+
+<p>因为我们使用 Nginx 作为 Web 服务器，因此也安装了 PHP-FPM ，。</p>
+
+<p>安装过程完成后， PHP-FPM 服务将自动启动。</p>
+
+<h2 id="下载-wordpress">下载 Wordpress</h2>
+
+<p>在下载 Wordpress 存档之前，首先创建一个将保存我们的 WordPress 文件的目录：</p>
+
+<pre><code class="language-console-bash">sudo mkdir -p /var/www/html/example.com
+</code></pre>
+
+<p>我们的下一步是使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>从 <a href="https://wordpress.org/download/">WordPress 下载页面</a>下载最新版本的 WordPress  ：</p>
+
+<pre><code class="language-console-bash">cd /tmp
+wget https://wordpress.org/latest.tar.gz
+</code></pre>
+
+<p>下载完成后，<!--link:how-to-create-and-extract-archives-using-the-tar-command-in-linux-->解压缩 WordPress 存档<!--link-->并将提取的文件移动到网站的文档根目录中：</p>
+
+<pre><code class="language-console-bash">tar xf latest.tar.gz
+sudo mv /tmp/wordpress/* /var/www/html/example.com/
+</code></pre>
+
+<p>最后，我们需要设置正确的权限，以便 Web 服务器可以完全访问站点的文件和目录。</p>
+
+<p>由于 Nginx 和 PHP 都作为 <code>www-data</code> 用户和组运行，因此要设置正确的权限，请运行以下 <a href="/linux/linux-chown-command/">chown 命令</a>：</p>
+
+<pre><code class="language-output">sudo chown -R www-data: /var/www/html/example.com
+</code></pre>
+
+<h2 id="配置-nginx">配置 Nginx</h2>
+
+<p>到目前为止，您应该已经在系统上安装了 Nginx 和 SSL 证书，如果没有，请检查本教程的先决条件。</p>
+
+<p>要为我们的 WordPress 实例创建一个新的服务器块，我们将使用官方 Nginx 站点的 <a href="https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/">Nginx 配方</a>。</p>
+
+<p>打开文本编辑器并创建文件 <code>/etc/nginx/sites-available/example.com</code> :</p>
+
+<pre><code class="language-nginx"># Redirect HTTP -&gt; HTTPS
+server {
+    listen 80;
+    server_name www.example.com example.com;
+
+    include snippets/letsencrypt.conf;
+    return 301 https://example.com$request_uri;
+}
+
+# Redirect WWW -&gt; NON WWW
+server {
+    listen 443 ssl http2;
+    server_name www.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    return 301 https://example.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    root /var/www/html/example.com;
+    index index.php;
+
+    # SSL parameters
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+    include snippets/letsencrypt.conf;
+
+    # log files
+    access_log /var/log/nginx/example.com.access.log;
+    error_log /var/log/nginx/example.com.error.log;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+        expires max;
+        log_not_found off;
+    }
+
+}
+</code></pre>
+
+<p>不要忘记将 example.com 替换为 Wordpress 的真实域名，并设置 SSL 证书文件的正确路径。此配置中使用的片段在[本指南]中创建(secure-nginx-with-let-s-encrypt-on-ubuntu-18-04.html)。</p>
+
+<p>通过创建指向 <code>sites-enabled</code> 目录的符号链接来启用服务器块：</p>
+
+<pre><code class="language-console-bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+</code></pre>
+
+<p>在重新启动 Nginx 服务之前，请进行测试以确保没有语法错误：</p>
+
+<pre><code class="language-console-bash">sudo nginx -t
+</code></pre>
+
+<p>如果没有错误，输出应如下所示：</p>
+
+<pre><code class="language-output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+</code></pre>
+
+<p>我们可以输入以下命令重新启动 Nginx ：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart nginx
+</code></pre>
+
+<h2 id="完成-wordpress-安装">完成 WordPress 安装</h2>
+
+<p>现在已下载 Wordpress 并完成服务器配置，我们可以通过 Web 界面完成安装。</p>
+
+<p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/install-wordpress-language-selector.jpg" alt="" /></p>
+
+<p>选择您要使用的语言，然后单击 <code>Continue</code> 按钮。</p>
+
+<p>接下来，您将看到以下信息页面，单击 <code>Let's go !</code>按钮。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/install-wordpress-information.jpg" alt="" /></p>
+
+<p>在下一个屏幕上，安装向导将要求您输入数据库连接详细信息。输入您之前创建的 MySQL 用户和数据库详细信息。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/install-wordpress-database-information.jpg" alt="" /></p>
+
+<p>单击 <code>Run the Installation</code> 按钮开始安装。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/install-wordpress-run-installation.jpg" alt="" /></p>
+
+<p>在下一步中，您需要输入 WordPress 站点的名称并选择用户名（出于安全考虑，请不要输入 &ldquo;admin&rdquo;）。</p>
+
+<p>安装程序将自动为您生成强密码。不要忘记保存此密码。您也可以自己设置密码。</p>
+
+<p>输入您的电子邮件地址，然后选择是否要阻止搜索引擎索引网站（不推荐）。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/install-wordpress-welcome.jpg" alt="" /></p>
+
+<p>单击 <code>Install WordPress</code> ，安装完成后，您将进入一个页面，通知您已安装 WordPress 。要访问 WordPress 登录表单，请单击 <code>Log in</code> 按钮。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/install-wordpress-completed.jpg" alt="" /></p>
+
+<p>输入您的用户名和密码，然后单击 <code>Log in</code> 按钮。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/wordpress-login-form.jpg" alt="" /></p>
+
+<p>登录后，您将被重定向到 WordPress 管理仪表板。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/wordpress-dashboard.jpg" alt="" /></p>
+
+<p>从这里开始，您可以通过安装新主题和插件来开始自定义 WordPress 了。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在 Ubuntu 18.04 服务器上成功安装了带 Nginx 的 WordPress 。<a href="https://codex.wordpress.org/zh-cn:%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8_WordPress">WordPress 起步</a> 是一个很好的起点，可以了解如何开始使用 WordPress 。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/wordpress" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">wordpress</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/cms" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">cms</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-a-mysql-database/">如何在Linux上通过命令行删除 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-mysql-database/">如何创建 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何从命令行管理 MySQL 数据库和用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Nginx 服务器块</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-r-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 R</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

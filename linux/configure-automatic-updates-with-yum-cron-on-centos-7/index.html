@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 CentOS 7 上使用 yum-cron 配置自动更新</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 7 上使用 yum-cron 配置自动更新" />
+<meta property="og:description" content="定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。
+
+如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。
+
+在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/configure-automatic-updates-with-yum-cron-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-07T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-07T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 CentOS 7 上使用 yum-cron 配置自动更新">
+<meta itemprop="description" content="定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。
+
+如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。
+
+在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。">
+
+
+<meta itemprop="datePublished" content="2019-05-07T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-07T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="288">
+
+
+
+<meta itemprop="keywords" content="centos,yum,security," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 CentOS 7 上使用 yum-cron 配置自动更新"/>
+<meta name="twitter:description" content="定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。
+
+如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。
+
+在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 CentOS 7 上使用 yum-cron 配置自动更新</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-07T06:00:00Z">May 7, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。</p>
+
+<p>如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。</p>
+
+<p>在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="安装-yum-cron-包">安装 yum-cron 包</h2>
+
+<p>该 <code>yum-cron</code> 程序包允许您自动运行 yum 命令作为 <!--link:scheduling-cron-jobs-with-crontab-->cron job<!--link-->来检查，下载和应用更新。有可能这个软件包已经安装在您的 CentOS 系统上。如果未安装，则可以通过运行以下命令来安装软件包：</p>
+
+<pre><code class="language-console-bash">sudo yum install yum-cron
+</code></pre>
+
+<p>安装完成后，启用并启动服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl enable yum-cron
+sudo systemctl start yum-cron
+</code></pre>
+
+<p>要验证服务是否正在运行，请键入以下命令：</p>
+
+<pre><code class="language-console-bash">systemctl status yum-cron
+</code></pre>
+
+<p>有关 yum-cron 服务状态的信息将显示在屏幕上：</p>
+
+<pre><code class="language-output">● yum-cron.service - Run automatic yum updates as a cron job
+   Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
+   Active: active (exited) since Sat 2019-05-04 21:49:45 UTC; 8min ago
+  Process: 2713 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
+ Main PID: 2713 (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/yum-cron.service
+</code></pre>
+
+<h2 id="配置-yum-cron">配置 yum-cron</h2>
+
+<p>yum-cron 附带两个配置文件，存储在 <code>/etc/yum</code> 目录，每小时配置文件 <code>yum-cron-hourly.conf</code> 和每日配置文件中 <code>yum-cron.conf</code> 。</p>
+
+<p>该 <code>yum-cron</code> 服务仅控制 cron 作业是否运行。该 <code>yum-cron</code> 实用程序由 <code>/etc/cron.hourly/0yum-hourly.cron</code> 和 <code>/etc/cron.daily/0yum-daily.cron</code> cron 文件调用。</p>
+
+<p>默认情况下，每小时 cron 配置为不执行任何操作。如果有可用更新，则每日 cron 设置为下载但不安装可用更新并将消息发送到 stdout 。对于要在测试服务器上测试更新后要接收通知并手动执行更新的关键生产系统，默认配置已足够。</p>
+
+<p>配置文件按部分构成，每个部分包含描述每个配置行的功能的注释。</p>
+
+<p>要编辑 yum-cron 配置文件，请在文本编辑器中打开该文件：</p>
+
+<pre><code class="language-console-bash">sudo nano /etc/yum/yum-cron-hourly.conf
+</code></pre>
+
+<p>在第一部分中， <code>[commands]</code> 您可以定义要更新的包的类型，启用消息和下载，并设置为在可用时自动应用更新。默认情况下，将 <code>update_cmd</code> 设置为 <code>default</code> ，这将更新所有包。如果要设置自动无人值守更新，建议更改为 <code>security</code>，这将告知 yum 更新仅修复安全问题的软件包的值。</p>
+
+<p>在以下示例中，我们通过设置为：更改了 <code>update_cmd</code> 为 <code>security</code> 和启用了无人参与的更新：<code>apply_updates</code> 设置为 <code>yes</code></p>
+
+<p>/etc/yum/yum-cron-hourly.conf</p>
+
+<pre><code class="language-ini">[commands]
+update_cmd = security
+update_messages = yes
+download_updates = yes
+apply_updates = yes
+random_sleep = 360
+</code></pre>
+
+<p>第二部分定义了如何发送消息。要向 stdout 和 email 发送消息，请更改 <code>emit_via</code> 的值为 <code>stdio,email</code> 。</p>
+
+<p>文件: <code>/etc/yum/yum-cron-hourly.conf</code></p>
+
+<pre><code class="language-ini">[emitters]
+system_name = None
+emit_via = stdio,email
+output_width = 80
+</code></pre>
+
+<p>在该 <code>[email]</code> 部分中，您可以设置发件人和收件人的电子邮件地址。确保您有一个可以发送系统上安装的电子邮件的工具，例如 mailx 或 postfix 。</p>
+
+<p>文件: <code>/etc/yum/yum-cron-hourly.conf</code></p>
+
+<pre><code class="language-ini">[email]
+email_from = root@centos.host
+email_to = me@example.com
+email_host = localhost
+</code></pre>
+
+<p>该<code>[base]</code>部分允许您覆盖<code>yum.conf</code>文件中定义的设置。如果要排除更新特定包，可以使用该<code>exclude</code>参数。在以下示例中，我们排除了[ <code>mongodb</code>]包。</p>
+
+<p>文件: <code>/etc/yum/yum-cron-hourly.conf</code></p>
+
+<pre><code class="language-ini">[base]
+debuglevel = -2
+mdpolicy = group:main
+exclude = mongodb*
+</code></pre>
+
+<p>您无需重新启动 <code>yum-cron</code> 服务即可使更改生效。</p>
+
+<h3 id="查看日志">查看日志</h3>
+
+<p>使用 <!--link:how-to-use-grep-command-to-search-files-in-linux-->grep<!--link--> 检查是否执行了与 yum 关联的 cron 作业：</p>
+
+<pre><code class="language-console-bash">sudo grep yum /var/log/cron
+</code></pre>
+
+<pre><code class="language-output">May  4 22:01:01 localhost run-parts(/etc/cron.hourly)[5588]: starting 0yum-hourly.cron
+May  4 22:32:01 localhost run-parts(/etc/cron.daily)[5960]: starting 0yum-daily.cron
+May  4 23:01:01 localhost run-parts(/etc/cron.hourly)[2121]: starting 0yum-hourly.cron
+May  4 23:01:01 localhost run-parts(/etc/cron.hourly)[2139]: finished 0yum-hourly.cron
+</code></pre>
+
+<p>yum 更新的历史记录记录在 <code>/var/log/yum</code> 文件中。您可以使用 <!--link:linux-tail-command-->tail 命令<!--link-->查看最新更新：</p>
+
+<pre><code class="language-console-bash">sudo tail -f  /var/log/yum.log
+</code></pre>
+
+<pre><code class="language-output">May 04 23:47:28 Updated: libgomp-4.8.5-36.el7_6.2.x86_64
+May 04 23:47:31 Updated: bpftool-3.10.0-957.12.1.el7.x86_64
+May 04 23:47:31 Updated: htop-2.2.0-3.el7.x86_64
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何配置自动更新并使 CentOS 系统保持最新状态。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/yum" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">yum</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/security" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-disable-selinux-on-centos-7/">如何在 CentOS 7 上禁用 SELinux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-your-centos-version/">如何查看您的 CentOS 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-centos-7/">如何在 CentOS 7 上安装 Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-centos-7/">如何在 CentOS 7 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-centos-7/">如何在 CentOS 7 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/creating-a-self-signed-ssl-certificate/">创建自签名的 SSL 证书</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 CentOS 7 上使用 FirewallD 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-edit-your-hosts-file/">如何编辑 hosts 文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-centos-7/">如何在 CentOS 7 上安装 Plex Media Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-sftp-chroot-jail/">如何设置 SFTP Chroot Jail</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

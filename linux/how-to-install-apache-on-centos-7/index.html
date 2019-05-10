@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 CentOS 7 上安装 Apache</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上安装 Apache" />
+<meta property="og:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，可以通过大量的扩展模块来提供强大的功能。下面的部分介绍了如何在 CentOS 7 服务器上安装和管理 Apache Web 服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-apache-on-centos-7/" />
+<meta property="article:published_time" content="2019-03-11T11:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-11T11:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上安装 Apache">
+<meta itemprop="description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，可以通过大量的扩展模块来提供强大的功能。下面的部分介绍了如何在 CentOS 7 服务器上安装和管理 Apache Web 服务器。">
+
+
+<meta itemprop="datePublished" content="2019-03-11T11:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-11T11:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="280">
+
+
+
+<meta itemprop="keywords" content="centos,apache," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上安装 Apache"/>
+<meta name="twitter:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，可以通过大量的扩展模块来提供强大的功能。下面的部分介绍了如何在 CentOS 7 服务器上安装和管理 Apache Web 服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 Apache</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-11T11:00:00Z">March 11, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，可以通过大量的扩展模块来提供强大的功能。下面的部分介绍了如何在 CentOS 7 服务器上安装和管理 Apache Web 服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户身份</a>登录。</p>
+
+<h2 id="安装-apache">安装 Apache</h2>
+
+<p>Apache 可以在 CentOS 的自有软件仓库中使用，安装非常简单。</p>
+
+<p>在 CentOS 和 RHEL 上 Apache 包和服务的名称是 <code>httpd</code>。请运行以下命令安装程序包：</p>
+
+<pre><code class="language-bash">sudo yum install httpd
+</code></pre>
+
+<p>安装完成后，启用随机启动并启动 Apache 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl enable httpd
+sudo systemctl start httpd
+</code></pre>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果您的<!--link:how-to-setup-a-firewall-with-firewalld-on-centos-7-->服务器受防火墙保护<!--link-->，则需要打开 HTTP 80 端口 和 HTTPS 443 端口。使用以下命令打开必要的端口：</p>
+
+<pre><code class="language-bash">sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload
+</code></pre>
+
+<h2 id="验证-apache-安装">验证 Apache 安装</h2>
+
+<p>现在我们已经在 CentOS 7 服务器上安装并运行了 Apache ，我们可以通过以下命令来查看 Apache 服务的状态和版本。</p>
+
+<p><strong>查看状态</strong></p>
+
+<pre><code class="language-bash">sudo systemctl status httpd
+</code></pre>
+
+<pre><code class="language-bash">● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2018-04-26 07:13:07 UTC; 11s ago
+     Docs: man:httpd(8)
+           man:apachectl(8)
+ Main PID: 3049 (httpd)
+   Status: &quot;Total requests: 0; Current requests/sec: 0; Current traffic:   0 B/sec&quot;
+   CGroup: /system.slice/httpd.service
+           ├─3049 /usr/sbin/httpd -DFOREGROUND
+           ├─3050 /usr/sbin/httpd -DFOREGROUND
+           ├─3051 /usr/sbin/httpd -DFOREGROUND
+           ├─3052 /usr/sbin/httpd -DFOREGROUND
+           ├─3053 /usr/sbin/httpd -DFOREGROUND
+           └─3054 /usr/sbin/httpd -DFOREGROUND
+</code></pre>
+
+<p><strong>查看版本</strong></p>
+
+<pre><code class="language-bash">sudo httpd -v
+</code></pre>
+
+<pre><code class="language-bash">Server version: Apache/2.4.6 (CentOS)
+Server built:   Oct 19 2017 20:39:16
+</code></pre>
+
+<p>最后要验证一切是否正常，请在您的浏览器中打开地址: <code>http://YOUR_IP</code> ，您将看到 CentOS 7 Apache 默认的欢迎页面，如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-apache-on-centos-7/apache-welcome-page.jpg" alt="" /></p>
+
+<h2 id="管理-apache-服务">管理 Apache 服务</h2>
+
+<p>您可以像管理任何其他 systemd 单元一样管理 Apache 服务。</p>
+
+<p>要停止 Apache 服务，请运行：</p>
+
+<pre><code class="language-bash">sudo systemctl stop httpd
+</code></pre>
+
+<p>要再次启动它，请键入：</p>
+
+<pre><code class="language-bash">sudo systemctl start httpd
+</code></pre>
+
+<p>要重新启动 Apache 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart httpd
+</code></pre>
+
+<p>在进行一些配置更改后重新加载 Apache 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl reload httpd
+</code></pre>
+
+<p>如果要禁用 Apache 服务随机自启动：</p>
+
+<pre><code class="language-bash">sudo systemctl disable httpd
+</code></pre>
+
+<p>并重新启用它：</p>
+
+<pre><code class="language-bash">sudo systemctl enable httpd
+</code></pre>
+
+<h2 id="apache-配置文件的结构和最佳实践">Apache 配置文件的结构和最佳实践</h2>
+
+<ul>
+<li>所有 Apache 配置文件都位于 <code>/etc/httpd</code> 目录中。</li>
+<li>主要的 Apache 配置文件是 <code>/etc/httpd/conf/httpd.conf</code> 。</li>
+<li>所有位于 <code>/etc/httpd/conf.d</code> 目录中以 <code>.conf</code> 结尾的配置文件都会包含进主 Apache 配置文件中。</li>
+<li>负责加载各种 Apache 模块的配置文件位于 <code>/etc/httpd/conf.modules.d</code> 目录中。</li>
+<li>为了更好的可维护性，建议为每个域创建单独的配置文件 (vhost)。</li>
+<li>新的 Apache vhost 文件必须 <code>.conf</code> 结尾并保存在 <code>/etc/httpd/conf.d</code> 目录中。您可以根据需要拥有尽可能多的虚拟主机。</li>
+<li>遵循标准命名约定是个好主意，例如，如果您的域名是， <code>mydomain.com</code> 则应该命名配置文件 <code>/etc/httpd/conf.d/mydomain.com.conf</code></li>
+<li>Apache 日志文件 (<code>access_log</code> 和 <code>error_log</code>)位于 <code>/var/log/httpd/</code> 目录中。建议每个虚拟主机使用不同 access 和 error 日志文件。</li>
+<li>您可以将网站根目录设置为任何位置。 webroot 最常见的位置包括：
+
+<ul>
+<li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
+<li><code>/var/www/&lt;site_name&gt;</code></li>
+<li><code>/var/www/html/&lt;site_name&gt;</code></li>
+<li><code>/opt/&lt;site_name&gt;</code></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 CentOS 7 服务器上成功安装了 Apache 。您现在已准备好开始部署应用程序并将 Apache 用作 Web 或代理服务器。</p>
+
+<!-- how-to-install-apache-on-centos-7/ --><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-mattermost-on-centos-7/">如何在 CentOS 7 上部署 Mattermost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-sudo-user-on-centos/">如何在 CentOS 上创建 sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-centos-7/">如何在 CentOS 7 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-centos-7/">如何在 CentOS 7 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-magento-2-to-use-varnish-on-centos-7/">在 CentOS 7 上配置 Magento 2 使用 Varnish</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-magento-2-on-centos-7/">在 CentOS 7 上安装 Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-centos-7/">如何在 CentOS 7 上安装 WildFly(JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

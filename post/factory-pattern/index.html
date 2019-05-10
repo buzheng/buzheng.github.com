@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 设计模式学习 - 工厂模式</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="设计模式学习 - 工厂模式" />
+<meta property="og:description" content="在面向对象开发原则中有这么一条：对象要么创建和管理对象，要么使用其他对象，不能兼而有之。这也夫单一职责原则的具体应用。其中创建和管理对象的角色就是工厂，他是工厂模式中的主角，他有如下的职责：
+
+
+创建对象
+按照约定的规则管理对象
+
+
+使用工厂能改给我们的好处：
+
+
+将使用者和被使用者的创建过程/创建逻辑解耦（将使用者和被使用者解耦，因为大多数情况下，使用者不知道被使用者的具体类型）。
+集中创建/管理对象，提高程序的内聚性。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/factory-pattern/" />
+<meta property="article:published_time" content="2013-01-10T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-01-10T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="设计模式学习 - 工厂模式">
+<meta itemprop="description" content="在面向对象开发原则中有这么一条：对象要么创建和管理对象，要么使用其他对象，不能兼而有之。这也夫单一职责原则的具体应用。其中创建和管理对象的角色就是工厂，他是工厂模式中的主角，他有如下的职责：
+
+
+创建对象
+按照约定的规则管理对象
+
+
+使用工厂能改给我们的好处：
+
+
+将使用者和被使用者的创建过程/创建逻辑解耦（将使用者和被使用者解耦，因为大多数情况下，使用者不知道被使用者的具体类型）。
+集中创建/管理对象，提高程序的内聚性。
+">
+
+
+<meta itemprop="datePublished" content="2013-01-10T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-01-10T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="89">
+
+
+
+<meta itemprop="keywords" content="设计模式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="设计模式学习 - 工厂模式"/>
+<meta name="twitter:description" content="在面向对象开发原则中有这么一条：对象要么创建和管理对象，要么使用其他对象，不能兼而有之。这也夫单一职责原则的具体应用。其中创建和管理对象的角色就是工厂，他是工厂模式中的主角，他有如下的职责：
+
+
+创建对象
+按照约定的规则管理对象
+
+
+使用工厂能改给我们的好处：
+
+
+将使用者和被使用者的创建过程/创建逻辑解耦（将使用者和被使用者解耦，因为大多数情况下，使用者不知道被使用者的具体类型）。
+集中创建/管理对象，提高程序的内聚性。
+"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">设计模式学习 - 工厂模式</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2013-01-10T00:00:00Z">January 10, 2013</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在面向对象开发原则中有这么一条：对象要么创建和管理对象，要么使用其他对象，不能兼而有之。这也夫单一职责原则的具体应用。其中创建和管理对象的角色就是工厂，他是工厂模式中的主角，他有如下的职责：</p>
+
+<ul>
+<li>创建对象</li>
+<li>按照约定的规则管理对象</li>
+</ul>
+
+<p>使用工厂能改给我们的好处：</p>
+
+<ul>
+<li>将使用者和被使用者的创建过程/创建逻辑解耦（将使用者和被使用者解耦，因为大多数情况下，使用者不知道被使用者的具体类型）。</li>
+<li>集中创建/管理对象，提高程序的内聚性。</li>
+</ul>
+
+<p>工厂模式属于创建模式，创建对象者其实就是工厂，与工厂相关的模式有如下几种：</p>
+
+<ul>
+<li>Simple/Static Factory</li>
+<li><a href="../factory-method-pattern/">Factory Method</a></li>
+<li><a href="../abstract-factory-pattern/">Abstract Factory</a></li>
+<li><a href="../singleton-pattern/">Singleton</a></li>
+<li>Object Pool</li>
+<li>Builder</li>
+<li>Prototype</li>
+</ul>
+
+<h2 id="simple-static-factory">Simple/Static Factory</h2>
+
+<p>这是最简单的工厂，实际中应用比较常见。就是工厂类提供了一个静态方法，来供使用者调用，从而获取他们需要的对象。</p>
+
+<h2 id="factory-method">Factory Method</h2>
+
+<p>工厂方法其实是一个特定的模板方法，抽象类中不确定的是创建什么对象，于是将创建对象的逻辑抽象出来，延迟到子类来实现，这遵循了封装变化的原则。类图如下：</p>
+
+<p><img src="/images/factory-method.jpg" alt="" /></p>
+
+<p>在JDK中，List 和 Set 都是继承自 Collection， iterator方法也是Collection中定义的，Collection是一个集合的抽象，根本不知道有哪些实现类，也根本不知道实现类的具体结构，也就根本不知道具体实现类的如何迭代，所以就把生成迭代器的任务交给具体实现类去实现，这样Collection根本不关心具体的Iterator，而和Iterator接口打交道。这就是依赖倒置原则的体现，应该依赖于抽像而不应该依赖于实现。</p>
+
+<p>另外这个模式也是完全符合开闭原则的， 当你有新的集合结构时， 只需要实现Collection， 实现自己的迭代器。根本不需要修改现有代码。</p>
+
+<h2 id="abstract-factory">Abstract Factory</h2>
+
+<p>抽象工厂管理的是一组相关的产品。抽象工厂只与产品的抽象关联，而不关心具体的对象，具体的对象有具体的工厂来生成。</p>
+
+<p>考虑下面的场景：在主题管理程序中，目前的主题有windows、mac、linux三种，用户能随时切换自己的系统主题。主题中包括了按钮、选择框、以及标题栏的样式。我们可以利用抽线工厂模式设计如下结构。</p>
+
+<p><img src="/images/abstract-factory.jpg" alt="" /></p>
+
+<p>ThemeFactory 就是抽象工厂，他只是定义了一个生产一系列主题元素的契约，具体的实现有每个具体的主题工厂实现。</p>
+
+<p>源码我已经上传到github，点击这里：<a href="https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/abstractfactory">https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/abstractfactory</a></p>
+
+<h2 id="singleton">Singleton</h2>
+
+<p>Singleton模式主要是应用在那些需要在JVM中只保留唯一对象的场景下的。具体的可以参看以前整理的这篇：<a href="../singleton-pattern/">设计模式学习 – Singleton Pattern</a></p>
+
+<h2 id="object-pool">Object Pool</h2>
+
+<p>Object Pool 也属于创建模式的一种，或者说是也是一种工厂。Object Pool 管理着一组对象，负责对象的创建和销毁，并维护每个对象的状态。使用者从 Object Pool 中获取自己需要的对象，并不负责对象的创建和销毁，仅仅是使用，使用完后再将对象丢给 Object Pool。</p>
+
+<h2 id="builder">Builder</h2>
+
+<p>如果一些对象的构造过程比较复杂，但又可有抽象出公共的步骤，可以考虑使用Builder模式。Builder 模式帮助我们将复杂对象的构建过程和对象的表示分离，是同样的构建过程可以创建不同的对象，所以说Builder模式封装的变化部分是对象的构建过程。看一下结构图：</p>
+
+<p><img src="/images/builder.jpg" alt="" /></p>
+
+<p>由此可以看出Builder模式中的角色：
+Director: 负责复杂对象的构建过程
+Builder: 负责构建具体的具体步骤
+Product：要被构建的对象</p>
+
+<p>在JDK中，StringBuilder 和 StringBuffer 就是一个极其简单的 Builder 模式的实现。他本身充当了 Builder 和 ConcreteBuilder 角色，而 Director 角色则由使用者自己担任， Product角色则是 String 对象。</p>
+
+<p>源码参看这里：<a href="https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/builder">https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/builder</a></p>
+
+<h2 id="prototype">Prototype</h2>
+
+<p>这个大概就是通过拷贝对象而生成其他对象的过程。理解不是很透，就不发言了。</p>
+
+<p>总结</p>
+
+<p>工厂模式是我们平时开发中经常用的模式，比如说 IOC 简单来看也是一个工厂；再比如我们在学习策略模式（Strategy）的时候，策略的管理者和生成者很可能就是工厂。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">设计模式</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/facade-pattern/">设计模式学习 - Facade Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/singleton-pattern/">设计模式学习 - Singleton Pattern</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

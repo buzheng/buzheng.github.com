@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 通过直接拷贝数据文件实现 Oracle 迁移</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="通过直接拷贝数据文件实现 Oracle 迁移" />
+<meta property="og:description" content="Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/oracle-migration-by-copy-data-file/" />
+<meta property="article:published_time" content="2015-09-17T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-09-17T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="通过直接拷贝数据文件实现 Oracle 迁移">
+<meta itemprop="description" content="Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。">
+
+
+<meta itemprop="datePublished" content="2015-09-17T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-09-17T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="289">
+
+
+
+<meta itemprop="keywords" content="Oracle," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="通过直接拷贝数据文件实现 Oracle 迁移"/>
+<meta name="twitter:description" content="Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">通过直接拷贝数据文件实现 Oracle 迁移</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2015-09-17T00:00:00Z">September 17, 2015</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。</p>
+
+<h2 id="背景">背景</h2>
+
+<p>由于机房服务器变更，需要将 Oracle 迁移到一台新服务器上去。一下是环境说明：</p>
+
+<ul>
+<li>原服务器地址： 192.168.1.15</li>
+<li>新服务器地址： 192.168.1.18</li>
+<li>操作系统：都是 CentOS 6.5</li>
+<li>数据库版本： 都是 11.2.0.1</li>
+</ul>
+
+<h2 id="新服务器上安装和配置-oracle">新服务器上安装和配置 Oracle</h2>
+
+<blockquote>
+<p>192.168.1.18</p>
+</blockquote>
+
+<p>在新服务器（192.168.1.18）上安装了Oracle，为了保险，主机名、数据库实例名、安装目录都和原数据库保持一致。具体安装方法可参考：<a href="../centos-65-install-oracle-11g-r2/">centos 6.5 安装 oracle 11gR2 及配置Oracle自动启动</a></p>
+
+<h2 id="查询需要拷贝的文件">查询需要拷贝的文件</h2>
+
+<blockquote>
+<p>192.168.1.15
+需要切换到 oracle 用户
+使用 sqlplus 登录进 Oracle 数据库</p>
+</blockquote>
+
+<pre><code class="language-shell">sqlplus / as sysdba
+</code></pre>
+
+<pre><code class="language-sql">SQL&gt; show parameter pfile
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+spfile                               string      /u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+
+SQL&gt; show parameter control
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+control_file_record_keep_time        integer     7
+control_files                        string      /u01/app/oracle/oradata/orcl/control01.ctl, /u01/app/oracle/recovery_area/orcl/control02.ctl
+control_management_pack_access       string      DIAGNOSTIC+TUNING
+
+SQL&gt; select  * from v$logfile;
+    GROUP# STATUS  TYPE    MEMBER                                                                           IS_RECOVERY_DEST_FILE
+---------- ------- ------- -------------------------------------------------------------------------------- ---------------------
+         3         ONLINE  /u01/app/oracle/oradata/orcl/redo03.log                                          NO
+         2         ONLINE  /u01/app/oracle/oradata/orcl/redo02.log                                          NO
+         1         ONLINE  /u01/app/oracle/oradata/orcl/redo01.log                                          NO
+
+SQL&gt; select name from v$datafile;
+NAME
+--------------------------------------------------------------------------------
+/u01/app/oracle/oradata/orcl/system01.dbf
+/u01/app/oracle/oradata/orcl/sysaux01.dbf
+/u01/app/oracle/oradata/orcl/undotbs01.dbf
+/u01/app/oracle/oradata/orcl/users01.dbf
+/u01/app/oracle/oradata/orcl/users02.dbf
+
+SQL&gt; select name from v$tempfile;
+NAME
+--------------------------------------------------------------------------------
+/u01/app/oracle/oradata/orcl/temp01.dbf
+</code></pre>
+
+<p>根据以上查询结果，发现有以下文件需要拷贝：</p>
+
+<pre><code>/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+/u01/app/oracle/oradata/orcl/control01.ctl
+/u01/app/oracle/recovery_area/orcl/control02.ctl
+/u01/app/oracle/oradata/orcl/redo03.log
+/u01/app/oracle/oradata/orcl/redo02.log
+/u01/app/oracle/oradata/orcl/redo01.log
+/u01/app/oracle/oradata/orcl/system01.dbf
+/u01/app/oracle/oradata/orcl/sysaux01.dbf
+/u01/app/oracle/oradata/orcl/undotbs01.dbf
+/u01/app/oracle/oradata/orcl/users01.dbf
+/u01/app/oracle/oradata/orcl/users02.dbf
+/u01/app/oracle/oradata/orcl/users03.dbf
+/u01/app/oracle/oradata/orcl/temp01.dbf
+</code></pre>
+
+<h2 id="停掉原数据库与新数据库">停掉原数据库与新数据库</h2>
+
+<blockquote>
+<p>192.168.1.15 和 192.168.1.18
+使用 root 用户</p>
+</blockquote>
+
+<pre><code class="language-shell">service oracle stop
+</code></pre>
+
+<h2 id="使用scp拷贝文件到新服务器">使用scp拷贝文件到新服务器</h2>
+
+<blockquote>
+<p>192.168.1.15
+scp 命令可以把文件复制到远程 Linux 服务器，可以参考：<a href="/2015/linux-scp-notes.html">scp 命令</a></p>
+</blockquote>
+
+<pre><code class="language-shell">scp /u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora oracle@192.168.1.18:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+scp /u01/app/oracle/oradata/orcl/control01.ctl oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/control01.ctl
+scp /u01/app/oracle/recovery_area/orcl/control02.ctl oracle@192.168.1.18:/u01/app/oracle/recovery_area/orcl/control02.ctl
+scp /u01/app/oracle/oradata/orcl/redo03.log oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/redo03.log
+scp /u01/app/oracle/oradata/orcl/redo02.log oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/redo02.log
+scp /u01/app/oracle/oradata/orcl/redo01.log oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/redo01.log
+scp /u01/app/oracle/oradata/orcl/system01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/system01.dbf
+scp /u01/app/oracle/oradata/orcl/sysaux01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/sysaux01.dbf
+scp /u01/app/oracle/oradata/orcl/undotbs01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/undotbs01.dbf
+scp /u01/app/oracle/oradata/orcl/users01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users01.dbf
+scp /u01/app/oracle/oradata/orcl/users02.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users02.dbf
+scp /u01/app/oracle/oradata/orcl/users03.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users03.dbf
+scp /u01/app/oracle/oradata/orcl/temp01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/temp01.dbf
+</code></pre>
+
+<p>等待拷贝完成</p>
+
+<h2 id="尝试启动新数据库">尝试启动新数据库</h2>
+
+<blockquote>
+<p>192.168.1.18
+使用 oracle 用户</p>
+</blockquote>
+
+<p>dba 登录进行启动数据库</p>
+
+<pre><code class="language-shell">[oracle@oracle ~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.1.0 Production on Thu Sep 17 09:26:11 2015
+
+Copyright (c) 1982, 2009, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL&gt; startup
+ORACLE instance started.
+
+Total System Global Area 6747725824 bytes
+Fixed Size                  2213976 bytes
+Variable Size            5100275624 bytes
+Database Buffers         1610612736 bytes
+Redo Buffers               34623488 bytes
+Database mounted.
+Database opened.
+</code></pre>
+
+<p>注意最后一句，到这里就启动成功了。这次很顺利，没有出现意外。也可以通过以下语句检测数据库的状态：</p>
+
+<pre><code class="language-sql">SQL&gt; select status from v$instance;
+
+STATUS
+------------
+OPEN
+</code></pre>
+
+<p>如果 <code>Database mounted</code> 成功后报错，也就是数据库最终不是 open 状态，只是 mounted 状态， 可以尝试恢复数据库。</p>
+
+<pre><code class="language-sql">recover database;
+</code></pre>
+
+<p>完成后，再打开数据库，一般可以成功。</p>
+
+<pre><code class="language-sql">alter database open;
+</code></pre>
+
+<h2 id="验证两个库的数据">验证两个库的数据</h2>
+
+<p>根据自己的实际情况进行验证, 这里不再赘述.</p>
+
+<p>Done.</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/oracle" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Oracle</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/oracle-user-notes/">Oracle 用户相关操作</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/oracle-slow-sql/">oracle 查看执行最慢 sql</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/ora-01654-unable-to-extend-index/">ORA-01654 索引无法通过128扩展, 表空间不足错误</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-modify-ssh-port-and-forbid-root-remote/">centos 6.5 修改 SSH 端口并禁用 root 远程登录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/oracle-auto-backup-shell-script/">Oracle 自动备份脚本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/oracle-notes/">oracle 学习笔记</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-65-install-oracle-11g-r2/">centos 6.5 安装 oracle 11gR2 及配置Oracle自动启动</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

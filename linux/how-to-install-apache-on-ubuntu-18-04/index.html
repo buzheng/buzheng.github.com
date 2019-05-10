@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装 Apache</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 Apache" />
+<meta property="og:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，提供强大的功能，还可以通过各种模块进行扩展。
+
+本教程介绍如何在 Ubuntu 18.04 上安装和管理 Apache Web 服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-apache-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-25T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-25T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 Apache">
+<meta itemprop="description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，提供强大的功能，还可以通过各种模块进行扩展。
+
+本教程介绍如何在 Ubuntu 18.04 上安装和管理 Apache Web 服务器。">
+
+
+<meta itemprop="datePublished" content="2019-03-25T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-25T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="257">
+
+
+
+<meta itemprop="keywords" content="ubuntu,apache," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 Apache"/>
+<meta name="twitter:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，提供强大的功能，还可以通过各种模块进行扩展。
+
+本教程介绍如何在 Ubuntu 18.04 上安装和管理 Apache Web 服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 Apache</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-25T05:00:00Z">March 25, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache HTTP 服务器是世界上最受欢迎的 Web 服务器。它是一个免费的，开源的跨平台 HTTP 服务器，提供强大的功能，还可以通过各种模块进行扩展。</p>
+
+<p>本教程介绍如何在 Ubuntu 18.04 上安装和管理 Apache Web 服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="安装-apache">安装 Apache</h2>
+
+<p>Apache 在默认的 Ubuntu 存储库中可用，因此我们可以很轻松的使用 apt 包管理工具安装它。在 Ubuntu 和 Debian 系统上，Apache 包和服务的名称是 <code>apache2</code> 。</p>
+
+<p>首先，更新软件包索引，然后使用以下命令安装 <code>apache2</code> 软件包：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install apache2
+</code></pre>
+
+<p>就是这样， Apache 已经安装并自动启动。您可以通过输入以下命令来检查 Apache 服务状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status apache2
+</code></pre>
+
+<pre><code class="language-bash">● apache2.service - The Apache HTTP Server
+   Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+  Drop-In: /lib/systemd/system/apache2.service.d
+           `-apache2-systemd.conf
+   Active: active (running) since Sun 2018-06-24 02:17:57 PDT; 2min 41s ago
+ Main PID: 3143 (apache2)
+    Tasks: 55 (limit: 2321)
+   CGroup: /system.slice/apache2.service
+           |-3143 /usr/sbin/apache2 -k start
+           |-3144 /usr/sbin/apache2 -k start
+           `-3145 /usr/sbin/apache2 -k start
+</code></pre>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果您的 Ubuntu 服务器受防火墙保护，则需要打开 HTTP (80) 和 HTTPS (443) 端口。</p>
+
+<p>假设您正在使用 UFW 管理防火墙，可以使用以下命令打开必要的端口：</p>
+
+<pre><code class="language-bash">sudo ufw allow 'Apache Full'
+</code></pre>
+
+<p>您可以使用以下方式验证更改：</p>
+
+<pre><code class="language-bash">sudo ufw status
+</code></pre>
+
+<pre><code class="language-bash">Status: active
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW       Anywhere
+Apache Full                ALLOW       Anywhere
+22/tcp (v6)                ALLOW       Anywhere (v6)
+Apache Full (v6)           ALLOW       Anywhere (v6)
+</code></pre>
+
+<h2 id="验证-apache-安装">验证 Apache 安装</h2>
+
+<p>要验证安装是否一切正常，请打开浏览器，输入您的服务器 IP 地址 <code>http://YOUR_IP_OR_DOMAIN/</code> ，您将看到默认的 Ubuntu 18.04 Apache 欢迎页面，如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-apache-on-ubuntu-18-04/apache-welcome-page.jpg" alt="" /></p>
+
+<p>该页面包含有关 Apache 配置文件，帮助程序脚本和目录位置的一些基本信息。</p>
+
+<h2 id="apache-配置文件的结构和最佳实践">Apache 配置文件的结构和最佳实践</h2>
+
+<ul>
+<li>所有 Apache 配置文件都位于 <code>/etc/apache2</code> 目录中。</li>
+<li>主要的 Apache 配置文件是 <code>/etc/apache2/apache2.conf</code> 。</li>
+<li>Apache 将侦听的端口在 <code>/etc/apache2/ports.conf</code> 中指定。</li>
+<li>Apache 虚拟主机文件存储在 <code>/etc/apache2/sites-available</code> 目录中。除非链接到 <code>/etc/apache2/sites-enabled</code> 目录，否则 Apache 不使用此目录中的配置文件。</li>
+<li>要激活虚拟主机，您需要使用 <code>a2ensite</code> 命令在目录 <code>sites-enabled</code> 中创建符号链接指向 <code>sites-availables</code> 目录中的配置文件。要停用虚拟主机，请使用 <code>a2dissite</code> 该命令。<br /></li>
+<li>遵循标准命名约定是个好主意。例如，如果您的域名是 <code>mydomain.com</code> 那么虚拟主机配置文件应该命名为 <code>/etc/apache2/sites-available/mydomain.com.conf</code></li>
+<li>负责加载各种 Apache 模块的配置文件位于 <code>/etc/apache2/mods-available/</code> 目录中。 <code>mods-available</code> 目录中的配置文件可以使用 <code>a2enconf</code> 命令通过在 <code>/etc/apache2/mods-enable/</code> 目录创建指向此目录的符号链接来激活。使用 <code>a2disconf</code> 命令来禁用目录中的配置 。</li>
+<li>包含全局配置片段的文件存储在 <code>/etc/apache2/conf-available/</code> 目录中。 <code>conf-available</code>中的文件可以通过使用 <code>a2enconf</code> 命令在 <code>/etc/apache2/conf-enabled/</code> 创建符号链接来启用。 使用命令 <code>a2disconf</code> 禁用。</li>
+<li>Apache 日志文件 (access.log 和 error.log) 位于 <code>/var/log/apache/</code> 目录中。建议每个虚拟主机都有不同 access 和 error 日志文件。</li>
+<li>您可以将网站文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
+
+<ul>
+<li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
+<li><code>/var/www/&lt;site_name&gt;</code></li>
+<li><code>/var/www/html/&lt;site_name&gt;</code></li>
+<li><code>/opt/&lt;site_name&gt;</code></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Ubuntu 18.04 服务器上成功安装了 Apache 。您现在已经可以开始部署您的应用程序并将 Apache 用作 Web 或代理服务器了。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置静态 IP 地址</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Slack</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 GitLab</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-rpm-packages-on-ubuntu/">在 Ubuntu 上安装 RPM 包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Odoo 11</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Bash 中 until loop 用法</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash 中 until loop 用法" />
+<meta property="og:description" content="循环是编程语言的基本概念之一。当您想要反复运行一系列命令直到满足特定条件时，循环很方便。
+
+在诸如 Bash 之类的脚本语言中，循环对于自动执行重复性任务非常有用。在 Bash 脚本中有3个基本的循环结构，用于 for loop, while loop 和 until loop 。
+
+本教程解释了 Bash 中的 until loop 的基础知识。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/bash-until-loop/" />
+<meta property="article:published_time" content="2019-03-04T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-04T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Bash 中 until loop 用法">
+<meta itemprop="description" content="循环是编程语言的基本概念之一。当您想要反复运行一系列命令直到满足特定条件时，循环很方便。
+
+在诸如 Bash 之类的脚本语言中，循环对于自动执行重复性任务非常有用。在 Bash 脚本中有3个基本的循环结构，用于 for loop, while loop 和 until loop 。
+
+本教程解释了 Bash 中的 until loop 的基础知识。">
+
+
+<meta itemprop="datePublished" content="2019-03-04T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-04T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="155">
+
+
+
+<meta itemprop="keywords" content="linux,bash,loop," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Bash 中 until loop 用法"/>
+<meta name="twitter:description" content="循环是编程语言的基本概念之一。当您想要反复运行一系列命令直到满足特定条件时，循环很方便。
+
+在诸如 Bash 之类的脚本语言中，循环对于自动执行重复性任务非常有用。在 Bash 脚本中有3个基本的循环结构，用于 for loop, while loop 和 until loop 。
+
+本教程解释了 Bash 中的 until loop 的基础知识。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">Bash 中 until loop 用法</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-04T08:00:00Z">March 4, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>循环是编程语言的基本概念之一。当您想要反复运行一系列命令直到满足特定条件时，循环很方便。</p>
+
+<p>在诸如 Bash 之类的脚本语言中，循环对于自动执行重复性任务非常有用。在 Bash 脚本中有3个基本的循环结构，用于 for loop, while loop 和 until loop 。</p>
+
+<p>本教程解释了 Bash 中的 until loop 的基础知识。</p>
+
+<h2 id="bash-until-loop">Bash until loop</h2>
+
+<p>until loop 用于当给定条件的计算结果为 false 时，重复执行给定的一组命令。</p>
+
+<p>Bash until loop 采用以下形式：</p>
+
+<pre><code class="language-bash">until [CONDITION]
+do
+  [COMMANDS]
+done
+</code></pre>
+
+<p>在执行命令之前计算条件。如果条件的计算结果为 <code>false</code> ，则执行命令。否则，如果条件的计算结果为 <code>true</code> ，则循环将终止，程序控制将传递给后面的命令。</p>
+
+<p>在下面的示例中，在每次迭代时，循环打印变量的当前值并将变量 <code>counter</code> 递增 <code>1</code>。</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+counter=0
+
+until [ $counter -gt 5 ]
+do
+  echo Counter: $counter
+  ((counter++))
+done
+</code></pre>
+
+<p>只要 <code>counter</code> 变量的值大于 5 ，循环就会终止迭代。该脚本将生成以下输出：</p>
+
+<pre><code class="language-bash">Counter: 0
+Counter: 1
+Counter: 2
+Counter: 3
+Counter: 4
+Counter: 5
+</code></pre>
+
+<h2 id="bash-until-loop-示例">Bash until loop 示例</h2>
+
+<p>如果您的 git 主机会有停机时间则以下的脚本可能非常有用，您可以运行该脚本一次，代替你手动键入 <code>git pull</code> 多次，直到主机处于联机状态。它将尝试拉出存储库，直到它成功拉出。</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+until git pull &amp;&gt; /dev/null
+do
+    echo &quot;Waiting for the git host ...&quot;
+    sleep 1
+done
+
+echo -e &quot;\nThe git repository is pulled.&quot;
+</code></pre>
+
+<p>该脚本将打印 &ldquo;Waiting for the git host &hellip;&rdquo; 并睡眠一秒钟直到 git 主机上线。一旦存储库被拉出，它将打印“git存储库被拉动。”。</p>
+
+<pre><code class="language-bash">Waiting for the git host ...
+Waiting for the git host ...
+Waiting for the git host ...
+
+The git repository is pulled.
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>while 和 until loop 非常相似，只要 while 循环迭代，只要条件求值为，true并且 until loop 迭代，只要条件求值为false。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/bash" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">bash</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/loop" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">loop</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-case-statement/">Bash 中 Case 语句用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-and-configure-postfix-and-dovecot/">安装和配置 Postfix 和 Dovecot</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/set-up-an-email-server-with-postfixadmin/">使用 PostfixAdmin 设置邮件服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/">配置 Odoo 使用 Nginx 作为反向代理</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">在 Linux 中使用 ls 命令列出文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

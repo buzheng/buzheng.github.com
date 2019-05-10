@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装和使用 Docker</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装和使用 Docker" />
+<meta property="og:description" content="Docker 是一种容器化技术，允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。
+
+Docker 已成为容器部署的事实标准，它是 DevOps 工程师及其持续集成和交付管道的重要工具。
+
+在本教程中，我们将介绍如何在 Ubuntu 18.04 计算机上安装 Docker 并探索基本的 Docker 概念和命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-23T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-23T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装和使用 Docker">
+<meta itemprop="description" content="Docker 是一种容器化技术，允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。
+
+Docker 已成为容器部署的事实标准，它是 DevOps 工程师及其持续集成和交付管道的重要工具。
+
+在本教程中，我们将介绍如何在 Ubuntu 18.04 计算机上安装 Docker 并探索基本的 Docker 概念和命令。">
+
+
+<meta itemprop="datePublished" content="2019-03-23T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-23T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="426">
+
+
+
+<meta itemprop="keywords" content="ubuntu,docker," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装和使用 Docker"/>
+<meta name="twitter:description" content="Docker 是一种容器化技术，允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。
+
+Docker 已成为容器部署的事实标准，它是 DevOps 工程师及其持续集成和交付管道的重要工具。
+
+在本教程中，我们将介绍如何在 Ubuntu 18.04 计算机上安装 Docker 并探索基本的 Docker 概念和命令。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装和使用 Docker</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-23T05:00:00Z">March 23, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Docker 是一种容器化技术，允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。</p>
+
+<p>Docker 已成为容器部署的事实标准，它是 DevOps 工程师及其持续集成和交付管道的重要工具。</p>
+
+<p>在本教程中，我们将介绍如何在 Ubuntu 18.04 计算机上安装 Docker 并探索基本的 Docker 概念和命令。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以具有 <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo 权限的用户</a>身份登录。本教程中的所有命令都应以非 root 用户身份运行。</p>
+
+<h2 id="在-ubuntu-上安装-docker">在 Ubuntu 上安装 Docker</h2>
+
+<p>虽然 Docker 安装包在官方 Ubuntu 18.04 软件仓库中可用，但它可能并不总是最新版本。我们一般建议从 Docker 的软件仓库安装最新的 Docker 软件包。</p>
+
+<p>要在 Ubuntu 18.04 上安装 Docker ，请按照下列步骤操作：</p>
+
+<ol>
+<li><p>首先，使用以下命令更新软件包索引并升级系统：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt upgrade
+</code></pre>
+
+<ol>
+<li>接下来，通过安装依赖项启用在 HTTPS 之上的新软件仓库：</li>
+</ol>
+
+<pre><code class="language-bash">sudo apt install apt-transport-https ca-certificates curl software-properties-common
+</code></pre></li>
+
+<li><p>使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>导入软件仓库的 GPG 密钥：</p>
+
+<pre><code class="language-bash">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+</code></pre>
+
+<p>输入以下内容，将 Docker APT 软件仓库添加到系统的软件软件仓库列表中：</p>
+
+<pre><code class="language-bash">sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot;
+</code></pre></li>
+
+<li><p>现在已启用 Docker 软件仓库，更新 apt 软件包列表并安装最新版本的 Docker CE (Community Edition) ：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install docker-ce
+</code></pre>
+
+<ol>
+<li>安装完成后， Docker 服务将自动启动。您可以输入以下命令进行验证：</li>
+</ol>
+
+<pre><code class="language-bash">sudo systemctl status docker
+</code></pre>
+
+<p>输出看起来像这样：</p>
+
+<pre><code class="language-bash">● docker.service - Docker Application Container Engine
+  Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+  Active: active (running) since Mon 2018-06-18 01:22:00 PDT; 6min ago
+    Docs: https://docs.docker.com
+Main PID: 10647 (dockerd)
+    Tasks: 21
+  CGroup: /system.slice/docker.service
+</code></pre>
+
+<ol>
+<li>在撰写本文时，最新的可用于 Ubuntu 18.04 的 Docker 版本是 18.03.1-ce 。输入以下命令检查 Docker 版本：</li>
+</ol>
+
+<pre><code class="language-bash">docker -v
+</code></pre>
+
+<pre><code class="language-bash">Docker version 18.03.1-ce, build 9ee9f40
+</code></pre>
+
+<h2 id="在没有-sudo-的情况下执行-docker-命令">在没有 Sudo 的情况下执行 Docker 命令</h2>
+
+<p>默认情况下，管理 Docker 需要管理员权限。如果要以非 root 用户身份运行 Docker 命令而不使用 sudo ，则需要将用户添加到 Docker 用户组 <code>docker</code> 中，该用户组是在安装 Docker CE 软件包期间创建的。您可以输入以下命令：</p>
+
+<pre><code class="language-bash">sudo usermod -aG docker $USER
+</code></pre></li>
+</ol>
+
+<p>注销并重新登录，以便刷新组成员身份。</p>
+
+<p>要验证 Docker 是否已成功安装并且您可以在不预先添加 sudo 的情况下运行 docker 命令，请输入以下命令，该命令将在容器中运行并下载测试镜像，打印 <code>&quot;Hello from Docker&quot;</code> 消息并退出：</p>
+
+<pre><code class="language-bash">docker container run hello-world
+</code></pre>
+
+<p>输出应如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-hello-world.jpg" alt="" /></p>
+
+<h2 id="docker-命令行界面">Docker 命令行界面</h2>
+
+<p>Docker CLI 命令采用以下形式：</p>
+
+<pre><code class="language-bash">docker [option] [subcommand] [arguments]
+</code></pre>
+
+<p>要列出所有可用的命令，请不带参数运行 <code>docker</code> ：</p>
+
+<pre><code class="language-bash">docker
+</code></pre>
+
+<p>如果您需要更多关于 <code>[subcommand]</code> 帮助，可以使用 <code>--help</code> 如下所示的开关：</p>
+
+<pre><code class="language-bash">docker [subcommand] --help
+</code></pre>
+
+<h2 id="docker-镜像">Docker 镜像</h2>
+
+<p>一个 Docker 镜像由一系列位于镜像的 Dockerfile 中表示指令的层组成。 一个镜像的 Dockerfile 组成一个可执行的软件应用。一个镜像是一个不可变的二进制文件，包括应用程序和运行应用程序所需的所有其他依赖项，如二进制文件，库和指令。简而言之， Docker 镜像本质上是 Docker 容器的快照。</p>
+
+<p>Docker Hub 上提供了大多数 Docker 镜像。</p>
+
+<p>Docker Hub 是基于云的注册服务，其中包括将 Docker 镜像保存在公共或私有软件仓库中的功能。</p>
+
+<h3 id="搜索-docker-镜像">搜索 Docker 镜像</h3>
+
+<p>要从 Docker Hub 注册表中搜索镜像，只需使用 search 子命令。</p>
+
+<p>例如，要搜索 Ubuntu 镜像，您可以输入：</p>
+
+<pre><code class="language-bash">docker search ubuntu
+</code></pre>
+
+<p>输出应如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-search-image.jpg" alt="" /></p>
+
+<p>正如你可以看到搜索结果打印的表格带有 5 列: <code>NAME</code> ， <code>DESCRIPTION</code> ， <code>STARS</code> ， <code>OFFICIAL</code> 和 <code>AUTOMATED</code> 。</p>
+
+<p>官方镜像是 Docker 与上游合作伙伴共同开发的镜像。</p>
+
+<p>Docker Hub 上的大多数 Docker 镜像都标有版本号。如果未指定任何标记， Docker 将提取最新镜像。</p>
+
+<h3 id="下载-docker-image">下载 Docker Image</h3>
+
+<p>如果要下载 Ubuntu 18.04 镜像的官方版本，可以使用 image pull 子命令执行此操作：</p>
+
+<pre><code class="language-bash">docker image pull ubuntu
+</code></pre>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-pull-image.jpg" alt="" /></p>
+
+<p>根据您的 Internet 速度，下载可能需要几秒钟或几分钟。</p>
+
+<p>由于我们没有指定标签，因此 docker 将提取最新的 Ubuntu 镜像，即 18.04 。如果你想拉一些以前的 Ubuntu 版本，比如说 Ubuntu 16.04，你需要使用 <code>docker image pull ubuntu:16.04</code></p>
+
+<p>下载镜像后，我们可以通过输入以下内容列出镜像：</p>
+
+<pre><code class="language-bash">docker image ls
+</code></pre>
+
+<p>输出看起来像这样：</p>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-list-images.jpg" alt="" /></p>
+
+<h3 id="删除-docker-镜像">删除 Docker 镜像</h3>
+
+<p>如果由于某些原因要删除镜像，可以使用 <code>image rm  [image_name]</code> 子命令执行此操作：</p>
+
+<pre><code class="language-bash">docker image rm ubuntu
+</code></pre>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-remove-image.jpg" alt="" /></p>
+
+<h2 id="docker-容器">Docker 容器</h2>
+
+<p>镜像的实例称为容器。容器表示单个应用程序，进程或服务的运行时。</p>
+
+<p>它可能不是最合适的比较，但如果您是程序员，您可以将 Docker 镜像视为类，将 Docker 容器视为类的实例。</p>
+
+<p>我们可以使用 <code>docker container</code> 子命令启动，停止，删除和管理容器。</p>
+
+<h3 id="启动-docker-容器">启动 Docker 容器</h3>
+
+<p>以下命令将基于 Ubuntu 镜像启动 Docker 容器。如果您没有本地镜像，它将首先下载它：</p>
+
+<pre><code class="language-bash">docker container run ubuntu
+</code></pre>
+
+<p>乍一看，在你看来好像根本没有任何事情发生。嗯，那不是真的。 Ubuntu 容器在启动后立即停止，因为它没有长时间运行的进程，我们没有提供任何命令，因此容器启动，运行空命令然后退出。</p>
+
+<p>开关 <code>-it</code> 允许我们通过命令行与容器进行交互。要启动交互式容器类型：</p>
+
+<pre><code class="language-bash">docker container run -it ubuntu /bin/bash
+</code></pre>
+
+<pre><code class="language-bash">[root@719ef9304412 /]#
+</code></pre>
+
+<p>从上面的输出中可以看出，一旦容器启动，命令提示符就会改变，这意味着您现在正在从容器内部开始工作：</p>
+
+<h3 id="列出-docker-容器">列出 Docker 容器</h3>
+
+<p>要列出活动容器，请输入：</p>
+
+<pre><code class="language-bash">docker container ls
+</code></pre>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-list-containers.jpg" alt="" /></p>
+
+<blockquote>
+<p>如果您没有任何正在运行的容器，则输出将为空。</p>
+</blockquote>
+
+<p>要查看活动和非活动容器，请将其传递给 -a 交换机：</p>
+
+<pre><code class="language-bash">docker container ls -a
+</code></pre>
+
+<p><img src="/images/linux/how-to-install-and-use-docker-on-ubuntu-18-04/docker-list-all-containers.jpg" alt="" /></p>
+
+<h3 id="删除-docker-容器">删除 Docker 容器</h3>
+
+<p>要删除一个或多个容器，只需复制容器 ID 并将其粘贴到 <code>container rm</code> 子命令之后：</p>
+
+<pre><code class="language-bash">docker container rm c55680af670c
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在 Ubuntu 18.04 计算机上安装 Docker 以及如何下载 Docker 镜像和管理 Docker 容器。您可能还想了解 <!--link:how-to-install-and-use-docker-compose-on-ubuntu-18-04-->Docker Compose<!--link--> ，它允许您定义和运行多容器 Docker 应用程序。</p>
+
+<p>本教程几乎没有涉及 Docker 生态系统的表面。在我们的下一篇文章中，我们将继续深入探讨 Docker 的其他方面。要了解有关 Docker 的更多信息，请查看<a href="https://docs.docker.com/">官方 Docker 文档</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/docker" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">docker</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Slack</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 GitLab</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-centos-7/">如何在 CentOS 7 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-rpm-packages-on-ubuntu/">在 Ubuntu 上安装 RPM 包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 Sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

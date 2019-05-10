@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache" />
+<meta property="og:description" content="Let’s Encrypt 是由 Internet Security Research Group (ISRG) 创建的证书颁发机构。它通过全自动流程提供免费的 SSL 证书，旨在消除手动证书创建，验证，安装和续订。
+
+今天所有主流浏览器都已经信赖 Let&rsquo;s Encrypt 颁发的证书。
+
+在本教程中，我们将提供有关如何使用 Ubuntu 18.04 上的 certbot 工具使用 Let&rsquo;s Encrypt 来保护 Apache 的分步说明。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-04-17T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-17T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache">
+<meta itemprop="description" content="Let’s Encrypt 是由 Internet Security Research Group (ISRG) 创建的证书颁发机构。它通过全自动流程提供免费的 SSL 证书，旨在消除手动证书创建，验证，安装和续订。
+
+今天所有主流浏览器都已经信赖 Let&rsquo;s Encrypt 颁发的证书。
+
+在本教程中，我们将提供有关如何使用 Ubuntu 18.04 上的 certbot 工具使用 Let&rsquo;s Encrypt 来保护 Apache 的分步说明。">
+
+
+<meta itemprop="datePublished" content="2019-04-17T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-17T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="499">
+
+
+
+<meta itemprop="keywords" content="ubuntu,apache,let&#39;s encrypt,certbot,ssl," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache"/>
+<meta name="twitter:description" content="Let’s Encrypt 是由 Internet Security Research Group (ISRG) 创建的证书颁发机构。它通过全自动流程提供免费的 SSL 证书，旨在消除手动证书创建，验证，安装和续订。
+
+今天所有主流浏览器都已经信赖 Let&rsquo;s Encrypt 颁发的证书。
+
+在本教程中，我们将提供有关如何使用 Ubuntu 18.04 上的 certbot 工具使用 Let&rsquo;s Encrypt 来保护 Apache 的分步说明。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-17T05:00:00Z">April 17, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Let’s Encrypt 是由 Internet Security Research Group (ISRG) 创建的证书颁发机构。它通过全自动流程提供免费的 SSL 证书，旨在消除手动证书创建，验证，安装和续订。</p>
+
+<p>今天所有主流浏览器都已经信赖 Let&rsquo;s Encrypt 颁发的证书。</p>
+
+<p>在本教程中，我们将提供有关如何使用 Ubuntu 18.04 上的 certbot 工具使用 Let&rsquo;s Encrypt 来保护 Apache 的分步说明。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保您已满足以下先决条件：</p>
+
+<ul>
+<li>您有一个指向公共服务器 IP 的域名。在本教程中我们将使用 <code>example.com</code> 。</li>
+<li>您按照<a href="/linux/how-to-install-apache-on-ubuntu-18-04/">这些说明</a>安装了 Apache  。</li>
+<li>您已为您的域创建了一个 apache 虚拟主机。您可以按照<a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">这些说明</a>获取有关如何创建虚拟主机的详细信息。</li>
+</ul>
+
+<h2 id="安装-certbot">安装 Certbot</h2>
+
+<p>Certbot 是一个功能齐全且易于使用的工具，可以自动完成获取和更新 Let&rsquo;s Encrypt SSL 证书和配置 Web 服务器的任务。 certbot 包包含在默认的 Ubuntu 存储库中。</p>
+
+<p>更新软件包列表并安装 certbot 软件包：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+sudo apt install certbot
+</code></pre>
+
+<h2 id="生成强-dh-diffie-hellman-组">生成强 Dh(Diffie-Hellman) 组</h2>
+
+<p>Diffie-Hellman 密钥交换 (DH) 是一种在不安全的通信信道上安全地交换密码密钥的方法。我们将生成一组新的 2048 位 DH 参数以加强安全性：</p>
+
+<pre><code class="language-console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+</code></pre>
+
+<blockquote>
+<p>如果您愿意，可以将大小更改为 4096 位，但在这种情况下，生成可能需要超过 30 分钟，具体取决于系统的环境。</p>
+</blockquote>
+
+<h2 id="获取-let-s-encrypt-ssl-证书">获取 Let&rsquo;s Encrypt SSL 证书</h2>
+
+<p>要获取我们域的 SSL 证书，我们将使用 Webroot 插件，该插件通过在 <code>${webroot-path}/.well-known/acme-challenge</code> 目录中为要请求的域名创建临时文件来验证。 Let&rsquo;s Encrypt 服务器向临时文件发出 HTTP 请求，以验证请求的域是否解析为运行 certbot 的服务器。</p>
+
+<p>为了使它更简单，我们将把所有对 <code>.well-known/acme-challenge</code> 的 HTTP 请求映射到单个目录 <code>/var/lib/letsencrypt</code> 。</p>
+
+<p>以下命令将创建目录并使其对 Apache 服务器科协。</p>
+
+<pre><code class="language-console-bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
+sudo chgrp www-data /var/lib/letsencrypt
+sudo chmod g+s /var/lib/letsencrypt
+</code></pre>
+
+<p>为避免重复代码，请创建以下两个配置片段：</p>
+
+<p>文件 <code>/etc/apache2/conf-available/letsencrypt.conf</code></p>
+
+<pre><code class="language-apache">Alias /.well-known/acme-challenge/ &quot;/var/lib/letsencrypt/.well-known/acme-challenge/&quot;
+&lt;Directory &quot;/var/lib/letsencrypt/&quot;&gt;
+    AllowOverride None
+    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+    Require method GET POST OPTIONS
+&lt;/Directory&gt;
+</code></pre>
+
+<p>文件 <code>/etc/apache2/conf-available/ssl-params.conf</code></p>
+
+<pre><code class="language-apache">SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+SSLHonorCipherOrder On
+Header always set Strict-Transport-Security &quot;max-age=63072000; includeSubDomains; preload&quot;
+Header always set X-Frame-Options DENY
+Header always set X-Content-Type-Options nosniff
+# Requires Apache &gt;= 2.4
+SSLCompression off
+SSLUseStapling on
+SSLStaplingCache &quot;shmcb:logs/stapling-cache(150000)&quot;
+# Requires Apache &gt;= 2.4.11
+SSLSessionTickets Off
+
+SSLOpenSSLConfCmd DHParameters &quot;/etc/ssl/certs/dhparam.pem&quot;
+</code></pre>
+
+<p>上面的代码段使用的是 <a href="https://cipherli.st/">Cipherli.st</a> 推荐的片段，支持 OCSP Stapling ， HTTP 严格传输安全 (HSTS) 并强制使用一些以安全为中心的 HTTP 头。</p>
+
+<p>在启用配置文件之前，请确保通过以下命令来启用 <code>mod_ssl</code> 和 <code>mod_headers</code>：</p>
+
+<pre><code class="language-console-bash">sudo a2enmod sslsudo a2enmod headers
+</code></pre>
+
+<p>接下来，通过运行以下命令启用 SSL 配置文件：</p>
+
+<pre><code class="language-console-bash">sudo a2enconf letsencrypt
+sudo a2enconf ssl-params
+</code></pre>
+
+<p>启用 HTTP/2 模块，这将使您的网站更快，更健壮：</p>
+
+<pre><code class="language-console-bash">sudo a2enmod http2
+</code></pre>
+
+<p>重新加载 Apache 配置以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl reload apache2
+</code></pre>
+
+<p>现在，我们可以使用 webroot 插件运行 Certbot 工具，并通过键入以下内容获取 SSL 证书文件：</p>
+
+<pre><code class="language-console-bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
+</code></pre>
+
+<p>如果成功获得 SSL 证书， certbot 将打印以下消息：</p>
+
+<pre><code class="language-output">IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/example.com/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/example.com/privkey.pem
+   Your cert will expire on 2018-10-28\. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot
+   again. To non-interactively renew *all* of your certificates, run
+   &quot;certbot renew&quot;
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+</code></pre>
+
+<p>现在您已拥有证书文件，请按如下所示编辑域虚拟主机配置 <code>/etc/apache2/sites-available/example.com.conf</code>：</p>
+
+<pre><code class="language-apache">&lt;VirtualHost *:80&gt; 
+  ServerName example.com
+  ServerAlias www.example.com
+
+  Redirect permanent / https://example.com/
+&lt;/VirtualHost&gt;
+
+&lt;VirtualHost *:443&gt;
+  ServerName example.com
+  ServerAlias www.example.com
+
+  Protocols h2 http:/1.1
+
+  &lt;If &quot;%{HTTP_HOST} == 'www.example.com'&quot;&gt;
+    Redirect permanent / https://example.com/
+  &lt;/If&gt;
+
+  DocumentRoot /var/www/example.com/public_html
+  ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
+  CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+
+  SSLEngine On
+  SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
+
+  # Other Apache Configuration
+
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>通过上面的配置，我们强制使用 HTTPS 并将域名从 www 版本重定向到非 www 版本。可根据需要随意调整配置。</p>
+
+<p>重新加载 Apache 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl reload apache2
+</code></pre>
+
+<p>您现在可以使用 <code>https://</code> 打开您的网站，您会注意到绿色锁定图标。</p>
+
+<p>如果您使用 <a href="https://www.ssllabs.com/ssltest/">SSL Labs Server Test</a> 测试您的域，您将获得 A+ 等级，如下所示：</p>
+
+<p><img src="/images/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/ssllabs-test.jpg" alt="" /></p>
+
+<h2 id="自动续订-let-s-encrypt-ssl-证书">自动续订 Let’s Encrypt SSL 证书</h2>
+
+<p>Let’s Encrypt 证书有效期为 90 天。要在证书过期之前自动续订证书， certbot 包会创建一个 cronjob ，每天运行两次，并在到期前 30 天自动续订任何证书。</p>
+
+<p>证书续订后，我们还必须重新加载 Apache 服务。附加 <code>--renew-hook &quot;systemctl reload apache2&quot;</code> 到 <code>/etc/cron.d/certbot</code> 文件，如下所示：</p>
+
+<p>文件 <code>/etc/cron.d/certbot</code></p>
+
+<pre><code class="language-sh">0 */12 * * * root test -x /usr/bin/certbot -a \! -d /run/systemd/system &amp;&amp; perl -e 'sleep int(rand(3600))' &amp;&amp; certbot -q renew --renew-hook &quot;systemctl reload apache2&quot;
+</code></pre>
+
+<p>要测试续订过程，您可以使用 certbot 的 <code>--dry-run</code> 开关：</p>
+
+<pre><code class="language-console-bash">sudo certbot renew --dry-run
+</code></pre>
+
+<p>如果没有错误，则表示续订过程成功。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您使用了 Let&rsquo;s Encrypt 客户端 certbot 来下载域名的 SSL 证书。您还创建了 Apache 代码段以避免重复代码并将 Apache 配置为使用 SSL 证书。在本教程结束时，您还设置了一个用于自动证书续订的 cronjob 。</p>
+
+<p>如果您想了解有关如何使用 Certbot 的更多信息，<a href="https://certbot.eff.org/docs/">他们的文档</a>是一个很好的起点。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/lets-encrypt" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">let&#39;s encrypt</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/certbot" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">certbot</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ssl" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ssl</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opera-web-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Opera 浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vlc-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 VLC Media Player</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-mattermost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Mattermost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wine-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Wine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postman-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 postman</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Google Chrome Web 浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-curl-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 curl</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PostgreSQL</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

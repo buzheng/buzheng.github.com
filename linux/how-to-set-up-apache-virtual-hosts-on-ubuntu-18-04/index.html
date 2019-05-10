@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上设置 Apache 虚拟主机" />
+<meta property="og:description" content="在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。
+
+Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。
+
+虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-04-12T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-12T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上设置 Apache 虚拟主机">
+<meta itemprop="description" content="在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。
+
+Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。
+
+虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-04-12T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-12T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="195">
+
+
+
+<meta itemprop="keywords" content="ubuntu,apache," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上设置 Apache 虚拟主机"/>
+<meta name="twitter:description" content="在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。
+
+Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。
+
+虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-12T05:00:00Z">April 12, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。</p>
+
+<p>Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。</p>
+
+<p>虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保您已满足以下先决条件：</p>
+
+<ul>
+<li>您有一个指向公共服务器 IP 的域名。我们会用的 <code>example.com</code> 。</li>
+<li>您已经按照<a href="/linux/how-to-install-apache-on-ubuntu-18-04/">这些说明</a>安装了 Apache  。</li>
+<li>您以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</li>
+</ul>
+
+<h2 id="创建目录结构">创建目录结构</h2>
+
+<p>文档根是用来存储带有域名的网站的文件的目录，目录中的文件是用来响应请求的。您可以将文档根目录设置为您想要的任何位置，在本指南中我们将使用以下目录结构：</p>
+
+<pre><code class="language-sh">/var/www/
+├── domain1.com
+│   └── public_html
+├── domain2.com
+│   └── public_html
+├── domain3.com
+│   └── public_html
+</code></pre>
+
+<p>基本上，我们将为我们想要服务器上托管的每个域名在 <code>/var/www</code> 目录中创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 存储域网站文件的目录。</p>
+
+<p>首先为域名 <code>example.com</code> <!--link:how-to-create-directories-in-linux-with-the-mkdir-command-->创建根目录<!--link-->：</p>
+
+<pre><code class="language-console-bash">sudo mkdir -p /var/www/example.com/public_html
+</code></pre>
+
+<p>出于测试目的，还要在域名文档根目录中创建一个文件 <code>index.html</code> 。</p>
+
+<p>打开编辑器并创建演示文件 <code>/var/www/example.com/public_html/index.html</code></p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Welcome to example.com&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Success! example.com home page!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>在本指南中，我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
+
+<p>为避免任何权限问题，我们为域名文档根目录<!--link:linux-chown-command-->更改所有权<!--link-->为 apache user （<code>www-data</code>）：</p>
+
+<pre><code class="language-console-bash">sudo chown -R www-data: /var/www/example.com
+</code></pre>
+
+<h2 id="创建虚拟主机">创建虚拟主机</h2>
+
+<p>默认情况下，在 Ubuntu 系统上， Apache 虚拟主机配置文件存储在 <code>/etc/apache2/sites-available</code> 目录中，可以通过创建指向 <code>/etc/apache2/sites-enabled</code> 目录的符号链接来启用。</p>
+
+<p>打开您选择的编辑器并创建以下基本虚拟主机配置文件： <code>/etc/apache2/sites-available/example.com.conf</code></p>
+
+<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    ServerAlias www.example.com
+    ServerAdmin webmaster@example.com
+    DocumentRoot /var/www/example.com/public_html
+
+    &lt;Directory /var/www/example.com/public_html&gt;
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
+    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<ul>
+<li><code>ServerName</code>：应与此虚拟主机配置匹配的域。这应该是您的域名。</li>
+<li><code>ServerAlias</code>：所有其他应与此虚拟主机匹配的 <code>www</code> 域，例如子域。</li>
+<li><code>DocumentRoot</code>： Apache 中提供网站文件的目录。</li>
+<li><code>Options</code>：<a href="https://httpd.apache.org/docs/2.4/mod/core.html#options">此指令</a>控制特定目录中可用的服务器功能。
+
+<ul>
+<li><code>-Indexes</code>：防止目录列表。</li>
+<li><code>FollowSymLinks</code>：此选项告诉您的 Web 服务器遵循符号链接。</li>
+</ul></li>
+<li><code>AllowOverride</code>：指定 <code>.htaccess</code> 文件中声明的哪些指令可以覆盖配置指令。</li>
+<li><code>ErrorLog</code>，<code>CustomLog</code>：指定日志文件的位置。</li>
+</ul>
+
+<p>您可以根据需要命名配置文件，但最佳做法是使用域名作为虚拟主机配置文件的名称。</p>
+
+<p>要启用新的虚拟主机文件，我们需要创建从虚拟主机文件到 <code>sites-enabled</code> 目录的符号链接，该目录在启动期间由 apache2 读取。</p>
+
+<p>启用虚拟主机的最简单方法是使用 <code>a2ensite</code> 帮助程序：</p>
+
+<pre><code class="language-apache">sudo a2ensite example.com
+</code></pre>
+
+<p>另一个选项是手动<!--link:how-to-create-symbolic-links-in-linux-using-the-ln-command-->创建符号链接<!--link-->，如下所示：</p>
+
+<pre><code class="language-console-bash">sudo ln -s /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-enabled/
+</code></pre>
+
+<p>完成后，测试配置是否存在任何语法错误：</p>
+
+<pre><code class="language-console-bash">sudo apachectl configtest
+</code></pre>
+
+<p>如果没有错误，您将看到以下输出：</p>
+
+<pre><code class="language-output">Syntax OK
+</code></pre>
+
+<p>重新启动 Apache 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart apache2
+</code></pre>
+
+<p>最后要验证一切是否按预期工作，在您选择的浏览器中打开 <code>http://example.com</code> ，您将看到如下内容：</p>
+
+<p><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/apache-welcome-page.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何创建 apache 虚拟主机配置以在单个 Ubuntu 服务器上托管多个域。您可以重复上面概述的步骤，并为您的所有域创建其他虚拟主机。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wine-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Wine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postman-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 postman</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Google Chrome Web 浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-curl-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 curl</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 OpenCV</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ghost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ghost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-installed-packages-on-ubuntu/">如何在 Ubuntu 上列出已安装的软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tensorflow-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 TensorFlow</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Tomcat 安装配置 Native APR 模式</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Tomcat 安装配置 Native APR 模式" />
+<meta property="og:description" content="APR 能大幅提高 tomcat 的性能是不争的事实，但我并没有做过性能比较测试。本文记录 CentOS 6.5 下为 tomcat 7 安装和配置 APR 模式的步骤和过程。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/tomcat-native-apr-install/" />
+<meta property="article:published_time" content="2015-08-04T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-08-04T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Tomcat 安装配置 Native APR 模式">
+<meta itemprop="description" content="APR 能大幅提高 tomcat 的性能是不争的事实，但我并没有做过性能比较测试。本文记录 CentOS 6.5 下为 tomcat 7 安装和配置 APR 模式的步骤和过程。">
+
+
+<meta itemprop="datePublished" content="2015-08-04T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-08-04T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="129">
+
+
+
+<meta itemprop="keywords" content="Tomcat," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tomcat 安装配置 Native APR 模式"/>
+<meta name="twitter:description" content="APR 能大幅提高 tomcat 的性能是不争的事实，但我并没有做过性能比较测试。本文记录 CentOS 6.5 下为 tomcat 7 安装和配置 APR 模式的步骤和过程。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">Tomcat 安装配置 Native APR 模式</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2015-08-04T00:00:00Z">August 4, 2015</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>APR 能大幅提高 tomcat 的性能是不争的事实，但我并没有做过性能比较测试。本文记录 CentOS 6.5 下为 tomcat 7 安装和配置 APR 模式的步骤和过程。</p>
+
+<h2 id="技术准备">技术准备</h2>
+
+<h3 id="什么是apr">什么是APR？</h3>
+
+<p>以下是来自<a href="https://zh.wikipedia.org/wiki/Apache%E5%8F%AF%E7%A7%BB%E6%A4%8D%E8%BF%90%E8%A1%8C%E6%97%B6">维基百科</a>的内容</p>
+
+<blockquote>
+<p>Apache可移植运行时（ Apache Portable Runtime，简称APR）是Apache HTTP服务器的支持库，提供了一组映射到下层操作系统的API。如果操作系统不支持某个特定的功能，APR将提供一个模拟的实现。这样程序员使用APR编写真正可在不同平台上移植的程序。</p>
+</blockquote>
+
+<h3 id="什么是-tomcat-native">什么是 tomcat-native</h3>
+
+<p>tomcat-native 库为 Tomcat 提供了本地实现。 tomcat-native 依赖于三个组件：APR, OPENSSL, JDK。</p>
+
+<h2 id="大致思路">大致思路</h2>
+
+<p>大致思路就是通过 tomcat-native 库，使tomcat运行时通过APR更多的调用本地API，达到提升性能的目的。由于依赖关系，安装时，先安装 APR, OPENSSL， 然后再安装 tomcat-native, 最后配置 tomcat 启动时依赖的库路径。</p>
+
+<h2 id="配置安装">配置安装</h2>
+
+<p>具体的安装步骤其实在 tomcat 自带的 tomcat-native.tar.gz 文件中就有，这里记录是自己的安装和配置过程，大致一样，略有不同。我在安装的没有选择将 tomcat-native 安装在某个tomcat下，而是独立安装。</p>
+
+<p>1, 安装 apr, openssl</p>
+
+<pre><code class="language-shell">yum install apr-devel openssl-devel
+</code></pre>
+
+<p>2, 安装 tomcat-native</p>
+
+<p>tomcat-native 安装文件已经存在于 tomcat 中，位于 $CATALINA_HOME/bin 的文件 tomcat-native.tar.gz。 将文件 tomcat-native.tar.gz 拷贝出来后解压，配置，安装。</p>
+
+<pre><code class="language-shell">tar xzcf tomcat-native.tar.gz
+cd tomcat-native-1.1.32-src/jni/native
+./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes
+make &amp;&amp; make install
+</code></pre>
+
+<p>安装完成后，会看到下面提示，标识已经安装到 /usr/local/apr/lib 中。</p>
+
+<pre><code class="language-shell">Libraries have been installed in:
+   /usr/local/apr/lib
+</code></pre>
+
+<p><strong>以上步骤都是通过 root 用户操作，以下步骤使用 tomcat 的所有者用户操作</strong></p>
+
+<p>3, 配置 tomcat 依赖库</p>
+
+<p>在 $CATALINA_HOME/bin/setenv.sh 中添加（没有则新建)
+export CATALINA_OPTS=&ldquo;$CATALINA_OPTS -Djava.library.path=/usr/local/apr/lib&rdquo;</p>
+
+<p>4, 配置 tomcat server.xml</p>
+
+<p>打开下面的配置</p>
+
+<pre><code class="language-xml">&lt;Listener className=&quot;org.apache.catalina.core.AprLifecycleListener&quot; SSLEngine=&quot;on&quot; /&gt;
+</code></pre>
+
+<p>确保 Connector 配置中的 protocol 为下列值中之一。</p>
+
+<pre><code class="language-xml">protocol=&quot;HTTP/1.1&quot; 
+protocol=&quot;org.apache.coyote.http11.Http11AprProtocol&quot;
+</code></pre>
+
+<blockquote>
+<p>如果指定为 HTTP/1.1, 则 tomcat 自动选择合适的协议。</p>
+</blockquote>
+
+<p>最后重启 Tomcat.</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/tomcat" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Tomcat</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/tomcat-config/">Tomcat 配置汇总</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

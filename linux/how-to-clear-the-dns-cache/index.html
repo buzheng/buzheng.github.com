@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何清除 DNS 缓存</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何清除 DNS 缓存" />
+<meta property="og:description" content="DNS 缓存是一个临时数据库，用于存储有关以前 DNS 查找的信息。换句话说，无论何时访问网站，您的操作系统和 Web 浏览器都会记录域名和相应的 IP 地址。这消除了对远程 DNS 服务器重复查询的需要，并允许您的操作系统或浏览器快速解析网站的 URL 。
+
+但是，在某些情况下，例如解决网络问题，或更改 DNS 解析器后，您需要刷新 DNS 缓存。这将清除缓存的 DNS 条目，并执行后续查找以根据新配置的 DNS 解析域。
+
+本指南提供有关如何在不同操作系统和 Web 浏览器上刷新 DNS 缓存的说明。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-clear-the-dns-cache/" />
+<meta property="article:published_time" content="2019-05-06T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-06T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何清除 DNS 缓存">
+<meta itemprop="description" content="DNS 缓存是一个临时数据库，用于存储有关以前 DNS 查找的信息。换句话说，无论何时访问网站，您的操作系统和 Web 浏览器都会记录域名和相应的 IP 地址。这消除了对远程 DNS 服务器重复查询的需要，并允许您的操作系统或浏览器快速解析网站的 URL 。
+
+但是，在某些情况下，例如解决网络问题，或更改 DNS 解析器后，您需要刷新 DNS 缓存。这将清除缓存的 DNS 条目，并执行后续查找以根据新配置的 DNS 解析域。
+
+本指南提供有关如何在不同操作系统和 Web 浏览器上刷新 DNS 缓存的说明。">
+
+
+<meta itemprop="datePublished" content="2019-05-06T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-06T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="355">
+
+
+
+<meta itemprop="keywords" content="terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何清除 DNS 缓存"/>
+<meta name="twitter:description" content="DNS 缓存是一个临时数据库，用于存储有关以前 DNS 查找的信息。换句话说，无论何时访问网站，您的操作系统和 Web 浏览器都会记录域名和相应的 IP 地址。这消除了对远程 DNS 服务器重复查询的需要，并允许您的操作系统或浏览器快速解析网站的 URL 。
+
+但是，在某些情况下，例如解决网络问题，或更改 DNS 解析器后，您需要刷新 DNS 缓存。这将清除缓存的 DNS 条目，并执行后续查找以根据新配置的 DNS 解析域。
+
+本指南提供有关如何在不同操作系统和 Web 浏览器上刷新 DNS 缓存的说明。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何清除 DNS 缓存</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-06T06:00:00Z">May 6, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>DNS 缓存是一个临时数据库，用于存储有关以前 DNS 查找的信息。换句话说，无论何时访问网站，您的操作系统和 Web 浏览器都会记录域名和相应的 IP 地址。这消除了对远程 DNS 服务器重复查询的需要，并允许您的操作系统或浏览器快速解析网站的 URL 。</p>
+
+<p>但是，在某些情况下，例如解决网络问题，或更改 DNS 解析器后，您需要刷新 DNS 缓存。这将清除缓存的 DNS 条目，并执行后续查找以根据新配置的 DNS 解析域。</p>
+
+<p>本指南提供有关如何在不同操作系统和 Web 浏览器上刷新 DNS 缓存的说明。</p>
+
+<h2 id="在-windows-上清除-刷新-dns-缓存">在 Windows 上清除/刷新 DNS 缓存</h2>
+
+<p>清除 DNS 缓存的过程对于所有 Windows 版本都是相同的。您需要使用管理员权限打开命令提示符并运行 <code>ipconfig /flushdns</code> 。</p>
+
+<h3 id="windows-10-和-windows-8">Windows 10 和 Windows 8</h3>
+
+<p>要清除 Windows 10 和 8 中的 DNS 缓存，请执行以下步骤：</p>
+
+<ol>
+<li>在 Windows 搜索栏中键入 cmd 。</li>
+
+<li><p>右键单击命令提示符，然后单击以管理员身份运行。这将打开命令提示符窗口。</p>
+
+<p><img src="/images/linux/how-to-clear-the-dns-cache/windows-command-prompt.jpg" alt="" /></p></li>
+
+<li><p>在命令行上，键入以下行并按 Enter 键：</p>
+
+<pre><code class="language-sh">ipconfig /flushdns
+</code></pre>
+
+<p>成功后，系统将返回以下消息：</p>
+
+<pre><code class="language-output">Windows IP Configuration
+
+Successfully flushed the DNS Resolver Cache.
+</code></pre>
+
+<p><img src="/images/linux/how-to-clear-the-dns-cache/windows-clear-cache.jpg" alt="" /></p></li>
+</ol>
+
+<h3 id="windows-7">Windows 7</h3>
+
+<p>要清除 Windows 7 中的 DNS 缓存，请执行以下步骤：</p>
+
+<ol>
+<li>单击“开始”按钮。</li>
+<li>在“开始”菜单搜索文本框中键入 cmd 。</li>
+<li>右键单击命令提示符，然后单击以管理员身份运行。这将打开命令提示符窗口。</li>
+
+<li><p>在命令行上，键入以下行并按 Enter 键：</p>
+
+<pre><code class="language-sh">ipconfig /flushdns
+</code></pre>
+
+<p>成功后，系统将返回以下消息：</p>
+
+<pre><code class="language-output">Windows IP Configuration
+
+Successfully flushed the DNS Resolver Cache.
+</code></pre></li>
+</ol>
+
+<h2 id="清除-刷新-linux-上的-dns-缓存">清除/刷新 Linux 上的 DNS 缓存</h2>
+
+<p>在 Linux 上，除非安装并运行 Systemd-Resolved ， DNSMasq 或 Nscd 等缓存服务，否则不存在操作系统级 DNS 缓存。清除 DNS 缓存的过程因 Linux 发行版和您正在使用的缓存服务而异。</p>
+
+<h3 id="systemd-resolved">Systemd-Resolved</h3>
+
+<p>大多数现代 Linux 发行版（如Ubuntu 18.04）都使用 systemd 解析服务来缓存 DNS 条目。</p>
+
+<p>要确定服务是否正在运行：</p>
+
+<pre><code class="language-sh">sudo systemctl is-active systemd-resolved.service
+</code></pre>
+
+<p>如果服务正在运行，则命令将打印 <code>active</code> ，否则您将看到 <code>inactive</code> 。</p>
+
+<p>要清除 Systemd Resolved DNS 缓存，请键入以下命令。</p>
+
+<pre><code class="language-sh">sudo systemd-resolve --flush-caches
+</code></pre>
+
+<p>成功时，该命令不会返回任何消息。</p>
+
+<h3 id="dnsmasq">dnsmasq</h3>
+
+<p>Dnsmasq 是一个轻量级的 DHCP 和 DNS 缓存名称服务器。</p>
+
+<p>如果您的系统使用 DNSMasq 作为缓存服务器，要清除 DNS 缓存，您需要重新启动 Dnsmasq 服务：</p>
+
+<pre><code class="language-sh">sudo systemctl restart dnsmasq.service
+</code></pre>
+
+<p>要么</p>
+
+<pre><code class="language-sh">sudo service dnsmasq restart
+</code></pre>
+
+<h3 id="nscd">NSCD</h3>
+
+<p>Nscd 是一个缓存守护进程，它是大多数基于 RedHat 的发行版的首选 DNS 缓存系统。</p>
+
+<p>如果您的系统使用 Nscd ，要清除 DNS 缓存，您需要重新启动 Nscd 服务：</p>
+
+<pre><code class="language-sh">sudo systemctl restart nscd.service
+</code></pre>
+
+<p>要么</p>
+
+<pre><code class="language-sh">sudo service nscd restart
+</code></pre>
+
+<h2 id="在-macos-上清除-刷新-dns-缓存">在 MacOS 上清除/刷新 DNS 缓存</h2>
+
+<p>在 MacOS 中刷新缓存的命令略有不同，具体取决于您运行的版本。该命令必须以具有系统管理员权限的用户身份运行（sudo用户）。</p>
+
+<p>要清除 MacOS 中的 DNS 缓存，请执行以下步骤：</p>
+
+<ol>
+<li>打开 Finder 。</li>
+<li>转到应用程序&gt;实用程序&gt;终端。这将打开终端窗口。</li>
+
+<li><p>在命令行中，键入以下行并按 Enter 键：</p>
+
+<pre><code class="language-sh">sudo killall -HUP mDNSResponder
+</code></pre>
+
+<p>输入您的 sudo 密码，然后再次按 Enter 键。成功时，系统不会返回任何消息。</p>
+
+<p>对于早期版本的 MacOS ，刷新缓存的命令是不同的。</p>
+
+<p><strong>MacOS 10.11 和 10.9</strong></p>
+
+<pre><code class="language-sh">sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
+</code></pre>
+
+<p><strong>MacOS 10.10</strong></p>
+
+<pre><code class="language-sh">sudo discoveryutil mdnsflushcache
+sudo discoveryutil udnsflushcaches
+</code></pre>
+
+<p><strong>MacOS 10.6 和 10.5</strong></p>
+
+<pre><code class="language-sh">sudo dscacheutil -flushcache
+</code></pre></li>
+</ol>
+
+<h2 id="清除-刷新浏览器-dns-缓存">清除/刷新浏览器 DNS 缓存</h2>
+
+<p>大多数现代 Web 浏览器都有内置的 DNS 客户端，以防止每次访问网站时重复查询。</p>
+
+<h3 id="谷歌浏览器">谷歌浏览器</h3>
+
+<p>要清除 <a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">Google Chrome 的</a>  DNS 缓存，请执行以下步骤：</p>
+
+<ol>
+<li>打开新标签页并 <code>chrome://net-internals/#dns</code> 在 Chrome 的地址栏中输入内容。</li>
+<li>单击“清除主机缓存”按钮。</li>
+</ol>
+
+<p>如果这对您不起作用，请尝试清除缓存和 Cookie 。</p>
+
+<ol>
+<li>按下 <code>CTRL+Shift+Del</code> 打开“清除浏览数据”对话框窗口。</li>
+<li>选择一个时间范围。选择“所有时间”以删除所有内容。</li>
+<li>选择“ Cookie 和其他网站数据”和“缓存的图像和文件”框。</li>
+<li>单击“清除数据”按钮。</li>
+</ol>
+
+<p>此方法适用于所有基于 Chrome 的浏览器，包括 Chromium ， Vivaldi 和 <a href="/linux/how-to-install-opera-web-browser-on-ubuntu-18-04/">Opera</a> 。</p>
+
+<h3 id="火狐">火狐</h3>
+
+<p>要清除 Firefox 的 DNS 缓存，请执行以下步骤：</p>
+
+<ol>
+<li>在右上角，点击汉堡包图标 <code>☰</code> 打开 Firefox 的菜单：</li>
+<li>单击 <code>⚙ 首选项</code> 链接。</li>
+<li>单击左侧的“隐私和安全”或“隐私”选项卡。</li>
+<li>向下滚动到该 <code>历史记录</code> 部分，然后单击 <code>清除历史记录...</code> 按钮。</li>
+<li>选择要清除的时间范围。选择“ Everything ”删除所有内容。</li>
+<li>选择所有框，然后单击“立即清除”。</li>
+</ol>
+
+<p>如果这对您不起作用，请尝试以下方法并暂时禁用 DNS 缓存。</p>
+
+<ol>
+<li>打开一个新选项卡，然后键入 <code>about:config</code>Firefox 的地址栏。</li>
+<li>搜索 <code>network.dnsCacheExpiration</code> ，暂时将值设置为 0 ，然后单击“确定”。然后，更改默认值并单击“确定”。</li>
+<li>搜索 <code>network.dnsCacheEntries</code> ，暂时将值设置为 0 ，然后单击“确定”。然后，更改默认值并单击“确定”。</li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在 Windows ， Linux 和 MacOS 操作系统上清除或刷新 DNS 缓存。</p>
+
+<p>Linux 和 MacOS 可以使用 <!--link:how-to-use-dig-command-to-query-dns-in-linux-->dig 命令<!--link-->查询 DNS 并解决 DNS 问题。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-compare-strings-in-bash/">如何在 Bash 中比较字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-copy-files-and-directories-in-linux/">如何在 Linux 中复制文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-your-centos-version/">如何查看您的 CentOS 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cd-command/">Linux cd 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-head-command/">Linux head 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/nginx-commands-you-should-know/">你应该知道的 Nginx 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/creating-a-self-signed-ssl-certificate/">创建自签名的 SSL 证书</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/echo-command-in-linux-with-examples/">Linux 中的 Echo 命令用法与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/current-working-directory/">使用 pwd 命令在 Linux 中确定当前的工作目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ip-command/">Linux ip 命令与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">如何在 Linux 中设置和查看环境变量</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-linux-version/">如何检查 Linux 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-get-size-of-file-directory-linux/">如何在 Linux 中获取目录的大小</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-curl-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 curl</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

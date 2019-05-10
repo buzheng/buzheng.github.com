@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 CentOS 7 上设置 Apache 虚拟主机</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上设置 Apache 虚拟主机" />
+<meta property="og:description" content="Apache 虚拟主机允许多个网站在一个 Web 服务器上运行。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。
+
+在本教程中，我们将分步说明如何在 CentOS 7 服务器上设置 Apache 虚拟主机。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/" />
+<meta property="article:published_time" content="2019-04-30T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-30T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上设置 Apache 虚拟主机">
+<meta itemprop="description" content="Apache 虚拟主机允许多个网站在一个 Web 服务器上运行。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。
+
+在本教程中，我们将分步说明如何在 CentOS 7 服务器上设置 Apache 虚拟主机。">
+
+
+<meta itemprop="datePublished" content="2019-04-30T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-30T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="174">
+
+
+
+<meta itemprop="keywords" content="centos,apache," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上设置 Apache 虚拟主机"/>
+<meta name="twitter:description" content="Apache 虚拟主机允许多个网站在一个 Web 服务器上运行。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。
+
+在本教程中，我们将分步说明如何在 CentOS 7 服务器上设置 Apache 虚拟主机。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 CentOS 7 上设置 Apache 虚拟主机</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-30T05:00:00Z">April 30, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache 虚拟主机允许多个网站在一个 Web 服务器上运行。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。</p>
+
+<p>在本教程中，我们将分步说明如何在 CentOS 7 服务器上设置 Apache 虚拟主机。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>您有一个指向公共服务器 IP 的域名。本例中我们使用 <code>example.com</code> 。</li>
+<li>您已按照<a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache 安装 Apache</a> 。</li>
+<li>您以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</li>
+</ul>
+
+<h2 id="创建目录结构">创建目录结构</h2>
+
+<p>DocumentRoot 是存储和提供域名的网站文件以响应请求的目录。您可以将文档根目录设置为您想要的任何位置，本例中我们将使用以下目录结构：</p>
+
+<pre><code class="language-tree">/var/www/
+├── example.com
+│   └── public_html
+├── example-1.com
+│   └── public_html
+├── example-2.com
+│   └── public_html
+</code></pre>
+
+<p>我们需要在 <code>/var/www</code> 目录中的为想要在服务器上托管的每个域创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 存储域网站文件的目录。</p>
+
+<p>使用 <!--link:how-to-create-directories-in-linux-with-the-mkdir-command-->mkdir 命令<!--link-->为域创建根目录 <code>example.com</code> ：</p>
+
+<pre><code class="language-console-bash">sudo mkdir -p /var/www/example.com/public_html
+</code></pre>
+
+<p>出于测试目的，我们将在网站文档根目录中创建一个文件 <code>index.html</code>。打开编辑器并创建一个包含以下内容的 HTML 文件 <code>/var/www/example.com/public_html/index.html</code>：</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Welcome to example.com&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Success! example.com home page!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>所有命令都以 sudo 用户身份执行，因此新创建的文件和目录归 root 用户所有。为了保没有权限问题，需要将域文档根目录的所有权更改为 <code>apache</code> 用户：</p>
+
+<pre><code class="language-console-bash">sudo chown -R apache: /var/www/example.com
+</code></pre>
+
+<h2 id="创建虚拟主机文件">创建虚拟主机文件</h2>
+
+<p>有几种方法可以设置虚拟主机。您可以在单个文件中添加所有虚拟主机指令，也可以为每个虚拟主机指令创建新的配置文件。就个人而言，我更喜欢第二种方法，因为它更易于维护。</p>
+
+<p>默认情况下， Apache 配置为从 <code>/etc/httpd/conf.d/</code> 目录加载以 <code>.conf</code> 结束的所有配置文件。</p>
+
+<p>要为特定网站创建虚拟主机，请打开您选择的编辑器并创建以下基本虚拟主机配置文件 <code>/etc/httpd/conf.d/example.com.conf</code>：</p>
+
+<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    ServerAlias www.example.com
+    ServerAdmin webmaster@example.com
+    DocumentRoot /var/www/example.com/public_html
+
+    &lt;Directory /var/www/example.com/public_html&gt;
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+    &lt;/Directory&gt;
+
+    ErrorLog /var/log/httpd/example.com-error.log
+    CustomLog /var/log/httpd/example.com-access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<ul>
+<li><code>ServerName</code>：应与此虚拟主机配置匹配的域名。这应该是您的域名。</li>
+<li><code>ServerAlias</code>：所有其他应与此虚拟主机匹配的域，例如 <code>www</code> 子域名。</li>
+<li><code>DocumentRoot</code>：Apache 将从中提供网站文件的目录。</li>
+<li><code>Options</code>：<a href="https://httpd.apache.org/docs/2.4/mod/core.html#options">此指令</a>控制特定目录中可用的服务器功能。
+
+<ul>
+<li><code>-Indexes</code>：防止目录列表。</li>
+<li><code>FollowSymLinks</code>：此选项告诉您的 Web 服务器遵循符号链接。</li>
+</ul></li>
+<li><code>AllowOverride</code>：指定 <code>.htaccess</code> 文件中声明的哪些指令可以覆盖配置指令。</li>
+<li><code>ErrorLog</code>，<code>CustomLog</code>：指定日志文件的位置。</li>
+</ul>
+
+<p>根据需要编辑文件并保存。</p>
+
+<p>配置文件名以 <code>.conf</code> 结尾，这一点很重要。您可以根据需要命名配置文件，但最佳做法是使用域名作为虚拟主机配置文件的名称。</p>
+
+<p>使用以下命令测试配置文件语法</p>
+
+<pre><code class="language-console-bash">sudo apachectl configtest
+</code></pre>
+
+<p>如果没有错误，您将看到以下输出：</p>
+
+<pre><code class="language-output">Syntax OK
+</code></pre>
+
+<p>要激活新创建的虚拟主机，请使用以下命令重新启动 Apache 服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart httpd
+</code></pre>
+
+<p>打开 <code>http://example.com</code> ：验证一切是否按预期工作：</p>
+
+<p><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/apache-welcome-page.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了如何创建 Apache 虚拟主机配置。您可以重复上面概述的步骤，并为您的所有域创建其他虚拟主机。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-disable-selinux-on-centos-7/">如何在 CentOS 7 上禁用 SELinux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-centos-7/">如何在 CentOS 7 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-centos-7/">如何在 CentOS 7 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 CentOS 7 上使用 FirewallD 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-edit-your-hosts-file/">如何编辑 hosts 文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-centos-7/">如何在 CentOS 7 上安装 Plex Media Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-centos-7/">如何在 CentOS 7 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

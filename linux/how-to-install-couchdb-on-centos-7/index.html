@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 CentOS 7 上安装 CouchDB</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上安装 CouchDB" />
+<meta property="og:description" content="Apache CouchDB 是 Apache Software Foundation 开发的免费开源 NoSQL 数据库。
+
+CouchDB 服务器将其数据存储在指定名称的数据库中，数据库中包含具有 JSON 结构的文档。每个文档都包含许多字段和附件。字段可以包括文本，数字，列表，布尔值等。它包括一个 RESTful HTTP API ，允许您读取，创建，编辑和删除数据库文档。
+
+在本教程中，我们将解释如何在 CentOS 7 上安装最新版本的 CouchDB 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-couchdb-on-centos-7/" />
+<meta property="article:published_time" content="2019-04-12T09:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-12T09:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上安装 CouchDB">
+<meta itemprop="description" content="Apache CouchDB 是 Apache Software Foundation 开发的免费开源 NoSQL 数据库。
+
+CouchDB 服务器将其数据存储在指定名称的数据库中，数据库中包含具有 JSON 结构的文档。每个文档都包含许多字段和附件。字段可以包括文本，数字，列表，布尔值等。它包括一个 RESTful HTTP API ，允许您读取，创建，编辑和删除数据库文档。
+
+在本教程中，我们将解释如何在 CentOS 7 上安装最新版本的 CouchDB 。">
+
+
+<meta itemprop="datePublished" content="2019-04-12T09:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-12T09:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="161">
+
+
+
+<meta itemprop="keywords" content="centos,couchdb,database," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上安装 CouchDB"/>
+<meta name="twitter:description" content="Apache CouchDB 是 Apache Software Foundation 开发的免费开源 NoSQL 数据库。
+
+CouchDB 服务器将其数据存储在指定名称的数据库中，数据库中包含具有 JSON 结构的文档。每个文档都包含许多字段和附件。字段可以包括文本，数字，列表，布尔值等。它包括一个 RESTful HTTP API ，允许您读取，创建，编辑和删除数据库文档。
+
+在本教程中，我们将解释如何在 CentOS 7 上安装最新版本的 CouchDB 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 CouchDB</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-12T09:00:00Z">April 12, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache CouchDB 是 Apache Software Foundation 开发的免费开源 NoSQL 数据库。</p>
+
+<p>CouchDB 服务器将其数据存储在指定名称的数据库中，数据库中包含具有 <a href="https://www.json.org/">JSON</a> 结构的文档。每个文档都包含许多字段和附件。字段可以包括文本，数字，列表，布尔值等。它包括一个 RESTful HTTP API ，允许您读取，创建，编辑和删除数据库文档。</p>
+
+<p>在本教程中，我们将解释如何在 CentOS 7 上安装最新版本的 CouchDB 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>要在 CentOS 系统上安装新软件包，您必须以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="启用-couchdb-存储库">启用 CouchDB 存储库</h2>
+
+<p>CouchDB 存储库依赖于 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>。如果系统上未启用 EPEL 存储库，请键入以下命令启用它：</p>
+
+<pre><code class="language-console-bash">sudo yum install epel-release
+</code></pre>
+
+<p>接下来，打开您选择的编辑器并创建 CouchDB 存储库文件：</p>
+
+<pre><code class="language-console-bash">sudo nano /etc/yum.repos.d/bintray-apache-couchdb-rpm.repo
+</code></pre>
+
+<p>将以下内容粘贴到文件中 <code>/etc/yum.repos.d/bintray-apache-couchdb-rpm.repo</code>：</p>
+
+<pre><code class="language-ini">[bintray--apache-couchdb-rpm]
+name=bintray--apache-couchdb-rpm
+baseurl=http://apache.bintray.com/couchdb-rpm/el$releasever/$basearch/
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+</code></pre>
+
+<p>保存文件并关闭编辑器。</p>
+
+<h2 id="在-centos-上安装-couchdb">在 CentOS 上安装 CouchDB</h2>
+
+<p>现在已启用存储库，您可以使用以下命令安装 CouchDB 软件包：</p>
+
+<pre><code class="language-console-bash">yum install couchdb
+</code></pre>
+
+<p>安装完成后，启动 CouchDB 服务并启用随机自启动：</p>
+
+<pre><code class="language-console-bash">sudo systemctl start couchdb
+sudo systemctl enable couchdb
+</code></pre>
+
+<p>默认情况下， CouchDB 仅侦听 localhost ，并且不会创建管理员帐户。</p>
+
+<p>Apache CouchDB 数据和配置文件存储在 <code>/opt/couchdb</code> 目录中。要创建管理员帐户，请打开该 <code>local.ini</code> 文件，然后在 <code>[admins]</code> 部分下添加一行 <code>username = password</code> 。</p>
+
+<pre><code class="language-console-bash">sudo nano /opt/couchdb/etc/local.ini
+</code></pre>
+
+<pre><code class="language-ini">[admins]
+admin = mysecretpassword
+</code></pre>
+
+<p>通过重新启动 CouchDB 服务将密码转换为哈希：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart couchdb
+</code></pre>
+
+<p>使用相同的格式添加多个管理员帐户。添加新帐户后，您需要重新启动 CouchDB 服务。</p>
+
+<h2 id="验证-couchdb-安装">验证 CouchDB 安装</h2>
+
+<p>要验证安装是否已成功执行，请发出以下 <a href="/linux/curl-command-examples/">curl 命令</a>，该命令将以 JSON 格式打印 CouchDB 数据库信息：</p>
+
+<pre><code class="language-console-bash">curl http://127.0.0.1:5984/
+</code></pre>
+
+<p>为了更易于阅读，下面的输出内容进行了格式化。</p>
+
+<pre><code class="language-output">{  
+   &quot;couchdb&quot;:&quot;Welcome&quot;,
+   &quot;version&quot;:&quot;2.3.1&quot;,
+   &quot;git_sha&quot;:&quot;c298091a4&quot;,
+   &quot;uuid&quot;:&quot;17a6b911e0d5bfe36778b387510dbd93&quot;,
+   &quot;features&quot;:[  
+      &quot;pluggable-storage-engines&quot;,
+      &quot;scheduler&quot;
+   ],
+   &quot;vendor&quot;:{  
+      &quot;name&quot;:&quot;The Apache Software Foundation&quot;
+   }
+}
+</code></pre>
+
+<p>如果您更喜欢 GUI ，则可以访问 CouchDB 基于 Web 的界面， Fauxton ：</p>
+
+<pre><code class="language-url">http://127.0.0.1:5984/_utils/
+</code></pre>
+
+<p><img src="/images/linux/how-to-install-couchdb-on-centos-7/couchdb-fauxton.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何安装 CouchDB CentOS 7. 您的下一步可能是访问 <a href="http://docs.couchdb.org/en/stable/">Apache CouchDB 文档</a>并查找有关此主题的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/couchdb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">couchdb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/database" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">database</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-7/">如何在 CentOS 7 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 CentOS 7 上使用 FirewallD 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-edit-your-hosts-file/">如何编辑 hosts 文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-centos-7/">如何在 CentOS 7 上安装 Plex Media Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-centos-7/">如何在 CentOS 7 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-centos-7/">如何在 CentOS 7 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-centos-7/">如何在 CentOS 7 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mysql-on-centos-7/">在 CentOS 7 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-centos-7/">如何在 CentOS 7 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-python-3-on-centos-7/">如何在 CentOS 7 上安装 Python 3</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-centos-7/">如何在 CentOS 7 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-centos-7/">如何在 CentOS 7 上安装和使用 Docker</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

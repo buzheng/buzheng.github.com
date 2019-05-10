@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | CentOS 7 安装 mysql 5.7.10</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="CentOS 7 安装 mysql 5.7.10" />
+<meta property="og:description" content="本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/centos7-install-mysql57/" />
+<meta property="article:published_time" content="2016-01-15T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-01-15T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="CentOS 7 安装 mysql 5.7.10">
+<meta itemprop="description" content="本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。">
+
+
+<meta itemprop="datePublished" content="2016-01-15T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-01-15T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="69">
+
+
+
+<meta itemprop="keywords" content="Mysql,Linux,CentOS," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CentOS 7 安装 mysql 5.7.10"/>
+<meta name="twitter:description" content="本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">CentOS 7 安装 mysql 5.7.10</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-01-15T00:00:00Z">January 15, 2016</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。</p>
+
+<h2 id="通过-yum-安装-mysql-社区版">通过 yum 安装 mysql 社区版</h2>
+
+<pre><code>wget http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
+yum -y localinstall mysql57-community-release-el7-7.noarch.rpm 
+yum -y install mysql-community-server
+</code></pre>
+
+<h2 id="设置服务并启动">设置服务并启动</h2>
+
+<pre><code>systemctl enable mysqld
+systemctl start mysqld
+</code></pre>
+
+<h2 id="修改数据库编码为-utf8">修改数据库编码为 utf8</h2>
+
+<p>修改 /etc/my.cnf, [mysqld] 分组下添加如下两行</p>
+
+<pre><code>character-set-server=utf8
+collation_server=utf8_unicode_ci
+</code></pre>
+
+<h2 id="修改表名字段不区分大小写">修改表名字段不区分大小写</h2>
+
+<p>修改 /etc/my.cnf, [mysqld] 分组下添加如下行</p>
+
+<pre><code>lower_case_table_names=1
+</code></pre>
+
+<h2 id="重启">重启</h2>
+
+<pre><code>systemctl restart mysqld
+</code></pre>
+
+<h2 id="修改-root-密码">修改 root 密码</h2>
+
+<p>1、查看安装时的临时密码</p>
+
+<pre><code>grep 'temporary password' /var/log/mysqld.log
+</code></pre>
+
+<p>2、利用密码登录进去</p>
+
+<pre><code>mysql -u root -p
+</code></pre>
+
+<p>3、修改root密码（至少8位，大小写混合，含有数字和特殊字符）</p>
+
+<pre><code>alter user 'root'@'localhost' identified by 'MyNewPass4!';
+</code></pre>
+
+<p>参考文档：</p>
+
+<ul>
+<li><a href="http://dev.mysql.com/doc/refman/5.7/en/linux-installation-yum-repo.html">http://dev.mysql.com/doc/refman/5.7/en/linux-installation-yum-repo.html</a></li>
+</ul><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">CentOS</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/centos7-install-and-enable-iptables/">CentOS 7 下安装并启用 iptables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos7-ifconfig-not-found/">CentOS 7 下不能使用 ifconfig 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-65-install-xrdp-061/">CentOS 6.5 安装远程桌面工具 xrdp 0.6.1</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/linux-scp-notes/">scp 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/linux-cron-notes/">cron 学习笔记</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-modify-ssh-port-and-forbid-root-remote/">centos 6.5 修改 SSH 端口并禁用 root 远程登录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/oracle-auto-backup-shell-script/">Oracle 自动备份脚本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/vi-usages/">Vi 常用命令汇总</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/iptables-notes/">iptables 使用笔记</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-65-install-oracle-11g-r2/">centos 6.5 安装 oracle 11gR2 及配置Oracle自动启动</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-65-install-oracle-jdk-8/">centos 6.5 安装 oracle jdk 8u40</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/bash-shell-script-note/">bash shell 编程学习注记</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/install-virtualmin-webmin-on-linux/">linux 上安装 virtualmin/webmin</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

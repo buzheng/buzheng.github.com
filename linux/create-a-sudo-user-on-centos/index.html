@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 CentOS 上创建 sudo 用户</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 上创建 sudo 用户" />
+<meta property="og:description" content="sudo 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。
+
+在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/create-a-sudo-user-on-centos/" />
+<meta property="article:published_time" content="2019-03-10T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-10T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 上创建 sudo 用户">
+<meta itemprop="description" content="sudo 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。
+
+在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。">
+
+
+<meta itemprop="datePublished" content="2019-03-10T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-10T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="152">
+
+
+
+<meta itemprop="keywords" content="centos,sudo," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 上创建 sudo 用户"/>
+<meta name="twitter:description" content="sudo 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。
+
+在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 CentOS 上创建 sudo 用户</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-10T08:00:00Z">March 10, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><code>sudo</code> 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。</p>
+
+<p>在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。</p>
+
+<h2 id="创建-sudo-用户">创建 sudo 用户</h2>
+
+<p>在 CentOS 上，默认情况下 <code>wheel</code> 组中的用户被授予 sudo 访问权限。如果要为现有用户配置 sudo ，就像下面步骤 4 的做法一样，只需将用户添加到 <code>wheel</code> 组中。</p>
+
+<p>按照以下步骤在 CentOS 服务器上创建一个 sudo 用户。</p>
+
+<ol>
+<li><p>·首先以 <code>root</code> 用户身份登录 CentOS 服务器。</p>
+
+<pre><code class="language-bash">ssh root@server_ip_address
+</code></pre>
+
+<ol>
+<li>使用 <code>useradd</code> 命令创建新用户帐户。</li>
+</ol>
+
+<pre><code class="language-bash">useradd username
+</code></pre>
+
+<p>替换 <code>username</code> 为您要创建的用户名。</p></li>
+
+<li><p>使用此 <code>passwd</code> 命令为新用户设置密码。</p>
+
+<pre><code class="language-bash">passwd username
+</code></pre>
+
+<p>系统将提示您确认密码。确保使用强密码。</p>
+
+<pre><code class="language-bash">Changing password for user username.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+</code></pre></li>
+
+<li><p>将新用户添加到 <code>wheel</code> 组。</p>
+
+<pre><code class="language-bash">usermod -aG wheel username
+</code></pre>
+
+<h2 id="如何使用-sudo">如何使用 sudo</h2>
+
+<p>切换到新创建的用户：</p>
+
+<pre><code class="language-bash">su - username
+</code></pre></li>
+</ol>
+
+<p>要使用 <code>sudo</code> ，只需在命令前加上前缀 <code>sudo</code> 和空格即可。</p>
+
+<pre><code class="language-bash">sudo [COMMAND]
+</code></pre>
+
+<p>例如，要列出 <code>/root</code> 您将使用的目录的内容：</p>
+
+<pre><code class="language-bash">sudo ls -l /root
+</code></pre>
+
+<p>首次在此帐户中使用 sudo 时，您将看到以下横幅消息，系统将提示您输入用户帐户的密码。</p>
+
+<pre><code class="language-bash">We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for username:
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>打完收工。您已在 CentOS 系统上成功创建了一个 sudo 用户。您现在可以使用此用户在服务器上执行管理任务。</p>
+
+<!--create-a-sudo-user-on-centos/ --><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/sudo" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">sudo</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-centos-7/">如何在 CentOS 7 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-centos-7/">如何在 CentOS 7 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-magento-2-to-use-varnish-on-centos-7/">在 CentOS 7 上配置 Magento 2 使用 Varnish</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-magento-2-on-centos-7/">在 CentOS 7 上安装 Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-centos-7/">如何在 CentOS 7 上安装 WildFly(JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

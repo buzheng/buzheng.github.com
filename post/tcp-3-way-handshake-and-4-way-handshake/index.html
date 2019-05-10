@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | TCP的三次握手和四次握手</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="TCP的三次握手和四次握手" />
+<meta property="og:description" content="TCP是面向连接的传输协议，在TCP通信过程中客户端和服务器之间会保留一个虚拟连接，为了建立这个虚拟连接，需要3次握手进行确认。连接结束的时候又需要4次握手进行确认。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/tcp-3-way-handshake-and-4-way-handshake/" />
+<meta property="article:published_time" content="2013-04-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-04-11T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="TCP的三次握手和四次握手">
+<meta itemprop="description" content="TCP是面向连接的传输协议，在TCP通信过程中客户端和服务器之间会保留一个虚拟连接，为了建立这个虚拟连接，需要3次握手进行确认。连接结束的时候又需要4次握手进行确认。">
+
+
+<meta itemprop="datePublished" content="2013-04-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-04-11T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="20">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TCP的三次握手和四次握手"/>
+<meta name="twitter:description" content="TCP是面向连接的传输协议，在TCP通信过程中客户端和服务器之间会保留一个虚拟连接，为了建立这个虚拟连接，需要3次握手进行确认。连接结束的时候又需要4次握手进行确认。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">TCP的三次握手和四次握手</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2013-04-11T00:00:00Z">April 11, 2013</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>TCP是面向连接的传输协议，在TCP通信过程中客户端和服务器之间会保留一个虚拟连接，为了建立这个虚拟连接，需要3次握手进行确认。连接结束的时候又需要4次握手进行确认。</p>
+
+<h2 id="三次握手">三次握手</h2>
+
+<p>连接请求由客户端发起，3次握手的过程是这样的：</p>
+
+<p>1，客户端向服务端申请建立连接，发送数据包SYN（syn=j）后，等待服务器的响应，此时客户机进入SYN_SEND状态。</p>
+
+<p>2，服务器收到SYN数据包后，需向客户端响应数据包ACK（ack=j+1）和SYN（syn=k），此时服务器的状态为SYN_RECV。</p>
+
+<p>3，客户端收到服务器响应的ACK+SYN数据包后，需要服务器回复 ACK（ack=k+1）数据包。服务器收到客户端的响应包ACK后，建立虚拟连接，此时服务器状态为 ESTABLISHED。</p>
+
+<p>为什么需要3次握手呢？三次握手其实是客户端与服务器双方都在确认连接是否可用的过程，经过3次握手，客户端可服务器都认为链接是可用的。三次握手并不能保证网络连接不出问题，只是处于开始确认的阶段。</p>
+
+<p><em>SYN：同步序列号（Synchronized sequence numbers）。</em></p>
+
+<h2 id="四次握手-四次挥手">四次握手/四次挥手</h2>
+
+<p>关闭连接一般也有客户端发起，中间经过四次通信：</p>
+
+<p>1，客户端向服务端发送数据包FIN（fin=m），请求关闭连接。</p>
+
+<p>2，服务端收到FIN包后，发送响应包ACK（ack=m+1）。</p>
+
+<p>3，服务端向客户端发送数据包 FIN（fin=n）。</p>
+
+<p>4，客户端收到FIN后，向服务端发送响应包ACK（ack=n+1）。</p>
+
+<p>为什么需要四次？为什么服务端不把ACK和FIN一块发送？因为客户端在发送完请求后，就可以向服务端发送FIN，而服务端收到FIN的时候，可能还在传送数据，所以必须等到数据发送完成后，才向客户端发送FIN。</p><ul class="pa0">
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

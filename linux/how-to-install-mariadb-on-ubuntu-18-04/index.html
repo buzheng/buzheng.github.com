@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装 MariaDB</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 MariaDB" />
+<meta property="og:description" content="MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。它由 MariaDB Foundation 维护和开发，包括一些 MySQL 的原始开发人员。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 MariaDB 的两种不同方法。第一种方法描述了从 Ubuntu 存储库安装 MariaDB 所需的步骤，而第二种方法将向您展示如何从官方 MariaDB 存储库安装最新版本的 MariaDB 。
+
+通常，建议使用第一种方法，安装 Ubuntu 提供的 MariaDB 软件包。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-mariadb-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-04-16T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-16T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 MariaDB">
+<meta itemprop="description" content="MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。它由 MariaDB Foundation 维护和开发，包括一些 MySQL 的原始开发人员。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 MariaDB 的两种不同方法。第一种方法描述了从 Ubuntu 存储库安装 MariaDB 所需的步骤，而第二种方法将向您展示如何从官方 MariaDB 存储库安装最新版本的 MariaDB 。
+
+通常，建议使用第一种方法，安装 Ubuntu 提供的 MariaDB 软件包。">
+
+
+<meta itemprop="datePublished" content="2019-04-16T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-16T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="389">
+
+
+
+<meta itemprop="keywords" content="ubuntu,mariadb,mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 MariaDB"/>
+<meta name="twitter:description" content="MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。它由 MariaDB Foundation 维护和开发，包括一些 MySQL 的原始开发人员。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 MariaDB 的两种不同方法。第一种方法描述了从 Ubuntu 存储库安装 MariaDB 所需的步骤，而第二种方法将向您展示如何从官方 MariaDB 存储库安装最新版本的 MariaDB 。
+
+通常，建议使用第一种方法，安装 Ubuntu 提供的 MariaDB 软件包。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 MariaDB</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-16T05:00:00Z">April 16, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。它由 <a href="https://mariadb.org/about/">MariaDB Foundation</a> 维护和开发，包括一些 MySQL 的原始开发人员。</p>
+
+<p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装 MariaDB 的两种不同方法。第一种方法描述了从 Ubuntu 存储库安装 MariaDB 所需的步骤，而第二种方法将向您展示如何从官方 MariaDB 存储库安装最新版本的 MariaDB 。</p>
+
+<p>通常，建议使用第一种方法，安装 Ubuntu 提供的 MariaDB 软件包。</p>
+
+<blockquote>
+<p>如果要安装 MySQL 而不是 MariaDB ，请查看<a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a> 教程。</p>
+</blockquote>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="在-ubuntu-18-04-上安装-mariadb">在 Ubuntu 18.04 上安装 MariaDB</h2>
+
+<p>在撰写本文时， MariaDB 版本 10.1 包含在 Ubuntu 主存储库中。</p>
+
+<p>要在 Ubuntu 18.04 上安装 MariaDB ，请按照下列步骤操作：</p>
+
+<ol>
+<li><p>更新包索引。</p>
+
+<pre><code class="language-console-bash">sudo apt update
+</code></pre>
+
+<ol>
+<li>更新包列表后，运行以下命令安装 MariaDB ：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo apt install mariadb-server
+</code></pre></li>
+
+<li><p>MariaDB 服务将自动启动。您可以输入以下命令进行验证：</p>
+
+<pre><code class="language-console-bash">sudo systemctl status mariadb
+</code></pre>
+
+<pre><code class="language-output">    ● mariadb.service - MariaDB database server
+Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset
+Active: active (running) since Sun 2018-07-29 19:31:31 UTC; 38s ago
+Main PID: 13932 (mysqld)
+Status: &quot;Taking your SQL requests now...&quot;
+    Tasks: 27 (limit: 507)
+CGroup: /system.slice/mariadb.service
+        └─13932 /usr/sbin/mysqld
+</code></pre>
+
+<p>您还可以使用以下命令检查 MariaDB 版本：</p>
+
+<pre><code class="language-console-bash">mysql -V
+</code></pre>
+
+<pre><code class="language-output">mysql  Ver 15.1 Distrib 10.1.29-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
+</code></pre></li>
+</ol>
+
+<h2 id="从-mariadb-存储库在-ubuntu-18-04-上安装-mariadb">从 MariaDB 存储库在 Ubuntu 18.04 上安装 MariaDB</h2>
+
+<p>在撰写本文时， MariaDB 官方存储库中提供的最新版 MariaDB 是 MariaDB 版本 10.3 。在继续下一步之前，您应该访问 <a href="https://downloads.mariadb.org/mariadb/repositories/">MariaDB 存储库</a>页面并检查是否有新版本可用。</p>
+
+<p>要在 Ubuntu 18.04 服务器上安装 MariaDB 10.3 ，请执行以下步骤：</p>
+
+<ol>
+<li><p>首先使用以下命令将 MariaDB GPG 密钥添加到系统中：</p>
+
+<pre><code class="language-console-bash">sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+</code></pre>
+
+<ol>
+<li>导入密钥后，添加 MariaDB 存储库：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://ftp.utexas.edu/mariadb/repo/10.3/ubuntu bionic main'
+</code></pre>
+
+<p>如果您收到错误消息 <code>add-apt-repository command not found</code>，请先安装<code>software-properties-common</code>包。</p></li>
+
+<li><p>为了能够从 MariaDB 存储库安装软件包，您需要更新软件包列表：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+</code></pre>
+
+<ol>
+<li>现在已添加存储库，请安装 MariaDB 软件包：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo apt install mariadb-server
+</code></pre></li>
+
+<li><p>MariaDB 服务将自动启动，以验证其类型：</p>
+
+<pre><code class="language-console-bash">sudo systemctl status mariadb
+</code></pre>
+
+<pre><code class="language-output">● mariadb.service - MariaDB 10.3.8 database server
+Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+Drop-In: /etc/systemd/system/mariadb.service.d
+        └─migrated-from-my.cnf-settings.conf
+Active: active (running) since Sun 2018-07-29 19:36:30 UTC; 56s ago
+    Docs: man:mysqld(8)
+        https://mariadb.com/kb/en/library/systemd/
+Main PID: 16417 (mysqld)
+Status: &quot;Taking your SQL requests now...&quot;
+    Tasks: 31 (limit: 507)
+CGroup: /system.slice/mariadb.service
+        └─16417 /usr/sbin/mysqld
+</code></pre>
+
+<p>并打印 MariaDB 服务器版本，包括：</p>
+
+<pre><code class="language-console-bash">mysql -V
+</code></pre>
+
+<pre><code class="language-output">mysql  Ver 15.1 Distrib 10.3.8-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
+</code></pre></li>
+</ol>
+
+<h2 id="保护-mariadb">保护 MariaDB</h2>
+
+<p>运行该 <code>mysql_secure_installation</code> 命令以提高 MariaDB 安装的安全性：</p>
+
+<pre><code class="language-console-bash">sudo mysql_secure_installation
+</code></pre>
+
+<p>该脚本将提示您设置 root 用户密码，删除匿名用户，限制 root 用户访问本地计算机并删除测试数据库。最后，脚本将重新加载权限表，确保所有更改立即生效。</p>
+
+<p>所有步骤都会详细解释，建议对所有问题回答 “Y” （是）。</p>
+
+<h2 id="从命令行连接到-mariadb">从命令行连接到 MariaDB</h2>
+
+<p>要通过终端连接到 MariaDB 服务器，我们可以使用 MariaDB 客户端。</p>
+
+<p>以 root 用户身份登录 MariaDB 服务器：</p>
+
+<pre><code class="language-console-bash">mysql -u root -p
+</code></pre>
+
+<p>系统将提示您输入先前运行 <code>mysql_secure_installation</code> 脚本时设置的 root 密码。</p>
+
+<p>输入密码后，您将看到 MariaDB shell ，如下所示：</p>
+
+<pre><code class="language-output">Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 49
+Server version: 10.1.29-MariaDB-6 Ubuntu 18.04
+
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>现在您的 MariaDB 服务器已启动并运行，并且您知道如何从命令行连接到 MariaDB 服务器，您可能需要查看以下教程：</p>
+
+<ul>
+<li><a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何管理 MySQL 用户帐户和数据库</a></li>
+<li><a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a></li>
+<li><!--link:how-to-create-a-mysql-database-->如何创建 MySQL 数据库<!--link--></li>
+<li><!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->如何创建 MySQL 用户帐户和授予权限<!--link--></li>
+<li><!--link:how-to-show-mysql-users-->如何显示 MySQL 用户<!--link--></li>
+<li><a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a></li>
+</ul>
+
+<p>如果您不喜欢命令行更喜欢使用 Web 界面，则可以安装<!--link:how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04-->安装 phpMyAdmin<!--link--> 并通过它管理 MariaDB 数据库和用户。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何从命令行管理 MySQL 数据库和用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opera-web-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Opera 浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vlc-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 VLC Media Player</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-mattermost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Mattermost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wine-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Wine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cut-command/">Linux Cut 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postman-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 postman</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装 Nginx</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 Nginx" />
+<meta property="og:description" content="Nginx的发音是 &ldquo;engine x&rdquo;, 是一个免费的，开源的，高性能的 HTTP 服务器和反向代理服务器。互联网上一些很大的站点都使用 Nginx 来负载。
+
+Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的和其它的 web 服务器的反向代理。
+
+与 Apache 相比，Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+本教程将概述在 Ubuntu 18.04 计算机上安装 Nginx 所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-nginx-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-12T07:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-12T07:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 Nginx">
+<meta itemprop="description" content="Nginx的发音是 &ldquo;engine x&rdquo;, 是一个免费的，开源的，高性能的 HTTP 服务器和反向代理服务器。互联网上一些很大的站点都使用 Nginx 来负载。
+
+Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的和其它的 web 服务器的反向代理。
+
+与 Apache 相比，Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+本教程将概述在 Ubuntu 18.04 计算机上安装 Nginx 所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-03-12T07:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-12T07:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="323">
+
+
+
+<meta itemprop="keywords" content="ubuntu,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 Nginx"/>
+<meta name="twitter:description" content="Nginx的发音是 &ldquo;engine x&rdquo;, 是一个免费的，开源的，高性能的 HTTP 服务器和反向代理服务器。互联网上一些很大的站点都使用 Nginx 来负载。
+
+Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的和其它的 web 服务器的反向代理。
+
+与 Apache 相比，Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+本教程将概述在 Ubuntu 18.04 计算机上安装 Nginx 所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 Nginx</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-12T07:00:00Z">March 12, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Nginx的发音是 &ldquo;engine x&rdquo;, 是一个免费的，开源的，高性能的 HTTP 服务器和反向代理服务器。互联网上一些很大的站点都使用 Nginx 来负载。</p>
+
+<p>Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的和其它的 web 服务器的<!--link:nginx-reverse-proxy-->反向代理<!--link-->。</p>
+
+<p>与 Apache 相比，Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。</p>
+
+<p>本教程将概述在 Ubuntu 18.04 计算机上安装 Nginx 所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>本教程开始之前，请确保您登录的<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">使用 sudo 权限的用户</a>，你没有安装 <a href="/linux/how-to-install-apache-on-ubuntu-18-04/">Apache</a> 或任何其他运行在 <code>80</code> 或 <code>443</code> 端口上的 Web 服务器。</p>
+
+<h2 id="安装-nginx">安装 Nginx</h2>
+
+<p>Nginx 软件包在 Ubuntu 自有仓库中可用，安装非常简单。</p>
+
+<p>我们首先更新包列表，然后安装 Nginx ：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install nginx
+</code></pre>
+
+<p>安装完成后， Nginx 服务将自动启动。您可以使用以下命令检查服务的状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status nginx
+</code></pre>
+
+<p>输出看起来像这样：</p>
+
+<pre><code class="language-bash">● nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2018-04-29 06:43:26 UTC; 8s ago
+     Docs: man:nginx(8)
+  Process: 3091 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+  Process: 3080 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+ Main PID: 3095 (nginx)
+    Tasks: 2 (limit: 507)
+   CGroup: /system.slice/nginx.service
+           ├─3095 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+           └─3097 nginx: worker process
+</code></pre>
+
+<h2 id="配置防火墙">配置防火墙</h2>
+
+<p>假设您正在使用 UFW 管理防火墙，则需要打开 HTTP (80)和 HTTPS (443)端口。你可以通过启用 &lsquo;Nginx Full&rsquo; 配置文件来实现这一点，该配置文件包含两个端口的规则：</p>
+
+<pre><code class="language-bash">sudo ufw allow 'Nginx Full'
+</code></pre>
+
+<p>要验证状态类型：</p>
+
+<pre><code class="language-bash">sudo ufw status
+</code></pre>
+
+<p>输出将如下所示：</p>
+
+<pre><code class="language-bash">Status: active
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW       Anywhere
+Nginx Full                 ALLOW       Anywhere
+22/tcp (v6)                ALLOW       Anywhere (v6)
+Nginx Full (v6)            ALLOW       Anywhere (v6)
+</code></pre>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>您可以通过在浏览器中访问 <code>http://YOUR_IP</code> 来测试新的 Nginx 安装，然后您将看到默认的 Nginx 登录页面，如下图所示：</p>
+
+<p><img src="/images/linux/how-to-install-nginx-on-ubuntu-18-04/nginx-screenshot.jpg" alt="" /></p>
+
+<h2 id="管理-nginx-服务">管理 Nginx 服务</h2>
+
+<p>您可以像管理任何其他系统服务一样管理 Nginx 服务。</p>
+
+<p>要停止 Nginx 服务，请运行：</p>
+
+<pre><code class="language-bash">sudo systemctl stop nginx
+</code></pre>
+
+<p>要再次启动它，请键入：</p>
+
+<pre><code class="language-bash">sudo systemctl start nginx
+</code></pre>
+
+<p>要重新启动 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart nginx
+</code></pre>
+
+<p>完成一些配置更改后重新加载 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl reload nginx
+</code></pre>
+
+<p>默认情况下， Nginx 服务将在启动时启动。如果要禁用 Nginx 服务随机启动：</p>
+
+<pre><code class="language-bash">sudo systemctl disable nginx
+</code></pre>
+
+<p>并重新启用它：</p>
+
+<pre><code class="language-bash">sudo systemctl enable nginx
+</code></pre>
+
+<h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
+
+<ul>
+<li>所有 Nginx 配置文件都位于 <code>/etc/nginx</code> 目录中。</li>
+<li>主要的 Nginx 配置文件是 <code>/etc/nginx/nginx.conf</code> 。</li>
+<li>为了使 Nginx 配置更易于维护，建议为每个域创建单独的配置文件。您可以根据需要创建尽可能多的服务器块文件。</li>
+<li>Nginx 服务器块文件存储在 <code>/etc/nginx/sites-available</code> 目录中。 Nginx 不使用此目录中的配置文件，除非它们链接到 <code>/etc/nginx/sites-enabled</code> 目录。</li>
+<li>要激活服务器块，您需要创建从 <code>sites-available</code> 目录中的配置文件站点到 <code>sites-enabled</code> 目录的软连接。</li>
+<li>建议遵循标准命名约定。例如，如果您的域名是 <code>mydomain.com</code>， 则应命名您的配置文件为 <code>/etc/nginx/sites-available/mydomain.com.conf</code></li>
+<li>目录 <code>/etc/nginx/snippets</code> 用来存放可包含在其他服务器块文件中的配置片段。如果使用可重复的配置段，则可以将这些段重构为片段，并将片段文件包含到服务器块中。</li>
+<li>Nginx 日志文件 (access.log 和 error.log) 位于 <code>/var/log/nginx</code> 目录中。建议每个服务器模块有不同 <code>access</code> 和 <code>error</code> 日志文件。</li>
+<li>您可以将域文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
+
+<ul>
+<li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
+<li><code>/var/www/&lt;site_name&gt;</code></li>
+<li><code>/var/www/html/&lt;site_name&gt;</code></li>
+<li><code>/opt/&lt;site_name&gt;</code></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在 Ubuntu 18.04 服务器上成功安装了 Nginx 。现在您已准备好开始部署应用程序并将 Nginx 用作 Web 服务器或代理服务器。安全证书是当今所有网站必备的功能，为了使用免费的 Let&rsquo;s Encrypt SSL 证书保护您的网站，您可以参考本指南: <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&rsquo;s Encrypt 保护 Nginx</a> 。</p>
+
+<p>如果您打算在服务器上托管多个域，可以查看教程: <a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">如何创建 Nginx 服务器块</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-upgrade-to-ubuntu-18-04-bionic-beaver/">如何将 Ubuntu 升级到 18.04 (Bionic Beaver)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-and-disable-root-user-account-in-ubuntu/">如何在 Ubuntu 中启用和禁用 root 帐户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-magento-2-on-centos-7/">在 CentOS 7 上安装 Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/set-up-an-email-server-with-postfixadmin/">使用 PostfixAdmin 设置邮件服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/">配置 Odoo 使用 Nginx 作为反向代理</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

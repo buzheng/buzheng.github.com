@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装 MySQL</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 MySQL" />
+<meta property="og:description" content="MySQL 是最流行的开源关系数据库管理系统。它快速，易于使用，可扩展，是流行 LAMP 和 LEMP 堆栈应用的组成部分。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装和配置更安全的 MySQL 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-mysql-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-24T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-24T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 MySQL">
+<meta itemprop="description" content="MySQL 是最流行的开源关系数据库管理系统。它快速，易于使用，可扩展，是流行 LAMP 和 LEMP 堆栈应用的组成部分。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装和配置更安全的 MySQL 。">
+
+
+<meta itemprop="datePublished" content="2019-03-24T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-24T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="288">
+
+
+
+<meta itemprop="keywords" content="ubuntu,mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 MySQL"/>
+<meta name="twitter:description" content="MySQL 是最流行的开源关系数据库管理系统。它快速，易于使用，可扩展，是流行 LAMP 和 LEMP 堆栈应用的组成部分。
+
+在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装和配置更安全的 MySQL 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 MySQL</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-24T05:00:00Z">March 24, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>MySQL 是最流行的开源关系数据库管理系统。它快速，易于使用，可扩展，是流行 LAMP 和 LEMP 堆栈应用的组成部分。</p>
+
+<p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装和配置更安全的 MySQL 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="在-ubuntu-上安装-mysql">在 Ubuntu 上安装 MySQL</h2>
+
+<p>在撰写本文时，官方 Ubuntu 存储库中提供的 MySQL 的最新版本是 MySQL 5.7 版。</p>
+
+<p>要在 Ubuntu 服务器上安装 MySQL ，请按照以下步骤操作：</p>
+
+<ol>
+<li><p>首先，输入以下内容来更新 apt 包索引：</p>
+
+<pre><code class="language-bash">sudo apt update
+</code></pre>
+
+<ol>
+<li>然后使用以下命令安装 MySQL ：</li>
+</ol>
+
+<pre><code class="language-bash">sudo apt install mysql-server
+</code></pre></li>
+
+<li><p>安装完成后， MySQL 服务将自动启动。要检查 MySQL 服务器是否正在运行，请输入：</p>
+
+<pre><code class="language-bash">sudo systemctl status mysql
+</code></pre>
+
+<pre><code class="language-bash">● mysql.service - MySQL Community Server
+  Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+  Active: active (running) since Wed 2018-06-20 11:30:23 PDT; 5min ago
+Main PID: 17382 (mysqld)
+    Tasks: 27 (limit: 2321)
+  CGroup: /system.slice/mysql.service
+          `-17382 /usr/sbin/mysqld --daemonize --pid-file=/run/mysqld/mysqld.pid
+</code></pre></li>
+</ol>
+
+<h2 id="保护-mysql">保护 MySQL</h2>
+
+<p>MySQL 服务器包附带一个调用的脚本 <code>mysql_secure_installation</code> ，可以执行多个与安全相关的操作。</p>
+
+<p>输入以下命令运行脚本：</p>
+
+<pre><code class="language-bash">sudo mysql_secure_installation
+</code></pre>
+
+<p>系统将要求您配置<a href="https://dev.mysql.com/doc/refman/5.7/en/validate-password.html">密码校验插件</a>用于测试 MySQL 用户密码强度并提高安全性。密码校验策略有三个级别，低，中和强。 如果你不想来设置验证密码插件，直接按下 <code>ENTER</code> 即可。</p>
+
+<p>在下一个提示符下，将要求您为 MySQL root 用户设置密码。执行此操作后，脚本还会要求您删除匿名用户，限制 root 用户本地访问并删除测试数据库。你应该对所有问题回答 &ldquo;Y&rdquo;（是）。</p>
+
+<h2 id="以-root-身份登录">以 root 身份登录</h2>
+
+<p>要从命令行与 MySQL 服务器交互，您可以使用 MySQL 客户端程序，MySQL 客户端程序作为 MySQL 服务器程序包的依赖项已经安装。</p>
+
+<p>在运行 MySQL 5.7 （及更高版本）的 Ubuntu 系统中，默认情况下， root 用户通过插件 <code>auth_socket</code> 进行身份验证。</p>
+
+<p>这个 <code>auth_socket</code> 插件对来自 localhost 通过 Unix 套接字文件连接的用户进行身份验证。这意味着您无法通过提供密码以 root 身份进行身份验证。</p>
+
+<p>以 root 用户的身份登录 MySQL 服务器：</p>
+
+<pre><code class="language-bash">sudo mysql
+</code></pre>
+
+<p>您将看到 My​​SQL shell ，如下所示：</p>
+
+<pre><code class="language-mysql">Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 5.7.22-0ubuntu18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</code></pre>
+
+<p>如果您想从外部程序以 root 用户身份登录 MySQL 服务器，例如 phpMyAdmin， 您有两个方法。</p>
+
+<p>第一个是将身份验证方法更改 <code>auth_socket</code> 为 <code>mysql_native_password</code> 。您可以通过运行以下命令来执行此操作：</p>
+
+<pre><code class="language-sql">ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'very_strong_password';
+FLUSH PRIVILEGES;
+</code></pre>
+
+<p>第二个方法是创建一个可以访问所有数据库的新管理用户：</p>
+
+<pre><code class="language-sql">GRANT ALL PRIVILEGES ON *.* TO 'administrator'@'localhost' IDENTIFIED BY 'very_strong_password';
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>现在您的 MySQL 服务器已启动并运行，并且您知道如何从命令行连接到 MySQL 服务器，您可能需要阅读以下指南：</p>
+
+<ul>
+<li><a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何管理 MySQL 用户帐户和数据库</a></li>
+<li><a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a></li>
+<li><!--link:how-to-create-a-mysql-database-->如何创建 MySQL 数据库<!--link--></li>
+<li><!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->如何创建 MySQL 用户帐户和授予权限<!--link--></li>
+<li><!--link:how-to-show-mysql-users-->如何显示 MySQL 用户<!--link--></li>
+<li><a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a></li>
+</ul>
+
+<p>如果您更喜欢通过命令行使用 Web 界面，则可以安装 phpMyAdmin 并通过它管理您的 MySQL 数据库和用户。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Slack</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 GitLab</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mysql-on-centos-7/">在 CentOS 7 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何从命令行管理 MySQL 数据库和用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-rpm-packages-on-ubuntu/">在 Ubuntu 上安装 RPM 包</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

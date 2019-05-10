@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 16.04 上安装 Odoo 11</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 16.04 上安装 Odoo 11" />
+<meta property="og:description" content="Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。
+
+安装 Odoo 最简单快捷的方法是使用他们的官方存储库。
+
+如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。
+
+本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/install-odoo-11-on-ubuntu-16-04/" />
+<meta property="article:published_time" content="2019-03-02T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-02T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 16.04 上安装 Odoo 11">
+<meta itemprop="description" content="Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。
+
+安装 Odoo 最简单快捷的方法是使用他们的官方存储库。
+
+如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。
+
+本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-03-02T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-02T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="380">
+
+
+
+<meta itemprop="keywords" content="linux,ubuntu,odoo,python," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 16.04 上安装 Odoo 11"/>
+<meta name="twitter:description" content="Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。
+
+安装 Odoo 最简单快捷的方法是使用他们的官方存储库。
+
+如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。
+
+本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 16.04 上安装 Odoo 11</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-02T08:00:00Z">March 2, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。</p>
+
+<p>安装 Odoo 最简单快捷的方法是使用他们的官方存储库。</p>
+
+<p>如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。</p>
+
+<p>本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。</p>
+
+<h2 id="准备工作">准备工作</h2>
+
+<p>在继续本教程之前，请确保以具有 sudo 权限的用户身份登录。</p>
+
+<p>将包索引和所有已安装的包更新到最新的包：</p>
+
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
+</code></pre>
+
+<p>安装 Git，Pip，Node.js 以及构建 Odoo 依赖项所需的工具：</p>
+
+<pre><code class="language-bash">sudo apt install git python3-pip build-essential python3-dev libxslt-dev libzip-dev libldap2-dev libsasl2-dev node-less
+</code></pre>
+
+<h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
+
+<p>使用下面的命令创建新的系统用户和组 <code>odoo</code> 来运行  Odoo 服务，用户的主目录为  <code>/opt/odoo</code>：</p>
+
+<pre><code class="language-bash">useradd -m -d /opt/odoo -U -r -s /bin/bash odoo
+</code></pre>
+
+<p>您可以根据需要为用户命名，只需确保创建具有相同名称的 PostgreSQL 用户。</p>
+
+<h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
+
+<p>从 Ubuntu 的默认存储库安装 PostgreSQL 包：</p>
+
+<pre><code class="language-bash">sudo apt install postgresql
+</code></pre>
+
+<p>安装完成后，创建一个与之前创建的系统用户同名的新 PostgreSQL 用户，在我们的例子中是 odoo：</p>
+
+<pre><code class="language-bash">sudo su - postgres -c &quot;createuser -s odoo&quot;
+</code></pre>
+
+<h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
+
+<p>您需要使用 wkhtmltopdf 工具来打印 PDF 报告。推荐的 Wkhtmltopdf 版本 0.12.1 在 Ubuntu 16.04 官方存储库中不可用。我们将从官方 Wkhtmltopdf 网站下载并安装推荐版本。</p>
+
+<p>使用以下wget命令下载程序包：</p>
+
+<pre><code class="language-bash">wget https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~xenial_amd64.deb
+</code></pre>
+
+<p>下载完成后，键入以下命令安装包：</p>
+
+<pre><code class="language-bash">sudo apt install ./wkhtmltox_0.12.1.3-1~xenial_amd64.deb
+</code></pre>
+
+<h2 id="安装和配置-odoo">安装和配置 Odoo</h2>
+
+<p>我们将在独立的 Python 环境中从 GitHub 存储库安装 Odoo，以便我们可以更好地控制版本和更新。</p>
+
+<p>在开始安装过程之前，请确保切换到 odoo 用户：</p>
+
+<pre><code class="language-bash">sudo su - odoo
+</code></pre>
+
+<p>要确认您是以用户身份登录 odoo，请使用以下命令：</p>
+
+<pre><code class="language-bash">whoami
+</code></pre>
+
+<p>从 GitHub 存储库中克隆 Odoo 源代码，开始安装过程：</p>
+
+<pre><code class="language-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 11.0 /opt/odoo/odoo11
+</code></pre>
+
+<blockquote>
+<ul>
+<li>如果要下载并安装不同的 Odoo 版本，只需在 <code>--branch</code> 切换后更改版本号。</li>
+<li>您可以根据需要下载任何 Odoo 源代码，例如， odoo11 您可以使用您的域名。</li>
+</ul>
+</blockquote>
+
+<p>virtualenv 是一个创建独立的 Python 环境的工具。请使用一下命令安装它：</p>
+
+<pre><code class="language-bash">pip3 install virtualenv
+</code></pre>
+
+<p>使用以下命令为 Odoo 安装创建新的 Python 虚拟环境：</p>
+
+<pre><code class="language-bash">cd /opt/odoo
+virtualenv odoo11-venv
+</code></pre>
+
+<p>激活环境：</p>
+
+<pre><code class="language-bash">source odoo11-venv/bin/activate
+</code></pre>
+
+<p>安装所有必需的 Python 模块：</p>
+
+<pre><code class="language-bash">pip3 install -r odoo11/requirements.txt
+</code></pre>
+
+<blockquote>
+<p>如果在安装过程中遇到任何编译错误，请确保已安装 <strong>准备工作</strong> 部分中列出的所有必需依赖项。</p>
+</blockquote>
+
+<p>安装完成后，停用环境并使用以下命令切换回sudo用户：</p>
+
+<pre><code class="language-bash">deactivate
+</code></pre>
+
+<pre><code class="language-bash">exit
+</code></pre>
+
+<p>如果您打算安装其他模块，最好将这些模块保存在单独的目录中。要为其他模块创建新目录，请执行以下命令：</p>
+
+<pre><code class="language-bash">sudo mkdir /opt/odoo/odoo11-custom-addons
+sudo chown odoo: /opt/odoo/odoo11-custom-addons
+</code></pre>
+
+<p>我们需要做的下一件事是创建配置文件。我们可以从头开始创建一个新的或复制一个已有的配置文件：</p>
+
+<pre><code class="language-bash">sudo cp /opt/odoo/odoo11/debian/odoo.conf /etc/odoo11.conf
+</code></pre>
+
+<p>打开文件并按如下所示进行编辑：</p>
+
+<pre><code class="language-bash">sudo nano /etc/odoo11.conf
+</code></pre>
+
+<p>/etc/odoo11.conf</p>
+
+<pre><code class="language-config">[options]
+; This is the password that allows database operations:
+admin_passwd = my_admin_passwd
+db_host = False
+db_port = False
+db_user = odoo
+db_password = False
+addons_path = /opt/odoo/odoo11/addons
+; If you are using custom modules
+; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons
+</code></pre>
+
+<p>完成后，关闭并保存文件。</p>
+
+<blockquote>
+<p>不要忘记更改 <code>my_admin_passwd</code> 为更安全的密码，并调整 <code>addons_path</code> 您是否使用自定义模块。</p>
+</blockquote>
+
+<h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
+
+<p>要将 odoo 作为服务运行，我们需要 <code>odoo11.service</code> 在 <code>/etc/systemd/system/</code> 目录中创建一个单元文件。</p>
+
+<p>打开文本编辑器并粘贴以下行：</p>
+
+<pre><code class="language-bash">sudo nano /etc/systemd/system/odoo11.service
+</code></pre>
+
+<p>/etc/systemd/system/odoo11.service</p>
+
+<pre><code class="language-config">[Unit]
+Description=Odoo11
+Requires=postgresql.service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+SyslogIdentifier=odoo11
+PermissionsStartOnly=true
+User=odoo
+Group=odoo
+ExecStart=/opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>通知 systemd 创建新的单元文件并通过执行以下命令启动 Odoo 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl start odoo11
+</code></pre>
+
+<p>使用以下命令检查服务状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status odoo11
+</code></pre>
+
+<p>输出应如下所示，表示 Odoo 服务处于活动状态并正在运行。</p>
+
+<pre><code class="language-bash">● odoo11.service - Odoo11
+   Loaded: loaded (/etc/systemd/system/odoo11.service; disabled; vendor preset: enabled)
+   Active: active (running) since Tue 2018-01-23 21:09:25 UTC; 1s ago
+ Main PID: 14146 (python3)
+   CGroup: /system.slice/odoo11.service
+           └─14146 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+</code></pre>
+
+<p>启用 Odoo 服务以在引导时自动启动：</p>
+
+<pre><code class="language-bash">sudo systemctl enable odoo11
+</code></pre>
+
+<p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
+
+<pre><code class="language-bash">sudo journalctl -u odoo11
+</code></pre>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入：<code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
+
+<p>假设安装成功，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/install-odoo-11-on-ubuntu-16-04/odoo-screenshot.jpg" alt="" /></p>
+
+<p>此时，您已经完成了一个可工作的 Odoo 11 安装步骤，您可以通过创建新数据库并开始处理项目来完成继续安装。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>到此为止，本教程向您介绍了在 Python 虚拟环境中在 Ubuntu 16.04 上安装 Odoo 11 的过程。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/odoo" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">odoo</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/python" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">在 Linux 中使用 ls 命令列出文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

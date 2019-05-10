@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上配置静态 IP 地址</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上配置静态 IP 地址" />
+<meta property="og:description" content="在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-24T07:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-24T07:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上配置静态 IP 地址">
+<meta itemprop="description" content="在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。">
+
+
+<meta itemprop="datePublished" content="2019-03-24T07:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-24T07:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="385">
+
+
+
+<meta itemprop="keywords" content="ubuntu,ip," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上配置静态 IP 地址"/>
+<meta name="twitter:description" content="在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上配置静态 IP 地址</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-24T07:00:00Z">March 24, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。</p>
+
+<p>在大多数情况下， IP 地址由路由器 DHCP 服务器动态分配。在某些情况下可能需要在 Ubuntu 计算机上设置静态 IP 地址，例如配置端口转发或在网络上运行<!--link:how-to-install-plex-media-server-on-ubuntu-18-04-->媒体服务器<!--link-->。</p>
+
+<h2 id="使用-dhcp-配置静态-ip-地址">使用 DHCP 配置静态 IP 地址</h2>
+
+<p>为 LAN 上的设备分配静态 IP 地址的最简单和推荐的方法是在路由器上设置静态 DHCP 。静态 DHCP 或 DHCP 预留是大多数路由器上的一项功能，它使 DHCP 服务器在每次设备从 DHCP 服务器请求地址时自动为同一网络设备分配相同的 IP 地址。这通过为设备唯一 MAC 地址分配静态 IP 来实现。配置 DHCP 保留的步骤因路由器而异，建议查阅供应商的文档。</p>
+
+<h2 id="netplan">Netplan</h2>
+
+<p>从 17.10 版本开始， <a href="https://netplan.io/">Netplan</a> 是 Ubuntu 上的默认网络管理工具，取代了之前用于在 Ubuntu 上配置网络的配置文件 <code>/etc/network/interfaces</code> 。</p>
+
+<p>Netplan 使用 <a href="https://yaml.org/">YAML</a> 语法的配置文件。要使用 Netplan 配置网络接口，只需为该接口创建 YAML 描述， Netplan 就会为您选择的渲染器工具生成所需的配置文件。</p>
+
+<p>Netplan 目前支持两个渲染器 NetworkManager 和 Systemd-networkingd 。 NetworkManager 主要用于台式机，而 Systemd-networkd 用于没有 GUI 的服务器。</p>
+
+<h2 id="在-ubuntu-server-上配置静态-ip-地址">在 Ubuntu Server 上配置静态 IP 地址</h2>
+
+<p>较新版本的 Ubuntu 使用“可预测的网络接口名称”开头 <code>en[letter][number]</code> 。默认情况下。第一步是确定要配置的以太网接口的名称。您可以使用 <code>ip link</code> 如下所示的命令：</p>
+
+<pre><code class="language-bash">ip link
+</code></pre>
+
+<p>该命令将打印所有可用网络接口的列表。在本例中，接口的名称是 <code>ens3</code> ：</p>
+
+<pre><code class="language-bash">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+3: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 56:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
+</code></pre>
+
+<p>Netplan 配置文件存储在 <code>/etc/netplan</code> 目录中并且文件后缀名是 <code>.yaml</code> 。您可能会在此目录中找到一个或两个 YAML 文件。该文件可能因设置而异。通常，文件被命名为 <code>01-netcfg.yaml</code> ， <code>50-cloud-init.yaml</code> 或者 <code>NN_interfaceName.yaml</code> ，但在您的系统中它可能是不同的。</p>
+
+<p>使用文本编辑器打开 YAML 配置文件：</p>
+
+<pre><code class="language-bash">sudo nano /etc/netplan/01-netcfg.yaml
+</code></pre>
+
+<pre><code class="language-bash">network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens3:
+      dhcp4: yes
+</code></pre>
+
+<p>在更改配置之前，让我们简要解释一下代码。</p>
+
+<p>每个 Netplan Yaml 文件都以 <code>network</code> 键开头，并且具有至少两个必需元素的。第一个必需元素是网络配置格式的版本，第二个是设备类型。设备类型值可以是 <code>ethernets</code> ， <code>bonds</code> ， <code>bridges</code> ，和 <code>vlans</code> 。</p>
+
+<p>上面的配置还包括 <code>renderer</code> 类型。开箱即用，如果您的 Ubuntu 安装在服务器模式下 ，则渲染器将配置为 <code>networkd</code> 用作后端。</p>
+
+<p>在设备的类型下（在本例中是 <code>ethernets</code> ），我们可以指定一个或多个网络接口。在此示例中，我们只有一个接口 <code>ens3</code> 配置为从 DHCP 服务器获取 IP 地址 dhcp4: yes 。</p>
+
+<p>要为 ens3 接口分配静态 IP 地址，请按如下方式编辑文件：</p>
+
+<ul>
+<li>将 DHCP 设置为 <code>no dhcp4: yes</code></li>
+<li>指定静态 IP 地址 <code>192.168.121.199/24</code> 。在 <code>addresses:</code> 下你可以添加一个或多 IPv4 或 IPv6 的 IP 地址将被分配给网络接口。</li>
+<li>指定网关  <code>gateway4: 192.168.121.1</code></li>
+<li>在 <code>nameservers</code> 下 ，指定域名服务器 <code>addresses:  [8.8.8.8, 1.1.1.1]</code></li>
+</ul>
+
+<p>文件 <code>/etc/netplan/01-netcfg.yaml</code></p>
+
+<pre><code class="language-bash">network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens3:
+      dhcp4: no
+      addresses:
+        - 192.168.121.199/24
+      gateway4: 192.168.121.1
+      nameservers:
+          addresses: [8.8.8.8, 1.1.1.1]
+</code></pre>
+
+<p>编辑 Yaml 文件时，请确保遵循 YAML 代码缩进标准，因为如果配置中存在语法错误，则可能无效。</p>
+
+<p>完成后保存并关闭文件并应用更改：</p>
+
+<pre><code class="language-bash">sudo netplan apply
+</code></pre>
+
+<pre><code class="language-bash">ip addr show dev ens3
+</code></pre>
+
+<pre><code class="language-bash">3: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 56:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
+    inet 192.168.121.199/24 brd 192.168.121.255 scope global dynamic ens3
+       valid_lft 3575sec preferred_lft 3575sec
+    inet6 fe80::5054:ff:feb0:f500/64 scope link 
+       valid_lft forever preferred_lft forever
+</code></pre>
+
+<p>而已！您已为 Ubuntu 服务器分配了静态 IP 。</p>
+
+<h2 id="在-ubuntu-桌面上配置静态-ip-地址">在 Ubuntu 桌面上配置静态 IP 地址</h2>
+
+<p>在 Ubuntu 台式计算机上设置静态 IP 地址不需要任何技术知识。</p>
+
+<ol>
+<li><p>在“活动”屏幕中，搜索“网络”，然后单击“网络”图标。这将打开 GNOME 网络配置设置。单击 cog 图标。</p>
+
+<p><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-network-settings.jpg" alt="" /></p></li>
+
+<li><p>这将打开“网络接口设置”对话框。</p>
+
+<p><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-interface-settings.jpg" alt="" /></p></li>
+
+<li><p>在“ IPV4 ”方法“部分中选择”手动“，然后输入您的静态 IP 地址，网络掩码和网关。完成后，单击“应用”按钮。</p>
+
+<p><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-set-static-ip.jpg" alt="" /></p></li>
+</ol>
+
+<p>现在您已经设置了静态 IP 地址，请使用 <code>Ctrl+Alt+T</code> 键盘快捷键或单击终端图标打开终端，然后键入以下命令来验证更改：</p>
+
+<pre><code class="language-bash">ip addr
+</code></pre>
+
+<p>输出将显示接口 IP 地址：</p>
+
+<pre><code class="language-bash">...
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:e9:40:f2 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.121.106/24 brd 192.168.121.255 scope global dynamic noprefixroute eth0
+       valid_lft 3523sec preferred_lft 3523sec
+    inet6 fe80::5054:ff:fee9:40f2/64 scope link 
+       valid_lft forever preferred_lft forever
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在 Ubuntu 18.04 计算机上分配静态 IP 地址。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ip" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ip</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Slack</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 GitLab</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-rpm-packages-on-ubuntu/">在 Ubuntu 上安装 RPM 包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 Sudo 用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

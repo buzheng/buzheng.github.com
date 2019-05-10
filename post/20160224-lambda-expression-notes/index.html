@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Java Lambda 表达式学习笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Java Lambda 表达式学习笔记" />
+<meta property="og:description" content="Java Lambda 表达式是 Java 8 引入的一个新的功能，可以说是模拟函数式编程的一个语法糖，类似于 Javascript 中的闭包，但又有些不同，主要目的是提供一个函数化的语法来简化我们的编码。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/20160224-lambda-expression-notes/" />
+<meta property="article:published_time" content="2016-02-24T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-02-24T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Java Lambda 表达式学习笔记">
+<meta itemprop="description" content="Java Lambda 表达式是 Java 8 引入的一个新的功能，可以说是模拟函数式编程的一个语法糖，类似于 Javascript 中的闭包，但又有些不同，主要目的是提供一个函数化的语法来简化我们的编码。">
+
+
+<meta itemprop="datePublished" content="2016-02-24T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-02-24T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="798">
+
+
+
+<meta itemprop="keywords" content="Java,Lambda," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java Lambda 表达式学习笔记"/>
+<meta name="twitter:description" content="Java Lambda 表达式是 Java 8 引入的一个新的功能，可以说是模拟函数式编程的一个语法糖，类似于 Javascript 中的闭包，但又有些不同，主要目的是提供一个函数化的语法来简化我们的编码。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">Java Lambda 表达式学习笔记</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-02-24T00:00:00Z">February 24, 2016</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Java Lambda 表达式是 Java 8 引入的一个新的功能，可以说是模拟函数式编程的一个语法糖，类似于 Javascript 中的闭包，但又有些不同，主要目的是提供一个函数化的语法来简化我们的编码。</p>
+
+<h2 id="lambda-基本语法">Lambda 基本语法</h2>
+
+<p>Lambda 的基本结构为 <code>(arguments) -&gt; body</code>，有如下几种情况：</p>
+
+<ul>
+<li>参数类型可推导时，不需要指定类型，如 <code>(a) -&gt; System.out.println(a)</code></li>
+<li>当只有一个参数且类型可推导时，不强制写 <code>()</code>, 如 <code>a -&gt; System.out.println(a)</code></li>
+<li>参数指定类型时，必须有括号，如 <code>(int a) -&gt; System.out.println(a)</code></li>
+<li>参数可以为空，如 <code>() -&gt; System.out.println(&ldquo;hello&rdquo;)</code></li>
+<li>body 需要用 <code>{}</code> 包含语句，当只有一条语句时 <code>{}</code> 可省略</li>
+</ul>
+
+<p>常见的写法如下：</p>
+
+<pre><code>(a) -&gt; a * a
+(int a, int b) -&gt; a + b
+(a, b) -&gt; {return a - b;}
+() -&gt; System.out.println(Thread.currentThread().getId())
+</code></pre>
+
+<h2 id="函数式接口-functionalinterface">函数式接口 FunctionalInterface</h2>
+
+<h3 id="概念">概念</h3>
+
+<p>Java Lambda 表达式以函数式接口为基础。什么是函数式接口（FunctionalInterface）？ 简单说来就是只有一个方法（函数）的接口，这类接口的目的是为了一个单一的操作，也就相当于一个单一的函数了。常见的接口如：Runnable, Comparator 都是函数式接口，并且都标注了注解 <code>@FunctionalInterface</code> 。</p>
+
+<h3 id="举例">举例</h3>
+
+<p>以 Thread 为例说明很容易理解。Runnable 接口是我们线程编程时常用的一个接口，就包含一个方法 <code>void run()</code>，这个方法就是线程的运行逻辑。按照以前的语法，我们新建线程一般要用到 Runnable 的匿名类，如下：</p>
+
+<pre><code class="language-java">new Thread(new Runnable() {
+
+	@Override
+	public void run() {
+		System.out.println(Thread.currentThread().getId());
+	}
+	
+}).start();
+</code></pre>
+
+<p>如果写多了，是不是很无聊，而基于 Lambda 的写法则变得简洁明了，如下：</p>
+
+<pre><code class="language-java">new Thread(() -&gt; System.out.println(Thread.currentThread().getId())).start();
+</code></pre>
+
+<p>注意 Thread 的参数，Runnable 的匿名实现就通过一句就实现了出来，写成下面的更好理解</p>
+
+<pre><code class="language-java">Runnable r = () -&gt; System.out.println(Thread.currentThread().getId());
+new Thread(r).start();
+</code></pre>
+
+<p>当然 Lambda 的目的不仅仅是写起来简洁，更高层次的目的等体会到了再总结。</p>
+
+<p>再看一个比较器的例子，按照传统的写法，如下：</p>
+
+<pre><code class="language-java">Integer[] a = {1, 8, 3, 9, 2, 0, 5};
+Arrays.sort(a, new Comparator&lt;Integer&gt;() {
+	@Override
+	public int compare(Integer o1, Integer o2) {
+		return o1 - o2;
+	}
+});
+</code></pre>
+
+<p>Lambda 表达式写法如下：</p>
+
+<pre><code class="language-java">Integer[] a = {1, 8, 3, 9, 2, 0, 5};
+Arrays.sort(a, (o1, o2) -&gt; o1 - o2);
+</code></pre>
+
+<h3 id="jdk中的函数式接口">JDK中的函数式接口</h3>
+
+<p>为了现有的类库能够直接使用 Lambda 表达式，Java 8 以前存在一些接口已经被标注为函数式接口的：</p>
+
+<ul>
+<li><code>java.lang.Runnable</code></li>
+<li><code>java.util.Comparator</code></li>
+<li><code>java.util.concurrent.Callable</code></li>
+<li><code>java.io.FileFilter</code></li>
+<li><code>java.security.PrivilegedAction</code></li>
+<li><code>java.beans.PropertyChangeListener</code></li>
+</ul>
+
+<p>Java 8 中更是新增加了一个包 <code>java.util.function</code>，带来了常用的函数式接口：</p>
+
+<ul>
+<li><code>Function&lt;T, R&gt;</code> - 函数：输入 T 输出 R</li>
+<li><code>BiFunction&lt;T, U, R&gt;</code> - 函数：输入 T 和 U 输出 R 对象</li>
+<li><code>Predicate&lt;T&gt;</code> - 断言/判断：输入 T 输出 boolean</li>
+<li><code>BiPredicate&lt;T, U&gt;</code> - 断言/判断：输入 T 和 U 输出 boolean</li>
+<li><code>Supplier&lt;T&gt;</code> - 生产者：无输入，输出 T</li>
+<li><code>Consumer&lt;T&gt;</code> - 消费者：输入 T，无输出</li>
+<li><code>BiConsumer&lt;T, U&gt;</code> - 消费者：输入 T 和 U 无输出</li>
+<li><code>UnaryOperator&lt;T&gt;</code> - 单元运算：输入 T 输出 T</li>
+<li><code>BinaryOperator&lt;T&gt;</code> - 二元运算：输入 T 和 T 输出 T</li>
+</ul>
+
+<p>另外还对基本类型的处理增加了更加具体的函数是接口，包括：<code>BooleanSupplier</code>, <code>DoubleBinaryOperator</code>, <code>DoubleConsumer</code>, <code>DoubleFunction&lt;R&gt;</code>, <code>DoublePredicate</code>, <code>DoubleSupplier</code>, <code>DoubleToIntFunction</code>, <code>DoubleToLongFunction</code>, <code>DoubleUnaryOperator</code>, <code>IntBinaryOperator</code>, <code>IntConsumer</code>, <code>IntFunction&lt;R&gt;</code>, <code>IntPredicate</code>, <code>IntSupplier</code>, <code>IntToDoubleFunction</code>, <code>IntToLongFunction</code>, <code>IntUnaryOperator</code>, <code>LongBinaryOperator</code>, <code>LongConsumer</code>, <code>LongFunction&lt;R&gt;</code>, <code>LongPredicate</code>, <code>LongSupplier</code>, <code>LongToDoubleFunction</code>, <code>LongToIntFunction</code>, <code>LongUnaryOperator</code>, <code>ToDoubleBiFunction&lt;T, U&gt;</code>, <code>ToDoubleFunction&lt;T&gt;</code>, <code>ToIntBiFunction&lt;T, U&gt;</code>, <code>ToIntFunction&lt;T&gt;</code>, <code>ToLongBiFunction&lt;T, U&gt;</code>, <code>ToLongFunction&lt;T&gt;</code> 。结合上面的函数式接口，对这些基本类型的函数式接口通过类名就能一眼看出接口的作用。</p>
+
+<h3 id="创建函数式接口">创建函数式接口</h3>
+
+<p>有时候我们需要自己实现一个函数式接口，做法也很简单，首先你要保证此接口只能有一个函数操作，然后在接口类型上标注注解 <code>@FunctionalInterface</code> 即可。</p>
+
+<h2 id="类型推导">类型推导</h2>
+
+<p>类型推导是 Lambda 表达式的基础，类型推导的过程就是 Lambda 表达式的编译过程。以下面的代码为例：</p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = str -&gt; Integer.parseInt(str);
+</code></pre>
+
+<p>编译期间，我理解的类型推导的过程如下：</p>
+
+<ol>
+<li>先确定目标类型 Function<String, Integer></li>
+<li>Function<String, Integer> 作为函数式接口，其方法签名为：Integer apply(String t)</li>
+<li>检测 str -&gt; Integer.parseInt(str) 是否与方法签名匹配（方法的参数类型、个数、顺序 和返回值类型）</li>
+<li>如果不匹配，则报编译错误</li>
+</ol>
+
+<p>这里的目标类型是关键，通过目标类型获取方法签名，然后和 Lambda 表达式做出对比。</p>
+
+<h2 id="方法引用">方法引用</h2>
+
+<p>方法引用(Method Reference)的基础同样是函数式接口，可以直接作为函数式接口的实现，与 Lambda 表达式有相同的作用，同样依赖于类型推导。方法引用可以看作是只调用一个方法的 Lambda 表达式的简化。</p>
+
+<p>方法引用的语法为： <code>Type::methodName</code> 或者 <code>instanceName::methodName</code> , 构造函数对应的 methodName 为 new。</p>
+
+<p>例如上面曾用到例子：</p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = str -&gt; Integer.parseInt(str);
+</code></pre>
+
+<p>对应的方法引用的写法为</p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = Integer::parseInt;
+</code></pre>
+
+<p>根据方法的类型，方法引用主要分为一下几种类型，构造方法引用、静态方法引用、实例上实例方法引用、类型上实例方法引用等</p>
+
+<h3 id="构造方法引用">构造方法引用</h3>
+
+<p>语法为： <code>Type::new</code> 。 如下面的函数为了将字符串转为数组</p>
+
+<p><strong>方法引用写法</strong></p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = Integer::new;
+</code></pre>
+
+<p><strong>Lambda 写法</strong></p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = str -&gt; new Integer(str);
+</code></pre>
+
+<p><strong>传统写法</strong></p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = new Function&lt;String, Integer&gt;() {
+	@Override
+	public Integer apply(String str) {
+		return new Integer(str);
+	}
+};
+</code></pre>
+
+<h3 id="数组构造方法引用">数组构造方法引用</h3>
+
+<p>语法为： <code>Type[]::new</code> 。如下面的函数为了构造一个指定长度的字符串数组</p>
+
+<p><strong>方法引用写法</strong></p>
+
+<pre><code class="language-java">Function&lt;Integer, String[]&gt; fixedArray = String[]::new;
+</code></pre>
+
+<p><strong>方法引用写法</strong></p>
+
+<pre><code class="language-java">Function&lt;Integer, String[]&gt; fixedArray = length -&gt; new String[length];
+</code></pre>
+
+<p><strong>传统写法</strong></p>
+
+<pre><code class="language-java">Function&lt;Integer, String[]&gt; fixedArray = new Function&lt;Integer, String[]&gt;() {
+	@Override
+	public String[] apply(Integer length) {
+		return new String[length];
+	}
+};
+</code></pre>
+
+<h3 id="静态方法引用">静态方法引用</h3>
+
+<p>语法为： <code>Type::new</code> 。 如下面的函数同样为了将字符串转为数组</p>
+
+<p><strong>方法引用写法</strong></p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = Integer::parseInt;
+</code></pre>
+
+<p><strong>Lambda 写法</strong></p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = str -&gt; Integer.parseInt(str);
+</code></pre>
+
+<p><strong>传统写法</strong></p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; strToInt = new Function&lt;String, Integer&gt;() {
+	@Override
+	public Integer apply(String str) {
+		return Integer.parseInt(str);
+	}
+};
+</code></pre>
+
+<h3 id="实例上实例方法引用">实例上实例方法引用</h3>
+
+<p>语法为： <code>instanceName::methodName</code> 。如下面的判断函数用来判断给定的姓名是否在列表中存在</p>
+
+<pre><code class="language-java">List&lt;String&gt; names = Arrays.asList(new String[]{&quot;张三&quot;, &quot;李四&quot;, &quot;王五&quot;});
+Predicate&lt;String&gt; checkNameExists = names::contains;
+System.out.println(checkNameExists.test(&quot;张三&quot;));
+System.out.println(checkNameExists.test(&quot;张四&quot;));
+</code></pre>
+
+<h3 id="类型上实例方法引用">类型上实例方法引用</h3>
+
+<p>语法为： <code>Type::methodName</code> 。运行时引用是指上下文中的对象，如下面的函数来返回字符串的长度</p>
+
+<pre><code class="language-java">Function&lt;String, Integer&gt; calcStrLength = String::length;
+System.out.println(calcStrLength.apply(&quot;张三&quot;));
+
+List&lt;String&gt; names = Arrays.asList(new String[]{&quot;zhangsan&quot;, &quot;lisi&quot;, &quot;wangwu&quot;});
+names.stream().map(String::length).forEach(System.out::println);
+</code></pre>
+
+<p>又比如下面的函数已指定的分隔符分割字符串为数组</p>
+
+<pre><code class="language-java">BiFunction&lt;String, String, String[]&gt; split = String::split;
+String[] names = split.apply(&quot;zhangsan,lisi,wangwu&quot;, &quot;,&quot;);
+System.out.println(Arrays.toString(names));
+</code></pre>
+
+<h2 id="stream-对象">Stream 对象</h2>
+
+<h3 id="概念-1">概念</h3>
+
+<p>什么是 Stream ? 这里的 Stream 不同于 io 中的 InputStream 和 OutputStream，Stream 位于包 java.util.stream 中， 也是 java 8 新加入的，Stream 只的是一组支持串行并行聚合操作的元素，可以理解为集合或者迭代器的增强版。什么是聚合操作？简单举例来说常见的有平均值、最大值、最小值、总和、排序、过滤等。</p>
+
+<p>Stream 的几个特征：</p>
+
+<ul>
+<li>单次处理。一次处理结束后，当前Stream就关闭了。</li>
+<li>支持并行操作</li>
+</ul>
+
+<h3 id="常见的获取-stream-的方式">常见的获取 Stream 的方式</h3>
+
+<ul>
+<li>从集合中获取
+
+<ul>
+<li>Collection.stream();</li>
+<li>Collection.parallelStream();</li>
+</ul></li>
+<li>静态工厂
+
+<ul>
+<li>Arrays.stream(array)</li>
+<li>Stream.of(T &hellip;)</li>
+<li>IntStream.range()</li>
+</ul></li>
+</ul>
+
+<p>这里只对 Stream 做简单的介绍，下面会有具体的应用。要说 Stream 与 Lambda 表达式有什么关系，其实并没有什么特别紧密的关系，只是 Lambda 表达式极大的方便了 Stream 的使用。如果没有 Lambda 表达式，使用 Stream 的过程中会产生大量的匿名类，非常别扭。</p>
+
+<h2 id="举例-1">举例</h2>
+
+<p>以下的demo依赖于 Employee 对象，以及由 Employee 对象组成的 List 对象。</p>
+
+<pre><code class="language-java">public class Employee {
+	
+	private String name;
+	private String sex;
+	private int age;
+	
+	public Employee(String name, String sex, int age) {
+		super();
+		this.name = name;
+		this.sex = sex;
+		this.age = age;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public String getSex() {
+		return sex;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(&quot;Employee {name=&quot;).append(name).append(&quot;, sex=&quot;).append(sex).append(&quot;, age=&quot;).append(age)
+				.append(&quot;}&quot;);
+		return builder.toString();
+	}	
+}
+</code></pre>
+
+<pre><code class="language-java">List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();
+employees.add(new Employee(&quot;张三&quot;, &quot;男&quot;, 25));
+employees.add(new Employee(&quot;李四&quot;, &quot;女&quot;, 24));
+employees.add(new Employee(&quot;王五&quot;, &quot;女&quot;, 23));
+employees.add(new Employee(&quot;周六&quot;, &quot;男&quot;, 22));
+employees.add(new Employee(&quot;孙七&quot;, &quot;女&quot;, 21));
+employees.add(new Employee(&quot;刘八&quot;, &quot;男&quot;, 20));
+</code></pre>
+
+<h3 id="打印所有员工">打印所有员工</h3>
+
+<p>Collection 提供了 forEach 方法，供我们逐个操作单个对象。</p>
+
+<pre><code class="language-java">employees.forEach(e -&gt; System.out.println(e)); 
+或者
+employees.stream().forEach(e -&gt; System.out.println(e)); 
+</code></pre>
+
+<h3 id="按年龄排序">按年龄排序</h3>
+
+<pre><code class="language-java">Collections.sort(employees, (e1, e2) -&gt; e1.getAge() - e2.getAge());
+employees.forEach(e -&gt; System.out.println(e));
+或者
+employees.stream().sorted((e1, e2) -&gt; e1.getAge() - e2.getAge()).forEach(e -&gt; System.out.println(e)); 
+</code></pre>
+
+<h3 id="打印年龄最大的女员工">打印年龄最大的女员工</h3>
+
+<p>max/min 返回指定排序条件下最大/最小的元素</p>
+
+<pre><code class="language-java">Employee maxAgeFemaleEmployee = employees.stream()
+		.filter(e -&gt; &quot;女&quot;.equals(e.getSex()))
+		.max((e1, e2) -&gt; e1.getAge() - e2.getAge())
+		.get();
+System.out.println(maxAgeFemaleEmployee);
+</code></pre>
+
+<h3 id="打印出年龄大于20-的男员工">打印出年龄大于20 的男员工</h3>
+
+<p>filter 可以过滤出符合条件的元素</p>
+
+<pre><code class="language-java">employees.stream()
+		.filter(e -&gt; e.getAge() &gt; 20 &amp;&amp; &quot;男&quot;.equals(e.getSex()))
+		.forEach(e -&gt; System.out.println(e));
+</code></pre>
+
+<h3 id="打印出年龄最大的2名男员工">打印出年龄最大的2名男员工</h3>
+
+<p>limit 方法截取有限的元素</p>
+
+<pre><code class="language-java">employees.stream()
+		.filter(e -&gt; &quot;男&quot;.equals(e.getSex()))
+		.sorted((e1, e2) -&gt; e2.getAge() - e1.getAge())
+		.limit(2)
+		.forEach(e -&gt; System.out.println(e));
+</code></pre>
+
+<h3 id="打印出所有男员工的姓名-使用-分隔">打印出所有男员工的姓名，使用 , 分隔</h3>
+
+<p>map 将 Stream 中所有元素的执行给定的函数后返回值组成新的 Stream</p>
+
+<pre><code class="language-java">String maleEmployeesNames = employees.stream()
+		.map(e -&gt; e.getName())
+		.collect(Collectors.joining(&quot;,&quot;));
+System.out.println(maleEmployeesNames);
+</code></pre>
+
+<h3 id="统计信息">统计信息</h3>
+
+<p>IntSummaryStatistics, DoubleSummaryStatistics, LongSummaryStatistics 包含了 Stream 中的汇总数据。</p>
+
+<pre><code class="language-java">IntSummaryStatistics stat = employees.stream()
+		.mapToInt(Employee::getAge).summaryStatistics();
+System.out.println(&quot;员工总数：&quot; + stat.getCount());
+System.out.println(&quot;最高年龄：&quot; + stat.getMax());
+System.out.println(&quot;最小年龄：&quot; + stat.getMin());
+System.out.println(&quot;平均年龄：&quot; + stat.getAverage());
+</code></pre>
+
+<h2 id="总结">总结</h2>
+
+<p>Lambda 表达式确实可以减少很多代码，能提高生产力，当然也有弊端，就是复杂的表达式可读性会比较差，也可能是还不是很习惯的缘故吧，如果习惯了，相信会喜欢上的。凡事都有两面性，就看我们如何去平衡这其中的利弊了，尤其是在一个团队中。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/lambda" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Lambda</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/tomcat-inspector-script/">Tomcat 监测脚本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/g1-gc-notes/">垃圾优先垃圾回收器(G1 GC)使用笔记</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/slf4j-log4j2-configure/">slf4j &#43; log4j 2 配置</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos-65-install-oracle-jdk-8/">centos 6.5 安装 oracle jdk 8u40</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/cxf-wsdl2java-simple-usage/">Apache CXF wsdl2java 生成客户端简单用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/file-separator-vs-pathseparator/">File 对象的 separator 与  pathSeparator</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/maven-profile-for-multiple-enviroments/">Maven多环境配置管理几种方案</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/instanceof-isinstance-isassignablefrom/">instanceof, isInstance, isAssignableFroms</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/mybatis-pageable-plugin/">MyBatis 物理分页插件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/keytools-tomcat-7-ssl/">使用keytools 为 tomcat 7 配置ssl 双向认证</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/eclipse-tomcat-maven-web/">在 Eclipse 中用 tomcat 调试 maven web 工程</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/java-notes-one-by-one/">JAVA 一些基础知识点滴</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

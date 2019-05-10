@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装 MongoDB</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 MongoDB" />
+<meta property="og:description" content="MongoDB 是一个免费的开源文档数据库。它属于一个名为 NoSQL 的数据库系列，它与传统的基于表的 SQL 数据库（如 MySQL 和 PostgreSQL ）不同。
+
+在 MongoDB 中，数据存储在灵活的、类 JSON 的文档中，其中字段可能因文档而异。它不需要预定义的模式，数据结构可以随时间更改。
+
+在本教程中，我们将介绍从官方 MongoDB 存储库在 Ubuntu 18.04 计算机上安装和配置最新版 MongoDB Community Edition 的过程。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-mongodb-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-04-26T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-26T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 MongoDB">
+<meta itemprop="description" content="MongoDB 是一个免费的开源文档数据库。它属于一个名为 NoSQL 的数据库系列，它与传统的基于表的 SQL 数据库（如 MySQL 和 PostgreSQL ）不同。
+
+在 MongoDB 中，数据存储在灵活的、类 JSON 的文档中，其中字段可能因文档而异。它不需要预定义的模式，数据结构可以随时间更改。
+
+在本教程中，我们将介绍从官方 MongoDB 存储库在 Ubuntu 18.04 计算机上安装和配置最新版 MongoDB Community Edition 的过程。">
+
+
+<meta itemprop="datePublished" content="2019-04-26T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-26T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="361">
+
+
+
+<meta itemprop="keywords" content="ubuntu,mongodb,database," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 MongoDB"/>
+<meta name="twitter:description" content="MongoDB 是一个免费的开源文档数据库。它属于一个名为 NoSQL 的数据库系列，它与传统的基于表的 SQL 数据库（如 MySQL 和 PostgreSQL ）不同。
+
+在 MongoDB 中，数据存储在灵活的、类 JSON 的文档中，其中字段可能因文档而异。它不需要预定义的模式，数据结构可以随时间更改。
+
+在本教程中，我们将介绍从官方 MongoDB 存储库在 Ubuntu 18.04 计算机上安装和配置最新版 MongoDB Community Edition 的过程。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 MongoDB</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-26T05:00:00Z">April 26, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>MongoDB 是一个免费的开源文档数据库。它属于一个名为 NoSQL 的数据库系列，它与传统的基于表的 SQL 数据库（如 MySQL 和 PostgreSQL ）不同。</p>
+
+<p>在 MongoDB 中，数据存储在灵活的、<a href="https://www.json.org/">类 JSON </a>的文档中，其中字段可能因文档而异。它不需要预定义的模式，数据结构可以随时间更改。</p>
+
+<p>在本教程中，我们将介绍从官方 MongoDB 存储库在 Ubuntu 18.04 计算机上安装和配置最新版 MongoDB Community Edition 的过程。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="安装-mongodb">安装 MongoDB</h2>
+
+<p>在撰写本文时，最新版本的 MongoDB 是 4.0 版。</p>
+
+<p>在继续安装过程之前，请转到 MongoDB 文档中的 <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#using-deb-packages-recommended">Install on Ubuntu</a> 部分，并检查是否有新版本可用。</p>
+
+<p>以下步骤描述了如何在 Ubuntu 服务器上安装 MongoDB ：</p>
+
+<ol>
+<li><p>启用 MongoDB 存储库</p>
+
+<p>首先，使用以下命令将 MongoDB GPG 密钥添加到系统：</p>
+
+<pre><code class="language-console-bash">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+</code></pre>
+
+<p>导入密钥后，添加 MongoDB 存储库：</p>
+
+<pre><code class="language-console-bash">sudo add-apt-repository 'deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse'
+</code></pre>
+
+<p>如果收到错误消息， <code>add-apt-repository command not found</code> 则说明您需要安装该 <code>software-properties-common</code> 软件包。</p>
+
+<blockquote>
+<p>要安装旧版本的 MongoDB ，只需替换 <code>4.0</code> 为您的想安装的版本即可。</p>
+</blockquote></li>
+
+<li><p>安装 MongoDB</p>
+
+<p>为了能够从 MongoDB 存储库安装软件包，您需要首先更新软件包列表：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+</code></pre>
+
+<p>现在已启用存储库并更新了包列表，您可以使用 apt 包管理器安装 <code>mongodb-org</code> 包：</p>
+
+<pre><code class="language-console-bash">sudo apt install mongodb-org
+</code></pre>
+
+<p>以下软件包将作为 <code>mongodb-org</code> 软件包的一部分安装在您的系统上：</p>
+
+<ul>
+<li><code>mongodb-org-server</code>- <code>mongod</code> 守护程序和相应的 init 脚本和配置。</li>
+<li><code>mongodb-org-mongos</code>- <code>mongos</code> 守护进程。</li>
+<li><code>mongodb-org-shell</code> - mongo shell 是 MongoDB 的交互式 JavaScript 接口。它用于通过命令行执行管理任务。</li>
+<li><code>mongodb-org-tools</code> - 包含几个 MongoDB 工具，用于导入和导出数据，统计信息以及其他实用程序。</li>
+</ul></li>
+
+<li><p>启动 MongoDB</p>
+
+<p>安装完成后，通过键入以下内容启动 MongoDB 守护程序并启用随机自启动：</p>
+
+<pre><code class="language-console-bash">sudo systemctl start mongod
+sudo systemctl enable mongod
+</code></pre>
+
+<ol>
+<li>验证 MongoDB 安装</li>
+</ol>
+
+<p>要验证安装是否已成功完成，我们要使用 <code>mongo</code> 工具连接到 MongoDB 数据库服务器并打印连接状态：</p>
+
+<pre><code class="language-console-bash">mongo --eval 'db.runCommand({ connectionStatus: 1 })'
+</code></pre>
+
+<p>输出将如下所示：</p>
+
+<pre><code class="language-output">MongoDB shell version v4.0.2
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 4.0.2
+{
+  &quot;authInfo&quot; : {
+    &quot;authenticatedUsers&quot; : [ ],
+    &quot;authenticatedUserRoles&quot; : [ ]
+  },
+  &quot;ok&quot; : 1
+}
+</code></pre>
+
+<p>字段 <code>ok</code> 的值为 <code>1</code> 表示成功。</p>
+
+<h2 id="配置-mongodb">配置 MongoDB</h2>
+
+<p>MongoDB 使用 <a href="http://yaml.org/">YAML</a> 格式的配置文件 <code>/etc/mongod.conf</code> 。您可以通过编辑此文件来配置 MongoDB 实例。</p>
+
+<p>默认配置设置足以满足大多数用户的需求。但是，对于生产环境，建议把安全部分的注释取消并启用授权，如下所示：</p>
+
+<pre><code class="language-yaml">security:
+authorization: enabled
+</code></pre></li>
+</ol>
+
+<p>选项 <code>authorization</code> 启用<a href="https://docs.mongodb.com/manual/core/authorization/">基于角色的访问控制(RBAC)</a>，以控制用户对数据库资源和操作的访问。如果禁用此选项，则每个用户都可以访问所有数据库并执行任何操作。</p>
+
+<p>在更改 MongoDB 配置文件后，使用以下命令重新启动 mongod 服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart mongod
+</code></pre>
+
+<p>要查找有关 MongoDB 4.0 中可用配置选项的更多信息，请访问<a href="https://docs.mongodb.com/manual/reference/configuration-options/">配置文件选项</a>文档页面。</p>
+
+<h2 id="创建管理-mongodb-用户">创建管理 MongoDB 用户</h2>
+
+<p>如果启用了 MongoDB 身份验证，请创建一个管理 MongoDB 用户，该用户将用于访问和管理 MongoDB 实例。</p>
+
+<p>首先访问 mongo shell ：</p>
+
+<pre><code class="language-console-bash">mongo
+</code></pre>
+
+<p>进入 MongoDB shell 后，键入以下命令以连接到 <code>admin</code> 数据库：</p>
+
+<pre><code class="language-json">use admin
+</code></pre>
+
+<pre><code class="language-output">switched to db admin
+</code></pre>
+
+<p>发出以下命令以创建具有 <code>userAdminAnyDatabase</code> 角色的新用户 <code>mongoAdmin</code>：</p>
+
+<pre><code class="language-json">db.createUser(
+  {
+    user: &quot;mongoAdmin&quot;, 
+    pwd: &quot;changeMe&quot;, 
+    roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]
+  }
+)
+</code></pre>
+
+<pre><code class="language-output">Successfully added user: {
+	&quot;user&quot; : &quot;mongoAdmin&quot;,
+	&quot;roles&quot; : [
+		{
+			&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,
+			&quot;db&quot; : &quot;admin&quot;
+		}
+	]
+}
+</code></pre>
+
+<blockquote>
+<p>您可以根据需要为管理 MongoDB 的用户命名。</p>
+</blockquote>
+
+<p>退出 mongo shell ：</p>
+
+<pre><code class="language-json">quit()
+</code></pre>
+
+<p>要测试更改，请使用先前创建的管理用户访问 mongo shell ：</p>
+
+<pre><code class="language-json">mongo -u mongoAdmin -p --authenticationDatabase admin
+</code></pre>
+
+<pre><code class="language-json">use admin
+</code></pre>
+
+<pre><code class="language-output">switched to db admin
+</code></pre>
+
+<p>现在，打印用户：</p>
+
+<pre><code class="language-json">show users
+</code></pre>
+
+<pre><code class="language-output">{
+	&quot;_id&quot; : &quot;admin.mongoAdmin&quot;,
+	&quot;user&quot; : &quot;mongoAdmin&quot;,
+	&quot;db&quot; : &quot;admin&quot;,
+	&quot;roles&quot; : [
+		{
+			&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,
+			&quot;db&quot; : &quot;admin&quot;
+		}
+	],
+	&quot;mechanisms&quot; : [
+		&quot;SCRAM-SHA-1&quot;,
+		&quot;SCRAM-SHA-256&quot;
+	]
+}
+</code></pre>
+
+<p>您也可以尝试访问没有任何参数的 mongo shell （只需键入 <code>mongo</code> ），看看是否可以使用与上面相同的命令列出用户。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在 Ubuntu 18.04 服务器上安装和配置 MongoDB 4.0 。</p>
+
+<p>有关此主题的更多信息，请参阅 <a href="https://docs.mongodb.com/manual/">The MongoDB 4.0 手册</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mongodb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mongodb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/database" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">database</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-mount-an-exfat-drive-on-ubuntu/">如何在 Ubuntu Linux 上安装 exFAT 驱动器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-the-latest-eclipse-ide-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装最新的 Eclipse IDE</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opera-web-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Opera 浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vlc-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 VLC Media Player</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-mattermost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Mattermost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

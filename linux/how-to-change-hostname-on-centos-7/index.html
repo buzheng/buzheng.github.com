@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 CentOS 7 上更改主机名</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上更改主机名" />
+<meta property="og:description" content="本教程将指导您完成在 CentOS 7 系统上更改主机名的过程。
+
+主机名在安装 CentOS 操作系统时设置，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。
+
+本教程中描述的方法无需重新启动系统即可运行。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-change-hostname-on-centos-7/" />
+<meta property="article:published_time" content="2019-03-29T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-29T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上更改主机名">
+<meta itemprop="description" content="本教程将指导您完成在 CentOS 7 系统上更改主机名的过程。
+
+主机名在安装 CentOS 操作系统时设置，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。
+
+本教程中描述的方法无需重新启动系统即可运行。">
+
+
+<meta itemprop="datePublished" content="2019-03-29T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-29T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="216">
+
+
+
+<meta itemprop="keywords" content="linux,hostname," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上更改主机名"/>
+<meta name="twitter:description" content="本教程将指导您完成在 CentOS 7 系统上更改主机名的过程。
+
+主机名在安装 CentOS 操作系统时设置，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。
+
+本教程中描述的方法无需重新启动系统即可运行。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 CentOS 7 上更改主机名</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-29T05:00:00Z">March 29, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程将指导您完成在 CentOS 7 系统上更改主机名的过程。</p>
+
+<p>主机名在安装 CentOS 操作系统时设置，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。</p>
+
+<p>本教程中描述的方法无需重新启动系统即可运行。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="了解主机名">了解主机名</h2>
+
+<p>主机名是标识网络上的计算机的标签。您不应在同一网络上的两台不同计算机上使用相同的主机名。</p>
+
+<p><code>hostname</code> 有三种类型： <code>static</code> ， <code>pretty</code> ，和 <code>transient</code> 。</p>
+
+<ul>
+<li><code>static</code> - 传统的主机名，可由用户设置，并存储在 <code>/etc/hostname</code> 文件中。</li>
+<li><code>pretty</code> - 用于呈现给用户的自由格式 UTF8 主机名。例如 <code>buzheng's desktop</code> 。</li>
+<li><code>transient</code> - 内核维护的动态主机名，可在运行时由 DHCP 或 mDNS 服务器更改。默认情况下，它与 <code>static</code> 主机名相同。</li>
+</ul>
+
+<p>建议对 <code>static</code> 和 <code>transient</code> 这两种主机名称使用完全限定的域名(<a href="https://kb.iu.edu/d/aiuv"><code>FQDN</code></a>) ，比如: <code>host.example.com</code> 。</p>
+
+<h2 id="显示当前主机名">显示当前主机名</h2>
+
+<p>要查看当前主机名，请输入以下命令：</p>
+
+<pre><code class="language-console-bash">hostnamectl
+</code></pre>
+
+<p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-7-hostnamectl.jpg" alt="" /></p>
+
+<p>从上图中可以看出，当前主机名设置为 <code>localhost.localdomain</code> 。</p>
+
+<h2 id="更改主机名">更改主机名</h2>
+
+<h3 id="方法1-使用-hostnamectl-命令">方法1：使用 <code>hostnamectl</code> 命令</h3>
+
+<p>在 CentOS 7 中我们可以使用命令 <code>hostnamectl</code> 更改系统主机名和相关设置，语法如下：</p>
+
+<pre><code class="language-console-bash">sudo hostnamectl set-hostname host.example.comsudo hostnamectl set-hostname &quot;Your Pretty HostName&quot; --prettysudo hostnamectl set-hostname host.example.com --staticsudo hostnamectl set-hostname host.example.com --transient
+</code></pre>
+
+<p>例如，我们要将系统静态主机名更改为 <code>host.buzheng.org</code> ，我们可以使用以下命令：</p>
+
+<pre><code class="language-console-bash">sudo hostnamectl set-hostname host.buzheng.org
+</code></pre>
+
+<p>要将 <code>pretty</code> 主机名设置为 <code>buzheng's desktop</code> ，请输入：</p>
+
+<pre><code class="language-console-bash">sudo hostnamectl set-hostname &quot;buzheng's desktop&quot; --pretty
+</code></pre>
+
+<p><code>hostnamectl</code> 命令不产生输出。成功时，返回 0 ，否则返回非零故障代码。</p>
+
+<h3 id="方法-2-使用-nmtui-命令">方法 2 ：使用 <code>nmtui</code> 命令</h3>
+
+<p><code>nmtui</code>  是 NetworkManager 的文本用户界面，也可用于更改主机名。</p>
+
+<p>要启动该 <code>nmtui</code> 实用程序，请运行以下命令：</p>
+
+<pre><code class="language-console-bash">sudo nmtui
+</code></pre>
+
+<p>使用箭头键浏览选项，选择 <code>Set system hostname</code> 并按 <code>Enter</code> ：</p>
+
+<p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-nmtui.jpg" alt="" /></p>
+
+<p>设置新主机名：</p>
+
+<p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-nmtui-change-hostname.jpg" alt="" /></p>
+
+<p>按 Enter 确认主机名更改：</p>
+
+<p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-nmtui-set-hostname.jpg" alt="" /></p>
+
+<p>最后，重新启动 <code>systemd-hostnamed</code> 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart systemd-hostnamed
+</code></pre>
+
+<h3 id="方法3-使用-nmcli-命令">方法3：使用 <code>nmcli</code> 命令</h3>
+
+<p><code>nmcli</code>  是一个用于控制 NetworkManager 的命令行工具，它也可用于更改主机名。</p>
+
+<p>要查看当前主机名类型：</p>
+
+<pre><code class="language-console-bash">sudo nmcli general hostname
+</code></pre>
+
+<p>要更改主机名为 <code>host.buzheng.org</code> 使用以下命令：</p>
+
+<pre><code class="language-console-bash">sudo nmcli general hostname host.buzheng.org
+</code></pre>
+
+<p>最后，重新启动 <code>systemd-hostnamed</code> 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart systemd-hostnamed
+</code></pre>
+
+<h2 id="验证更改">验证更改</h2>
+
+<p>要验证主机名是否已成功更改，请使用以下 <code>hostnamectl</code> 命令：</p>
+
+<pre><code>hostnamectl
+
+</code></pre>
+
+<p>您的新主机名将打印在控制台上：</p>
+
+<pre><code class="language-output">   Static hostname: host.buzheng.org
+   Pretty hostname: buzheng's desktop
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 52d6807a6ae34327871ae568f7a1387e
+           Boot ID: 4f747d0280d3402abed870d18b6e9a7a
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-693.11.6.el7.x86_64
+      Architecture: x86-64
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了 3 种不同的方法，用于在不重新启动计算机的情况下更改 CentOS 7 服务器的主机名。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/hostname" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">hostname</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/linux-shutdown-command/">Linux shutdown 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-user-password-in-linux/">如何在 Linux 中更改用户密码</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/wget-command-examples/">wget 命令示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-passwordless-ssh-login/">如何设置 SSH 免密登录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-users-in-linux-using-the-userdel-command/">如何使用 userdel 命令在 Linux 中删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-find-files-in-linux-using-the-command-line/">如何使用命令行在 Linux 中查找文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-linux-screen/">如何使用 Linux  screen</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-zip-files-and-directories-in-linux/">如何在 Linux 中压缩文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-ssh-port-in-linux/">如何在 Linux 中更改 SSH 端口</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-automatic-odoo-backup/">如何设置 Odoo 自动备份</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-linux-swap-file/">创建 Linux Swap 交换区文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

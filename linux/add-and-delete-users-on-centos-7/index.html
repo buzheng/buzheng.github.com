@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 CentOS 7 中添加和删除用户</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 7 中添加和删除用户" />
+<meta property="og:description" content="和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/add-and-delete-users-on-centos-7/" />
+<meta property="article:published_time" content="2019-02-26T11:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-02-26T11:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 CentOS 7 中添加和删除用户">
+<meta itemprop="description" content="和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。">
+
+
+<meta itemprop="datePublished" content="2019-02-26T11:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-02-26T11:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="91">
+
+
+
+<meta itemprop="keywords" content="linux,centos,教程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 CentOS 7 中添加和删除用户"/>
+<meta name="twitter:description" content="和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 CentOS 7 中添加和删除用户</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-02-26T11:00:00Z">February 26, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您需要以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>才能创建和删除用户。</p>
+
+<h2 id="在-centos-中添加用户">在 CentOS 中添加用户</h2>
+
+<p>在 CentOS 中，您可以使用 <code>useradd</code> 命令行实用程序创建新的用户帐户。</p>
+
+<p>要创建一个名为的新用户帐户，username您将运行：</p>
+
+<pre><code class="language-bash">sudo adduser username
+</code></pre>
+
+<p>上面的命令不显示输出。它将创建新用户的主目录 <code>/home/username</code>，并将文件从 <code>/etc/skel</code> 目录复制到用户的主目录。在主目录中，用户可以编写，编辑和删除文件和目录。</p>
+
+<p>接下来，您需要为新用户设置密码，以便用户可以登录。为此，请使用以下passwd命令：</p>
+
+<pre><code class="language-bash">sudo passwd username
+</code></pre>
+
+<p>系统将提示您输入并确认密码。确保使用强密码。</p>
+
+<pre><code class="language-bash">Changing password for user username.
+New password: 
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+</code></pre>
+
+<p>默认情况下，在CentOS上，组 <code>wheel</code> 的成员被授予 <code>sudo</code> 访问权限。</p>
+
+<p>如果您希望新创建的用户具有管理权限，请将用户添加到 <code>wheel</code> 组：</p>
+
+<pre><code class="language-bash">sudo usermod -aG wheel username
+</code></pre>
+
+<p>如果您以 <code>root</code> 身份登录，则不必使用 <code>sudo</code> 预先添加每个命令。</p>
+
+<h2 id="在-centos-中删除用户">在 CentOS 中删除用户</h2>
+
+<p>如果不再需要用户帐户，则可以使用 <code>deluser</code> 命令行工具将其删除。</p>
+
+<p>如果要删除用户而不删除用户文件，请运行：</p>
+
+<pre><code class="language-bash">sudo userdel username
+</code></pre>
+
+<p>如果要删除并且用户的主目录和邮件假脱机使用该-r标志：</p>
+
+<pre><code class="language-bash">sudo userdel -r username
+</code></pre>
+
+<p>成功时，<code>userdel</code> 命令不会产生任何输出。</p>
+
+<p>如果用户被授予 <code>sudo</code> 权限，则将删除 <code>wheel</code> 组，以及用户所属的任何其他组。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何在 CentOS 中添加和删除用户。同样的，相同的命令也适用于任何其他 Linux 发行版。</p>
+
+<!-- how-to-add-and-delete-users-on-centos-7 --><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%95%99%E7%A8%8B" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">教程</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Mysql 5.7 从节点配置多线程主从复制</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Mysql 5.7 从节点配置多线程主从复制" />
+<meta property="og:description" content="Mysql 采用多线程进行复制是从 Mysql 5.6 开始支持的内容，但是 5.6 版本下有缺陷，虽然支持多线程，但是每个数据库只能一个线程，也就是说如果我们只有一个数据库，则主从复制时也只有一个线程在工作。相当于还是以前的单线程。 从 Mysql 5.7 开始支持同一数据库下并行主从复制。不过默认情况下，还是单数据库单个线程，如果需要使用多线程，需要在从节点进行配置。
+
+Mysql 5.7 对主从复制增加了一种类型，共有两种类型，如下：
+
+
+DATABASE 基于库的并行复制 ， 每个数据库对应一个复制线程
+LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可以有多个线程
+
+
+下面的步骤，在从节点上进行配置。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/20170222-mysql-57-slave-multi-thread-replication/" />
+<meta property="article:published_time" content="2017-02-22T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-02-22T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Mysql 5.7 从节点配置多线程主从复制">
+<meta itemprop="description" content="Mysql 采用多线程进行复制是从 Mysql 5.6 开始支持的内容，但是 5.6 版本下有缺陷，虽然支持多线程，但是每个数据库只能一个线程，也就是说如果我们只有一个数据库，则主从复制时也只有一个线程在工作。相当于还是以前的单线程。 从 Mysql 5.7 开始支持同一数据库下并行主从复制。不过默认情况下，还是单数据库单个线程，如果需要使用多线程，需要在从节点进行配置。
+
+Mysql 5.7 对主从复制增加了一种类型，共有两种类型，如下：
+
+
+DATABASE 基于库的并行复制 ， 每个数据库对应一个复制线程
+LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可以有多个线程
+
+
+下面的步骤，在从节点上进行配置。">
+
+
+<meta itemprop="datePublished" content="2017-02-22T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-02-22T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="454">
+
+
+
+<meta itemprop="keywords" content="Mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mysql 5.7 从节点配置多线程主从复制"/>
+<meta name="twitter:description" content="Mysql 采用多线程进行复制是从 Mysql 5.6 开始支持的内容，但是 5.6 版本下有缺陷，虽然支持多线程，但是每个数据库只能一个线程，也就是说如果我们只有一个数据库，则主从复制时也只有一个线程在工作。相当于还是以前的单线程。 从 Mysql 5.7 开始支持同一数据库下并行主从复制。不过默认情况下，还是单数据库单个线程，如果需要使用多线程，需要在从节点进行配置。
+
+Mysql 5.7 对主从复制增加了一种类型，共有两种类型，如下：
+
+
+DATABASE 基于库的并行复制 ， 每个数据库对应一个复制线程
+LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可以有多个线程
+
+
+下面的步骤，在从节点上进行配置。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">Mysql 5.7 从节点配置多线程主从复制</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2017-02-22T00:00:00Z">February 22, 2017</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Mysql 采用多线程进行复制是从 Mysql 5.6 开始支持的内容，但是 5.6 版本下有缺陷，虽然支持多线程，但是每个数据库只能一个线程，也就是说如果我们只有一个数据库，则主从复制时也只有一个线程在工作。相当于还是以前的单线程。 从 Mysql 5.7 开始支持同一数据库下并行主从复制。不过默认情况下，还是单数据库单个线程，如果需要使用多线程，需要在从节点进行配置。</p>
+
+<p>Mysql 5.7 对主从复制增加了一种类型，共有两种类型，如下：</p>
+
+<ul>
+<li><code>DATABASE</code> 基于库的并行复制 ， 每个数据库对应一个复制线程</li>
+<li><code>LOGICAL_CLOCK</code>  基于组提交的并行复制方式，同一个数据库下可以有多个线程</li>
+</ul>
+
+<p><strong>下面的步骤，在从节点上进行配置。</strong></p>
+
+<h2 id="查看当前配置">查看当前配置</h2>
+
+<p>在开始配置之前，我们先看一下当前配置下的主从复制的进程数。</p>
+
+<pre><code class="language-sql">mysql&gt; show processlist;
++----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
+| Id | User        | Host      | db   | Command | Time  | State                                                  | Info             |
++----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
+|  1 | system user |           | NULL | Connect | 91749 | Waiting for master to send event                       | NULL             |
+|  2 | system user |           | NULL | Connect |   208 | Slave has read all relay log; waiting for more updates | NULL             |
+| 37 | root        | localhost | NULL | Query   |     0 | starting                                               | show processlist |
++----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
+3 rows in set (0.00 sec)
+</code></pre>
+
+<p>从上面看出只有一个主进程在等待同步。</p>
+
+<p><strong>下面查看复制类型和并行数量配置</strong></p>
+
+<pre><code class="language-sql">mysql&gt; show variables like 'slave_parallel_type';
++---------------------+----------+
+| Variable_name       | Value    |
++---------------------+----------+
+| slave_parallel_type | DATABASE |
++---------------------+----------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<p>当前的复制类型是 DATABASE，也就是统一数据库下只有一个线程进行复制，不能并行复制。</p>
+
+<pre><code class="language-sql">mysql&gt; show variables like 'slave_parallel_workers';
++------------------------+-------+
+| Variable_name          | Value |
++------------------------+-------+
+| slave_parallel_workers | 0     |
++------------------------+-------+
+1 row in set (0.01 sec)
+</code></pre>
+
+<p>当前并行工作的进程数是 0</p>
+
+<h2 id="配置多线程">配置多线程</h2>
+
+<p>1、停止从节点复制</p>
+
+<pre><code class="language-sql">mysql&gt; stop slave;
+Query OK, 0 rows affected (0.01 sec)
+</code></pre>
+
+<p>2、设置复制类型为 LOGICAL_CLOCK</p>
+
+<pre><code class="language-sql">mysql&gt; set global slave_parallel_type='logical_clock';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; show variables like 'slave_parallel_type';
++---------------------+---------------+
+| Variable_name       | Value         |
++---------------------+---------------+
+| slave_parallel_type | LOGICAL_CLOCK |
++---------------------+---------------+
+1 row in set (0.01 sec)
+</code></pre>
+
+<p>3、设置并行数量为 4</p>
+
+<pre><code class="language-sql">mysql&gt; set global slave_parallel_workers=4;
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql&gt; show variables like 'slave_parallel_workers';
++------------------------+-------+
+| Variable_name          | Value |
++------------------------+-------+
+| slave_parallel_workers | 4     |
++------------------------+-------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<p>4、启动从节点复制</p>
+
+<pre><code class="language-sql">mysql&gt; start slave;
+Query OK, 0 rows affected (0.02 sec)
+</code></pre>
+
+<p>5、查看一下当前工作的线程数</p>
+
+<pre><code class="language-sql">mysql&gt; show processlist;
++----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
+| Id | User        | Host      | db   | Command | Time | State                                                  | Info             |
++----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
+| 37 | root        | localhost | NULL | Query   |    0 | starting                                               | show processlist |
+| 38 | system user |           | NULL | Connect |    8 | Waiting for master to send event                       | NULL             |
+| 39 | system user |           | NULL | Connect |    7 | Slave has read all relay log; waiting for more updates | NULL             |
+| 40 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
+| 41 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
+| 42 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
+| 43 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
++----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
+7 rows in set (0.00 sec)
+</code></pre>
+
+<p>最后说一下为什么需要多线程复制？因为主从之间的同步会有延时，多线程的目的是为了尽量减少这个延时时间。虽然如何优化主从是一个系统的功能，不同的场景需要不同的解决方案，但是多线程至少从基础上能减少延迟时间。另外根据数据库的实际情况，能否真正减少延时，以及配置多少线程，则需要反复的测试得出适合自己的数据。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Mysql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/20170216-simple-mysql-backup-bat-script/">一个简单的 Mysql 备份 BAT 脚本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos7-mysql57-replication/">Mysql 配置主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos7-install-mysql57/">CentOS 7 安装 mysql 5.7.10</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

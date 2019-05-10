@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 一个简单的 Mysql 备份 BAT 脚本</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="一个简单的 Mysql 备份 BAT 脚本" />
+<meta property="og:description" content="这是一个简单的 Windows 下备份 Mysql 的 BAT 脚本，脚本使用 mysqldump 命令来备份一个指定的 Mysql 数据库到一个文件，文件格式为 %dbname%-yyyyMMddHHmmss.sql，只保留最近60天的备份。如果想定时执行，在 Windows 中添加任务计划即可。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/20170216-simple-mysql-backup-bat-script/" />
+<meta property="article:published_time" content="2017-02-16T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-02-16T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="一个简单的 Mysql 备份 BAT 脚本">
+<meta itemprop="description" content="这是一个简单的 Windows 下备份 Mysql 的 BAT 脚本，脚本使用 mysqldump 命令来备份一个指定的 Mysql 数据库到一个文件，文件格式为 %dbname%-yyyyMMddHHmmss.sql，只保留最近60天的备份。如果想定时执行，在 Windows 中添加任务计划即可。">
+
+
+<meta itemprop="datePublished" content="2017-02-16T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-02-16T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="68">
+
+
+
+<meta itemprop="keywords" content="Mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="一个简单的 Mysql 备份 BAT 脚本"/>
+<meta name="twitter:description" content="这是一个简单的 Windows 下备份 Mysql 的 BAT 脚本，脚本使用 mysqldump 命令来备份一个指定的 Mysql 数据库到一个文件，文件格式为 %dbname%-yyyyMMddHHmmss.sql，只保留最近60天的备份。如果想定时执行，在 Windows 中添加任务计划即可。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">一个简单的 Mysql 备份 BAT 脚本</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2017-02-16T00:00:00Z">February 16, 2017</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>这是一个简单的 Windows 下备份 Mysql 的 BAT 脚本，脚本使用 mysqldump 命令来备份一个指定的 Mysql 数据库到一个文件，文件格式为 <code>%dbname%-yyyyMMddHHmmss.sql</code>，只保留最近60天的备份。如果想定时执行，在 Windows 中添加<strong>任务计划</strong>即可。</p>
+
+<pre><code>@echo off
+
+set hour=%time:~0,2%
+if &quot;%time:~0,1%&quot;==&quot; &quot; set hour=0%time:~1,1%
+set now=%Date:~0,4%%Date:~5,2%%Date:~8,2%%hour%%Time:~3,2%%Time:~6,2%
+echo %now%
+
+set host=xxx.xxx.xxx.xxx
+set port=3306
+set user=root
+set pass=root
+set dbname=dataname
+set backupfile=E:\backup\db\%dbname%-%now%.sql
+
+E:\backup\mysql-5.7.13-winx64\bin\mysqldump -h%host% -P%port% -u%user% -p%pass% -c --add-drop-table %dbname% &gt; %backupfile%
+
+echo delete files before 60 days
+
+forfiles /p &quot;E:\backup\db&quot; /m *.sql /d -60 /c &quot;cmd /c del @file /f&quot;
+</code></pre><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Mysql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/centos7-mysql57-replication/">Mysql 配置主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/centos7-install-mysql57/">CentOS 7 安装 mysql 5.7.10</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

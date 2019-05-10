@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Nginx&#43;tomcat 负载均衡发布应用新版本</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Nginx&#43;tomcat 负载均衡发布应用新版本" />
+<meta property="og:description" content="本文记录在 Nginx&#43;tomcat 负载均衡环境 下，当需要发布新版的tomcat应用时采取的几种方法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/nginx-tomcat-deploy-app-new-version/" />
+<meta property="article:published_time" content="2014-07-20T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-07-20T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Nginx&#43;tomcat 负载均衡发布应用新版本">
+<meta itemprop="description" content="本文记录在 Nginx&#43;tomcat 负载均衡环境 下，当需要发布新版的tomcat应用时采取的几种方法。">
+
+
+<meta itemprop="datePublished" content="2014-07-20T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-07-20T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="72">
+
+
+
+<meta itemprop="keywords" content="运维," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nginx&#43;tomcat 负载均衡发布应用新版本"/>
+<meta name="twitter:description" content="本文记录在 Nginx&#43;tomcat 负载均衡环境 下，当需要发布新版的tomcat应用时采取的几种方法。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">Nginx&#43;tomcat 负载均衡发布应用新版本</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2014-07-20T00:00:00Z">July 20, 2014</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文记录在 <a href="../ubuntu-keepalived-nginx-tomcat-load-lalance/">Nginx+tomcat 负载均衡环境</a> 下，当需要发布新版的tomcat应用时采取的几种方法。</p>
+
+<p>Nginx + tomcat 负载均衡环境下，我们一般会将 tomcat 应用设计为 无状态的，这样无论是对于整个环境的横向扩展，还是发布新应用都是有帮助的。 在开始之前，我们先了解一下几点：</p>
+
+<ul>
+<li>nginx 重启很快，但也需要时间</li>
+<li>nginx 可以实现配置的平滑重新加载</li>
+<li>tomcat 应用部署需要重新启动</li>
+</ul>
+
+<p>1，逐个 tomcat 节点发布应用</p>
+
+<p>tomcat 发布应用新版本是需要重启，在重启的过程中，nginx 会自动剔除无响应的节点，等重启完成后，nginx 又会将该 tomcat 节点自动添加进来。</p>
+
+<p>这种方式优点就是操作比较简单，缺点是影响用户操作。如果某个用户的操作刚好落在正在发布重启的 tomcat 节点上，必然会受到影响，虽然是短暂的。而在其他 tomcat 继续发布的时候，又会扩大这种影响。</p>
+
+<p>这种方式需要选择用户量最少的时间进行，一般是午夜过后。</p>
+
+<p>2，基于第一种方案的缺点，又结合 nginx 可以对配置平滑加载。可以在发布某个 tomcat 节点前修改 nginx 配置，将该节点剔除，然后重新平滑 reload nginx 的配置文件，发布完成后，再修改回来，再重新 reload nginx 的配置文件。 然后继续发布另外一个 tomcat 节点。</p>
+
+<p>这样的好处就是将对用户的影响减少到最低，缺点就是给运维人员带来很大的工作量，试想一下 tomcat 节点较多的场景。</p>
+
+<p>3，如何减少工作量？</p>
+
+<p>一般我们生产环境下，会有两组 tomcat ， 一组用于线上服务（线上组），一组作为备份（备份组）。我们可以先将备份组所有 tomcat 节点部署好，然后修改 nginx 配置文件，切换到备份组，然后操作 nginx 平滑 reload 配置文件。最后再将 线上组 所有 tomcat 节点部署好。 此时 备份组转为线上组，而线上组转为备份组。</p>
+
+<p>这样只修改一次配置文件，相比第二种减少了很多工作量，也就减少了很多出错的机会。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/%E8%BF%90%E7%BB%B4" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">运维</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/ubuntu-keepalived-nginx-tomcat-load-lalance/">Ubuntu下配置 keepalived&#43;nginx&#43;tomcat 负载均衡</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

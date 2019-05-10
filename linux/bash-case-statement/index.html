@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Bash 中 Case 语句用法</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash 中 Case 语句用法" />
+<meta property="og:description" content="在 Bash 中，当您有多个不同的选择时， case 语句通常用于简化复杂的条件。 使用 case 语句而不是嵌套的 if 语句将帮助您使 bash 脚本更易读，更易于维护。
+
+Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的概念。与 C 中的 switch 语句不同主要在于， Bash 中的 case 语句一旦找到一个并执行与该模式关联的语句，就不会继续搜索模式匹配。
+
+在本教程中，我们将介绍 Bash 案例语句的基础知识，并向您展示如何在 shell 脚本中使用它们。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/bash-case-statement/" />
+<meta property="article:published_time" content="2019-03-02T09:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-02T09:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Bash 中 Case 语句用法">
+<meta itemprop="description" content="在 Bash 中，当您有多个不同的选择时， case 语句通常用于简化复杂的条件。 使用 case 语句而不是嵌套的 if 语句将帮助您使 bash 脚本更易读，更易于维护。
+
+Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的概念。与 C 中的 switch 语句不同主要在于， Bash 中的 case 语句一旦找到一个并执行与该模式关联的语句，就不会继续搜索模式匹配。
+
+在本教程中，我们将介绍 Bash 案例语句的基础知识，并向您展示如何在 shell 脚本中使用它们。">
+
+
+<meta itemprop="datePublished" content="2019-03-02T09:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-02T09:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="193">
+
+
+
+<meta itemprop="keywords" content="linux,bash,教程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Bash 中 Case 语句用法"/>
+<meta name="twitter:description" content="在 Bash 中，当您有多个不同的选择时， case 语句通常用于简化复杂的条件。 使用 case 语句而不是嵌套的 if 语句将帮助您使 bash 脚本更易读，更易于维护。
+
+Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的概念。与 C 中的 switch 语句不同主要在于， Bash 中的 case 语句一旦找到一个并执行与该模式关联的语句，就不会继续搜索模式匹配。
+
+在本教程中，我们将介绍 Bash 案例语句的基础知识，并向您展示如何在 shell 脚本中使用它们。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">Bash 中 Case 语句用法</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-02T09:00:00Z">March 2, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在 Bash 中，当您有多个不同的选择时， case 语句通常用于简化复杂的条件。 使用 case 语句而不是嵌套的 if 语句将帮助您使 bash 脚本更易读，更易于维护。</p>
+
+<p>Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的概念。与 C 中的 switch 语句不同主要在于， Bash 中的 case 语句一旦找到一个并执行与该模式关联的语句，就不会继续搜索模式匹配。</p>
+
+<p>在本教程中，我们将介绍 Bash 案例语句的基础知识，并向您展示如何在 shell 脚本中使用它们。</p>
+
+<h2 id="case-语句语法">Case 语句语法</h2>
+
+<p>Bash 中的 case 语句采用以下形式：</p>
+
+<pre><code class="language-bash">case EXPRESSION in
+
+  PATTERN_1)
+    STATEMENTS
+    ;;
+
+  PATTERN_2)
+    STATEMENTS
+    ;;
+
+  PATTERN_N)
+    STATEMENTS
+    ;;
+
+  *)
+    STATEMENTS
+    ;;
+esac
+</code></pre>
+
+<ul>
+<li>每个 case 语句都以 case 关键字开头，后面跟 case 表达式和关键字开头 in ，该语句以esac关键字结尾。</li>
+<li>您可以使用由 <code>|</code> 运算符分隔的多个模式。该 <code>)</code> 运营商终止模式列表。</li>
+<li>模式可以包含<a href="https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html#Pattern-Matching">特殊字符</a>。</li>
+<li>模式及其相关命令称为子句。</li>
+<li>每个子句必须以 <code>;;</code> 。</li>
+<li>与 case 表达式相匹配的第一个模式中对应的命令会被执行。</li>
+<li>通常的做法是使用通配符星号（<code>*</code>）作为最终模式来定义默认情况。这个模式总是匹配所有的情况。</li>
+<li>如果没有匹配的模式，则返回状态为零。否则，返回状态是执行的命令的退出状态。</li>
+</ul>
+
+<h2 id="案例陈述示例">案例陈述示例</h2>
+
+<p>这里是一个在 bash 脚本中使用 case 语句的示例，该脚本会打印给定国家/地区的官方语言：</p>
+
+<p>languages.sh</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+echo -n &quot;Enter the name of a country: &quot;
+read COUNTRY
+
+echo -n &quot;The official language of $COUNTRY is &quot;
+
+case $COUNTRY in
+
+  Lithuania)
+    echo -n &quot;Lithuanian&quot;
+    ;;
+
+  Romania | Moldova)
+    echo -n &quot;Romanian&quot;
+    ;;
+
+  Italy | &quot;San Marino&quot; | Switzerland | &quot;Vatican City&quot;)
+    echo -n &quot;Italian&quot;
+    ;;
+
+  *)
+    echo -n &quot;unknown&quot;
+    ;;
+esac
+</code></pre>
+
+<p>将以上自定义脚本另存为文件 <code>languages.sh</code> 并从命令行运行它。</p>
+
+<pre><code class="language-bash">bash languages.sh
+</code></pre>
+
+<p>该脚本将要求您输入国家/地区。例如，如果键入“Lithuania”，它将匹配第一个模式，并且 <code>echo</code> 将执行该子句中的命令。</p>
+
+<p>该脚本将打印以下输出：</p>
+
+<pre><code class="language-bash">Enter the name of a country: Lithuania
+The official language of Lithuania is Lithuanian
+</code></pre>
+
+<p>如果您输入的国家/地区与默认通配符星号符号之外的任何其他模式都不匹配，假设输入是阿根廷的话，该脚本将执行默认子句中 <code>echo</code> 命令。</p>
+
+<pre><code class="language-bash">Enter the name of a country: Argentina
+The official language of Argentina is unknown
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何编写 bash case 语句。它们通常用于从命令行将参数传递给 shell 脚本。例如，init 脚本使用 case 语句来启动，停止或重新启动服务。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/bash" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">bash</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%95%99%E7%A8%8B" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">教程</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">在 Linux 中使用 ls 命令列出文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

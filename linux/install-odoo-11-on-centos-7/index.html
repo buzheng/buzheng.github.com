@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 CentOS 7 上安装 Odoo 11</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 7 上安装 Odoo 11" />
+<meta property="og:description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供了一系列商业应用程序，包括 CRM ，网站，电子商务，账单，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们无法通过 Oumo 存储库中的 yum 安装 Odoo 包。
+
+我们要么在 docker  容器中运行 Odoo ，要么在 Python 虚拟环境中安装它。
+
+在本教程中，我们将向您介绍如何在 CentOS 7 计算机上使用 Git 源和 Python 虚拟环境安装 Odoo 11 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/install-odoo-11-on-centos-7/" />
+<meta property="article:published_time" content="2019-03-08T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-08T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 CentOS 7 上安装 Odoo 11">
+<meta itemprop="description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供了一系列商业应用程序，包括 CRM ，网站，电子商务，账单，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们无法通过 Oumo 存储库中的 yum 安装 Odoo 包。
+
+我们要么在 docker  容器中运行 Odoo ，要么在 Python 虚拟环境中安装它。
+
+在本教程中，我们将向您介绍如何在 CentOS 7 计算机上使用 Git 源和 Python 虚拟环境安装 Odoo 11 。">
+
+
+<meta itemprop="datePublished" content="2019-03-08T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-08T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="439">
+
+
+
+<meta itemprop="keywords" content="centos,odoo,python," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 CentOS 7 上安装 Odoo 11"/>
+<meta name="twitter:description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供了一系列商业应用程序，包括 CRM ，网站，电子商务，账单，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们无法通过 Oumo 存储库中的 yum 安装 Odoo 包。
+
+我们要么在 docker  容器中运行 Odoo ，要么在 Python 虚拟环境中安装它。
+
+在本教程中，我们将向您介绍如何在 CentOS 7 计算机上使用 Git 源和 Python 虚拟环境安装 Odoo 11 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 CentOS 7 上安装 Odoo 11</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-08T06:00:00Z">March 8, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的一体化商业软件。它提供了一系列商业应用程序，包括 CRM ，网站，电子商务，账单，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
+
+<p>Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们无法通过 Oumo 存储库中的 yum 安装 Odoo 包。</p>
+
+<p>我们要么在 docker  容器中运行 Odoo ，要么在 Python 虚拟环境中安装它。</p>
+
+<p>在本教程中，我们将向您介绍如何在 CentOS 7 计算机上使用 Git 源和 Python 虚拟环境安装 Odoo 11 。</p>
+
+<h2 id="在开始之前">在开始之前</h2>
+
+<p>以 <a href="/linux/create-a-sudo-user-on-centos/">sudo 用户身份</a>登录 CentOS 计算机并将系统更新到最新的软件包：</p>
+
+<pre><code class="language-bash">sudo yum update
+</code></pre>
+
+<p>键入以下命令启用 EPEL 存储库：</p>
+
+<pre><code class="language-bash">sudo yum install epel-release
+</code></pre>
+
+<p>我们将从 Software Collections （ SCL ）存储库安装 Python 3.5 软件包。</p>
+
+<p>通过启用 SCL ，您将可以访问核心存储库中不可用的较新版本的编程语言和服务。使用以下命令启用 SCL 存储库：</p>
+
+<pre><code class="language-bash">sudo yum install centos-release-scl
+</code></pre>
+
+<p>使用以下命令安装 Python 3.5 软件包：</p>
+
+<pre><code class="language-bash">sudo yum install rh-python35
+</code></pre>
+
+<p>最后安装 <code>git</code> ， <code>pip</code> 以及构建 Odoo 依赖项所需的所有工具：</p>
+
+<pre><code class="language-bash">sudo yum install git gcc wget nodejs-less libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel postgresql-devel
+</code></pre>
+
+<h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
+
+<p>创建新的系统用户和组来运行 Odoo 服务， 用户的主目录设置为 <code>/opt/odoo</code> ：</p>
+
+<pre><code class="language-bash">sudo useradd -m -U -r -d /opt/odoo -s /bin/bash odoo
+</code></pre>
+
+<blockquote>
+<p>您可以随意为用户命名，只需确保 PostgreSQL 也创建具有相同名称的用户即可。</p>
+</blockquote>
+
+<h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
+
+<p>安装 PostgreSQL 服务器并创建一个新的 PostgreSQL 数据库集群：</p>
+
+<pre><code class="language-bash">sudo yum install postgresql-server
+sudo postgresql-setup initdb
+</code></pre>
+
+<p>安装完成后，启用开机自启动并启动 PostgreSQL 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl enable postgresql
+sudo systemctl start postgresql
+</code></pre>
+
+<p>在我们的示例中，创建一个与先前创建的系统用户同名的 PostgreSQL 用户 <code>odoo</code> ：</p>
+
+<pre><code class="language-bash">sudo su - postgres -c &quot;createuser -s odoo&quot;
+</code></pre>
+
+<h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
+
+<p>软件包 <code>wkhtmltox</code> 提供了一组开源命令行工具，可以将 HTML 呈现为 PDF 和各种图像格式。要打印 PDF 报告，您需要使用该 <code>wkhtmltopdf</code> 工具。 Odoo 的推荐版本 0.12.1 在官方 CentOS 7 存储库中并b不可用。</p>
+
+<p>要下载并安装推荐的版本，请运行以下命令：</p>
+
+<pre><code class="language-bash">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
+sudo yum localinstall wkhtmltox-0.12.1_linux-centos7-amd64.rpm
+</code></pre>
+
+<h2 id="安装和配置-odoo-11">安装和配置 Odoo 11</h2>
+
+<p>我们将从 GitHub 存储库安装 Odoo ，以便我们可以更好地控制版本和更新。我们还将使用 <code>virtualenv</code> ，这是一个创建独立的 Python 环境的工具。</p>
+
+<p>在开始安装过程之前，请确保切换到 <code>odoo</code> 用户。</p>
+
+<pre><code class="language-bash">sudo su - odoo
+</code></pre>
+
+<p>要确认您是否以 <code>odoo</code> 用户身份登录，可以使用以下命令：</p>
+
+<pre><code class="language-bash">whoami
+</code></pre>
+
+<p>现在我们可以开始安装。首先从 GitHub 存储库克隆 odoo ：</p>
+
+<pre><code class="language-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 11.0 /opt/odoo/odoo11
+</code></pre>
+
+<p>启用软件集合，以便我们可以访问 python 3.5 二进制文件：</p>
+
+<pre><code class="language-bash">scl enable rh-python35 bash
+</code></pre>
+
+<p>使用以下命令为我们的 Odoo 安装创建新的虚拟环境：</p>
+
+<pre><code class="language-bash">cd /opt/odoo
+python3 -m venv odoo11-venv
+</code></pre>
+
+<p>激活环境：</p>
+
+<pre><code class="language-bash">source odoo11-venv/bin/activate
+</code></pre>
+
+<p>并安装所有必需的 Python 模块：</p>
+
+<pre><code class="language-bash">pip3 install -r odoo11/requirements.txt
+</code></pre>
+
+<blockquote>
+<p>如果在安装过程中遇到任何编译错误，请确保已安装 <strong>开始之前</strong> 部分中列出的所有必需依赖项。</p>
+</blockquote>
+
+<p>安装完成后，停用环境并使用以下命令切换回 sudo 用户：</p>
+
+<pre><code class="language-bash">deactivate
+</code></pre>
+
+<pre><code class="language-bash">exit
+</code></pre>
+
+<p>如果您计划安装自定义模块，最好将这些模块安装在单独的目录中。要为自定义模块创建新目录，请执行以下操作：</p>
+
+<pre><code class="language-bash">sudo mkdir /opt/odoo/odoo11-custom-addons
+sudo chown odoo: /opt/odoo/odoo11-custom-addons
+</code></pre>
+
+<p>接下来，我们需要创建一个配置文件 <code>/etc/odoo11.conf</code> :</p>
+
+<pre><code class="language-bash">[options]
+; This is the password that allows database operations:
+admin_passwd = superadmin_passwd
+db_host = False
+db_port = False
+db_user = odoo
+db_password = False
+addons_path = /opt/odoo/odoo11/addons
+; If you are using custom modules
+; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons
+</code></pre>
+
+<blockquote>
+<p>不要忘记更改 <code>superadmin_passwd</code> 为更安全的密码，如果使用自定义模块调整 <code>addons_path</code> 为自定义模块目录。</p>
+</blockquote>
+
+<h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
+
+<p>为了将 odoo 作为服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件 <code>odoo11.service</code> ：</p>
+
+<p><code>/etc/systemd/system/odoo11.service</code></p>
+
+<pre><code class="language-bash">[Unit]
+Description=Odoo11
+Requires=postgresql.service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+SyslogIdentifier=odoo11
+PermissionsStartOnly=true
+User=odoo
+Group=odoo
+ExecStart=/usr/bin/scl enable rh-python35 -- /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>通过执行以下命令通知 <code>systemd</code> 新创建的单元文件并启动 Odoo 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl start odoo11
+</code></pre>
+
+<p>您可以使用以下命令检查服务状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status odoo11
+</code></pre>
+
+<pre><code class="language-bash">● odoo11.service - Odoo11
+   Loaded: loaded (/etc/systemd/system/odoo11.service; disabled; vendor preset: disabled)
+   Active: active (running) since Wed 2018-03-28 20:13:30 UTC; 6s ago
+ Main PID: 16174 (scl)
+   CGroup: /system.slice/odoo11.service
+           ├─16174 /usr/bin/scl enable rh-python35 -- /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+           ├─16175 /bin/bash /var/tmp/sclihoNjg
+           └─16178 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+</code></pre>
+
+<p>如果没有错误，您可以启用 Odoo 服务在系统启动时自动启动：</p>
+
+<pre><code class="language-bash">sudo systemctl enable odoo11
+</code></pre>
+
+<p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
+
+<pre><code class="language-bash">sudo journalctl -u odoo11
+</code></pre>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
+
+<p>假设安装成功，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/install-odoo-11-on-centos-7/odoo-screenshot.jpg" alt="" /></p>
+
+<blockquote>
+<p>如果您无法访问该页面，那么您的防火墙可能阻止了端口 8069 。</p>
+</blockquote>
+
+<h2 id="结论">结论</h2>
+
+<p>本教程向您介绍了在 Python 虚拟环境中在 CentOS 7 上安装 Odoo 11 的过程。</p>
+
+<p>您可能还想了解有关如何为 Odoo 数据库创建自动每日备份的教程。</p>
+
+<!-- install-odoo-11-on-centos-7/ --><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/odoo" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">odoo</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/python" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-magento-2-to-use-varnish-on-centos-7/">在 CentOS 7 上配置 Magento 2 使用 Varnish</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-magento-2-on-centos-7/">在 CentOS 7 上安装 Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-centos-7/">如何在 CentOS 7 上安装 WildFly(JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/">配置 Odoo 使用 Nginx 作为反向代理</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

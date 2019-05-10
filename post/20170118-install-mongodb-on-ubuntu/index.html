@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Ubuntu 安装 mongodb 3.4</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Ubuntu 安装 mongodb 3.4" />
+<meta property="og:description" content="今天参照 mongodb 的官方文档在 Unbuntu Server 16.04 上安装了 Mongodb 3.4，步骤很简单，就顺手翻译了一下这个文档，这个文档是讲述了 Mongodb 3.4 在 Ubuntu 12.04, 14.04, 16.04 上的安装步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/20170118-install-mongodb-on-ubuntu/" />
+<meta property="article:published_time" content="2017-01-18T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-01-18T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Ubuntu 安装 mongodb 3.4">
+<meta itemprop="description" content="今天参照 mongodb 的官方文档在 Unbuntu Server 16.04 上安装了 Mongodb 3.4，步骤很简单，就顺手翻译了一下这个文档，这个文档是讲述了 Mongodb 3.4 在 Ubuntu 12.04, 14.04, 16.04 上的安装步骤。">
+
+
+<meta itemprop="datePublished" content="2017-01-18T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-01-18T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="341">
+
+
+
+<meta itemprop="keywords" content="Mongodb," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Ubuntu 安装 mongodb 3.4"/>
+<meta name="twitter:description" content="今天参照 mongodb 的官方文档在 Unbuntu Server 16.04 上安装了 Mongodb 3.4，步骤很简单，就顺手翻译了一下这个文档，这个文档是讲述了 Mongodb 3.4 在 Ubuntu 12.04, 14.04, 16.04 上的安装步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">Ubuntu 安装 mongodb 3.4</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2017-01-18T00:00:00Z">January 18, 2017</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>今天参照 mongodb 的<a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/">官方文档</a>在 Unbuntu Server 16.04 上安装了 Mongodb 3.4，步骤很简单，就顺手翻译了一下这个文档，这个文档是讲述了 Mongodb 3.4 在 Ubuntu 12.04, 14.04, 16.04 上的安装步骤。</p>
+
+<h2 id="概述">概述</h2>
+
+<p>这个教程讲述了在长期支持版 Ubuntu Linux 系统上从 <code>.deb</code> 包安装 Mongodb 社区版的步骤。虽然 Ubuntu 软件仓库中已经包含了 MongoDB 的包，但并不是最新的版本。</p>
+
+<blockquote>
+<p><strong>平台支持：</strong>
+MongoDB 提供的包只支持 64 位长期支持版本的 Ubuntu 发行版。比如 Ubuntu 12.04 LTS (precise), 14.04 LTS (trusty), 16.04 LTS (xenial) 等等。这些包可能在其他发行版上也能工作，但是并未被支持。</p>
+
+<p><strong>注意事项：</strong>
+3.4 不兼容 IBM Power Systems 上的 Ubuntu 16.04</p>
+</blockquote>
+
+<h2 id="包">包</h2>
+
+<p>MongoDB 在自己的仓库里提供了官方支持的安装包。仓库中包含了下面的包</p>
+
+<table>
+<thead>
+<tr>
+<th>包</th>
+<th>功能</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>mongodb-org</td>
+<td>这个包会自动安装以下的 4 个组件包</td>
+</tr>
+
+<tr>
+<td>mongodb-org-server</td>
+<td>包含了 <code>mongod</code> 守护进程及其相关的配置和初始化脚本</td>
+</tr>
+
+<tr>
+<td>mongodb-org-mongos</td>
+<td>包含了 <code>mongos</code> 守护进程</td>
+</tr>
+
+<tr>
+<td>mongodb-org-shell</td>
+<td>包含了 <code>mongo</code> 客户端程序</td>
+</tr>
+
+<tr>
+<td>mongodb-org-tools</td>
+<td>包含了一下 MongoDB 工具: <code>mongoimport bsondump</code>, <code>mongodump</code>, <code>mongoexport</code>, <code>mongofiles</code>, <code>mongooplog</code>, <code>mongoperf</code>, <code>mongorestore</code>, <code>mongostat</code>, <code>mongotop</code>.</td>
+</tr>
+</tbody>
+</table>
+
+<p>包 mongodb-org-server 提供的初始化脚本来启动 mongod，配置文件为： <code>/etc/mongod.conf</code></p>
+
+<p>这些安装包与 Ubuntu 提供的 <code>mongodb</code>, <code>mongodb-server</code>, <code>mongodb-clients</code> 包冲突。</p>
+
+<p>安装包提供的配置文件 <code>/etc/mongod.conf</code> 默认配置 bind_ip 为 127.0.0.1 。在初始化一个<a href="https://docs.mongodb.com/manual/reference/glossary/#term-replica-set">复制集群(replica set)</a>之前根据你的需要修改这个设置。</p>
+
+<h2 id="安装-mongodb-社区版">安装 MongoDB 社区版</h2>
+
+<p>MongoDB 提供的包只支持 64 位长期支持版本的 Ubuntu 发行版。比如 Ubuntu 12.04 LTS (precise), 14.04 LTS (trusty), 16.04 LTS (xenial) 等等。这些包可能在其他发行版上也能工作，但是并未被支持。</p>
+
+<h3 id="导入包管理系统使用的公钥">导入包管理系统使用的公钥</h3>
+
+<p>Ubuntu 的软件包管理工具（即dpkg和APT）要求软件包的发布者通过GPG密钥签名来确保软件包的一致性和真实性。通过以下命令导入MongoDB公共GPG密钥：</p>
+
+<pre><code class="language-bash">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+</code></pre>
+
+<h3 id="为-mongodb-创建-list-file">为 MongoDB 创建 list file</h3>
+
+<p>根据 Ubuntu 的版本使用适当的命令创建 list file: <code>/etc/apt/sources.list.d/mongodb-org-3.4.list</code></p>
+
+<h4 id="ubuntu-12-04">Ubuntu 12.04</h4>
+
+<pre><code class="language-bash">echo &quot;deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.4 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+</code></pre>
+
+<h4 id="ubuntu-14-04">Ubuntu 14.04</h4>
+
+<pre><code class="language-bash">echo &quot;deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+</code></pre>
+
+<h4 id="ubuntu-16-04">Ubuntu 16.04</h4>
+
+<pre><code class="language-bash">echo &quot;deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse&quot; | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+</code></pre>
+
+<h3 id="重新下载本地包数据库索引">重新下载本地包数据库索引</h3>
+
+<pre><code class="language-bash">sudo apt-get update
+</code></pre>
+
+<h3 id="安装-mongodb">安装 MongoDB</h3>
+
+<p>通过以下命令安装最新的可靠版</p>
+
+<pre><code class="language-bash">sudo apt-get install -y mongodb-org
+</code></pre>
+
+<h2 id="运行-mongodb-社区版">运行 MongoDB 社区版</h2>
+
+<p>默认情况下， MongoDB 实例的数据文件位于 <code>/var/lib/mongodb</code>，日志文件位于 <code>/var/log/mongodb</code>，并且通过用户 mongodb 来运行。你可以在配置文件 <code>/etc/mongod.conf</code> 指定不同的日志文件和数据文件目录，其对应的配置为：<code>systemLog.path</code> 和  <code>storage.dbPath</code> 。</p>
+
+<p>如果你更改了运行 MongoDB 进程的用户，必须修改 <code>/var/lib/mongodb</code> 和 <code>/var/log/mongodb</code> 的访问权限来让用户能访问这些目录。</p>
+
+<h3 id="启动-mongodb">启动 MongoDB</h3>
+
+<p>执行如下命令来启动 <code>mongod</code> 进程</p>
+
+<pre><code class="language-bash">sudo service mongod start
+# 或者
+sudo systemctl start mongod
+</code></pre>
+
+<h3 id="验证-mongodb-启动成功">验证 MongoDB 启动成功</h3>
+
+<p>通过检查日志文件 /var/log/mongodb/mongod.log 来验证 mongod 进程是否启动成功，日志文件中应包含下面的信息：</p>
+
+<pre><code>[initandlisten] waiting for connections on port &lt;port&gt;
+</code></pre>
+
+<p><code>&lt;port&gt;</code> 与配置文件 /etc/mongod.conf 的配置一致， 默认值是 27017</p>
+
+<h3 id="停止-mongodb">停止 MongoDB</h3>
+
+<p>如果需要，你可通过下面的命令来停止 mongod 进程</p>
+
+<pre><code class="language-bash">sudo service mongod stop
+# 或者
+sudo systemctl stop mongod
+</code></pre>
+
+<h3 id="重启-mongodb">重启 MongoDB</h3>
+
+<pre><code class="language-bash">sudo service mongod status
+# 或者
+sudo systemctl status mongod
+</code></pre>
+
+<h3 id="查看-mongodb-状态">查看 MongoDB 状态</h3>
+
+<pre><code class="language-bash">sudo service mongod status
+# 或者
+sudo systemctl status mongod
+</code></pre>
+
+<h2 id="卸载-mongodb-社区版">卸载 MongoDB 社区版</h2>
+
+<p>为了彻底的从系统中移除 MongoDB，你需要移除 MongoDB 应用程序，配置文件，日志和数据文件目录。请参照下面的操作步骤进行：</p>
+
+<h3 id="停止-mongodb-1">停止 MongoDB</h3>
+
+<p>通过以下命令停止 mongod 进程</p>
+
+<pre><code class="language-bash">sudo service mongod stop
+</code></pre>
+
+<h3 id="删除软件包">删除软件包</h3>
+
+<p>删除所有的 MongoDB 软件包</p>
+
+<pre><code class="language-bash">sudo apt-get purge mongodb-org*
+</code></pre>
+
+<h3 id="删除数据和日志目录">删除数据和日志目录</h3>
+
+<p>删除 MongoDB 数据和日志目录</p>
+
+<pre><code class="language-bash">sudo rm -r /var/log/mongodb
+sudo rm -r /var/lib/mongodb
+</code></pre><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mongodb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Mongodb</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/20170114-mongodb-enable-access-control/">Mongodb 开启访问控制</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

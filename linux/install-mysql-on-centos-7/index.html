@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 CentOS 7 上安装 MySQL</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 7 上安装 MySQL" />
+<meta property="og:description" content="随着 CentOS 7 的发布， CentOS 的软件仓库中不再提供世界上最流行的开源关系数据库管理系统 MySQL ， MariaDB 已成为默认的数据库系统。 MariaDB 是 MySQL 的向后兼容，二进制插件替代品。
+
+在本教程中，我们将向您展示如何在 CentOS 7 机器上安装 MySQL 。
+
+如果要安装 MariaDB 而不是 MySQL ，请查看我们的安装说明教程。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/install-mysql-on-centos-7/" />
+<meta property="article:published_time" content="2019-03-17T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-17T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 CentOS 7 上安装 MySQL">
+<meta itemprop="description" content="随着 CentOS 7 的发布， CentOS 的软件仓库中不再提供世界上最流行的开源关系数据库管理系统 MySQL ， MariaDB 已成为默认的数据库系统。 MariaDB 是 MySQL 的向后兼容，二进制插件替代品。
+
+在本教程中，我们将向您展示如何在 CentOS 7 机器上安装 MySQL 。
+
+如果要安装 MariaDB 而不是 MySQL ，请查看我们的安装说明教程。">
+
+
+<meta itemprop="datePublished" content="2019-03-17T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-17T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="473">
+
+
+
+<meta itemprop="keywords" content="centos,mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 CentOS 7 上安装 MySQL"/>
+<meta name="twitter:description" content="随着 CentOS 7 的发布， CentOS 的软件仓库中不再提供世界上最流行的开源关系数据库管理系统 MySQL ， MariaDB 已成为默认的数据库系统。 MariaDB 是 MySQL 的向后兼容，二进制插件替代品。
+
+在本教程中，我们将向您展示如何在 CentOS 7 机器上安装 MySQL 。
+
+如果要安装 MariaDB 而不是 MySQL ，请查看我们的安装说明教程。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 CentOS 7 上安装 MySQL</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-17T06:00:00Z">March 17, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>随着 CentOS 7 的发布， CentOS 的软件仓库中不再提供世界上最流行的开源关系数据库管理系统 MySQL ， MariaDB 已成为默认的数据库系统。 MariaDB 是 MySQL 的向后兼容，二进制插件替代品。</p>
+
+<p>在本教程中，我们将向您展示如何在 CentOS 7 机器上安装 MySQL 。</p>
+
+<p>如果要安装 MariaDB 而不是 MySQL ，请查看我们的<a href="/linux/install-mariadb-on-centos-7/">安装说明</a>教程。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保使用具有 sudo 权限的用户帐户或 root 用户登录服务器。最好使用 sudo 用户运行管理命令作而不是用 root 用户运行，如果系统上没有 sudo 用户，则可以按照这些说明<a href="/linux/create-a-sudo-user-on-centos/">创建 sudo 用户</a>。</p>
+
+<p>正如我们在介绍中提到的， MySQL 在默认的 CentOS 7 软件仓库中不可用，因此我们将从 <a href="https://dev.mysql.com/downloads/repo/yum/">MySQL Yum 软件仓库</a>安装软件包。在以下部分中，我们将向您展示如何安装 MySQL 8.0 和 MySQL 5.7 。</p>
+
+<p>在 CentOS 7 服务器上您最好只<strong>安装一个 MySQL 版本</strong>。如果您不确定要安装哪个版本，请参阅您要在服务器上部署的应用程序的文档。</p>
+
+<h2 id="在-centos-7-上安装-mysql-8-0">在 CentOS 7 上安装 MySQL 8.0</h2>
+
+<p>在撰写本文时，最新版本的 MySQL 是 8.0 版。要在 CentOS 7 服务器上安装它，请按照以下步骤操作：</p>
+
+<ol>
+<li><p>使用以下命令启用 MySQL 8.0 软件仓库：</p>
+
+<pre><code class="language-bash">sudo yum localinstall https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+</code></pre>
+
+<ol>
+<li>用 yum 安装 MySQL 8.0 包：</li>
+</ol>
+
+<pre><code class="language-bash">sudo yum install mysql-community-server
+</code></pre>
+
+<p>在安装过程中， yum 可能会提示您导入 MySQL GPG 密钥。输入 <code>y</code> 并点击 <code>Enter</code> 。</p></li>
+</ol>
+
+<h2 id="在-centos-7-上安装-mysql-5-7">在 CentOS 7 上安装 MySQL 5.7</h2>
+
+<p>要在 CentOS 7 服务器上安装以前的稳定版本的 MySQL 5.7 版，请按照以下步骤操作：</p>
+
+<ol>
+<li><p>使用以下命令启用 MySQL 5.7 软件仓库：</p>
+
+<pre><code class="language-bash">sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+</code></pre>
+
+<ol>
+<li>安装 MySQL 5.7 软件包：</li>
+</ol>
+
+<p>像安装任何其他软件包一样，使用 yum 安装 MySQL 为：</p>
+
+<pre><code class="language-bash">sudo yum install mysql-community-server
+</code></pre></li>
+</ol>
+
+<blockquote>
+<p>以下部分与 MySQL 8.0 和 MySQL 5.7 相关。</p>
+</blockquote>
+
+<h2 id="启动-mysql">启动 MySQL</h2>
+
+<p>安装完成后，启动 MySQL 服务并启用随机启动：</p>
+
+<pre><code class="language-bash">sudo systemctl enable mysqld
+sudo systemctl start mysqld
+</code></pre>
+
+<p>我们可以通过输入以下内容来检查 MySQL 服务状态</p>
+
+<pre><code class="language-bash">sudo systemctl status mysqld
+</code></pre>
+
+<pre><code class="language-bash">● mysqld.service - MySQL Server
+   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2018-05-23 11:02:43 UTC; 14min ago
+     Docs: man:mysqld(8)
+           http://dev.mysql.com/doc/refman/en/using-systemd.html
+  Process: 4293 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+ Main PID: 4310 (mysqld)
+   Status: &quot;SERVER_OPERATING&quot;
+   CGroup: /system.slice/mysqld.service
+           └─4310 /usr/sbin/mysqld
+</code></pre>
+
+<h2 id="让-mysql-更安全">让 MySQL 更安全</h2>
+
+<p>当 MySQL 服务器第一次启动时，会为 MySQL root 用户生成临时密码。您可以通过运行以下命令找到密码：</p>
+
+<pre><code class="language-bash">sudo grep 'temporary password' /var/log/mysqld.log
+</code></pre>
+
+<p>输出应该如下所示：</p>
+
+<pre><code class="language-bash">2018-05-23T10:59:51.251159Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: q&amp;0)V!?fjksL
+</code></pre>
+
+<p>记下密码，因为下一个命令会要求您输入临时 root 密码。</p>
+
+<p>运行该 <code>mysql_secure_installation</code> 命令以提高 MySQL 安装的安全性：</p>
+
+<pre><code class="language-bash">sudo mysql_secure_installation
+</code></pre>
+
+<pre><code class="language-bash">Securing the MySQL server deployment.
+
+Enter password for user root:
+</code></pre>
+
+<p>输入临时密码后，系统会要求您为 root 用户设置新密码。密码长度必须至少为 8 个字符，并且至少包含一个大写字母，一个小写字母，一个数字和一个特殊字符。</p>
+
+<pre><code class="language-bash">The existing password for the user account root has expired. Please set a new password.
+
+New password:
+
+Re-enter new password:
+</code></pre>
+
+<p>该脚本还将要求您删除匿名用户，限制 <code>root</code> 用户对本地计算机的访问权限并删除测试数据库。你应该对所有问题回答“是”（是）。</p>
+
+<h2 id="从命令行连接到-mysql">从命令行连接到 MySQL</h2>
+
+<p>要通过终端与 MySQL 交互，我们将使用 MySQL 客户端工具，它已经作为 MySQL 服务器软件包的依赖项被安装。</p>
+
+<p>以 <code>root</code> 用户的身份登录 MySQL 服务器：</p>
+
+<pre><code class="language-bash">mysql -u root -p
+</code></pre>
+
+<p>系统将提示您输入先前设置的 root 密码, 就是刚刚运行 <code>mysql_secure_installation</code> 脚本时设置的密码。</p>
+
+<p>输入密码后，您将看到 mysql shell ，如下所示：</p>
+
+<pre><code class="language-sql">Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.11 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+</code></pre>
+
+<h2 id="创建数据库">创建数据库</h2>
+
+<p>连接到 MySQL shell 后，可以通过输入以下命令来创建新数据库：</p>
+
+<pre><code class="language-sql">CREATE DATABASE new_database;
+</code></pre>
+
+<pre><code class="language-sql">Query OK, 1 row affected (0.00 sec)
+</code></pre>
+
+<h2 id="创建表">创建表</h2>
+
+<p>现在我们创建了一个数据库，我们可以创建一个表来存储一些数据。</p>
+
+<p>在运行用于创建表的 SQL 语句之前，我们需要连接到数据库：</p>
+
+<pre><code class="language-sql">use new_database;
+</code></pre>
+
+<p>在这个例子中，我们将创建一个名为 <code>contacts</code> 的简单表，这个表有三个字段 <code>id</code> ， <code>name</code> 和 <code>email</code> ：</p>
+
+<pre><code class="language-sql">CREATE TABLE contacts (
+  id INT PRIMARY KEY,
+  name VARCHAR(30),
+  email VARCHAR(30)
+);
+</code></pre>
+
+<pre><code class="language-sql">Query OK, 1 row affected (0.00 sec)
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了如何在 CentOS 7 服务器上安装 Mysql 和让 MySQL 服务器更加安全。我们还向您展示了如何连接到 MySQL shell 以及如何创建新的数据库和表。</p>
+
+<p>现在您的 MySQL 服务器已启动并运行，并且您知道如何从命令行连接到 MySQL 服务器，您可能需要以下教程获取更多知识：</p>
+
+<ul>
+<li><a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何管理 MySQL 用户帐户和数据库</a></li>
+<li><a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a></li>
+<li><!--link:how-to-create-a-mysql-database-->如何创建 MySQL 数据库<!--link--></li>
+<li><!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->如何创建 MySQL 用户帐户和授予权限<!--link--></li>
+<li><!--link:how-to-show-mysql-users-->如何显示 MySQL 用户<!--link--></li>
+<li><a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">如何使用 Mysqldump 备份和恢复 MySQL 数据库</a></li>
+</ul>
+
+<p>如果您不喜欢命令行更喜欢使用 Web 界面，则可以安装 phpMyAdmin 并通过它管理您的 MySQL 数据库。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-centos-7/">如何在 CentOS 7 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-python-3-on-centos-7/">如何在 CentOS 7 上安装 Python 3</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">如何从命令行管理 MySQL 数据库和用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-centos-7/">如何在 CentOS 7 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-centos-7/">如何在 CentOS 7 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-mattermost-on-centos-7/">如何在 CentOS 7 上部署 Mattermost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-sudo-user-on-centos/">如何在 CentOS 上创建 sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-centos-7/">如何在 CentOS 7 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-reset-a-mysql-root-password/">如何重置 MySQL root 密码</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-centos-7/">如何在 CentOS 7 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-magento-2-to-use-varnish-on-centos-7/">在 CentOS 7 上配置 Magento 2 使用 Varnish</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

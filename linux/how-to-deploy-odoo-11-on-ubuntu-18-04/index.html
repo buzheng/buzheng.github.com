@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上部署 Odoo 11</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上部署 Odoo 11" />
+<meta property="og:description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+根据所需的用例，有几种方法可以安装 Odoo 。当然，安装 Odoo 最简单快捷的方法是使用他们的官方 APT 软件仓库。
+
+如果你想有更多的灵活性，比如同一个系统上运行多个版本 Odoo 那么您可以使用容器和容器编排或在虚拟环境中安装 Odoo 。
+
+本指南介绍了在 Ubuntu 18.04 系统上使用 Git 源码和在 Python 虚拟环境中安装和配置 Odoo 进行生产所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-14T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-14T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上部署 Odoo 11">
+<meta itemprop="description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+根据所需的用例，有几种方法可以安装 Odoo 。当然，安装 Odoo 最简单快捷的方法是使用他们的官方 APT 软件仓库。
+
+如果你想有更多的灵活性，比如同一个系统上运行多个版本 Odoo 那么您可以使用容器和容器编排或在虚拟环境中安装 Odoo 。
+
+本指南介绍了在 Ubuntu 18.04 系统上使用 Git 源码和在 Python 虚拟环境中安装和配置 Odoo 进行生产所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-03-14T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-14T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="850">
+
+
+
+<meta itemprop="keywords" content="ubuntu,odoo," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上部署 Odoo 11"/>
+<meta name="twitter:description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+根据所需的用例，有几种方法可以安装 Odoo 。当然，安装 Odoo 最简单快捷的方法是使用他们的官方 APT 软件仓库。
+
+如果你想有更多的灵活性，比如同一个系统上运行多个版本 Odoo 那么您可以使用容器和容器编排或在虚拟环境中安装 Odoo 。
+
+本指南介绍了在 Ubuntu 18.04 系统上使用 Git 源码和在 Python 虚拟环境中安装和配置 Odoo 进行生产所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上部署 Odoo 11</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-14T06:00:00Z">March 14, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
+
+<p>根据所需的用例，有几种方法可以安装 Odoo 。当然，安装 Odoo 最简单快捷的方法是使用他们的官方 APT 软件仓库。</p>
+
+<p>如果你想有更多的灵活性，比如同一个系统上运行多个版本 Odoo 那么您可以使用<!--link:how-to-install-and-use-docker-on-ubuntu-18-04-->容器<!--link-->和<!--link:how-to-install-and-use-docker-compose-on-ubuntu-18-04-->容器编排<!--link-->或在虚拟环境中安装 Odoo 。</p>
+
+<p>本指南介绍了在 Ubuntu 18.04 系统上使用 Git 源码和在 Python 虚拟环境中安装和配置 Odoo 进行生产所需的步骤。</p>
+
+<h2 id="准备工作">准备工作</h2>
+
+<p>以 <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo 用户身份</a>登录 Ubuntu 计算机并将系统更新到最新：</p>
+
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
+</code></pre>
+
+<p>安装 <!--link:how-to-install-git-on-ubuntu-18-04-->Git<!--link--> ， <!--link:how-to-install-pip-on-ubuntu-18.04-->Pip<!--link--> ， <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">Node.js</a> 以及构建 Odoo 的依赖项：</p>
+
+<pre><code class="language-bash">sudo apt install git python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less
+</code></pre>
+
+<h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
+
+<p>创建新的系统用户和组运行 Odoo 服务，使用 <code>/opt/odoo</code> 作为用户的主目录。</p>
+
+<pre><code class="language-bash">sudo useradd -m -d /opt/odoo -U -r -s /bin/bash odoo
+</code></pre>
+
+<p>您可以为用户命名成其他名称，但是要同样创建一个具有相同名称的 postgres 用户。</p>
+
+<h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
+
+<p>从 Ubuntu 的默认软件仓库安装 PostgreSQL 包：</p>
+
+<pre><code class="language-bash">sudo apt install postgresql
+</code></pre>
+
+<p>安装完成后，创建一个与之前创建的系统用户同名的 PostgreSQL 用户，在我们的例子中使用的是 <code>odoo</code> ：</p>
+
+<pre><code class="language-bash">sudo su - postgres -c &quot;createuser -s odoo&quot;
+</code></pre>
+
+<h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
+
+<p><code>wkhtmltox</code> 软件包提供了一组开源命令行工具，可以将 HTML 呈现为 PDF 和各种图像格式。要打印 PDF 报告，您就需要使用 <code>wkhtmltopdf</code> 工具。 Odoo 的推荐版本 0.12.1 在官方 Ubuntu 18.04 软件仓库中不可用，我们将从官方 Wkhtmltopdf 网站下载并安装推荐版本。</p>
+
+<p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载程序包：</p>
+
+<pre><code class="language-bash">wget https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~bionic_amd64.deb
+</code></pre>
+
+<p>下载完成后，通过以下命令进行安装：</p>
+
+<pre><code class="language-bash">sudo apt install /wkhtmltox_0.12.1.3-1~bionic_amd64.deb
+</code></pre>
+
+<h2 id="安装和配置-odoo">安装和配置 Odoo</h2>
+
+<p>我们将在独立的 Python 虚拟环境中从 GitHub 软件仓库安装 Odoo ，以便我们可以更好地控制版本和更新。</p>
+
+<p>在开始安装过程之前，请确保切换到 odoo 用户。</p>
+
+<pre><code class="language-bash">sudo su - odoo
+</code></pre>
+
+<p>可以使用以下命令确认您是否以 odoo 用户登录：</p>
+
+<pre><code class="language-bash">whoami
+</code></pre>
+
+<p>现在我们可以开始安装。首先从 GitHub 软件仓库克隆 odoo ：</p>
+
+<pre><code class="language-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 11.0 /opt/odoo/odoo11
+</code></pre>
+
+<blockquote>
+<ul>
+<li>如果要安装不同的 Odoo 版本，只需更改 <code>--branch</code> 后的版本号。</li>
+<li>您可以根据需要为目录命名，例如您可以使用域名代替 <code>odoo11</code> 。</li>
+</ul>
+</blockquote>
+
+<p>为 Odoo 11 安装创建新的虚拟环境：</p>
+
+<pre><code class="language-bash">cd /opt/odoo
+python3 -m venv odoo11-venv
+</code></pre>
+
+<p>使用以下命令激活环境：</p>
+
+<pre><code class="language-bash">source odoo11-venv/bin/activate
+</code></pre>
+
+<p>并使用 <code>pip3</code> 安装所有必需的 Python 模块：</p>
+
+<pre><code class="language-bash">pip3 install wheel
+pip3 install -r odoo11/requirements.txt
+</code></pre>
+
+<blockquote>
+<p><code>pip3</code>  是一个用于安装和管理 Python 包的工具。</p>
+
+<p>如果在安装过程中遇到任何编译错误，请确保已安装该准备工作部分中列出的所有必需依赖项。</p>
+</blockquote>
+
+<p>安装完成后，使用以下命令停用环境并切换回 sudo 用户：</p>
+
+<pre><code class="language-bash">deactivate
+</code></pre>
+
+<pre><code class="language-bash">exit
+</code></pre>
+
+<p>如果您计划安装自定义模块，最好将这些模块安装在单独的目录中。要如果为自定义模块创建新目录，请运行：</p>
+
+<pre><code class="language-bash">sudo mkdir /opt/odoo/odoo11-custom-addons
+sudo chown odoo: /opt/odoo/odoo11-custom-addons
+</code></pre>
+
+<p>接下来，我们需要创建一个配置文件，可以从头开始创建一个新文件，也可以复制已有的配置文件：</p>
+
+<pre><code class="language-bash">sudo cp /opt/odoo/odoo11/debian/odoo.conf /etc/odoo11.conf
+</code></pre>
+
+<p>打开文件 <code>/etc/odoo11.conf</code> 并按如下所示进行编辑：</p>
+
+<pre><code class="language-conf">[options]
+; This is the password that allows database operations:
+admin_passwd = my_admin_passwd
+db_host = False
+db_port = False
+db_user = odoo
+db_password = False
+addons_path = /opt/odoo/odoo11/addons
+; If you are using custom modules
+; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons
+</code></pre>
+
+<p>不要忘记更改 <code>my_admin_passwd</code> 为更安全的密码。如果你使用自定义模块也要调整 <code>addons_path</code> 。</p>
+
+<p>@@ 创建 systemd 单元文件
+要将 odoo 作为服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件  <code>odoo11.service</code> ：</p>
+
+<pre><code class="language-conf">[Unit]
+Description=Odoo11
+Requires=postgresql.service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+SyslogIdentifier=odoo11
+PermissionsStartOnly=true
+User=odoo
+Group=odoo
+ExecStart=/opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>通过执行以下命令通知 systemd 我们创建了一个新的单元文件，并启动 Odoo 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl start odoo11
+</code></pre>
+
+<p>您可以使用以下命令检查服务状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status odoo11
+</code></pre>
+
+<pre><code class="language-bash">● odoo11.service - Odoo11
+   Loaded: loaded (/etc/systemd/system/odoo11.service; disabled; vendor preset: enabled)
+   Active: active (running) since Thu 2018-05-03 21:23:08 UTC; 3s ago
+ Main PID: 18351 (python3)
+    Tasks: 4 (limit: 507)
+   CGroup: /system.slice/odoo11.service
+           └─18351 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+</code></pre>
+
+<p>如果没有错误，您可以启用 Odoo 服务在系统启动时自动启动：</p>
+
+<pre><code class="language-bash">sudo systemctl enable odoo11
+</code></pre>
+
+<p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
+
+<pre><code class="language-bash">sudo journalctl -u odoo11
+</code></pre>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
+
+<p>假设安装成功，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/odoo-screenshot.jpg" alt="" /></p>
+
+<h2 id="将-nginx-配置为-ssl-反向代理">将 Nginx 配置为 SSL 反向代理</h2>
+
+<p>如果要将 Nginx 用作 SSL 反向代理，请确保满足以下先决条件：</p>
+
+<ul>
+<li>您有一个指向公共服务器 IP 的域名。在本教程中我们将使用 <code>example.com</code> 。</li>
+<li>您按照说明<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">安装了 Nginx</a> 。</li>
+<li>您已为您的域安装了 SSL 证书。您可以按照说明<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">安装免费的 Let&rsquo;s Encrypt SSL 证书</a>。</li>
+</ul>
+
+<p>默认的 Odoo Web 服务器通过 HTTP 提供服务。为了使我们的 Odoo 部署更安全，我们将 Nginx 配置为 SSL 代理，该代理将通过 HTTPS 提供流量。</p>
+
+<p>SSL 代理是处理 SSL 加密/解密的代理服务器。这意味着我们的终止代理 ( Nginx )将处理和解密传入的 TLS 连接 ( HTTPS )，它会将未加密的请求传递给我们的内部服务 ( Odoo )，因此 Nginx 和 Odoo 之间的流量不会被加密 ( HTTP )。</p>
+
+<p>我们需要告诉 Odoo 我们将使用代理，打开配置文件 <code>/etc/odoo11.conf</code> 并添加以下行：</p>
+
+<pre><code class="language-bash">proxy_mode = True
+</code></pre>
+
+<p>重新启动 Odoo 服务以使更改生效：</p>
+
+<pre><code class="language-bash">sudo systemctl restart odoo11
+</code></pre>
+
+<p>使用 Nginx 作为代理可以带来几个好处。在此示例中，我们将配置 SSL ， HTTP 到 HTTPS 重定向， WWW 到非 WWW 重定向，缓存静态文件并启用 GZip 压缩。</p>
+
+<p>编辑文件: <code>/etc/nginx/sites-enabled/example.com</code></p>
+
+<pre><code class="language-nginx"># Odoo servers
+upstream odoo {
+ server 127.0.0.1:8069;
+}
+
+upstream odoochat {
+ server 127.0.0.1:8072;
+}
+
+# HTTP -&gt; HTTPS
+server {
+    listen 80;
+    server_name www.example.com example.com;
+
+    include snippets/letsencrypt.conf;
+    return 301 https://example.com$request_uri;
+}
+
+# WWW -&gt; NON WWW
+server {
+    listen 443 ssl http2;
+    server_name www.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    return 301 https://example.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    proxy_read_timeout 720s;
+    proxy_connect_timeout 720s;
+    proxy_send_timeout 720s;
+
+    # Proxy headers
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+
+    # SSL parameters
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    # log files
+    access_log /var/log/nginx/odoo.access.log;
+    error_log /var/log/nginx/odoo.error.log;
+
+    # Handle longpoll requests
+    location /longpolling {
+        proxy_pass http://odoochat;
+    }
+
+    # Handle / requests
+    location / {
+       proxy_redirect off;
+       proxy_pass http://odoo;
+    }
+
+    # Cache static files
+    location ~* /web/static/ {
+        proxy_cache_valid 200 90m;
+        proxy_buffering on;
+        expires 864000;
+        proxy_pass http://odoo;
+    }
+
+    # Gzip
+    gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
+    gzip on;
+}
+</code></pre>
+
+<blockquote>
+<p>不要忘记将 <code>example.com</code> 替换为您的 Odoo 域，并设置 SSL 证书文件的正确路径。此配置中使用的片段在<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本教程</a>中创建。</p>
+</blockquote>
+
+<p>完成后，使用以下命令重新启动 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart nginx
+</code></pre>
+
+<h2 id="更改绑定的网络端口">更改绑定的网络端口</h2>
+
+<p>此步骤是可选的，但这是一种很好的安全措施。默认情况下， Odoo 服务器在所有接口上侦听端口 8069 ，因此如果要禁用对 Odoo 实例的直接访问，可以阻止所有公共接口的端口 8069 或强制 Odoo 仅在本地接口上侦听。</p>
+
+<p>在本指南中，我们将强制 Odoo 只监听 127.0.0.1 ，打开 Odoo 配置文件 <code>/etc/odoo11.conf</code> 在末尾添加以下两行：</p>
+
+<pre><code class="language-bash">xmlrpc_interface = 127.0.0.1
+netrpc_interface = 127.0.0.1
+</code></pre>
+
+<p>保存配置文件并重新启动 Odoo 服务器以使更改生效：</p>
+
+<pre><code class="language-bash">sudo systemctl restart odoo
+</code></pre>
+
+<h2 id="启用多进程处理">启用多进程处理</h2>
+
+<p>默认情况下， Odoo 工作在多线程模式。对于生产部署，建议切换到多进程，因为它可以提高稳定性，并更好地利用系统资源。为了实现多处理，我们需要编辑 Odoo 配置并设置非零数量的工作进程。</p>
+
+<p>根据系统中的 CPU 核心数和可用的 RAM 内存计算工作进程数。</p>
+
+<p>根据官方 <a href="https://www.odoo.com/documentation/11.0/setup/deploy.html">Odoo 文档</a>计算工人数量和所需的 RAM 内存大小，我们将使用以下公式和假设：</p>
+
+<p><strong>工作进程(workers)数量计算</strong></p>
+
+<ul>
+<li>理论最大工作进程数量 = (system_cpus * 2）+ 1</li>
+<li>1名工作进程数量可以服务 〜= 6个并发用户</li>
+<li>计划调度工作进程也需要 CPU</li>
+</ul>
+
+<p><strong>RAM 内存大小计算</strong></p>
+
+<ul>
+<li>我们将考虑所有请求的 20％ 是重要请求，而 80％ 是较轻请求。繁重的请求使用大约 1 GB 的 RAM，而较轻的请求使用大约 150 MB 的 RAM</li>
+<li>需要的 RAM = number_of_workers * ( (light_worker_ratio * light_worker_ram_estimation）+ (heavy_worker_ratio * heavy_worker_ram_estimation））</li>
+</ul>
+
+<blockquote>
+<p>如果您不知道系统上有多少CPU，则可以使用以下命令：</p>
+
+<pre><code class="language-bash">&gt; grep -c ^processor /proc/cpuinfo
+&gt; ```
+
+假设我们有一个带有 4 个 CPU 内核，8 GB RAM 内存和 30 个并发 Odoo 用户的系统。
+
+- 30 用户 / 6 = **5**  (5是所需工作进程的理论数量）
+- (4 * 2) + 1 = **9**  (9是理论上最大工作进程数量）
+
+根据上面的计算，我们可以使用 5 个工作进程 + 1 个 `cron` 工作进程，共有 6 个工作进程。
+
+根据工作进程的数量计算 RAM 内存消耗：
+
+- RAM = 6 * ((0.8*150) + (0.2*1024)) ~= 2 GB
+
+上面的计算表明我们的 Odoo 安装需要大约 2GB 的RAM。
+
+要切换到多进程模式，请打开配置文件 `/etc/odoo11.conf` 并附加以下行：
+
+```conf
+limit_memory_hard = 2684354560
+limit_memory_soft = 2147483648
+limit_request = 8192
+limit_time_cpu = 600
+limit_time_real = 1200
+max_cron_threads = 1
+workers = 5
+</code></pre>
+</blockquote>
+
+<p>重新启动 Odoo 服务以使更改生效：</p>
+
+<pre><code class="language-bash">sudo systemctl restart odoo11
+</code></pre>
+
+<p>其余的系统资源将由我们机器上运行的其他服务使用。在本指南中，我们将 Odoo 与 PostgreSQL 和 Nginx 一起安装在同一台服务器上，根据您的设置，您还可以在服务器上运行其他服务。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>而已！本教程向您介绍了在 Ubuntu 18.04 上在 Python 虚拟环境中安装 Odoo 11 的过程，并使用 <!--link:nginx-reverse-proxy-->Nginx 作为反向代理<!--link-->。您还学习了如何为生产环境启用多进程和优化 Odoo 。您可能还想查看有关如何<a href="/linux/how-to-setup-automatic-odoo-backup/">为 Odoo 数据库创建自动每日备份</a>的教程。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/odoo" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">odoo</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 Sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Nginx 服务器块</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-upgrade-to-ubuntu-18-04-bionic-beaver/">如何将 Ubuntu 升级到 18.04 (Bionic Beaver)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-automatic-odoo-backup/">如何设置 Odoo 自动备份</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-and-disable-root-user-account-in-ubuntu/">如何在 Ubuntu 中启用和禁用 root 帐户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/set-up-an-email-server-with-postfixadmin/">使用 PostfixAdmin 设置邮件服务器</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

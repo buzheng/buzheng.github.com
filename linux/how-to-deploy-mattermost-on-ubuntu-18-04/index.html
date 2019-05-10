@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上部署 Mattermost</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上部署 Mattermost" />
+<meta property="og:description" content="Mattermost 是一个企业级即时消息平台，是一个开源的自托管 Slack 替代方案。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-deploy-mattermost-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-04-13T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-13T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上部署 Mattermost">
+<meta itemprop="description" content="Mattermost 是一个企业级即时消息平台，是一个开源的自托管 Slack 替代方案。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。">
+
+
+<meta itemprop="datePublished" content="2019-04-13T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-13T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="511">
+
+
+
+<meta itemprop="keywords" content="ubuntu,mattermost," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上部署 Mattermost"/>
+<meta name="twitter:description" content="Mattermost 是一个企业级即时消息平台，是一个开源的自托管 Slack 替代方案。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上部署 Mattermost</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-13T05:00:00Z">April 13, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Mattermost 是一个企业级即时消息平台，是一个开源的自托管 Slack 替代方案。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。</p>
+
+<p>在本教程中，我们将在 Ubuntu 18.04 服务器上安装 Mattermost ，并将<!--link:nginx-reverse-proxy-->Nginx 配置为 SSL 反向代理<!--link-->。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保您已满足以下先决条件：</p>
+
+<ul>
+<li>您以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</li>
+<li>您有一个指向您的服务器 IP 地址的域名。在本文中我们将使用 <code>example.com</code> 。</li>
+<li>您已安装 Nginx ，如果没有，请查看<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">本教程</a>。</li>
+<li>您已为您的域安装了 SSL 证书。您可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本教程安装免费的 Let&rsquo;s Encrypt SSL 证书</a>。</li>
+</ul>
+
+<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
+
+<p>我们将使用 MySQL 作为 Mattermost 的数据库。如果您的服务器上没有安装 MySQL 或 MariaDB ，则可以按照<a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">这些说明</a>进行安装。</p>
+
+<p>登录 MySQL shell ：</p>
+
+<pre><code class="language-console-bash">mysql -u root
+</code></pre>
+
+<p>使用以下命令为我们的 Mattermost 安装创建新数据库和用户：</p>
+
+<pre><code class="language-console-mysql">CREATE DATABASE mattermost;GRANT ALL ON mattermost.* TO mattermost@localhost IDENTIFIED BY 'P4ssvv0rD';
+</code></pre>
+
+<blockquote>
+<p>确保使用的密码比 <code>P4ssvv0rD</code> 更安全 。</p>
+</blockquote>
+
+<h2 id="创建新的系统用户">创建新的系统用户</h2>
+
+<p>创建一个将运行我们的 Mattermost 实例的新用户和组。我们将为用户命名 <code>mattermost</code> ：</p>
+
+<pre><code class="language-console-bash">sudo useradd -U -M -d /opt/mattermost mattermost
+</code></pre>
+
+<h2 id="安装-mattermost-服务器">安装 Mattermost 服务器</h2>
+
+<p>在撰写本文时， Mattermost 的最新稳定版本是 5.1.0 版。使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>下载存档：</p>
+
+<pre><code class="language-console-bash">sudo curl -L https://releases.mattermost.com/5.1.0/mattermost-5.1.0-linux-amd64.tar.gz -o /tmp/mattermost.tar.gz
+</code></pre>
+
+<p>下载完成后，将存档解压缩到 <code>/opt</code> 目录</p>
+
+<pre><code class="language-console-bash">sudo tar zxf /tmp/mattermost.tar.gz -C /opt
+</code></pre>
+
+<p>创建文件的存储目录：</p>
+
+<pre><code class="language-console-bash">sudo mkdir -p /opt/mattermost/data
+</code></pre>
+
+<p><!--link:linux-chown-command-->更改目录所有权<!--link-->为 <code>mattermost</code> 用户：</p>
+
+<pre><code class="language-console-bash">sudo chown -R mattermost: /opt/mattermost
+</code></pre>
+
+<p>打开 <code>/opt/mattermost/config/config.json</code> 文件，将数据库驱动程序设置为 <code>mysql</code> 并输入数据库信息：</p>
+
+<pre><code class="language-json">&quot;SqlSettings&quot;: {
+    &quot;DriverName&quot;: &quot;mysql&quot;,
+    &quot;DataSource&quot;: &quot;mattermost:P4ssvv0rD@tcp(localhost:3306)/mattermost?charset=utf8mb4,utf8&amp;readTimeout=30s&amp;writeTimeout=30s&quot;,
+</code></pre>
+
+<p>为了确保我们的 Mattermost 实例按预期工作，我们先测试一下 Mattermost 服务器。使用以下命令切换到目录 <code>/opt/mattermost</code> 并启动服务器：</p>
+
+<pre><code class="language-console-bash">cd /opt/mattermost
+sudo -u mattermost bin/mattermost
+</code></pre>
+
+<p>如果一切正常，服务器将启动，输出将如下所示：</p>
+
+<pre><code class="language-output">{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1532546921.941638,&quot;caller&quot;:&quot;app/server.go:115&quot;,&quot;msg&quot;:&quot;Starting Server...&quot;}
+{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1532546921.9421031,&quot;caller&quot;:&quot;app/server.go:154&quot;,&quot;msg&quot;:&quot;Server is listening on [::]:8065&quot;}
+{&quot;level&quot;:&quot;info&quot;,&quot;ts&quot;:1532546921.9541554,&quot;caller&quot;:&quot;app/web_hub.go:75&quot;,&quot;msg&quot;:&quot;Starting 2 websocket hubs&quot;}
+</code></pre>
+
+<p>我们现在使用 <code>CTRL+C</code> 停止  Mattermost 服务器并继续执行后续步骤。</p>
+
+<h2 id="创建一个-systemd-单元">创建一个 Systemd 单元</h2>
+
+<p>为了将我们的 Mattermost 实例作为服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个单元文件 <code>mattermost.service</code> 。</p>
+
+<p>打开文本编辑器并创建以下文件： <code>/etc/systemd/system/mattermost.service</code></p>
+
+<pre><code class="language-ini">[Unit]
+Description=Mattermost
+After=network.target
+After=mysql.service
+Requires=mysql.service
+
+[Service]
+Type=notify
+ExecStart=/opt/mattermost/bin/mattermost
+TimeoutStartSec=3600
+Restart=always
+RestartSec=10
+WorkingDirectory=/opt/mattermost
+User=mattermost
+Group=mattermost
+LimitNOFILE=49152
+
+[Install]
+WantedBy=mysql.service
+</code></pre>
+
+<p>让 systemd 重新加载配置，并使用以下命令启动 Mattermost 服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl daemon-reload
+sudo systemctl start mattermost
+</code></pre>
+
+<p>我们现在可以检查服务状态：</p>
+
+<pre><code class="language-console-bash">sudo systemctl status mattermost
+</code></pre>
+
+<pre><code class="language-output">● mattermost.service - Mattermost
+   Loaded: loaded (/etc/systemd/system/mattermost.service; disabled; ven
+   Active: active (running) since Wed 2018-07-25 18:39:05 UTC; 41s ago
+ Main PID: 3091 (mattermost)
+    Tasks: 18 (limit: 507)
+   CGroup: /system.slice/mattermost.service
+           ├─3091 /opt/mattermost/bin/mattermost
+</code></pre>
+
+<p>如果没有错误，请启用 Mattermost 服务在引导时自动启动：</p>
+
+<pre><code class="language-console-bash">sudo systemctl enable mattermost
+</code></pre>
+
+<h2 id="使用-nginx-设置反向代理">使用 Nginx 设置反向代理</h2>
+
+<p>如果您按照教程<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx </a>以及教程<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Let&rsquo;s Encrypt 来保护 Nginx</a>，您应该已经安装了 Nginx 并配置了 SSL 证书。</p>
+
+<p>现在我们需要为 Mattermost 实例设置一个新的服务器块。打开文本编辑器并创建以下文件： <code>/etc/nginx/conf.d/example.com.conf</code></p>
+
+<pre><code class="language-nginx">proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mattermost_cache:10m max_size=3g inactive=120m use_temp_path=off;
+
+upstream mattermost_backend {
+  server 127.0.0.1:8065;
+}
+
+server {
+    listen 80;
+    server_name example.com www.example.com;
+
+    include snippets/letsencrypt.conf;
+    return 301 https://example.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name www.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    return 301 https://example.com$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
+    include snippets/ssl.conf;
+
+    access_log /var/log/nginx/example.com-access.log;
+    error_log /var/log/nginx/example.com-error.log;
+
+    location ~ /api/v[0-9]+/(users/)?websocket$ {
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection &quot;upgrade&quot;;
+       client_max_body_size 50M;
+       proxy_set_header Host $http_host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_set_header X-Frame-Options SAMEORIGIN;
+       proxy_buffers 256 16k;
+       proxy_buffer_size 16k;
+       proxy_read_timeout 600s;
+       proxy_pass http://mattermost_backend;
+    }
+
+    location / {
+       proxy_http_version 1.1;
+       client_max_body_size 50M;
+       proxy_set_header Connection &quot;&quot;;
+       proxy_set_header Host $http_host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_set_header X-Frame-Options SAMEORIGIN;
+       proxy_buffers 256 16k;
+       proxy_buffer_size 16k;
+       proxy_read_timeout 600s;
+       proxy_cache mattermost_cache;
+       proxy_cache_revalidate on;
+       proxy_cache_min_uses 2;
+       proxy_cache_use_stale timeout;
+       proxy_cache_lock on;
+       proxy_pass http://mattermost_backend;
+    }
+}
+</code></pre>
+
+<p>重新加载 Nginx 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl reload nginx
+</code></pre>
+
+<h2 id="配置-mattermost">配置 Mattermost</h2>
+
+<p>打开浏览器，键入您的域名，您将被重定向到注册页面。</p>
+
+<p>输入您的电子邮件，选择用户名和密码，然后单击 <code>Create Account</code> 按钮创建您的第一个帐户。</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-create-account.jpg" alt="" /></p>
+
+<p>系统中第一个创建的用户将具有管理员权限。</p>
+
+<p>在下一步中，配置向导将要求您创建新团队。</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-create-team.jpg" alt="" /></p>
+
+<p>单击 <code>Create a new team</code> 链接，输入您的第一个团队并单击 <code>Next</code> 按钮。</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-team-name.jpg" alt="" /></p>
+
+<p>在下一步中，系统会要求您选择新团队的网址：</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-team-url.jpg" alt="" /></p>
+
+<p>单击 <code>Finish</code> 按钮，您将被重定向到 Mattermost 仪表板，以管理员身份登录。</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-dashboard.jpg" alt="" /></p>
+
+<p>通过单击导航面板顶部的用户名打开系统控制台，然后在打开的新菜单中单击该 <code>System Console</code> 链接。</p>
+
+<p>通过转到设置常规→配置来设置站点 URL 。</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-site-url.jpg" alt="" /></p>
+
+<p>要启用电子邮件通知，请跳转到通知→电子邮件，更改 <code>Enable Email Notifications</code> 值 <code>false</code> 为 <code>true</code> 并输入您的 SMTP 参数。</p>
+
+<p><img src="/images/linux/how-to-deploy-mattermost-on-ubuntu-18-04/Mattermost-email-notifications.jpg" alt="" /></p>
+
+<p>您可以使用任何流行的交易电子邮件服务，如 SendinBlue ， SendGrid ， Amazon SES ， Mandrill ， Mailgun ， Mailjet 和 Postmark ，或者您可以按照<!--link:series/setting-up-and-configuring-a-mail-server-->本教程<!--link-->设置自己的邮件服务器。</p>
+
+<p>最后，我们需要重新启动 Mattermost 服务才能使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart mattermost
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Ubuntu 18.04 服务器上成功安装了 Mattermost ，并将 Nginx 设置为反向代理。您现在可以开始使用 Mattermost 与您的团队协作了。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mattermost" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mattermost</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wine-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Wine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postman-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 postman</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Google Chrome Web 浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-curl-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 curl</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 OpenCV</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ghost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ghost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-installed-packages-on-ubuntu/">如何在 Ubuntu 上列出已安装的软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tensorflow-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 TensorFlow</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

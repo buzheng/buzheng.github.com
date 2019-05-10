@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 使用keytools 为 tomcat 7 配置ssl 双向认证</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="使用keytools 为 tomcat 7 配置ssl 双向认证" />
+<meta property="og:description" content="第一、证书库、证书等生成
+
+1、生成服务器证书库
+
+keytool -validity 36500 -genkey -v -alias tomcat_server -keyalg RSA -keystore tomcat_server.keystore -dname &quot;CN=127.0.0.1,OU=,O=,L=,ST=,c=&quot; -storepass 123456 -keypass 123456
+
+
+-validity 36500 有效期，以天为单位
+CN 这项一定是服务器的域名或者IP地址
+OU 组织单位
+O 组织
+L 区域
+ST 州/省份
+C 国家" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/keytools-tomcat-7-ssl/" />
+<meta property="article:published_time" content="2013-07-19T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-07-19T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="使用keytools 为 tomcat 7 配置ssl 双向认证">
+<meta itemprop="description" content="第一、证书库、证书等生成
+
+1、生成服务器证书库
+
+keytool -validity 36500 -genkey -v -alias tomcat_server -keyalg RSA -keystore tomcat_server.keystore -dname &quot;CN=127.0.0.1,OU=,O=,L=,ST=,c=&quot; -storepass 123456 -keypass 123456
+
+
+-validity 36500 有效期，以天为单位
+CN 这项一定是服务器的域名或者IP地址
+OU 组织单位
+O 组织
+L 区域
+ST 州/省份
+C 国家">
+
+
+<meta itemprop="datePublished" content="2013-07-19T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-07-19T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="247">
+
+
+
+<meta itemprop="keywords" content="Java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用keytools 为 tomcat 7 配置ssl 双向认证"/>
+<meta name="twitter:description" content="第一、证书库、证书等生成
+
+1、生成服务器证书库
+
+keytool -validity 36500 -genkey -v -alias tomcat_server -keyalg RSA -keystore tomcat_server.keystore -dname &quot;CN=127.0.0.1,OU=,O=,L=,ST=,c=&quot; -storepass 123456 -keypass 123456
+
+
+-validity 36500 有效期，以天为单位
+CN 这项一定是服务器的域名或者IP地址
+OU 组织单位
+O 组织
+L 区域
+ST 州/省份
+C 国家"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">使用keytools 为 tomcat 7 配置ssl 双向认证</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2013-07-19T00:00:00Z">July 19, 2013</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id="第一-证书库-证书等生成">第一、证书库、证书等生成</h2>
+
+<h3 id="1-生成服务器证书库">1、生成服务器证书库</h3>
+
+<pre><code class="language-bash">keytool -validity 36500 -genkey -v -alias tomcat_server -keyalg RSA -keystore tomcat_server.keystore -dname &quot;CN=127.0.0.1,OU=,O=,L=,ST=,c=&quot; -storepass 123456 -keypass 123456
+</code></pre>
+
+<p>-validity 36500 有效期，以天为单位
+CN 这项一定是服务器的域名或者IP地址
+OU 组织单位
+O 组织
+L 区域
+ST 州/省份
+C 国家</p>
+
+<h3 id="2-客户端证书">2、客户端证书</h3>
+
+<pre><code class="language-bash">keytool -validity 36500 -genkeypair -v -alias testclient -keyalg RSA -storetype PKCS12 -keystore testclient.p12 -dname &quot;CN=testclient,OU=,O=,L=,ST=,c=&quot; -storepass 123456
+</code></pre>
+
+<p>-storetype PKCS12 主要是为了将证书导入IE/firefox 中。</p>
+
+<p>将生成的证书导入IE中。</p>
+
+<h3 id="3-将客户端证书导入服务器端证书库">3、将客户端证书导入服务器端证书库</h3>
+
+<p>服务器端证书不识别 p12格式的证书，需要从客户端证书导出 CER格式证书，然后将CER格式证书导入到服务器端证书中。</p>
+
+<pre><code class="language-bash">keytool -export -alias testclient -keystore testclient.p12 -storetype PKCS12 -storepass 123456 -rfc -file testclient.cer
+</code></pre>
+
+<p>然后将client.cer 导入到服务器证书库(使用下面任意一个命令)</p>
+
+<pre><code class="language-bash">keytool -import -v -file testclient.cer -keystore tomcat_server.keystore -storepass 123456
+keytool -import -alias testclient -v -file testclient.cer -keystore tomcat_server.keystore -storepass 123456
+</code></pre>
+
+<p>注意这里的别名，如果不加别名，则默认别名则是 mykey，所以见到mykey 请不要吃惊。</p>
+
+<h3 id="4-从服务器证书库导出服务器证书">4、从服务器证书库导出服务器证书</h3>
+
+<pre><code class="language-bash">keytool -export -alias tomcat_server -keystore tomcat_server.keystore -storepass 123456 -rfc -file tomcat_server.cer
+</code></pre>
+
+<p>该证书可以导入浏览器中，让客户端信任服务器证书。不导入也不影响使用，但浏览器会不信任服务器证书，会提示错误信息。</p>
+
+<p>5、查看证书库中的所有证书</p>
+
+<pre><code class="language-bash">keytool -list -keystore tomcat_server.keystore -storepass 123456
+</code></pre>
+
+<h2 id="第二-tomcat-配置">第二、Tomcat 配置</h2>
+
+<p>配置 server.xml</p>
+
+<pre><code class="language-xml">&lt;Connector port=&quot;8443&quot; protocol=&quot;HTTP/1.1&quot; SSLEnabled=&quot;true&quot;
+	maxThreads=&quot;150&quot; scheme=&quot;https&quot; secure=&quot;true&quot;
+	keystoreFile=&quot;D:\\dev\\tomcat-https\\note\\tomcat_server.keystore&quot; 
+	keystorePass=&quot;123456&quot; 
+	truststoreFile=&quot;D:\\dev\\tomcat-https\\note\\tomcat_server.keystore&quot; 
+	truststorePass=&quot;123456&quot;
+	clientAuth=&quot;true&quot; sslProtocol=&quot;TLS&quot; /&gt;
+</code></pre>
+
+<p>启动tomcat 就可以了。</p>
+
+<h2 id="问题">问题</h2>
+
+<p>如果启动时报如下错误：</p>
+
+<pre><code class="language-bash">SEVERE: Failed to initialize end point associated with ProtocolHandler [&quot;http-apr-8443&quot;]
+java.lang.Exception: Connector attribute SSLCertificateFile must be defined when using SSL with APR
+	at org.apache.tomcat.util.net.AprEndpoint.bind(AprEndpoint.java:507)
+	at org.apache.tomcat.util.net.AbstractEndpoint.init(AbstractEndpoint.java:610)
+	at org.apache.coyote.AbstractProtocol.init(AbstractProtocol.java:429)
+	at org.apache.catalina.connector.Connector.initInternal(Connector.java:981)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardService.initInternal(StandardService.java:559)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.core.StandardServer.initInternal(StandardServer.java:814)
+	at org.apache.catalina.util.LifecycleBase.init(LifecycleBase.java:102)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:640)
+	at org.apache.catalina.startup.Catalina.load(Catalina.java:665)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:281)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:455)
+</code></pre>
+
+<p>则是由于Tomcat中的SSL采用了 APR来实现的，关于SSL的实现，Tomcat提供了两种：JSSE和APR，如果安装了 APR，则优先选择APR作为实现。APR的ssh配置需要通OpenSSH来进行配置。这在 server.xml 中有说明：</p>
+
+<blockquote>
+<p>Define a SSL HTTP/1.1 Connector on port 8443
+This connector uses the JSSE configuration, when using APR, the connector should be using the OpenSSL style configuration described in the APR documentation</p>
+</blockquote>
+
+<p>那么避免采用 APR呢？ 有两种方法，
+1，将 protocol=&ldquo;HTTP/1.1&rdquo; 修改为 protocol=&ldquo;org.apache.coyote.http11.Http11Protocol&rdquo;
+2，在windows 下，可以将 bin 目录下的 tcnative-1.dll 删掉。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/eclipse-tomcat-maven-web/">在 Eclipse 中用 tomcat 调试 maven web 工程</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/java-notes-one-by-one/">JAVA 一些基础知识点滴</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 使用 PostfixAdmin 设置邮件服务器</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="使用 PostfixAdmin 设置邮件服务器" />
+<meta property="og:description" content="Postfix Admin 是一个基于Web的界面，帮助用户配置和管理基于 Postfix 的电子邮件服务器。使用Postfix Admin，您可以创建和管理多个虚拟域，用户和别名。
+
+这是设置和配置邮件服务器系列中的第一篇文章，其中包括创建必要的 DNS 记录，并解释如何使用免费的 Let&rsquo;s Encrypt 证书，PHP 和 MySQL 安装和配置 Postfix Admin，Nginx。
+
+本教程是为 Ubuntu 16.04 编写的，但是相同的步骤(可能需要微小修改)应适用于任何较新版本的Ubuntu。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/set-up-an-email-server-with-postfixadmin/" />
+<meta property="article:published_time" content="2019-03-03T09:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-03T09:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="使用 PostfixAdmin 设置邮件服务器">
+<meta itemprop="description" content="Postfix Admin 是一个基于Web的界面，帮助用户配置和管理基于 Postfix 的电子邮件服务器。使用Postfix Admin，您可以创建和管理多个虚拟域，用户和别名。
+
+这是设置和配置邮件服务器系列中的第一篇文章，其中包括创建必要的 DNS 记录，并解释如何使用免费的 Let&rsquo;s Encrypt 证书，PHP 和 MySQL 安装和配置 Postfix Admin，Nginx。
+
+本教程是为 Ubuntu 16.04 编写的，但是相同的步骤(可能需要微小修改)应适用于任何较新版本的Ubuntu。">
+
+
+<meta itemprop="datePublished" content="2019-03-03T09:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-03T09:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="474">
+
+
+
+<meta itemprop="keywords" content="linux,ubuntu,postfixadmin,postfix,Mail Server,教程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 PostfixAdmin 设置邮件服务器"/>
+<meta name="twitter:description" content="Postfix Admin 是一个基于Web的界面，帮助用户配置和管理基于 Postfix 的电子邮件服务器。使用Postfix Admin，您可以创建和管理多个虚拟域，用户和别名。
+
+这是设置和配置邮件服务器系列中的第一篇文章，其中包括创建必要的 DNS 记录，并解释如何使用免费的 Let&rsquo;s Encrypt 证书，PHP 和 MySQL 安装和配置 Postfix Admin，Nginx。
+
+本教程是为 Ubuntu 16.04 编写的，但是相同的步骤(可能需要微小修改)应适用于任何较新版本的Ubuntu。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">使用 PostfixAdmin 设置邮件服务器</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-03T09:00:00Z">March 3, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Postfix Admin 是一个基于Web的界面，帮助用户配置和管理基于 Postfix 的电子邮件服务器。使用Postfix Admin，您可以创建和管理多个虚拟域，用户和别名。</p>
+
+<p>这是设置和配置邮件服务器系列中的第一篇文章，其中包括创建必要的 DNS 记录，并解释如何使用免费的 Let&rsquo;s Encrypt 证书，PHP 和 MySQL 安装和配置 Postfix Admin，Nginx。</p>
+
+<p>本教程是为 Ubuntu 16.04 编写的，但是相同的步骤(可能需要微小修改)应适用于任何较新版本的Ubuntu。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>作为遵循本系列的先决条件，您将需要：</p>
+
+<ul>
+<li>Ubuntu 16.04 服务器。该服务器主机名必须是 FQDN。在本系列中我们将使用 <code>mail.example.com</code>。</li>
+<li>具有sudo权限的用户。</li>
+</ul>
+
+<h2 id="dns-设置">DNS 设置</h2>
+
+<p>您需要为您的邮件系统设置以下 DNS 记录：</p>
+
+<p>一条记录，用于将系统的 FQDN（主机名）指向您的邮件服务器 IPv4 地址。</p>
+
+<pre><code class="language-config">mail.example.com. 3600 IN A   23.45.67.89
+</code></pre>
+
+<p>FQDN 由两部分组成，主机名和域名。</p>
+
+<p>MX 记录，用于指定哪个邮件服务器负责代表收件人的域接受电子邮件。在我们的案例中，我们希望邮件服务器@example.com接受发送到电子邮件地址的所有电子邮件mail.example.com。</p>
+
+<pre><code class="language-config">example.com.      3600 IN MX  0 mail.example.com.
+</code></pre>
+
+<p>SPF记录，用于验证哪些邮件服务器被批准代表给定域发送电子邮件。在下面的示例中，我们批准域邮件服务器（mx），如果SPF检查失败，结果将是软故障（~all）：</p>
+
+<pre><code class="language-config">example.com.      3600 IN TXT &quot;v=spf1 mx ~all&quot;
+</code></pre>
+
+<blockquote>
+<p>当然，您需要使用您的真实域名和邮件服务器IP地址替换域名和IP地址。</p>
+</blockquote>
+
+<h3 id="反向-dns-ptr">反向 DNS（PTR）</h3>
+
+<p>反向 DNS（PTR）是域名映射的 IP 地址，与 DNS 完全相反，它将域名映射到 IP 地址。</p>
+
+<p>大多数电子邮件服务器将对尝试连接它们的IP地址执行反向DNS查找，如果未设置PTR记录，则可能不接受来自服务器的电子邮件。</p>
+
+<p>在大多数情况下，可以通过您的托管服务提供商Web界面设置PTR条目，或者联系支持团队并要求他们为您设置正确的PTR记录。</p>
+
+<p>您可以使用dig命令查找给定IP地址的反向DNS。</p>
+
+<pre><code class="language-bash">dig -x 23.45.67.89
+</code></pre>
+
+<pre><code class="language-bash">23.45.67.89.in-addr.arpa domain name pointer mail.example.com.
+</code></pre>
+
+<h2 id="创建系统用户">创建系统用户</h2>
+
+<p>由于我们使用虚拟用户配置邮件服务器，因此我们需要一个系统用户，该用户将成为所有邮箱的所有者，虚拟用户将使用这些用户访问服务器上的电子邮件。</p>
+
+<p>以下命令将创建一个名为的新组和用户 vmail，并将用户的主目录设置为 <code>/var/mail/vmail</code>：</p>
+
+<pre><code class="language-bash">sudo groupadd -g 5000 vmail
+sudo useradd -u 5000 -g vmail -s /usr/sbin/nologin -d /var/mail/vmail -m vmail
+</code></pre>
+
+<p>所有虚拟邮箱都将存储在 <code>/var/mail/vmail</code> 目录中。</p>
+
+<h2 id="安装-nginx-php-和-mysql">安装 Nginx, PHP 和 MySQL</h2>
+
+<p>Postfix Admin 是一个基于PHP的应用程序。为了能够访问 PostfixAdmin Web 界面，我们需要安装 <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">Web 服务器</a>和 PHP。</p>
+
+<p>运行以下命令以安装 Nginx，PHP和所有必需的PHP模块：</p>
+
+<pre><code class="language-bash">sudo apt install nginx mysql-server php7.0-fpm php7.0-cli php7.0-imap php7.0-json php7.0-mysql php7.0-opcache php7.0-mbstring php7.0-readline
+</code></pre>
+
+<p>在安装过程中，系统会提示您创建 MySQL root 密码。</p>
+
+<h2 id="下载并配置-postfix-admin">下载并配置 Postfix Admin</h2>
+
+<p>在撰写本文时，3.1是Postfix Admin的最新稳定版本。</p>
+
+<p>使用以下 wget 命令下载 Postfix Admin 存档：</p>
+
+<pre><code class="language-bash">VERSION=3.1
+wget -q https://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VERSION}/postfixadmin-${VERSION}.tar.gz
+</code></pre>
+
+<p>下载完成后，解压文档：</p>
+
+<pre><code class="language-bash">tar xzf postfixadmin-${VERSION}.tar.gz
+</code></pre>
+
+<p>将 Postfix Admin 源文件移动到 <code>/var/www</code> 目录和创建 <code>templates_c</code> 目录（smarty cache）：</p>
+
+<pre><code class="language-bash">sudo mv postfixadmin-${VERSION}/ /var/www/postfixadmin
+rm -f postfixadmin-${VERSION}.tar.gz
+mkdir /var/www/postfixadmin/templates_c
+</code></pre>
+
+<p>Nginx 和 PHP-FPM 都在用户 <code>www-data</code> 下运行， 因此我们需要更改 <code>/var/www/postfixadmin</code> 的用户所有权：</p>
+
+<pre><code class="language-bash">sudo chown -R www-data: /var/www/postfixadmin
+</code></pre>
+
+<p>Postfix Admin 将使用 MySQL 数据库来存储有关用户，域和应用程序配置的信息。</p>
+
+<p>登录MySQL shell：</p>
+
+<pre><code class="language-bash">mysql -u root -p
+</code></pre>
+
+<p>使用以下命令创建新的 MySQL 用户和数据库：</p>
+
+<pre><code class="language-bash">CREATE DATABASE postfixadmin;
+GRANT ALL ON postfixadmin.* TO 'postfixadmin'@'localhost' IDENTIFIED BY 'P4ssvv0rD';
+FLUSH PRIVILEGES;
+</code></pre>
+
+<blockquote>
+<p>不要忘记将密码（P4ssvv0rD）更改为更安全的密码。</p>
+</blockquote>
+
+<p>我们将创建一个文件名为 <code>config.local.php</code> 覆盖默认应用程序配置文件，而不是编辑默认的 Postfix Admin 配置：</p>
+
+<p>使用您的文本文件打开文件：</p>
+
+<pre><code class="language-bash">sudo nano /var/www/postfixadmin/config.local.php
+</code></pre>
+
+<p>粘贴以下 php 代码：</p>
+
+<p>/var/www/postfixadmin/config.local.php</p>
+
+<pre><code class="language-php">&lt;?php
+$CONF['configured'] = true;
+
+$CONF['database_type'] = 'mysqli';
+$CONF['database_host'] = 'localhost';
+$CONF['database_user'] = 'postfixadmin';
+$CONF['database_password'] = 'P4ssvv0rD';
+$CONF['database_name'] = 'postfixadmin';
+
+$CONF['default_aliases'] = array (
+  'abuse'      =&gt; 'abuse@example.com',
+  'hostmaster' =&gt; 'hostmaster@example.com',
+  'postmaster' =&gt; 'postmaster@example.com',
+  'webmaster'  =&gt; 'webmaster@example.com'
+);
+
+$CONF['fetchmail'] = 'NO';
+$CONF['show_footer_text'] = 'NO';
+
+$CONF['quota'] = 'YES';
+$CONF['domain_quota'] = 'YES';
+$CONF['quota_multiplier'] = '1024000';
+$CONF['used_quotas'] = 'YES';
+$CONF['new_quota_table'] = 'YES';
+
+$CONF['aliases'] = '0';
+$CONF['mailboxes'] = '0';
+$CONF['maxquota'] = '0';
+$CONF['domain_quota_default'] = '0';
+?&gt;
+</code></pre>
+
+<p>保存并关闭文件。</p>
+
+<p>通过上面的配置，我们定义了数据库类型和登录凭据。此外，我们还指定了默认别名，禁用 fetchmail 和启用配额。</p>
+
+<p>接下来，运行以下命令为 Postfix Admin 数据库创建架构：</p>
+
+<pre><code class="language-bash">sudo -u www-data php /var/www/postfixadmin/upgrade.php
+</code></pre>
+
+<p>填充数据库后，我们可以继续使用 <code>postfixadmin-cli</code> 工具创建我们的第一个 PostfixAdmin  superadmin 用户。</p>
+
+<p>此用户将具有管理权限以修改任何域或应用程序设置。</p>
+
+<pre><code class="language-bash">sudo bash /var/www/postfixadmin/scripts/postfixadmin-cli admin add superadmin@example.com --superadmin 1 --active 1 --password P4ssvv0rD --password2 P4ssvv0rD
+</code></pre>
+
+<p>输出应该如下所示：</p>
+
+<pre><code class="language-bash">Welcome to Postfixadmin-CLI v0.2
+---------------------------------------------------------------
+
+The admin superadmin@example.com has been added!
+
+---------------------------------------------------------------
+</code></pre>
+
+<blockquote>
+<p>不要忘记将superadmin帐户的密码 <code>P4ssvv0rD</code> 更改为更安全的密码。</p>
+</blockquote>
+
+<h2 id="安装-let-s-encrypt-ssl-证书">安装 Let’s Encrypt SSL 证书</h2>
+
+<p>我们将使用 SSL 证书访问我们的 Postfix Admin 安装并启用 Dovecot 和 Postfix SSL/TLS加密。</p>
+
+<p>我们有一个关于<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">如何安装Let’s Encrypt SSL证书的教程</a> , 这里最重要的一点是在我们的案例中为您的服务器主机名（FQDN）生成SSL证书 mail.example.com。</p>
+
+<p>按照上面链接的教程生成SSL证书后，编辑 Nginx 服务器块，如下所示：</p>
+
+<p>/etc/nginx/sites-enabled/mail.example.com.conf</p>
+
+<pre><code class="language-config">server {
+    listen 80;
+    server_name mail.example.com;
+
+    include snippets/letsencrypt.conf;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name mail.example.com;
+    root /var/www;
+
+    ssl_certificate /etc/letsencrypt/live/mail.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mail.example.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/mail.example.com/chain.pem;
+    include snippets/ssl.conf;
+    include snippets/letsencrypt.conf;
+
+    location / {
+       try_files $uri $uri/ /index.php;
+    }
+
+    location /postfixadmin {
+       index index.php;
+       try_files $uri $uri/ /postfixadmin/index.php;
+    }
+
+    location ~* \.php$ {
+         fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+         if (!-f $document_root$fastcgi_script_name) {return 404;}
+         fastcgi_pass  unix:/run/php/php7.0-fpm.sock;
+         fastcgi_index index.php;
+         include fastcgi_params;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+</code></pre>
+
+<p>重新加载 Nginx 服务以使更改生效：</p>
+
+<pre><code class="language-bash">sudo systemctl reload nginx
+</code></pre>
+
+<p>此时，您应该可以在 <code>https://mail.example.com/postfixadmin</code> 使用本教程前面安装过程中创建的 superadmin 用户登录 Postfix Admin 。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您已安装 Postfix Admin。在本系列的下一部分中，我们将继续<a href="install-and-configure-postfix-and-dovecot.htmll">安装和配置 Postfix 和 Dovecot</a>。敬请关注！</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/postfixadmin" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">postfixadmin</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/postfix" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">postfix</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mail-server" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Mail Server</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%95%99%E7%A8%8B" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">教程</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/">配置 Odoo 使用 Nginx 作为反向代理</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-case-statement/">Bash 中 Case 语句用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">在 Linux 中使用 ls 命令列出文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 使用github作为maven仓库</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="使用github作为maven仓库" />
+<meta property="og:description" content="本文介绍的这种使用 github 作为 maven 仓库的思路主要为：
+
+
+github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
+配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库
+部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/github-maven-repository/" />
+<meta property="article:published_time" content="2014-06-17T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-06-17T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="使用github作为maven仓库">
+<meta itemprop="description" content="本文介绍的这种使用 github 作为 maven 仓库的思路主要为：
+
+
+github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
+配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库
+部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去
+">
+
+
+<meta itemprop="datePublished" content="2014-06-17T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-06-17T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="407">
+
+
+
+<meta itemprop="keywords" content="git,maven," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用github作为maven仓库"/>
+<meta name="twitter:description" content="本文介绍的这种使用 github 作为 maven 仓库的思路主要为：
+
+
+github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
+配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库
+部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去
+"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">使用github作为maven仓库</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2014-06-17T00:00:00Z">June 17, 2014</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文介绍的这种使用 github 作为 maven 仓库的思路主要为：</p>
+
+<ol>
+<li>github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库</li>
+<li>配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库</li>
+<li>部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去</li>
+</ol>
+
+<p>以我的项目为例：<a href="https://github.com/buzheng/mybatis-pageable">https://github.com/buzheng/mybatis-pageable</a></p>
+
+<p>首先通过配置pom.xml告诉maven将artifacts部署到一个target下的一个临时目录中，具体配置如下：</p>
+
+<pre><code class="language-xml">&lt;plugin&gt;
+	&lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
+	&lt;version&gt;2.8.1&lt;/version&gt;
+	&lt;configuration&gt;
+		&lt;altDeploymentRepository&gt;internal.repo::default::file://${project.build.directory}/mvn-repo&lt;/altDeploymentRepository&gt;
+	&lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p>配置完成后，运行命令 mvn clean deploy 后发现已经部署maven仓库到 target/mvn-repo 目录下。然后我们要做的就是将该目录上传到github中。</p>
+
+<p>在 ~/.m2/settings.xml 中添加github的授权信息，以便 github 的 site-maven-plugin 能够push文件到github，配置信息如下：</p>
+
+<pre><code class="language-xml">&lt;server&gt;
+    &lt;id&gt;github&lt;/id&gt;
+    &lt;username&gt;你在github的帐号&lt;/username&gt;
+    &lt;password&gt;你在github的用户名&lt;/password&gt;
+&lt;/server&gt;
+</code></pre>
+
+<p>添加如下配置到 pom.xml 以告诉 github site-maven-plugin 服务器信息</p>
+
+<pre><code class="language-xml">&lt;properties&gt;
+	&lt;!-- github server corresponds to entry in ~/.m2/settings.xml --&gt;
+	&lt;github.global.server&gt;github&lt;/github.global.server&gt;
+&lt;/properties&gt;
+</code></pre>
+
+<p>最后配置 github site-maven-plugin 插件</p>
+
+<pre><code class="language-xml">&lt;plugin&gt;
+	&lt;groupId&gt;com.github.github&lt;/groupId&gt;
+	&lt;artifactId&gt;site-maven-plugin&lt;/artifactId&gt;
+	&lt;version&gt;0.9&lt;/version&gt;
+	&lt;configuration&gt;
+		&lt;message&gt;Maven artifacts for ${project.version}&lt;/message&gt;  &lt;!-- git commit message --&gt;
+		&lt;noJekyll&gt;true&lt;/noJekyll&gt;                                  &lt;!-- disable webpage processing --&gt;
+		&lt;outputDirectory&gt;${project.build.directory}/mvn-repo&lt;/outputDirectory&gt; &lt;!-- matches distribution management repository url above --&gt;
+		&lt;branch&gt;refs/heads/mvn-repo&lt;/branch&gt;                       &lt;!-- remote branch name --&gt;
+		&lt;includes&gt;
+			&lt;include&gt;**/*&lt;/include&gt;
+		&lt;/includes&gt;
+		&lt;repositoryName&gt;mybatis-pageable&lt;/repositoryName&gt;      &lt;!-- github repo name --&gt;
+		&lt;repositoryOwner&gt;buzheng&lt;/repositoryOwner&gt;    &lt;!-- github username --&gt;
+	&lt;/configuration&gt;
+	&lt;executions&gt;
+		&lt;!-- run site-maven-plugin&amp;#039;s &amp;#039;site&amp;#039; target as part of the build&amp;#039;s normal 
+			&amp;#039;deploy&amp;#039; phase --&gt;
+		&lt;execution&gt;
+			&lt;goals&gt;
+				&lt;goal&gt;site&lt;/goal&gt;
+			&lt;/goals&gt;
+			&lt;phase&gt;deploy&lt;/phase&gt;
+		&lt;/execution&gt;
+	&lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p>配置完成，运行命令 mvn clean deploy后，登录github，发现已经创建 mvn-repo 分支，并上传了 本地的 target/mvn-repo 目录。</p>
+
+<pre><code class="language-bash">[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building mybatis-pageable 0.1
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ mybatis-pageable ---
+[INFO] Deleting E:\workspace\mybatis-pageable\target
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ mybatis-pageable ---
+[WARNING] Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 0 resource
+[INFO]
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ mybatis-pageable ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 6 source files to E:/workspace/mybatis-pageable/target/classes
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ mybatis-pageable ---
+[INFO] Not copying test resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ mybatis-pageable ---
+[INFO] Not compiling test sources
+[INFO]
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ mybatis-pageable ---
+[INFO] Tests are skipped.
+[INFO]
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ mybatis-pageable ---
+[INFO] Building jar: E:/workspace/mybatis-pageable/target/mybatis-pageable-0.1.jar
+[INFO]
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ mybatis-pageable ---
+[INFO] Installing E:/workspace/mybatis-pageable/target/mybatis-pageable-0.1.jar to C:/Users/Adam.my-pc/.m2/repository/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar
+[INFO] Installing E:/workspace/mybatis-pageable/pom.xml to C:/Users/Adam.my-pc/.m2/repository/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom
+[INFO]
+[INFO] --- maven-deploy-plugin:2.8.1:deploy (default-deploy) @ mybatis-pageable ---
+[INFO] Using alternate deployment repository internal.repo::default::file://E:/workspace/mybatis-pageable/target/mvn-repo
+Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar (15 KB at 1020.2 KB/sec)
+Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom (4 KB at 907.5 KB/sec)
+Downloading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml
+Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml (303 B at 147.9 KB/sec)
+[INFO]
+[INFO] --- site-maven-plugin:0.9:site (default) @ mybatis-pageable ---
+[INFO] Creating 9 blobs
+[INFO] Creating tree with 10 blob entries
+[INFO] Creating commit with SHA-1: ac8a117fa05c3a24f057a684519d5edade5d4e64
+[INFO] Updating reference refs/heads/mvn-repo from cf1389181d9559b6926a26e852aa2b605b46da1e to ac8a117fa05c3a24f057a684519d5edade5d4e64
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 8.124s
+[INFO] Finished at: Mon Jun 16 15:47:54 CST 2014
+[INFO] Final Memory: 24M/178M
+[INFO] ------------------------------------------------------------------------
+</code></pre>
+
+<p>到此为止，项目的已经部署到github上。如果其他项目依赖此项目，需要在pom.xml中添加如下配置后，再添加相应的依赖关系即可。</p>
+
+<pre><code class="language-xml">&lt;repositories&gt;
+	&lt;repository&gt;
+		&lt;id&gt;mybatis-pageable-mvn-repo&lt;/id&gt;
+		&lt;url&gt;https://raw.github.com/buzheng/mybatis-pageable/mvn-repo/&lt;/url&gt;
+	&lt;/repository&gt;
+&lt;/repositories&gt;
+</code></pre>
+
+<p>完成！</p>
+
+<p>这种方法相当方便，只需要几个简单的配置，便能自动将jar包发布到github上。</p>
+
+<p>参考：<a href="http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github">http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github</a></p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/git" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">git</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/maven" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">maven</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/advantage-of-git-to-svn/">Git对于SVN的优势</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/git-usage-notes/">Git 使用汇总</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Linux 中压缩文件和目录</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Linux 中压缩文件和目录" />
+<meta property="og:description" content="ZIP 是使用最广泛的归档文件格式，支持无损数据压缩。
+
+ZIP 文件是包含一个或多个压缩文件或目录的数据容器。压缩的 zip 文件占用较少的磁盘空间，可以比未压缩文件更快地从一台机器传输到另一台机器。借助于适当的工具，可以在 Windows ， macOS 和 Linux 等所有操作系统轻松提取 ZIP 文件。
+
+在本教程中，我们将向您展示如何使用 zip 实用程序通过命令行在 Linux 系统中压缩(压缩)文件和目录。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-zip-files-and-directories-in-linux/" />
+<meta property="article:published_time" content="2019-03-19T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-19T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Linux 中压缩文件和目录">
+<meta itemprop="description" content="ZIP 是使用最广泛的归档文件格式，支持无损数据压缩。
+
+ZIP 文件是包含一个或多个压缩文件或目录的数据容器。压缩的 zip 文件占用较少的磁盘空间，可以比未压缩文件更快地从一台机器传输到另一台机器。借助于适当的工具，可以在 Windows ， macOS 和 Linux 等所有操作系统轻松提取 ZIP 文件。
+
+在本教程中，我们将向您展示如何使用 zip 实用程序通过命令行在 Linux 系统中压缩(压缩)文件和目录。">
+
+
+<meta itemprop="datePublished" content="2019-03-19T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-19T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="286">
+
+
+
+<meta itemprop="keywords" content="linux,zip,压缩文件," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Linux 中压缩文件和目录"/>
+<meta name="twitter:description" content="ZIP 是使用最广泛的归档文件格式，支持无损数据压缩。
+
+ZIP 文件是包含一个或多个压缩文件或目录的数据容器。压缩的 zip 文件占用较少的磁盘空间，可以比未压缩文件更快地从一台机器传输到另一台机器。借助于适当的工具，可以在 Windows ， macOS 和 Linux 等所有操作系统轻松提取 ZIP 文件。
+
+在本教程中，我们将向您展示如何使用 zip 实用程序通过命令行在 Linux 系统中压缩(压缩)文件和目录。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Linux 中压缩文件和目录</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-19T06:00:00Z">March 19, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>ZIP 是使用最广泛的归档文件格式，支持无损数据压缩。</p>
+
+<p>ZIP 文件是包含一个或多个压缩文件或目录的数据容器。压缩的 zip 文件占用较少的磁盘空间，可以比未压缩文件更快地从一台机器传输到另一台机器。借助于适当的工具，可以在 Windows ， macOS 和 Linux 等所有操作系统轻松提取 ZIP 文件。</p>
+
+<p>在本教程中，我们将向您展示如何使用 zip 实用程序通过命令行在 Linux 系统中压缩(压缩)文件和目录。</p>
+
+<h2 id="zip-命令">Zip 命令</h2>
+
+<p><a href="https://linux.die.net/man/1/unzip">Zip</a> 是一个帮助您创建 ZIP 存档的实用程序。</p>
+
+<p><code>zip</code> 命令采用以下语法形式：</p>
+
+<pre><code class="language-bash">zip OPTIONS ARCHIVE_NAME FILES
+</code></pre>
+
+<p>要在特定目录中创建 ZIP 存档，用户需要具有该目录的写入权限。 ZIP 文件不支持 Linux 样式的所有权信息，并且所有提取的文件将由运行该命令的用户拥有。如果要保留<!--link-->文件所有者和权限<!--link:linux-chown-command-->，请使用 <!--link:how-to-create-and-extract-archives-using-the-tar-command-in-linux-->tar 命令<!--link-->。</p>
+
+<p>默认情况下，大多数 Linux 发行版中都没有安装 zip 实用程序，但您可以使用发行版的软件包管理器轻松安装它。</p>
+
+<h3 id="在-ubuntu-和-debian-上安装-zip">在 Ubuntu 和 Debian 上安装 Zip</h3>
+
+<pre><code class="language-bash">sudo apt install zip
+</code></pre>
+
+<h3 id="在-centos-和-fedora-上安装-zip">在 CentOS 和 Fedora 上安装 Zip</h3>
+
+<pre><code class="language-bash">sudo yum install zip
+</code></pre>
+
+<h2 id="如何压缩文件和目录">如何压缩文件和目录</h2>
+
+<p>要压缩一个或多个文件，请指定要添加存档的文件，多个文件使用空格分隔，如下所示：</p>
+
+<pre><code class="language-bash">zip archivename.zip filename1 filename2 filename3
+</code></pre>
+
+<pre><code class="language-bash">adding: filename1 (deflated 63%)
+adding: filename2 (stored 0%)
+adding: filename3 (deflated 38%)
+</code></pre>
+
+<p>默认情况下， zip 命令打印添加到存档的所有文件的名称和压缩方法。我们将在本指南后面解释压缩方法和级别。</p>
+
+<p>如果您指定了 zip 存档名称，那么将自动添加 <code>.zip</code> 后缀名，除非存档名称包含点。 <code>zip archivename.zip filename</code> 创建的存档的名称与 <code>zip archivename filename</code> 相同。</p>
+
+<pre><code class="language-bash">如果要不需要打印 zip 命令的输出，请使用以下 `-q` 选项：
+
+zip -q archivename.zip filename1 filename2 filename3
+</code></pre>
+
+<p>通常，您在创建目录的压缩文件时，需要包括子目录的内容。而 <code>-r</code> 选项允许您递归遍历整个目录结构。使用 zip 压缩目录时：</p>
+
+<pre><code class="language-bash">zip -r archivename.zip directory_name
+</code></pre>
+
+<p>您还可以在同一压缩文件中添加多个文件和目录：</p>
+
+<pre><code class="language-bash">zip -r archivename.zip directory_name1 directory_name2 file1 file1
+</code></pre>
+
+<h2 id="压缩方法和级别">压缩方法和级别</h2>
+
+<p>zip 默认压缩方法是 <code>deflate</code> 。如果 zip 实用程序确定无法压缩文件，则只需将文件存储在存档中，而不使用 <code>store</code> 方法对其进行压缩。在大多数 Linux 发行版中， zip 实用程序还支持 <code>bzip2</code> 压缩方法。</p>
+
+<p>要指定压缩方法，请使用该 <code>-Z</code> 选项。</p>
+
+<pre><code class="language-bash">zip -r -Z bzip2 archivename.zip directory_name
+</code></pre>
+
+<pre><code class="language-bash">...
+adding: sub_dir/ (stored 0%)
+adding: sub_dir/file1 (bzipped 52%)
+adding: sub_dir/file2 (bzipped 79%)
+</code></pre>
+
+<p>zip 命令允许您使用前缀为短划线的数字 0 到 9 指定压缩级别。默认压缩级别为 <code>-6</code> 。使用 <code>-0</code> 时所有文件将无需压缩即可存储。 <code>-9</code> 将强制 zip 命令对所有文件使用最佳压缩。</p>
+
+<p>例如，要使用压缩级别 <code>-9</code> ， 您可以键入以下内容：</p>
+
+<pre><code class="language-bash">zip -9 -r archivename.zip directory_name
+</code></pre>
+
+<p>压缩级别越高， zip 进程占用的 CPU 越多，完成时间就越长。</p>
+
+<h2 id="创建受密码保护的-zip-文件">创建受密码保护的 ZIP 文件</h2>
+
+<p>如果您有需要存储在存档中的敏感信息，可以使用以下 <code>-e</code> 选项对其进行加密：</p>
+
+<pre><code class="language-bash">zip -e  archivename.zip directory_name
+</code></pre>
+
+<p>系统将提示您输入并验证存档密码：</p>
+
+<pre><code class="language-bash">Enter password:
+Verify password:
+</code></pre>
+
+<h2 id="创建拆分-zip-文件">创建拆分 Zip 文件</h2>
+
+<p>想象一下这样的场景，您希望将 zip 存档存储在文件托管服务上，文件大小上载限制为 1GB ， ZIP 存档为 5GB 。</p>
+
+<p>您可以使用 <code>-s</code> 选项后跟指定的大小来创建新的拆分的 Zip 文件。单位可以是 k (千字节)， m (兆字节)， g (千兆字节) 或 t (兆兆字节)。</p>
+
+<pre><code class="language-bash">zip -s 1g -r archivename.zip directory_name
+</code></pre>
+
+<p>上面的命令将在达到指定的大小限制后继续在集合中创建新的存档。</p>
+
+<pre><code class="language-bash">archivename.zip
+archivename.z01
+archivename.z02
+archivename.z03
+archivename.z04
+</code></pre>
+
+<h2 id="zip-示例">ZIP 示例</h2>
+
+<p>把当前目录中的所有文件，压缩进名为 <code>archivename.zip</code> 的 ZIP 存档，。</p>
+
+<pre><code class="language-bash">zip archivename *
+</code></pre>
+
+<p>与上面相同，包括隐藏文件(以点开头的文件)：</p>
+
+<pre><code class="language-bash">zip archivename .* *
+</code></pre>
+
+<p>创建一个名为 <code>archivename.zip</code> 的 ZIP 存档，其中包含当前目录中的所有 MP3 文件，不压缩文件。</p>
+
+<pre><code class="language-bash">zip -0 archivename *.mp3
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何使用 zip 命令创建 ZIP 存档。我们还向您展示了 zip 命令的最常见选项。</p>
+
+<p>如果您想了解更多关于 Unzip 的信息，请访问 <a href="https://linux.die.net/man/1/zip">Zip Man 页面</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/zip" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">zip</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">压缩文件</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-ssh-port-in-linux/">如何在 Linux 中更改 SSH 端口</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-automatic-odoo-backup/">如何设置 Odoo 自动备份</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-linux-swap-file/">创建 Linux Swap 交换区文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-and-configure-roundcube-webmail/">安装和配置 Roundcube Webmail</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-and-integrate-rspamd/">安装并集成 Rspamd</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-until-loop/">Bash 中 until loop 用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-and-configure-postfix-and-dovecot/">安装和配置 Postfix 和 Dovecot</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

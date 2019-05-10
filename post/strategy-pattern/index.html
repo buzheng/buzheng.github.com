@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 设计模式学习 - Strategy Pattern</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="设计模式学习 - Strategy Pattern" />
+<meta property="og:description" content="Strategy Pattern （策略模式）是对一系列可以替换的策略（算法）进行抽象，具体算法继承与抽象，在不同的场景下可以选择不同的算法，这样的好处就是将策略的使用者与具体的策略解耦。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/strategy-pattern/" />
+<meta property="article:published_time" content="2013-02-27T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-02-27T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="设计模式学习 - Strategy Pattern">
+<meta itemprop="description" content="Strategy Pattern （策略模式）是对一系列可以替换的策略（算法）进行抽象，具体算法继承与抽象，在不同的场景下可以选择不同的算法，这样的好处就是将策略的使用者与具体的策略解耦。">
+
+
+<meta itemprop="datePublished" content="2013-02-27T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-02-27T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="10">
+
+
+
+<meta itemprop="keywords" content="设计模式," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="设计模式学习 - Strategy Pattern"/>
+<meta name="twitter:description" content="Strategy Pattern （策略模式）是对一系列可以替换的策略（算法）进行抽象，具体算法继承与抽象，在不同的场景下可以选择不同的算法，这样的好处就是将策略的使用者与具体的策略解耦。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">设计模式学习 - Strategy Pattern</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2013-02-27T00:00:00Z">February 27, 2013</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Strategy Pattern （策略模式）是对一系列可以替换的策略（算法）进行抽象，具体算法继承与抽象，在不同的场景下可以选择不同的算法，这样的好处就是将策略的使用者与具体的策略解耦。</p>
+
+<p>对于一系列不同的策略（算法），选择哪个策略（算法）要根据不同的场景。比如在一个国际支付系统中，各个国家/地区的税收政策并不相同，于是计算税收成为系统中的“变化的部分”，策略模式正好适合此场景，抽象税收计算行为，各个地区的税收分别独立实现。于是选择哪个税收算法，应该根据用户所处的国家/地区来确定。画出结构图如下所示：</p>
+
+<p><img src="/images/strategy-pay.jpg" alt="" /></p>
+
+<p>在此系统中，支付逻辑依赖于上下文，由上下文决定采用哪种计算税率的方法。这样支付逻辑就和具体的计算税率逻辑解耦了。</p>
+
+<p>这个实现也是符合“开闭原则” 的，当你支持新的税率算法时，只需要增加一个TaxCalculator的实现就可以了。</p>
+
+<p>剩下的重点就是 上下文 TaxContext了，他是策略选择中的一个重要角色。从我们以前的经验来看，这个角色的职责倒是和工厂的职责相当类似的，这里我们就用工厂实现就可以了。由此我们看出，工厂真是无处不在（这篇介绍了工厂模式的一些实现：[](../factory-pattern/)）。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">设计模式</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/decorator-pattern/">设计模式学习 - Decorator Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/null-object-pattern/">设计模式学习 - Null Object Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/observer-pattern/">设计模式学习 - Observer Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/adapter-pattern/">设计模式学习 - Adapter Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/iterator-pattern/">设计模式学习 - Iterator Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/factory-pattern/">设计模式学习 - 工厂模式</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/facade-pattern/">设计模式学习 - Facade Pattern</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/singleton-pattern/">设计模式学习 - Singleton Pattern</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

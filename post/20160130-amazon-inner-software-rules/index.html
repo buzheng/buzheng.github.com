@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | Amazon 内部软件设计原则</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Amazon 内部软件设计原则" />
+<meta property="og:description" content="网上摘录的一段文字，对 Amazon 内部软件的设计规定非常有感触，非常认同。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/20160130-amazon-inner-software-rules/" />
+<meta property="article:published_time" content="2016-01-30T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-01-30T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Amazon 内部软件设计原则">
+<meta itemprop="description" content="网上摘录的一段文字，对 Amazon 内部软件的设计规定非常有感触，非常认同。">
+
+
+<meta itemprop="datePublished" content="2016-01-30T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-01-30T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="19">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Amazon 内部软件设计原则"/>
+<meta name="twitter:description" content="网上摘录的一段文字，对 Amazon 内部软件的设计规定非常有感触，非常认同。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">Amazon 内部软件设计原则</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2016-01-30T00:00:00Z">January 30, 2016</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>网上摘录的一段文字，对 Amazon 内部软件的设计规定非常有感触，非常认同。</p>
+
+<p>曾经在亚马逊工作了六年，2005年跳槽到谷歌的软件工程师，Steve Yegge (史蒂夫* 野哥)在2011年的一封公开信内介绍：</p>
+
+<p>“亚马逊的招聘流程本质上有缺陷。每个团队自己雇人，所以不同团队的员工招聘水准差别很大。。。亚马逊的办公场所，污垢遍布，不花一分钱用于装饰。。亚马逊的程序代码一团糟，没有任何工程标准，完全看相关团队的选择。。  也许有两百个不同的角度方式比较这两个公司，但除了三个以外，谷歌在所有方面都完胜亚马逊  ”.</p>
+
+<p>“但是亚马逊有一件事，做得非常非常好，这远远弥补了亚马逊所有的政治上的，哲学上的和技术上的失误”.</p>
+
+<p>2002年前后，贝索斯给所有员工发布了一个命令，关于内部软件设计的命令:</p>
+
+<p>1）所有团队，要把他们的数据和软件功能通过服务接口对外公开</p>
+
+<p>2）团队之间的沟通只能通过这些接口。</p>
+
+<p>3）不允许通过任何别的方式通讯：不能直接连接，走后门，不能直接读别的团队的数据，不能共享内存。</p>
+
+<p>4）服务接口的后端的软件技术的选择，没有关系。</p>
+
+<p>5）所有的服务接口设计时，都必须具备一个能力，允许日后让外界第三方开发者调用。没有任何例外。</p>
+
+<p>6）不听话的人，将被开掉.</p>
+
+<p>来源：<a href="http://wangchuan.blog.caixin.com/archives/141825">http://wangchuan.blog.caixin.com/archives/141825</a></p><ul class="pa0">
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

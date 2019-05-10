@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 在 Ubuntu 上安装 RPM 包</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Ubuntu 上安装 RPM 包" />
+<meta property="og:description" content="Ubuntu 软件仓库包含数千个 deb 软件包，可以从 Ubuntu 软件中心或使用 apt 命令行实用程序安装。 Deb 是所有基于 Debian 的发行版（包括 Ubuntu ）使用的安装包格式。某些软件包在 Ubuntu 自有的软件仓库中不可用，但可以通过启用适当的源来轻松安装。
+
+在大多数情况下，当软件供应商不提供软件仓库时，他们将有一个下载页面，您可以从页面上下载并安装 deb 软件包，或者下载源代码并从源代码编译软件。
+
+某些软件可能仅作为 RPM 包分发，虽然这并不常见。 RPM 是 Red Hat 及其衍生产品（如 CentOS ）使用的包格式。幸运的是，有一个名为 alien 的工具允许我们在 Ubuntu 上安装 RPM 文件或将 RPM 包文件转换为 Debian 包文件。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/install-rpm-packages-on-ubuntu/" />
+<meta property="article:published_time" content="2019-03-14T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-14T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="在 Ubuntu 上安装 RPM 包">
+<meta itemprop="description" content="Ubuntu 软件仓库包含数千个 deb 软件包，可以从 Ubuntu 软件中心或使用 apt 命令行实用程序安装。 Deb 是所有基于 Debian 的发行版（包括 Ubuntu ）使用的安装包格式。某些软件包在 Ubuntu 自有的软件仓库中不可用，但可以通过启用适当的源来轻松安装。
+
+在大多数情况下，当软件供应商不提供软件仓库时，他们将有一个下载页面，您可以从页面上下载并安装 deb 软件包，或者下载源代码并从源代码编译软件。
+
+某些软件可能仅作为 RPM 包分发，虽然这并不常见。 RPM 是 Red Hat 及其衍生产品（如 CentOS ）使用的包格式。幸运的是，有一个名为 alien 的工具允许我们在 Ubuntu 上安装 RPM 文件或将 RPM 包文件转换为 Debian 包文件。">
+
+
+<meta itemprop="datePublished" content="2019-03-14T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-14T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="159">
+
+
+
+<meta itemprop="keywords" content="ubuntu,rpm,alien," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 Ubuntu 上安装 RPM 包"/>
+<meta name="twitter:description" content="Ubuntu 软件仓库包含数千个 deb 软件包，可以从 Ubuntu 软件中心或使用 apt 命令行实用程序安装。 Deb 是所有基于 Debian 的发行版（包括 Ubuntu ）使用的安装包格式。某些软件包在 Ubuntu 自有的软件仓库中不可用，但可以通过启用适当的源来轻松安装。
+
+在大多数情况下，当软件供应商不提供软件仓库时，他们将有一个下载页面，您可以从页面上下载并安装 deb 软件包，或者下载源代码并从源代码编译软件。
+
+某些软件可能仅作为 RPM 包分发，虽然这并不常见。 RPM 是 Red Hat 及其衍生产品（如 CentOS ）使用的包格式。幸运的是，有一个名为 alien 的工具允许我们在 Ubuntu 上安装 RPM 文件或将 RPM 包文件转换为 Debian 包文件。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">在 Ubuntu 上安装 RPM 包</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-14T08:00:00Z">March 14, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Ubuntu 软件仓库包含数千个 deb 软件包，可以从 Ubuntu 软件中心或使用 <code>apt</code> 命令行实用程序安装。 Deb 是所有基于 Debian 的发行版（包括 Ubuntu ）使用的安装包格式。某些软件包在 Ubuntu 自有的软件仓库中不可用，但可以通过启用适当的源来轻松安装。</p>
+
+<p>在大多数情况下，当软件供应商不提供软件仓库时，他们将有一个下载页面，您可以从页面上下载并安装 <code>deb</code> 软件包，或者下载源代码并从源代码编译软件。</p>
+
+<p>某些软件可能仅作为 RPM 包分发，虽然这并不常见。 RPM 是 Red Hat 及其衍生产品（如 CentOS ）使用的包格式。幸运的是，有一个名为 <code>alien</code> 的工具允许我们在 Ubuntu 上安装 RPM 文件或将 RPM 包文件转换为 Debian 包文件。</p>
+
+<h2 id="开始之前">开始之前</h2>
+
+<p>这不是在 Ubuntu 中安装软件包的推荐方法。只要有可能，您更应该从 Ubuntu 软件仓库安装软件。</p>
+
+<p>并非所有 RPM 软件包都可以安装在 Ubuntu 上。在 Ubuntu 上安装打包的 RPM 可能会导致程序包依赖性冲突。</p>
+
+<p>您永远不应该使用此方法来替换或更新重要的系统软件包，例如 <code>libc</code> ， <code>systemd</code> 或其他对系统正常运行至关重要的服务和库。这样做可能会导致错误和系统不稳定。</p>
+
+<h2 id="安装-alien">安装 alien</h2>
+
+<p>Alien 是一个支持 Red Hat rpm ， Debian deb ， Stampede slp ， Slackware tgz 和 Solaris pkg 文件格式之间转换的工具。</p>
+
+<p>在安装 alien 软件包之前，请确保在您的系统上启用了 Universe 软件仓库：</p>
+
+<pre><code class="language-bash">sudo add-apt-repository universe
+</code></pre>
+
+<p>启用软件仓库后，更新包索引并安装 alien ：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install alien
+</code></pre>
+
+<p>上面的命令还将安装必要的构建工具。</p>
+
+<h2 id="转换和安装-rpm-包">转换和安装 RPM 包</h2>
+
+<p>要将包从 RPM 转换为 DEB 格式，请使用 alien 命令，后跟 RPM 包名称：</p>
+
+<pre><code class="language-bash">sudo alien package_name.rpm
+</code></pre>
+
+<p>根据包装文件大小的不同，转换可能需要一些时间。在大多数情况下，您会在屏幕上看到警告消息。如果包成功转换，输出将指示生成 DEB 包：</p>
+
+<pre><code class="language-bash">package_name.deb generated
+</code></pre>
+
+<p>您可以使用 dpkg 或 apt 实用程序来<!--link:how-to-install-deb-packages-on-ubuntu-->安装 deb 软件包<!--link-->：</p>
+
+<pre><code class="language-bash">sudo dpkg -i package_name.deb
+</code></pre>
+
+<pre><code class="language-bash">sudo apt ./package_name.deb
+</code></pre>
+
+<p>如果它与您的系统兼容并且满足所有依赖，现在应该安装该软件包，。</p>
+
+<blockquote>
+<p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 访问权限的用户</a>身份登录才能在 Ubuntu 系统上安装软件包。</p>
+</blockquote>
+
+<h2 id="直接安装-rpm-包">直接安装 RPM 包</h2>
+
+<p>您可以使用 <code>-i</code> 选项告诉 <code>alien</code> 直接安装 RPM 软件包，而不是转换然后安装软件包。</p>
+
+<pre><code class="language-bash">sudo alien -i package_name.rpm
+</code></pre>
+
+<p>上面的命令将自动生成并安装软件包，并在安装后删除软件包文件。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何在 Ubuntu 上安装 RPM 包。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/rpm" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">rpm</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/alien" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">alien</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 Sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Nginx 服务器块</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-upgrade-to-ubuntu-18-04-bionic-beaver/">如何将 Ubuntu 升级到 18.04 (Bionic Beaver)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-and-disable-root-user-account-in-ubuntu/">如何在 Ubuntu 中启用和禁用 root 帐户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/set-up-an-email-server-with-postfixadmin/">使用 PostfixAdmin 设置邮件服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

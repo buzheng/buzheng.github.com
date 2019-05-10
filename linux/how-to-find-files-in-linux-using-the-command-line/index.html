@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何使用命令行在 Linux 中查找文件</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何使用命令行在 Linux 中查找文件" />
+<meta property="og:description" content="find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。
+
+Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。
+
+您可以使用 find 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 grep 或 sed 对这些文件执行操作。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-find-files-in-linux-using-the-command-line/" />
+<meta property="article:published_time" content="2019-03-21T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-21T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何使用命令行在 Linux 中查找文件">
+<meta itemprop="description" content="find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。
+
+Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。
+
+您可以使用 find 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 grep 或 sed 对这些文件执行操作。">
+
+
+<meta itemprop="datePublished" content="2019-03-21T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-21T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="384">
+
+
+
+<meta itemprop="keywords" content="linux,find," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何使用命令行在 Linux 中查找文件"/>
+<meta name="twitter:description" content="find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。
+
+Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。
+
+您可以使用 find 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 grep 或 sed 对这些文件执行操作。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何使用命令行在 Linux 中查找文件</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-21T05:00:00Z">March 21, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。</p>
+
+<p>Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。</p>
+
+<p>您可以使用 <code>find</code> 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 <!--link:how-to-use-grep-command-to-search-files-in-linux--><code>grep</code><!--link--> 或 <code>sed</code> 对这些文件执行操作。</p>
+
+<h2 id="linux-find-命令语法">Linux find 命令语法</h2>
+
+<p>在讨论如何使用 <code>find</code> 命令之前，让我们先回顾一下基本语法。</p>
+
+<p>find 命令采用以下形式：</p>
+
+<pre><code class="language-bash">find [options] [path...] [expression]
+</code></pre>
+
+<ul>
+<li>该 <code>options</code> 属性控制符号链接，调试选项和优化方法的处理。</li>
+<li>该 <code>path...</code> 属性定义了 find 将搜索文件的起始目录。</li>
+<li>该 <code>expression</code> 属性由选项，搜索模式和由运算符分隔的操作组成。</li>
+</ul>
+
+<p>我们来看看下面的例子：</p>
+
+<pre><code class="language-bash">find -L /home/projects/ -name &quot;*.js&quot; -exec chmod 644 {} \;
+</code></pre>
+
+<p>此命令包含一个参数 <code>-L</code> (options)，它允许 find 命令跟随符号链接，搜索 <code>/home/projects/</code> (path &hellip;) 下面的整个目录树，查找以 <code>.js</code> (expression) 结尾的所有文件，并将所有匹配文件的权限设置为 644 。</p>
+
+<h2 id="按类型查找文件">按类型查找文件</h2>
+
+<p>要指定要查找的文件类型，请使用 -type 参数。</p>
+
+<p>您可以使用以下描述符指定文件类型：</p>
+
+<ul>
+<li><code>f</code>： 常规文件</li>
+<li><code>d</code>： 目录</li>
+<li><code>l</code>： 符号链接</li>
+<li><code>c</code>： 字符设备</li>
+<li><code>b</code>： 块设备</li>
+<li><code>p</code>： 命名管道（FIFO）</li>
+<li><code>s</code>： 套接字</li>
+</ul>
+
+<p>例如，如果要查找当前工作目录中的所有目录，可以使用：</p>
+
+<pre><code class="language-bash">find . -type d
+</code></pre>
+
+<p>如果要列出系统类型上的所有字符设备：</p>
+
+<pre><code class="language-bash">find / -type c
+</code></pre>
+
+<p>要将所有文件权限更改为 644 并将所有目录权限更改为 755 ，请递归运行以下命令：</p>
+
+<pre><code class="language-bash">find /var/www/my_project -type d -exec chmod 0755 {} \;
+find /var/www/my_project -type f -exec chmod 0644 {} \;
+</code></pre>
+
+<h2 id="按名称查找文件">按名称查找文件</h2>
+
+<p>按名称查找文件可能是 <code>find</code> 命令最常用的用法。要按名称查找文件，请将该 <code>-name</code> 选项与要搜索的文件的名称一起传递。</p>
+
+<p>要在 <code>/home/buzheng</code> 目录中搜索名为 <code>document.pdf</code> 的文件，请使用以下命令：</p>
+
+<pre><code class="language-bash">sudo find /home/buzheng -type f -name document.pdf
+</code></pre>
+
+<p>如果搜索不区分大小写，请使用 <code>-iname</code> 替换  <code>-name</code> 选项：</p>
+
+<pre><code class="language-bash">sudo find /home/buzheng -type f -iname document.pdf
+</code></pre>
+
+<p>上面的命令将匹配 Document.pdf ， DOCUMENT.pdf ..etc 。</p>
+
+<h2 id="按扩展名查找文件">按扩展名查找文件</h2>
+
+<p>按扩展名搜索文件与按名称搜索文件相同。例如，如果要在 /var/log/nginx 目录查找以 <code>.log.gz</code> 结尾的所有文件 ，可以使用：</p>
+
+<pre><code class="language-bash">find /var/log/nginx -type f -name '*.log.gz'
+</code></pre>
+
+<p>值得一提的是，当您使用通配符时，您必须把模式用引号引起来或反斜杠 <code>\</code> 转义星号 <code>*</code>， 以便 shell 不会解释它。</p>
+
+<p>如果要查找的所有文件与正则表达式 <code>*.log.gz</code> 不匹配，可以使用 <code>-not</code> 参数。例如，要查找不以 <code>*.log.gz</code> 您结尾的所有文件，请使用：</p>
+
+<pre><code class="language-bash">find /var/log/nginx -type f -not -name '*.log.gz'
+</code></pre>
+
+<h2 id="按大小查找文件">按大小查找文件</h2>
+
+<p>要根据文件大小查找文件，请将 -size 参数与大小条件一起传递。您可以使用以下后缀指定文件大小：</p>
+
+<ul>
+<li><code>b</code>： 512字节块（默认）</li>
+<li><code>c</code>： 字节</li>
+<li><code>w</code>： 双字节字</li>
+<li><code>k</code>： 千字节</li>
+<li><code>M</code>： 兆字节</li>
+<li><code>G</code>： 千兆字节</li>
+</ul>
+
+<p>例如，要在 <code>/tmp</code> 目录中查找所有的大小正好是 1024 字节文件，您可运行以下命令：</p>
+
+<pre><code class="language-bash">find /tmp -type f -size 1024c
+</code></pre>
+
+<p>find 命令还允许您搜索大于或小于指定大小的文件。</p>
+
+<p>在下面的示例中，我们在当前工作目录中搜索小于 1MB 的所有文件，注意值之前的减号 <code>-</code> ：</p>
+
+<pre><code class="language-bash">find . -type f -size -1M
+</code></pre>
+
+<p>如果要搜索大小超过 1MB 的文件，则需要使用加号 <code>+</code> ：</p>
+
+<pre><code class="language-bash">find . -type f -size +1M
+</code></pre>
+
+<p>您甚至可以搜索大小范围内的文件。例如，以下命令将查找介于 1 和 2 MB 之间的所有文件：</p>
+
+<pre><code class="language-bash">find . -type f -size +1M -size 2M
+</code></pre>
+
+<h2 id="按修改日期查找文件">按修改日期查找文件</h2>
+
+<p>find 命令还可以根据上次修改，访问或更改时间搜索文件。</p>
+
+<p>与按大小搜索时相同，您可以使用加号和减号来指定大于或小于。</p>
+
+<p>举个例子，几天前你修改了一个 <code>dovecot</code> 配置文件，但你忘了文件名。您可以轻松过滤目录 <code>/etc/dovecot/conf.d/</code> 中的所有文件，这些文件以 <code>.conf</code> 为后缀并在过去 5 天内进行了修改：</p>
+
+<pre><code class="language-bash">find /etc/dovecot/conf.d -name &quot;*.conf&quot; -mtime 5
+</code></pre>
+
+<p>以下是使用 <code>-daystart</code> 选项根据修改日期过滤文件的另一个示例。</p>
+
+<p>以下命令将列出 <code>/home</code> 目录中 30 天或更久前修改的的所有文件：</p>
+
+<pre><code class="language-bash">find /home -mtime +30 -daystart
+</code></pre>
+
+<h2 id="按权限查找文件">按权限查找文件</h2>
+
+<p>要根据文件权限过滤文件，请使用 <code>-perm</code> 选项。</p>
+
+<p>例如，要在目录中 <code>/var/www/html</code> 查找权限为 775 的所有文件，请使用：</p>
+
+<pre><code class="language-bash">find /var/www/html -perm 644
+</code></pre>
+
+<p>您可以使用减号 <code>-</code> 或斜杠 <code>/</code> 为数字模式添加前缀  。</p>
+
+<p>当斜杠 <code>/</code> 用作前缀时，至少一个类别（用户，组或其他类别）必须匹配匹配至少一个权限位。</p>
+
+<p>请考虑以下示例命令：</p>
+
+<pre><code class="language-bash">find . -perm /444
+</code></pre>
+
+<p>上述命令将匹配为用户，组或其他人设置了读权限的所有文件。</p>
+
+<p>如果使用减号 <code>-</code> 作为前缀，则必须符合设置的权限的文件。</p>
+
+<p>以下命令将搜索对所有者和组具有读写权限的文件，并且其他用户可以读取：</p>
+
+<pre><code class="language-bash">find . -perm -664
+</code></pre>
+
+<h2 id="按所有者查找文件">按所有者查找文件</h2>
+
+<p>要查找特定用户或组拥有的文件，可以使用 <code>-user</code> 和 <code>-group</code> 选项。</p>
+
+<p>例如，要搜索用户 <code>buzheng</code> 拥有的所有文件和目录，您将运行：</p>
+
+<pre><code class="language-bash">find / -user buzheng
+</code></pre>
+
+<p>这是更高级的示例，假设您要查找用户 <code>www-data</code> 拥有的所有文件，并将匹配文件的所有者从 <code>www-data</code> 更改为 <code>nginx</code> ：</p>
+
+<pre><code class="language-bash">find / -user www-data -type f  -exec chown nginx {} \;
+</code></pre>
+
+<h2 id="查找和删除文件">查找和删除文件</h2>
+
+<p>要删除所有匹配的文件，请将参数添加 <code>-delete</code> 到匹配表达式的末尾。</p>
+
+<p>仅当您确定结果与要删除的文件匹配时，才确保使用此选项。在使用该 <code>-delete</code> 选项之前打印匹配的文件总是一个好主意。</p>
+
+<p>例如，要删除 <code>/var/log/</code> 中所有 <code>.temp</code> 结尾的文件，请使用：</p>
+
+<pre><code class="language-bash">find /var/log/ -name `*.temp` -delete
+</code></pre>
+
+<blockquote>
+<p>请谨慎使用选项 <code>-delete</code> 。 find 命令行做为表达式被执行，如果首先添加该 <code>-delete</code> 选项，该命令将删除指定起始点下方的所有内容。</p>
+</blockquote>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您已经学习了如何根据各种标准使用 Linux find 命令，您现在应该对如何在 Linux 系统上查找文件有基本的了解。</p>
+
+<p>您还可以访问 <a href="https://linux.die.net/man/1/find">find 手册页页面</a>并阅读 find 命令的所有其他强大选项。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/find" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">find</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-linux-screen/">如何使用 Linux  screen</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-zip-files-and-directories-in-linux/">如何在 Linux 中压缩文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-ssh-port-in-linux/">如何在 Linux 中更改 SSH 端口</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-automatic-odoo-backup/">如何设置 Odoo 自动备份</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-linux-swap-file/">创建 Linux Swap 交换区文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-and-configure-roundcube-webmail/">安装和配置 Roundcube Webmail</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-and-integrate-rspamd/">安装并集成 Rspamd</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

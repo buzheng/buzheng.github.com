@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Debian 9 上安装 Nginx</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上安装 Nginx" />
+<meta property="og:description" content="Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。
+
+Nginx 的可以被用作一个独立的 Web 服务器，还可以作为 Apache和其它的 web 服务器的反向代理。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+本教程将概述在 Debian 机器上安装和管理 Nginx 的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-nginx-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上安装 Nginx">
+<meta itemprop="description" content="Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。
+
+Nginx 的可以被用作一个独立的 Web 服务器，还可以作为 Apache和其它的 web 服务器的反向代理。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+本教程将概述在 Debian 机器上安装和管理 Nginx 的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="223">
+
+
+
+<meta itemprop="keywords" content="nginx,debian," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上安装 Nginx"/>
+<meta name="twitter:description" content="Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。
+
+Nginx 的可以被用作一个独立的 Web 服务器，还可以作为 Apache和其它的 web 服务器的反向代理。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+本教程将概述在 Debian 机器上安装和管理 Nginx 的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 Nginx</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00Z">May 9, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。</p>
+
+<p>Nginx 的可以被用作一个独立的 Web 服务器，还可以作为 <a href="/linux/how-to-install-apache-on-debian-9/">Apache</a>和其它的 web 服务器的<!--link:nginx-reverse-proxy-->反向代理<!--link-->。</p>
+
+<p>与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。</p>
+
+<p>本教程将概述在 Debian 机器上安装和管理 Nginx 的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="安装-nginx">安装 Nginx</h2>
+
+<p>安装非常简单。按照以下步骤在 Debian 系统上安装 Nginx ：</p>
+
+<ol>
+<li><p>更新包索引：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+</code></pre>
+
+<ol>
+<li>安装 Nginx 包：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo apt install nginx
+</code></pre></li>
+
+<li><p>安装过程完成后， Nginx 服务将自动启动。您可以通过运行以下 <a href="/linux/curl-command-examples/">curl</a> 命令来验证它：</p>
+
+<pre><code class="language-console-bash">curl -I 127.0.0.1
+</code></pre>
+
+<pre><code class="language-output">HTTP/1.1 200 OK
+Server: nginx/1.10.3
+Date: Mon, 27 Aug 2018 22:29:02 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Mon, 27 Aug 2018 22:27:54 GMT
+Connection: keep-alive
+ETag: &quot;5b847aea-264&quot;
+Accept-Ranges: bytes
+</code></pre></li>
+</ol>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果使用 iptables 过滤与系统的连接，则需要打开 HTTP (<code>80</code>) 和 HTTPS (<code>443</code>) 端口。</p>
+
+<p>通过发出以下命令打开必要的端口：</p>
+
+<pre><code class="language-console-bash">sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+</code></pre>
+
+<h2 id="使用-systemctl-管理-nginx-服务">使用 systemctl 管理 Nginx 服务</h2>
+
+<p>您可以使用 <code>systemctl</code> 命令来管理 Nginx 服务，管理方式与任何其他 systemd 单元一样。</p>
+
+<p>要停止 Nginx 服务，请运行：</p>
+
+<pre><code class="language-console-bash">sudo systemctl stop nginx
+</code></pre>
+
+<p>要再次启动它，请键入：</p>
+
+<pre><code class="language-console-bash">sudo systemctl start nginx
+</code></pre>
+
+<p>要重新启动 Nginx 服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart nginx
+</code></pre>
+
+<p>完成一些配置更改后重新加载 Nginx 服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl reload nginx
+</code></pre>
+
+<p>禁用 Nginx 服务以在启动时启动：</p>
+
+<pre><code class="language-console-bash">sudo systemctl disable nginx
+</code></pre>
+
+<p>并重新启用它：</p>
+
+<pre><code class="language-console-bash">sudo systemctl enable nginx
+</code></pre>
+
+<h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
+
+<ul>
+<li>Nginx 配置文件存储在 <code>/etc/nginx</code> 目录中。</li>
+<li>主要的 Nginx 配置文件是 <code>/etc/nginx/nginx.conf</code> 。</li>
+<li>服务器块（ 虚拟主机 ）配置文件存储在 <code>/etc/nginx/sites-available</code> 目录中。 Nginx 不使用此目录中的配置文件，除非它们链接到 <code>/etc/nginx/sites-enabled</code> 目录。</li>
+<li>激活服务器块是通过创建从 <code>sites-available</code> 目录中的配置文件站点到目录 <code>sites-enabled</code> 的符号链接（指针）来完成的。</li>
+<li>要编写更易于维护的代码，遵循标准命名约定是个好主意。例如，如果您的域名是 <code>mydomain.com</code> 您的，则应该命名配置文件 <code>/etc/nginx/sites-available/mydomain.com.conf</code> 。</li>
+<li>该 <code>/etc/nginx/snippets</code> 目录包含可包含在服务器块文件中的配置片段。如果使用可重复的配置段，则可以将这些段重构为片段，并将片段文件包含到服务器块中。</li>
+<li>Nginx 日志文件（<code>access.log</code> 和 <code>error.log</code>）位于 <code>/var/log/nginx/</code> 目录中。建议每个服务器模块都有不同的 <code>access</code> 和 <code>error</code> 日志文件。</li>
+<li>您可以将网站文档根目录设置为任何位置。 最常见的位置包括：
+
+<ul>
+<li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
+<li><code>/var/www/&lt;site_name&gt;</code></li>
+<li><code>/var/www/html/&lt;site_name&gt;</code></li>
+<li><code>/opt/&lt;site_name&gt;</code></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在 Debian 9 服务器上成功安装了 Nginx 。您现在可以开始部署应用程序并将 Nginx 用作 Web 或代理服务器。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-debian-9/">如何在 Debian 9 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-9/">如何在 Debian 9 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-debian-9/">如何在 Debian 9 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-debian-9/">如何在 Debian 9 上安装Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/nginx-commands-you-should-know/">你应该知道的 Nginx 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-debian-9/">如何在 Debian 9 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-debian-9/">如何在 Debian 9 上安装 go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cut-command/">Linux Cut 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-debian-9/">如何在 Debian 9 上安装 Minecraft Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-python-3-7-on-debian-9/">如何在 Debian 9 上安装 Python 3.7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-debian-9/">如何在 Debian 9 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-prestashop-on-ubuntu/">如何在 Ubuntu 18.04 上安装 PrestaShop</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

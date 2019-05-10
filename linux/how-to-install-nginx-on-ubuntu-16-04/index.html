@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 16.04 上安装 Nginx</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 16.04 上安装 Nginx" />
+<meta property="og:description" content="Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-nginx-on-ubuntu-16-04/" />
+<meta property="article:published_time" content="2019-03-01T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-01T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 16.04 上安装 Nginx">
+<meta itemprop="description" content="Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。">
+
+
+<meta itemprop="datePublished" content="2019-03-01T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-01T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="351">
+
+
+
+<meta itemprop="keywords" content="linux,ubuntu,nginx,教程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 16.04 上安装 Nginx"/>
+<meta name="twitter:description" content="Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
+
+在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 16.04 上安装 Nginx</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-01T08:00:00Z">March 1, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。</p>
+
+<p>与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。</p>
+
+<p>在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保以具有 sudo 权限的用户身份登录，并且您没有在端口 80 或 443 上运行 Apache 或任何其他服务。</p>
+
+<h2 id="安装-nginx">安装 Nginx</h2>
+
+<p>Nginx 软件包在 Ubuntu 默认软件存储库中提供。安装只需执行以下命令：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install nginx
+</code></pre>
+
+<p>安装完成后，键入以下命令检查 Nginx 服务的状态：</p>
+
+<pre><code class="language-bash">sudo systemctl status nginx
+</code></pre>
+
+<p>输出应显示 Nginx 服务处于活动状态并正在运行：</p>
+
+<pre><code class="language-bash">● nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2018-01-05 15:44:04 UTC; 1min 59s ago
+ Main PID: 1291 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─1291 nginx: master process /usr/sbin/nginx -g daemon on; master_process on
+           └─1293 nginx: worker process
+</code></pre>
+
+<p>要检查 Nginx 版本类型：</p>
+
+<pre><code class="language-bash">sudo nginx -v
+</code></pre>
+
+<pre><code class="language-bash">nginx version: nginx/1.10.3 (Ubuntu)
+</code></pre>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>假设您正在使用 UFW 管理防火墙，则需要打开 HTTP （ 80 ）和HTTPS（443）端口。</p>
+
+<p>你可以通过启用&rsquo; Nginx Full &lsquo;配置文件来实现这一点，该配置文件包含两个端口的规则：</p>
+
+<pre><code class="language-bash">sudo ufw allow 'Nginx Full'
+</code></pre>
+
+<p>要验证防火墙状态类型：</p>
+
+<pre><code class="language-bash">sudo ufw status
+</code></pre>
+
+<p>输出结果如下所示：</p>
+
+<pre><code class="language-bash">Status: active
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW       Anywhere
+Nginx Full                 ALLOW       Anywhere
+22/tcp (v6)                ALLOW       Anywhere (v6)
+Nginx Full (v6)            ALLOW       Anywhere (v6)
+</code></pre>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>要验证 Nginx 是否按预期http:// YOUR_IP 在您选择的浏览器中打开，您将看到默认的 Nginx 欢迎页面，如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-nginx-on-ubuntu-16-04/nginx-screenshot.jpg" alt="" /></p>
+
+<h2 id="从-nginx-ppa-存储库安装-nginx">从 Nginx PPA 存储库安装 Nginx</h2>
+
+<p>来自 Ubuntu 存储库的 Nginx 包经常过时。要安装最新的 Nginx 版本，请使用官方的 Nginx PPA 存储库。</p>
+
+<p>按照以下步骤在 Ubuntu 16.04 上安装最新版本的 Nginx ：</p>
+
+<p>首先安装 software-properties-common 包：</p>
+
+<pre><code class="language-bash">sudo apt install software-properties-common
+</code></pre>
+
+<p>使用以下命令添加 Nginx PPA 存储库：</p>
+
+<pre><code class="language-bash">sudo add-apt-repository ppa:nginx/stable
+</code></pre>
+
+<p>更新包列表并安装 Nginx ：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install nginx
+</code></pre>
+
+<p>安装完成后，检查 Nginx 版本：</p>
+
+<pre><code class="language-bash">sudo nginx -v
+</code></pre>
+
+<p>输出看起来像这样：</p>
+
+<pre><code class="language-bash">nginx version: nginx/1.12.2
+</code></pre>
+
+<h2 id="使用-systemctl-管理-nginx-服务">使用 systemctl 管理 Nginx 服务</h2>
+
+<p>您可以像管理任何其他 systemd 单元一样管理 Nginx 服务。</p>
+
+<p>要停止 Nginx 服务，请运行：</p>
+
+<pre><code class="language-bash">sudo systemctl stop nginx
+</code></pre>
+
+<p>要启动 Nginx 服务，请键入：</p>
+
+<pre><code class="language-bash">sudo systemctl start nginx
+</code></pre>
+
+<p>重启 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl restart nginx
+</code></pre>
+
+<p>完成一些配置更改后重新加载 Nginx 服务：</p>
+
+<pre><code class="language-bash">sudo systemctl reload nginx
+</code></pre>
+
+<p>禁止 Nginx 服务随机启动：</p>
+
+<pre><code class="language-bash">sudo systemctl disable nginx
+</code></pre>
+
+<p>重新启用 Nginx 服务以再次启动：</p>
+
+<pre><code class="language-bash">sudo systemctl enable nginx
+</code></pre>
+
+<h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
+
+<ul>
+<li>所有 Nginx 配置文件都位于 /etc/nginx/ 目录中。</li>
+<li>主要的 Nginx 配置文件是 /etc/nginx/nginx.conf 。</li>
+<li>为了使 Nginx 配置更易于维护，建议为每个域创建单独的配置文件。您可以根据需要拥有尽可能多的服务器块文件。</li>
+<li>Nginx 服务器块文件存储在 /etc/nginx/sites-available 目录中。 Nginx 不使用此目录中的配置文件，除非它们链接到 /etc/nginx/sites-enabled 目录。</li>
+<li>要激活服务器块，您需要从 sites-available 目录中的配置文件站点到目录创建符号链接（指针） sites-enabled 。</li>
+<li>遵循标准命名约定是个好主意，例如，如果您的域名是， mydomain.com 那么您的配置文件应该被命名 /etc/nginx/sites-available/mydomain.com.conf</li>
+<li>该 /etc/nginx/snippets 目录包含可包含在服务器块文件中的配置片段。如果使用可重复的配置段，则可以将这些段重构为片段，并将片段文件包含到服务器块中。</li>
+<li>Nginx 日志文件（access.log 和 error.log）位于 /var/log/nginx/ 目录中。建议有不同 access 和 error 日志文件每个服务器模块。</li>
+<li>您可以将域文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
+
+<ul>
+<li>/home/<user_name>/<site_name></li>
+<li>/var/www/<site_name></li>
+<li>/var/www/html/<site_name></li>
+<li>/opt/<site_name></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在 Ubuntu 16.04 服务器上成功安装了 Nginx 。您现在已准备好开始部署应用程序并将 Nginx 用作 Web 或代理服务器。</p>
+
+<p>安全证书是当今所有网站的“必备”功能，如果要使用免费的 Let&rsquo;s Encrypt SSL 证书保护您的网站，您可以查看以下指南：</p>
+
+<p><a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&rsquo;s Encrypt 来保护 Nginx</a></p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%95%99%E7%A8%8B" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">教程</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">在 Linux 中使用 ls 命令列出文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

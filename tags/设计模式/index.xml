@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式 on 不争笔记</title>
+    <link>/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+    <description>Recent content in 设计模式 on 不争笔记</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 21 May 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>设计模式学习 - Abstract Factory Pattern</title>
+      <link>/post/abstract-factory-pattern/</link>
+      <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/abstract-factory-pattern/</guid>
+      <description>&lt;p&gt;前几天总结了&lt;a href=&#34;../factory-method-pattern/&#34;&gt;工厂方法模式&lt;/a&gt;：将创建对象的部分抽象，留作具体的子类来创建。当时也说过，工厂方法是抽象工厂的一个特例。那么抽象工厂解决什么问题呢？抽象工厂主要用于存在一组产品或者产品族的场景中。所谓产品族，就是一组有关联的产品。对产品和工厂都进行抽象，客户端只知道抽象的工厂和产品，而不需要关心具体的工厂和产品，具体选择哪个工厂，由上下文来来决定。贴一下抽象工厂通用类图。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 – State Pattern</title>
+      <link>/post/state-pattern/</link>
+      <pubDate>Fri, 17 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/state-pattern/</guid>
+      <description>&lt;p&gt;模式解决问题的思路都是相同的，找到变化的部分封装起来，用来解决某一类特定的问题。状态模式同样是用来出来多路分支的情况，不过在岔口要根据对象的状态来进行选择，对象的不同状态决定了选择不同的分支。既然状态是变化的，我们就考虑将状态封装，由上下文保存当前的状态，由状态对象决定下一步的操作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Factory Method Pattern</title>
+      <link>/post/factory-method-pattern/</link>
+      <pubDate>Tue, 14 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/factory-method-pattern/</guid>
+      <description>&lt;p&gt;封装变化是我们在设计的时候要遵循的一个基本原则，这也是设计模式的基础。工厂方法这个模式中变化的部分是：创建对象的部分。由于这部分逻辑不确定，抽象类只是定义了一个创建操作接口，具体的实现需要延迟到子类来，由每个具体子类负责创建一个具体的产品，这跟抽象工厂模式是很接近的，可以说工厂方法是&lt;a href=&#34;/abstract-factory-pattern.html&#34;&gt;抽象工厂&lt;/a&gt;的一个特例。下面是一个通用的Factory Method 类图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/images/factory-method.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Proxy Pattern</title>
+      <link>/post/proxy-pattern/</link>
+      <pubDate>Fri, 03 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/proxy-pattern/</guid>
+      <description>Proxy Pattern，代理模式。代理是我们经常用到的一个概念，比如我们常用的代理服务器，还有一些公司业务的代理人等，都是代理。我们平时只与代理打交道，把我们的要求告诉代理，然后又代理帮助我们去处理，处理完成后，再将结果反馈给我们。
+我们先看一下 Proxy Pattern 的类图。
+proxy pattern class diagram
+代理服务器：是用来代理上网的，我们设置好代理服务器之后，所有的请求都发往代理服务器，代理服务器会帮助我们完成下载网页，传输数据等操作。同时代理服务器也可以统计流量，过滤一些内容等。
+从代理服务器我们可以看出，代理不但能帮助我们完成功能，还可以在流程中添加一些控制（统计流量、过滤内容），这对我们很有启发。比如在我们平时的业务处理层中，某些业务处理类专职于处理某中业务逻辑，而此时如果我们需要添加一些权限控制，安全性控制，或者日志服务等，如果直接修改业务类原有代码，肯定不是最佳的实践。不但违反了开闭原则，也违反了类的单一职责原则，导致过多的职责都添加到业务类中，使业务类除了业务逻辑外还负责了许多本不该他负责的职责。 下面的就是一个简单的日志代理的例子。
+IHello接口定义个了一个操作sayHello。
+package org.buzheng.study.pattern.proxy; public interface IHello { public void sayHello(String name); } HelloSpeaker是IHello的一个具体实现。 ``` java package org.buzheng.study.pattern.proxy; public class HelloSpeaker implements IHello { public void sayHello(String name) { System.out.println(&amp;quot;hello &amp;quot; + name); } }  HelloStaticProxy是一个代理类，负责添加日志的功能，在操作的前后都记录日志。
+package org.buzheng.study.pattern.proxy; public class HelloLoggingProxy implements IHello { private IHello hello; public HelloLoggingProxy(IHello hello) { super(); this.hello = hello; } public void sayHello(String name) { System.</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Template Method Pattern</title>
+      <link>/post/template-method-pattern/</link>
+      <pubDate>Wed, 13 Mar 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/template-method-pattern/</guid>
+      <description>&lt;p&gt;Template Method （模板方法），从他的名字我们就可以看得出，这个模式抽象为一个模板。模板方法为我们解决某个算法提供了一个抽象的实现骨架，确定的步骤可以直接实现，不确定（有变化）的部分，则推迟到具体的子类来实现。算法的使用者只需依赖于模板，具体使用哪个模板，则由上下文指定。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Strategy Pattern</title>
+      <link>/post/strategy-pattern/</link>
+      <pubDate>Wed, 27 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/strategy-pattern/</guid>
+      <description>&lt;p&gt;Strategy Pattern （策略模式）是对一系列可以替换的策略（算法）进行抽象，具体算法继承与抽象，在不同的场景下可以选择不同的算法，这样的好处就是将策略的使用者与具体的策略解耦。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Decorator Pattern</title>
+      <link>/post/decorator-pattern/</link>
+      <pubDate>Sun, 03 Feb 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/decorator-pattern/</guid>
+      <description>&lt;p&gt;Decorator Pattern （装饰者模式）提供了动态增加对象行为的方式，他在原有对象的基础上动态的增加额外的职责。基本结构如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/images/decorator.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Null Object Pattern</title>
+      <link>/post/null-object-pattern/</link>
+      <pubDate>Thu, 31 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/null-object-pattern/</guid>
+      <description>&lt;p&gt;Null Object Pattern （空对象模式）是在某些场景下，使用一个 Null Object 来代替返回的 null, 通过这个 NullObject，使用者能够像使用普通对象一样，而不需要 null 判断，让逻辑更顺畅，让代码看起来很干净，很清爽。&lt;/p&gt;
+
+&lt;p&gt;那什么是 Null Object？Null Object 就是一个普通对象的特例，他一般继承于普通对象，然后对一些操作进行了重写，让这些操作符合无意义 或 空操作。对这个对象的一切操作，就像没有进行过操作一样。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Observer Pattern</title>
+      <link>/post/observer-pattern/</link>
+      <pubDate>Tue, 29 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/observer-pattern/</guid>
+      <description>Observer Pattern （观察者模式、侦听器模式、订阅发布模式、模式-视图模式）适用于有需要通知的场景。当某些对象依赖于某个对象的某个状态，需要在这个对象到达某个状态时进行某些操作时，可将这些对象注册到需要监视的对象（主题）上，当这个对象（主题）到达某个状态时，主动通知这些对象，从而化主动为被动，使具体的观察者对象和要关注的主题解耦。下面一个普遍的结构图：
+在 JDK 中，已经内置了 java.util.Observer 接口 和 java.util.Obserable 类。Observer 接口，就是观察者的抽象，定义了 update 操作。Obserable 类，则实现了观察者注册、删除和通知的逻辑，主题对象一般只要继承这个类即可。
+观察者模式是一个很常用的模式，tomcat 中就大量使用了观察者。
+尽管观察者模式一个比较简单的模式，但是我们在使用的过程中应该注意以下问题： 1，如果观察者对象太多，主题对象的通知操作可能会很慢，这时可能将通知过程做成异步或通过线程池进行管理，就像消息队列那样。 2，如果观察者对象之间的操作互有依赖，则通知时，可能会有操作混乱。</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Adapter Pattern</title>
+      <link>/post/adapter-pattern/</link>
+      <pubDate>Fri, 18 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/adapter-pattern/</guid>
+      <description>&lt;p&gt;Adapter Pattern 用以解决当前类和目标接口不匹配的情况，他通过增加一个适配类来是当前类和目标接口达成一致。结构如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/images/object-adapter.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Iterator Pattern</title>
+      <link>/post/iterator-pattern/</link>
+      <pubDate>Thu, 17 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/iterator-pattern/</guid>
+      <description>&lt;p&gt;Iterator Pattern 属于行为模式，她为如何访问集合的内部定义了统一的访问方式。有了这个统一的访问方式，那些集合类的使用者对所有的集合都可以使用统一的方式来访问，而不关心是什么集合。下面是一个通用的结构图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/images/iterator.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - 工厂模式</title>
+      <link>/post/factory-pattern/</link>
+      <pubDate>Thu, 10 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/factory-pattern/</guid>
+      <description>&lt;p&gt;在面向对象开发原则中有这么一条：对象要么创建和管理对象，要么使用其他对象，不能兼而有之。这也夫单一职责原则的具体应用。其中创建和管理对象的角色就是工厂，他是工厂模式中的主角，他有如下的职责：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建对象&lt;/li&gt;
+&lt;li&gt;按照约定的规则管理对象&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使用工厂能改给我们的好处：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将使用者和被使用者的创建过程/创建逻辑解耦（将使用者和被使用者解耦，因为大多数情况下，使用者不知道被使用者的具体类型）。&lt;/li&gt;
+&lt;li&gt;集中创建/管理对象，提高程序的内聚性。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Facade Pattern</title>
+      <link>/post/facade-pattern/</link>
+      <pubDate>Tue, 08 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/facade-pattern/</guid>
+      <description>&lt;p&gt;Facade Pattern 被译成门面模式。他的目的就是想对外部用户隐藏系统/模块/类的复杂性，提供给用户一个简单易用的使用接口。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>设计模式学习 - Singleton Pattern</title>
+      <link>/post/singleton-pattern/</link>
+      <pubDate>Sat, 05 Jan 2013 00:00:00 +0000</pubDate>
+      
+      <guid>/post/singleton-pattern/</guid>
+      <description>&lt;p&gt;Singleton Pattern 是一种创建模式，根据译者的不同，可能会译作：单态模式、单例模式、单件模式等。Singleton Pattern的目的是保证某个对象在运行环境中有且只有一个实例。主要的实现思路就是将构造方法私有化（防止由使用者构建对象），然后由对象本身来确保这唯一的实例，并提供一个公共操作来供使用者来获取这唯一的实例。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

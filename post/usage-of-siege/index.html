@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 压力测试工具siege的用法</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="压力测试工具siege的用法" />
+<meta property="og:description" content="Siege是linux下的一个web系统的压力测试工具，支持多链接，支持get和post请求，可以对web系统进行多并发下持续请求的压力测试。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/usage-of-siege/" />
+<meta property="article:published_time" content="2013-01-08T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-01-08T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="压力测试工具siege的用法">
+<meta itemprop="description" content="Siege是linux下的一个web系统的压力测试工具，支持多链接，支持get和post请求，可以对web系统进行多并发下持续请求的压力测试。">
+
+
+<meta itemprop="datePublished" content="2013-01-08T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-01-08T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="111">
+
+
+
+<meta itemprop="keywords" content="压力测试,siege," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="压力测试工具siege的用法"/>
+<meta name="twitter:description" content="Siege是linux下的一个web系统的压力测试工具，支持多链接，支持get和post请求，可以对web系统进行多并发下持续请求的压力测试。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        博文
+      </p>
+      <h1 class="f1 athelas mb1">压力测试工具siege的用法</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2013-01-08T00:00:00Z">January 8, 2013</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Siege是linux下的一个web系统的压力测试工具，支持多链接，支持get和post请求，可以对web系统进行多并发下持续请求的压力测试。</p>
+
+<h2 id="安装-siege">安装 Siege</h2>
+
+<pre><code class="language-bash">#wget http://www.joedog.org/pub/siege/siege-latest.tar.gz 
+#tar -xzvf siege-latest.tar.gz
+#./configure; make
+#make install
+</code></pre>
+
+<h2 id="siege命令常用参数">Siege命令常用参数</h2>
+
+<p>-c 200 指定并发数200
+-r 5 指定测试的次数5
+-f urls.txt 制定url的文件
+-i internet系统，随机发送url
+-b 请求无需等待 delay=0
+-t 5 持续测试5分钟
+ -r和-t一般不同时使用</p>
+
+<h2 id="常用的siege命令举例">常用的siege命令举例</h2>
+
+<p>200个并发对<a href="http://www.google.com发送请求100次">http://www.google.com发送请求100次</a></p>
+
+<pre><code class="language-bash">siege -c 200 -r 100 http://www.google.com
+</code></pre>
+
+<p>在urls.txt中列出所有的网址</p>
+
+<pre><code class="language-bash">siege -c 200 -r 100 -f urls.txt
+</code></pre>
+
+<p>随机选取urls.txt中列出所有的网址</p>
+
+<pre><code class="language-bash">siege -c 200 -r 100 -f urls.txt -i
+</code></pre>
+
+<p>delay=0，更准确的压力测试，而不是功能测试</p>
+
+<pre><code class="language-bash">siege -c 200 -r 100 -f urls.txt -i -b
+</code></pre>
+
+<p>指定http请求头 文档类型</p>
+
+<pre><code class="language-bash">siege -H &amp;quot;Content-Type:application/json&amp;quot; -c 200 -r 100 -f urls.txt -i -b
+</code></pre>
+
+<h2 id="siege输出结果说明">Siege输出结果说明</h2>
+
+<p>Transactions: 总共测试次数
+Availability: 成功次数百分比
+Elapsed time: 总共耗时多少秒
+Data transferred: 总共数据传输
+Response time: 等到响应耗时
+Transaction rate: 平均每秒处理请求数
+Throughput: 吞吐率
+Concurrency: 最高并发
+Successful transactions: 成功的请求数
+Failed transactions: 失败的请求数</p>
+
+<h2 id="siege使用的一些总结">Siege使用的一些总结</h2>
+
+<p>1，发送post请求时，url格式为：<a href="http://www.xxxx.com/">http://www.xxxx.com/</a> POST p1=v1&amp;p2=v2
+2，如果url中含有空格和中文，要先进行url编码，否则siege发送的请求url不准确</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">压力测试</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/siege" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">siege</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

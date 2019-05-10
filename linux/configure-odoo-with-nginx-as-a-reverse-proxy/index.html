@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 配置 Odoo 使用 Nginx 作为反向代理</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="配置 Odoo 使用 Nginx 作为反向代理" />
+<meta property="og:description" content="Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。
+
+Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。
+
+本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/" />
+<meta property="article:published_time" content="2019-03-03T08:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-03T08:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="配置 Odoo 使用 Nginx 作为反向代理">
+<meta itemprop="description" content="Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。
+
+Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。
+
+本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。">
+
+
+<meta itemprop="datePublished" content="2019-03-03T08:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-03T08:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="239">
+
+
+
+<meta itemprop="keywords" content="linux,odoo,nginx,教程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="配置 Odoo 使用 Nginx 作为反向代理"/>
+<meta name="twitter:description" content="Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。
+
+Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。
+
+本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">配置 Odoo 使用 Nginx 作为反向代理</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-03T08:00:00Z">March 3, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。</p>
+
+<p>Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。</p>
+
+<p>本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保您已满足以下先决条件：</p>
+
+<ul>
+<li>你安装了 Odoo ，如果没有，你可以在<a href="/linux/install-odoo-11-on-ubuntu-16-04/">这里</a>找到说明</li>
+<li>您有一个指向您的 Odoo 安装的域名。在本文中我们将使用 <code>odoo.example.com</code> 。</li>
+<li>您已安装 Nginx ，如果没有，请查看: <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>。</li>
+<li>您已为您的域安装了 SSL 证书。您可以按照本指南 <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">安装免费的 Let&rsquo;s Encrypt 证书</a>。</li>
+</ul>
+
+<h2 id="将-nginx-配置为反向代理">将 Nginx 配置为反向代理</h2>
+
+<p>使用反向代理可以带来很多好处，例如负载均衡， SSL Termination ，缓存，压缩，托管静态内容等等。</p>
+
+<p>在此示例中，我们将配置 SSL Termination ，重定向 HTTP 到 HTTPS ，缓存静态文件和启用 GZip 压缩。</p>
+
+<p>下面是一个示例 nginx 配置文件（server 配置段），你可用于把它用在安装 odoo 的过程中。</p>
+
+<p>打开文本编辑器并创建以下文件。</p>
+
+<pre><code class="language-bash">sudo nano /etc/nginx/sites-enabled/odoo.example.com
+</code></pre>
+
+<p>/etc/nginx/sites-enabled/odoo.example.com</p>
+
+<pre><code class="language-bash">upstream odoo {
+ server 127.0.0.1:8069;
+}
+
+upstream odoo-chat {
+ server 127.0.0.1:8072;
+}
+
+server {
+    server_name odoo.example.com;
+    return 301 https://odoo.example.com$request_uri;
+}
+
+server {
+   listen 443 ssl http2;
+   server_name odoo.example.com;
+
+   ssl_certificate /path/to/signed_cert_plus_intermediates;
+   ssl_certificate_key /path/to/private_key;
+   ssl_session_timeout 1d;
+   ssl_session_cache shared50m;
+   ssl_session_tickets off;
+
+   ssl_dhparam /path/to/dhparam.pem;
+
+   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+   ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305ECDHE-ECDSA-AES128-GCM-SHA256ECDHE-ECDSA-AES256-GCM-SHA384DHE-RSA-AES128-GCM-SHA256ECDHE-ECDSA-AES128-SHA256ECDHE-ECDSA-AES128-SHAECDHE-RSA-AES128-SHAECDHE-ECDSA-AES256-SHADHE-RSA-AES128-SHA256DHE-RSA-AES256-SHA256ECDHE-ECDSA-DES-CBC3-SHAEDH-RSA-DES-CBC3-SHAAES256-GCM-SHA384AES256-SHA256AES256-SHA!DSS';
+   ssl_prefer_server_ciphers on;
+
+   add_header Strict-Transport-Security max-age=15768000;
+
+   ssl_stapling on;
+   ssl_stapling_verify on;
+   ssl_trusted_certificate /path/to/root_CA_cert_plus_intermediates;
+   resolver 8.8.8.8 8.8.4.4;
+
+   access_log /var/log/nginx/odoo.access.log;
+   error_log /var/log/nginx/odoo.error.log;
+
+   proxy_read_timeout 720s;
+   proxy_connect_timeout 720s;
+   proxy_send_timeout 720s;
+   proxy_set_header X-Forwarded-Host $host;
+   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_set_header X-Forwarded-Proto $scheme;
+   proxy_set_header X-Real-IP $remote_addr;
+
+   location / {
+     proxy_redirect off;
+     proxy_pass http://odoo;
+   }
+
+   location /longpolling {
+       proxy_pass http://odoo-chat;
+   }
+
+   location ~* /web/static/ {
+       proxy_cache_valid 200 90m;
+       proxy_buffering    on;
+       expires 864000;
+       proxy_pass http://odoo;
+  }
+
+  # gzip
+  gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
+  gzip on;
+}
+</code></pre>
+
+<p>不要忘记将 <code>odoo.example.com</code> 替换为您的 Odoo 域，并为 SSL 证书文件设置正确的路径。</p>
+
+<p>完成后保存文件并重新启动 Nginx 服务：</p>
+
+<pre><code class="language-bash">systemctl restart nginx
+</code></pre>
+
+<h2 id="更改绑定网络接口">更改绑定网络接口</h2>
+
+<p>此步骤是可选的，但这是一种很好的安全措施。</p>
+
+<p>默认情况下， Odoo 服务器侦听所有网络接口上的 8069 端口。如果要禁用对 Odoo 实例的直接访问，请打开 Odoo 配置文件，并在文件末尾添加以下两行：</p>
+
+<p>/etc/odoo.conf</p>
+
+<pre><code class="language-bash">xmlrpc_interface = 127.0.0.1
+netrpc_interface = 127.0.0.1
+</code></pre>
+
+<p>保存配置文件并重新启动 Odoo 服务器以使更改生效：</p>
+
+<pre><code class="language-bash">systemctl restart odoo
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何将 Nginx 配置为 Odoo 应用程序的代理。您还可以阅读有关如何设置自动 Odoo 备份的信息</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/odoo" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">odoo</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%95%99%E7%A8%8B" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">教程</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-case-statement/">Bash 中 Case 语句用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">如何在 CentOS 7 上安装和配置 Samba</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vagrant-on-debian-9/">如何在 Debian 9 上安装 Vagrant</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">在 Linux 中使用 ls 命令列出文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-epel-repository-on-centos/">如何在 CentOS 上启用EPEL存储库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-android-studio-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Android Studio</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-opencart-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/add-and-delete-users-on-centos-7/">在 CentOS 7 中添加和删除用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

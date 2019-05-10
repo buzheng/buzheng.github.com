@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何设置 SSH 免密登录</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何设置 SSH 免密登录" />
+<meta property="og:description" content="Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。
+
+在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-setup-passwordless-ssh-login/" />
+<meta property="article:published_time" content="2019-03-22T05:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-22T05:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何设置 SSH 免密登录">
+<meta itemprop="description" content="Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。
+
+在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。">
+
+
+<meta itemprop="datePublished" content="2019-03-22T05:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-22T05:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="218">
+
+
+
+<meta itemprop="keywords" content="linux,ssh,安全," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何设置 SSH 免密登录"/>
+<meta name="twitter:description" content="Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。
+
+在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何设置 SSH 免密登录</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-22T05:00:00Z">March 22, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。</p>
+
+<p>在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。</p>
+
+<h2 id="设置-ssh-无密码登录">设置 SSH 无密码登录</h2>
+
+<p>要在 Linux 中设置 SSH 免密登录，您只需生成公共身份验证密钥并将其附加到远程主机 <code>~/.ssh/authorized_keys</code> 文件即可。</p>
+
+<p>以下步骤将介绍配置 SSH 免密登录的过程：</p>
+
+<ol>
+<li><p>检查现有的 SSH 密钥对。</p>
+
+<p>在生成新的 SSH 密钥对之前，首先检查您的客户端计算机上是否已有 SSH 密钥，因为您不想覆盖现有密钥。</p>
+
+<p>运行以下 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令</a>以查看是否存在现有 SSH 密钥：</p>
+
+<pre><code class="language-bash">ls -al ~/.ssh/id_*.pub
+</code></pre>
+
+<p>如果存在现有密钥，您可以使用这些密钥并跳过下一步或备份旧密钥并生成新密钥。</p>
+
+<p>如果您看到 <code>No such file or directory</code> 或 <code>no matches found</code> 意味着您没有 SSH 密钥，则可以继续执行下一步并生成新密钥。</p>
+
+<ol>
+<li>生成新的 SSH 密钥对。</li>
+</ol>
+
+<p>以下命令将生成一个新的 4096 位 SSH 密钥对，并将您的电子邮件地址作为注释：</p>
+
+<pre><code class="language-bash">ssh-keygen -t rsa -b 4096 -C &quot;your_email@domain.com&quot;
+</code></pre>
+
+<p>按 <code>Enter</code> 接受则默认文件位置和文件名：</p>
+
+<pre><code class="language-bash">Enter file in which to save the key (/home/yourusername/.ssh/id_rsa):
+</code></pre>
+
+<p>接下来，<code>ssh-keygen</code> 工具将要求您键入安全密码。无论您是否想要使用密码短语都取决于您，如果您选择使用密码短语，您将获得额外的安全保护。在大多数情况下，开发人员和系统管理员使用 SSH 而不使用密码，因为它们对完全自动化的流程很有用。如果您不想使用密码短语，请按 Enter</p>
+
+<pre><code class="language-bash">Enter passphrase (empty for no passphrase):
+</code></pre>
+
+<p>整个交互看起来像这样：</p>
+
+<p><img src="/images/linux/how-to-setup-passwordless-ssh-login/generate-a-new-ssh-key-pair.jpg" alt="" /></p>
+
+<p>要确认是否已经生成 SSH 密钥，您可以使用以下命令列出新的私钥和公钥：</p>
+
+<pre><code class="language-bash">ls ~/.ssh/id_*
+</code></pre>
+
+<pre><code class="language-bash">/home/yourusername/.ssh/id_rsa /home/yourusername/.ssh/id_rsa.pub
+</code></pre></li>
+
+<li><p>复制公钥</p>
+
+<p>现在您已经生成了 SSH 密钥对，为了能够在没有密码的情况下登录到您的服务器，您需要将公钥复制到您要管理的服务器。</p>
+
+<p>将公钥复制到服务器的最简单方法是使用名为的命令 <code>ssh-copy-id</code> 。在您的本地机器终端类型：</p>
+
+<pre><code class="language-bash">ssh-copy-id remote_username@server_ip_address
+</code></pre>
+
+<p>系统将提示您输入 <code>remote_username</code> 的密码：</p>
+
+<pre><code class="language-bash">remote_username@server_ip_address's password:
+</code></pre>
+
+<p>用户通过身份验证后，公钥将附加到远程用户 <code>authorized_keys</code> 文件，并且将关闭连接。</p>
+
+<p>如果由于某种原因， ssh-copy-id 本地计算机上没有该实用程序，则可以使用以下命令复制公钥：</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_rsa.pub | ssh remote_username@server_ip_address &quot;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&quot;
+</code></pre>
+
+<ol>
+<li>使用 SSH 密钥登录服务器</li>
+</ol>
+
+<p>完成上述步骤后，您应该能够登录到远程服务器而不会被提示输入密码。</p>
+
+<p>要测试它只是尝试通过 SSH 登录到您的服务器：</p>
+
+<pre><code class="language-bash">ssh remote_username@server_ip_address
+</code></pre>
+
+<p>如果一切顺利，您将立即登录。</p></li>
+</ol>
+
+<h2 id="禁用-ssh-密码验证">禁用 SSH 密码验证</h2>
+
+<p>要为服务器添加额外的安全层，可以禁用 SSH 的密码身份验证。</p>
+
+<p>在禁用 SSH 密码身份验证之前，请确保您可以在没有密码的情况下登录到服务器，并且您登录的用户具有 sudo 权限。</p>
+
+<p>以下教程描述了如何配置 sudo 访问：</p>
+
+<ul>
+<li><a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 sudo 用户</a></li>
+<li><a href="/linux/create-a-sudo-user-on-centos/">如何在 CentOS 上创建 sudo 用户</a></li>
+<li><a href="/linux/how-to-create-a-sudo-user-on-debian/">如何在 Debian 上创建 sudo 用户</a></li>
+</ul>
+
+<ol>
+<li><p>使用具有 sudo 权限的用户或 root 用户，通过 SSH 密钥登录到远程服务器：</p>
+
+<pre><code class="language-bash">ssh sudo_user@server_ip_address
+</code></pre>
+
+<ol>
+<li>打开 SSH 配置文件 <code>/etc/ssh/sshd_config</code> ，搜索以下指令并按如下方式进行修改：</li>
+</ol>
+
+<pre><code class="language-bash">PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+</code></pre>
+
+<p>完成后保存文件并重新启动 SSH 服务。</p>
+
+<p>在 Ubuntu 或 Debian 服务器上，运行以下命令：</p>
+
+<pre><code class="language-bash">sudo systemctl restart ssh
+</code></pre>
+
+<p>在 CentOS 或 Fedora 服务器上，运行以下命令：</p>
+
+<pre><code class="language-bash">sudo systemctl restart sshd
+</code></pre></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何设置基于 SSH 密钥的身份验证，允许您在不提供用户密码的情况下登录到远程服务器。您可以将相同的密钥添加到多个远程服务。</p>
+
+<p>我们还向您展示了如何禁用 SSH 密码身份验证并为您的服务器添加额外的安全层。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ssh" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ssh</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E5%AE%89%E5%85%A8" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">安全</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-ssh-port-in-linux/">如何在 Linux 中更改 SSH 端口</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-users-in-linux-using-the-userdel-command/">如何使用 userdel 命令在 Linux 中删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-find-files-in-linux-using-the-command-line/">如何使用命令行在 Linux 中查找文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-linux-screen/">如何使用 Linux  screen</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-zip-files-and-directories-in-linux/">如何在 Linux 中压缩文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-automatic-odoo-backup/">如何设置 Odoo 自动备份</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-linux-swap-file/">创建 Linux Swap 交换区文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-mariadb-on-centos-7/">在 CentOS 7 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-centos-7/">如何在 CentOS 7 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

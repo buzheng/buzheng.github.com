@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Ubuntu 18.04 上安装和配置 GitLab</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上安装和配置 GitLab" />
+<meta property="og:description" content="GitLab 是一个基于 Web 的开源 Git 软件仓库管理器，用 Ruby 编写，包括 wiki，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够创建，审查和部署他们的项目。
+
+有三种不同版本的 GitLab 可用，社区版 (CE) ，企业版 (EE) 和 GitLab 托管版本。
+
+如果你想远离 GitHub ， GitLab 是首选。它可以从不同的来源导入项目和问题，包括 GitHub ，这使得迁移过程无忧无虑。 GitLab 界面设计精良，干净，直观，并且在用户体验和功能方面与 GitHub 相近。
+
+根据所需的用例，有几种方法可以安装 GitLab 。本教程介绍了使用 Omnibus 软件包在 Ubuntu 18.04 系统上安装和配置 GitLab  (CE) 所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-03-19T06:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-19T06:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上安装和配置 GitLab">
+<meta itemprop="description" content="GitLab 是一个基于 Web 的开源 Git 软件仓库管理器，用 Ruby 编写，包括 wiki，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够创建，审查和部署他们的项目。
+
+有三种不同版本的 GitLab 可用，社区版 (CE) ，企业版 (EE) 和 GitLab 托管版本。
+
+如果你想远离 GitHub ， GitLab 是首选。它可以从不同的来源导入项目和问题，包括 GitHub ，这使得迁移过程无忧无虑。 GitLab 界面设计精良，干净，直观，并且在用户体验和功能方面与 GitHub 相近。
+
+根据所需的用例，有几种方法可以安装 GitLab 。本教程介绍了使用 Omnibus 软件包在 Ubuntu 18.04 系统上安装和配置 GitLab  (CE) 所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-03-19T06:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-19T06:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="428">
+
+
+
+<meta itemprop="keywords" content="ubuntu,git,gitlab," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装和配置 GitLab"/>
+<meta name="twitter:description" content="GitLab 是一个基于 Web 的开源 Git 软件仓库管理器，用 Ruby 编写，包括 wiki，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够创建，审查和部署他们的项目。
+
+有三种不同版本的 GitLab 可用，社区版 (CE) ，企业版 (EE) 和 GitLab 托管版本。
+
+如果你想远离 GitHub ， GitLab 是首选。它可以从不同的来源导入项目和问题，包括 GitHub ，这使得迁移过程无忧无虑。 GitLab 界面设计精良，干净，直观，并且在用户体验和功能方面与 GitHub 相近。
+
+根据所需的用例，有几种方法可以安装 GitLab 。本教程介绍了使用 Omnibus 软件包在 Ubuntu 18.04 系统上安装和配置 GitLab  (CE) 所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装和配置 GitLab</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-03-19T06:00:00Z">March 19, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>GitLab 是一个基于 Web 的开源 <!--link:how-to-install-git-on-ubuntu-18-04-->Git<!--link--> 软件仓库管理器，用 <!--link:how-to-install-ruby-on-ubuntu-18-04-->Ruby<!--link--> 编写，包括 wiki，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够创建，审查和部署他们的项目。</p>
+
+<p>有三种不同版本的 GitLab 可用，社区版 (CE) ，企业版 (EE) 和 GitLab 托管版本。</p>
+
+<p>如果你想远离 <a href="https://github.com/">GitHub</a> ， <a href="https://about.gitlab.com/">GitLab</a> 是首选。它可以从不同的来源导入项目和问题，包括 GitHub ，这使得迁移过程无忧无虑。 GitLab 界面设计精良，干净，直观，并且在用户体验和功能方面与 GitHub 相近。</p>
+
+<p>根据所需的用例，有几种方法可以安装 GitLab 。本教程介绍了使用 Omnibus 软件包在 Ubuntu 18.04 系统上安装和配置 GitLab  (CE) 所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>本教程假设您安装了新的 Ubuntu 18.04 。根据 <a href="https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements">GitLab 要求页面</a>，建议服务器的配置如下：</p>
+
+<ul>
+<li>至少 4GB 的 RAM 内存</li>
+<li>2 核心</li>
+<li>至少 2GB 的交换空间。</li>
+<li>(可选)指向服务器 IP 地址的域或子域。</li>
+</ul>
+
+<p>为了增加安全，建议设置基本防火墙。您可以按照<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"> Ubuntu 18.04 指南中的如何使用 UFW 设置防火墙</a>中的步骤进行操作。</p>
+
+<p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户身份</a>登录。</p>
+
+<h2 id="安装所需的依赖项">安装所需的依赖项</h2>
+
+<p>更新本地程序包索引并使用以下命令安装依赖项：</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install curl openssh-server ca-certificates
+</code></pre>
+
+<p>为了让 GitLab 能够发送通知电子邮件，您可以安装和使用 Postfix 或使用一些事务性邮件服务，如 SendGrid ， MailChimp ， MailGun 或 SES ，在这种情况下，您可以跳过以下步骤并在安装完成之后配置 <a href="https://docs.gitlab.com/omnibus/settings/smtp.html">GitLab SMTP 设置</a>。</p>
+
+<p>运行以下命令在 Ubuntu 服务器上安装 Postfix ：</p>
+
+<pre><code class="language-bash">debconf-set-selections &lt;&lt;&lt; &quot;postfix postfix/mailname string $(hostname -f)&quot;
+debconf-set-selections &lt;&lt;&lt; &quot;postfix postfix/main_mailer_type string 'Internet Site'&quot;
+sudo apt install postfix
+</code></pre>
+
+<p>有关如何设置自己的邮件服务器的更多详细信息，请查看<!--link:/series/setting-up-and-configuring-a-mail-server/-->本系列<!--link-->。</p>
+
+<h2 id="安装-gitlab">安装 GitLab</h2>
+
+<p>安装 GitLab 的过程非常简单。我们将使用 apt 包管理器安装 GitLab CE 包。</p>
+
+<p>首先使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>将 GitLab 软件仓库添加到系统源列表：</p>
+
+<pre><code class="language-bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+</code></pre>
+
+<p>启用软件仓库后，通过运行以下命令安装 GitLab 软件包。</p>
+
+<pre><code class="language-bash">sudo apt install gitlab-ce
+</code></pre>
+
+<p>安装过程可能需要一段时间，安装成功后，您将看到以下输出：</p>
+
+<pre><code class="language-bash">Thank you for installing GitLab!
+</code></pre>
+
+<h2 id="调整防火墙规则">调整防火墙规则</h2>
+
+<p>有关设置基本防火墙的指南在先决条件部分中进行了链接。为了能够访问 GitLab 接口，我们需要打开端口 <code>80</code> 和 <code>443</code> ：</p>
+
+<pre><code class="language-bash">sudo ufw allow OpenSSH
+sudo ufw allow http
+sudo ufw allow https
+</code></pre>
+
+<p>要确保所需的端口处于打开状态，您可以使用以下命令检查防火墙的状态：</p>
+
+<pre><code class="language-bash">sudo ufw status
+</code></pre>
+
+<pre><code class="language-bash">Status: active
+
+To                         Action      From
+--                         ------      ----
+80/tcp                     ALLOW       Anywhere
+443/tcp                    ALLOW       Anywhere
+OpenSSH                    ALLOW       Anywhere
+80/tcp (v6)                ALLOW       Anywhere (v6)
+443/tcp (v6)               ALLOW       Anywhere (v6)
+OpenSSH (v6)               ALLOW       Anywhere (v6)
+</code></pre>
+
+<h2 id="设置-gitlab-url">设置 GitLab URL</h2>
+
+<p>在访问 GitLab Web 界面之前，我们需要设置可以访问 GitLab 的 URL 。打开 Gitlab 的配置文件并进行以下更改：</p>
+
+<pre><code class="language-bash">sudo nano /etc/gitlab/gitlab.rb
+</code></pre>
+
+<p>在配置文件的顶部附近，您将看到以 <code>external_url</code> 开头的行。。如果您有域名使用 https，如果要使用 http 通过服务器 IP 地址访问 GitLab 接口，更改值以匹配您的域名/子域名或 IP 地址。</p>
+
+<pre><code class="language-rb">external_url 'https://gitlab.example.com'
+</code></pre>
+
+<p>接下来搜索 <code>&quot;Let's Encrypt integration&quot;</code> ，取消注释以 <code>＃</code> 开头的行 <code>letsencrypt['enable']</code> 并将其设置为 <code>true</code> 。(可选)如果您希望从 Let&rsquo;s Encrypt 收到有关您的域的电子邮件，请取消注释以 <code>letsencrypt['contact_emails']</code> 开头的行 并添加您的电子邮件地址。</p>
+
+<p>如果您设置 <code>external_url</code> 为 IP 地址，则不要启用Let的加密集成。</p>
+
+<pre><code class="language-rb">letsencrypt['enable'] = true
+letsencrypt['contact_emails'] = ['admin@example.com'] # This should be an array of email addresses to add as contacts
+</code></pre>
+
+<p>最后，保存并关闭文件并运行以下命令来重新配置 Gitlab ：</p>
+
+<pre><code class="language-bash">sudo gitlab-ctl reconfigure
+</code></pre>
+
+<p>该命令将重新配置您的 GitLab 设置并生成一个免费的 Let&rsquo;s Encrypt SSL 证书。</p>
+
+<h2 id="通过-web-interface-配置-gitlab">通过 Web Interface 配置 GitLab</h2>
+
+<p>现在您已经配置了 GitLab URL ，您可以通过 GitLab Web 界面从初始配置开始。</p>
+
+<p>启动 Web 浏览器并导航至： <code>https://your_gitlab_domain_or_server_IP.com</code></p>
+
+<h3 id="设置管理帐户密码">设置管理帐户密码</h3>
+
+<p>首次访问 Web 界面时，系统会提示您设置管理帐户的密码。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-initial-page.jpg" alt="" /></p>
+
+<p>输入安全密码，完成后单击 <code>Change your password</code> 按钮。</p>
+
+<p>您将被重定向到登录页面：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-login-page.jpg" alt="" /></p>
+
+<p>默认管理帐户用户名是 <code>root</code> 。在本教程的后面部分，我们将向您展示如何更改用户名。</p>
+
+<ul>
+<li>用户名：root</li>
+<li>密码：[您设置的密码]</li>
+</ul>
+
+<p>输入登录凭据并单击 <code>Sign in</code> 按钮后，您将进入 GitLab 欢迎页面。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-welcome-page.jpg" alt="" /></p>
+
+<h3 id="编辑用户配置文件">编辑用户配置文件</h3>
+
+<p>您要做的第一件事是编辑您的用户个人资料。单击用户头像(右上角)，然后从下拉菜单中选择 Settings ：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-access-user-profile.jpg" alt="" /></p>
+
+<p>您可以在此处更改姓名，电子邮件和其他个人资料信息和设置。根据自己的喜好进行更改。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-profile-page.jpg" alt="" /></p>
+
+<p>完成后，单击 <code>Update Profile settings</code> 按钮，很快您将收到一封确认电子邮件，其中包含您提供的地址。要确认您的帐户，请按照电子邮件中提供的说明操作。</p>
+
+<h3 id="更改用户名">更改用户名</h3>
+
+<p>要访问 Profile 页面，请单击 <code>Account</code> 左侧垂直导航菜单中的链接。</p>
+
+<p>您已经知道第一个管理帐户的默认用户名是 <code>root</code> 。要更改它，只需键入新用户名并单击 <code>Update username</code> 按钮即可。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-change-user-name.jpg" alt="" /></p>
+
+<p>在此屏幕上，您还可以启用双因素身份验证。</p>
+
+<p>下次您将登录 GitLab 仪表板时，您需要输入新的用户名。</p>
+
+<h3 id="添加-ssh-密钥">添加 SSH 密钥</h3>
+
+<p>为了能够将您的本地 git 更改推送到 GitLab 服务器，您需要将 SSH 公钥添加到 GitLab 帐户。</p>
+
+<p>如果您已在本地系统上创建了 SSH 密钥对，则可以通过键入以下内容来显示公钥：</p>
+
+<pre><code class="language-bash">cat ~/.ssh/id_rsa.pub
+</code></pre>
+
+<p>输出应如下所示：</p>
+
+<pre><code class="language-bash">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDd/mnMzHwjUzK8g3ldfsfRpJuC16mhWamaXRk8ySQrD/dzpbRLfDnZsLxCzRoq+ZzFHGwcQlJergtergdHGRrO8FE5jl3IWRRp+mP12qYw== admin@linuxize.com
+</code></pre>
+
+<p>如果上面的命令打印， <code>No such file or directory</code> 则意味着您没有在计算机上生成 SSH 密钥对。</p>
+
+<p>要<!--link:how-to-set-up-ssh-keys-on-ubuntu-1804-->生成新的 SSH 密钥对<!--link-->，请使用以下命令：</p>
+
+<pre><code class="language-bash">ssh-keygen -t rsa -b 4096 -C &quot;your_email@domain.com&quot;
+</code></pre>
+
+<p>复制 <!--link:linux-cat-command-->cat 命令<!--link-->的输出并返回 GitLab 的 Web 界面。单击左侧垂直导航菜单中的 <code>SSH Keys</code> 以访问 SSH Keys 配置页面。</p>
+
+<p>在 Key 文本框粘贴您之前从本地计算机复制的公钥，设置描述性标题并单击 <code>Add key</code> 按钮：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-add-ssh-key.jpg" alt="" /></p>
+
+<p>现在，您应该能够从本地计算机推送和拉取项目更改，而无需提供 GitLab 帐户凭据。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>本教程向您介绍了在 Ubuntu 18.04 上安装和配置 GitLab 的过程。您还学习了如何编辑配置文件设置，如何更改用户名以及添加 SSH 密钥。您现在可以创建第一个项目并开始使用 GitLab 。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/git" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">git</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/gitlab" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">gitlab</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-rpm-packages-on-ubuntu/">在 Ubuntu 上安装 RPM 包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 Sudo 用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Nginx 服务器块</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-upgrade-to-ubuntu-18-04-bionic-beaver/">如何将 Ubuntu 升级到 18.04 (Bionic Beaver)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

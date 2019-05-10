@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>不争笔记  | 如何在 Debian 9 上安装 Elasticsearch</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上安装 Elasticsearch" />
+<meta property="og:description" content="Elasticsearch 是一个开源的分布式全文搜索和分析引擎。它支持 RESTful 操作，允许您实时存储，搜索和分析大量数据。
+
+Elasticsearch 是最受欢迎的搜索引擎之一，为具有复杂搜索要求的应用程序提供支持，例如大型电子商务商店和分析应用程序。
+
+本教程将指导您完成在 Debian 9 上安装 Elasticsearch 的过程。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-elasticsearch-on-debian-9/" />
+<meta property="article:published_time" content="2019-04-29T07:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-29T07:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上安装 Elasticsearch">
+<meta itemprop="description" content="Elasticsearch 是一个开源的分布式全文搜索和分析引擎。它支持 RESTful 操作，允许您实时存储，搜索和分析大量数据。
+
+Elasticsearch 是最受欢迎的搜索引擎之一，为具有复杂搜索要求的应用程序提供支持，例如大型电子商务商店和分析应用程序。
+
+本教程将指导您完成在 Debian 9 上安装 Elasticsearch 的过程。">
+
+
+<meta itemprop="datePublished" content="2019-04-29T07:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-29T07:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="339">
+
+
+
+<meta itemprop="keywords" content="java,elasticsearch,database,debian," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上安装 Elasticsearch"/>
+<meta name="twitter:description" content="Elasticsearch 是一个开源的分布式全文搜索和分析引擎。它支持 RESTful 操作，允许您实时存储，搜索和分析大量数据。
+
+Elasticsearch 是最受欢迎的搜索引擎之一，为具有复杂搜索要求的应用程序提供支持，例如大型电子商务商店和分析应用程序。
+
+本教程将指导您完成在 Debian 9 上安装 Elasticsearch 的过程。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 Elasticsearch</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-29T07:00:00Z">April 29, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Elasticsearch 是一个开源的分布式全文搜索和分析引擎。它支持 RESTful 操作，允许您实时存储，搜索和分析大量数据。</p>
+
+<p>Elasticsearch 是最受欢迎的搜索引擎之一，为具有复杂搜索要求的应用程序提供支持，例如大型电子商务商店和分析应用程序。</p>
+
+<p>本教程将指导您完成在 Debian 9 上安装 Elasticsearch 的过程。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录才能在 Debian 服务器上安装软件包。</p>
+
+<h2 id="安装-elasticsearch">安装 Elasticsearch</h2>
+
+<p>在 Debian 上安装 Elasticsearch 的最简单方法是通过官方 Elasticsearch 存储库。在撰写本文时，最新版本的 Elasticsearch 是 <code>7.0.0</code> 并且要求在系统上安装 Oracle Java 8 或 OpenJDK 8 。</p>
+
+<p>首先更新软件包索引并安装 <code>apt-transport-https</code> 通过 HTTPS 从存储库中下载所需的软件包：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+sudo apt install apt-transport-https
+</code></pre>
+
+<p>安装 OpenJDK 8 ：</p>
+
+<pre><code class="language-console-bash">sudo apt install openjdk-8-jdk
+</code></pre>
+
+<p>通过打印 Java 版本来验证 Java 安装：</p>
+
+<pre><code class="language-console-bash">java -version
+</code></pre>
+
+<p>输出应该如下所示：</p>
+
+<pre><code class="language-output">openjdk version &quot;1.8.0_181&quot;
+OpenJDK Runtime Environment (build 1.8.0_181-8u181-b13-2~deb9u1-b13)
+OpenJDK 64-Bit Server VM (build 25.181-b13, mixed mode)
+</code></pre>
+
+<blockquote>
+<p>如果要安装 Oracle Java 而不是 OpenJDK ，请查看这个<a href="/linux/install-java-on-debian-9/">教程</a>。</p>
+</blockquote>
+
+<p>下一步是添加 Elasticsearch 存储库。</p>
+
+<p>使用以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令导入存储库的公钥：</p>
+
+<pre><code class="language-console-bash">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+</code></pre>
+
+<p>上面的命令应该输出 <code>OK</code> ，这意味着密钥已成功导入，并且来自此存储库的包将被视为可信。</p>
+
+<p>接下来，通过运行以下命令将 Elasticsearch 存储库添加到系统：</p>
+
+<pre><code class="language-console-bash">sudo sh -c 'echo &quot;deb https://artifacts.elastic.co/packages/7.x/apt stable main&quot; &gt; /etc/apt/sources.list.d/elastic-7.x.list'
+</code></pre>
+
+<p>如果要安装不同版本的 Elasticsearch ，请使用所需的版本更改上面的命令中的  <code>7.x</code> 。</p>
+
+<p>更新软件包索引并安装 Elasticsearch 引擎：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+sudo apt install elasticsearch
+</code></pre>
+
+<p>安装过程完成后，使用以下命令启动并启用该服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
+</code></pre>
+
+<p>要验证 Elasticsearch 是否正在运行，请使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>向 localhost 上的端口 9200 发送 HTTP 请求：</p>
+
+<pre><code class="language-console-bash">curl -X GET &quot;localhost:9200/&quot;
+</code></pre>
+
+<p>输出应该类似于：</p>
+
+<pre><code class="language-output">{
+  &quot;name&quot; : &quot;stretch&quot;,
+  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,
+  &quot;cluster_uuid&quot; : &quot;Nj2W3PswRuWvJW8JG75O1Q&quot;,
+  &quot;version&quot; : {
+    &quot;number&quot; : &quot;7.0.0&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;deb&quot;,
+    &quot;build_hash&quot; : &quot;b7e28a7&quot;,
+    &quot;build_date&quot; : &quot;2019-04-05T22:55:32.697037Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;8.0.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;6.7.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;6.0.0-beta1&quot;
+  },
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+}
+</code></pre>
+
+<p>服务可能需要 5-10 秒才能启动。如果你看到 <code>curl: (7) Failed to connect to localhost port 9200: Connection refused</code> ，请等待几秒钟再试一次。</p>
+
+<p>要查看 Elasticsearch 服务记录的消息，请使用以下命令：</p>
+
+<pre><code class="language-console-bash">sudo journalctl -u elasticsearch
+</code></pre>
+
+<p>现在，Elasticsearch 已安装在 Debian 服务器上。</p>
+
+<h2 id="配置-elasticsearch">配置 Elasticsearch</h2>
+
+<p>Elasticsearch 数据存储在 <code>/var/lib/elasticsearch</code> 目录中。配置文件位于 <code>/etc/elasticsearch</code> 并且可以在 <code>/etc/default/elasticsearch</code> 文件中配置 Java 启动选项。</p>
+
+<p>默认情况下， Elasticsearch 配置为仅侦听 localhost 。如果连接到数据库的客户端也在同一主机上运行，​​并且您要设置单节点群集，则无需启用远程访问。</p>
+
+<h3 id="远程访问">远程访问</h3>
+
+<p>开箱即用的 Elasticsearch 不会实现身份验证，因此任何可以访问 HTTP API 的人都可以访问它。如果要允许远程访问 Elasticsearch 服务器，则需要配置防火墙并仅允许从受信任的客户端访问 Elasticsearch 端口 9200 。</p>
+
+<p>如果您使用 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">UFW</a> 作为您选择的防火墙工具，请运行以下命令以允许从远程可信 IP 地址访问端口 9200 ：</p>
+
+<pre><code class="language-console-bash">sudo ufw allow from 192.168.100.20 to any port 9200
+</code></pre>
+
+<p>不要忘记使用您自己的远程 IP 地址进行更改上面命令中的 <code>192.168.100.20</code> 。</p>
+
+<p>否则，如果你使用普通的 iptables ，请运行以下命令：</p>
+
+<pre><code class="language-console-bash">sudo iptables -A INPUT -p tcp -s 192.168.100.20 --dport 9200 -j ACCEPT
+</code></pre>
+
+<p>配置防火墙后，下一步是编辑配置并设置 Elasticsearch 以侦听外部连接。</p>
+
+<p>为此，请打开 <code>/etc/elasticsearch/elasticsearch.yml</code> 配置文件：</p>
+
+<pre><code class="language-console-bash">sudo nano /etc/elasticsearch/elasticsearch.yml
+</code></pre>
+
+<p>搜索包含的行 <code>network.host</code> ，取消注释，并将值更改为 <code>0.0.0.0</code> ：</p>
+
+<pre><code class="language-ini">network.host: 0.0.0.0
+</code></pre>
+
+<p>如果您的计算机上有多个网络接口，则可以指定接口 IP 地址，这将导致 Elasticsearch 仅在指定的接口上进行侦听。</p>
+
+<p>重新启动 Elasticsearch 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart elasticsearch
+</code></pre>
+
+<p>此时，您应该能够从远程位置连接到 Elasticsearch 服务器。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Debian 9 系统上成功安装了 Elasticsearch 。有关如何开始使用 Elasticsearch 的更多信息，请访问其官方<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html">文档</a>页面。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/elasticsearch" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">elasticsearch</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/database" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">database</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-9/">如何在 Debian 9 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-7/">如何在 CentOS 7 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-debian-9/">如何在 Debian 9 上安装 Minecraft Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-debian-9/">如何在 Debian 9 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-debian-9/">如何在 Debian 9 上安装 WildFly (JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-debian-9/">如何在 Debian 9 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-debian-9/">如何在 Debian 9 上安装 Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-debian-9/">如何在 Debian 9 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-debian-9/">如何在 Debian 9 上安装Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-the-latest-eclipse-ide-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装最新的 Eclipse IDE</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-debian-9/">如何在 Debian 9 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-debian-9/">如何在 Debian 9 上安装 go</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
