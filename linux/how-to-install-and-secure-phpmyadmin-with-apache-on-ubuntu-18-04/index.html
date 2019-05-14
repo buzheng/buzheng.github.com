@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin" />
+<meta property="og:description" content="phpMyAdmin 是一个开源 PHP 应用程序，旨在通过基于 Web 的界面处理 MySQL 和 MariaDB 服务器的管理。
+phpMyAdmin 允许您管理 MySQL 数据库，用户帐户和权限，执行 SQL 语句，以各种数据格式导入和导出数据等等。
+本教程介绍了在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin 所需的步骤。
+先决条件 在继续本教程之前，请确保满足以下先决条件：
+ [你的 Ubuntu 服务器已经安装了 LAMP(Linux, Apache, MySQL, PHP)。 以具有 sudo 权限的用户身份登录。  虽然没有必要，但建议通过 HTTPS 访问 phpMyAdmin 安装。如果您的域名尚未受 SSL 保护，您可以按照本指南在 Ubuntu 18.04 上使用Let&rsquo;s Encrypt 保护您的 Apache。
+安装 phpMyAdmin 要在您的 Ubuntu 18.04 服务器上安装 phpMyAdmin ，请按照下列步骤操作：
+ 更新软件包索引并将系统软件包升级到最新版本：
+sudo apt update &amp;&amp; sudo apt upgrade   使用以下命令从默认的 Ubuntu 存储库安装 phpMyAdmin 软件包：  sudo apt install phpmyadmin  安装程序会提示您选择运行 phpMyAdmin 的 Web 服务器并自动配置， 然后按 空格 ，选择 apache , 然后按下 回车 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-05-15T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-15T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin">
+<meta itemprop="description" content="phpMyAdmin 是一个开源 PHP 应用程序，旨在通过基于 Web 的界面处理 MySQL 和 MariaDB 服务器的管理。
+phpMyAdmin 允许您管理 MySQL 数据库，用户帐户和权限，执行 SQL 语句，以各种数据格式导入和导出数据等等。
+本教程介绍了在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin 所需的步骤。
+先决条件 在继续本教程之前，请确保满足以下先决条件：
+ [你的 Ubuntu 服务器已经安装了 LAMP(Linux, Apache, MySQL, PHP)。 以具有 sudo 权限的用户身份登录。  虽然没有必要，但建议通过 HTTPS 访问 phpMyAdmin 安装。如果您的域名尚未受 SSL 保护，您可以按照本指南在 Ubuntu 18.04 上使用Let&rsquo;s Encrypt 保护您的 Apache。
+安装 phpMyAdmin 要在您的 Ubuntu 18.04 服务器上安装 phpMyAdmin ，请按照下列步骤操作：
+ 更新软件包索引并将系统软件包升级到最新版本：
+sudo apt update &amp;&amp; sudo apt upgrade   使用以下命令从默认的 Ubuntu 存储库安装 phpMyAdmin 软件包：  sudo apt install phpmyadmin  安装程序会提示您选择运行 phpMyAdmin 的 Web 服务器并自动配置， 然后按 空格 ，选择 apache , 然后按下 回车 。">
+
+
+<meta itemprop="datePublished" content="2019-05-15T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-15T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="311">
+
+
+
+<meta itemprop="keywords" content="ubuntu,phpmyadmin,mysql,mariadb,apache,php," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin"/>
+<meta name="twitter:description" content="phpMyAdmin 是一个开源 PHP 应用程序，旨在通过基于 Web 的界面处理 MySQL 和 MariaDB 服务器的管理。
+phpMyAdmin 允许您管理 MySQL 数据库，用户帐户和权限，执行 SQL 语句，以各种数据格式导入和导出数据等等。
+本教程介绍了在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin 所需的步骤。
+先决条件 在继续本教程之前，请确保满足以下先决条件：
+ [你的 Ubuntu 服务器已经安装了 LAMP(Linux, Apache, MySQL, PHP)。 以具有 sudo 权限的用户身份登录。  虽然没有必要，但建议通过 HTTPS 访问 phpMyAdmin 安装。如果您的域名尚未受 SSL 保护，您可以按照本指南在 Ubuntu 18.04 上使用Let&rsquo;s Encrypt 保护您的 Apache。
+安装 phpMyAdmin 要在您的 Ubuntu 18.04 服务器上安装 phpMyAdmin ，请按照下列步骤操作：
+ 更新软件包索引并将系统软件包升级到最新版本：
+sudo apt update &amp;&amp; sudo apt upgrade   使用以下命令从默认的 Ubuntu 存储库安装 phpMyAdmin 软件包：  sudo apt install phpmyadmin  安装程序会提示您选择运行 phpMyAdmin 的 Web 服务器并自动配置， 然后按 空格 ，选择 apache , 然后按下 回车 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-15T05:00:00&#43;08:00">May 15, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+
+<p>phpMyAdmin 是一个开源 PHP 应用程序，旨在通过基于 Web 的界面处理 MySQL 和 MariaDB 服务器的管理。</p>
+
+<p>phpMyAdmin 允许您管理 MySQL 数据库，用户帐户和权限，执行 SQL 语句，以各种数据格式导入和导出数据等等。</p>
+
+<p>本教程介绍了在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin 所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>[你的 Ubuntu 服务器已经安装了 LAMP(Linux, Apache, MySQL, PHP)。</li>
+<li>以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</li>
+</ul>
+
+<p>虽然没有必要，但建议通过 HTTPS 访问 phpMyAdmin 安装。如果您的域名尚未受 SSL 保护，您可以按照本指南<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用Let&rsquo;s Encrypt 保护您的 Apache</a>。</p>
+
+<h2 id="安装-phpmyadmin">安装 phpMyAdmin</h2>
+
+<p>要在您的 Ubuntu 18.04 服务器上安装 phpMyAdmin ，请按照下列步骤操作：</p>
+
+<ol>
+<li><p>更新软件包索引并将系统软件包升级到最新版本：</p>
+
+<pre><code class="language-console-bash">sudo apt update &amp;&amp; sudo apt upgrade
+</code></pre>
+
+<ol>
+<li>使用以下命令从默认的 Ubuntu 存储库安装 phpMyAdmin 软件包：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo apt install phpmyadmin
+</code></pre>
+
+<p>安装程序会提示您选择运行 phpMyAdmin 的 Web 服务器并自动配置， 然后按 <code>空格</code> ，选择 apache  , 然后按下 <code>回车</code> 。</p>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/configuring-phpmyadmin-web-server.jpg" alt="" /></p>
+
+<p>接下来，将询问您是否使用 <code>dbconfig-common</code> 设置数据库，选择 <code>Yes</code> 并点击 <code>回车</code> 。</p>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/configuring-phpmyadmin-database.jpg" alt="" /></p>
+
+<p>输入 phpMyAdmin 的密码以注册数据库，选择 <code>OK</code> 并按 <code>Enter</code> 。</p>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/configuring-phpmyadmin-password.jpg" alt="" /></p>
+
+<p>系统将提示您确认密码，输入相同的密码， <code>OK</code> 然后选择并按 <code>Enter</code> 。</p>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/configuring-phpmyadmin-confirm-password.jpg" alt="" /></p></li>
+
+<li><p>安装过程完成后，重新启动 Apache 以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart apache2
+</code></pre>
+
+<h2 id="创建管理-mysql-用户">创建管理 MySQL 用户</h2>
+
+<p>在运行 MySQL 5.7 （及更高版本）的 Ubuntu 系统中， root 用户默认设置的身份验证方法是 <code>auth_socket</code> 。</p>
+
+<p>该 <code>auth_socket</code> 插件对从 localhost 通过 Unix 套接字文件连接的用户进行身份验证。这意味着您无法通过提供密码进行身份验证。</p>
+
+<p>我们将创建一个新的管理 MySQL 用户，而不是更改 MySQL 用户 root 的身份验证方法。此用户将具有与 root 用户相同的权限，并将设置为使用 <code>mysql_native_password</code> 身份验证方法。</p>
+
+<p>我们将使用此用户登录 phpMyAdmin 仪表板并在 MySQL 或 MariaDB 服务器上执行管理任务。</p>
+
+<p>首先以 root 用户身份登录 MySQL 服务器：</p>
+
+<pre><code class="language-console-bash">sudo mysql
+</code></pre></li>
+</ol>
+
+<p>在 MySQL shell 中执行以下命令，这些命令将创建新的管理用户并授予适当的权限：</p>
+
+<pre><code class="language-console-mysql">CREATE USER 'padmin'@'localhost' IDENTIFIED BY 'super-strong-password';GRANT ALL PRIVILEGES ON *.* TO 'padmin'@'localhost' WITH GRANT OPTION;
+</code></pre>
+
+<p>在我们的示例中，我们命名了管理用户 <code>padmin</code> 。您可以使用任何您喜欢的名称，只需确保设置一个强密码即可。</p>
+
+<h2 id="访问-phpmyadmin">访问 phpMyAdmin</h2>
+
+<p>要访问 phpMyAdmin 界面，请打开您喜欢的浏览器并键入服务器的域名或公共 IP 地址，后跟 <code>/phpmyadmin</code> ：</p>
+
+<pre><code class="language-url">https://your_domain_or_ip_address/phpmyadmin
+</code></pre>
+
+<p>输入先前创建的管理用户登录凭据，然后单击 <code>Go</code> 。</p>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/phpmyadmin-login.jpg" alt="" /></p>
+
+<p>登录后，您将看到 phpMyAdmin 仪表板，其外观如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/phpmyadmin-interface.jpg" alt="" /></p>
+
+<h2 id="保护-phpmyadmin">保护 phpMyAdmin</h2>
+
+<p>要添加额外的安全层，我们将通过设置基本身份验证来密码保护 phpMyAdmin 目录。</p>
+
+<p>首先，我们将使用 Apache 软件包附带的工具 <code>htpasswd</code> 为用户创建一个密码文件。我们将 <code>.htpasswd</code> 文件存储在 <code>/etc/phpmyadmin</code> 目录中：</p>
+
+<pre><code class="language-console-bash">sudo htpasswd -c /etc/phpmyadmin/.htpasswd padmin
+</code></pre>
+
+<p>在这个例子中，我们创建了一个名为 <code>padmin</code> 的用户。您可以选择任何用户名，它不必与 MySQL 管理用户相同。</p>
+
+<p>上面的命令将提示您输入并确认用户的密码。</p>
+
+<pre><code class="language-output">New password:
+Re-type new password:
+Adding password for user padmin
+</code></pre>
+
+<p>如果要添加其他用户，可以使用不带 <code>-c</code> 标志的相同命令：</p>
+
+<pre><code class="language-console-bash">sudo htpasswd /etc/phpmyadmin/.htpasswd padmin2
+</code></pre>
+
+<p>下一步是将 Apache 配置为使用该 <code>.htpasswd</code> 文件密码保护 phpMyAdmin 目录。</p>
+
+<p>为此，请打开 <code>phpmyadmin.conf</code> 在 phpMyAdmin 安装期间自动创建的文件 <code>/etc/apache2/conf-available/phpmyadmin.conf</code>：</p>
+
+<pre><code class="language-console-bash">sudo nano /etc/apache2/conf-available/phpmyadmin.conf
+</code></pre>
+
+<p>编辑/插入以黄色突出显示的以下行：</p>
+
+<pre><code class="language-apache">&lt;Directory /usr/share/phpmyadmin&gt;
+    Options  +FollowSymLinks +Multiviews +Indexes  # edit this line
+    DirectoryIndex index.php
+
+    AllowOverride None
+    AuthType basic
+    AuthName &quot;Authentication Required&quot;
+    AuthUserFile /etc/phpmyadmin/.htpasswd
+    Require valid-user
+
+    &lt;IfModule mod_php5.c&gt;
+    ...
+</code></pre>
+
+<p>保存并关闭该文件并重新启动 Apache 以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart apache2
+</code></pre>
+
+<p>现在，在访问 phpMyAdmin 时，系统将提示您输入之前创建的用户的登录凭据：</p>
+
+<pre><code class="language-url">https://your_domain_or_ip_address/phpmyadmin
+</code></pre>
+
+<p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/phpmyadmin-basic-auth.jpg" alt="" /></p>
+
+<p>进入基本身份验证后，您将进入 phpMyAdmin 登录页面，您需要输入 MySQL 管理用户登录凭据。</p>
+
+<blockquote>
+<p>将 <code>/phpmyadmin</code> 别名更改的更加独特和安全也是一个好主意。</p>
+</blockquote>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在 Ubuntu 18.04 服务器上成功安装了 phpMyAdmin 。您现在可以开始<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">创建 MySQL 数据库，用户和表</a>，并执行各种 MySQL 查询和操作。</p>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/phpmyadmin" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">phpmyadmin</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/php" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">php</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-composer-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Composer</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-show-mysql-users/">如何查看 MySQL 中的用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-debian-9/">如何在 Debian 9 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-a-mysql-database/">如何在Linux上通过命令行删除 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-mysql-database/">如何创建 MySQL 数据库</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-php-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PHP</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Apache</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
