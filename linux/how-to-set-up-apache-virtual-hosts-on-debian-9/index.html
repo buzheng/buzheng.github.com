@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Debian 9 上设置 Apache 虚拟主机 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上设置 Apache 虚拟主机" />
+<meta property="og:description" content="在本教程中，我们将向您介绍如何在 Debian 9 上设置 Apache 虚拟主机。
+
+Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚拟主机时，您可以为每个域名或子域名指定不同的文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。
+
+虽然本教程是为 Debian 9 编写的，但相同的步骤适用于所有基于 Debian 的发行版。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-set-up-apache-virtual-hosts-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-16T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-16T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上设置 Apache 虚拟主机">
+<meta itemprop="description" content="在本教程中，我们将向您介绍如何在 Debian 9 上设置 Apache 虚拟主机。
+
+Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚拟主机时，您可以为每个域名或子域名指定不同的文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。
+
+虽然本教程是为 Debian 9 编写的，但相同的步骤适用于所有基于 Debian 的发行版。">
+
+
+<meta itemprop="datePublished" content="2019-05-16T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-16T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="187">
+
+
+
+<meta itemprop="keywords" content="apache,debian," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上设置 Apache 虚拟主机"/>
+<meta name="twitter:description" content="在本教程中，我们将向您介绍如何在 Debian 9 上设置 Apache 虚拟主机。
+
+Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚拟主机时，您可以为每个域名或子域名指定不同的文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。
+
+虽然本教程是为 Debian 9 编写的，但相同的步骤适用于所有基于 Debian 的发行版。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上设置 Apache 虚拟主机</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-16T05:00:00&#43;08:00">May 16, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将向您介绍如何在 Debian 9 上设置 Apache 虚拟主机。</p>
+
+<p>Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚拟主机时，您可以为每个域名或子域名指定不同的文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。</p>
+
+<p>虽然本教程是为 Debian 9 编写的，但相同的步骤适用于所有基于 Debian 的发行版。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>让域名指向您的服务器 IP 地址。在本教程中我们将使用 <code>example.com</code> 。</li>
+<li>您已经<a href="/linux/how-to-install-apache-on-debian-9/">在 Debian 服务器上安装 Apache</a>。</li>
+<li>以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限的用户</a>身份登录。</li>
+</ul>
+
+<h2 id="创建目录结构">创建目录结构</h2>
+
+<p>文档根目录是存储网站文件的，并根据请求响应存储在目录中的文件。您可以将文档根目录设置为所需的任何位置。在本指南中，我们将使用以下目录结构：</p>
+
+<pre><code class="language-sh">/var/www/
+├── domain1.com
+│   └── public_html
+├── domain2.com
+│   └── public_html
+├── domain3.com
+│   └── public_html
+</code></pre>
+
+<p>托管在我们服务器上的每个域名都将其文档根目录设置为 <code>/var/www/&lt;domain_name&gt;/public_html</code> 。</p>
+
+<p>让我们从为第一个域 <code>example.com</code> 创建文档根目录开始：</p>
+
+<pre><code class="language-console-bash">sudo mkdir -p /var/www/example.com/public_html
+</code></pre>
+
+<p>我们还将在域文档根目录中创建一个文件 <code>index.html</code> ，该文件将在您浏览器中访问域时显示。</p>
+
+<p>打开您喜欢的文本编辑器，创建一个新文件 <code>/var/www/example.com/public_html/index.html</code> 并将以下内容粘贴到其中：</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Welcome to example.com&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Success! example.com home page!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
+
+<p>为了避免任何权限问题，我们将域文档根目录和该目录中的所有文件的所有权更改为 apache 服务器用户<code>www-data</code>）：</p>
+
+<pre><code class="language-console-bash">sudo chown -R www-data: /var/www/example.com
+</code></pre>
+
+<h2 id="创建虚拟主机">创建虚拟主机</h2>
+
+<p>在 Debian 系统上， Apache 虚拟主机配置文件位于 <code>/etc/apache2/sites-available</code> 目录中，可以通过在 <code>/etc/apache2/sites-enabled</code> 目录中创建指向的配置文件的符号链接来启用。</p>
+
+<p>打开您选择的文本编辑器并创建以下基本虚拟主机配置文件：<code>/etc/apache2/sites-available/example.com.conf</code></p>
+
+<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    ServerAlias www.example.com
+    ServerAdmin webmaster@example.com
+    DocumentRoot /var/www/example.com/public_html
+
+    &lt;Directory /var/www/example.com/public_html&gt;
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
+    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<ul>
+<li><code>ServerName</code>：应与此虚拟主机配置匹配的域。这应该是您的域名。</li>
+<li><code>ServerAlias</code>：所有其他域或子域也应与此虚拟主机匹配，通常是 <code>www</code> 子域。</li>
+<li><code>DocumentRoot</code>： 存放网站文件的目录。</li>
+<li><code>Options</code>：<a href="https://httpd.apache.org/docs/2.4/mod/core.html#options">此指令</a>控制特定目录中可用的服务器功能。
+
+<ul>
+<li><code>-Indexes</code>：防止目录列表。</li>
+<li><code>FollowSymLinks</code>：启用此选项后， Apache 将遵循符号链接。</li>
+</ul></li>
+<li><code>AllowOverride</code>：指定 <code>.htaccess</code> 文件中声明的哪些指令可以覆盖配置指令。</li>
+<li><code>ErrorLog</code>，<code>CustomLog</code>：指定日志文件的位置。</li>
+</ul>
+
+<p>您可以根据需要命名虚拟主机配置文件，但建议使用域名作为配置文件的名称。</p>
+
+<p>要启用新的虚拟主机文件，请在 <code>sites-enabled</code> 目录创建符号链接指向虚拟主机配置文件，该目录在启动期间由 Apache 读取。</p>
+
+<p>在 Debian 系统中，您可以使用名为 <code>a2ensite</code> 的帮助程序脚本启用虚拟主机：</p>
+
+<pre><code class="language-apache">sudo a2ensite example.com
+</code></pre>
+
+<p>另一个选项是手动<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">创建符号链接</a>，如下所示：</p>
+
+<pre><code class="language-console-bash">sudo ln -s /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-enabled/
+</code></pre>
+
+<p>启用配置后，通过键入以下内容测试语法是否正确：</p>
+
+<pre><code class="language-console-bash">sudo apachectl configtest
+</code></pre>
+
+<p>如果没有错误，您将看到以下输出：</p>
+
+<pre><code class="language-output">Syntax OK
+</code></pre>
+
+<p>重新启动 <code>apache2</code> 服务以使更改生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart apache2
+</code></pre>
+
+<p>要验证一切是否按预期工作，请在您喜欢的浏览器中打开 <code>http://example.com</code> ，您将看到如下内容：</p>
+
+<p><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-debian-9/apache-welcome-page.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何创建 Apache 虚拟主机配置以在单个 Debian 服务器上托管多个域。您可以重复相同的步骤为其他域创建其他虚拟主机。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/apache" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apache</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-debian-9/">如何在 Debian 9 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-debian-9/">如何在 Debian 9 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-debian-9/">如何在 Debian 9 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-debian-9/">如何在 Debian 9 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-9/">如何在 Debian 9 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-debian-9/">如何在 Debian 9 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-debian-9/">如何在 Debian 9 上安装Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-debian-9/">如何在 Debian 9 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-debian-9/">如何在 Debian 9 上安装 go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
