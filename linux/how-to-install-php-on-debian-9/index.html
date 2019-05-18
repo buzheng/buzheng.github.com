@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Debian 9 上安装 PHP | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 9 上安装 PHP" />
+<meta property="og:description" content="带有 PHP 7.0 版本的 Debian 9 将很快达到使用寿命，并且不再进行安全更新。在本教程中，我们将引导您完成在 Debian 9 服务器上安装 PHP 7.2 的步骤。我们还将向您展示如何配置 Apache 和 Nginx 来运行 PHP 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-php-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-19T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-19T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Debian 9 上安装 PHP">
+<meta itemprop="description" content="带有 PHP 7.0 版本的 Debian 9 将很快达到使用寿命，并且不再进行安全更新。在本教程中，我们将引导您完成在 Debian 9 服务器上安装 PHP 7.2 的步骤。我们还将向您展示如何配置 Apache 和 Nginx 来运行 PHP 。">
+
+
+<meta itemprop="datePublished" content="2019-05-19T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-19T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="341">
+
+
+
+<meta itemprop="keywords" content="php,debian," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 Debian 9 上安装 PHP"/>
+<meta name="twitter:description" content="带有 PHP 7.0 版本的 Debian 9 将很快达到使用寿命，并且不再进行安全更新。在本教程中，我们将引导您完成在 Debian 9 服务器上安装 PHP 7.2 的步骤。我们还将向您展示如何配置 Apache 和 Nginx 来运行 PHP 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 PHP</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-19T05:00:00&#43;08:00">May 19, 2019</time>      
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>带有 PHP 7.0 版本的 Debian 9 将很快达到使用寿命，并且不再进行安全更新。在本教程中，我们将引导您完成在 Debian 9 服务器上安装 PHP 7.2 的步骤。我们还将向您展示如何配置 Apache 和 Nginx 来运行 PHP 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="在-debian-9-上安装-php-7-2">在 Debian 9 上安装 PHP 7.2</h2>
+
+<p>以下步骤描述了如何使用 Ondrej Sury 存储库安装 PHP 7.2 。</p>
+
+<ol>
+<li><p>首先，更新 <code>apt</code> 软件包列表并安装添加新存储库所需的依赖项：</p>
+
+<pre><code class="language-console-bash">sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+</code></pre>
+
+<ol>
+<li>首先使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>导入存储库的 GPG 密钥：</li>
+</ol>
+
+<pre><code class="language-console-bash">curl -fsSL https://packages.sury.org/php/apt.gpg | sudo apt-key add -
+</code></pre>
+
+<p>通过键入以下命令将 ondrej 的存储库添加到系统的软件存储库列表中：</p>
+
+<pre><code class="language-console-bash">sudo add-apt-repository &quot;deb https://packages.sury.org/php/ $(lsb_release -cs) main&quot;
+</code></pre>
+
+<ol>
+<li>现在我们已经在我们的系统上启用了 ondrej 的存储库，我们可以通过指定我们想要使用的版本来安装 PHP ：</li>
+</ol>
+
+<pre><code class="language-console-bash">sudo apt updatesudo apt install php7.2-common php7.2-cli
+</code></pre></li>
+
+<li><p>通过运行以下将打印 PHP 版本的命令来验证安装。</p>
+
+<pre><code class="language-console-bash">php -v
+</code></pre>
+
+<pre><code class="language-output">PHP 7.2.8-1+0~20180725124257.2+stretch~1.gbp571e56 (cli) (built: Jul 25 2018 12:43:00) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
+    with Zend OPcache v7.2.8-1+0~20180725124257.2+stretch~1.gbp571e56, Copyright (c) 1999-2018, by Zend Technologies
+</code></pre></li>
+</ol>
+
+<h2 id="配置-apache-以运行-php">配置 Apache 以运行 PHP</h2>
+
+<p>如果您使用 <a href="/linux/how-to-install-apache-on-debian-9/">Apache</a> 作为 Web 服务器，需要安装 PHP 和 Apache PHP 模块，请运行以下命令：</p>
+
+<pre><code class="language-console-bash">sudo apt install php7.2 libapache2-mod-php
+</code></pre>
+
+<p>安装软件包后启用 php7.2 模块只需重新启动 Apache 服务：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart apache2
+</code></pre>
+
+<h2 id="配置-nginx-以运行-php">配置 Nginx 以运行 PHP</h2>
+
+<p>与 Apache 不同， <a href="/linux/how-to-install-nginx-on-debian-9/">Nginx</a> 没有内置的处理 PHP 文件的支持，所以我们需要安装一个单独的应用程序来处理 PHP 文件，如 PHP FPM (fastCGI进程管理器)。</p>
+
+<p>要安装 PHP 和 PHP FPM 包，请运行以下命令：</p>
+
+<pre><code class="language-console-bash">sudo apt install php7.2-fpm
+</code></pre>
+
+<p>安装软件包后， PHP FPM 服务将自动启动。您可以通过以下方式检查服务状态：</p>
+
+<pre><code class="language-console-bash">systemctl status php7.2-fpm
+</code></pre>
+
+<pre><code class="language-output">● php7.2-fpm.service - The PHP 7.2 FastCGI Process Manager
+   Loaded: loaded (/lib/systemd/system/php7.2-fpm.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2018-08-30 21:06:53 UTC; 1min 4s ago
+     Docs: man:php-fpm7.2(8)
+ Main PID: 16791 (php-fpm7.2)
+   Status: &quot;Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0req/sec&quot;
+   CGroup: /system.slice/php7.2-fpm.service
+           ├─16791 php-fpm: master process (/etc/php/7.2/fpm/php-fpm.conf)
+           ├─16792 php-fpm: pool www
+           └─16793 php-fpm: pool www
+</code></pre>
+
+<p>您现在可以编辑域 Nginx 服务器块并添加以下行，以便 Nginx 可以处理 PHP 文件：</p>
+
+<pre><code class="language-nginx">server {
+
+    # . . . other code
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
+}
+</code></pre>
+
+<p>重新启动 Nginx 服务，以使新配置生效：</p>
+
+<pre><code class="language-console-bash">sudo systemctl restart nginx
+</code></pre>
+
+<h2 id="安装-php-扩展">安装 PHP 扩展</h2>
+
+<p>我们可以通过安装额外的扩展来扩展 PHP 的核心功能。 PHP 扩展以包的形式提供，可以通过以下方式轻松安装：</p>
+
+<pre><code class="language-console-bash">sudo apt install php-[extname]
+</code></pre>
+
+<p>例如，如果要安装 MySQL 和 GD PHP 扩展，则应运行以下命令：</p>
+
+<pre><code class="language-console-bash">sudo apt install php7.2-mysql php7.2-gd
+</code></pre>
+
+<p>安装新的 PHP 扩展后，请不要忘记重新启动 Apache 或 PHP FPM 服务，具体取决于您的设置。</p>
+
+<h2 id="测试-php-处理">测试 PHP 处理</h2>
+
+<p>要测试您的 Web 服务器是否已正确配置以进行 PHP 处理，请 <code>/var/www/html</code> 使用以下代码在目录中创建名为 <code>info.php</code> 的新文件 <code>/var/www/html/info.php</code>：</p>
+
+<pre><code class="language-php">&lt;?php
+
+phpinfo();
+
+</code></pre>
+
+<p>保存文件，打开您的浏览器并访问  <code>http://your_server_ip/info.php</code></p>
+
+<p>该 <code>phpinfo</code> 函数将打印有关 PHP 配置的信息，如下图所示：</p>
+
+<p><img src="/images/linux/how-to-install-php-on-debian-9/phpinfo-debian.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Debian 9 服务器上成功安装了 PHP ，并学习了如何配置 Web 服务器以处理 PHP 文件。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/php" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">php</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-debian-9/">如何在 Debian 9 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-debian-9/">如何在 Debian 9 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-composer-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Composer</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-debian-9/">如何在 Debian 9 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-debian-9/">如何在 Debian 9 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-9/">如何在 Debian 9 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-debian-9/">如何在 Debian 9 上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-debian-9/">如何在 Debian 9 上安装Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mysql-on-debian-9/">如何在 Debian 9 上安装 MySQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-go-on-debian-9/">如何在 Debian 9 上安装 go</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cut-command/">Linux Cut 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-debian-9/">如何在 Debian 9 上安装 Minecraft Server</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
