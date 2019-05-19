@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -53,7 +53,7 @@
 
 <meta itemprop="datePublished" content="2019-03-15T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-15T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="894">
+<meta itemprop="wordCount" content="893">
 
 
 
@@ -70,7 +70,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 Drupal</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上安装 Drupal</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-15T08:00:00&#43;08:00">March 15, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Drupal 是全球领先的开源 CMS 平台之一。它灵活，可扩展，可用于构建不同类型的网站，从小型个人博客到大型企业，政治和政府网站都不在话下。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Drupal 是全球领先的开源 CMS 平台之一。它灵活，可扩展，可用于构建不同类型的网站，从小型个人博客到大型企业，政治和政府网站都不在话下。</p>
 
 <p>在本教程中，我们说明如何在 CentOS 7 上安装 Drupal 8.6 。</p>
 
@@ -171,121 +173,70 @@
 <p>第一步是创建新的数据库和用户帐户，并向用户授予适当的权限。</p>
 
 <p>如果您的服务器上已经安装了 <a href="/linux/install-mysql-on-centos-7/">MySQL</a> 或 <a href="/linux/install-mariadb-on-centos-7/">MariaDB</a> ，您可以跳过此步骤，否则您可以通过输入以下内容从 CentOS 的默认软件仓库安装 MariaDB 5.5 服务器软件包：</p>
-
-<pre><code class="language-bash">sudo yum install mariadb-server
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install mariadb-server</code></pre></div>
 <blockquote>
 <p>对于全新的 MariaDB/MySQL 安装，建议运行 <code>mysql_secure_installation</code> 命令以提高数据库服务器的安全性。</p>
 </blockquote>
 
 <p>输入以下命令登录 MySQL shell ，并在出现提示时输入密码：</p>
-
-<pre><code class="language-bash">mysql -u root -p
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p</code></pre></div>
 <p>通过运行以下命令来<!--link:how-to-create-a-mysql-database-->创建数据库<!--link-->(数据库名为 <code>drupal</code>)，创建用户(用户名为 <code>drupaluser</code>)， 并为<!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->用户授予必要的权限<!--link--></p>
-
-<pre><code class="language-bash">CREATE DATABASE drupal CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON drupal.* TO 'drupaluser'@'localhost' IDENTIFIED BY 'change-with-strong-password';
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE drupal CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci<span class="p">;</span>
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON drupal.* TO <span class="s1">&#39;drupaluser&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;change-with-strong-password&#39;</span><span class="p">;</span></code></pre></div>
 <h2 id="安装-php">安装 PHP</h2>
 
 <p>CentOS 7 附带 PHP 版本 5.4 ，此版本已过时且不再受支持。 Drupal 推荐的 PHP 版本是 PHP 7.2 。</p>
 
 <p>要<a href="/linux/install-php-7-on-centos-7/">在 CentOS 7 上安装 PHP 7.2</a> ，我们首先需要启用 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL</a> 和 Remi 软件仓库：</p>
-
-<pre><code class="language-bash">sudo yum install epel-release yum-utils
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install epel-release yum-utils
 sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-sudo yum-config-manager --enable remi-php72
-</code></pre>
-
+sudo yum-config-manager --enable remi-php72</code></pre></div>
 <p>一旦启用了安装 PHP 7.2 和所有必需的 PHP 扩展软件仓库后，请运行以下命令：</p>
-
-<pre><code class="language-bash">sudo yum install php-cli php-fpm php-mysql php-json php-opcache php-mbstring php-xml php-gd php-curl git
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install php-cli php-fpm php-mysql php-json php-opcache php-mbstring php-xml php-gd php-curl git</code></pre></div>
 <p>我们同时也安装了 PHP FPM ，因为我们将使用 Nginx 作为 Web 服务器。</p>
 
 <p>默认情况下， PHP FPM 将在端口 <code>9000</code> 上以用户身份 <code>apache</code> 运行。我们需要将用户更改为 <code>nginx</code> 并且从 TCP 套接字切换到 Unix 套接字。请打开 <code>/etc/php-fpm.d/www.conf</code> 文件并编辑：</p>
-
-<pre><code class="language-bash">...
-user = nginx
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">...
+<span class="nv">user</span> <span class="o">=</span> nginx
 ...
-group = nginx
+<span class="nv">group</span> <span class="o">=</span> nginx
 ...
-listen = /run/php-fpm/www.sock
+<span class="nv">listen</span> <span class="o">=</span> /run/php-fpm/www.sock
 ...
-listen.owner = nginx
-listen.group = nginx
-</code></pre>
-
+listen.owner <span class="o">=</span> nginx
+listen.group <span class="o">=</span> nginx</code></pre></div>
 <p>使用以下 <!--link:linux-chown-command-->chown 命令<!--link-->确保目录 <code>/var/lib/php</code> 具有正确的所有权：</p>
-
-<pre><code class="language-bash">sudo chown -R root:nginx /var/lib/php
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R root:nginx /var/lib/php</code></pre></div>
 <p>最后，启用随机自启动并启动 PHP FPM 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl enable php-fpm
-sudo systemctl start php-fpm
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> php-fpm
+sudo systemctl start php-fpm</code></pre></div>
 <h2 id="安装-composer">安装 Composer</h2>
 
 <p>Composer 是 PHP 的依赖管理器。我们将下载 Drupal 模板并使用 composer 安装所有必需的 Drupal 组件。</p>
 
 <p>以下命令将通过使用 <a href="/linux/curl-command-examples/">curl</a> 下载 Composer 安装程序并将文件移动到目录 <code>/usr/local/bin</code> 来全局<!--link:how-to-install-and-use-composer-on-centos-7-->安装 composer<!--link--> ：</p>
-
-<pre><code class="language-bash">curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -sS https://getcomposer.org/installer <span class="p">|</span> sudo php -- --install-dir<span class="o">=</span>/usr/local/bin --filename<span class="o">=</span>composer</code></pre></div>
 <p>通过运行以下命令验证安装，该命令将打印 <code>composer</code> 版本：</p>
-
-<pre><code class="language-bash">composer --version
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">composer --version</code></pre></div>
 <p>输出应该如下所示：</p>
-
-<pre><code class="language-bash">Composer version 1.8.4 2019-02-11 10:52:10
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Composer version <span class="m">1</span>.8.4 <span class="m">2019</span>-02-11 <span class="m">10</span>:52:10</code></pre></div>
 <h2 id="安装-drupal">安装 Drupal</h2>
 
 <p>现在，composer 已经安装完成，通过下面的命令，使用 <a href="https://github.com/drupal-composer/drupal-project">Drupal 模板</a> 在 <code>/var/www/my_drupal</code> 目录里面创建一个新的 Drupal 项目 ：</p>
-
-<pre><code class="language-bash">sudo /usr/local/bin/composer create-project drupal-composer/drupal-project:8.x-dev /var/www/my_drupal --stability dev --no-interaction
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo /usr/local/bin/composer create-project drupal-composer/drupal-project:8.x-dev /var/www/my_drupal --stability dev --no-interaction</code></pre></div>
 <p>上面的命令将下载模板，获取所有必需的 php 包并运行准备项目进行安装所需的脚本。该过程可能需要几分钟，如果成功，输出结束将如下所示：</p>
-
-<pre><code class="language-bash">Create a sites/default/settings.php file with chmod 0666
-Create a sites/default/files directory with chmod 0777
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Create a sites/default/settings.php file with chmod <span class="m">0666</span>
+Create a sites/default/files directory with chmod <span class="m">0777</span></code></pre></div>
 <p>下一步是使用 Drush 安装 Drupal 。在下面的命令中，要使用我们在第一部分中创建的 MySQL 数据库和用户信息：</p>
-
-<pre><code class="language-bash">cd /var/www/my_drupal
-sudo vendor/bin/drush site-install --db-url=mysql://drupaluser:change-with-strong-password@localhost/drupal
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/www/my_drupal
+sudo vendor/bin/drush site-install --db-url<span class="o">=</span>mysql://drupaluser:change-with-strong-password@localhost/drupal</code></pre></div>
 <p>安装程序将提示您以下消息，只需按 <code>Enter</code> 键继续。</p>
-
-<pre><code class="language-bash">You are about to DROP all tables in your 'drupal' database. Do you want to continue? (yes/no) [yes]:
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">You are about to DROP all tables in your <span class="s1">&#39;drupal&#39;</span> database. Do you want to <span class="k">continue</span>? <span class="o">(</span>yes/no<span class="o">)</span> <span class="o">[</span>yes<span class="o">]</span>:</code></pre></div>
 <p>安装完成后，脚本将打印管理用户名和密码。输出应如下所示：</p>
-
-<pre><code class="language-bash">[notice] Starting Drupal installation. This takes a while.
-[success] Installation complete.  User name: admin  User password: frxka2Db5v
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>notice<span class="o">]</span> Starting Drupal installation. This takes a <span class="k">while</span>.
+<span class="o">[</span>success<span class="o">]</span> Installation complete.  User name: admin  User password: frxka2Db5v</code></pre></div>
 <p>最后，设置正确的权限，以便 Web 服务器可以完全访问站点的文件和目录：</p>
-
-<pre><code class="language-bash">sudo chown -R nginx: /var/www/my_drupal
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R nginx: /var/www/my_drupal</code></pre></div>
 <h2 id="配置-nginx">配置 Nginx</h2>
 
 <p>到目前为止，您应该已经在系统上安装了 Nginx 和 SSL 证书，如果没有，请检查本教程的先决条件。</p>
@@ -293,141 +244,129 @@ sudo vendor/bin/drush site-install --db-url=mysql://drupaluser:change-with-stron
 <p>我们将使用官方 Nginx 站点的 <a href="https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/">Nginx  配方</a>，为我们的新 Drupal 项目创建一个新的服务器块，。</p>
 
 <p>打开文本编辑器并创建以下文件 <code>/etc/nginx/conf.d/example.com</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/conf.d/example.com</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Redirect HTTP -&gt; HTTPS
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-<pre><code class="language-bash">sudo nano /etc/nginx/conf.d/example.com
-</code></pre>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-<pre><code class="language-nginx"># Redirect HTTP -&gt; HTTPS
-server {
-    listen 80;
-    server_name www.example.com example.com;
+<span class="c1"># Redirect WWW -&gt; NON WWW
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span><span class="p">;</span>
 
-    include snippets/letsencrypt.conf;
-    return 301 https://example.com$request_uri;
-}
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
 
-# Redirect WWW -&gt; NON WWW
-server {
-    listen 443 ssl http2;
-    server_name www.example.com;
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
 
-    return 301 https://example.com$request_uri;
-}
+    <span class="kn">root</span> <span class="s">/var/www/my_drupal/web</span><span class="p">;</span>
 
-server {
-    listen 443 ssl http2;
-    server_name example.com;
+    <span class="c1"># SSL parameters
+</span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
 
-    root /var/www/my_drupal/web;
+    <span class="c1"># log files
+</span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/example.com.error.log</span><span class="p">;</span>
 
-    # SSL parameters
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
+    <span class="kn">location</span> <span class="p">=</span> <span class="s">/favicon.ico</span> <span class="p">{</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # log files
-    access_log /var/log/nginx/example.com.access.log;
-    error_log /var/log/nginx/example.com.error.log;
+    <span class="kn">location</span> <span class="p">=</span> <span class="s">/robots.txt</span> <span class="p">{</span>
+        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location = /favicon.ico {
-        log_not_found off;
-        access_log off;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\..*/.*\.php$</span> <span class="p">{</span>
+        <span class="kn">return</span> <span class="mi">403</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location = /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/sites/.*/private/</span> <span class="p">{</span>
+        <span class="kn">return</span> <span class="mi">403</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location ~ \..*/.*\.php$ {
-        return 403;
-    }
+    <span class="c1"># Block access to scripts in site files directory
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/sites/[^/]+/files/.*\.php$</span> <span class="p">{</span>
+        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location ~ ^/sites/.*/private/ {
-        return 403;
-    }
+    <span class="c1"># Block access to &#34;hidden&#34; files and directories whose names begin with a
+</span><span class="c1"></span>    <span class="c1"># period. This includes directories used by version control systems such
+</span><span class="c1"></span>    <span class="c1"># as Subversion or Git to store control files.
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">(^|/)\.</span> <span class="p">{</span>
+        <span class="kn">return</span> <span class="mi">403</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Block access to scripts in site files directory
-    location ~ ^/sites/[^/]+/files/.*\.php$ {
-        deny all;
-    }
+    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">/index.php?</span><span class="nv">$query_string</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Block access to &quot;hidden&quot; files and directories whose names begin with a
-    # period. This includes directories used by version control systems such
-    # as Subversion or Git to store control files.
-    location ~ (^|/)\. {
-        return 403;
-    }
+    <span class="kn">location</span> <span class="s">@rewrite</span> <span class="p">{</span>
+        <span class="kn">rewrite</span> <span class="s">^/(.*)</span>$ <span class="s">/index.php?q=</span><span class="nv">$1</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location / {
-        try_files $uri /index.php?$query_string;
-    }
-
-    location @rewrite {
-        rewrite ^/(.*)$ /index.php?q=$1;
-    }
-
-    # Don't allow direct access to PHP files in the vendor directory.
-    location ~ /vendor/.*\.php$ {
-        deny all;
-        return 404;
-    }
+    <span class="c1"># Don&#39;t allow direct access to PHP files in the vendor directory.
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/vendor/.*\.php$</span> <span class="p">{</span>
+        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+        <span class="kn">return</span> <span class="mi">404</span><span class="p">;</span>
+    <span class="p">}</span>
 
 
-    location ~ '\.php$|^/update.php' {
-        fastcgi_split_path_info ^(.+?\.php)(|/.*)$;
-        include fastcgi_params;
-        # Block httpoxy attacks. See https://httpoxy.org/.
-        fastcgi_param HTTP_PROXY &quot;&quot;;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-        fastcgi_param QUERY_STRING $query_string;
-        fastcgi_intercept_errors on;
-        fastcgi_pass unix:/run/php-fpm/www.sock;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">&#39;\.php$|^/update.php&#39;</span> <span class="p">{</span>
+        <span class="kn">fastcgi_split_path_info</span> <span class="s">^(.+?\.php)(|/.*)</span>$<span class="p">;</span>
+        <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+        <span class="c1"># Block httpoxy attacks. See https://httpoxy.org/.
+</span><span class="c1"></span>        <span class="kn">fastcgi_param</span> <span class="s">HTTP_PROXY</span> <span class="s">&#34;&#34;</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">PATH_INFO</span> <span class="nv">$fastcgi_path_info</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">QUERY_STRING</span> <span class="nv">$query_string</span><span class="p">;</span>
+        <span class="kn">fastcgi_intercept_errors</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="s">unix:/run/php-fpm/www.sock</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Fighting with Styles? This little gem is amazing.
-    # location ~ ^/sites/.*/files/imagecache/ { # For Drupal &lt;= 6
-    location ~ ^/sites/.*/files/styles/ { # For Drupal &gt;= 7
-        try_files $uri @rewrite;
-    }
+    <span class="c1"># Fighting with Styles? This little gem is amazing.
+</span><span class="c1"></span>    <span class="c1"># location ~ ^/sites/.*/files/imagecache/ { # For Drupal &lt;= 6
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/sites/.*/files/styles/</span> <span class="p">{</span> <span class="c1"># For Drupal &gt;= 7
+</span><span class="c1"></span>        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">@rewrite</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Handle private files through Drupal. Private file's path can come
-    # with a language prefix.
-    location ~ ^(/[a-z\-]+)?/system/files/ { # For Drupal &gt;= 7
-        try_files $uri /index.php?$query_string;
-    }
+    <span class="c1"># Handle private files through Drupal. Private file&#39;s path can come
+</span><span class="c1"></span>    <span class="c1"># with a language prefix.
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">^(/[a-z\-]+)?/system/files/</span> <span class="p">{</span> <span class="c1"># For Drupal &gt;= 7
+</span><span class="c1"></span>        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">/index.php?</span><span class="nv">$query_string</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
-        try_files $uri @rewrite;
-        expires max;
-        log_not_found off;
-    }
+    <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">\.(js|css|png|jpg|jpeg|gif|ico|svg)</span>$ <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">@rewrite</span><span class="p">;</span>
+        <span class="kn">expires</span> <span class="s">max</span><span class="p">;</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
 
-}
-</code></pre>
-
+<span class="p">}</span></code></pre></div>
 <blockquote>
 <p>不要忘记将 <code>example.com</code> 替换为 Drupal 项目的域名，并设置 SSL 证书文件的正确路径。此配置中使用的片段在<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">本指南</a>中创建。</p>
 </blockquote>
 
 <p>在重新启动 Nginx 服务之前，请进行测试以确保没有语法错误：</p>
-
-<pre><code class="language-bash">sudo nginx -t
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -t</code></pre></div>
 <p>通过输入以下命令重新启动 Nginx 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl restart nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
 <h2 id="测试安装">测试安装</h2>
 
 <p>打开浏览器，输入您的域名，如果安装成功，将出现类似于以下内容的屏幕：</p>
@@ -441,30 +380,24 @@ server {
 <p>现在您已经安装了 Drupal 项目，您还需要安装一些模块和主题。 Drupal 模块和主题托管在自定义 composer 存储库上，其中的 drupal-project 让我们开箱即用。</p>
 
 <p>要安装模块或主题，您只需要进入 <code>cd</code> 项目目录并输入 <code>composer require drupal/module_or_theme_name</code> 。例如，如果我们要安装 <a href="https://www.drupal.org/project/pathauto">Pathauto</a> 模块，我们需要运行以下命令：</p>
-
-<pre><code class="language-bash">cd /var/www/my_drupal
-sudo -u nginx /usr/local/bin/composer require drupal/pathauto
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/www/my_drupal
+sudo -u nginx /usr/local/bin/composer require drupal/pathauto</code></pre></div>
 <blockquote>
 <p>通过前置 <code>sudo -u nginx</code> 我们以用户身份 <code>nginx</code> 运行命令</p>
 </blockquote>
-
-<pre><code class="language-bash">Using version ^1.3 for drupal/pathauto
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Using version ^1.3 <span class="k">for</span> drupal/pathauto
 ./composer.json has been updated
-&gt; DrupalProject\composer\ScriptHandler::checkComposerVersion
+&gt; DrupalProject<span class="se">\c</span>omposer<span class="se">\S</span>criptHandler::checkComposerVersion
 Loading composer repositories with package information
-Updating dependencies (including require-dev)
-Package operations: 3 installs, 0 updates, 0 removals
-  - Installing drupal/token (1.5.0): Downloading (100%) 
-  - Installing drupal/ctools (3.2.0): Downloading (100%)
-  - Installing drupal/pathauto (1.3.0): Downloading (100%)
+Updating dependencies <span class="o">(</span>including require-dev<span class="o">)</span>
+Package operations: <span class="m">3</span> installs, <span class="m">0</span> updates, <span class="m">0</span> removals
+  - Installing drupal/token <span class="o">(</span><span class="m">1</span>.5.0<span class="o">)</span>: Downloading <span class="o">(</span><span class="m">100</span>%<span class="o">)</span> 
+  - Installing drupal/ctools <span class="o">(</span><span class="m">3</span>.2.0<span class="o">)</span>: Downloading <span class="o">(</span><span class="m">100</span>%<span class="o">)</span>
+  - Installing drupal/pathauto <span class="o">(</span><span class="m">1</span>.3.0<span class="o">)</span>: Downloading <span class="o">(</span><span class="m">100</span>%<span class="o">)</span>
 Package phpunit/phpunit-mock-objects is abandoned, you should avoid using it. No replacement was suggested.
 Writing lock file
 Generating autoload files
-&gt; DrupalProject\composer\ScriptHandler::createRequiredFiles
-</code></pre>
-
+&gt; DrupalProject<span class="se">\c</span>omposer<span class="se">\S</span>criptHandler::createRequiredFiles</code></pre></div>
 <p>从上面的输出中可以看出， composer 还为我们安装了所有的包依赖项。</p>
 
 <h2 id="更新-drupal-core">更新 Drupal Core</h2>
@@ -472,26 +405,14 @@ Generating autoload files
 <p>在升级之前，最好备份文件和数据库。您可以使用 <a href="https://www.drupal.org/project/backup_migrate">备份和迁移</a> 模块，也可以手动备份数据库和文件。</p>
 
 <p>要备份安装文件，可以使用以下 <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">rsync 命令</a>，当然，您需要使用安装目录的正确路径：</p>
-
-<pre><code class="language-bash">sudo rsync -a /var/www/my_drupal/  /var/www/my_drupal_$(date +%F)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rsync -a /var/www/my_drupal/  /var/www/my_drupal_<span class="k">$(</span>date +%F<span class="k">)</span></code></pre></div>
 <p>要备份数据库，我们可以使用标准 <a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">mysqldump 命令</a>：</p>
-
-<pre><code class="language-bash">mysqldump -u root -p &gt; /var/www/my_drupal_database_$(date +%F).sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p &gt; /var/www/my_drupal_database_<span class="k">$(</span>date +%F<span class="k">)</span>.sql</code></pre></div>
 <p>或者 <code>drush sql-dump</code> ：</p>
-
-<pre><code class="language-bash">cd /var/www/my_drupal
-vendor/bin/drush sql-dump &gt; /var/www/my_drupal_database_$(date +%F).sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/www/my_drupal
+vendor/bin/drush sql-dump &gt; /var/www/my_drupal_database_<span class="k">$(</span>date +%F<span class="k">)</span>.sql</code></pre></div>
 <p>现在我们创建了一个备份，我们可以通过运行以下命令继续并更新所有 Drupal 核心文件：</p>
-
-<pre><code class="language-bash">sudo -u nginx /usr/local/bin/composer update drupal/core webflo/drupal-core-require-dev symfony/* --with-dependencies
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo -u nginx /usr/local/bin/composer update drupal/core webflo/drupal-core-require-dev symfony/* --with-dependencies</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>恭喜，您已使用 composer 成功安装了 Drupal 8 ，并学习了如何安装模块和主题。您现在可以开始自定义您的网站了。<a href="https://www.drupal.org/docs/user_guide/en/index.html">Drupal 8 用户指南</a>是一个很好的起点，可以了解更多有关如何管理您的 Drupal 安装。另外，不要忘记访问 Github 上的 <a href="https://github.com/drupal-composer/drupal-project/releases">Drupal Composer</a> 模板项目。</p><ul class="pa0">

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2019-03-24T07:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-24T07:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="385">
+<meta itemprop="wordCount" content="382">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上配置静态 IP 地址</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上配置静态 IP 地址</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-24T07:00:00&#43;08:00">March 24, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。</p>
 
 <p>在大多数情况下， IP 地址由路由器 DHCP 服务器动态分配。在某些情况下可能需要在 Ubuntu 计算机上设置静态 IP 地址，例如配置端口转发或在网络上运行<!--link:how-to-install-plex-media-server-on-ubuntu-18-04-->媒体服务器<!--link-->。</p>
 
@@ -148,33 +150,21 @@
 <h2 id="在-ubuntu-server-上配置静态-ip-地址">在 Ubuntu Server 上配置静态 IP 地址</h2>
 
 <p>较新版本的 Ubuntu 使用“可预测的网络接口名称”开头 <code>en[letter][number]</code> 。默认情况下。第一步是确定要配置的以太网接口的名称。您可以使用 <code>ip link</code> 如下所示的命令：</p>
-
-<pre><code class="language-bash">ip link
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip link</code></pre></div>
 <p>该命令将打印所有可用网络接口的列表。在本例中，接口的名称是 <code>ens3</code> ：</p>
-
-<pre><code class="language-bash">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-3: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
-    link/ether 56:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="m">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="m">1000</span>
+    link/loopback <span class="m">00</span>:00:00:00:00:00 brd <span class="m">00</span>:00:00:00:00:00
+<span class="m">3</span>: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc mq state UP mode DEFAULT group default qlen <span class="m">1000</span>
+    link/ether <span class="m">56</span>:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff</code></pre></div>
 <p>Netplan 配置文件存储在 <code>/etc/netplan</code> 目录中并且文件后缀名是 <code>.yaml</code> 。您可能会在此目录中找到一个或两个 YAML 文件。该文件可能因设置而异。通常，文件被命名为 <code>01-netcfg.yaml</code> ， <code>50-cloud-init.yaml</code> 或者 <code>NN_interfaceName.yaml</code> ，但在您的系统中它可能是不同的。</p>
 
 <p>使用文本编辑器打开 YAML 配置文件：</p>
-
-<pre><code class="language-bash">sudo nano /etc/netplan/01-netcfg.yaml
-</code></pre>
-
-<pre><code class="language-bash">network:
-  version: 2
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/netplan/01-netcfg.yaml</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">network:
+  version: <span class="m">2</span>
   renderer: networkd
   ethernets:
     ens3:
-      dhcp4: yes
-</code></pre>
-
+      dhcp4: yes</code></pre></div>
 <p>在更改配置之前，让我们简要解释一下代码。</p>
 
 <p>每个 Netplan Yaml 文件都以 <code>network</code> 键开头，并且具有至少两个必需元素的。第一个必需元素是网络配置格式的版本，第二个是设备类型。设备类型值可以是 <code>ethernets</code> ， <code>bonds</code> ， <code>bridges</code> ，和 <code>vlans</code> 。</p>
@@ -193,38 +183,26 @@
 </ul>
 
 <p>文件 <code>/etc/netplan/01-netcfg.yaml</code></p>
-
-<pre><code class="language-bash">network:
-  version: 2
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">network:
+  version: <span class="m">2</span>
   renderer: networkd
   ethernets:
     ens3:
       dhcp4: no
       addresses:
-        - 192.168.121.199/24
-      gateway4: 192.168.121.1
+        - <span class="m">192</span>.168.121.199/24
+      gateway4: <span class="m">192</span>.168.121.1
       nameservers:
-          addresses: [8.8.8.8, 1.1.1.1]
-</code></pre>
-
+          addresses: <span class="o">[</span><span class="m">8</span>.8.8.8, <span class="m">1</span>.1.1.1<span class="o">]</span></code></pre></div>
 <p>编辑 Yaml 文件时，请确保遵循 YAML 代码缩进标准，因为如果配置中存在语法错误，则可能无效。</p>
 
 <p>完成后保存并关闭文件并应用更改：</p>
-
-<pre><code class="language-bash">sudo netplan apply
-</code></pre>
-
-<pre><code class="language-bash">ip addr show dev ens3
-</code></pre>
-
-<pre><code class="language-bash">3: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
-    link/ether 56:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
-    inet 192.168.121.199/24 brd 192.168.121.255 scope global dynamic ens3
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo netplan apply</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip addr show dev ens3</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">3</span>: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc mq state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">56</span>:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.121.199/24 brd <span class="m">192</span>.168.121.255 scope global dynamic ens3
        valid_lft 3575sec preferred_lft 3575sec
     inet6 fe80::5054:ff:feb0:f500/64 scope link 
-       valid_lft forever preferred_lft forever
-</code></pre>
-
+       valid_lft forever preferred_lft forever</code></pre></div>
 <p>而已！您已为 Ubuntu 服务器分配了静态 IP 。</p>
 
 <h2 id="在-ubuntu-桌面上配置静态-ip-地址">在 Ubuntu 桌面上配置静态 IP 地址</h2>
@@ -246,21 +224,15 @@
 </ol>
 
 <p>现在您已经设置了静态 IP 地址，请使用 <code>Ctrl+Alt+T</code> 键盘快捷键或单击终端图标打开终端，然后键入以下命令来验证更改：</p>
-
-<pre><code class="language-bash">ip addr
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip addr</code></pre></div>
 <p>输出将显示接口 IP 地址：</p>
-
-<pre><code class="language-bash">...
-2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 52:54:00:e9:40:f2 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.121.106/24 brd 192.168.121.255 scope global dynamic noprefixroute eth0
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">...
+<span class="m">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc fq_codel state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">52</span>:54:00:e9:40:f2 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.121.106/24 brd <span class="m">192</span>.168.121.255 scope global dynamic noprefixroute eth0
        valid_lft 3523sec preferred_lft 3523sec
     inet6 fe80::5054:ff:fee9:40f2/64 scope link 
-       valid_lft forever preferred_lft forever
-</code></pre>
-
+       valid_lft forever preferred_lft forever</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>您已经学习了如何在 Ubuntu 18.04 计算机上分配静态 IP 地址。</p><ul class="pa0">

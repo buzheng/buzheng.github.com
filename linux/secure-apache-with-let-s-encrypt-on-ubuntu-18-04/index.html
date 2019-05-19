@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -64,7 +64,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</h1>
+      
+      <h1 class="f1 mb1">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-04-17T05:00:00&#43;08:00">April 17, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Let’s Encrypt 是由 Internet Security Research Group (ISRG) 创建的证书颁发机构。它通过全自动流程提供免费的 SSL 证书，旨在消除手动证书创建，验证，安装和续订。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Let’s Encrypt 是由 Internet Security Research Group (ISRG) 创建的证书颁发机构。它通过全自动流程提供免费的 SSL 证书，旨在消除手动证书创建，验证，安装和续订。</p>
 
 <p>今天所有主流浏览器都已经信赖 Let&rsquo;s Encrypt 颁发的证书。</p>
 
@@ -162,18 +164,12 @@
 <p>Certbot 是一个功能齐全且易于使用的工具，可以自动完成获取和更新 Let&rsquo;s Encrypt SSL 证书和配置 Web 服务器的任务。 certbot 包包含在默认的 Ubuntu 存储库中。</p>
 
 <p>更新软件包列表并安装 certbot 软件包：</p>
-
-<pre><code class="language-console-bash">sudo apt update
-sudo apt install certbot
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install certbot</code></pre></div>
 <h2 id="生成强-dh-diffie-hellman-组">生成强 Dh(Diffie-Hellman) 组</h2>
 
 <p>Diffie-Hellman 密钥交换 (DH) 是一种在不安全的通信信道上安全地交换密码密钥的方法。我们将生成一组新的 2048 位 DH 参数以加强安全性：</p>
-
-<pre><code class="language-console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048</code></pre></div>
 <blockquote>
 <p>如果您愿意，可以将大小更改为 4096 位，但在这种情况下，生成可能需要超过 30 分钟，具体取决于系统的环境。</p>
 </blockquote>
@@ -185,73 +181,48 @@ sudo apt install certbot
 <p>为了使它更简单，我们将把所有对 <code>.well-known/acme-challenge</code> 的 HTTP 请求映射到单个目录 <code>/var/lib/letsencrypt</code> 。</p>
 
 <p>以下命令将创建目录并使其对 Apache 服务器科协。</p>
-
-<pre><code class="language-console-bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
 sudo chgrp www-data /var/lib/letsencrypt
-sudo chmod g+s /var/lib/letsencrypt
-</code></pre>
-
+sudo chmod g+s /var/lib/letsencrypt</code></pre></div>
 <p>为避免重复代码，请创建以下两个配置片段：</p>
 
 <p>文件 <code>/etc/apache2/conf-available/letsencrypt.conf</code></p>
-
-<pre><code class="language-apache">Alias /.well-known/acme-challenge/ &quot;/var/lib/letsencrypt/.well-known/acme-challenge/&quot;
-&lt;Directory &quot;/var/lib/letsencrypt/&quot;&gt;
-    AllowOverride None
-    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
-    Require method GET POST OPTIONS
-&lt;/Directory&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> /.well-known/acme-challenge/ <span class="s2">&#34;/var/lib/letsencrypt/.well-known/acme-challenge/&#34;</span>
+<span class="nt">&lt;Directory</span> <span class="s">&#34;/var/lib/letsencrypt/&#34;</span><span class="nt">&gt;</span>
+    <span class="nb">AllowOverride</span> <span class="k">None</span>
+    <span class="nb">Options</span> MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+    <span class="nb">Require</span> method GET POST OPTIONS
+<span class="nt">&lt;/Directory&gt;</span></code></pre></div>
 <p>文件 <code>/etc/apache2/conf-available/ssl-params.conf</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">SSLCipherSuite</span> EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+<span class="nb">SSLProtocol</span> <span class="k">All</span> -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+<span class="nb">SSLHonorCipherOrder</span> <span class="k">On</span>
+<span class="nb">Header</span> always set Strict-Transport-Security <span class="s2">&#34;max-age=63072000; includeSubDomains; preload&#34;</span>
+<span class="nb">Header</span> always set X-Frame-Options DENY
+<span class="nb">Header</span> always set X-Content-Type-Options nosniff
+<span class="c"># Requires Apache &gt;= 2.4</span>
+<span class="nb">SSLCompression</span> <span class="k">off</span>
+<span class="nb">SSLUseStapling</span> <span class="k">on</span>
+<span class="nb">SSLStaplingCache</span> <span class="s2">&#34;shmcb:logs/stapling-cache(150000)&#34;</span>
+<span class="c"># Requires Apache &gt;= 2.4.11</span>
+<span class="nb">SSLSessionTickets</span> <span class="k">Off</span>
 
-<pre><code class="language-apache">SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
-SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
-SSLHonorCipherOrder On
-Header always set Strict-Transport-Security &quot;max-age=63072000; includeSubDomains; preload&quot;
-Header always set X-Frame-Options DENY
-Header always set X-Content-Type-Options nosniff
-# Requires Apache &gt;= 2.4
-SSLCompression off
-SSLUseStapling on
-SSLStaplingCache &quot;shmcb:logs/stapling-cache(150000)&quot;
-# Requires Apache &gt;= 2.4.11
-SSLSessionTickets Off
-
-SSLOpenSSLConfCmd DHParameters &quot;/etc/ssl/certs/dhparam.pem&quot;
-</code></pre>
-
+<span class="nb">SSLOpenSSLConfCmd</span> DHParameters <span class="s2">&#34;/etc/ssl/certs/dhparam.pem&#34;</span></code></pre></div>
 <p>上面的代码段使用的是 <a href="https://cipherli.st/">Cipherli.st</a> 推荐的片段，支持 OCSP Stapling ， HTTP 严格传输安全 (HSTS) 并强制使用一些以安全为中心的 HTTP 头。</p>
 
 <p>在启用配置文件之前，请确保通过以下命令来启用 <code>mod_ssl</code> 和 <code>mod_headers</code>：</p>
-
-<pre><code class="language-console-bash">sudo a2enmod sslsudo a2enmod headers
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo a2enmod sslsudo a2enmod headers</code></pre></div>
 <p>接下来，通过运行以下命令启用 SSL 配置文件：</p>
-
-<pre><code class="language-console-bash">sudo a2enconf letsencrypt
-sudo a2enconf ssl-params
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo a2enconf letsencrypt
+sudo a2enconf ssl-params</code></pre></div>
 <p>启用 HTTP/2 模块，这将使您的网站更快，更健壮：</p>
-
-<pre><code class="language-console-bash">sudo a2enmod http2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo a2enmod http2</code></pre></div>
 <p>重新加载 Apache 配置以使更改生效：</p>
-
-<pre><code class="language-console-bash">sudo systemctl reload apache2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2</code></pre></div>
 <p>现在，我们可以使用 webroot 插件运行 Certbot 工具，并通过键入以下内容获取 SSL 证书文件：</p>
-
-<pre><code class="language-console-bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com</code></pre></div>
 <p>如果成功获得 SSL 证书， certbot 将打印以下消息：</p>
-
-<pre><code class="language-output">IMPORTANT NOTES:
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/example.com/fullchain.pem
    Your key file has been saved at:
@@ -259,52 +230,44 @@ sudo a2enconf ssl-params
    Your cert will expire on 2018-10-28\. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot
    again. To non-interactively renew *all* of your certificates, run
-   &quot;certbot renew&quot;
+   &#34;certbot renew&#34;
  - If you like Certbot, please consider supporting our work by:
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le
-</code></pre>
-
+   Donating to ISRG / Let&#39;s Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le</code></pre></div>
 <p>现在您已拥有证书文件，请按如下所示编辑域虚拟主机配置 <code>/etc/apache2/sites-available/example.com.conf</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span> 
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
 
-<pre><code class="language-apache">&lt;VirtualHost *:80&gt; 
-  ServerName example.com
-  ServerAlias www.example.com
+  <span class="nb">Redirect</span> permanent / https://example.com/
+<span class="nt">&lt;/VirtualHost&gt;</span>
 
-  Redirect permanent / https://example.com/
-&lt;/VirtualHost&gt;
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
 
-&lt;VirtualHost *:443&gt;
-  ServerName example.com
-  ServerAlias www.example.com
+  <span class="nb">Protocols</span> h2 http:/1.1
 
-  Protocols h2 http:/1.1
+  <span class="nt">&lt;If</span> <span class="s">&#34;%{HTTP_HOST} == &#39;www.example.com&#39;&#34;</span><span class="nt">&gt;</span>
+    <span class="nb">Redirect</span> permanent / https://example.com/
+  <span class="nt">&lt;/If&gt;</span>
 
-  &lt;If &quot;%{HTTP_HOST} == 'www.example.com'&quot;&gt;
-    Redirect permanent / https://example.com/
-  &lt;/If&gt;
+  <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com/public_html</span>
+  <span class="nb">ErrorLog</span> ${APACHE_LOG_DIR}/example.com-error.log
+  <span class="nb">CustomLog</span> ${APACHE_LOG_DIR}/example.com-access.log combined
 
-  DocumentRoot /var/www/example.com/public_html
-  ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
-  CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+  <span class="nb">SSLEngine</span> <span class="k">On</span>
+  <span class="nb">SSLCertificateFile</span> <span class="sx">/etc/letsencrypt/live/example.com/fullchain.pem</span>
+  <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/etc/letsencrypt/live/example.com/privkey.pem</span>
 
-  SSLEngine On
-  SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem
-  SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
+  <span class="c"># Other Apache Configuration</span>
 
-  # Other Apache Configuration
-
-&lt;/VirtualHost&gt;
-</code></pre>
-
+<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
 <p>通过上面的配置，我们强制使用 HTTPS 并将域名从 www 版本重定向到非 www 版本。可根据需要随意调整配置。</p>
 
 <p>重新加载 Apache 服务以使更改生效：</p>
-
-<pre><code class="language-console-bash">sudo systemctl reload apache2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2</code></pre></div>
 <p>您现在可以使用 <code>https://</code> 打开您的网站，您会注意到绿色锁定图标。</p>
 
 <p>如果您使用 <a href="https://www.ssllabs.com/ssltest/">SSL Labs Server Test</a> 测试您的域，您将获得 A+ 等级，如下所示：</p>
@@ -318,15 +281,9 @@ sudo a2enconf ssl-params
 <p>证书续订后，我们还必须重新加载 Apache 服务。附加 <code>--renew-hook &quot;systemctl reload apache2&quot;</code> 到 <code>/etc/cron.d/certbot</code> 文件，如下所示：</p>
 
 <p>文件 <code>/etc/cron.d/certbot</code></p>
-
-<pre><code class="language-sh">0 */12 * * * root test -x /usr/bin/certbot -a \! -d /run/systemd/system &amp;&amp; perl -e 'sleep int(rand(3600))' &amp;&amp; certbot -q renew --renew-hook &quot;systemctl reload apache2&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload apache2&#34;</span></code></pre></div>
 <p>要测试续订过程，您可以使用 certbot 的 <code>--dry-run</code> 开关：</p>
-
-<pre><code class="language-console-bash">sudo certbot renew --dry-run
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo certbot renew --dry-run</code></pre></div>
 <p>如果没有错误，则表示续订过程成功。</p>
 
 <h2 id="结论">结论</h2>

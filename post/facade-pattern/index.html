@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">设计模式学习 - Facade Pattern</h1>
+      
+      <h1 class="f1 mb1">设计模式学习 - Facade Pattern</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-01-08T00:00:00Z">January 8, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Facade Pattern 被译成门面模式。他的目的就是想对外部用户隐藏系统/模块/类的复杂性，提供给用户一个简单易用的使用接口。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Facade Pattern 被译成门面模式。他的目的就是想对外部用户隐藏系统/模块/类的复杂性，提供给用户一个简单易用的使用接口。</p>
 
 <p>这是一个实际存在的场景：
 OrderService 封装了操作Order的相关逻辑：增删改查；在目前的系统中运行良好。</p>
@@ -141,51 +143,45 @@ OrderService 封装了操作Order的相关逻辑：增删改查；在目前的�
 <p><img src="/images/class-facade.jpg" alt="" /></p>
 
 <p>系统中的已有逻辑类：OrderService.java</p>
-
-<pre><code class="language-java">public class OrderService {
-    public void add(Order order) {
-        System.out.println(&quot;add order: &quot; + order);
-    }
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderService</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;add order: &#34;</span> <span class="o">+</span> <span class="n">order</span><span class="o">);</span>
+    <span class="o">}</span>
  
-    public void modify(Order order) {
-        System.out.println(&quot;modify order: &quot; + order);
-    }
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">modify</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;modify order: &#34;</span> <span class="o">+</span> <span class="n">order</span><span class="o">);</span>
+    <span class="o">}</span>
  
-    public void delete(String orderId) {
-        System.out.println(&quot;delete order: &quot; + orderId);
-    }
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;delete order: &#34;</span> <span class="o">+</span> <span class="n">orderId</span><span class="o">);</span>
+    <span class="o">}</span>
  
-    public Order load(String orderId) {
-        System.out.println(&quot;load order: &quot; + orderId);
-        return new Order();
-    }
-}
-</code></pre>
-
+    <span class="kd">public</span> <span class="n">Order</span> <span class="nf">load</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;load order: &#34;</span> <span class="o">+</span> <span class="n">orderId</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">Order</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>提供给外部客户使用的查询类：OrderQueryServiceFacade</p>
-
-<pre><code class="language-java">public class OrderQueryServiceFacade {
-    private OrderService orderService;
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderQueryServiceFacade</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">OrderService</span> <span class="n">orderService</span><span class="o">;</span>
  
-    public OrderQueryServiceFacade(OrderService orderService) {
-        super();
-        this.orderService = orderService;
-    }
+    <span class="kd">public</span> <span class="nf">OrderQueryServiceFacade</span><span class="o">(</span><span class="n">OrderService</span> <span class="n">orderService</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">orderService</span> <span class="o">=</span> <span class="n">orderService</span><span class="o">;</span>
+    <span class="o">}</span>
  
-    /*
-    * 这里是需要暴露的操作，不一定与原接口相同。
-    * 比如下面的 queryById
-    */
-    public Order load(String orderId) {
-        return this.orderService.load(orderId);
-    }
+    <span class="cm">/*
+</span><span class="cm">    * 这里是需要暴露的操作，不一定与原接口相同。
+</span><span class="cm">    * 比如下面的 queryById
+</span><span class="cm">    */</span>
+    <span class="kd">public</span> <span class="n">Order</span> <span class="nf">load</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">orderService</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="n">orderId</span><span class="o">);</span>
+    <span class="o">}</span>
  
-    public Order queryById(String orderId) {
-        return this.load(orderId);
-    }
-}
-</code></pre>
-
+    <span class="kd">public</span> <span class="n">Order</span> <span class="nf">queryById</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="n">orderId</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>这是一个简单的例子，简单到只是隐藏了类的一些操作。更多Facade应用场景是隐藏整个系统（模块）的复杂性，对外部提供一个简单的操作界面，就如下图展示的一样。</p>
 
 <p><img src="/images/system-facade.jpg" alt="" /></p>

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2013-01-07T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-01-07T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="147">
+<meta itemprop="wordCount" content="145">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,33 +122,29 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Tomcat 配置汇总</h1>
+      
+      <h1 class="f1 mb1">Tomcat 配置汇总</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-01-07T00:00:00Z">January 7, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id="tomcat6-配置线程池">Tomcat6 配置线程池</h2>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id="tomcat6-配置线程池">Tomcat6 配置线程池</h2>
 
 <p>打开 tomcat 的配置文件 server.xml, 去掉以下代码的注释：</p>
-
-<pre><code class="language-xml">&lt;executor
-        maxthreads=&quot;150&quot;
-        minsparethreads=&quot;4&quot;
-        name=&quot;tomcatThreadPool&quot;
-        nameprefix=&quot;catalina-exec-&quot;&gt;&lt;/executor&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;executor</span>
+        <span class="na">maxthreads=</span><span class="s">&#34;150&#34;</span>
+        <span class="na">minsparethreads=</span><span class="s">&#34;4&#34;</span>
+        <span class="na">name=</span><span class="s">&#34;tomcatThreadPool&#34;</span>
+        <span class="na">nameprefix=</span><span class="s">&#34;catalina-exec-&#34;</span><span class="nt">&gt;&lt;/executor&gt;</span></code></pre></div>
 <p>然后在Connector中加入如下executor参数，如下：</p>
-
-<pre><code class="language-xml">&lt;connector
-        connectiontimeout=&quot;20000&quot;
-        executor=&quot;tomcatThreadPool&quot;
-        port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;
-        redirectport=&quot;8443&quot;&gt;&lt;/connector&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;connector</span>
+        <span class="na">connectiontimeout=</span><span class="s">&#34;20000&#34;</span>
+        <span class="na">executor=</span><span class="s">&#34;tomcatThreadPool&#34;</span>
+        <span class="na">port=</span><span class="s">&#34;8080&#34;</span> <span class="na">protocol=</span><span class="s">&#34;HTTP/1.1&#34;</span>
+        <span class="na">redirectport=</span><span class="s">&#34;8443&#34;</span><span class="nt">&gt;&lt;/connector&gt;</span></code></pre></div>
 <p>name 指定线程池的名称，以供Connector使用
 namePrefix 这个属性用来指定 线程名称的前缀，线程名称类似于：catalina-exec-1
 maxThreads 指定最大的线程数
@@ -159,10 +155,7 @@ minSpareThreads 指定最少备用线程数</p>
 <h2 id="在eclipse中远程-debug-tomcat">在Eclipse中远程 DEBUG Tomcat</h2>
 
 <p>catalina.sh加入以下配置后重启tomcat：</p>
-
-<pre><code class="language-bash">CATALINA_OPTS=&quot;-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=2010&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=2010&#34;</span></code></pre></div>
 <p>其中address只指定远程连接的端口号，transport=dt_socket是指定远程debug（dt_shmem时为本机debug）。</p>
 
 <p>进入Eclipse，Run-&gt;Debug Configuration-&gt;Remote Java Application,双击或右键-&gt;New，Connect Type 选择 Socket Attach，输入Host和Port后，点击Debug 按钮就可以了</p>
@@ -170,15 +163,12 @@ minSpareThreads 指定最少备用线程数</p>
 <h2 id="tomcat-配置-jmx-实现远程监控">Tomcat 配置 JMX 实现远程监控</h2>
 
 <p>修改 setenv.sh (没有则添加), 添加下面一下配置行：</p>
-
-<pre><code class="language-bash">CATALINA_OPTS=&quot;$CATALINA_OPTS -Djava.rmi.server.hostname=192.168.80.168
-    -Dcom.sun.management.jmxremote.port=8999
-    -Dcom.sun.management.jmxremote.ssl=false
-    -Dcom.sun.management.jmxremote.authenticate=true
-    -Dcom.sun.management.jmxremote.password.file=the-password-file-path
-    -Dcom.sun.management.jmxremote.access.file=the-access-file-path&quot;;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Djava.rmi.server.hostname=192.168.80.168
+</span><span class="s2">    -Dcom.sun.management.jmxremote.port=8999
+</span><span class="s2">    -Dcom.sun.management.jmxremote.ssl=false
+</span><span class="s2">    -Dcom.sun.management.jmxremote.authenticate=true
+</span><span class="s2">    -Dcom.sun.management.jmxremote.password.file=the-password-file-path
+</span><span class="s2">    -Dcom.sun.management.jmxremote.access.file=the-access-file-path&#34;</span><span class="p">;</span></code></pre></div>
 <ul>
 <li>-Djava.rmi.server.hostname 的值为当前主机的IP即可。</li>
 <li>-Dcom.sun.management.jmxremote.port=8999 为端口号</li>
@@ -190,48 +180,30 @@ minSpareThreads 指定最少备用线程数</p>
 <p>jmxremote.authenticate=false时，不用配置最后两项。后面两项是密码文件和访问权限文件，默认位于bin目录下，2个文件的权限为400。</p>
 
 <p>the-password-file-path 格式为：</p>
-
-<pre><code>admin admin_password
-master master_password
-</code></pre>
-
+<div class="highlight"><pre class="chroma">admin admin_password
+master master_password</pre></div>
 <p>the-access-file-path 格式为：</p>
-
-<pre><code>admin readwrite
-master readonly
-</code></pre>
-
+<div class="highlight"><pre class="chroma">admin readwrite
+master readonly</pre></div>
 <p>重启 tomcat 后，就可以使用 VisualVM进行远程监控了。</p>
 
 <p>由于 tomcat jmx 的远程通信接口是随机的，不便于通过防火墙，可采用下面的配置方式：</p>
 
 <p>1，setenv.sh 去掉行 -Dcom.sun.management.jmxremote.port=8999</p>
-
-<pre><code class="language-bash">CATALINA_OPTS=&quot;$CATALINA_OPTS -Djava.rmi.server.hostname=192.168.80.168
-    -Dcom.sun.management.jmxremote.ssl=false
-    -Dcom.sun.management.jmxremote.authenticate=true
-    -Dcom.sun.management.jmxremote.password.file=the-password-file-path
-    -Dcom.sun.management.jmxremote.access.file=the-access-file-path&quot;;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Djava.rmi.server.hostname=192.168.80.168
+</span><span class="s2">    -Dcom.sun.management.jmxremote.ssl=false
+</span><span class="s2">    -Dcom.sun.management.jmxremote.authenticate=true
+</span><span class="s2">    -Dcom.sun.management.jmxremote.password.file=the-password-file-path
+</span><span class="s2">    -Dcom.sun.management.jmxremote.access.file=the-access-file-path&#34;</span><span class="p">;</span></code></pre></div>
 <p>2，server.xml 添加</p>
-
-<pre><code class="language-xml">&lt;Listener className=&quot;org.apache.catalina.mbeans.JmxRemoteLifecycleListener&quot; rmiRegistryPortPlatform=&quot;18085&quot; rmiServerPortPlatform=&quot;28085&quot; /&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Listener</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.mbeans.JmxRemoteLifecycleListener&#34;</span> <span class="na">rmiRegistryPortPlatform=</span><span class="s">&#34;18085&#34;</span> <span class="na">rmiServerPortPlatform=</span><span class="s">&#34;28085&#34;</span> <span class="nt">/&gt;</span></code></pre></div>
 <p>注意：由于 org.apache.catalina.mbeans.JmxRemoteLifecycleListener 在 tomcat7 中已经独立出来，所以需要单独下载 catalina-jmx-remote.jar 放在 $CATALINA_HOME/lib 下。</p>
-
-<pre><code class="language-bash">wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.63/bin/extras/catalina-jmx-remote.jar
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.63/bin/extras/catalina-jmx-remote.jar</code></pre></div>
 <h2 id="windows-下tomcat-启动时-弹出窗口一闪就关了">Windows 下tomcat 启动时，弹出窗口一闪就关了</h2>
 
 <p>有时候在修改了 tomcat 的一些参数后，启动时运行 startup.bat, 如果有错误，弹出窗口一闪就关掉了，不知道启动错误的原因，对文件 startup.bat 做如下修改：</p>
-
-<pre><code class="language-bash">rem call &quot;%EXECUTABLE%&quot; start %CMD_LINE_ARGS%
-call &quot;%EXECUTABLE%&quot; run %CMD_LINE_ARGS%
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rem call <span class="s2">&#34;%EXECUTABLE%&#34;</span> start %CMD_LINE_ARGS%
+call <span class="s2">&#34;%EXECUTABLE%&#34;</span> run %CMD_LINE_ARGS%</code></pre></div>
 <p>就是将call &ldquo;%EXECUTABLE%&rdquo; start %CMD_LINE_ARGS% 行中的 start 修改为 run。这样修改后，启动时，就不会弹出新cmd窗口，如果有错，错误就直接显示在当前cmd窗口了。</p><ul class="pa0">
   
    <li class="list">

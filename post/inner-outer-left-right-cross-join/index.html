@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -67,7 +67,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -137,14 +137,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">内连接、左联接、右连接、交叉连接</h1>
+      
+      <h1 class="f1 mb1">内连接、左联接、右连接、交叉连接</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-01-24T00:00:00Z">January 24, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>当多表存在关联时，一般使用连接进行关联查询。连接一般分为：内连接、外连接， 这里做一个总结。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>当多表存在关联时，一般使用连接进行关联查询。连接一般分为：内连接、外连接， 这里做一个总结。</p>
 
 <p><strong>内连接(inner join)</strong>，返回的是2个表中满足条件的记录的组合。
 <strong>左外连接(left join/left outer join)</strong>，以左表的记录为基础，右表符合条件便组合，不符合条件则以空字段留空。
@@ -152,23 +154,20 @@
 <strong>全外连接(full join/full outer join)</strong>，相当于左外连接和右外连接的 union。</p>
 
 <p>为了更容易的理解，我们建立了2个表：学生表（student）和班级表（class），建表脚本如下(postgre数据库)：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">student</span>
+<span class="p">(</span>
+  <span class="n">id</span> <span class="nb">integer</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">character</span> <span class="nb">varying</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+  <span class="n">class_no</span> <span class="nb">integer</span><span class="p">,</span>
+  <span class="k">CONSTRAINT</span> <span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="n">PK</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span> <span class="p">)</span>
+<span class="p">);</span>
 
-<pre><code class="language-sql">CREATE TABLE student
-(
-  id integer NOT NULL,
-  name character varying(100),
-  class_no integer,
-  CONSTRAINT &amp;quot;PK&amp;quot; PRIMARY KEY (id )
-);
-
-CREATE TABLE class
-(
-  no integer NOT NULL,
-  name character varying(100),
-  CONSTRAINT &amp;quot;PK_CLASS&amp;quot; PRIMARY KEY (no )
-);
-</code></pre>
-
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">class</span>
+<span class="p">(</span>
+  <span class="k">no</span> <span class="nb">integer</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">character</span> <span class="nb">varying</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+  <span class="k">CONSTRAINT</span> <span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span><span class="n">PK_CLASS</span><span class="o">&amp;</span><span class="n">quot</span><span class="p">;</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="k">no</span> <span class="p">)</span>
+<span class="p">);</span></code></pre></div>
 <p>两个表的数据分别如下图所示：</p>
 
 <p><img src="/images/table-student.jpg" alt="" /></p>
@@ -176,50 +175,29 @@ CREATE TABLE class
 <p><img src="/images/table-class.jpg" alt="" /></p>
 
 <p>内连接</p>
-
-<pre><code class="language-sql">select * from student s inner join class c on s.class_no = c.no;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span> <span class="k">inner</span> <span class="k">join</span> <span class="k">class</span> <span class="k">c</span> <span class="k">on</span> <span class="n">s</span><span class="p">.</span><span class="n">class_no</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="k">no</span><span class="p">;</span></code></pre></div>
 <p>通常会写作</p>
-
-<pre><code class="language-sql">select * from student s, class c where s.class_no = c.no;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span><span class="p">,</span> <span class="k">class</span> <span class="k">c</span> <span class="k">where</span> <span class="n">s</span><span class="p">.</span><span class="n">class_no</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="k">no</span><span class="p">;</span></code></pre></div>
 <p>执行结果如下</p>
 
 <p><img src="/images/result1.jpg" alt="" /></p>
 
 <p>左外连接/左连接</p>
-
-<pre><code class="language-sql">select * from student s left  join class c on s.class_no = c.no;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span> <span class="k">left</span>  <span class="k">join</span> <span class="k">class</span> <span class="k">c</span> <span class="k">on</span> <span class="n">s</span><span class="p">.</span><span class="n">class_no</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="k">no</span><span class="p">;</span></code></pre></div>
 <p><img src="/images/result2.jpg" alt="" /></p>
 
 <p>右外连接/右连接</p>
-
-<pre><code class="language-sql">select * from student s right join class c on s.class_no = c.no;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span> <span class="k">right</span> <span class="k">join</span> <span class="k">class</span> <span class="k">c</span> <span class="k">on</span> <span class="n">s</span><span class="p">.</span><span class="n">class_no</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="k">no</span><span class="p">;</span></code></pre></div>
 <p><img src="/images/result3.jpg" alt="" /></p>
 
 <p>全外连接/全连接</p>
-
-<pre><code class="language-sql">select * from student s full join class c on s.class_no = c.no;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span> <span class="k">full</span> <span class="k">join</span> <span class="k">class</span> <span class="k">c</span> <span class="k">on</span> <span class="n">s</span><span class="p">.</span><span class="n">class_no</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="k">no</span><span class="p">;</span></code></pre></div>
 <p><img src="/images/result4.jpg" alt="" /></p>
 
 <p>另外还有一种叫交叉连接，他返回2个记录集的笛卡尔积。</p>
-
-<pre><code class="language-sql">select * from student s, class c;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span><span class="p">,</span> <span class="k">class</span> <span class="k">c</span><span class="p">;</span></code></pre></div>
 <p>或者</p>
-
-<pre><code class="language-sql">select * from student s cross join class c;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">student</span> <span class="n">s</span> <span class="k">cross</span> <span class="k">join</span> <span class="k">class</span> <span class="k">c</span><span class="p">;</span></code></pre></div>
 <p>结果如下：</p>
 
 <p><img src="/images/result5.jpg" alt="" /></p><ul class="pa0">

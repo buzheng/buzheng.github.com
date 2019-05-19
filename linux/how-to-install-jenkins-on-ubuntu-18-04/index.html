@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -53,7 +53,7 @@
 
 <meta itemprop="datePublished" content="2019-05-05T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-05T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="266">
+<meta itemprop="wordCount" content="265">
 
 
 
@@ -70,7 +70,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 Jenkins</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上安装 Jenkins</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-05-05T05:00:00&#43;08:00">May 5, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://jenkins.io/">Jenkins</a> 是一个开源自动化服务器，提供了一种简单的方法来达成持续集成和连续交付(CI/CD)。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://jenkins.io/">Jenkins</a> 是一个开源自动化服务器，提供了一种简单的方法来达成持续集成和连续交付(CI/CD)。</p>
 
 <p>持续集成(CI)是一种 DevOps 实践，其中团队成员定期将其代码更改提交到版本控制软件仓库，然后运行自动构建和测试。持续交付(CD)是一系列实践，其中代码更改自动构建，测试并部署到生产中。</p>
 
@@ -167,11 +169,8 @@
 <li><p>安装 Java</p>
 
 <p>由于 Jenkins 是一个 Java 应用程序，因此第一步是安装 Java 。使用以下命令更新程序包索引并安装 Java 8 OpenJDK 程序包：</p>
-
-<pre><code class="language-console-bash">sudo apt update
-sudo apt install openjdk-8-jdk
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install openjdk-8-jdk</code></pre></div>
 <p>当前版本的 Jenkins 尚不支持Java 10 和 Java 11。如果您的计算机上安装了多个 Java 版本，请<a href="/linux/install-java-on-ubuntu-18-04/">确保 Java 8 是默认的 Java 版本</a>。</p>
 
 <ol>
@@ -179,65 +178,42 @@ sudo apt install openjdk-8-jdk
 </ol>
 
 <p>使用以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令导入 Jenkins 软件仓库的 GPG 密钥：</p>
-
-<pre><code class="language-console-bash">wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -</code></pre></div>
 <p>上面的命令应该输出 <code>OK</code> ，这意味着密钥已成功导入，并且来自此软件仓库的包将被视为可信。</p>
 
 <p>接下来，将 Jenkins 软件仓库添加到系统中：</p>
-
-<pre><code class="language-console-bash">sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ &gt; /etc/apt/sources.list.d/jenkins.list'
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo sh -c &#39;echo deb http://pkg.jenkins.io/debian-stable binary/ &gt; /etc/apt/sources.list.d/jenkins.list&#39;</code></pre></div>
 <ol>
 <li>安装 Jenkins</li>
 </ol>
 
 <p>启用 Jenkins 软件仓库后，通过键入以下 <code>apt</code> 命令更新软件包列表并安装最新版本的 Jenkins ：</p>
-
-<pre><code class="language-console-bash">sudo apt update
-sudo apt install jenkins
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install jenkins</code></pre></div>
 <p>安装过程完成后， Jenkins 服务将自动启动。您可以通过打印服务状态来验证它：</p>
-
-<pre><code class="language-console-bash">systemctl status jenkins
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">systemctl status jenkins</code></pre></div>
 <p>你应该看到类似的东西：</p>
-
-<pre><code class="language-output&gt;">● jenkins.service - LSB: Start Jenkins at boot time
+<div class="highlight"><pre class="chroma"><code class="language-output>" data-lang="output>">● jenkins.service - LSB: Start Jenkins at boot time
 Loaded: loaded (/etc/init.d/jenkins; generated)
 Active: active (exited) since Wed 2018-08-22 13:03:08 PDT; 2min 16s ago
     Docs: man:systemd-sysv-generator(8)
     Tasks: 0 (limit: 2319)
-CGroup: /system.slice/jenkins.service
-</code></pre></li>
+CGroup: /system.slice/jenkins.service</code></pre></div></li>
 </ol>
 
 <h2 id="调整防火墙">调整防火墙</h2>
 
 <p>如果要在受防火墙保护的远程 Ubuntu 服务器上安装 Jenkins ，则需要打开端口 <code>8080</code> 。假设您正在使用 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"><code>UFW</code></a> 管理防火墙，可以使用以下命令打开端口：</p>
-
-<pre><code class="language-console-bash">sudo ufw allow 8080
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 8080</code></pre></div>
 <p>验证更改：</p>
-
-<pre><code class="language-console-bash">sudo ufw status
-</code></pre>
-
-<pre><code class="language-output">Status: active
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
 
 To                         Action      From
 --                         ------      ----
 OpenSSH                    ALLOW       Anywhere
 8080                       ALLOW       Anywhere
 OpenSSH (v6)               ALLOW       Anywhere (v6)
-8080 (v6)                  ALLOW       Anywhere (v6)
-</code></pre>
-
+8080 (v6)                  ALLOW       Anywhere (v6)</code></pre></div>
 <h2 id="设置-jenkins">设置 Jenkins</h2>
 
 <p>要设置刚刚安装的 Jenkins ，请打开浏览器，键入您的域或 IP 地址，然后键入端口 <code>8080</code>(<code>http://your_ip_or_domain:8080</code>)，将显示类似以下内容的屏幕：</p>
@@ -245,13 +221,7 @@ OpenSSH (v6)               ALLOW       Anywhere (v6)
 <p><img src="/images/linux/how-to-install-jenkins-on-ubuntu-18-04/unlock-jenkins.jpg" alt="" /></p>
 
 <p>在安装过程中， Jenkins 安装程序会创建一个 32 个字符的长字母数字密码。使用以下命令在终端上打印密码：</p>
-
-<pre><code class="language-console-bash">sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-</code></pre>
-
-<pre><code class="language-output">2115173b548f4e99a203ee99a8732a32
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cat /var/lib/jenkins/secrets/initialAdminPassword</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">2115173b548f4e99a203ee99a8732a32</code></pre></div>
 <p>从终端复制密码，将其粘贴到管理员密码字段中，然后单击 <code>Continue</code> 。</p>
 
 <p><img src="/images/linux/how-to-install-jenkins-on-ubuntu-18-04/customize-jenkins.jpg" alt="" /></p>

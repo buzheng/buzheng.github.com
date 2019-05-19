@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2013-05-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-05-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="220">
+<meta itemprop="wordCount" content="214">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">设计模式学习 – State Pattern</h1>
+      
+      <h1 class="f1 mb1">设计模式学习 – State Pattern</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-05-17T00:00:00Z">May 17, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>模式解决问题的思路都是相同的，找到变化的部分封装起来，用来解决某一类特定的问题。状态模式同样是用来出来多路分支的情况，不过在岔口要根据对象的状态来进行选择，对象的不同状态决定了选择不同的分支。既然状态是变化的，我们就考虑将状态封装，由上下文保存当前的状态，由状态对象决定下一步的操作。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>模式解决问题的思路都是相同的，找到变化的部分封装起来，用来解决某一类特定的问题。状态模式同样是用来出来多路分支的情况，不过在岔口要根据对象的状态来进行选择，对象的不同状态决定了选择不同的分支。既然状态是变化的，我们就考虑将状态封装，由上下文保存当前的状态，由状态对象决定下一步的操作。</p>
 
 <p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/State_Design_Pattern_UML_Class_Diagram.svg/400px-State_Design_Pattern_UML_Class_Diagram.svg.png" alt="" /></p>
 
@@ -140,137 +142,116 @@
 <p><img src="/images/state.jpg" alt="" /></p>
 
 <p>贴一下具体的代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FireSwitch</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="n">State</span> <span class="n">state</span><span class="o">;</span>
 
-public class FireSwitch {
-	private State state;
+	<span class="kd">public</span> <span class="nf">FireSwitch</span><span class="o">()</span> <span class="o">{</span>
+		<span class="n">state</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OffState</span><span class="o">();</span>
+	<span class="o">}</span>
 
-	public FireSwitch() {
-		state = new OffState();
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setState</span><span class="o">(</span><span class="n">State</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	public void setState(State state) {
-		this.state = state;
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+	<span class="o">}</span>
 
-	public void switchClockwise() {
-		this.state.switchClockwise(this);
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-	public void switchCounterClockwise() {
-		this.state.switchCounterClockwise(this);
-	}
-}
-</code></pre>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">State</span> <span class="o">{</span>
 
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">);</span>
 
-public interface State {
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-	public void switchClockwise(FireSwitch fs);
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OffState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	public void switchCounterClockwise(FireSwitch fs);
-}
-</code></pre>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">SmallState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;off -&gt; small&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">LargeState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;off -&gt; large&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-public class OffState implements State {
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-	public void switchClockwise(FireSwitch fs) {
-		fs.setState(new SmallState());
-		System.out.println(&quot;off -&gt; small&quot;);
-	}
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SmallState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	public void switchCounterClockwise(FireSwitch fs) {
-		fs.setState(new LargeState());
-		System.out.println(&quot;off -&gt; large&quot;);
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">MediumState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;small -&gt; medium&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-}
-</code></pre>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">OffState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;small -&gt; off&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-public class SmallState implements State {
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MediumState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	public void switchClockwise(FireSwitch fs) {
-		fs.setState(new MediumState());
-		System.out.println(&quot;small -&gt; medium&quot;);
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">LargeState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;medium -&gt; large&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-	public void switchCounterClockwise(FireSwitch fs) {
-		fs.setState(new OffState());
-		System.out.println(&quot;small -&gt; off&quot;);
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">SmallState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;medium -&gt; small&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-}
-</code></pre>
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LargeState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-public class MediumState implements State {
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">OffState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;large -&gt; off&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-	public void switchClockwise(FireSwitch fs) {
-		fs.setState(new LargeState());
-		System.out.println(&quot;medium -&gt; large&quot;);
-	}
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">MediumState</span><span class="o">());</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;large -&gt; medium&#34;</span><span class="o">);</span>
+	<span class="o">}</span>
 
-	public void switchCounterClockwise(FireSwitch fs) {
-		fs.setState(new SmallState());
-		System.out.println(&quot;medium -&gt; small&quot;);
-	}
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-}
-</code></pre>
+<span class="cm">/**
+</span><span class="cm"> * 
+</span><span class="cm"> *
+</span><span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">FireSwitch</span> <span class="n">fs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FireSwitch</span><span class="o">();</span>
 
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">();</span>
 
-public class LargeState implements State {
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;-----------------------&#34;</span><span class="o">);</span>
 
-	public void switchClockwise(FireSwitch fs) {
-		fs.setState(new OffState());
-		System.out.println(&quot;large -&gt; off&quot;);
-	}
-
-	public void switchCounterClockwise(FireSwitch fs) {
-		fs.setState(new MediumState());
-		System.out.println(&quot;large -&gt; medium&quot;);
-	}
-
-}
-</code></pre>
-
-<pre><code class="language-java">package org.buzheng.study.pattern.state;
-
-/**
- * 
- *
- */
-public class Main {
-	public static void main(String[] args) {
-		FireSwitch fs = new FireSwitch();
-
-		fs.switchClockwise();
-		fs.switchClockwise();
-		fs.switchClockwise();
-		fs.switchClockwise();
-
-		System.out.println(&quot;-----------------------&quot;);
-
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-		fs.switchCounterClockwise();
-	}
-}
-</code></pre>
-
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>&nbsp;</p><ul class="pa0">
   
    <li class="list">

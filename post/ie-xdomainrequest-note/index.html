@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">IE XDomainRequest 学习笔记</h1>
+      
+      <h1 class="f1 mb1">IE XDomainRequest 学习笔记</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-07-13T00:00:00Z">July 13, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>W3C CORS（跨域资源共享）是对于跨域请求的一个规范，目前各个主流浏览器都实现了这个规范，IE8开始，增加了XDomainRequest作为跨域请求的对象，而Firefox与Chrom则CORS直接实现在XMLHttpRequest对象中，更方便使用。不过IE10中，XMLHttpRequest对象也实现了CORS。本文主要总结 XDomainRequest 对象一些使用方法。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>W3C CORS（跨域资源共享）是对于跨域请求的一个规范，目前各个主流浏览器都实现了这个规范，IE8开始，增加了XDomainRequest作为跨域请求的对象，而Firefox与Chrom则CORS直接实现在XMLHttpRequest对象中，更方便使用。不过IE10中，XMLHttpRequest对象也实现了CORS。本文主要总结 XDomainRequest 对象一些使用方法。</p>
 
 <p>XDomainRequest 是个简单的实现，他仅有有限的几个方法供我们来调用，支持少数事件但足够。</p>
 
@@ -141,47 +143,37 @@
 </ul>
 
 <p>以下是个一个典型的代码片段</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&#34;http://localhost:8084/Server/HandlerServlet&#34;</span><span class="p">;</span>
 
-<pre><code class="language-javascript">var url = &quot;http://localhost:8084/Server/HandlerServlet&quot;;
+<span class="kd">var</span> <span class="nx">xdr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XDomainRequest</span><span class="p">();</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>			
+	<span class="nx">alert</span><span class="p">(</span><span class="nx">xdr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;error&#34;</span><span class="p">);</span>
+<span class="p">};</span>
 
-var xdr = new XDomainRequest();
-xdr.onload = function() {			
-	alert(xdr.responseText);
-};
-xdr.onerror = function() {
-	alert(&quot;error&quot;);
-};
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">ontimeout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;timeout&#34;</span><span class="p">);</span>
+<span class="p">};</span>
 
-xdr.timeout = 1000;
-xdr.ontimeout = function() {
-	alert(&quot;timeout&quot;);
-};
-
-xdr.open(&quot;get&quot;, url);
-xdr.send();
-</code></pre>
-
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;get&#34;</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+</code></pre></div>
 <p>注意，使用跨域的时候，如果需要使用跨域请求返回的内容，则需添加响应头 Access-Control-Allow-Origin:* ，* 代表了允许任何域使用响应的内容。在Java中的做法如下:</p>
-
-<pre><code class="language-java">response.addHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">response</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">&#34;Access-Control-Allow-Origin&#34;</span><span class="o">,</span> <span class="s">&#34;*&#34;</span><span class="o">);</span></code></pre></div>
 <p>上面是使用 GET 请求，然后再说一下使用 POST 请求的方式，这里有需要注意的地方，使用 POST 请求的代码片段如下：</p>
-
-<pre><code class="language-javascript">xdr.open(&quot;post&quot;, url);
-var postData = encodeURI(JSON.stringify(data));
-xdr.send(&quot;num=1000&quot;);
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">xdr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;post&#34;</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">postData</span> <span class="o">=</span> <span class="nb">encodeURI</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&#34;num=1000&#34;</span><span class="p">);</span>
+</code></pre></div>
 <p>这里并没有什么需要注意的地方，需要注意的地方在服务端，在服务端你并不能从参数中获取到 POST 的数据，在java中你并不能通过 request.getParameter来获得num的内容，你只能从流里面读取出来，然后在自行解析，代码片段如下：</p>
-
-<pre><code class="language-java">BufferedReader br = request.getReader();
-String s = null;
-while ((s = br.readLine()) != null) {
-	System.out.println(s);
-}
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getReader</span><span class="o">();</span>
+<span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="k">while</span> <span class="o">((</span><span class="n">s</span> <span class="o">=</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+<span class="o">}</span></code></pre></div>
 <p>这可能是 XDomainRequest 的一个bug，也可能是故意这么实现的，这我们就不深究了，知道如何获取数据就可以了。</p>
 
 <p>不管如何，XDomainRequest毕竟给我提供了一个跨域请求的方式，在Ajax开发中，如果有跨域请求，且浏览器版本在IE10以下， XDomainRequest 给了我们一个捷径。</p>

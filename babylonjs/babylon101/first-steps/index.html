@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         BABYLONJS 教程
       </p>
-      <h1 class="f1 athelas mb1">迈出第一步</h1>
+      
+      <h1 class="f1 mb1">迈出第一步</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-21T22:00:00Z">March 21, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Babylon.JS 是使用 HTML5 canvas 元素在 Web 上编写 3D 应用的一个不错的选择。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Babylon.JS 是使用 HTML5 canvas 元素在 Web 上编写 3D 应用的一个不错的选择。</p>
 
 <h2 id="playground">Playground</h2>
 
@@ -138,28 +140,26 @@
 <p>Playground 是一个网站，其中有你创建自己的场景需要的一切东西，或者你可以编辑现有的一个例子。点击查看<a href="https://doc.babylonjs.com/features/Playground">关于 Playground 的更多信息</a>。</p>
 
 <p>在 Playground 内创建场景的模板是：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">createScene</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
-<pre><code class="language-javascript">var createScene = function () {
+    <span class="c1">// Create the scene space
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Scene</span><span class="p">(</span><span class="nx">engine</span><span class="p">);</span>
 
-    // Create the scene space
-    var scene = new BABYLON.Scene(engine);
+    <span class="c1">// Add a camera to the scene and attach it to the canvas
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">camera</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">ArcRotateCamera</span><span class="p">(</span><span class="s2">&#34;Camera&#34;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">.</span><span class="nx">Zero</span><span class="p">(),</span> <span class="nx">scene</span><span class="p">);</span>
+    <span class="nx">camera</span><span class="p">.</span><span class="nx">attachControl</span><span class="p">(</span><span class="nx">canvas</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-    // Add a camera to the scene and attach it to the canvas
-    var camera = new BABYLON.ArcRotateCamera(&quot;Camera&quot;, Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
-    camera.attachControl(canvas, true);
+    <span class="c1">// Add lights to the scene
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">light1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">HemisphericLight</span><span class="p">(</span><span class="s2">&#34;light1&#34;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nx">scene</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">light2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">PointLight</span><span class="p">(</span><span class="s2">&#34;light2&#34;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nx">scene</span><span class="p">);</span>
 
-    // Add lights to the scene
-    var light1 = new BABYLON.HemisphericLight(&quot;light1&quot;, new BABYLON.Vector3(1, 1, 0), scene);
-    var light2 = new BABYLON.PointLight(&quot;light2&quot;, new BABYLON.Vector3(0, 1, -1), scene);
+    <span class="c1">// This is where you create and manipulate meshes
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">sphere</span> <span class="o">=</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">MeshBuilder</span><span class="p">.</span><span class="nx">CreateSphere</span><span class="p">(</span><span class="s2">&#34;sphere&#34;</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">scene</span><span class="p">);</span>
 
-    // This is where you create and manipulate meshes
-    var sphere = BABYLON.MeshBuilder.CreateSphere(&quot;sphere&quot;, {}, scene);
+    <span class="k">return</span> <span class="nx">scene</span><span class="p">;</span>
 
-    return scene;
-
-};
-</code></pre>
-
+<span class="p">};</span>
+</code></pre></div>
 <p>您需要的其他一切都已经在 Playground 内处理好了。</p>
 
 <p><a href="http://www.babylonjs-playground.com/#WG9OY#1">以上代码的 Playground 示例</a></p>
@@ -173,82 +173,79 @@
 <p>最后，添加代码来调用场景。这使得引擎能够在循环中连续渲染场景，并在浏览器调整大小时调整其大小。</p>
 
 <p>HTML 模板</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">xmlns</span><span class="o">=</span><span class="s">&#34;http://www.w3.org/1999/xhtml&#34;</span><span class="p">&gt;</span>
 
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;Content-Type&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;text/html; charset=utf-8&#34;</span><span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Babylon Template<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
 
-    &lt;head&gt;
-        &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;
-        &lt;title&gt;Babylon Template&lt;/title&gt;
+        <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+            <span class="nt">html</span><span class="o">,</span> <span class="nt">body</span> <span class="p">{</span>
+                <span class="k">overflow</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
+                <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+                <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+                <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
 
-        &lt;style&gt;
-            html, body {
-                overflow: hidden;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
+            <span class="p">#</span><span class="nn">renderCanvas</span> <span class="p">{</span>
+                <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+                <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+                <span class="n">touch-action</span><span class="p">:</span> <span class="kc">none</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
 
-            #renderCanvas {
-                width: 100%;
-                height: 100%;
-                touch-action: none;
-            }
-        &lt;/style&gt;
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://preview.babylonjs.com/babylon.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://code.jquery.com/pep/0.4.3/pep.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
 
-        &lt;script src=&quot;https://preview.babylonjs.com/babylon.js&quot;&gt;&lt;/script&gt;
-        &lt;script src=&quot;https://preview.babylonjs.com/loaders/babylonjs.loaders.min.js&quot;&gt;&lt;/script&gt;
-        &lt;script src=&quot;https://code.jquery.com/pep/0.4.3/pep.js&quot;&gt;&lt;/script&gt;
-    &lt;/head&gt;
+   <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
 
-   &lt;body&gt;
+    <span class="p">&lt;</span><span class="nt">canvas</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;renderCanvas&#34;</span> <span class="na">touch-action</span><span class="o">=</span><span class="s">&#34;none&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">canvas</span><span class="p">&gt;</span> //touch-action=&#34;none&#34; for best results from PEP
 
-    &lt;canvas id=&quot;renderCanvas&quot; touch-action=&quot;none&quot;&gt;&lt;/canvas&gt; //touch-action=&quot;none&quot; for best results from PEP
+    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="kd">var</span> <span class="nx">canvas</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;renderCanvas&#34;</span><span class="p">);</span> <span class="c1">// Get the canvas element 
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">engine</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Engine</span><span class="p">(</span><span class="nx">canvas</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span> <span class="c1">// Generate the BABYLON 3D engine
+</span><span class="c1"></span>
+        <span class="cm">/******* Add the create scene function ******/</span>
+        <span class="kd">var</span> <span class="nx">createScene</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
-    &lt;script&gt;
-        var canvas = document.getElementById(&quot;renderCanvas&quot;); // Get the canvas element 
-        var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+            <span class="c1">// Create the scene space
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Scene</span><span class="p">(</span><span class="nx">engine</span><span class="p">);</span>
 
-        /******* Add the create scene function ******/
-        var createScene = function () {
+            <span class="c1">// Add a camera to the scene and attach it to the canvas
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">camera</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">ArcRotateCamera</span><span class="p">(</span><span class="s2">&#34;Camera&#34;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="nx">scene</span><span class="p">);</span>
+            <span class="nx">camera</span><span class="p">.</span><span class="nx">attachControl</span><span class="p">(</span><span class="nx">canvas</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-            // Create the scene space
-            var scene = new BABYLON.Scene(engine);
+            <span class="c1">// Add lights to the scene
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">light1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">HemisphericLight</span><span class="p">(</span><span class="s2">&#34;light1&#34;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nx">scene</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">light2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">PointLight</span><span class="p">(</span><span class="s2">&#34;light2&#34;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="nx">scene</span><span class="p">);</span>
 
-            // Add a camera to the scene and attach it to the canvas
-            var camera = new BABYLON.ArcRotateCamera(&quot;Camera&quot;, Math.PI / 2, Math.PI / 2, 2, new BABYLON.Vector3(0,0,5), scene);
-            camera.attachControl(canvas, true);
+            <span class="c1">// Add and manipulate meshes in the scene
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">sphere</span> <span class="o">=</span> <span class="nx">BABYLON</span><span class="p">.</span><span class="nx">MeshBuilder</span><span class="p">.</span><span class="nx">CreateSphere</span><span class="p">(</span><span class="s2">&#34;sphere&#34;</span><span class="p">,</span> <span class="p">{</span><span class="nx">diameter</span><span class="o">:</span><span class="mi">2</span><span class="p">},</span> <span class="nx">scene</span><span class="p">);</span>
 
-            // Add lights to the scene
-            var light1 = new BABYLON.HemisphericLight(&quot;light1&quot;, new BABYLON.Vector3(1, 1, 0), scene);
-            var light2 = new BABYLON.PointLight(&quot;light2&quot;, new BABYLON.Vector3(0, 1, -1), scene);
+            <span class="k">return</span> <span class="nx">scene</span><span class="p">;</span>
+        <span class="p">};</span>
+        <span class="cm">/******* End of the create scene function ******/</span>    
 
-            // Add and manipulate meshes in the scene
-            var sphere = BABYLON.MeshBuilder.CreateSphere(&quot;sphere&quot;, {diameter:2}, scene);
+        <span class="kd">var</span> <span class="nx">scene</span> <span class="o">=</span> <span class="nx">createScene</span><span class="p">();</span> <span class="c1">//Call the createScene function
+</span><span class="c1"></span>
+        <span class="c1">// Register a render loop to repeatedly render the scene
+</span><span class="c1"></span>        <span class="nx">engine</span><span class="p">.</span><span class="nx">runRenderLoop</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> 
+                <span class="nx">scene</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+        <span class="p">});</span>
 
-            return scene;
-        };
-        /******* End of the create scene function ******/    
+        <span class="c1">// Watch for browser/canvas resize events
+</span><span class="c1"></span>        <span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;resize&#34;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> 
+                <span class="nx">engine</span><span class="p">.</span><span class="nx">resize</span><span class="p">();</span>
+        <span class="p">});</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
-        var scene = createScene(); //Call the createScene function
+   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 
-        // Register a render loop to repeatedly render the scene
-        engine.runRenderLoop(function () { 
-                scene.render();
-        });
-
-        // Watch for browser/canvas resize events
-        window.addEventListener(&quot;resize&quot;, function () { 
-                engine.resize();
-        });
-    &lt;/script&gt;
-
-   &lt;/body&gt;
-
-&lt;/html&gt;
-</code></pre>
-
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
 <h2 id="笔记">笔记</h2>
 
 <p>上面的示例使用较新的 <code>MeshBuilder</code> 方法创建形状，其中形状的变量在 <code>options</code> 对象参数中设置，并且比旧形式的 <code>BABYLON.Mesh.Create ....</code> 具有一些优势，它使用形状变量的参数列表。大多数 Playground 都使用旧方法，因为许多是在 <code>MeshBuilder</code> 存在之前创建的。</p>

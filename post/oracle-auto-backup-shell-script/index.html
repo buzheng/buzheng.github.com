@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,62 +128,56 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Oracle 自动备份脚本</h1>
+      
+      <h1 class="f1 mb1">Oracle 自动备份脚本</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-06-18T00:00:00Z">June 18, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本脚本的主要思路是通过 oracle 字典的 exp 命令将数据库导出为 dmp 文件，然后将 dmp 文件打包压缩成 tar.gz 文件，最后将文件 ftp 到远程服务器上。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本脚本的主要思路是通过 oracle 字典的 exp 命令将数据库导出为 dmp 文件，然后将 dmp 文件打包压缩成 tar.gz 文件，最后将文件 ftp 到远程服务器上。</p>
 
 <h2 id="建立脚本文件">建立脚本文件</h2>
 
 <blockquote>
 <p>使用 oracle 用户</p>
 </blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">vi /home/oracle/backup/backup.sh
 
-<pre><code class="language-shell">vi /home/oracle/backup/backup.sh
+<span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nb">export</span> <span class="nv">ORACLE_HOME</span><span class="o">=</span>/u01/app/oracle
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ORACLE_HOME</span>/bin
+<span class="nb">export</span> <span class="nv">ORACLE_SID</span><span class="o">=</span>orcl
 
-#!/bin/bash
+<span class="nv">today</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d<span class="k">)</span>
 
-export ORACLE_HOME=/u01/app/oracle
-export PATH=$PATH:$ORACLE_HOME/bin
-export ORACLE_SID=orcl
+<span class="nb">cd</span> /home/oracle/backup
+exp xxx/xxx123 <span class="nv">file</span><span class="o">=</span>xxx-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.dmp <span class="nv">log</span><span class="o">=</span>xxx-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.log
+tar -zcf xxx-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.tar.gz xxx-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.dmp xxx-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.log --remove-files
 
-today=$(date +%Y%m%d)
+exp yyy/yyy123 <span class="nv">file</span><span class="o">=</span>yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.dmp <span class="nv">log</span><span class="o">=</span>yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.log
+tar -zcf yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.tar.gz yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.dmp yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.log --remove-files
 
-cd /home/oracle/backup
-exp xxx/xxx123 file=xxx-${today}.dmp log=xxx-${today}.log
-tar -zcf xxx-${today}.tar.gz xxx-${today}.dmp xxx-${today}.log --remove-files
-
-exp yyy/yyy123 file=yyy-${today}.dmp log=yyy-${today}.log
-tar -zcf yyy-${today}.tar.gz yyy-${today}.dmp yyy-${today}.log --remove-files
-
-ftp -i -v -n 192.168.1.10 &lt;&lt;END
-user oracle oracle
-binary
-mput xxx-${today}.tar.gz yyy-${today}.tar.gz
-bye
-END
-</code></pre>
-
+ftp -i -v -n <span class="m">192</span>.168.1.10 <span class="s">&lt;&lt;END
+</span><span class="s">user oracle oracle
+</span><span class="s">binary
+</span><span class="s">mput xxx-${today}.tar.gz yyy-${today}.tar.gz
+</span><span class="s">bye
+</span><span class="s">END</span></code></pre></div>
 <h2 id="设置每天自动备份">设置每天自动备份</h2>
 
 <blockquote>
 <p>使用 oracle 用户</p>
 </blockquote>
-
-<pre><code class="language-shell">crontab -e
-0 3 * * * /home/oracle/backup/backup.sh &gt;&gt; /home/oracle/backup/backup.log 2&gt;&amp;1
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">crontab -e
+<span class="m">0</span> <span class="m">3</span> * * * /home/oracle/backup/backup.sh &gt;&gt; /home/oracle/backup/backup.log <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span></code></pre></div>
 <blockquote>
 <p>使用 root 用户</p>
 </blockquote>
-
-<pre><code class="language-shell">service crontab restart
-</code></pre><ul class="pa0">
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">service crontab restart</code></pre></div><ul class="pa0">
   
    <li class="list">
      <a href="/tags/linux" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Linux</a>

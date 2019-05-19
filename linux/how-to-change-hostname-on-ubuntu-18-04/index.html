@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -53,7 +53,7 @@
 
 <meta itemprop="datePublished" content="2019-03-18T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-18T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="214">
+<meta itemprop="wordCount" content="212">
 
 
 
@@ -70,7 +70,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上更改主机名</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上更改主机名</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-18T08:00:00&#43;08:00">March 18, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程将指导您在 Ubuntu 18.04 系统上完成更改主机名的过程。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程将指导您在 Ubuntu 18.04 系统上完成更改主机名的过程。</p>
 
 <p>主机名在安装 Ubuntu 操作系统时设置，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。</p>
 
@@ -164,21 +166,15 @@
 <h2 id="显示当前主机名">显示当前主机名</h2>
 
 <p>要查看当前主机名，请输入以下命令：</p>
-
-<pre><code class="language-bash">hostnamectl
-</code></pre>
-
-<pre><code class="language-bash">   Static hostname: ubuntu1804.localdomain
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">hostnamectl</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">   Static hostname: ubuntu1804.localdomain
          Icon name: computer-vm
            Chassis: vm
         Machine ID: 6f17445f53074505a008c9abd8ed64a5
            Boot ID: 1c769ab73b924a188c5caeaf8c72e0f4
     Virtualization: kvm
-  Operating System: Ubuntu 18.04 LTS
-            Kernel: Linux 4.15.0-22-generic
-      Architecture: x86-64
-</code></pre>
-
+  Operating System: Ubuntu <span class="m">18</span>.04 LTS
+            Kernel: Linux <span class="m">4</span>.15.0-22-generic
+      Architecture: x86-64</code></pre></div>
 <p>如上所示，当前主机名设置为 ubuntu1804.localdomain 。</p>
 
 <h2 id="更改主机名">更改主机名</h2>
@@ -190,75 +186,48 @@
 <p>在 Ubuntu 18.04 中，我们可以使用命令 <code>hostnamectl</code> 更改系统主机名和相关设置。</p>
 
 <p>例如，我们要将系统静态主机名更改为 buzheng ，我们可以使用以下命令：</p>
-
-<pre><code class="language-bash">sudo hostnamectl set-hostname buzheng
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo hostnamectl set-hostname buzheng</code></pre></div>
 <p><code>hostnamectl</code> 命令不产生输出。成功时，返回 0 ，否则返回非零故障代码。</p>
 
 <h3 id="编辑-etc-hosts-文件">编辑 <code>/etc/hosts</code> 文件</h3>
 
 <p>打开 <code>/etc/hosts</code> 文件并将旧主机名更改为新主机名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">127</span>.0.0.1   localhost
+<span class="m">127</span>.0.0.1   buzheng
 
-<pre><code class="language-bash">127.0.0.1   localhost
-127.0.0.1   buzheng
-
-# The following lines are desirable for IPv6 capable hosts
+<span class="c1"># The following lines are desirable for IPv6 capable hosts</span>
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-</code></pre>
-
+ff02::2 ip6-allrouters</code></pre></div>
 <h3 id="编辑-cloud-cfg-文件">编辑 cloud.cfg 文件。</h3>
 
 <p>如果安装了软件包 <code>cloud-init</code> ，您还需要编辑 <code>/etc/cloud/cloud.cfg</code> 文件。此软件包通常默认安装在由云提供商（如 AWS ）提供的映像中，用于处理云实例的初始化。</p>
 
 <p>要检查是否已安装软件包，请运行以下 ls 命令：</p>
-
-<pre><code class="language-bash">ls -l /etc/cloud/cloud.cfg
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls -l /etc/cloud/cloud.cfg</code></pre></div>
 <p>如果看到以下输出，则表示未安装软件包，无需进一步操作。</p>
-
-<pre><code class="language-bash">ls: cannot access '/etc/cloud/cloud.cfg': No such file or directory
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls: cannot access <span class="s1">&#39;/etc/cloud/cloud.cfg&#39;</span>: No such file or directory</code></pre></div>
 <p>如果安装了软件包，输出将如下所示：</p>
-
-<pre><code class="language-bash">-rw-r--r-- 1 root root 3169 Apr 27 09:30 /etc/cloud/cloud.cfg
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">-rw-r--r-- <span class="m">1</span> root root <span class="m">3169</span> Apr <span class="m">27</span> <span class="m">09</span>:30 /etc/cloud/cloud.cfg</code></pre></div>
 <p>在这种情况下，您需要打开 <code>/etc/cloud/cloud.cfg</code> 文件：</p>
-
-<pre><code class="language-bash">sudo nano /etc/cloud/cloud.cfg
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/cloud/cloud.cfg</code></pre></div>
 <p>搜索 <code>preserve_hostname</code> , 更改 false 为 true ：</p>
-
-<pre><code class="language-bash"># This will cause the set+update hostname module to not operate (if true)
-preserve_hostname: true
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># This will cause the set+update hostname module to not operate (if true)</span>
+preserve_hostname: true</code></pre></div>
 <p>保存文件并关闭编辑器。</p>
 
 <h2 id="验证更改">验证更改</h2>
 
 <p>要验证主机名是否已成功更改，同样使用以下 <code>hostnamectl</code> 命令：</p>
-
-<pre><code class="language-bash">hostnamectl
-</code></pre>
-
-<pre><code class="language-bash">   Static hostname: buzheng
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">hostnamectl</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">   Static hostname: buzheng
          Icon name: computer-vm
            Chassis: vm
         Machine ID: 6f17445f53074505a008c9abd8ed64a5
            Boot ID: 1c769ab73b924a188c5caeaf8c72e0f4
     Virtualization: kvm
-  Operating System: Ubuntu 18.04 LTS
-            Kernel: Linux 4.15.0-22-generic
-      Architecture: x86-64
-</code></pre>
-
+  Operating System: Ubuntu <span class="m">18</span>.04 LTS
+            Kernel: Linux <span class="m">4</span>.15.0-22-generic
+      Architecture: x86-64</code></pre></div>
 <p>您应该能在控制台上看到新的主机名称。</p>
 
 <h2 id="结论">结论</h2>

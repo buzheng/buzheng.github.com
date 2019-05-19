@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -45,7 +45,7 @@
 
 <meta itemprop="datePublished" content="2019-03-13T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-13T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="542">
+<meta itemprop="wordCount" content="540">
 
 
 
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</h1>
+      
+      <h1 class="f1 mb1">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 来保护 Nginx</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-13T06:00:00&#43;08:00">March 13, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Let&rsquo;s Encrypt 是由 Internet Security Research Group (ISRG) 开发的免费开放证书。今天几乎所有浏览器都信任 Let&rsquo;s Encrypt 颁发的证书。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Let&rsquo;s Encrypt 是由 Internet Security Research Group (ISRG) 开发的免费开放证书。今天几乎所有浏览器都信任 Let&rsquo;s Encrypt 颁发的证书。</p>
 
 <p>在本教程中，我们将提供有关如何使用 Ubuntu 18.04 上的 certbot 工具使用 Let&rsquo;s Encrypt 来保护您的 Nginx 的分步说明。</p>
 
@@ -154,18 +156,12 @@
 <p>Certbot 是一个功能齐全且易于使用的工具，可以自动完成获取和更新 Let&rsquo;s Encrypt SSL 证书和配置 Web 服务器以使用证书的任务。 certbot 包包含在 Ubuntu 的自有存储库中。</p>
 
 <p>更新软件包列表并安装 certbot 软件包：</p>
-
-<pre><code class="language-bash">sudo apt update
-sudo apt install certbot
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
+sudo apt install certbot</code></pre></div>
 <h2 id="生成强-dh-diffie-hellman-组">生成强 Dh (Diffie-Hellman)组</h2>
 
 <p>Diffie-Hellman 密钥交换(DH)是一种在不安全的通信信道上安全地交换密码密钥的方法。我们将生成一组新的 2048 位 DH 参数以加强安全性：</p>
-
-<pre><code class="language-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem <span class="m">2048</span></code></pre></div>
 <blockquote>
 <p>如果您愿意，可以将大小更改为 4096 位，但在这种情况下，生成可能需要超过 30 分钟，具体取决于各自的系统。</p>
 </blockquote>
@@ -177,95 +173,64 @@ sudo apt install certbot
 <p>为了使它更简单，我们将把所有对 <code>.well-known/acme-challenge</code> 的 HTTP 请求都映射到单独的目录 <code>/var/lib/letsencrypt</code> 。</p>
 
 <p>以下命令将创建目录并使让 Nginx 服务器对该目录有写入权限。</p>
-
-<pre><code class="language-bash">mkdir -p /var/lib/letsencrypt/.well-known
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /var/lib/letsencrypt/.well-known
 chgrp www-data /var/lib/letsencrypt
-chmod g+s /var/lib/letsencrypt
-</code></pre>
-
+chmod g+s /var/lib/letsencrypt</code></pre></div>
 <p>为避免重复代码，请创建以下两个片段，我们将在所有 Nginx 服务器块文件中包含这些片段。</p>
 
 <p>打开文本编辑器并创建第一个片段 <code>/etc/nginx/snippets/letsencrypt.conf</code> ：</p>
-
-<pre><code class="language-bash">sudo nano /etc/nginx/snippets/letsencrypt.conf
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/snippets/letsencrypt.conf</code></pre></div>
 <p>文件的内容如下：</p>
-
-<pre><code class="language-nginx">location ^~ /.well-known/acme-challenge/ {
-  allow all;
-  root /var/lib/letsencrypt/;
-  default_type &quot;text/plain&quot;;
-  try_files $uri =404;
-}
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">location</span> <span class="s">^~</span> <span class="s">/.well-known/acme-challenge/</span> <span class="p">{</span>
+  <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+  <span class="kn">root</span> <span class="s">/var/lib/letsencrypt/</span><span class="p">;</span>
+  <span class="kn">default_type</span> <span class="s">&#34;text/plain&#34;</span><span class="p">;</span>
+  <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 <p>创建第二个代码段 <code>/etc/nginx/snippets/ssl.conf</code> ，其中包括 Mozilla 推荐的配置，启用了 OCSP 装订, HTTP Strict Transport Security(HSTS), 并强制使用少数的几个安全的 HTTP 标头。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/snippets/ssl.conf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">ssl_dhparam</span> <span class="s">/etc/ssl/certs/dhparam.pem</span><span class="p">;</span>
 
-<pre><code class="language-bash">sudo nano /etc/nginx/snippets/ssl.conf
-</code></pre>
+<span class="k">ssl_session_timeout</span> <span class="s">1d</span><span class="p">;</span>
+<span class="k">ssl_session_cache</span> <span class="s">shared:SSL:50m</span><span class="p">;</span>
+<span class="k">ssl_session_tickets</span> <span class="no">off</span><span class="p">;</span>
 
-<pre><code class="language-nginx">ssl_dhparam /etc/ssl/certs/dhparam.pem;
+<span class="k">ssl_protocols</span> <span class="s">TLSv1</span> <span class="s">TLSv1.1</span> <span class="s">TLSv1.2</span><span class="p">;</span>
+<span class="k">ssl_ciphers</span> <span class="s">&#39;ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS&#39;</span><span class="p">;</span>
+<span class="k">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
 
-ssl_session_timeout 1d;
-ssl_session_cache shared:SSL:50m;
-ssl_session_tickets off;
+<span class="k">ssl_stapling</span> <span class="no">on</span><span class="p">;</span>
+<span class="k">ssl_stapling_verify</span> <span class="no">on</span><span class="p">;</span>
+<span class="k">resolver</span> <span class="mi">8</span><span class="s">.8.8.8</span> <span class="mi">8</span><span class="s">.8.4.4</span> <span class="s">valid=300s</span><span class="p">;</span>
+<span class="k">resolver_timeout</span> <span class="s">30s</span><span class="p">;</span>
 
-ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
-ssl_prefer_server_ciphers on;
-
-ssl_stapling on;
-ssl_stapling_verify on;
-resolver 8.8.8.8 8.8.4.4 valid=300s;
-resolver_timeout 30s;
-
-add_header Strict-Transport-Security &quot;max-age=15768000; includeSubdomains; preload&quot;;
-add_header X-Frame-Options SAMEORIGIN;
-add_header X-Content-Type-Options nosniff;
-</code></pre>
-
+<span class="k">add_header</span> <span class="s">Strict-Transport-Security</span> <span class="s">&#34;max-age=15768000</span><span class="p">;</span> <span class="k">includeSubdomains</span><span class="p">;</span> <span class="k">preload&#34;</span><span class="p">;</span>
+<span class="k">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">SAMEORIGIN</span><span class="p">;</span>
+<span class="k">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">nosniff</span><span class="p">;</span></code></pre></div>
 <p>创建片段后，打开域服务器块并包含 <code>letsencrypt.conf</code> 如下所示的片段：</p>
-
-<pre><code class="language-bash">sudo nano /etc/nginx/sites-available/example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/example.com</code></pre></div>
 <p>/etc/nginx/sites-available/example.com</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+  <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+  <span class="kn">server_name</span> <span class="s">example.com</span> <span class="s">www.example.com</span><span class="p">;</span>
 
-<pre><code class="language-nginx">server {
-  listen 80;
-  server_name example.com www.example.com;
-
-  include snippets/letsencrypt.conf;
-}
-</code></pre>
-
+  <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 <p>要启用新的服务器块文件，我们需要创建从文件到 <code>sites-enabled</code> 目录的符号链接，以便 Nginx 能读取到：</p>
-
-<pre><code class="language-bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/</code></pre></div>
 <p>重新启动 Nginx 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl restart nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
 <p>您现在可以使用 <code>webroot</code> 插件运行 Certbot 并通过发出以下命令获取 SSL 证书文件：</p>
-
-<pre><code class="language-bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com</code></pre></div>
 <p>如果成功获得 SSL 证书， certbot 将打印以下消息：</p>
-
-<pre><code class="language-bash">IMPORTANT NOTES:
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/example.com/fullchain.pem
    Your key file has been saved at:
    /etc/letsencrypt/live/example.com/privkey.pem
-   Your cert will expire on 2018-07-28. To obtain a new or tweaked
+   Your cert will expire on <span class="m">2018</span>-07-28. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot
    again. To non-interactively renew *all* of your certificates, run
-   &quot;certbot renew&quot;
+   <span class="s2">&#34;certbot renew&#34;</span>
  - Your account credentials have been saved in your Certbot
    configuration directory at /etc/letsencrypt. You should make a
    secure backup of this folder now. This configuration directory will
@@ -273,76 +238,56 @@ add_header X-Content-Type-Options nosniff;
    making regular backups of this folder is ideal.
  - If you like Certbot, please consider supporting our work by:
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le
-</code></pre>
-
+   Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le</code></pre></div>
 <p>现在您已拥有证书文件，您可以按如下方式编辑域名服务器块文件 <code>/etc/nginx/sites-available/example.com</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/example.com</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-<pre><code class="language-bash">sudo nano /etc/nginx/sites-available/example.com
-</code></pre>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-<pre><code class="language-nginx">server {
-    listen 80;
-    server_name www.example.com example.com;
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span><span class="p">;</span>
 
-    include snippets/letsencrypt.conf;
-    return 301 https://$host$request_uri;
-}
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
 
-server {
-    listen 443 ssl http2;
-    server_name www.example.com;
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
-    include snippets/letsencrypt.conf;
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
 
-    return 301 https://example.com$request_uri;
-}
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
 
-server {
-    listen 443 ssl http2;
-    server_name example.com;
-
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
-    include snippets/letsencrypt.conf;
-
-    # . . . other code
-}
-</code></pre>
-
+    <span class="c1"># . . . other code
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
 <p>通过上面的配置，我们强制访问域名使用 HTTPS, 并从 www 重定向到非 www 版本。</p>
 
 <p>重新加载 Nginx 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl reload nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
 <h2 id="自动续订-let-s-encrypt-ssl-证书">自动续订 Let&rsquo;s Encrypt SSL 证书</h2>
 
 <p>我们的加密证书有效期为 90 天。要在证书过期之前自动续订证书， certbot 包会创建一个 cronjob ，每天运行两次，并在到期前 30 天自动续订任何证书。</p>
 
 <p>由于我们在续订证书后使用 certbot webroot 插件，因此我们还必须重新加载 nginx 服务。附加 <code>--renew-hook &quot;systemctl reload nginx&quot;</code> 到 <code>/etc/cron.d/certbot</code> 文件，如下所示：</p>
-
-<pre><code class="language-bash">sudo nano /etc/cron.d/certbot
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/cron.d/certbot</code></pre></div>
 <p>/etc/cron.d/certbot</p>
-
-<pre><code class="language-bash">0 */12 * * * root test -x /usr/bin/certbot -a \! -d /run/systemd/system &amp;&amp; perl -e 'sleep int(rand(3600))' &amp;&amp; certbot -q renew --renew-hook &quot;systemctl reload nginx&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload nginx&#34;</span></code></pre></div>
 <p>要测试续订过程，您可以运行 certbot 时带上参数 <code>--dry-run</code> ：</p>
-
-<pre><code class="language-bash">sudo certbot renew --dry-run
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo certbot renew --dry-run</code></pre></div>
 <p>如果没有错误，则表示续订过程成功。</p>
 
 <h2 id="结论">结论</h2>

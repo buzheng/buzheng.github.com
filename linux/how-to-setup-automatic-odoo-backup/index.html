@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -45,7 +45,7 @@ Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以
 
 <meta itemprop="datePublished" content="2019-03-11T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-11T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="246">
+<meta itemprop="wordCount" content="245">
 
 
 
@@ -58,7 +58,7 @@ Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@ Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何设置 Odoo 自动备份</h1>
+      
+      <h1 class="f1 mb1">如何设置 Odoo 自动备份</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-11T06:00:00&#43;08:00">March 11, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将引导您完成这样的过程：为 Odoo 数据库创建每日自动备份。 Odoo 是最流行的开源 ERP 系统，它使用 Python 编写，使用 PostgreSQL 作为数据库后端。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将引导您完成这样的过程：为 Odoo 数据库创建每日自动备份。 Odoo 是最流行的开源 ERP 系统，它使用 Python 编写，使用 PostgreSQL 作为数据库后端。</p>
 
 <p>Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以保护您的数据，避免在受到潜在的灾难性时丢失。对于任何拥安装了Odoo 的人和企业来说都是绝对至关重要的。</p>
 
@@ -160,15 +162,9 @@ Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以
 <p>现在我们已经知道了如何通过 Odoo 数据库管理界面创建备份，但是如果我们想从命令行使用此工具创建备份，该如何操作呢？答案很简单，使用 <a href="/linux/wget-command-examples/"><code>wget</code><a href="/linux/curl-command-examples/"> 或 </a><code>curl</code></a> 。这两个工具都可以使用 POST 发送数据，我们可以使用它将必要的变量传递给 Odoo 数据库管理工具。</p>
 
 <p>在下面的示例中，我们的主密码是 <code>ADMIN_PASSWORD</code> ，我们要为数据库 <code>DB_NAME</code> 创建一个备份文件 <code>back_up_filename.zip</code>，并将文件将保存在 <code>backup_dir</code> 目录中。</p>
-
-<pre><code class="language-bash">curl -X POST -F 'master_pwd=ADMIN_PASSWORD' -F 'name=DB_NAME' -F 'backup_format=zip' -o /backup_dir/back_up_filename.zip http://localhost:8069/web/database/backup
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -X POST -F <span class="s1">&#39;master_pwd=ADMIN_PASSWORD&#39;</span> -F <span class="s1">&#39;name=DB_NAME&#39;</span> -F <span class="s1">&#39;backup_format=zip&#39;</span> -o /backup_dir/back_up_filename.zip http://localhost:8069/web/database/backup</code></pre></div>
 <p>如果你，喜欢 wget 不喜欢用 curl，你可以使用下面的命令：</p>
-
-<pre><code class="language-bash">wget --post-data 'master_pwd=ADMIN_PASSWORD&amp;name=DB_NAME&amp;backup_format=zip' -O /backup_dir/back_up_filename.zip http://localhost:8069/web/database/backup
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget --post-data <span class="s1">&#39;master_pwd=ADMIN_PASSWORD&amp;name=DB_NAME&amp;backup_format=zip&#39;</span> -O /backup_dir/back_up_filename.zip http://localhost:8069/web/database/backup</code></pre></div>
 <p>如果要从远程位置不是 <code>localhost</code> 创建备份，您需要替换 Odoo 实例的实际 URL 。在这种情况下，建议使用 HTTPS ，因为您不希望密码通过 Internet 以纯文本形式发送。</p>
 
 <p>您可以在通过教程查看有关如何<a href="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/">使用配置 Nginx 作为 Odoo 反向代理</a>的更多信息。</p>
@@ -180,44 +176,34 @@ Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以
 <p>假设我们希望每天凌晨 01:30 备份我们的 Odoo 数据库并保留最新的 7 个备份。</p>
 
 <p>我们要创建一个简单的 bash 脚本 <code>〜/backup_odoo.sh</code>，您可以根据需要对其进行命名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1"># vars</span>
+<span class="nv">BACKUP_DIR</span><span class="o">=</span>~/odoo_backups
+<span class="nv">ODOO_DATABASE</span><span class="o">=</span>db1
+<span class="nv">ADMIN_PASSWORD</span><span class="o">=</span>superadmin_passwd
 
-<pre><code class="language-bash">#!/bin/bash
+<span class="c1"># create a backup directory</span>
+mkdir -p <span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span>
 
-# vars
-BACKUP_DIR=~/odoo_backups
-ODOO_DATABASE=db1
-ADMIN_PASSWORD=superadmin_passwd
-
-# create a backup directory
-mkdir -p ${BACKUP_DIR}
-
-# create a backup
-curl -X POST \
-    -F &quot;master_pwd=${ADMIN_PASSWORD}&quot; \
-    -F &quot;name=${ODOO_DATABASE}&quot; \
-    -F &quot;backup_format=zip&quot; \
-    -o ${BACKUP_DIR}/${ODOO_DATABASE}.$(date +%F).zip \
-    http://localhost:8069/web/database/backup
+<span class="c1"># create a backup</span>
+curl -X POST <span class="se">\
+</span><span class="se"></span>    -F <span class="s2">&#34;master_pwd=</span><span class="si">${</span><span class="nv">ADMIN_PASSWORD</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    -F <span class="s2">&#34;name=</span><span class="si">${</span><span class="nv">ODOO_DATABASE</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    -F <span class="s2">&#34;backup_format=zip&#34;</span> <span class="se">\
+</span><span class="se"></span>    -o <span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">ODOO_DATABASE</span><span class="si">}</span>.<span class="k">$(</span>date +%F<span class="k">)</span>.zip <span class="se">\
+</span><span class="se"></span>    http://localhost:8069/web/database/backup
 
 
-# delete old backups
-find ${BACKUP_DIR} -type f -mtime +7 -name &quot;${ODOO_DATABASE}.*.zip&quot; -delete
-</code></pre>
-
+<span class="c1"># delete old backups</span>
+find <span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si">}</span> -type f -mtime +7 -name <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ODOO_DATABASE</span><span class="si">}</span><span class="s2">.*.zip&#34;</span> -delete</code></pre></div>
 <p>sudo chmod +x ~/backup_odoo.sh</p>
-
-<pre><code>
-&gt; 不要忘了根据您的实际情况更改变量 BACKUP_DIR ， ODOO_DATABASE 和 ADMIN_PASSWORD 的值。
+<div class="highlight"><pre class="chroma">&gt; 不要忘了根据您的实际情况更改变量 BACKUP_DIR ， ODOO_DATABASE 和 ADMIN_PASSWORD 的值。
 
 最后一步是创建一个新的 cron 作业，每天凌晨 01:30 运行：
 
 ```bash
-crontab -e
-</code></pre>
-
-<pre><code class="language-bash">30 1 * * * /home/&lt;yourusername&gt;/backup_odoo.sh
-</code></pre>
-
+crontab -e</pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">30</span> <span class="m">1</span> * * * /home/&lt;yourusername&gt;/backup_odoo.sh</code></pre></div>
 <blockquote>
 <p>不要忘记根据你的实际情况正确的设置备份脚本的名称和路径。</p>
 </blockquote>
@@ -241,20 +227,14 @@ crontab -e
 <p>根据数据库大小和网速，还原过程可能需要一些时间。</p>
 
 <p>我们还可以从命令行恢复数据库：</p>
-
-<pre><code class="language-bash">curl -F 'master_pwd=superadmin_passwd' -F backup_file=@/opt/odoo/odoo_backups/db1.2018-04-14.zip -F 'copy=true' -F 'name=db3' http://localhost:8069/web/database/restore
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -F <span class="s1">&#39;master_pwd=superadmin_passwd&#39;</span> -F <span class="nv">backup_file</span><span class="o">=</span>@/opt/odoo/odoo_backups/db1.2018-04-14.zip -F <span class="s1">&#39;copy=true&#39;</span> -F <span class="s1">&#39;name=db3&#39;</span> http://localhost:8069/web/database/restore</code></pre></div>
 <p>当然，您需要修改上面命令中使用的 Odoo Master 密码，数据库备份的路径和数据库名称。</p>
 
 <p>如果恢复成功，输出应如下所示：</p>
-
-<pre><code class="language-bash">!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">!DOCTYPE HTML PUBLIC <span class="s2">&#34;-//W3C//DTD HTML 3.2 Final//EN&#34;</span>&gt;
 &lt;title&gt;Redirecting...&lt;/title&gt;
 &lt;h1&gt;Redirecting...&lt;/h1&gt;
-&lt;p&gt;You should be redirected automatically to target URL: &lt;a href=&quot;/web/database/manager&quot;&gt;/web/database/manager&lt;/a&gt;.  If not click the link.
-</code></pre>
-
+&lt;p&gt;You should be redirected automatically to target URL: &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;/web/database/manager&#34;</span>&gt;/web/database/manager&lt;/a&gt;.  If not click the link.</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>本教程引导您使用 cronjob 为 Odoo 数据库创建每日自动备份。</p>

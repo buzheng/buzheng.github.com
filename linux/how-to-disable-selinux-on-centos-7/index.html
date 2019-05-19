@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2019-04-28T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-28T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="217">
+<meta itemprop="wordCount" content="216">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上禁用 SELinux</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上禁用 SELinux</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-04-28T05:00:00&#43;08:00">April 28, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>SELinux(<a href="https://selinuxproject.org/page/Main_Page">安全增强型 Linux</a>) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>SELinux(<a href="https://selinuxproject.org/page/Main_Page">安全增强型 Linux</a>) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。</p>
 
 <p>SELinux 策略规则对顶进程和用户如何相互交互以及进程和用户如何与文件交互。</p>
 
@@ -156,11 +158,7 @@
 <h2 id="检查-selinux-状态">检查 SELinux 状态</h2>
 
 <p>要查看当前 SELinux 状态以及系统上正在使用的 SELinux 策略，可以使用以下 <code>sestatus</code> 命令：</p>
-
-<pre><code class="language-console-bash">sestatus
-</code></pre>
-
-<pre><code class="language-output">SELinux status:                 enabled
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sestatus</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">SELinux status:                 enabled
 SELinuxfs mount:                /sys/fs/selinux
 SELinux root directory:         /etc/selinux
 Loaded policy name:             targeted
@@ -168,26 +166,20 @@ Current mode:                   enforcing
 Mode from config file:          enforcing
 Policy MLS status:              enabled
 Policy deny_unknown status:     allowed
-Max kernel policy version:      31
-</code></pre>
-
+Max kernel policy version:      31</code></pre></div>
 <p>您可以从上面的输出中看到 SELinux 已启用并设置为强制模式。</p>
 
 <h2 id="禁用-selinux">禁用 SELinux</h2>
 
 <p>你可以暂时 SELinux 的模式从改变 <code>targeted</code> 到 <code>permissive</code> 使用下面的命令：</p>
-
-<pre><code class="language-console-bash">sudo setenforce 0
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo setenforce 0</code></pre></div>
 <p>但是，此更改仅对当前运行时会话有效。</p>
 
 <p>要在 CentOS 7 系统上永久禁用 SELinux ，请执行以下步骤：</p>
 
 <ol>
 <li><p>打开 <code>/etc/selinux/config</code> 文件并将 <code>SELINUX</code> 设置为 <code>disabled</code> ：</p>
-
-<pre><code class="language-config">    # This file controls the state of SELinux on the system.
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">    # This file controls the state of SELinux on the system.
     # SELINUX= can take one of these three values:
     #       enforcing - SELinux security policy is enforced.
     #       permissive - SELinux prints warnings instead of enforcing.
@@ -196,26 +188,16 @@ Max kernel policy version:      31
     # SELINUXTYPE= can take one of these two values:
     #       targeted - Targeted processes are protected,
     #       mls - Multi Level Security protection.
-    SELINUXTYPE=targeted
-
-</code></pre>
-
+    SELINUXTYPE=targeted</code></pre></div>
 <ol>
 <li>保存文件并重新启动 CentOS 系统：</li>
 </ol>
-
-<pre><code class="language-console-bash">sudo shutdown -r now
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo shutdown -r now</code></pre></div></li>
 
 <li><p>系统启动后，使用以下 <code>sestatus</code> 命令验证更改：</p>
-
-<pre><code class="language-console-bash">sestatus
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sestatus</code></pre></div>
 <p>输出应如下所示：</p>
-
-<pre><code class="language-output">SELinux status:                 disabled
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">SELinux status:                 disabled</code></pre></div></li>
 </ol>
 
 <h2 id="结论">结论</h2>

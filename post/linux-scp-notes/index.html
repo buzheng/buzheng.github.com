@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">scp 命令</h1>
+      
+      <h1 class="f1 mb1">scp 命令</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-09-12T00:00:00Z">September 12, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><code>scp</code> 命令用于在不同 linux 机器之间拷贝/复制文件、目录，是 <code>cp</code> 命令的加强版。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><code>scp</code> 命令用于在不同 linux 机器之间拷贝/复制文件、目录，是 <code>cp</code> 命令的加强版。</p>
 
 <h2 id="基本命令格式和参数">基本命令格式和参数</h2>
 
@@ -152,47 +154,29 @@
 <h2 id="本地复制到远程">本地复制到远程</h2>
 
 <h3 id="复制文件">复制文件</h3>
-
-<pre><code class="language-shell">scp /root/test.txt root@192.168.1.10:/root/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">scp /root/test.txt root@192.168.1.10:/root/</code></pre></div>
 <p>将 /root/test.txt 拷贝到 192.168.1.10 的 /root/ 目录下，文件名还是 text.txt，使用 root 用户，此时会提示输入远程 root 用户的密码。</p>
 
 <h3 id="复制文件并重命名">复制文件并重命名</h3>
-
-<pre><code class="language-shell">scp /root/test.txt root@192.168.1.10:/root/test1.txt
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">scp /root/test.txt root@192.168.1.10:/root/test1.txt</code></pre></div>
 <p>将 /root/test.txt 拷贝到 192.168.1.10 的 /root/ 目录下，文件名还是 text1.txt，使用 root 用户，此时会提示输入远程 root 用户的密码。</p>
 
 <h3 id="复制整个目录">复制整个目录</h3>
-
-<pre><code class="language-shell">scp -r /root/test/ root@192.168.1.10:/root/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">scp -r /root/test/ root@192.168.1.10:/root/</code></pre></div>
 <p>将整个目录 /root/test/ 复制到  192.168.1.10 的 /root/ 下，使用 root 用户，此时会提示输入远程 root 用户的密码。</p>
 
 <h2 id="远程复制到本地">远程复制到本地</h2>
 
 <p>远程复制到本地 与 从本地复制到远程命令类似，不同的是 远程文件作为源文件在前，本地文件作为目标文件在后。</p>
-
-<pre><code class="language-shell">scp root@192.168.1.10:/root/test.txt /root/test.txt 
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">scp root@192.168.1.10:/root/test.txt /root/test.txt </code></pre></div>
 <h2 id="避免每次都输入远程密码">避免每次都输入远程密码</h2>
 
 <p>scp 默认使用 ssh， 每次传输都需要输入远程用户的密码，十分麻烦。但是如果两台机器之间建立了信任关系后，则不需要输入密码，如下</p>
 
 <p>首先在本机上生成配对密钥</p>
-
-<pre><code class="language-shell">ssh-keygen -t rsa 
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">ssh-keygen -t rsa </code></pre></div>
 <p>然后将本机上的公钥文件拷贝到远程机器，并命名为 authorized_keys</p>
-
-<pre><code class="language-shell">scp /root.ssh/id_rsa.pub 192.168.1.10:/root/.ssh/authorized_keys 
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">scp /root.ssh/id_rsa.pub <span class="m">192</span>.168.1.10:/root/.ssh/authorized_keys </code></pre></div>
 <p>以后再传文件就不用输入密码了，包括使用 ssh, sftp 时，都不用输入密码了。</p>
 
 <p>Done.</p><ul class="pa0">

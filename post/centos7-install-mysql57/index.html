@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,65 +122,43 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">CentOS 7 安装 mysql 5.7.10</h1>
+      
+      <h1 class="f1 mb1">CentOS 7 安装 mysql 5.7.10</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2016-01-15T00:00:00Z">January 15, 2016</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。</p>
 
 <h2 id="通过-yum-安装-mysql-社区版">通过 yum 安装 mysql 社区版</h2>
-
-<pre><code>wget http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
+<div class="highlight"><pre class="chroma">wget http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
 yum -y localinstall mysql57-community-release-el7-7.noarch.rpm 
-yum -y install mysql-community-server
-</code></pre>
-
+yum -y install mysql-community-server</pre></div>
 <h2 id="设置服务并启动">设置服务并启动</h2>
-
-<pre><code>systemctl enable mysqld
-systemctl start mysqld
-</code></pre>
-
+<div class="highlight"><pre class="chroma">systemctl enable mysqld
+systemctl start mysqld</pre></div>
 <h2 id="修改数据库编码为-utf8">修改数据库编码为 utf8</h2>
 
 <p>修改 /etc/my.cnf, [mysqld] 分组下添加如下两行</p>
-
-<pre><code>character-set-server=utf8
-collation_server=utf8_unicode_ci
-</code></pre>
-
+<div class="highlight"><pre class="chroma">character-set-server=utf8
+collation_server=utf8_unicode_ci</pre></div>
 <h2 id="修改表名字段不区分大小写">修改表名字段不区分大小写</h2>
 
 <p>修改 /etc/my.cnf, [mysqld] 分组下添加如下行</p>
-
-<pre><code>lower_case_table_names=1
-</code></pre>
-
+<div class="highlight"><pre class="chroma">lower_case_table_names=1</pre></div>
 <h2 id="重启">重启</h2>
-
-<pre><code>systemctl restart mysqld
-</code></pre>
-
+<div class="highlight"><pre class="chroma">systemctl restart mysqld</pre></div>
 <h2 id="修改-root-密码">修改 root 密码</h2>
 
 <p>1、查看安装时的临时密码</p>
-
-<pre><code>grep 'temporary password' /var/log/mysqld.log
-</code></pre>
-
+<div class="highlight"><pre class="chroma">grep &#39;temporary password&#39; /var/log/mysqld.log</pre></div>
 <p>2、利用密码登录进去</p>
-
-<pre><code>mysql -u root -p
-</code></pre>
-
+<div class="highlight"><pre class="chroma">mysql -u root -p</pre></div>
 <p>3、修改root密码（至少8位，大小写混合，含有数字和特殊字符）</p>
-
-<pre><code>alter user 'root'@'localhost' identified by 'MyNewPass4!';
-</code></pre>
-
+<div class="highlight"><pre class="chroma">alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;MyNewPass4!&#39;;</pre></div>
 <p>参考文档：</p>
 
 <ul>

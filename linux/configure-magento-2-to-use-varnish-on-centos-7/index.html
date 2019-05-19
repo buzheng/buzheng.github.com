@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">在 CentOS 7 上配置 Magento 2 使用 Varnish</h1>
+      
+      <h1 class="f1 mb1">在 CentOS 7 上配置 Magento 2 使用 Varnish</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-08T06:00:00&#43;08:00">March 8, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>页面速度或加载时间对于您的在线商店的成功至关重要。加载时间是加载特定页面上的内容所花费的总时间。加载时间越长，转换率越低。这也是 Google 考虑确定搜索引擎排名的最重要因素之一。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>页面速度或加载时间对于您的在线商店的成功至关重要。加载时间是加载特定页面上的内容所花费的总时间。加载时间越长，转换率越低。这也是 Google 考虑确定搜索引擎排名的最重要因素之一。</p>
 
 <p>在第一篇文章中，我们在 CentOS 7 机器上安装了 Magento 2 。在本系列的第二篇文章中，我们将介绍如何安装和配置 Varnish 以使我们的 Magento 商店超级快速。</p>
 
@@ -156,8 +158,7 @@
 <p>我们需要编辑我们在第一篇文章中创建的 Nginx 服务器块来处理 SSL/TLS termination，并作为 Varnish 的后端。</p>
 
 <p><code>/etc/nginx/conf.d/example.com.conf</code></p>
-
-<pre><code class="language-conf">upstream fastcgi_backend {
+<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">upstream fastcgi_backend {
   server   unix:/run/php-fpm/magento.sock;
 }
 
@@ -205,14 +206,11 @@ server {
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Forwarded-Port 443;
     }
-}
-</code></pre>
-
+}</code></pre></div>
 <p>我们还需要从 <code>nginx.conf</code> 文件中删除默认的 Nginx 服务器块。注释掉或删除以下行：</p>
 
 <p><code>/etc/nginx/nginx.conf</code></p>
-
-<pre><code class="language-conf">...
+<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">...
 # server {
 #     listen       80 default_server;
 #     listen       [::]:80 default_server;
@@ -233,62 +231,39 @@ server {
 #         location = /50x.html {
 #     }
 # }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>重新加载 Nginx 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl reload nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
 <h2 id="安装和配置-varnish">安装和配置 Varnish</h2>
 
 <p>Varnish 是一个快速的反向代理 HTTP 加速器，它将位于我们的 Web 服务器前面，它将为我们 Magento 提供全页面缓存的解决方案。</p>
 
 <p>使用以下命令通过 yum 安装 Varnish ：</p>
-
-<pre><code class="language-bash">sudo yum install varnish
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install varnish</code></pre></div>
 <p>配置 Magento 使用 Varnish ：</p>
-
-<pre><code class="language-bash">php /opt/magento/public_html/bin/magento config:set --scope=default --scope-code=0 system/full_page_cache/caching_application 2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">php /opt/magento/public_html/bin/magento config:set --scope<span class="o">=</span>default --scope-code<span class="o">=</span><span class="m">0</span> system/full_page_cache/caching_application <span class="m">2</span></code></pre></div>
 <p>接下来，我们需要生成一个 Varnish 配置文件：</p>
-
-<pre><code class="language-bash">sudo php /opt/magento/public_html/bin/magento varnish:vcl:generate &gt; /etc/varnish/default.vcl
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo php /opt/magento/public_html/bin/magento varnish:vcl:generate &gt; /etc/varnish/default.vcl</code></pre></div>
 <p>上述命令需要以 root 用户或者具有 sudo 权限的用户身份运行，并且将使用默认值创建文件 <code>/etc/varnish/default.vcl</code> ，默认值 <code>localhost</code> 为后端主机， <code>8080</code> 为后端端口。</p>
 
 <p>默认配置的健康检查文件的 url 是错误的。打开 <code>default.vcl</code> 文件并从黄色突出显示的行中删除 <code>/pub</code> ：</p>
 
 <p><code>/etc/varnish/default.vcl</code></p>
-
-<pre><code class="language-conf">...
+<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">...
 .probe = {
-     # .url = &quot;/pub/health_check.php&quot;;
-     .url = &quot;/health_check.php&quot;;
+     # .url = &#34;/pub/health_check.php&#34;;
+     .url = &#34;/health_check.php&#34;;
      .timeout = 2s;
      .interval = 5s;
      .window = 10;
      .threshold = 5;
 }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>默认情况下， Varnish 侦听端口 6081 ，我们需要将其更改为 80 , 修改文件 <code>/etc/varnish/varnish.params</code>：</p>
-
-<pre><code class="language-conf">VARNISH_LISTEN_PORT=80
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">VARNISH_LISTEN_PORT=80</code></pre></div>
 <p>完成修改后，启用 Varnish 服务随机启动并启动服务：</p>
-
-<pre><code class="language-bash">sudo systemctl enable varnish
-sudo systemctl start varnish
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> varnish
+sudo systemctl start varnish</code></pre></div>
 <p>您可以使用该 <code>varnishlog</code> 工具查看实时 Web 请求来调试 Varnish 。</p>
 
 <h2 id="结论">结论</h2>

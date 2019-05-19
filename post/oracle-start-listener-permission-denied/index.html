@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -55,7 +55,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -125,51 +125,47 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Linux 下 ORACLE 启动侦听报错 TNS:permission denied</h1>
+      
+      <h1 class="f1 mb1">Linux 下 ORACLE 启动侦听报错 TNS:permission denied</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-04-02T09:00:00Z">April 2, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
 
 <p>今天开发环境 oracle 启动侦听的时候，出现了 TNS:permission denied 的问题，并最终找到了解决方案，现在共享出来。</p>
 
 <!-- more -->
 
 <h2 id="错误描述">错误描述</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>oracle@oracle ~<span class="o">]</span>$ lsnrctl start     
 
-<pre><code class="language-bash">[oracle@oracle ~]$ lsnrctl start     
+LSNRCTL <span class="k">for</span> Linux: Version <span class="m">11</span>.2.0.1.0 - Production on <span class="m">27</span>-MAR-2015 <span class="m">15</span>:37:59
 
-LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-MAR-2015 15:37:59
-
-Copyright (c) 1991, 2009, Oracle.  All rights reserved.
+Copyright <span class="o">(</span>c<span class="o">)</span> <span class="m">1991</span>, <span class="m">2009</span>, Oracle.  All rights reserved.
 
 Starting /u01/app/oracle/product/11.2.0/dbhome_1/bin/tnslsnr: please wait...
 
-TNSLSNR for Linux: Version 11.2.0.1.0 - Production
+TNSLSNR <span class="k">for</span> Linux: Version <span class="m">11</span>.2.0.1.0 - Production
 System parameter file is /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/listener.ora
 Log messages written to /u01/app/oracle/diag/tnslsnr/oracle/listener/alert/log.xml
-Error listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC1521)))
+Error listening on: <span class="o">(</span><span class="nv">DESCRIPTION</span><span class="o">=(</span><span class="nv">ADDRESS</span><span class="o">=(</span><span class="nv">PROTOCOL</span><span class="o">=</span>IPC<span class="o">)(</span><span class="nv">KEY</span><span class="o">=</span>EXTPROC1521<span class="o">)))</span>
 TNS-12555: TNS:permission denied
  TNS-12560: TNS:protocol adapter error
-  TNS-00525: Insufficient privilege for operation
-   Linux Error: 1: Operation not permitted
+  TNS-00525: Insufficient privilege <span class="k">for</span> operation
+   Linux Error: <span class="m">1</span>: Operation not permitted
 
-Listener failed to start. See the error message(s) above...
-</code></pre>
-
+Listener failed to start. See the error message<span class="o">(</span>s<span class="o">)</span> above...</code></pre></div>
 <h2 id="解决方案">解决方案</h2>
 
 <p>出现这个错误是由于没有 /var/tmp/.oracle 的读写权限引起的。由于开发环境没有严格管理，不知道哪位同学把此目录的所有者改成了root，导致 oracle 用户没有权限操作此目录。使用下面方式修正过来即可。</p>
-
-<pre><code class="language-bash">cd /var/tmp
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/tmp
 chown oracle .oracle
 chgrp oinstall .oracle
-chmod 777 .oracle
-</code></pre>
-
+chmod <span class="m">777</span> .oracle</code></pre></div>
 <blockquote>
 <p>看到网上有资料说 直接干掉 /var/tmp/.oracle 这个目录也是可以的，我没有尝试，不知道效果如何，这里仅作笔记。</p>
 </blockquote>

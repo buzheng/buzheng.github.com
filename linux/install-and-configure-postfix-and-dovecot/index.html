@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -49,7 +49,7 @@ Postfix 是一种开源邮件传输代理（MTA），一种用于发送和接收
 
 <meta itemprop="datePublished" content="2019-03-03T10:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-03T10:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1026">
+<meta itemprop="wordCount" content="1023">
 
 
 
@@ -64,7 +64,7 @@ Postfix 是一种开源邮件传输代理（MTA），一种用于发送和接收
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ Postfix 是一种开源邮件传输代理（MTA），一种用于发送和接收
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">安装和配置 Postfix 和 Dovecot</h1>
+      
+      <h1 class="f1 mb1">安装和配置 Postfix 和 Dovecot</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-03T10:00:00&#43;08:00">March 3, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>这是我们设置和配置邮件服务器系列的第二篇文章。在这篇文章中，我们将向您展示如何安装和配置 Postfix 和 Dovecot，这是我们邮件系统的两个主要组件。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>这是我们设置和配置邮件服务器系列的第二篇文章。在这篇文章中，我们将向您展示如何安装和配置 Postfix 和 Dovecot，这是我们邮件系统的两个主要组件。</p>
 
 <p>Postfix 是一种开源邮件传输代理（MTA），一种用于发送和接收电子邮件的服务。Dovecot 是一个 IMAP / POP3 服务器，在我们的设置中它还将处理本地传递和用户身份验证。</p>
 
@@ -156,131 +158,88 @@ Postfix 是一种开源邮件传输代理（MTA），一种用于发送和接收
 <p>Ubuntu 默认存储库中的 Dovecot 软件包已过时。为了利用该 imap_sieve 模块，我们将从 Dovecot 社区存储库安装 Dovecot。</p>
 
 <p>使用以下 wget 命令将存储库 GPG 密钥添加到 apt 源密钥环：</p>
-
-<pre><code class="language-bash">wget -O- https://repo.dovecot.org/DOVECOT-REPO-GPG | sudo apt-key add -
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget -O- https://repo.dovecot.org/DOVECOT-REPO-GPG <span class="p">|</span> sudo apt-key add -</code></pre></div>
 <p>使用以下命令启用 Dovecot 社区存储库：</p>
-
-<pre><code class="language-bash">echo &quot;deb https://repo.dovecot.org/ce-2.3-latest/ubuntu/$(lsb_release -cs) $(lsb_release -cs) main&quot; | sudo tee -a /etc/apt/sources.list.d/dovecot.list
-</code></pre>
-
-<pre><code class="language-bash">sudo apt update
-sudo debconf-set-selections &lt;&lt;&lt; &quot;postfix postfix/mailname string $(hostname -f)&quot;
-sudo debconf-set-selections &lt;&lt;&lt; &quot;postfix postfix/main_mailer_type string 'Internet Site'&quot;
-sudo apt install postfix postfix-mysql dovecot-imapd dovecot-lmtpd dovecot-pop3d dovecot-mysql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;deb https://repo.dovecot.org/ce-2.3-latest/ubuntu/</span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> main&#34;</span> <span class="p">|</span> sudo tee -a /etc/apt/sources.list.d/dovecot.list</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
+sudo debconf-set-selections <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;postfix postfix/mailname string </span><span class="k">$(</span>hostname -f<span class="k">)</span><span class="s2">&#34;</span>
+sudo debconf-set-selections <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;postfix postfix/main_mailer_type string &#39;Internet Site&#39;&#34;</span>
+sudo apt install postfix postfix-mysql dovecot-imapd dovecot-lmtpd dovecot-pop3d dovecot-mysql</code></pre></div>
 <h2 id="配置-postfix">配置 Postfix</h2>
 
 <p>我们将设置 Postfix 以使用虚拟邮箱和域。</p>
 
 <p>首先创建 <code>sql</code> 配置文件，该文件将指示 postfix 如何访问本系列第一部分中创建的 MySQL 数据库。</p>
-
-<pre><code class="language-bash">sudo mkdir -p /etc/postfix/sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /etc/postfix/sql</code></pre></div>
 <p>打开文本编辑器并创建以下文件：</p>
 
 <p>/etc/postfix/sql/mysql_virtual_domains_maps.cf</p>
-
-<pre><code class="language-config">user = postfixadmin
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">user = postfixadmin
 password = P4ssvv0rD
 hosts = 127.0.0.1
 dbname = postfixadmin
-query = SELECT domain FROM domain WHERE domain='%s' AND active = '1'
-</code></pre>
-
+query = SELECT domain FROM domain WHERE domain=&#39;%s&#39; AND active = &#39;1&#39;</code></pre></div>
 <p>/etc/postfix/sql/mysql_virtual_alias_maps.cf</p>
-
-<pre><code class="language-config">user = postfixadmin
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">user = postfixadmin
 password = P4ssvv0rD
 hosts = 127.0.0.1
 dbname = postfixadmin
-query = SELECT goto FROM alias WHERE address='%s' AND active = '1'
-</code></pre>
-
+query = SELECT goto FROM alias WHERE address=&#39;%s&#39; AND active = &#39;1&#39;</code></pre></div>
 <p>/etc/postfix/sql/mysql_virtual_alias_domain_maps.cf</p>
-
-<pre><code class="language-config">user = postfixadmin
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">user = postfixadmin
 password = P4ssvv0rD
 hosts = 127.0.0.1
 dbname = postfixadmin
-query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' and alias.address = CONCAT('%u', '@', alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active='1'
-</code></pre>
-
+query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = &#39;%d&#39; and alias.address = CONCAT(&#39;%u&#39;, &#39;@&#39;, alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active=&#39;1&#39;</code></pre></div>
 <p>/etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf</p>
-
-<pre><code class="language-config">user = postfixadmin
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">user = postfixadmin
 password = P4ssvv0rD
 hosts = 127.0.0.1
 dbname = postfixadmin
-query  = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' and alias.address = CONCAT('@', alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active='1'
-</code></pre>
-
+query  = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = &#39;%d&#39; and alias.address = CONCAT(&#39;@&#39;, alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active=&#39;1&#39;</code></pre></div>
 <p>/etc/postfix/sql/mysql_virtual_mailbox_maps.cf</p>
-
-<pre><code class="language-config">user = postfixadmin
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">user = postfixadmin
 password = P4ssvv0rD
 hosts = 127.0.0.1
 dbname = postfixadmin
-query = SELECT maildir FROM mailbox WHERE username='%s' AND active = '1'
-</code></pre>
-
+query = SELECT maildir FROM mailbox WHERE username=&#39;%s&#39; AND active = &#39;1&#39;</code></pre></div>
 <p>/etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf</p>
-
-<pre><code class="language-config">user = postfixadmin
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">user = postfixadmin
 password = P4ssvv0rD
 hosts = 127.0.0.1
 dbname = postfixadmin
-query = SELECT maildir FROM mailbox,alias_domain WHERE alias_domain.alias_domain = '%d' and mailbox.username = CONCAT('%u', '@', alias_domain.target_domain) AND mailbox.active = 1 AND alias_domain.active='1'
-</code></pre>
-
+query = SELECT maildir FROM mailbox,alias_domain WHERE alias_domain.alias_domain = &#39;%d&#39; and mailbox.username = CONCAT(&#39;%u&#39;, &#39;@&#39;, alias_domain.target_domain) AND mailbox.active = 1 AND alias_domain.active=&#39;1&#39;</code></pre></div>
 <p>创建SQL配置文件后，更新 postfix 的主配置文件以包含有关存储在 MySQL 数据库中的虚拟域，用户和别名的信息。</p>
-
-<pre><code class="language-bash">sudo postconf -e &quot;virtual_mailbox_domains = mysql:/etc/postfix/sql/mysql_virtual_domains_maps.cf&quot;
-sudo postconf -e &quot;virtual_alias_maps = mysql:/etc/postfix/sql/mysql_virtual_alias_maps.cf, mysql:/etc/postfix/sql/mysql_virtual_alias_domain_maps.cf, mysql:/etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf&quot;
-sudo postconf -e &quot;virtual_mailbox_maps = mysql:/etc/postfix/sql/mysql_virtual_mailbox_maps.cf, mysql:/etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo postconf -e <span class="s2">&#34;virtual_mailbox_domains = mysql:/etc/postfix/sql/mysql_virtual_domains_maps.cf&#34;</span>
+sudo postconf -e <span class="s2">&#34;virtual_alias_maps = mysql:/etc/postfix/sql/mysql_virtual_alias_maps.cf, mysql:/etc/postfix/sql/mysql_virtual_alias_domain_maps.cf, mysql:/etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf&#34;</span>
+sudo postconf -e <span class="s2">&#34;virtual_mailbox_maps = mysql:/etc/postfix/sql/mysql_virtual_mailbox_maps.cf, mysql:/etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf&#34;</span></code></pre></div>
 <blockquote>
 <p>postconf 命令显示配置参数的实际值，更改配置参数值或显示有关 Postfix 邮件系统的其他配置信息。</p>
 </blockquote>
 
 <p>本地投递代理会将传入的电子邮件投递到用户的邮箱。运行以下命令将 Dovecot 的 LMTP 服务设置为默认邮件传递传输：</p>
-
-<pre><code class="language-bash">sudo postconf -e &quot;virtual_transport = lmtp:unix:private/dovecot-lmtp&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo postconf -e <span class="s2">&#34;virtual_transport = lmtp:unix:private/dovecot-lmtp&#34;</span></code></pre></div>
 <p>使用先前生成的 Let’s encrypt SSL 证书设置TL参数：</p>
-
-<pre><code class="language-bash">sudo postconf -e 'smtp_tls_security_level = may'
-sudo postconf -e 'smtpd_tls_security_level = may'
-sudo postconf -e 'smtp_tls_note_starttls_offer = yes'
-sudo postconf -e 'smtpd_tls_loglevel = 1'
-sudo postconf -e 'smtpd_tls_received_header = yes'
-sudo postconf -e 'smtpd_tls_cert_file = /etc/letsencrypt/live/mail.example.com/fullchain.pem'
-sudo postconf -e 'smtpd_tls_key_file = /etc/letsencrypt/live/mail.example.com/privkey.pem'
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo postconf -e <span class="s1">&#39;smtp_tls_security_level = may&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_tls_security_level = may&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtp_tls_note_starttls_offer = yes&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_tls_loglevel = 1&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_tls_received_header = yes&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_tls_cert_file = /etc/letsencrypt/live/mail.example.com/fullchain.pem&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_tls_key_file = /etc/letsencrypt/live/mail.example.com/privkey.pem&#39;</span></code></pre></div>
 <p>配置经过身份验证的 SMTP 设置并将身份验证移交给 Dovecot：</p>
-
-<pre><code class="language-bash">sudo postconf -e 'smtpd_sasl_type = dovecot'
-sudo postconf -e 'smtpd_sasl_path = private/auth'
-sudo postconf -e 'smtpd_sasl_local_domain ='
-sudo postconf -e 'smtpd_sasl_security_options = noanonymous'
-sudo postconf -e 'broken_sasl_auth_clients = yes'
-sudo postconf -e 'smtpd_sasl_auth_enable = yes'
-sudo postconf -e 'smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination'
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo postconf -e <span class="s1">&#39;smtpd_sasl_type = dovecot&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_sasl_path = private/auth&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_sasl_local_domain =&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_sasl_security_options = noanonymous&#39;</span>
+sudo postconf -e <span class="s1">&#39;broken_sasl_auth_clients = yes&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_sasl_auth_enable = yes&#39;</span>
+sudo postconf -e <span class="s1">&#39;smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination&#39;</span></code></pre></div>
 <p>我们还需要编辑 Postfix 主配置文件 <code>master.cf</code> 并启用提交端口（587）和 smtps 端口（465）。</p>
 
 <p>使用文本编辑器打开文件并取消注释/编辑以下行：</p>
 
 <p>/etc/postfix/master.cf</p>
-
-<pre><code class="language-config">submission inet n       -       y       -       -       smtpd
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">submission inet n       -       y       -       -       smtpd
   -o syslog_name=postfix/submission
   -o smtpd_tls_security_level=encrypt
   -o smtpd_sasl_auth_enable=yes
@@ -301,14 +260,9 @@ smtps     inet  n       -       y       -       -       smtpd
 #  -o smtpd_sender_restrictions=$mua_sender_restrictions
 #  -o smtpd_recipient_restrictions=
 #  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
-  -o milter_macro_daemon_name=ORIGINATING
-</code></pre>
-
+  -o milter_macro_daemon_name=ORIGINATING</code></pre></div>
 <p>重新启动后缀服务以使更改生效。</p>
-
-<pre><code class="language-bash">sudo systemctl restart postfix
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart postfix</code></pre></div>
 <p>此时您已成功配置 Postfix 服务。</p>
 
 <h2 id="配置-dovecot">配置 Dovecot</h2>
@@ -318,26 +272,22 @@ smtps     inet  n       -       y       -       -       smtpd
 <p>首先配置 <code>dovecot-sql.conf.ext</code> 指示 Dovecot 如何访问数据库的文件以及如何查找有关电子邮件帐户的信息。</p>
 
 <p>/etc/dovecot/dovecot-sql.conf.ext</p>
-
-<pre><code class="language-config">driver = mysql
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">driver = mysql
 connect = host=127.0.0.1 dbname=postfixadmin user=postfixadmin password=P4ssvv0rD
 default_pass_scheme = MD5-CRYPT
 iterate_query = SELECT username AS user FROM mailbox
-user_query = SELECT CONCAT('/var/mail/vmail/',maildir) AS home, \
-  CONCAT('maildir:/var/mail/vmail/',maildir) AS mail, \
-  5000 AS uid, 5000 AS gid, CONCAT('*:bytes=',quota) AS quota_rule \
-  FROM mailbox WHERE username = '%u' AND active = 1
+user_query = SELECT CONCAT(&#39;/var/mail/vmail/&#39;,maildir) AS home, \
+  CONCAT(&#39;maildir:/var/mail/vmail/&#39;,maildir) AS mail, \
+  5000 AS uid, 5000 AS gid, CONCAT(&#39;*:bytes=&#39;,quota) AS quota_rule \
+  FROM mailbox WHERE username = &#39;%u&#39; AND active = 1
 password_query = SELECT username AS user,password FROM mailbox \
-  WHERE username = '%u' AND active='1'
-</code></pre>
-
+  WHERE username = &#39;%u&#39; AND active=&#39;1&#39;</code></pre></div>
 <p>不要忘记使用正确的MySQL凭据（dbname，用户和密码）。</p>
 
 <p>接下来，编辑 <code>conf.d/10-mail.conf</code> 文件并编辑以下变量：</p>
 
 <p>/etc/dovecot/conf.d/10-mail.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 mail_location = maildir:/var/mail/vmail/%d/%n
 ...
 mail_uid = vmail
@@ -349,28 +299,22 @@ last_valid_uid = 5000
 mail_privileged_group = vmail
 ...
 mail_plugins = quota
-...
-</code></pre>
-
+...</code></pre></div>
 <p>要使身份验证工作，请打开 <code>conf.d/10-auth.conf</code>，编辑以下行并包含该 <code>auth-sql.conf.ext</code> 文件：</p>
 
 <p>/etc/dovecot/conf.d/10-auth.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 disable_plaintext_auth = yes
 ...
 auth_mechanisms = plain login
 ...
 #!include auth-system.conf.ext
 !include auth-sql.conf.ext
-...
-</code></pre>
-
+...</code></pre></div>
 <p>打开 <code>conf.d/10-master.conf</code> 文件，并按如下所示进行修改：</p>
 
 <p>/etc/dovecot/conf.d/10-master.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 service lmtp {
   unix_listener /var/spool/postfix/private/dovecot-lmtp {
     mode = 0600
@@ -407,14 +351,11 @@ service dict {
     group = vmail
   }
 }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>打开 <code>conf.d/10-ssl.conf</code> 并启用 SSL / TLS。</p>
 
 <p>/etc/dovecot/conf.d/10-ssl.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 ssl = yes
 ...
 ssl_cert = &lt;/etc/letsencrypt/live/mail.example.com/fullchain.pem
@@ -424,9 +365,7 @@ ssl_dh = &lt;/etc/ssl/certs/dhparam.pem
 ssl_cipher_list = EECDH+AES:EDH+AES+aRSA
 ...
 ssl_prefer_server_ciphers = yes
-...
-</code></pre>
-
+...</code></pre></div>
 <blockquote>
 <p>确保使用 SSL 证书文件的正确路径。</p>
 
@@ -438,33 +377,26 @@ ssl_prefer_server_ciphers = yes
 <p>打开 <code>conf.d/20-imap.conf</code> 文件并激活 <code>imap_quota</code> 插件：</p>
 
 <p>/etc/dovecot/conf.d/20-imap.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 protocol imap {
   ...
   mail_plugins = $mail_plugins imap_quota
   ...
 }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>打开 <code>conf.d/20-lmtp.conf</code> 文件并按如下所示进行编辑：</p>
 
 <p>/etc/dovecot/conf.d/20-lmtp.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 protocol lmtp {
   postmaster_address = postmaster@example.com
   mail_plugins = $mail_plugins
 }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>在 <code>conf.d/20-lmtp.conf</code> 文件中定义默认邮箱：</p>
 
 <p>/etc/dovecot/conf.d/15-mailboxes.conf</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 mailbox Drafts {
   special_use = \Drafts
 }
@@ -475,16 +407,13 @@ mailbox Spam {
 mailbox Junk {
   special_use = \Junk
 }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>有两种不同类型的配额大小，一种是针对整个域设置的，另一种是针对每个用户邮箱设置的。在本系列的前一部分中，我们已经在 PostfixAdmin 中启用了配额支持，这意味着配额信息将存储在 PostfixAdmin 数据库中。</p>
 
 <p>现在，我们需要配置Dovecot以连接到数据库，处理配额限制以及运行脚本，当用户的配额超过指定限制时，该脚本会向用户发送邮件。为此，请打开 <code>conf.d/90-quota.conf</code> 文件并按如下所示进行修改：</p>
 
 <p>/etc/dovecot/conf.d/90-quota.conf</p>
-
-<pre><code class="language-config">plugin {
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">plugin {
   quota = dict:User quota::proxy::sqlquota
   quota_rule = *:storage=5GB
   quota_rule2 = Trash:storage=+100M
@@ -509,14 +438,11 @@ service quota-warning {
 
 dict {
   sqlquota = mysql:/etc/dovecot/dovecot-dict-sql.conf.ext
-}
-</code></pre>
-
+}</code></pre></div>
 <p>我们还需要告诉dovecot如何访问配额SQL字典。打开 <code>dovecot-dict-sql.conf.ext</code> 文件并编辑以下行：</p>
 
 <p>/etc/dovecot/dovecot-dict-sql.conf.ext</p>
-
-<pre><code class="language-config">...
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
 connect = host=127.0.0.1 dbname=postfixadmin user=postfixadmin password=P4ssvv0rD
 ...
 map {
@@ -542,36 +468,25 @@ map {
 #     mailbox = $mailbox
 #   }
 # }
-...
-</code></pre>
-
+...</code></pre></div>
 <p>确保使用正确的 MySQL 凭据（dbname，用户和密码）。</p>
 
 <p>创建以下shell脚本，如果其配额超出指定限制，将向用户发送电子邮件：</p>
 
 <p>/usr/local/bin/quota-warning.sh</p>
-
-<pre><code class="language-bash">#!/bin/sh
-PERCENT=$1
-USER=$2
-cat &lt;&lt; EOF | /usr/lib/dovecot/dovecot-lda -d $USER -o &quot;plugin/quota=dict:User quota::noenforcing:proxy::sqlquota&quot;
-From: postmaster@example.com
-Subject: Quota warning
-
-Your mailbox is now $PERCENT% full.
-EOF
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/sh
+</span><span class="cp"></span><span class="nv">PERCENT</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nv">USER</span><span class="o">=</span><span class="nv">$2</span>
+cat <span class="s">&lt;&lt; EOF | /usr/lib/dovecot/dovecot-lda -d $USER -o &#34;plugin/quota=dict:User quota::noenforcing:proxy::sqlquota&#34;
+</span><span class="s">From: postmaster@example.com
+</span><span class="s">Subject: Quota warning
+</span><span class="s">
+</span><span class="s">Your mailbox is now $PERCENT% full.
+</span><span class="s">EOF</span></code></pre></div>
 <p>通过运行以下命令使脚本可执行：</p>
-
-<pre><code class="language-bash">sudo chmod +x /usr/local/bin/quota-warning.sh
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chmod +x /usr/local/bin/quota-warning.sh</code></pre></div>
 <p>最后重启 dovecot 服务以使更改生效。</p>
-
-<pre><code class="language-bash">sudo systemctl dovecot restart
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl dovecot restart</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>到目前为止，您应该拥有功能齐全的邮件系统。在本系列的下一部分中，我们将向您展示如何安装和集成Rspamd。</p><ul class="pa0">

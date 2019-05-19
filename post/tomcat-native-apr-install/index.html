@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Tomcat 安装配置 Native APR 模式</h1>
+      
+      <h1 class="f1 mb1">Tomcat 安装配置 Native APR 模式</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-08-04T00:00:00Z">August 4, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>APR 能大幅提高 tomcat 的性能是不争的事实，但我并没有做过性能比较测试。本文记录 CentOS 6.5 下为 tomcat 7 安装和配置 APR 模式的步骤和过程。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>APR 能大幅提高 tomcat 的性能是不争的事实，但我并没有做过性能比较测试。本文记录 CentOS 6.5 下为 tomcat 7 安装和配置 APR 模式的步骤和过程。</p>
 
 <h2 id="技术准备">技术准备</h2>
 
@@ -154,26 +156,17 @@
 <p>具体的安装步骤其实在 tomcat 自带的 tomcat-native.tar.gz 文件中就有，这里记录是自己的安装和配置过程，大致一样，略有不同。我在安装的没有选择将 tomcat-native 安装在某个tomcat下，而是独立安装。</p>
 
 <p>1, 安装 apr, openssl</p>
-
-<pre><code class="language-shell">yum install apr-devel openssl-devel
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">yum install apr-devel openssl-devel</code></pre></div>
 <p>2, 安装 tomcat-native</p>
 
 <p>tomcat-native 安装文件已经存在于 tomcat 中，位于 $CATALINA_HOME/bin 的文件 tomcat-native.tar.gz。 将文件 tomcat-native.tar.gz 拷贝出来后解压，配置，安装。</p>
-
-<pre><code class="language-shell">tar xzcf tomcat-native.tar.gz
-cd tomcat-native-1.1.32-src/jni/native
-./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes
-make &amp;&amp; make install
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">tar xzcf tomcat-native.tar.gz
+<span class="nb">cd</span> tomcat-native-1.1.32-src/jni/native
+./configure --with-apr<span class="o">=</span>/usr/bin/apr-1-config --with-ssl<span class="o">=</span>yes
+make <span class="o">&amp;&amp;</span> make install</code></pre></div>
 <p>安装完成后，会看到下面提示，标识已经安装到 /usr/local/apr/lib 中。</p>
-
-<pre><code class="language-shell">Libraries have been installed in:
-   /usr/local/apr/lib
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Libraries have been installed in:
+   /usr/local/apr/lib</code></pre></div>
 <p><strong>以上步骤都是通过 root 用户操作，以下步骤使用 tomcat 的所有者用户操作</strong></p>
 
 <p>3, 配置 tomcat 依赖库</p>
@@ -184,16 +177,10 @@ export CATALINA_OPTS=&ldquo;$CATALINA_OPTS -Djava.library.path=/usr/local/apr/li
 <p>4, 配置 tomcat server.xml</p>
 
 <p>打开下面的配置</p>
-
-<pre><code class="language-xml">&lt;Listener className=&quot;org.apache.catalina.core.AprLifecycleListener&quot; SSLEngine=&quot;on&quot; /&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Listener</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.core.AprLifecycleListener&#34;</span> <span class="na">SSLEngine=</span><span class="s">&#34;on&#34;</span> <span class="nt">/&gt;</span></code></pre></div>
 <p>确保 Connector 配置中的 protocol 为下列值中之一。</p>
-
-<pre><code class="language-xml">protocol=&quot;HTTP/1.1&quot; 
-protocol=&quot;org.apache.coyote.http11.Http11AprProtocol&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml">protocol=&#34;HTTP/1.1&#34; 
+protocol=&#34;org.apache.coyote.http11.Http11AprProtocol&#34;</code></pre></div>
 <blockquote>
 <p>如果指定为 HTTP/1.1, 则 tomcat 自动选择合适的协议。</p>
 </blockquote>

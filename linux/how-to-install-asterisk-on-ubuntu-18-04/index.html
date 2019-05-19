@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -64,7 +64,7 @@ Asterisk 功能包括语音邮件，待机音乐，电话会议，呼叫排队�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ Asterisk 功能包括语音邮件，待机音乐，电话会议，呼叫排队�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 Asterisk</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上安装 Asterisk</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-04-09T05:00:00&#43;08:00">April 9, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Asterisk 是最受欢迎和被广泛采用的开源 PBX 平台，为 IP PBX 系统，会议服务器和 VoIP 网关提供支持。它被世界各地的个人，小企业，大型企业和政府使用。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Asterisk 是最受欢迎和被广泛采用的开源 PBX 平台，为 IP PBX 系统，会议服务器和 VoIP 网关提供支持。它被世界各地的个人，小企业，大型企业和政府使用。</p>
 
 <p>Asterisk 功能包括语音邮件，待机音乐，电话会议，呼叫排队，呼叫录音，交互式语音响应等等。</p>
 
@@ -156,68 +158,38 @@ Asterisk 功能包括语音邮件，待机音乐，电话会议，呼叫排队�
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
 
 <p>更新您的 Ubuntu 系统并安装下载和构建 Asterisk 所需的以下软件包：</p>
-
-<pre><code class="language-console-bash">sudo apt update &amp;&amp; sudo apt upgrade
-sudo apt install wget build-essential subversion
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgrade
+sudo apt install wget build-essential subversion</code></pre></div>
 <h2 id="下载-asterisk">下载 Asterisk</h2>
 
 <p>我们将在 <code>/usr/src</code> 目录中下载 Asterisk 源，该目录是放置源文件的常用位置，进入目录：</p>
-
-<pre><code class="language-console-bash">cd /usr/src/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /usr/src/</code></pre></div>
 <p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载最新版本的 Asterisk 15 ：</p>
-
-<pre><code class="language-console-bash">sudo wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-15-current.tar.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-15-current.tar.gz</code></pre></div>
 <p>下载完成后，使用以下命令<!--link:how-to-create-and-extract-archives-using-the-tar-command-in-linux-->提取 tarball<!--link-->：</p>
-
-<pre><code class="language-console-bash">sudo tar zxf asterisk-15-current.tar.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar zxf asterisk-15-current.tar.gz</code></pre></div>
 <p>在继续执行后续步骤之前，请确保通过输入以下内容进入 Asterisk 源目录：</p>
-
-<pre><code class="language-console-bash">cd asterisk-15.*/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd asterisk-15.*/</code></pre></div>
 <h2 id="安装-asterisk-依赖项">安装 Asterisk 依赖项</h2>
 
 <p>以下脚本将下载构建 MP3 模块并在 Asterisk 上使用 MP3 文件所需的 MP3 源：</p>
-
-<pre><code class="language-console-bash">sudo contrib/scripts/get_mp3_source.sh
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo contrib/scripts/get_mp3_source.sh</code></pre></div>
 <p>使用 <code>install_prereq</code> 脚本解析 Ubuntu 系统上的所有依赖项：</p>
-
-<pre><code class="language-console-bash">sudo contrib/scripts/install_prereq install
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo contrib/scripts/install_prereq install</code></pre></div>
 <p>该脚本将安装所有必需的包，并在成功完成后，将打印以下消息：</p>
-
-<pre><code class="language-output">#############################################
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">#############################################
 ## install completed successfully
-#############################################
-</code></pre>
-
+#############################################</code></pre></div>
 <h2 id="安装-asterisk">安装 Asterisk</h2>
 
 <p><code>configure</code> 脚本将执行许多检查以确保系统上存在所有依赖项，通过键入以下命令启动脚本：</p>
-
-<pre><code class="language-console-bash">sudo ./configure
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ./configure</code></pre></div>
 <p>成功完成后，您将看到以下输出：</p>
 
 <p><img src="/images/linux/how-to-install-asterisk-on-ubuntu-18-04/configure-asterisk.jpg" alt="" /></p>
 
 <p>下一步是选择要编译和安装的模块。通过键入以下内容访问 Menuselect 系统：</p>
-
-<pre><code class="language-console-bash">sudo make menuselect
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make menuselect</code></pre></div>
 <p>我们已经下载了 MP3 源文件，现在我们需要通过选择 <code>format_mp3</code> 以下内容告诉 Asterisk 构建 MP3 模块：</p>
 
 <p><img src="/images/linux/how-to-install-asterisk-on-ubuntu-18-04/asterisk-mp3.jpg" alt="" /></p>
@@ -225,10 +197,7 @@ sudo apt install wget build-essential subversion
 <p>完成后，按 <code>F12</code> 保存并退出，或切换到 <code>Save and Exit</code> 按钮并按 <code>Enter</code> 。</p>
 
 <p>现在我们可以使用以下 <code>make</code> 命令启动编译过程：</p>
-
-<pre><code class="language-console-bash">sudo make -j2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make -j2</code></pre></div>
 <blockquote>
 <p>编译可能需要一些时间，具体取决于您的系统。您可以根据处理器的核心数修改 <code>-j</code> 标志。</p>
 </blockquote>
@@ -238,10 +207,7 @@ sudo apt install wget build-essential subversion
 <p><img src="/images/linux/how-to-install-asterisk-on-ubuntu-18-04/compile-asterisk.jpg" alt="" /></p>
 
 <p>如上面的消息所示，下一步是通过键入以下内容来安装 Asterisk 及其模块：</p>
-
-<pre><code class="language-console-bash">sudo make install
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install</code></pre></div>
 <p>安装完成后，脚本将显示以下消息：</p>
 
 <p><img src="/images/linux/how-to-install-asterisk-on-ubuntu-18-04/install-asterisk.jpg" alt="" /></p>
@@ -249,72 +215,39 @@ sudo apt install wget build-essential subversion
 <p>现在我们安装了 Asterisk ，我们需要安装示例配置文件。</p>
 
 <p>通过键入以下内容安装通用配置文件和参考文档：</p>
-
-<pre><code class="language-console-bash">sudo make samples
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make samples</code></pre></div>
 <p>或者安装基本的 PBX 配置文件：</p>
-
-<pre><code class="language-console-bash">sudo make basic-pbx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make basic-pbx</code></pre></div>
 <p>最后一步是键入以下命令安装 Asterisk init 脚本：</p>
-
-<pre><code class="language-console-bash">sudo make config
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make config</code></pre></div>
 <p>运行 <code>ldconfig</code> 更新共享库缓存：</p>
-
-<pre><code class="language-console-bash">sudo ldconfig
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ldconfig</code></pre></div>
 <h2 id="创建-asterisk-用户">创建 Asterisk 用户</h2>
 
 <p>默认情况下， Asterisk 以 root 用户身份运行。出于安全原因，我们将创建一个新的系统用户并将 Asterisk 配置为以新创建的用户身份运行。</p>
 
 <p>要创建名为 <code>asterisk</code> 的新系统用户，请运行以下命令：</p>
-
-<pre><code class="language-console-bash">sudo adduser --system --group --home /var/lib/asterisk --no-create-home --gecos &quot;Asterisk PBX&quot; asterisk
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser --system --group --home /var/lib/asterisk --no-create-home --gecos &#34;Asterisk PBX&#34; asterisk</code></pre></div>
 <p>要将 Asterisk 配置为以 <code>asterisk</code> 用户身份运行，请打开该 <code>/etc/default/asterisk</code> 文件并取消注释以下两行：</p>
-
-<pre><code class="language-config">AST_USER=&quot;asterisk&quot;
-AST_GROUP=&quot;asterisk&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">AST_USER=&#34;asterisk&#34;
+AST_GROUP=&#34;asterisk&#34;</code></pre></div>
 <p>将 <code>asterisk</code> 用户添加到 <code>dialout</code> 和 <code>audio</code> 组：</p>
-
-<pre><code class="language-console-bash">sudo usermod -a -G dialout,audio asterisk
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G dialout,audio asterisk</code></pre></div>
 <p>我们还需要对所有 Asterisk 文件和目录<!--link:linux-chown-command-->更改的所有权<!--link-->，以便用户 asterisk 可以访问这些文件：</p>
-
-<pre><code class="language-console-bash">sudo chown -R asterisk: /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk
-sudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R asterisk: /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk
+sudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk</code></pre></div>
 <h2 id="启动-asterisk">启动 Asterisk</h2>
 
 <p>现在我们已经完成了设置，我们可以使用以下命令启动 Asterisk 服务：</p>
-
-<pre><code class="language-console-bash">sudo systemctl start asterisk
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start asterisk</code></pre></div>
 <p>要验证 Asterisk 是否正在运行，请键入以下命令连接到 Asterisk 命令行界面 (CLI) ：</p>
-
-<pre><code class="language-console-bash">sudo asterisk -vvvr
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo asterisk -vvvr</code></pre></div>
 <p>您将看到默认的 Asterisk CLI 提示符：</p>
 
 <p><img src="/images/linux/how-to-install-asterisk-on-ubuntu-18-04/asterisk-cli.jpg" alt="" /></p>
 
 <p>最后一步是启用 Asterisk 服务随机启动：</p>
-
-<pre><code class="language-console-bash">sudo systemctl enable asterisk
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable asterisk</code></pre></div>
 <h2 id="配置防火墙">配置防火墙</h2>
 
 <p>防火墙将保护您的服务器免受不必要的访问。</p>
@@ -322,15 +255,9 @@ sudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/aster
 <p>如果您的服务器上没有配置防火墙，您可以查看我们的指南，了解<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 ubuntu 上使用 ufw 设置防火墙</a></p>
 
 <p>默认情况下， SIP 使用 UDP 端口 5060 ，运行以下命令来打开端口：</p>
-
-<pre><code class="language-console-bash">sudo ufw allow 5060/udp
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 5060/udp</code></pre></div>
 <p>如果启用了实时协议 (RTP) ，则还需要打开以下端口范围：</p>
-
-<pre><code class="language-console-bash">sudo ufw allow 10000:20000/udp
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 10000:20000/udp</code></pre></div>
 <p>您可以根据需要随意调整防火墙。</p>
 
 <h2 id="结论">结论</h2>

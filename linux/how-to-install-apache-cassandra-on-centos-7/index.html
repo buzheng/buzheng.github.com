@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -45,7 +45,7 @@
 
 <meta itemprop="datePublished" content="2019-03-26T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-26T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="296">
+<meta itemprop="wordCount" content="294">
 
 
 
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 Apache Cassandra</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上安装 Apache Cassandra</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-26T05:00:00&#43;08:00">March 26, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache Cassandra 是一个开源的 NoSQL 数据库，没有单点故障，在不影响性能的情况下提供线性可扩展性和高可用性。在 Cassandra 中，记录的结构与关系数据库中的表，行和列类似。 Apache Cassandra 被许多组织使用，包括 Apple， NetFlix， eBay 和 Easou 。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache Cassandra 是一个开源的 NoSQL 数据库，没有单点故障，在不影响性能的情况下提供线性可扩展性和高可用性。在 Cassandra 中，记录的结构与关系数据库中的表，行和列类似。 Apache Cassandra 被许多组织使用，包括 Apple， NetFlix， eBay 和 Easou 。</p>
 
 <p>本教程介绍如何在 CentOS 7 上安装 Apache Cassandra。</p>
 
@@ -150,67 +152,40 @@
 <p>在撰写本文时，最新版本的 Apache Cassandra 是 <code>3.11</code> 并且要求在系统上安装 Oracle Java Standard Edition 8 或 OpenJDK 8 。</p>
 
 <p>我们将安装 OpenJDK ，它是 Java 平台的开源实现，它也是 CentOS 7 中的默认 Java 开发和运行时：</p>
-
-<pre><code class="language-console-bash">sudo yum install java-1.8.0-openjdk-devel
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install java-1.8.0-openjdk-devel</code></pre></div>
 <p>通过运行以下将打印 Java 版本的命令来验证 Java 安装：</p>
-
-<pre><code class="language-console-bash">java -version
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">java -version</code></pre></div>
 <p>输出应该如下所示：</p>
-
-<pre><code class="language-output">openjdk version &quot;1.8.0_201&quot;
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">openjdk version &#34;1.8.0_201&#34;
 OpenJDK Runtime Environment (build 1.8.0_201-b09)
-OpenJDK 64-Bit Server VM (build 25.201-b09, mixed mode)
-</code></pre>
-
+OpenJDK 64-Bit Server VM (build 25.201-b09, mixed mode)</code></pre></div>
 <p>如果不想安装 OpenJDK 而是要安装 Oracle Java ，请按照<a href="/linux/install-java-on-centos-7/">这个说明</a>进行安装。</p>
 
 <p>现在已经安装了 Java ，下一步是添加 Apache Cassandra 软件仓库。</p>
 
 <p>打开您选择的编辑器并创建以下软件仓库文件：</p>
-
-<pre><code class="language-console-bash">sudo nano /etc/yum.repos.d/webmin.repo
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/yum.repos.d/webmin.repo</code></pre></div>
 <p>将以下内容粘贴到文件 <code>/etc/yum.repos.d/cassandra.repo</code> 中：</p>
-
-<pre><code class="language-ini">[cassandra]
-name=Apache Cassandra
-baseurl=https://www.apache.org/dist/cassandra/redhat/311x/
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://www.apache.org/dist/cassandra/KEYS
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[cassandra]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Apache Cassandra</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">https://www.apache.org/dist/cassandra/redhat/311x/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">repo_gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">https://www.apache.org/dist/cassandra/KEYS</span></code></pre></div>
 <p>启用软件仓库后，键入以下命令安装最新版本的 Apache Cassandra ：</p>
-
-<pre><code class="language-console-bash">sudo yum install cassandra
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install cassandra</code></pre></div>
 <p>启用随机启动并启动 Cassandra 服务：</p>
-
-<pre><code class="language-console-bash">sudo systemctl enable cassandra
-sudo systemctl start cassandra
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable cassandra
+sudo systemctl start cassandra</code></pre></div>
 <p>输入以下命令验证 Cassandra 是否正在运行：</p>
-
-<pre><code class="language-console-bash">nodetool status
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nodetool status</code></pre></div>
 <p>你应该看到类似的东西：</p>
-
-<pre><code class="language-output">Datacenter: datacenter1
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Datacenter: datacenter1
 =======================
 Status=Up/Down
 |/ State=Normal/Leaving/Joining/Moving
 --  Address    Load        Tokens       Owns (effective)  Host ID                               Rack
-UN  127.0.0.1  103.68 KiB  256          100.0%            129a9437-377d-415b-b6b2-5dc46b73a763  rack1
-</code></pre>
-
+UN  127.0.0.1  103.68 KiB  256          100.0%            129a9437-377d-415b-b6b2-5dc46b73a763  rack1</code></pre></div>
 <p>此时， Apache Cassandra 已经安装在您的 CentOS 服务器上。</p>
 
 <h2 id="配置-apache-cassandra">配置 Apache Cassandra</h2>
@@ -220,31 +195,19 @@ UN  127.0.0.1  103.68 KiB  256          100.0%            129a9437-377d-415b-b6b
 <p>默认情况下， Cassandra 配置为仅侦听 <code>localhost</code> 。如果连接到数据库的客户端也在同一主机上运行，​​则无需更改默认配置文件。</p>
 
 <p>要通过 CQL (Cassandra 查询语言) 与 Cassandra 交互，您可以使用 Cassandra 软件包附带的命名行实用程序 <code>cqlsh</code>。</p>
-
-<pre><code class="language-console-bash">cqlsh
-</code></pre>
-
-<pre><code class="language-output">Connected to Test Cluster at 127.0.0.1:9042.
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cqlsh</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Connected to Test Cluster at 127.0.0.1:9042.
 [cqlsh 5.0.1 | Cassandra 3.11.4 | CQL spec 3.4.4 | Native protocol v4]
 Use HELP for help.
-cqlsh&gt;
-</code></pre>
-
+cqlsh&gt;</code></pre></div>
 <h2 id="重命名-apache-cassandra-集群">重命名 Apache Cassandra 集群</h2>
 
 <p>默认情况下， Cassandra 群集名为“ Test Cluster ”。如果要更改群集名称，请执行以下步骤：</p>
 
 <ol>
 <li><p>使用 <code>cqlsh</code> 命令登录 Cassandra CQL 终端 ：</p>
-
-<pre><code class="language-console-bash">cqlsh
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cqlsh</code></pre></div>
 <p>以下命令将集群名称更改为 &ldquo;Cassandra Cluster&rdquo;：</p>
-
-<pre><code class="language-sql">UPDATE system.local SET cluster_name = 'Cassandra Cluster' WHERE KEY = 'local';
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">UPDATE</span> <span class="k">system</span><span class="p">.</span><span class="k">local</span> <span class="k">SET</span> <span class="n">cluster_name</span> <span class="o">=</span> <span class="s1">&#39;Cassandra Cluster&#39;</span> <span class="k">WHERE</span> <span class="k">KEY</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span><span class="p">;</span></code></pre></div>
 <blockquote>
 <p>您可以把 &ldquo;Cassandra Cluster&rdquo; 替换为您想用的任意名称。</p>
 </blockquote>
@@ -252,22 +215,14 @@ cqlsh&gt;
 <p>完成后输入 <code>exit</code> 以退出控制台。</p></li>
 
 <li><p>编辑 <code>/etc/cassandra/default.conf/cassandra.yaml</code> 配置文件并输入新的群集名称。</p>
-
-<pre><code class="language-yaml">cluster_name: 'Cassandra Cluster'
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">cluster_name<span class="p">:</span><span class="w"> </span><span class="s1">&#39;Cassandra Cluster&#39;</span></code></pre></div>
 <ol>
 <li>运行以下命令清除系统缓存：</li>
 </ol>
-
-<pre><code class="language-sql">nodetool flush system
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">nodetool</span> <span class="n">flush</span> <span class="k">system</span></code></pre></div></li>
 
 <li><p>最后重启 Cassandra 服务：</p>
-
-<pre><code class="language-console-bash">sudo systemctl restart cassandra
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart cassandra</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>您已经在 CentOS 7 上成功安装了 Apache Cassandra 。您现在可以访问 <a href="https://cassandra.apache.org/doc/latest/getting_started/index.html">Apache Cassandra</a> 官方<a href="https://cassandra.apache.org/doc/latest/getting_started/index.html">文档</a>页面，了解如何开始使用 Cassandra 。</p></li>

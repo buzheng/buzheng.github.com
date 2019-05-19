@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -53,7 +53,7 @@
 
 <meta itemprop="datePublished" content="2019-03-14T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-14T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="850">
+<meta itemprop="wordCount" content="848">
 
 
 
@@ -70,7 +70,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上部署 Odoo 11</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上部署 Odoo 11</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-14T06:00:00&#43;08:00">March 14, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
 
 <p>根据所需的用例，有几种方法可以安装 Odoo 。当然，安装 Odoo 最简单快捷的方法是使用他们的官方 APT 软件仓库。</p>
 
@@ -158,69 +160,39 @@
 <h2 id="准备工作">准备工作</h2>
 
 <p>以 <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo 用户身份</a>登录 Ubuntu 计算机并将系统更新到最新：</p>
-
-<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade</code></pre></div>
 <p>安装 <!--link:how-to-install-git-on-ubuntu-18-04-->Git<!--link--> ， <!--link:how-to-install-pip-on-ubuntu-18.04-->Pip<!--link--> ， <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">Node.js</a> 以及构建 Odoo 的依赖项：</p>
-
-<pre><code class="language-bash">sudo apt install git python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install git python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less</code></pre></div>
 <h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
 
 <p>创建新的系统用户和组运行 Odoo 服务，使用 <code>/opt/odoo</code> 作为用户的主目录。</p>
-
-<pre><code class="language-bash">sudo useradd -m -d /opt/odoo -U -r -s /bin/bash odoo
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -d /opt/odoo -U -r -s /bin/bash odoo</code></pre></div>
 <p>您可以为用户命名成其他名称，但是要同样创建一个具有相同名称的 postgres 用户。</p>
 
 <h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
 
 <p>从 Ubuntu 的默认软件仓库安装 PostgreSQL 包：</p>
-
-<pre><code class="language-bash">sudo apt install postgresql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install postgresql</code></pre></div>
 <p>安装完成后，创建一个与之前创建的系统用户同名的 PostgreSQL 用户，在我们的例子中使用的是 <code>odoo</code> ：</p>
-
-<pre><code class="language-bash">sudo su - postgres -c &quot;createuser -s odoo&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - postgres -c <span class="s2">&#34;createuser -s odoo&#34;</span></code></pre></div>
 <h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
 
 <p><code>wkhtmltox</code> 软件包提供了一组开源命令行工具，可以将 HTML 呈现为 PDF 和各种图像格式。要打印 PDF 报告，您就需要使用 <code>wkhtmltopdf</code> 工具。 Odoo 的推荐版本 0.12.1 在官方 Ubuntu 18.04 软件仓库中不可用，我们将从官方 Wkhtmltopdf 网站下载并安装推荐版本。</p>
 
 <p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载程序包：</p>
-
-<pre><code class="language-bash">wget https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~bionic_amd64.deb
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~bionic_amd64.deb</code></pre></div>
 <p>下载完成后，通过以下命令进行安装：</p>
-
-<pre><code class="language-bash">sudo apt install /wkhtmltox_0.12.1.3-1~bionic_amd64.deb
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install /wkhtmltox_0.12.1.3-1~bionic_amd64.deb</code></pre></div>
 <h2 id="安装和配置-odoo">安装和配置 Odoo</h2>
 
 <p>我们将在独立的 Python 虚拟环境中从 GitHub 软件仓库安装 Odoo ，以便我们可以更好地控制版本和更新。</p>
 
 <p>在开始安装过程之前，请确保切换到 odoo 用户。</p>
-
-<pre><code class="language-bash">sudo su - odoo
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - odoo</code></pre></div>
 <p>可以使用以下命令确认您是否以 odoo 用户登录：</p>
-
-<pre><code class="language-bash">whoami
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">whoami</code></pre></div>
 <p>现在我们可以开始安装。首先从 GitHub 软件仓库克隆 odoo ：</p>
-
-<pre><code class="language-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 11.0 /opt/odoo/odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://www.github.com/odoo/odoo --depth <span class="m">1</span> --branch <span class="m">11</span>.0 /opt/odoo/odoo11</code></pre></div>
 <blockquote>
 <ul>
 <li>如果要安装不同的 Odoo 版本，只需更改 <code>--branch</code> 后的版本号。</li>
@@ -229,22 +201,13 @@
 </blockquote>
 
 <p>为 Odoo 11 安装创建新的虚拟环境：</p>
-
-<pre><code class="language-bash">cd /opt/odoo
-python3 -m venv odoo11-venv
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/odoo
+python3 -m venv odoo11-venv</code></pre></div>
 <p>使用以下命令激活环境：</p>
-
-<pre><code class="language-bash">source odoo11-venv/bin/activate
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> odoo11-venv/bin/activate</code></pre></div>
 <p>并使用 <code>pip3</code> 安装所有必需的 Python 模块：</p>
-
-<pre><code class="language-bash">pip3 install wheel
-pip3 install -r odoo11/requirements.txt
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip3 install wheel
+pip3 install -r odoo11/requirements.txt</code></pre></div>
 <blockquote>
 <p><code>pip3</code>  是一个用于安装和管理 Python 包的工具。</p>
 
@@ -252,27 +215,14 @@ pip3 install -r odoo11/requirements.txt
 </blockquote>
 
 <p>安装完成后，使用以下命令停用环境并切换回 sudo 用户：</p>
-
-<pre><code class="language-bash">deactivate
-</code></pre>
-
-<pre><code class="language-bash">exit
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">deactivate</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">exit</code></pre></div>
 <p>如果您计划安装自定义模块，最好将这些模块安装在单独的目录中。要如果为自定义模块创建新目录，请运行：</p>
-
-<pre><code class="language-bash">sudo mkdir /opt/odoo/odoo11-custom-addons
-sudo chown odoo: /opt/odoo/odoo11-custom-addons
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /opt/odoo/odoo11-custom-addons
+sudo chown odoo: /opt/odoo/odoo11-custom-addons</code></pre></div>
 <p>接下来，我们需要创建一个配置文件，可以从头开始创建一个新文件，也可以复制已有的配置文件：</p>
-
-<pre><code class="language-bash">sudo cp /opt/odoo/odoo11/debian/odoo.conf /etc/odoo11.conf
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/odoo/odoo11/debian/odoo.conf /etc/odoo11.conf</code></pre></div>
 <p>打开文件 <code>/etc/odoo11.conf</code> 并按如下所示进行编辑：</p>
-
-<pre><code class="language-conf">[options]
+<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">[options]
 ; This is the password that allows database operations:
 admin_passwd = my_admin_passwd
 db_host = False
@@ -281,15 +231,12 @@ db_user = odoo
 db_password = False
 addons_path = /opt/odoo/odoo11/addons
 ; If you are using custom modules
-; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons
-</code></pre>
-
+; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons</code></pre></div>
 <p>不要忘记更改 <code>my_admin_passwd</code> 为更安全的密码。如果你使用自定义模块也要调整 <code>addons_path</code> 。</p>
 
 <p>@@ 创建 systemd 单元文件
 要将 odoo 作为服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件  <code>odoo11.service</code> ：</p>
-
-<pre><code class="language-conf">[Unit]
+<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">[Unit]
 Description=Odoo11
 Requires=postgresql.service
 After=network.target postgresql.service
@@ -304,39 +251,22 @@ ExecStart=/opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/od
 StandardOutput=journal+console
 
 [Install]
-WantedBy=multi-user.target
-</code></pre>
-
+WantedBy=multi-user.target</code></pre></div>
 <p>通过执行以下命令通知 systemd 我们创建了一个新的单元文件，并启动 Odoo 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl daemon-reload
-sudo systemctl start odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
+sudo systemctl start odoo11</code></pre></div>
 <p>您可以使用以下命令检查服务状态：</p>
-
-<pre><code class="language-bash">sudo systemctl status odoo11
-</code></pre>
-
-<pre><code class="language-bash">● odoo11.service - Odoo11
-   Loaded: loaded (/etc/systemd/system/odoo11.service; disabled; vendor preset: enabled)
-   Active: active (running) since Thu 2018-05-03 21:23:08 UTC; 3s ago
- Main PID: 18351 (python3)
-    Tasks: 4 (limit: 507)
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status odoo11</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● odoo11.service - Odoo11
+   Loaded: loaded <span class="o">(</span>/etc/systemd/system/odoo11.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Thu <span class="m">2018</span>-05-03 <span class="m">21</span>:23:08 UTC<span class="p">;</span> 3s ago
+ Main PID: <span class="m">18351</span> <span class="o">(</span>python3<span class="o">)</span>
+    Tasks: <span class="m">4</span> <span class="o">(</span>limit: <span class="m">507</span><span class="o">)</span>
    CGroup: /system.slice/odoo11.service
-           └─18351 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
-</code></pre>
-
+           └─18351 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf</code></pre></div>
 <p>如果没有错误，您可以启用 Odoo 服务在系统启动时自动启动：</p>
-
-<pre><code class="language-bash">sudo systemctl enable odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> odoo11</code></pre></div>
 <p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
-
-<pre><code class="language-bash">sudo journalctl -u odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -u odoo11</code></pre></div>
 <h2 id="测试安装">测试安装</h2>
 
 <p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
@@ -360,123 +290,105 @@ sudo systemctl start odoo11
 <p>SSL 代理是处理 SSL 加密/解密的代理服务器。这意味着我们的终止代理 ( Nginx )将处理和解密传入的 TLS 连接 ( HTTPS )，它会将未加密的请求传递给我们的内部服务 ( Odoo )，因此 Nginx 和 Odoo 之间的流量不会被加密 ( HTTP )。</p>
 
 <p>我们需要告诉 Odoo 我们将使用代理，打开配置文件 <code>/etc/odoo11.conf</code> 并添加以下行：</p>
-
-<pre><code class="language-bash">proxy_mode = True
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">proxy_mode</span> <span class="o">=</span> True</code></pre></div>
 <p>重新启动 Odoo 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl restart odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart odoo11</code></pre></div>
 <p>使用 Nginx 作为代理可以带来几个好处。在此示例中，我们将配置 SSL ， HTTP 到 HTTPS 重定向， WWW 到非 WWW 重定向，缓存静态文件并启用 GZip 压缩。</p>
 
 <p>编辑文件: <code>/etc/nginx/sites-enabled/example.com</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Odoo servers
+</span><span class="c1"></span><span class="k">upstream</span> <span class="s">odoo</span> <span class="p">{</span>
+ <span class="kn">server</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">8069</span><span class="p">;</span>
+<span class="p">}</span>
 
-<pre><code class="language-nginx"># Odoo servers
-upstream odoo {
- server 127.0.0.1:8069;
-}
+<span class="k">upstream</span> <span class="s">odoochat</span> <span class="p">{</span>
+ <span class="kn">server</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">8072</span><span class="p">;</span>
+<span class="p">}</span>
 
-upstream odoochat {
- server 127.0.0.1:8072;
-}
+<span class="c1"># HTTP -&gt; HTTPS
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-# HTTP -&gt; HTTPS
-server {
-    listen 80;
-    server_name www.example.com example.com;
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-    include snippets/letsencrypt.conf;
-    return 301 https://example.com$request_uri;
-}
+<span class="c1"># WWW -&gt; NON WWW
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span><span class="p">;</span>
 
-# WWW -&gt; NON WWW
-server {
-    listen 443 ssl http2;
-    server_name www.example.com;
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
 
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-    return 301 https://example.com$request_uri;
-}
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
 
-server {
-    listen 443 ssl http2;
-    server_name example.com;
+    <span class="kn">proxy_read_timeout</span> <span class="s">720s</span><span class="p">;</span>
+    <span class="kn">proxy_connect_timeout</span> <span class="s">720s</span><span class="p">;</span>
+    <span class="kn">proxy_send_timeout</span> <span class="s">720s</span><span class="p">;</span>
 
-    proxy_read_timeout 720s;
-    proxy_connect_timeout 720s;
-    proxy_send_timeout 720s;
+    <span class="c1"># Proxy headers
+</span><span class="c1"></span>    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Host</span> <span class="nv">$host</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
 
-    # Proxy headers
-    proxy_set_header X-Forwarded-Host $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Real-IP $remote_addr;
+    <span class="c1"># SSL parameters
+</span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
 
-    # SSL parameters
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
+    <span class="c1"># log files
+</span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/odoo.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/odoo.error.log</span><span class="p">;</span>
 
-    # log files
-    access_log /var/log/nginx/odoo.access.log;
-    error_log /var/log/nginx/odoo.error.log;
+    <span class="c1"># Handle longpoll requests
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="s">/longpolling</span> <span class="p">{</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://odoochat</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Handle longpoll requests
-    location /longpolling {
-        proxy_pass http://odoochat;
-    }
+    <span class="c1"># Handle / requests
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+       <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+       <span class="kn">proxy_pass</span> <span class="s">http://odoo</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Handle / requests
-    location / {
-       proxy_redirect off;
-       proxy_pass http://odoo;
-    }
+    <span class="c1"># Cache static files
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">/web/static/</span> <span class="p">{</span>
+        <span class="kn">proxy_cache_valid</span> <span class="mi">200</span> <span class="mi">90m</span><span class="p">;</span>
+        <span class="kn">proxy_buffering</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">expires</span> <span class="mi">864000</span><span class="p">;</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://odoo</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # Cache static files
-    location ~* /web/static/ {
-        proxy_cache_valid 200 90m;
-        proxy_buffering on;
-        expires 864000;
-        proxy_pass http://odoo;
-    }
-
-    # Gzip
-    gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
-    gzip on;
-}
-</code></pre>
-
+    <span class="c1"># Gzip
+</span><span class="c1"></span>    <span class="kn">gzip_types</span> <span class="s">text/css</span> <span class="s">text/less</span> <span class="s">text/plain</span> <span class="s">text/xml</span> <span class="s">application/xml</span> <span class="s">application/json</span> <span class="s">application/javascript</span><span class="p">;</span>
+    <span class="kn">gzip</span> <span class="no">on</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 <blockquote>
 <p>不要忘记将 <code>example.com</code> 替换为您的 Odoo 域，并设置 SSL 证书文件的正确路径。此配置中使用的片段在<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本教程</a>中创建。</p>
 </blockquote>
 
 <p>完成后，使用以下命令重新启动 Nginx 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl restart nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
 <h2 id="更改绑定的网络端口">更改绑定的网络端口</h2>
 
 <p>此步骤是可选的，但这是一种很好的安全措施。默认情况下， Odoo 服务器在所有接口上侦听端口 8069 ，因此如果要禁用对 Odoo 实例的直接访问，可以阻止所有公共接口的端口 8069 或强制 Odoo 仅在本地接口上侦听。</p>
 
 <p>在本指南中，我们将强制 Odoo 只监听 127.0.0.1 ，打开 Odoo 配置文件 <code>/etc/odoo11.conf</code> 在末尾添加以下两行：</p>
-
-<pre><code class="language-bash">xmlrpc_interface = 127.0.0.1
-netrpc_interface = 127.0.0.1
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">xmlrpc_interface</span> <span class="o">=</span> <span class="m">127</span>.0.0.1
+<span class="nv">netrpc_interface</span> <span class="o">=</span> <span class="m">127</span>.0.0.1</code></pre></div>
 <p>保存配置文件并重新启动 Odoo 服务器以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl restart odoo
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart odoo</code></pre></div>
 <h2 id="启用多进程处理">启用多进程处理</h2>
 
 <p>默认情况下， Odoo 工作在多线程模式。对于生产部署，建议切换到多进程，因为它可以提高稳定性，并更好地利用系统资源。为了实现多处理，我们需要编辑 Odoo 配置并设置非零数量的工作进程。</p>
@@ -502,41 +414,35 @@ netrpc_interface = 127.0.0.1
 
 <blockquote>
 <p>如果您不知道系统上有多少CPU，则可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; grep -c ^processor /proc/cpuinfo
+&gt; <span class="sb">```</span>
 
-<pre><code class="language-bash">&gt; grep -c ^processor /proc/cpuinfo
-&gt; ```
+假设我们有一个带有 <span class="m">4</span> 个 CPU 内核，8 GB RAM 内存和 <span class="m">30</span> 个并发 Odoo 用户的系统。
 
-假设我们有一个带有 4 个 CPU 内核，8 GB RAM 内存和 30 个并发 Odoo 用户的系统。
+- <span class="m">30</span> 用户 / <span class="nv">6</span> <span class="o">=</span> **5**  <span class="o">(</span>5是所需工作进程的理论数量）
+- <span class="o">(</span><span class="m">4</span> * <span class="m">2</span><span class="o">)</span> + <span class="nv">1</span> <span class="o">=</span> **9**  <span class="o">(</span>9是理论上最大工作进程数量）
 
-- 30 用户 / 6 = **5**  (5是所需工作进程的理论数量）
-- (4 * 2) + 1 = **9**  (9是理论上最大工作进程数量）
-
-根据上面的计算，我们可以使用 5 个工作进程 + 1 个 `cron` 工作进程，共有 6 个工作进程。
+根据上面的计算，我们可以使用 <span class="m">5</span> 个工作进程 + <span class="m">1</span> 个 <span class="sb">`</span>cron<span class="sb">`</span> 工作进程，共有 <span class="m">6</span> 个工作进程。
 
 根据工作进程的数量计算 RAM 内存消耗：
 
-- RAM = 6 * ((0.8*150) + (0.2*1024)) ~= 2 GB
+- <span class="nv">RAM</span> <span class="o">=</span> <span class="m">6</span> * <span class="o">((</span><span class="m">0</span>.8*150<span class="o">)</span> + <span class="o">(</span><span class="m">0</span>.2*1024<span class="o">))</span> ~<span class="o">=</span> <span class="m">2</span> GB
 
 上面的计算表明我们的 Odoo 安装需要大约 2GB 的RAM。
 
-要切换到多进程模式，请打开配置文件 `/etc/odoo11.conf` 并附加以下行：
+要切换到多进程模式，请打开配置文件 <span class="sb">`</span>/etc/odoo11.conf<span class="sb">`</span> 并附加以下行：
 
-```conf
-limit_memory_hard = 2684354560
-limit_memory_soft = 2147483648
-limit_request = 8192
-limit_time_cpu = 600
-limit_time_real = 1200
-max_cron_threads = 1
-workers = 5
-</code></pre>
-</blockquote>
+<span class="sb">```</span>conf
+<span class="nv">limit_memory_hard</span> <span class="o">=</span> <span class="m">2684354560</span>
+<span class="nv">limit_memory_soft</span> <span class="o">=</span> <span class="m">2147483648</span>
+<span class="nv">limit_request</span> <span class="o">=</span> <span class="m">8192</span>
+<span class="nv">limit_time_cpu</span> <span class="o">=</span> <span class="m">600</span>
+<span class="nv">limit_time_real</span> <span class="o">=</span> <span class="m">1200</span>
+<span class="nv">max_cron_threads</span> <span class="o">=</span> <span class="m">1</span>
+<span class="nv">workers</span> <span class="o">=</span> <span class="m">5</span></code></pre></div></blockquote>
 
 <p>重新启动 Odoo 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl restart odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart odoo11</code></pre></div>
 <p>其余的系统资源将由我们机器上运行的其他服务使用。在本指南中，我们将 Odoo 与 PostgreSQL 和 Nginx 一起安装在同一台服务器上，根据您的设置，您还可以在服务器上运行其他服务。</p>
 
 <h2 id="结论">结论</h2>

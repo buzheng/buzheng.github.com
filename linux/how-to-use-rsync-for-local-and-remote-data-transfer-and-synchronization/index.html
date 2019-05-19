@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -49,7 +49,7 @@ rsync 的可用于系统之间，并作为一个替换镜像数据，增量备�
 
 <meta itemprop="datePublished" content="2019-03-30T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-30T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="244">
+<meta itemprop="wordCount" content="243">
 
 
 
@@ -64,7 +64,7 @@ rsync 的可用于系统之间，并作为一个替换镜像数据，增量备�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ rsync 的可用于系统之间，并作为一个替换镜像数据，增量备�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何使用 rsync 进行本地和远程数据传输和同步</h1>
+      
+      <h1 class="f1 mb1">如何使用 rsync 进行本地和远程数据传输和同步</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-30T05:00:00&#43;08:00">March 30, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>rsync 是一种快速且通用的命令行实用程序，它通过远程 shell 在两个位置之间同步文件和文件夹。它通过仅传输源位置和目标位置之间的差异来提供快速增量文件传输。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>rsync 是一种快速且通用的命令行实用程序，它通过远程 shell 在两个位置之间同步文件和文件夹。它通过仅传输源位置和目标位置之间的差异来提供快速增量文件传输。</p>
 
 <p>rsync 的可用于系统之间，并作为一个替换镜像数据，增量备份，复制文件 <!--link:how-to-use-scp-command-to-securely-transfer-files--><code>scp</code><!--link-->， <!--link:how-to-use-linux-sftp-command-to-transfer-files--><code>sftp</code><!--link-->和 <code>cp</code> 日常使用的命令。</p>
 
@@ -150,36 +152,21 @@ rsync 的可用于系统之间，并作为一个替换镜像数据，增量备�
 <h2 id="安装-rsync">安装 rsync</h2>
 
 <p>rsync 程序已预安装在大多数 Linux 发行版和 Mac OSX 上。您可以通过输入以下内容来检查系统上是否安装了它：</p>
-
-<pre><code class="language-console-bash">rsync --version
-</code></pre>
-
-<pre><code class="language-output">rsync  version 3.1.2  protocol version 31
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">rsync  version 3.1.2  protocol version 31</code></pre></div>
 <p>如果您的系统上没有安装 rsync ，则可以使用包管理器轻松安装它。</p>
 
 <h3 id="在-ubuntu-和-debian-上安装-rsync">在 Ubuntu 和 Debian 上安装 rsync</h3>
-
-<pre><code class="language-console-bash">sudo apt install rsync
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install rsync</code></pre></div>
 <h3 id="在-centos-和-fedora-上安装-rsync">在 CentOS 和 Fedora 上安装 rsync</h3>
-
-<pre><code class="language-console-bash">sudo yum install rsync
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install rsync</code></pre></div>
 <h2 id="rsync-命令语法">rsync 命令语法</h2>
 
 <p>在讨论如何使用 rsync 命令之前，让我们先回顾一下基本语法。</p>
 
 <p>rsync 实用程序表达式采用以下形式：</p>
-
-<pre><code class="language-sh">Local to Local:  rsync [OPTION]... SRC [SRC]... DEST
-Local to Remote: rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST
-Remote to Local: rsync [OPTION]... [USER@]HOST:SRC [DEST]
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Local to Local:  rsync <span class="o">[</span>OPTION<span class="o">]</span>... SRC <span class="o">[</span>SRC<span class="o">]</span>... DEST
+Local to Remote: rsync <span class="o">[</span>OPTION<span class="o">]</span>... SRC <span class="o">[</span>SRC<span class="o">]</span>... <span class="o">[</span>USER@<span class="o">]</span>HOST:DEST
+Remote to Local: rsync <span class="o">[</span>OPTION<span class="o">]</span>... <span class="o">[</span>USER@<span class="o">]</span>HOST:SRC <span class="o">[</span>DEST<span class="o">]</span></code></pre></div>
 <ul>
 <li><code>OPTION</code>- <a href="https://linux.die.net/man/1/rsync">rsync 选项</a></li>
 <li><code>SRC</code> - 源目录</li>
@@ -202,22 +189,13 @@ Remote to Local: rsync [OPTION]... [USER@]HOST:SRC [DEST]
 <h2 id="rsync-的基本用法">rsync 的基本用法</h2>
 
 <p>要将单个文件从一个文件复制到另一个本地位置，您应该运行以下命令：</p>
-
-<pre><code class="language-console-bash">rsync -a /opt/filename.zip /tmp/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /opt/filename.zip /tmp/</code></pre></div>
 <p><img src="/images/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/rsync-copy-file.jpg" alt="" /></p>
 
 <p>上面命令中在目标位置省略文件名则表示使用当前文件名称复制文件。如果要以不同的名称保存文件，则需要指定新名称：</p>
-
-<pre><code class="language-console-bash">rsync -a /opt/filename.zip /tmp/newfilename.zip
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /opt/filename.zip /tmp/newfilename.zip</code></pre></div>
 <p>在下面的示例中，我们将创建网站文件的本地备份：</p>
-
-<pre><code class="language-console-bash">rsync -a /var/www/domain.com/public_html/ /var/www/domain.com/public_html_backup/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /var/www/domain.com/public_html/ /var/www/domain.com/public_html_backup/</code></pre></div>
 <p>如果目标目录不存在， rsync 将创建一个。</p>
 
 <p>值得一提的是， rsync 使用尾部斜杠对源目录进行不同的处理 <code>/</code> 。如果在源目录中添加尾部斜杠，它将仅将目录的内容复制到目标目录。当省略尾部斜杠时， rsync 会将源目录复制到目标目录中的。</p>
@@ -227,24 +205,15 @@ Remote to Local: rsync [OPTION]... [USER@]HOST:SRC [DEST]
 <p>使用 rsync 进行远程传输时，必须同时在源计算机和目标计算机上安装。新版本的 rsync 配置为使用 SSH 作为默认远程 shell 。</p>
 
 <p>在以下示例中，我们将目录从本地传输到远程计算机：</p>
-
-<pre><code class="language-console-bash">rsync -a /opt/media/ remote_user@remote_host_or_ip:/opt/media/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /opt/media/ remote_user@remote_host_or_ip:/opt/media/</code></pre></div>
 <blockquote>
 <p>如果尚未设置 <a href="/linux/how-to-setup-passwordless-ssh-login/">SSH 免密登录</a>到远程计算机，则会要求您输入用户密码。</p>
 </blockquote>
 
 <p>如果要将数据从远程数据传输到本地计算机，则需要使用远程位置作为源：</p>
-
-<pre><code class="language-console-bash">rsync -a remote_user@remote_host_or_ip:/opt/media/ /opt/media/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a remote_user@remote_host_or_ip:/opt/media/ /opt/media/</code></pre></div>
 <p>如果远程主机上的 SSH 正在侦听默认端口 22 以外的端口，则可以使用以下 <code>-e</code> 参数指定端口：</p>
-
-<pre><code class="language-console-bash">rsync -a -e &quot;ssh -p 2322&quot; /opt/media/ remote_user@remote_host_or_ip:/opt/media/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a -e &#34;ssh -p 2322&#34; /opt/media/ remote_user@remote_host_or_ip:/opt/media/</code></pre></div>
 <p>传输大量数据时，建议在 <a href="/linux/how-to-use-linux-screen/">screen</a> 会话中运行 rsync 命令或使用该 <code>-P</code> 选项。</p>
 
 <h2 id="排除文件和目录">排除文件和目录</h2>
@@ -252,21 +221,12 @@ Remote to Local: rsync [OPTION]... [USER@]HOST:SRC [DEST]
 <p>当需要<!--link:how-to-exclude-files-and-directories-with-rsync-->排除文件或目录<!--link-->时，您需要使用它们的相对路径。使用 rsync 时，有两个选项可以排除文件和目录。</p>
 
 <p>第一个选项是使用 <code>--exclude</code> 参数并在命令行中指定要排除的文件和目录。在下面的示例中，我们排除了位于 <code>src_directory</code> 中的 <code>node_modules</code> 和 <code>tmp</code> 目录。</p>
-
-<pre><code class="language-console-bash">rsync -a --exclude=node_modules --exclude=tmp /src_directory/ /dst_directory/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude=node_modules --exclude=tmp /src_directory/ /dst_directory/</code></pre></div>
 <p>第二个选项是使用 <code>--exclude-from</code> 参数指定文件，该文件中是排除的文件和目录的列表。</p>
-
-<pre><code class="language-console-bash">rsync -a --exclude-from='/exclude-file.txt' /src_directory/ /dst_directory/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude-from=&#39;/exclude-file.txt&#39; /src_directory/ /dst_directory/</code></pre></div>
 <p>文件 <code>/exclude-file.txt</code></p>
-
-<pre><code class="language-txt">node_modules
-tmp
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">node_modules
+tmp</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>在本教程中，您学习了如何使用 rsync 复制和同步文件和目录。在 <a href="https://download.samba.org/pub/rsync/rsync.html">rsync 用户手册</a>页面上还有很多关于 rsync 的知识。</p><ul class="pa0">

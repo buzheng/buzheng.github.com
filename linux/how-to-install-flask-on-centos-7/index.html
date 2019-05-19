@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 Flask</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上安装 Flask</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-04-30T06:00:00&#43;08:00">April 30, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Flask 是一个免费的开源微博客框架，旨在帮助开发人员构建安全，可扩展和可维护的 Web 应用程序。 Flask 基于 <a href="http://werkzeug.pocoo.org/">Werkzeug</a> 并使用 <a href="http://jinja.pocoo.org/">Jinja2</a> 作为模板引擎。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Flask 是一个免费的开源微博客框架，旨在帮助开发人员构建安全，可扩展和可维护的 Web 应用程序。 Flask 基于 <a href="http://werkzeug.pocoo.org/">Werkzeug</a> 并使用 <a href="http://jinja.pocoo.org/">Jinja2</a> 作为模板引擎。</p>
 
 <p>与 <a href="/linux/how-to-install-django-on-centos-7/">Django</a> 不同，默认情况下， Flask 不包含 ORM ，表单验证或第三方库提供的任何其他功能。 Flask 构建时考虑了扩展，这些扩展 Python 包为 Flask 应用程序添加功能。</p>
 
@@ -150,15 +152,9 @@
 <p>CentOS 7 附带 Python 2.7.5 ，这是 CentOS 基础系统的关键部分。 SCL 将允许您安装较新版本的 python 3.x 以及默认的 python v2.7.5 ，以便 yum 等系统工具可以继续正常工作。</p>
 
 <p>通过安装 CentOS 附加存储库中包含的 CentOS SCL 发布文件来启用 SCL ：</p>
-
-<pre><code class="language-console-bash">sudo yum install centos-release-scl
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install centos-release-scl</code></pre></div>
 <p>启用存储库后，使用以下命令安装 Python 3.6 ：</p>
-
-<pre><code class="language-console-bash">sudo yum install rh-python36
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install rh-python36</code></pre></div>
 <p>一旦安装了 Python 3.6 ，我们就可以为 Flask 应用程序创建一个虚拟环境。</p>
 
 <h3 id="2-创建虚拟环境">2.创建虚拟环境</h3>
@@ -166,50 +162,29 @@
 <p>首先导航到要存储 Python 3 虚拟环境的目录。它可以是您的主目录或您的用户具有读写权限的任何其他目录。</p>
 
 <p>要访问 Python 3.6 ，您需要使用该<code>scl</code>工具启动新的shell实例：</p>
-
-<pre><code class="language-console-bash">scl enable rh-python36 bash
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">scl enable rh-python36 bash</code></pre></div>
 <p>为 Flask 应用程序创建一个新目录并<a href="/linux/linux-cd-command/">导航</a>到它：</p>
-
-<pre><code class="language-console-bash">mkdir my_flask_appcd my_flask_app
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir my_flask_appcd my_flask_app</code></pre></div>
 <p>运行以下命令以创建新的虚拟环境：</p>
-
-<pre><code class="language-console-bash">python3 -m venv venv
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">python3 -m venv venv</code></pre></div>
 <p>上面的命令将创建一个名为 <code>venv</code> 的目录，其中包含 Python 二进制文件的副本， <a href="/linux/how-to-install-pip-on-centos-7/">Pip 包管理器</a>，标准 Python 库和其他支持文件。您可以为虚拟环境使用任何名称。</p>
 
 <p>使用 <code>activate</code> 脚本激活虚拟环境：</p>
-
-<pre><code class="language-console-bash">source venv/bin/activate
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source venv/bin/activate</code></pre></div>
 <p>激活后，虚拟环境的 bin 目录将添加到 <code>$PATH</code> 变量的开头。此外，您的 shell 提示符也会更改，它将显示您当前使用的虚拟环境的名称。在我们的情况下是 <code>venv</code> ：</p>
 
 <h3 id="3-安装-flask">3.安装 Flask</h3>
 
 <p>现在虚拟环境已激活，您可以使用 Python 包管理器 pip 来安装 Flask ：</p>
-
-<pre><code class="language-console-venv">pip install Flask
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-venv" data-lang="console-venv">pip install Flask</code></pre></div>
 <p>在虚拟环境中，你可以使用命令 <code>pip</code> 来代替 <code>pip3</code>，用 <code>python</code> 代替 <code>python3</code> 。</p>
 
 <p>使用以下命令验证安装，该命令将打印 Flask 版本：</p>
-
-<pre><code class="language-console-venv">python -m Flask --version
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-venv" data-lang="console-venv">python -m Flask --version</code></pre></div>
 <p>在撰写本文时，最新的官方 Flask 版本是 1.0.2</p>
-
-<pre><code class="language-output">Flask 1.0.2
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Flask 1.0.2
 Python 3.6.3 (default, Mar 20 2018, 13:50:41) 
-[GCC 4.8.5 20150623 (Red Hat 4.8.5-16)]
-</code></pre>
-
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-16)]</code></pre></div>
 <p>您的 Flask 版本可能与此处显示的版本不同。</p>
 
 <h3 id="4-创建最小的-flask-应用程序">4.创建最小的 Flask 应用程序</h3>
@@ -219,15 +194,12 @@ Python 3.6.3 (default, Mar 20 2018, 13:50:41)
 <p>打开<!--link:how-to-install-visual-studio-code-on-centos-7-->文本编辑器<!--link-->或 Python IDE 并创建以下文件：</p>
 
 <p>文件: <code>〜/my_flask_app/hello.py</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<pre><code class="language-python">from flask import Flask
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-</code></pre>
-
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span></code></pre></div>
 <p>让我们逐行分析代码。</p>
 
 <ol>
@@ -241,22 +213,16 @@ def hello_world():
 <h3 id="5-测试开发服务器">5.测试开发服务器</h3>
 
 <p>我们将使用该 <code>flask</code> 命令来运行应用程序，但在此之前，我们需要告诉 Flask 如何通过指定 <code>FLASK_APP</code> 环境变量来加载应用程序：</p>
-
-<pre><code class="language-console-venv">export FLASK_APP=helloflask run
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-venv" data-lang="console-venv">export FLASK_APP=helloflask run</code></pre></div>
 <p>上面的命令将启动开发内置服务器。</p>
 
 <p>输出将如下所示：</p>
-
-<pre><code class="language-output"> * Serving Flask app &quot;hello&quot;
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"> * Serving Flask app &#34;hello&#34;
  * Environment: production
    WARNING: Do not use the development server in a production environment.
    Use a production WSGI server instead.
  * Debug mode: off
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-</code></pre>
-
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)</code></pre></div>
 <p>如果您在<!--link:how-to-install-virtualbox-on-centos-7-->虚拟机<!--link-->上安装了 Flask ，并且想要访问 Flask 开发服务器，则可以通过在 <code>flask run</code> 命令后附加 <code>--host=0.0.0.0</code> 使服务器公开。</p>
 
 <p>在 <a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">Web 浏览器中</a>打开 <code>http://127.0.0.1:5000</code> ，您将看到“ Hello World ！”消息。</p>
@@ -266,10 +232,7 @@ def hello_world():
 <h3 id="6-停用虚拟环境">6.停用虚拟环境</h3>
 
 <p>完成工作后，通过键入来停用环境， <code>deactivate</code> 您将返回正常的 shell 。</p>
-
-<pre><code class="language-console-venv">deactivate
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-venv" data-lang="console-venv">deactivate</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>您已经学习了如何创建 Python 虚拟环境并在 CentOS 7 计算机上安装 Flask 。要创建其他 Flask 开发环境，请重复本教程中概述的步骤。</p>

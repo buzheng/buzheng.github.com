@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -64,7 +64,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何清除 DNS 缓存</h1>
+      
+      <h1 class="f1 mb1">如何清除 DNS 缓存</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-05-06T06:00:00&#43;08:00">May 6, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>DNS 缓存是一个临时数据库，用于存储有关以前 DNS 查找的信息。换句话说，无论何时访问网站，您的操作系统和 Web 浏览器都会记录域名和相应的 IP 地址。这消除了对远程 DNS 服务器重复查询的需要，并允许您的操作系统或浏览器快速解析网站的 URL 。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>DNS 缓存是一个临时数据库，用于存储有关以前 DNS 查找的信息。换句话说，无论何时访问网站，您的操作系统和 Web 浏览器都会记录域名和相应的 IP 地址。这消除了对远程 DNS 服务器重复查询的需要，并允许您的操作系统或浏览器快速解析网站的 URL 。</p>
 
 <p>但是，在某些情况下，例如解决网络问题，或更改 DNS 解析器后，您需要刷新 DNS 缓存。这将清除缓存的 DNS 条目，并执行后续查找以根据新配置的 DNS 解析域。</p>
 
@@ -163,17 +165,11 @@
 <p><img src="/images/linux/how-to-clear-the-dns-cache/windows-command-prompt.jpg" alt="" /></p></li>
 
 <li><p>在命令行上，键入以下行并按 Enter 键：</p>
-
-<pre><code class="language-sh">ipconfig /flushdns
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ipconfig /flushdns</code></pre></div>
 <p>成功后，系统将返回以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Windows IP Configuration
 
-<pre><code class="language-output">Windows IP Configuration
-
-Successfully flushed the DNS Resolver Cache.
-</code></pre>
-
+Successfully flushed the DNS Resolver Cache.</code></pre></div>
 <p><img src="/images/linux/how-to-clear-the-dns-cache/windows-clear-cache.jpg" alt="" /></p></li>
 </ol>
 
@@ -187,16 +183,11 @@ Successfully flushed the DNS Resolver Cache.
 <li>右键单击命令提示符，然后单击以管理员身份运行。这将打开命令提示符窗口。</li>
 
 <li><p>在命令行上，键入以下行并按 Enter 键：</p>
-
-<pre><code class="language-sh">ipconfig /flushdns
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ipconfig /flushdns</code></pre></div>
 <p>成功后，系统将返回以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Windows IP Configuration
 
-<pre><code class="language-output">Windows IP Configuration
-
-Successfully flushed the DNS Resolver Cache.
-</code></pre></li>
+Successfully flushed the DNS Resolver Cache.</code></pre></div></li>
 </ol>
 
 <h2 id="清除-刷新-linux-上的-dns-缓存">清除/刷新 Linux 上的 DNS 缓存</h2>
@@ -208,17 +199,11 @@ Successfully flushed the DNS Resolver Cache.
 <p>大多数现代 Linux 发行版（如Ubuntu 18.04）都使用 systemd 解析服务来缓存 DNS 条目。</p>
 
 <p>要确定服务是否正在运行：</p>
-
-<pre><code class="language-sh">sudo systemctl is-active systemd-resolved.service
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl is-active systemd-resolved.service</code></pre></div>
 <p>如果服务正在运行，则命令将打印 <code>active</code> ，否则您将看到 <code>inactive</code> 。</p>
 
 <p>要清除 Systemd Resolved DNS 缓存，请键入以下命令。</p>
-
-<pre><code class="language-sh">sudo systemd-resolve --flush-caches
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemd-resolve --flush-caches</code></pre></div>
 <p>成功时，该命令不会返回任何消息。</p>
 
 <h3 id="dnsmasq">dnsmasq</h3>
@@ -226,29 +211,17 @@ Successfully flushed the DNS Resolver Cache.
 <p>Dnsmasq 是一个轻量级的 DHCP 和 DNS 缓存名称服务器。</p>
 
 <p>如果您的系统使用 DNSMasq 作为缓存服务器，要清除 DNS 缓存，您需要重新启动 Dnsmasq 服务：</p>
-
-<pre><code class="language-sh">sudo systemctl restart dnsmasq.service
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl restart dnsmasq.service</code></pre></div>
 <p>要么</p>
-
-<pre><code class="language-sh">sudo service dnsmasq restart
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo service dnsmasq restart</code></pre></div>
 <h3 id="nscd">NSCD</h3>
 
 <p>Nscd 是一个缓存守护进程，它是大多数基于 RedHat 的发行版的首选 DNS 缓存系统。</p>
 
 <p>如果您的系统使用 Nscd ，要清除 DNS 缓存，您需要重新启动 Nscd 服务：</p>
-
-<pre><code class="language-sh">sudo systemctl restart nscd.service
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl restart nscd.service</code></pre></div>
 <p>要么</p>
-
-<pre><code class="language-sh">sudo service nscd restart
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo service nscd restart</code></pre></div>
 <h2 id="在-macos-上清除-刷新-dns-缓存">在 MacOS 上清除/刷新 DNS 缓存</h2>
 
 <p>在 MacOS 中刷新缓存的命令略有不同，具体取决于您运行的版本。该命令必须以具有系统管理员权限的用户身份运行（sudo用户）。</p>
@@ -260,30 +233,19 @@ Successfully flushed the DNS Resolver Cache.
 <li>转到应用程序&gt;实用程序&gt;终端。这将打开终端窗口。</li>
 
 <li><p>在命令行中，键入以下行并按 Enter 键：</p>
-
-<pre><code class="language-sh">sudo killall -HUP mDNSResponder
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo killall -HUP mDNSResponder</code></pre></div>
 <p>输入您的 sudo 密码，然后再次按 Enter 键。成功时，系统不会返回任何消息。</p>
 
 <p>对于早期版本的 MacOS ，刷新缓存的命令是不同的。</p>
 
 <p><strong>MacOS 10.11 和 10.9</strong></p>
-
-<pre><code class="language-sh">sudo dscacheutil -flushcache
-sudo killall -HUP mDNSResponder
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder</code></pre></div>
 <p><strong>MacOS 10.10</strong></p>
-
-<pre><code class="language-sh">sudo discoveryutil mdnsflushcache
-sudo discoveryutil udnsflushcaches
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo discoveryutil mdnsflushcache
+sudo discoveryutil udnsflushcaches</code></pre></div>
 <p><strong>MacOS 10.6 和 10.5</strong></p>
-
-<pre><code class="language-sh">sudo dscacheutil -flushcache
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dscacheutil -flushcache</code></pre></div></li>
 </ol>
 
 <h2 id="清除-刷新浏览器-dns-缓存">清除/刷新浏览器 DNS 缓存</h2>

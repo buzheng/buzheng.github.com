@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">centos 6.5 修改 SSH 端口并禁用 root 远程登录</h1>
+      
+      <h1 class="f1 mb1">centos 6.5 修改 SSH 端口并禁用 root 远程登录</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-08-12T00:00:00Z">August 12, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>我们知道 SSH 的默认端口为 22，但是基于安全的需要，我们需要修改服务器的 SSH 端口，和禁用 root 远程登录。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>我们知道 SSH 的默认端口为 22，但是基于安全的需要，我们需要修改服务器的 SSH 端口，和禁用 root 远程登录。</p>
 
 <p>通过以下步骤，我们通过编辑 /etc/ssh/sshd_config ，将端口修改为 10089，并禁用 root 远程登录，同时为新端口添加防火墙规则，并删除默认端口的规则。</p>
 
@@ -138,27 +140,18 @@
 </blockquote>
 
 <h2 id="修改端口">修改端口</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/ssh/sshd_config
 
-<pre><code class="language-bash">vi /etc/ssh/sshd_config
-
-Port 10089 #端口号
-PermitRootLogin no # 禁止root ssh
-</code></pre>
-
+Port <span class="m">10089</span> <span class="c1">#端口号</span>
+PermitRootLogin no <span class="c1"># 禁止root ssh</span></code></pre></div>
 <h2 id="为新端口开通防火墙规则">为新端口开通防火墙规则</h2>
-
-<pre><code class="language-bash">iptables -I INPUT 4 -m state --state NEW -p tcp --dport 10089 -j ACCEPT
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">iptables -I INPUT <span class="m">4</span> -m state --state NEW -p tcp --dport <span class="m">10089</span> -j ACCEPT
 service iptables save
-service iptables reload
-</code></pre>
-
+service iptables reload</code></pre></div>
 <h2 id="删除22端口的规则">删除22端口的规则</h2>
-
-<pre><code class="language-bash">iptables -D INPUT $RULE_LINE_NUMBER
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">iptables -D INPUT <span class="nv">$RULE_LINE_NUMBER</span>
 service iptables save
-service iptables reload
-</code></pre>
-
+service iptables reload</code></pre></div>
 <blockquote>
 <p>$RULE_LINE_NUMBER 可以通过 iptables -L -n &ndash;line-number 来查看</p>
 </blockquote><ul class="pa0">

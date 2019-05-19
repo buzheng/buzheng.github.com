@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -45,7 +45,7 @@
 
 <meta itemprop="datePublished" content="2019-05-08T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-08T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="257">
+<meta itemprop="wordCount" content="256">
 
 
 
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何查看 MySQL 中的用户</h1>
+      
+      <h1 class="f1 mb1">如何查看 MySQL 中的用户</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-05-08T05:00:00&#43;08:00">May 8, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>您是否曾想获得 MySQL 服务器中所有用户的列表？有显示 MySQL 数据库和表的命令，但没有显示用户的 “show users” 的命令。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>您是否曾想获得 MySQL 服务器中所有用户的列表？有显示 MySQL 数据库和表的命令，但没有显示用户的 “show users” 的命令。</p>
 
 <p>本教程介绍如何通过命令行列出 MySQL 数据库服务器中的所有用户帐户。</p>
 
@@ -151,10 +153,7 @@
 <p>所有命令都将作为 root 用户在 MySQL shell 中执行。</p>
 
 <p>要访问 MySQL shell ，请键入以下命令，并在出现提示时输入您的 MySQL root 用户密码：</p>
-
-<pre><code class="language-console-bash">mysql -u root -p
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u root -p</code></pre></div>
 <p>如果您尚未为 MySQL root 用户设置密码，则可以省略 <code>-p</code> 选项。</p>
 
 <blockquote>
@@ -164,13 +163,9 @@
 <h2 id="显示-mysql-用户">显示 MySQL 用户</h2>
 
 <p>MySQL 将有关用户的信息存储在 <code>mysql</code> 数据库中 <code>user</code> 表中。要获取所有 MySQL 用户帐户的列表，我们可以使用该 <code>SELECT</code> 语句并从 <code>mysql.users</code> 表中检索所有行：</p>
-
-<pre><code class="language-console-mysql">SELECT User, Host FROM mysql.user;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SELECT User, Host FROM mysql.user;</code></pre></div>
 <p>输出应类似于以下内容：</p>
-
-<pre><code class="language-output">+------------------+-----------+
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+------------------+-----------+
 | user             | host      |
 +------------------+-----------+
 | root             | localhost |
@@ -182,9 +177,7 @@
 | leia             | localhost |
 | han              | localhost |
 +------------------+-----------+
-8 rows in set (0.00 sec)
-</code></pre>
-
+8 rows in set (0.00 sec)</code></pre></div>
 <p>上面的命令仅示出了 <code>mysql.user</code> 表中的两列 <code>User</code>和<code>Host</code>，该表包含超过 40 列如 <code>Password</code> ， <code>Select_priv</code> ， <code>Update_priv</code>&hellip; 等</p>
 
 <p>MySQL 中的<a href="https://dev.mysql.com/doc/refman/8.0/en/user-names.html">用户帐户</a>由用户名和主机名部分组成。</p>
@@ -192,11 +185,7 @@
 <p>您可以使用该 <code>desc mysql.user;</code> 语句显示有关每个表列的信息。知道列名称后，再选定数据运行查询。</p>
 
 <p>例如，要获取所有 MySQL 用户帐户的列表，包括有关密码以及密码是活动还是已过期的信息，您可以使用以下查询：</p>
-
-<pre><code class="language-console-mysql">SELECT User, Host, Password, password_expired FROM mysql.user;
-</code></pre>
-
-<pre><code class="language-output">+----------------+-----------+-------------------------------------------+------------------+
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SELECT User, Host, Password, password_expired FROM mysql.user;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+----------------+-----------+-------------------------------------------+------------------+
 | User           | Host      | Password                                  | password_expired |
 +----------------+-----------+-------------------------------------------+------------------+
 | root           | localhost |                                           | N                |
@@ -208,9 +197,7 @@
 | leia           | localhost | *74409C8DB55AC1A6829D801915981C46EDBFC64A | N                |
 | han            | localhost | *7B3022FCAEC3534CE67C68322D8AF0C240D95745 | N                |
 +----------------+-----------+-------------------------------------------+------------------+
-8 rows in set (0.00 sec)
-</code></pre>
-
+8 rows in set (0.00 sec)</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>在本教程中，我们向您展示了如何通过从 mysql 数据库中的用户表中检索数据来获取所有 MySQL 用户帐户的列表。</p><ul class="pa0">

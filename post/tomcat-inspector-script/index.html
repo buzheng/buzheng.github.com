@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,66 +122,62 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Tomcat 监测脚本</h1>
+      
+      <h1 class="f1 mb1">Tomcat 监测脚本</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-10-29T00:00:00Z">October 29, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>通过 Tomcat 监测脚本 按照一定的时间频度来检测Tomcat应用是否正常，如果进程不存在，则启动 Tomcat；如果进程存在而访问不正常，则杀掉进程，再启动 Tomcat。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>通过 Tomcat 监测脚本 按照一定的时间频度来检测Tomcat应用是否正常，如果进程不存在，则启动 Tomcat；如果进程存在而访问不正常，则杀掉进程，再启动 Tomcat。</p>
 
 <h2 id="脚本的主体">脚本的主体</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /home/dev/ctl/tomcat-inspector/image.sh
 
-<pre><code class="language-bash">vi /home/dev/ctl/tomcat-inspector/image.sh
-
-#!/bin/bash
-
-echo $(date '+%Y-%m-%d %H:%M:%S')
+<span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nb">echo</span> <span class="k">$(</span>date <span class="s1">&#39;+%Y-%m-%d %H:%M:%S&#39;</span><span class="k">)</span>
 whoami
 
-JAVA_HOME=/opt/java/jdk1.8.0_40
-PATH=$JAVA_HOME/bin:$PATH
-export PATH JAVA_HOME
+<span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/java/jdk1.8.0_40
+<span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span>
+<span class="nb">export</span> PATH JAVA_HOME
 
-port=8086
-sn=&quot;tomcat-image-$port&quot;
-th=&quot;/home/dev/tomcat/$sn&quot;
-url=&quot;http://you-app-server/&quot;
+<span class="nv">port</span><span class="o">=</span><span class="m">8086</span>
+<span class="nv">sn</span><span class="o">=</span><span class="s2">&#34;tomcat-image-</span><span class="nv">$port</span><span class="s2">&#34;</span>
+<span class="nv">th</span><span class="o">=</span><span class="s2">&#34;/home/dev/tomcat/</span><span class="nv">$sn</span><span class="s2">&#34;</span>
+<span class="nv">url</span><span class="o">=</span><span class="s2">&#34;http://you-app-server/&#34;</span>
 
-tomcat=`ps -ef | grep java | grep $sn | grep $port | wc -l`
+<span class="nv">tomcat</span><span class="o">=</span><span class="sb">`</span>ps -ef <span class="p">|</span> grep java <span class="p">|</span> grep <span class="nv">$sn</span> <span class="p">|</span> grep <span class="nv">$port</span> <span class="p">|</span> wc -l<span class="sb">`</span>
 
-if [ $tomcat -eq 0 ]
-then
-    echo $sn stoped.
-    echo starting $sn ......
-    $th/bin/startup.sh
-fi
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$tomcat</span> -eq <span class="m">0</span> <span class="o">]</span>
+<span class="k">then</span>
+    <span class="nb">echo</span> <span class="nv">$sn</span> stoped.
+    <span class="nb">echo</span> starting <span class="nv">$sn</span> ......
+    <span class="nv">$th</span>/bin/startup.sh
+<span class="k">fi</span>
 
-if [ $tomcat -ge 1 ]
-then
-    tpid=`ps -ef | grep java | grep $sn | grep $port | awk '{print $2}'`
-    echo $sn is running, pid = $tpid
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$tomcat</span> -ge <span class="m">1</span> <span class="o">]</span>
+<span class="k">then</span>
+    <span class="nv">tpid</span><span class="o">=</span><span class="sb">`</span>ps -ef <span class="p">|</span> grep java <span class="p">|</span> grep <span class="nv">$sn</span> <span class="p">|</span> grep <span class="nv">$port</span> <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
+    <span class="nb">echo</span> <span class="nv">$sn</span> is running, <span class="nv">pid</span> <span class="o">=</span> <span class="nv">$tpid</span>
 
-    httpStatus=`curl -I $url 2&gt;/dev/null | grep HTTP | awk '{print $2}'`
-    echo $httpStatus
-    if [[ -z &quot;$httpStatus&quot; || $httpStatus -ge 500 ]]
-    then
-        echo killing $sn ......
-        kill -9 $tpid
+    <span class="nv">httpStatus</span><span class="o">=</span><span class="sb">`</span>curl -I <span class="nv">$url</span> <span class="m">2</span>&gt;/dev/null <span class="p">|</span> grep HTTP <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
+    <span class="nb">echo</span> <span class="nv">$httpStatus</span>
+    <span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$httpStatus</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="nv">$httpStatus</span> -ge <span class="m">500</span> <span class="o">]]</span>
+    <span class="k">then</span>
+        <span class="nb">echo</span> killing <span class="nv">$sn</span> ......
+        <span class="nb">kill</span> -9 <span class="nv">$tpid</span>
 
-        echo starting $sn ......
-        $th/bin/startup.sh
-    fi
-fi
-</code></pre>
-
+        <span class="nb">echo</span> starting <span class="nv">$sn</span> ......
+        <span class="nv">$th</span>/bin/startup.sh
+    <span class="k">fi</span>
+<span class="k">fi</span></code></pre></div>
 <h2 id="设定执行频度">设定执行频度</h2>
-
-<pre><code class="language-shell">crontab -e
-*/5 * * * * /home/dev/ctl/tomcat-inspector/image.sh &gt;&gt; /home/dev/ctl/tomcat-inspector/logs/image.log 2&gt;&amp;1
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">crontab -e
+*/5 * * * * /home/dev/ctl/tomcat-inspector/image.sh &gt;&gt; /home/dev/ctl/tomcat-inspector/logs/image.log <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span></code></pre></div>
 <p>Done.</p><ul class="pa0">
   
    <li class="list">

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -49,7 +49,7 @@ Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的�
 
 <meta itemprop="datePublished" content="2019-03-02T09:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-02T09:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="193">
+<meta itemprop="wordCount" content="192">
 
 
 
@@ -64,7 +64,7 @@ Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">Bash 中 Case 语句用法</h1>
+      
+      <h1 class="f1 mb1">Bash 中 Case 语句用法</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-02T09:00:00&#43;08:00">March 2, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在 Bash 中，当您有多个不同的选择时， case 语句通常用于简化复杂的条件。 使用 case 语句而不是嵌套的 if 语句将帮助您使 bash 脚本更易读，更易于维护。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在 Bash 中，当您有多个不同的选择时， case 语句通常用于简化复杂的条件。 使用 case 语句而不是嵌套的 if 语句将帮助您使 bash 脚本更易读，更易于维护。</p>
 
 <p>Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的概念。与 C 中的 switch 语句不同主要在于， Bash 中的 case 语句一旦找到一个并执行与该模式关联的语句，就不会继续搜索模式匹配。</p>
 
@@ -150,27 +152,24 @@ Bash 中的 case 语句与 Javascript 或 C 中的 switch 语句具有类似的�
 <h2 id="case-语句语法">Case 语句语法</h2>
 
 <p>Bash 中的 case 语句采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">case</span> EXPRESSION in
 
-<pre><code class="language-bash">case EXPRESSION in
-
-  PATTERN_1)
+  PATTERN_1<span class="o">)</span>
     STATEMENTS
-    ;;
+    <span class="p">;;</span>
 
-  PATTERN_2)
+  PATTERN_2<span class="o">)</span>
     STATEMENTS
-    ;;
+    <span class="p">;;</span>
 
-  PATTERN_N)
+  PATTERN_N<span class="o">)</span>
     STATEMENTS
-    ;;
+    <span class="p">;;</span>
 
-  *)
+  *<span class="o">)</span>
     STATEMENTS
-    ;;
-esac
-</code></pre>
-
+    <span class="p">;;</span>
+<span class="k">esac</span></code></pre></div>
 <ul>
 <li>每个 case 语句都以 case 关键字开头，后面跟 case 表达式和关键字开头 in ，该语句以esac关键字结尾。</li>
 <li>您可以使用由 <code>|</code> 运算符分隔的多个模式。该 <code>)</code> 运营商终止模式列表。</li>
@@ -187,53 +186,41 @@ esac
 <p>这里是一个在 bash 脚本中使用 case 语句的示例，该脚本会打印给定国家/地区的官方语言：</p>
 
 <p>languages.sh</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nb">echo</span> -n <span class="s2">&#34;Enter the name of a country: &#34;</span>
+<span class="nb">read</span> COUNTRY
 
-<pre><code class="language-bash">#!/bin/bash
+<span class="nb">echo</span> -n <span class="s2">&#34;The official language of </span><span class="nv">$COUNTRY</span><span class="s2"> is &#34;</span>
 
-echo -n &quot;Enter the name of a country: &quot;
-read COUNTRY
+<span class="k">case</span> <span class="nv">$COUNTRY</span> in
 
-echo -n &quot;The official language of $COUNTRY is &quot;
+  Lithuania<span class="o">)</span>
+    <span class="nb">echo</span> -n <span class="s2">&#34;Lithuanian&#34;</span>
+    <span class="p">;;</span>
 
-case $COUNTRY in
+  Romania <span class="p">|</span> Moldova<span class="o">)</span>
+    <span class="nb">echo</span> -n <span class="s2">&#34;Romanian&#34;</span>
+    <span class="p">;;</span>
 
-  Lithuania)
-    echo -n &quot;Lithuanian&quot;
-    ;;
+  Italy <span class="p">|</span> <span class="s2">&#34;San Marino&#34;</span> <span class="p">|</span> Switzerland <span class="p">|</span> <span class="s2">&#34;Vatican City&#34;</span><span class="o">)</span>
+    <span class="nb">echo</span> -n <span class="s2">&#34;Italian&#34;</span>
+    <span class="p">;;</span>
 
-  Romania | Moldova)
-    echo -n &quot;Romanian&quot;
-    ;;
-
-  Italy | &quot;San Marino&quot; | Switzerland | &quot;Vatican City&quot;)
-    echo -n &quot;Italian&quot;
-    ;;
-
-  *)
-    echo -n &quot;unknown&quot;
-    ;;
-esac
-</code></pre>
-
+  *<span class="o">)</span>
+    <span class="nb">echo</span> -n <span class="s2">&#34;unknown&#34;</span>
+    <span class="p">;;</span>
+<span class="k">esac</span></code></pre></div>
 <p>将以上自定义脚本另存为文件 <code>languages.sh</code> 并从命令行运行它。</p>
-
-<pre><code class="language-bash">bash languages.sh
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">bash languages.sh</code></pre></div>
 <p>该脚本将要求您输入国家/地区。例如，如果键入“Lithuania”，它将匹配第一个模式，并且 <code>echo</code> 将执行该子句中的命令。</p>
 
 <p>该脚本将打印以下输出：</p>
-
-<pre><code class="language-bash">Enter the name of a country: Lithuania
-The official language of Lithuania is Lithuanian
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter the name of a country: Lithuania
+The official language of Lithuania is Lithuanian</code></pre></div>
 <p>如果您输入的国家/地区与默认通配符星号符号之外的任何其他模式都不匹配，假设输入是阿根廷的话，该脚本将执行默认子句中 <code>echo</code> 命令。</p>
-
-<pre><code class="language-bash">Enter the name of a country: Argentina
-The official language of Argentina is unknown
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter the name of a country: Argentina
+The official language of Argentina is unknown</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>到目前为止，您应该很好地理解如何编写 bash case 语句。它们通常用于从命令行将参数传递给 shell 脚本。例如，init 脚本使用 case 语句来启动，停止或重新启动服务。</p><ul class="pa0">

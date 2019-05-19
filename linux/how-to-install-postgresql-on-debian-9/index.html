@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -45,7 +45,7 @@
 
 <meta itemprop="datePublished" content="2019-05-14T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-14T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="393">
+<meta itemprop="wordCount" content="391">
 
 
 
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Debian 9 上安装 PostgreSQL</h1>
+      
+      <h1 class="f1 mb1">如何在 Debian 9 上安装 PostgreSQL</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-05-14T05:00:00&#43;08:00">May 14, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>PostgreSQL ，通常简称为 Postgres ，是一种开源的通用对象关系数据库管理系统。 PostgreSQL 具有许多高级功能，如在线备份，即时恢复，嵌套事务， SQL 和 JSON 查询，多版本并发控制（MVCC），异步复制等。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>PostgreSQL ，通常简称为 Postgres ，是一种开源的通用对象关系数据库管理系统。 PostgreSQL 具有许多高级功能，如在线备份，即时恢复，嵌套事务， SQL 和 JSON 查询，多版本并发控制（MVCC），异步复制等。</p>
 
 <p>在本教程中，我们将向您展示如何在 Debian 9 上安装 PostgreSQL 并探索基本数据库管理的基础知识。</p>
 
@@ -151,29 +153,19 @@
 
 <ol>
 <li><p>首先更新本地包索引：</p>
-
-<pre><code class="language-console-bash">sudo apt update
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div>
 <ol>
 <li>安装 PostgreSQL 服务器和 PostgreSQL contrib 包，它为 PostgreSQL 数据库提供了额外的功能：</li>
 </ol>
-
-<pre><code class="language-console-bash">sudo apt install postgresql postgresql-contrib
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install postgresql postgresql-contrib</code></pre></div></li>
 
 <li><p>安装完成后， PostgreSQL 服务将自动启动。要验证安装，我们将使用该 <code>psql</code> 实用程序连接到 PostgreSQL 数据库服务器并打印服务器版本：</p>
-
-<pre><code class="language-console-bash">sudo -u postgres psql -c &quot;SELECT version();&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &#34;SELECT version();&#34;</code></pre></div>
 <p>输出将如下所示：</p>
-
-<pre><code class="language-output">                                                 version                                                  
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                                                 version                                                  
 -----------------------------------------------------------------------------------------------------------
 PostgreSQL 9.6.10 on x86_64-pc-linux-gnu, compiled by gcc (Debian 6.3.0-18+deb9u1) 6.3.0 20170516, 64-bit
-(1 row)
-</code></pre></li>
+(1 row)</code></pre></div></li>
 </ol>
 
 <blockquote>
@@ -198,20 +190,11 @@ PostgreSQL 9.6.10 on x86_64-pc-linux-gnu, compiled by gcc (Debian 6.3.0-18+deb9u
 <p>用户 <code>postgres</code> 在安装 PostgreSQL 自动创建。该用户是 PostgreSQL 实例的超级用户，它相当于 MySQL root 用户。</p>
 
 <p>要首先以 postgres 用户身份登录 PostgreSQL 服务器，您需要切换到 postgres 用户，然后使用该 <code>psql</code> 实用程序访问 PostgreSQL 提示符：</p>
-
-<pre><code class="language-console-bash">sudo su - postgrespsql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgrespsql</code></pre></div>
 <p>从这里，您可以与 PostgreSQL 实例进行交互。要退出 PostgreSQL shell 类型：</p>
-
-<pre><code class="language-psql">\q
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-psql" data-lang="psql">\q</code></pre></div>
 <p>您 <code>sudo</code> 无需切换用户即可使用该命令访问 PostgreSQL 提示符：</p>
-
-<pre><code class="language-console-bash">sudo -u postgres psql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
 <p>该 <code>postgres</code> 用户通常只能从本地主机使用，建议不要为这个用户设置密码。</p>
 
 <h2 id="创建-postgresql-角色和数据库">创建 PostgreSQL 角色和数据库</h2>
@@ -224,62 +207,37 @@ PostgreSQL 9.6.10 on x86_64-pc-linux-gnu, compiled by gcc (Debian 6.3.0-18+deb9u
 <li><p>创建一个新的 PostgreSQL 角色</p>
 
 <p>以下命令将创建一个名为 john 的新角色：</p>
-
-<pre><code class="language-console-bash">sudo su - postgres -c &quot;createuser john&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgres -c &#34;createuser john&#34;</code></pre></div>
 <ol>
 <li>创建一个新的 PostgreSQL 数据库</li>
 </ol>
 
 <p>使用以下 <code>createdb</code> 命令创建名为 johndb 的新数据库：</p>
-
-<pre><code class="language-console-bash">sudo su - postgres -c &quot;createdb johndb&quot;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgres -c &#34;createdb johndb&#34;</code></pre></div></li>
 
 <li><p>授予权限</p>
 
 <p>要在我们在上一步中创建的数据库上向用户 <code>john</code> 授予权限，请连接到 PostgreSQL shell ：</p>
-
-<pre><code class="language-console-bash">sudo -u postgres psql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
 <p>并运行以下查询：</p>
-
-<pre><code class="language-sql">grant all privileges on database johndb to john;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="k">database</span> <span class="n">johndb</span> <span class="k">to</span> <span class="n">john</span><span class="p">;</span></code></pre></div></li>
 </ol>
 
 <h2 id="启用对-postgresql-服务器的远程访问">启用对 PostgreSQL 服务器的远程访问</h2>
 
 <p>默认情况下， PostgreSQL 服务器仅在本地接口 <code>127.0.0.1</code> 上侦听。为了使你的 PostgreSQL 服务器的远程访问打开配置文件 <code>postgresql.conf</code> ，并添加 <code>listen_addresses = '*'</code> 到 <code>CONNECTIONS AND AUTHENTICATION</code> 部分。</p>
-
-<pre><code class="language-console-bash">sudo vim /etc/postgresql/9.6/main/postgresql.conf
-</code></pre>
-
-<pre><code class="language-conf">#------------------------------------------------------------------------------
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo vim /etc/postgresql/9.6/main/postgresql.conf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">#------------------------------------------------------------------------------
 # CONNECTIONS AND AUTHENTICATION
 #------------------------------------------------------------------------------
 
 # - Connection Settings -
 
-listen_addresses = '*'     # what IP address(es) to listen on;
-</code></pre>
-
+listen_addresses = &#39;*&#39;     # what IP address(es) to listen on;</code></pre></div>
 <p>保存文件并重启 PostgreSQL 服务：</p>
-
-<pre><code class="language-console-bash">sudo service postgresql restart
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo service postgresql restart</code></pre></div>
 <p>使用该 <code>ss</code> 实用程序验证更改：</p>
-
-<pre><code class="language-console-bash">ss -nlt | grep 5432
-</code></pre>
-
-<pre><code class="language-output">LISTEN   0         128                 0.0.0.0:5432             0.0.0.0:*
-LISTEN   0         128                    [::]:5432                [::]:*
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ss -nlt | grep 5432</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">LISTEN   0         128                 0.0.0.0:5432             0.0.0.0:*
+LISTEN   0         128                    [::]:5432                [::]:*</code></pre></div>
 <p>从上面的输出可以看出， PostgreSQL 服务器正在监听所有接口（0.0.0.0）。</p>
 
 <p>最后一步是通过编辑 <code>pg_hba.conf</code> 文件将服务器配置为接受远程连接。</p>
@@ -287,8 +245,7 @@ LISTEN   0         128                    [::]:5432                [::]:*
 <p>以下是一些显示不同用例的示例：</p>
 
 <p>/etc/postgresql/9.6/main/pg_hba.conf</p>
-
-<pre><code class="language-config"># TYPE  DATABASE        USER            ADDRESS                 METHOD
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config"># TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # The user jane will be able to access all databases from all locations using a md5 password
 host    all             jane            0.0.0.0/0                md5
@@ -297,9 +254,7 @@ host    all             jane            0.0.0.0/0                md5
 host    janedb          jane            0.0.0.0/0                md5
 
 # The user jane will be able to access all databases from a trusted location (192.168.1.134) without a password
-host    all             jane            192.168.1.134            trust
-</code></pre>
-
+host    all             jane            192.168.1.134            trust</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>您已经学习了如何在 Debian 9 服务器上安装和配置 PostgreSQL 。有关此主题的更多信息，请参阅 <a href="https://www.postgresql.org/docs/9.6/static/index.html">PostgreSQL 文档</a>。</p><ul class="pa0">

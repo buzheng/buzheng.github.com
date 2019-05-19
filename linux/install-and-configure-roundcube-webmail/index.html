@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -64,7 +64,7 @@ RoundCube 包含电子邮件客户端所需的所有功能，例如 richtext/HTM
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ RoundCube 包含电子邮件客户端所需的所有功能，例如 richtext/HTM
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">安装和配置 Roundcube Webmail</h1>
+      
+      <h1 class="f1 mb1">安装和配置 Roundcube Webmail</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-05T06:00:00&#43;08:00">March 5, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>这是设置和配置邮件服务器系列的最后一部分，我们将介绍如何安装和配置 Roundcube Webmail。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>这是设置和配置邮件服务器系列的最后一部分，我们将介绍如何安装和配置 Roundcube Webmail。</p>
 
 <p>Roundcube 是一个基于 Web 的 IMAP 电子邮件客户端，使用 用 PHP 编写且具有非常直观和现代的用户界面。要使用 Roundcube ，您只需要一个 Web 浏览器。</p>
 
@@ -154,82 +156,50 @@ RoundCube 包含电子邮件客户端所需的所有功能，例如 richtext/HTM
 <h2 id="php-依赖项">PHP 依赖项</h2>
 
 <p>我们将首先更新包列表并安装所有必需的PHP依赖项：</p>
-
-<pre><code class="language-bash">sudo apt update
-sudo apt install php-auth php-intl php-mail-mime php-mail-mimedecode php-mcrypt php-net-smtp php-net-socket php-pear php-xml php7.0-intl php7.0-mcrypt php7.0-xml php7.0-gd php7.0-gd php-imagick
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
+sudo apt install php-auth php-intl php-mail-mime php-mail-mimedecode php-mcrypt php-net-smtp php-net-socket php-pear php-xml php7.0-intl php7.0-mcrypt php7.0-xml php7.0-gd php7.0-gd php-imagick</code></pre></div>
 <p>安装完成后，运行以下 <code>sed</code> 命令将 <code>date.timezone</code> 值设置为 UTC：</p>
-
-<pre><code class="language-bash">sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.0/fpm/php.ini
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sed -i <span class="s2">&#34;s/;date.timezone.*/date.timezone = UTC/&#34;</span> /etc/php/7.0/fpm/php.ini</code></pre></div>
 <p>重新启动 PHP FPM 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl php7.0-fpm restart
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl php7.0-fpm restart</code></pre></div>
 <h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
 
 <p>Roundcube 支持 MySQL，PostgreSQL 和 SQLite 数据库后端。</p>
 
 <p>在本教程中，我们将使用 MySQL 作为我们的数据库服务器。登录 MySQL shell：</p>
-
-<pre><code class="language-bash">mysql -u root -p
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p</code></pre></div>
 <p>创建一个新的MySQL数据库，一个用户并通过新创建的数据库为该用户授予权限：</p>
-
-<pre><code class="language-bash">CREATE DATABASE roundcubemail;
-GRANT ALL ON roundcubemail.* TO 'roundcubemail'@'localhost' IDENTIFIED BY 'P4ssvv0rD';
-FLUSH PRIVILEGES;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE roundcubemail<span class="p">;</span>
+GRANT ALL ON roundcubemail.* TO <span class="s1">&#39;roundcubemail&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;P4ssvv0rD&#39;</span><span class="p">;</span>
+FLUSH PRIVILEGES<span class="p">;</span></code></pre></div>
 <p>##下载 Roundcube</p>
 
 <p>在撰写本文时，1.3.8 是 Roundcube 的最新稳定版本。在继续下一步之前，您应该检查 <a href="https://roundcube.net/download/">Roundcube 下载页面</a>以查看是否有更新的版本。</p>
 
 <p>首先使用以下 <code>wget</code> 命令下载 Roundcube 归档文件：</p>
-
-<pre><code class="language-bash">wget https://github.com/roundcube/roundcubemail/releases/download/1.3.8/roundcubemail-1.3.8.tar.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://github.com/roundcube/roundcubemail/releases/download/1.3.8/roundcubemail-1.3.8.tar.gz</code></pre></div>
 <p>下载完成后，提取存档并将 Roundcube 代码移动到 <code>/var/www/roundcubemail</code> 目录：</p>
-
-<pre><code class="language-bash">tar xzf roundcubemail-1.3.8.tar.gz.tar.gz
-sudo mv roundcubemail-1.3.8/ /var/www/roundcubemail
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tar xzf roundcubemail-1.3.8.tar.gz.tar.gz
+sudo mv roundcubemail-1.3.8/ /var/www/roundcubemail</code></pre></div>
 <p><a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">Nginx</a> 和 PHP-FPM 在 <code>www-data</code> 用户下运行，因此我们需要将 <code>/var/www/postfixadmin</code> 目录的所有权更改为该用户：</p>
-
-<pre><code class="language-bash">sudo chown -R www-data: /var/www/roundcubemail
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/roundcubemail</code></pre></div>
 <h2 id="配置-nginx">配置 Nginx</h2>
 
 <p>在<a href="/linux/set-up-an-email-server-with-postfixadmin/">本系列的第一部分</a>中，我们为 PostfixAdmin 实例创建了一个 Nginx 服务器块。打开配置文件并添加以下：</p>
 
 <p>/etc/nginx/sites-enabled/mail.example.com.conf</p>
-
-<pre><code class="language-bash">
-location /roundcubemail {
-   index index.php;
-   try_files $uri $uri/ /roundcubemail/index.php;
-}
-location ~ ^/roundcubemail/(README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ {
-   deny all;
-}
-location ~ ^/roundcubemail/(bin|SQL|config|temp|logs)/ {
-   deny all;
-}
-
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">location /roundcubemail <span class="o">{</span>
+   index index.php<span class="p">;</span>
+   try_files <span class="nv">$uri</span> <span class="nv">$uri</span>/ /roundcubemail/index.php<span class="p">;</span>
+<span class="o">}</span>
+location ~ ^/roundcubemail/<span class="o">(</span>README<span class="p">|</span>INSTALL<span class="p">|</span>LICENSE<span class="p">|</span>CHANGELOG<span class="p">|</span>UPGRADING<span class="o">)</span>$ <span class="o">{</span>
+   deny all<span class="p">;</span>
+<span class="o">}</span>
+location ~ ^/roundcubemail/<span class="o">(</span>bin<span class="p">|</span>SQL<span class="p">|</span>config<span class="p">|</span>temp<span class="p">|</span>logs<span class="o">)</span>/ <span class="o">{</span>
+   deny all<span class="p">;</span>
+<span class="o">}</span></code></pre></div>
 <p>重新加载 Nginx 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl reload nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
 <h2 id="配置-roundcube">配置 Roundcube</h2>
 
 <p>打开浏览器并导航到 <a href="https://mail.example.com/roundcubemail/installer">https://mail.example.com/roundcubemail/installer</a> 。</p>
@@ -251,15 +221,9 @@ location ~ ^/roundcubemail/(bin|SQL|config|temp|logs)/ {
 <p><img src="/images/linux/install-and-configure-roundcube-webmail/initialize-roundcube-database.jpg" alt="" /></p>
 
 <p>创建数据库结构后，删除该installer目录以防止重新配置和/或未经授权的访问。</p>
-
-<pre><code class="language-bash">sudo rm -rf /var/www/roundcubemail/installer
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm -rf /var/www/roundcubemail/installer</code></pre></div>
 <p>启用Roundcube的自动缓存清理是可选的，但建议：</p>
-
-<pre><code class="language-bash">sudo crontab -u www-data -l | { cat; echo &quot;18 11 * * * /var/www/roundcubemail/bin/cleandb.sh&quot;; } | sudo crontab -u www-data -
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo crontab -u www-data -l <span class="p">|</span> <span class="o">{</span> cat<span class="p">;</span> <span class="nb">echo</span> <span class="s2">&#34;18 11 * * * /var/www/roundcubemail/bin/cleandb.sh&#34;</span><span class="p">;</span> <span class="o">}</span> <span class="p">|</span> sudo crontab -u www-data -</code></pre></div>
 <h2 id="验证您的roundcube安装">验证您的Roundcube安装</h2>
 
 <p>打开Web浏览器，导航至：<a href="https://mail.example.com/roundcubemail">https://mail.example.com/roundcubemail</a> 并使用您的电子邮件帐户的用户名和密码登录。</p>
@@ -269,18 +233,15 @@ location ~ ^/roundcubemail/(bin|SQL|config|temp|logs)/ {
 <h2 id="启用roundcube插件">启用Roundcube插件</h2>
 
 <p>Roundcube 附带了许多默认禁用的插件。在本指南中，我们将启用 password 和 managesieve 插件。此插件允许用户在 Roundcube 界面中创建筛选过滤器并更改其密码。</p>
-
-<pre><code class="language-php">/var/www/roundcubemail/config/config.inc.php
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">/var/www/roundcubemail/config/config.inc.php
 // Enable plugins
-$config['plugins'] = array('managesieve','password');
+$config[&#39;plugins&#39;] = array(&#39;managesieve&#39;,&#39;password&#39;);
 // Configure managesieve plugin
-$rcmail_config['managesieve_port'] = 4190;
+$rcmail_config[&#39;managesieve_port&#39;] = 4190;
 // Configure password plugin
-$config['password_driver'] = 'sql';
-$config['password_db_dsn'] = 'mysql://postfixadmin:P4ssvv0rD@localhost/postfixadmin';
-$config['password_query'] = 'UPDATE mailbox SET password=%c WHERE username=%u';
-</code></pre>
-
+$config[&#39;password_driver&#39;] = &#39;sql&#39;;
+$config[&#39;password_db_dsn&#39;] = &#39;mysql://postfixadmin:P4ssvv0rD@localhost/postfixadmin&#39;;
+$config[&#39;password_query&#39;] = &#39;UPDATE mailbox SET password=%c WHERE username=%u&#39;;</code></pre></div>
 <p>不要忘记在行 <code>password_db_dsn</code> 中输入 PostfixAdmin 数据库凭据。</p>
 
 <h2 id="结论">结论</h2>

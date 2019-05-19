@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -70,7 +70,7 @@ mysqldump 命令创建的备份文件基本上是一组可用于重新创建原�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@ mysqldump 命令创建的备份文件基本上是一组可用于重新创建原�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何使用 Mysqldump 备份和恢复 MySQL 数据库</h1>
+      
+      <h1 class="f1 mb1">如何使用 Mysqldump 备份和恢复 MySQL 数据库</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-22T05:00:00&#43;08:00">March 22, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程介绍如何使用 mysqldump 命令从命令行备份和还原 MySQL 或 MariaDB 数据库。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程介绍如何使用 mysqldump 命令从命令行备份和还原 MySQL 或 MariaDB 数据库。</p>
 
 <p>mysqldump 命令创建的备份文件基本上是一组可用于重新创建原始数据库的 SQL 语句。</p>
 
@@ -160,10 +162,7 @@ mysqldump 命令创建的备份文件基本上是一组可用于重新创建原�
 <p>在讨论如何使用 mysqldump 命令之前，让我们先回顾一下基本语法。</p>
 
 <p>mysqldump 命令表达式采用以下形式：</p>
-
-<pre><code class="language-bash">mysqldump [options] &gt; file.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump <span class="o">[</span>options<span class="o">]</span> &gt; file.sql</code></pre></div>
 <ul>
 <li><code>options</code> - <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#mysqldump-option-summary">mysqldump 选项</a></li>
 <li><code>file.sql</code> -  dump （备份）文件</li>
@@ -172,98 +171,62 @@ mysqldump 命令创建的备份文件基本上是一组可用于重新创建原�
 <h2 id="备份单个-mysql-数据库">备份单个 MySQL 数据库</h2>
 
 <p>要使用用户 root 创建名称为 <code>database_name</code> 数据库的备份并将其保存到名为 <code>database_name.sql</code> 的文件，请运行以下命令：</p>
-
-<pre><code class="language-bash">mysqldump -u root -p database_name &gt; database_name.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p database_name &gt; database_name.sql</code></pre></div>
 <p>系统将提示您输入 root 密码。输入它，按 <code>Enter</code> ， 导出过程将开始。根据数据库大小，该过程可能需要一些时间。</p>
 
 <p>如果您以用于执行导出的用户和登录用户是同一用户，这时候导出时不需要密码，可以省略 <code>-u</code> 和 <code>-p</code> 选项：</p>
-
-<pre><code class="language-bash">mysqldump database_name &gt; database_name.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump database_name &gt; database_name.sql</code></pre></div>
 <h2 id="备份多个-mysql-数据库">备份多个 MySQL 数据库</h2>
 
 <p>要使用一个命令备份多个 MySQL 数据库，您需要使用 <code>--database</code> 选项，后面使用要备份的数据库列表。每个数据库名称必须用空格分隔。</p>
-
-<pre><code class="language-bash">mysqldump -u root -p --databases database_name_a database_name_b &gt; databases_a_b.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p --databases database_name_a database_name_b &gt; databases_a_b.sql</code></pre></div>
 <p>上面的命令将创建一个包含两个数据库的 sql 文件。</p>
 
 <h2 id="备份所有-mysql-数据库">备份所有 MySQL 数据库</h2>
 
 <p>要备份所有 MySQL 数据库，请使用 <code>--all-databases</code> 选项：</p>
-
-<pre><code class="language-bash">mysqldump -u root -p --all-databases &gt; all_databases.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p --all-databases &gt; all_databases.sql</code></pre></div>
 <p>与上一个示例相同，上​​面的命令将创建一个包含所有数据库的 sql 文件。</p>
 
 <h2 id="将所有-mysql-数据库备份为单独的文件">将所有 MySQL 数据库备份为单独的文件</h2>
 
 <p>该 mysqldump 命令不提供将所有数据库备份为单独文件的选项，但我们可以通过简单的 <!--link:bash-for-loop-->bash FOR 循环<!--link-->轻松实现：</p>
-
-<pre><code class="language-bash">for DB in $(mysql -e 'show databases' -s --skip-column-names); do
-    mysqldump $DB &gt; &quot;$DB.sql&quot;;
-done
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> DB in <span class="k">$(</span>mysql -e <span class="s1">&#39;show databases&#39;</span> -s --skip-column-names<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    mysqldump <span class="nv">$DB</span> &gt; <span class="s2">&#34;</span><span class="nv">$DB</span><span class="s2">.sql&#34;</span><span class="p">;</span>
+<span class="k">done</span></code></pre></div>
 <p>上面的命令将使用数据库名称作为文件名为每个数据库创建单独的 dump 文件。</p>
 
 <h2 id="创建压缩的-mysql-数据库备份">创建压缩的 MySQL 数据库备份</h2>
 
 <p>如果数据库大小非常大，那么压缩输出是个好主意。为此，只需将输出传递给 gzip 命令，然后将其重定向到文件，如下所示：</p>
-
-<pre><code class="language-bash">mysqldump database_name &gt; | gzip &gt; database_name.sql.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump database_name &gt; <span class="p">|</span> gzip &gt; database_name.sql.gz</code></pre></div>
 <h2 id="使用时间戳创建备份">使用时间戳创建备份</h2>
 
 <p>如果要在同一位置保留多个备份，则可以将当前日期添加到备份文件名：</p>
-
-<pre><code class="language-bash">mysqldump  database_name &gt; database_name-$(date +%Y%m%d).sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump  database_name &gt; database_name-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.sql</code></pre></div>
 <p>上面的命令将创建一个具有以下格式的文件 <code>database_name-20180617.sql</code></p>
 
 <p>如果使用 cronjob 自动执行数据库备份，则还可以使用以下命令删除超过30天的任何备份：</p>
-
-<pre><code class="language-bash">find /path/to/backups -type f -name &quot;*.sql&quot; -mtime +30 -delete
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /path/to/backups -type f -name <span class="s2">&#34;*.sql&#34;</span> -mtime +30 -delete</code></pre></div>
 <p>当然，您需要根据备份位置和文件名调整命令。要了解有关 find 命令的更多信息，请查看指南: <a href="/linux/how-to-find-files-in-linux-using-the-command-line/">如何使用命令行在 Linux 中查找文件</a>。</p>
 
 <h2 id="恢复-mysql-备份">恢复 MySQL 备份</h2>
 
 <p>您可以使用 <code>mysql</code> 工具恢复 MySQL 备份 。命令语法如下：</p>
-
-<pre><code class="language-bash">mysql database_name &lt; file.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql database_name &lt; file.sql</code></pre></div>
 <p>在大多数情况下，您需要<!--link:how-to-create-a-mysql-database-->创建要导入的数据库<!--link-->。如果数据库已存在，则首先需要将其删除。</p>
 
 <p>在以下示例中，第一个命令将创建一个名为 <code>database_name</code> 的数据库，然后将备份文件  <code>database_name.sql</code> 导入其中：</p>
-
-<pre><code class="language-bash">mysql -u root -p -e &quot;create database database_name&quot;;
-mysql -u root -p database_name &lt; database_name.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p -e <span class="s2">&#34;create database database_name&#34;</span><span class="p">;</span>
+mysql -u root -p database_name &lt; database_name.sql</code></pre></div>
 <h2 id="从完整的-mysql-备份中恢复单个-mysql-数据库">从完整的 MySQL 备份中恢复单个 MySQL 数据库</h2>
 
 <p>如果使用该 <code>-all-databases</code> 选项备份所有数据库，并且要从包含多个数据库的备份文件还原单个数据库，请使用 <code>--one-database</code> 如下所示的选项：</p>
-
-<pre><code class="language-bash">mysql --one-database database_name &lt; all_databases.sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql --one-database database_name &lt; all_databases.sql</code></pre></div>
 <h2 id="在一个命令中导出和导入-mysql-数据库">在一个命令中导出和导入 MySQL 数据库</h2>
 
 <p>不需要先从一个数据库创建 dump 备份文件，然后将备份导入另一个 MySQL 数据库，您可以使用以下单行命令达到目的：</p>
-
-<pre><code class="language-bash">mysqldump -u root -p database_name | mysql -h remote_host -u root -p remote_database_name
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p database_name <span class="p">|</span> mysql -h remote_host -u root -p remote_database_name</code></pre></div>
 <p>上面的命令会将输出传递给远程主机上的 mysql 客户端，并将其导入到名为 <code>remote_database_name</code> 的数据库中。在运行该命令之前，请确保远程服务器上已存在该数据库。</p>
 
 <h2 id="使用-cron-自动备份">使用 Cron 自动备份</h2>
@@ -274,41 +237,24 @@ mysql -u root -p database_name &lt; database_name.sql
 
 <ol>
 <li><p>在用户主目录中创建一个文件 <code>.my.cnf</code> ：</p>
-
-<pre><code class="language-bash">sudo nano ~/.my.cnf
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano ~/.my.cnf</code></pre></div>
 <p>将以下文本复制并粘贴到 <code>.my.cnf</code> 文件中。</p>
-
-<pre><code class="language-bash">[client]
-user = dbuser
-password = dbpasswd
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>client<span class="o">]</span>
+<span class="nv">user</span> <span class="o">=</span> dbuser
+<span class="nv">password</span> <span class="o">=</span> dbpasswd</code></pre></div>
 <p>不要忘了把 <code>dbuser</code> 和 <code>dbpasswd</code> 更改为数据库的用户和用户的密码。</p></li>
 
 <li><p>限制凭证文件的权限，以便只有您的用户才能访问它：</p>
-
-<pre><code class="language-bash">chmod 600 ~/.my.cnf
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chmod <span class="m">600</span> ~/.my.cnf</code></pre></div>
 <ol>
 <li>为数据库备份创建目录：</li>
 </ol>
-
-<pre><code class="language-bash">mkdir ~/db_backups
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mkdir ~/db_backups</code></pre></div></li>
 
 <li><p>编辑用户 crontab 文件并设置一个新的 cron 作业 ：</p>
-
-<pre><code class="language-bash">crontab -e
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">crontab -e</code></pre></div>
 <p>复制并粘贴以下 cron 作业，该作业将在每天凌晨 3 点创建数据库 <code>mydb</code> 的备份：</p>
-
-<pre><code class="language-bash">0 3 * * * /usr/bin/mysqldump -u dbuser mydb &gt; /home/username/db_backups/mydb-$(date +%Y%m%d).sql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">0</span> <span class="m">3</span> * * * /usr/bin/mysqldump -u dbuser mydb &gt; /home/username/db_backups/mydb-<span class="k">$(</span>date +%Y%m%d<span class="k">)</span>.sql</code></pre></div>
 <p>不要忘记替换 <code>username</code> 为您的实际用户名。</p></li>
 </ol>
 

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -64,7 +64,7 @@ Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Debian 9 上设置 Apache 虚拟主机</h1>
+      
+      <h1 class="f1 mb1">如何在 Debian 9 上设置 Apache 虚拟主机</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-05-16T05:00:00&#43;08:00">May 16, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将向您介绍如何在 Debian 9 上设置 Apache 虚拟主机。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将向您介绍如何在 Debian 9 上设置 Apache 虚拟主机。</p>
 
 <p>Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚拟主机时，您可以为每个域名或子域名指定不同的文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。</p>
 
@@ -160,68 +162,53 @@ Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚�
 <h2 id="创建目录结构">创建目录结构</h2>
 
 <p>文档根目录是存储网站文件的，并根据请求响应存储在目录中的文件。您可以将文档根目录设置为所需的任何位置。在本指南中，我们将使用以下目录结构：</p>
-
-<pre><code class="language-sh">/var/www/
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/var/www/
 ├── domain1.com
 │   └── public_html
 ├── domain2.com
 │   └── public_html
 ├── domain3.com
-│   └── public_html
-</code></pre>
-
+│   └── public_html</code></pre></div>
 <p>托管在我们服务器上的每个域名都将其文档根目录设置为 <code>/var/www/&lt;domain_name&gt;/public_html</code> 。</p>
 
 <p>让我们从为第一个域 <code>example.com</code> 创建文档根目录开始：</p>
-
-<pre><code class="language-console-bash">sudo mkdir -p /var/www/example.com/public_html
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.com/public_html</code></pre></div>
 <p>我们还将在域文档根目录中创建一个文件 <code>index.html</code> ，该文件将在您浏览器中访问域时显示。</p>
 
 <p>打开您喜欢的文本编辑器，创建一个新文件 <code>/var/www/example.com/public_html/index.html</code> 并将以下内容粘贴到其中：</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;title&gt;Welcome to example.com&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Success! example.com home page!&lt;/h1&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
 <p>我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
 
 <p>为了避免任何权限问题，我们将域文档根目录和该目录中的所有文件的所有权更改为 apache 服务器用户<code>www-data</code>）：</p>
-
-<pre><code class="language-console-bash">sudo chown -R www-data: /var/www/example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R www-data: /var/www/example.com</code></pre></div>
 <h2 id="创建虚拟主机">创建虚拟主机</h2>
 
 <p>在 Debian 系统上， Apache 虚拟主机配置文件位于 <code>/etc/apache2/sites-available</code> 目录中，可以通过在 <code>/etc/apache2/sites-enabled</code> 目录中创建指向的配置文件的符号链接来启用。</p>
 
 <p>打开您选择的文本编辑器并创建以下基本虚拟主机配置文件：<code>/etc/apache2/sites-available/example.com.conf</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> example.com
+    <span class="nb">ServerAlias</span> www.example.com
+    <span class="nb">ServerAdmin</span> webmaster@example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com/public_html</span>
 
-<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
-    ServerName example.com
-    ServerAlias www.example.com
-    ServerAdmin webmaster@example.com
-    DocumentRoot /var/www/example.com/public_html
+    <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com/public_html</span><span class="nt">&gt;</span>
+        <span class="nb">Options</span> -Indexes +FollowSymLinks
+        <span class="nb">AllowOverride</span> <span class="k">All</span>
+    <span class="nt">&lt;/Directory&gt;</span>
 
-    &lt;Directory /var/www/example.com/public_html&gt;
-        Options -Indexes +FollowSymLinks
-        AllowOverride All
-    &lt;/Directory&gt;
-
-    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
-    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
-&lt;/VirtualHost&gt;
-</code></pre>
-
+    <span class="nb">ErrorLog</span> ${APACHE_LOG_DIR}/example.com-error.log
+    <span class="nb">CustomLog</span> ${APACHE_LOG_DIR}/example.com-access.log combined
+<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
 <ul>
 <li><code>ServerName</code>：应与此虚拟主机配置匹配的域。这应该是您的域名。</li>
 <li><code>ServerAlias</code>：所有其他域或子域也应与此虚拟主机匹配，通常是 <code>www</code> 子域。</li>
@@ -241,30 +228,15 @@ Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚�
 <p>要启用新的虚拟主机文件，请在 <code>sites-enabled</code> 目录创建符号链接指向虚拟主机配置文件，该目录在启动期间由 Apache 读取。</p>
 
 <p>在 Debian 系统中，您可以使用名为 <code>a2ensite</code> 的帮助程序脚本启用虚拟主机：</p>
-
-<pre><code class="language-apache">sudo a2ensite example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">sudo</span> a2ensite example.com</code></pre></div>
 <p>另一个选项是手动<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">创建符号链接</a>，如下所示：</p>
-
-<pre><code class="language-console-bash">sudo ln -s /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-enabled/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ln -s /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-enabled/</code></pre></div>
 <p>启用配置后，通过键入以下内容测试语法是否正确：</p>
-
-<pre><code class="language-console-bash">sudo apachectl configtest
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apachectl configtest</code></pre></div>
 <p>如果没有错误，您将看到以下输出：</p>
-
-<pre><code class="language-output">Syntax OK
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Syntax OK</code></pre></div>
 <p>重新启动 <code>apache2</code> 服务以使更改生效：</p>
-
-<pre><code class="language-console-bash">sudo systemctl restart apache2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2</code></pre></div>
 <p>要验证一切是否按预期工作，请在您喜欢的浏览器中打开 <code>http://example.com</code> ，您将看到如下内容：</p>
 
 <p><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-debian-9/apache-welcome-page.jpg" alt="" /></p>

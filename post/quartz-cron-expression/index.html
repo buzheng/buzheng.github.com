@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -73,7 +73,7 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -143,14 +143,16 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Quartz Cron Expression</h1>
+      
+      <h1 class="f1 mb1">Quartz Cron Expression</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-01-11T00:00:00Z">January 11, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id="表达式格式及字段说明">表达式格式及字段说明</h2>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id="表达式格式及字段说明">表达式格式及字段说明</h2>
 
 <p>Quartz 定时表达式一般有6个字段单位（也可7个），使用空格间隔。从前到后按照如下的格式：
 秒 分 时 日 月 星期[ 年] （最后一个单位“年”是可选的）。</p>
@@ -197,30 +199,24 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
 <h2 id="quartz-在-spring-中的应用">Quartz 在 Spring 中的应用</h2>
 
 <p>俺都是在Spring中使用 quartz的，从来没有单独使用过。Spring 简化了 Quartz 的使用，通过简单的配置，就能达到定时出发某个类的某个方法的目的。在一个简单的配置中包括 触发器。触发器配置要包括作业内容和作业触发条件2部分内容，作业触发条件配置作业的开始结束时间或处理频度，而作业内容指定了要处理某个类的某个方法。如下面的配置：</p>
-
-<pre><code class="language-java">&lt;bean id=&quot;trigger1&quot; class=&quot;org.springframework.scheduling.quartz.CronTriggerBean&quot;&gt;
-    &lt;property name=&quot;jobDetail&quot;&gt;
-        &lt;bean class=&quot;org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean&quot;&gt;
-            &lt;property name=&quot;targetObject&quot; ref=&quot;simpleService&quot; /&gt;
-            &lt;property name=&quot;targetMethod&quot; value=&quot;testMethod1&quot; /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name=&quot;cronExpression&quot; value=&quot;0/5 * * * * ?&quot; /&gt;
-&lt;/bean&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="o">&lt;</span><span class="n">bean</span> <span class="n">id</span><span class="o">=</span><span class="s">&#34;trigger1&#34;</span> <span class="n">class</span><span class="o">=</span><span class="s">&#34;org.springframework.scheduling.quartz.CronTriggerBean&#34;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;jobDetail&#34;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">bean</span> <span class="n">class</span><span class="o">=</span><span class="s">&#34;org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean&#34;</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;targetObject&#34;</span> <span class="n">ref</span><span class="o">=</span><span class="s">&#34;simpleService&#34;</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;targetMethod&#34;</span> <span class="n">value</span><span class="o">=</span><span class="s">&#34;testMethod1&#34;</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">bean</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">property</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;cronExpression&#34;</span> <span class="n">value</span><span class="o">=</span><span class="s">&#34;0/5 * * * * ?&#34;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">bean</span><span class="o">&gt;</span></code></pre></div>
 <p>配置好触发器后，将触发器加入到quartz的任务列表就可以了，如下：</p>
-
-<pre><code class="language-java">&lt;bean name=&quot;quartzScheduler&quot;
-    class=&quot;org.springframework.scheduling.quartz.SchedulerFactoryBean&quot;&gt;
-    &lt;property name=&quot;triggers&quot;&gt;
-        &lt;list&gt;
-            &lt;ref bean=&quot;trigger1&quot; /&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="o">&lt;</span><span class="n">bean</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;quartzScheduler&#34;</span>
+    <span class="n">class</span><span class="o">=</span><span class="s">&#34;org.springframework.scheduling.quartz.SchedulerFactoryBean&#34;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;triggers&#34;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">list</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ref</span> <span class="n">bean</span><span class="o">=</span><span class="s">&#34;trigger1&#34;</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">list</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">property</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">bean</span><span class="o">&gt;</span></code></pre></div>
 <p><span style="line-height: 1.6em;">更多配置代码可参看我在github上的代码：</span></p>
 
 <p><a href="https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml">https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml</a></p>

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -47,7 +47,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
 
@@ -254,24 +254,22 @@
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
       <p><strong>查询执行最慢的sql</strong></p>
-
-<pre><code class="language-sql">select *
-  from (select sa.SQL_TEXT,
-               sa.SQL_FULLTEXT,
-               sa.EXECUTIONS &quot;执行次数&quot;,
-               round(sa.ELAPSED_TIME / 1000000, 2) &quot;总执行时间&quot;,
-               round(sa.ELAPSED_TIME / 1000000 / sa.EXECUTIONS, 2) &quot;平均执行时间&quot;,
-               sa.COMMAND_TYPE,
-               sa.PARSING_USER_ID &quot;用户ID&quot;,
-               u.username &quot;用户名&quot;,
-               sa.HASH_VALUE
-          from v$sqlarea sa
-          left join all_users u
-            on sa.PARSING_USER_ID = u.user_id
-         where sa.EXECUTIONS &gt; 0
-         order by (sa.ELAPSED_TIME / sa.EXECUTIONS) desc)
- where rownum &lt;= 50;
-</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span>
+  <span class="k">from</span> <span class="p">(</span><span class="k">select</span> <span class="n">sa</span><span class="p">.</span><span class="n">SQL_TEXT</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">SQL_FULLTEXT</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="s2">&#34;执行次数&#34;</span><span class="p">,</span>
+               <span class="n">round</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;总执行时间&#34;</span><span class="p">,</span>
+               <span class="n">round</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="mi">1000000</span> <span class="o">/</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;平均执行时间&#34;</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">COMMAND_TYPE</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="s2">&#34;用户ID&#34;</span><span class="p">,</span>
+               <span class="n">u</span><span class="p">.</span><span class="n">username</span> <span class="s2">&#34;用户名&#34;</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">HASH_VALUE</span>
+          <span class="k">from</span> <span class="n">v$sqlarea</span> <span class="n">sa</span>
+          <span class="k">left</span> <span class="k">join</span> <span class="n">all_users</span> <span class="n">u</span>
+            <span class="k">on</span> <span class="n">sa</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="o">=</span> <span class="n">u</span><span class="p">.</span><span class="n">user_id</span>
+         <span class="k">where</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="o">&gt;</span> <span class="mi">0</span>
+         <span class="k">order</span> <span class="k">by</span> <span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span><span class="p">)</span> <span class="k">desc</span><span class="p">)</span>
+ <span class="k">where</span> <span class="n">rownum</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">;</span></code></pre></div>
     </div>
   </div>
 

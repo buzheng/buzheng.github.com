@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -53,7 +53,7 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
 
 <meta itemprop="datePublished" content="2019-03-08T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-08T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="439">
+<meta itemprop="wordCount" content="437">
 
 
 
@@ -70,7 +70,7 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">在 CentOS 7 上安装 Odoo 11</h1>
+      
+      <h1 class="f1 mb1">在 CentOS 7 上安装 Odoo 11</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-08T06:00:00&#43;08:00">March 8, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的一体化商业软件。它提供了一系列商业应用程序，包括 CRM ，网站，电子商务，账单，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo 是世界上最受欢迎的一体化商业软件。它提供了一系列商业应用程序，包括 CRM ，网站，电子商务，账单，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
 
 <p>Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们无法通过 Oumo 存储库中的 yum 安装 Odoo 包。</p>
 
@@ -158,39 +160,21 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
 <h2 id="在开始之前">在开始之前</h2>
 
 <p>以 <a href="/linux/create-a-sudo-user-on-centos/">sudo 用户身份</a>登录 CentOS 计算机并将系统更新到最新的软件包：</p>
-
-<pre><code class="language-bash">sudo yum update
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum update</code></pre></div>
 <p>键入以下命令启用 EPEL 存储库：</p>
-
-<pre><code class="language-bash">sudo yum install epel-release
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install epel-release</code></pre></div>
 <p>我们将从 Software Collections （ SCL ）存储库安装 Python 3.5 软件包。</p>
 
 <p>通过启用 SCL ，您将可以访问核心存储库中不可用的较新版本的编程语言和服务。使用以下命令启用 SCL 存储库：</p>
-
-<pre><code class="language-bash">sudo yum install centos-release-scl
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install centos-release-scl</code></pre></div>
 <p>使用以下命令安装 Python 3.5 软件包：</p>
-
-<pre><code class="language-bash">sudo yum install rh-python35
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install rh-python35</code></pre></div>
 <p>最后安装 <code>git</code> ， <code>pip</code> 以及构建 Odoo 依赖项所需的所有工具：</p>
-
-<pre><code class="language-bash">sudo yum install git gcc wget nodejs-less libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel postgresql-devel
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install git gcc wget nodejs-less libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel postgresql-devel</code></pre></div>
 <h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
 
 <p>创建新的系统用户和组来运行 Odoo 服务， 用户的主目录设置为 <code>/opt/odoo</code> ：</p>
-
-<pre><code class="language-bash">sudo useradd -m -U -r -d /opt/odoo -s /bin/bash odoo
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -r -d /opt/odoo -s /bin/bash odoo</code></pre></div>
 <blockquote>
 <p>您可以随意为用户命名，只需确保 PostgreSQL 也创建具有相同名称的用户即可。</p>
 </blockquote>
@@ -198,104 +182,59 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
 <h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
 
 <p>安装 PostgreSQL 服务器并创建一个新的 PostgreSQL 数据库集群：</p>
-
-<pre><code class="language-bash">sudo yum install postgresql-server
-sudo postgresql-setup initdb
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install postgresql-server
+sudo postgresql-setup initdb</code></pre></div>
 <p>安装完成后，启用开机自启动并启动 PostgreSQL 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl enable postgresql
-sudo systemctl start postgresql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> postgresql
+sudo systemctl start postgresql</code></pre></div>
 <p>在我们的示例中，创建一个与先前创建的系统用户同名的 PostgreSQL 用户 <code>odoo</code> ：</p>
-
-<pre><code class="language-bash">sudo su - postgres -c &quot;createuser -s odoo&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - postgres -c <span class="s2">&#34;createuser -s odoo&#34;</span></code></pre></div>
 <h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
 
 <p>软件包 <code>wkhtmltox</code> 提供了一组开源命令行工具，可以将 HTML 呈现为 PDF 和各种图像格式。要打印 PDF 报告，您需要使用该 <code>wkhtmltopdf</code> 工具。 Odoo 的推荐版本 0.12.1 在官方 CentOS 7 存储库中并b不可用。</p>
 
 <p>要下载并安装推荐的版本，请运行以下命令：</p>
-
-<pre><code class="language-bash">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
-sudo yum localinstall wkhtmltox-0.12.1_linux-centos7-amd64.rpm
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
+sudo yum localinstall wkhtmltox-0.12.1_linux-centos7-amd64.rpm</code></pre></div>
 <h2 id="安装和配置-odoo-11">安装和配置 Odoo 11</h2>
 
 <p>我们将从 GitHub 存储库安装 Odoo ，以便我们可以更好地控制版本和更新。我们还将使用 <code>virtualenv</code> ，这是一个创建独立的 Python 环境的工具。</p>
 
 <p>在开始安装过程之前，请确保切换到 <code>odoo</code> 用户。</p>
-
-<pre><code class="language-bash">sudo su - odoo
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - odoo</code></pre></div>
 <p>要确认您是否以 <code>odoo</code> 用户身份登录，可以使用以下命令：</p>
-
-<pre><code class="language-bash">whoami
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">whoami</code></pre></div>
 <p>现在我们可以开始安装。首先从 GitHub 存储库克隆 odoo ：</p>
-
-<pre><code class="language-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 11.0 /opt/odoo/odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://www.github.com/odoo/odoo --depth <span class="m">1</span> --branch <span class="m">11</span>.0 /opt/odoo/odoo11</code></pre></div>
 <p>启用软件集合，以便我们可以访问 python 3.5 二进制文件：</p>
-
-<pre><code class="language-bash">scl enable rh-python35 bash
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">scl <span class="nb">enable</span> rh-python35 bash</code></pre></div>
 <p>使用以下命令为我们的 Odoo 安装创建新的虚拟环境：</p>
-
-<pre><code class="language-bash">cd /opt/odoo
-python3 -m venv odoo11-venv
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/odoo
+python3 -m venv odoo11-venv</code></pre></div>
 <p>激活环境：</p>
-
-<pre><code class="language-bash">source odoo11-venv/bin/activate
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> odoo11-venv/bin/activate</code></pre></div>
 <p>并安装所有必需的 Python 模块：</p>
-
-<pre><code class="language-bash">pip3 install -r odoo11/requirements.txt
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip3 install -r odoo11/requirements.txt</code></pre></div>
 <blockquote>
 <p>如果在安装过程中遇到任何编译错误，请确保已安装 <strong>开始之前</strong> 部分中列出的所有必需依赖项。</p>
 </blockquote>
 
 <p>安装完成后，停用环境并使用以下命令切换回 sudo 用户：</p>
-
-<pre><code class="language-bash">deactivate
-</code></pre>
-
-<pre><code class="language-bash">exit
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">deactivate</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">exit</code></pre></div>
 <p>如果您计划安装自定义模块，最好将这些模块安装在单独的目录中。要为自定义模块创建新目录，请执行以下操作：</p>
-
-<pre><code class="language-bash">sudo mkdir /opt/odoo/odoo11-custom-addons
-sudo chown odoo: /opt/odoo/odoo11-custom-addons
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /opt/odoo/odoo11-custom-addons
+sudo chown odoo: /opt/odoo/odoo11-custom-addons</code></pre></div>
 <p>接下来，我们需要创建一个配置文件 <code>/etc/odoo11.conf</code> :</p>
-
-<pre><code class="language-bash">[options]
-; This is the password that allows database operations:
-admin_passwd = superadmin_passwd
-db_host = False
-db_port = False
-db_user = odoo
-db_password = False
-addons_path = /opt/odoo/odoo11/addons
-; If you are using custom modules
-; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>options<span class="o">]</span>
+<span class="p">;</span> This is the password that allows database operations:
+<span class="nv">admin_passwd</span> <span class="o">=</span> superadmin_passwd
+<span class="nv">db_host</span> <span class="o">=</span> False
+<span class="nv">db_port</span> <span class="o">=</span> False
+<span class="nv">db_user</span> <span class="o">=</span> odoo
+<span class="nv">db_password</span> <span class="o">=</span> False
+<span class="nv">addons_path</span> <span class="o">=</span> /opt/odoo/odoo11/addons
+<span class="p">;</span> If you are using custom modules
+<span class="p">;</span> <span class="nv">addons_path</span> <span class="o">=</span> /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons</code></pre></div>
 <blockquote>
 <p>不要忘记更改 <code>superadmin_passwd</code> 为更安全的密码，如果使用自定义模块调整 <code>addons_path</code> 为自定义模块目录。</p>
 </blockquote>
@@ -305,56 +244,38 @@ addons_path = /opt/odoo/odoo11/addons
 <p>为了将 odoo 作为服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件 <code>odoo11.service</code> ：</p>
 
 <p><code>/etc/systemd/system/odoo11.service</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Odoo11
+<span class="nv">Requires</span><span class="o">=</span>postgresql.service
+<span class="nv">After</span><span class="o">=</span>network.target postgresql.service
 
-<pre><code class="language-bash">[Unit]
-Description=Odoo11
-Requires=postgresql.service
-After=network.target postgresql.service
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>simple
+<span class="nv">SyslogIdentifier</span><span class="o">=</span>odoo11
+<span class="nv">PermissionsStartOnly</span><span class="o">=</span><span class="nb">true</span>
+<span class="nv">User</span><span class="o">=</span>odoo
+<span class="nv">Group</span><span class="o">=</span>odoo
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/scl <span class="nb">enable</span> rh-python35 -- /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+<span class="nv">StandardOutput</span><span class="o">=</span>journal+console
 
-[Service]
-Type=simple
-SyslogIdentifier=odoo11
-PermissionsStartOnly=true
-User=odoo
-Group=odoo
-ExecStart=/usr/bin/scl enable rh-python35 -- /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
-StandardOutput=journal+console
-
-[Install]
-WantedBy=multi-user.target
-</code></pre>
-
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</code></pre></div>
 <p>通过执行以下命令通知 <code>systemd</code> 新创建的单元文件并启动 Odoo 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl daemon-reload
-sudo systemctl start odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
+sudo systemctl start odoo11</code></pre></div>
 <p>您可以使用以下命令检查服务状态：</p>
-
-<pre><code class="language-bash">sudo systemctl status odoo11
-</code></pre>
-
-<pre><code class="language-bash">● odoo11.service - Odoo11
-   Loaded: loaded (/etc/systemd/system/odoo11.service; disabled; vendor preset: disabled)
-   Active: active (running) since Wed 2018-03-28 20:13:30 UTC; 6s ago
- Main PID: 16174 (scl)
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status odoo11</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● odoo11.service - Odoo11
+   Loaded: loaded <span class="o">(</span>/etc/systemd/system/odoo11.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Wed <span class="m">2018</span>-03-28 <span class="m">20</span>:13:30 UTC<span class="p">;</span> 6s ago
+ Main PID: <span class="m">16174</span> <span class="o">(</span>scl<span class="o">)</span>
    CGroup: /system.slice/odoo11.service
-           ├─16174 /usr/bin/scl enable rh-python35 -- /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+           ├─16174 /usr/bin/scl <span class="nb">enable</span> rh-python35 -- /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
            ├─16175 /bin/bash /var/tmp/sclihoNjg
-           └─16178 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
-</code></pre>
-
+           └─16178 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf</code></pre></div>
 <p>如果没有错误，您可以启用 Odoo 服务在系统启动时自动启动：</p>
-
-<pre><code class="language-bash">sudo systemctl enable odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> odoo11</code></pre></div>
 <p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
-
-<pre><code class="language-bash">sudo journalctl -u odoo11
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -u odoo11</code></pre></div>
 <h2 id="测试安装">测试安装</h2>
 
 <p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>

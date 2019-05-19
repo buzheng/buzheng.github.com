@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,45 +122,41 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">冒泡排序</h1>
+      
+      <h1 class="f1 mb1">冒泡排序</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-04-23T00:00:00Z">April 23, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>冒泡排序是一个常见的交换排序方法。冒泡的算法大意：在未排序的队列中从头遍历，开始比较相邻的2个元素，如果这个元素不符合要求的顺序，则交换位置，经过一遍比较之后，最小的元素就会到达序列的首位；然后将剩下的序列作为未排序的序列，重复上面的算法，直到整个序列排序完成。由于在排序的过程中，一直向前移动，看起来有点像水里的气泡向水面漂浮一样，故得此名。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>冒泡排序是一个常见的交换排序方法。冒泡的算法大意：在未排序的队列中从头遍历，开始比较相邻的2个元素，如果这个元素不符合要求的顺序，则交换位置，经过一遍比较之后，最小的元素就会到达序列的首位；然后将剩下的序列作为未排序的序列，重复上面的算法，直到整个序列排序完成。由于在排序的过程中，一直向前移动，看起来有点像水里的气泡向水面漂浮一样，故得此名。</p>
 
 <p>冒泡排序的时间复杂度为 O(n<sup>2</sup>)。下面是一个简单的java代码例子</p>
-
-<pre><code class="language-java">public void sort(int[] input) {
-	for (int i = input.length - 1; i &gt;= 1; i--) {
-		for (int j = i; j &gt;= 1; j--) {
-			if (input[j] &lt; input[j-1]) {
-				int tmp = input[j];
-				input[j] = input[j-1];
-				input[j-1] = tmp;
-			}
-		}
-	}
-}
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">input</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">1</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">1</span><span class="o">;</span> <span class="n">j</span><span class="o">--)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">-</span><span class="n">1</span><span class="o">])</span> <span class="o">{</span>
+				<span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+				<span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">-</span><span class="n">1</span><span class="o">];</span>
+				<span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">-</span><span class="n">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">;</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>有时候，没必要非得2个相邻的元素比较，只要每一遍将最小/大交换到未排序序列的首/尾就好了。下面是一个伪实现：</p>
-
-<pre><code class="language-java">public void sort(int[] input) {
-	for (int i = input.length -1; i &gt;= 0; i--) {
-		for (int j = i-1; j &gt;= 0; j--) {
-			if (input[i] &lt; input[j]) {
-				int tmp = input[i];
-				input[i] = input[j];
-				input[j] = tmp;
-			}
-		}
-	}
-}
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">input</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span><span class="n">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span> <span class="o">{</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="n">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">0</span><span class="o">;</span> <span class="n">j</span><span class="o">--)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">input</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">])</span> <span class="o">{</span>
+				<span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">input</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+				<span class="n">input</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+				<span class="n">input</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">;</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>冒泡排序是一种交换排序，其重点在于交换。另一个重点在于相邻的元素，不停的比较相邻的元素。</p><ul class="pa0">
   
    <li class="list">

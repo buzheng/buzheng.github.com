@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上设置 Apache 虚拟主机</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上设置 Apache 虚拟主机</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-04-30T05:00:00&#43;08:00">April 30, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache 虚拟主机允许多个网站在一个 Web 服务器上运行。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Apache 虚拟主机允许多个网站在一个 Web 服务器上运行。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。</p>
 
 <p>在本教程中，我们将分步说明如何在 CentOS 7 服务器上设置 Apache 虚拟主机。</p>
 
@@ -152,42 +154,30 @@
 <h2 id="创建目录结构">创建目录结构</h2>
 
 <p>DocumentRoot 是存储和提供域名的网站文件以响应请求的目录。您可以将文档根目录设置为您想要的任何位置，本例中我们将使用以下目录结构：</p>
-
-<pre><code class="language-tree">/var/www/
+<div class="highlight"><pre class="chroma"><code class="language-tree" data-lang="tree">/var/www/
 ├── example.com
 │   └── public_html
 ├── example-1.com
 │   └── public_html
 ├── example-2.com
-│   └── public_html
-</code></pre>
-
+│   └── public_html</code></pre></div>
 <p>我们需要在 <code>/var/www</code> 目录中的为想要在服务器上托管的每个域创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 存储域网站文件的目录。</p>
 
 <p>使用 <!--link:how-to-create-directories-in-linux-with-the-mkdir-command-->mkdir 命令<!--link-->为域创建根目录 <code>example.com</code> ：</p>
-
-<pre><code class="language-console-bash">sudo mkdir -p /var/www/example.com/public_html
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.com/public_html</code></pre></div>
 <p>出于测试目的，我们将在网站文档根目录中创建一个文件 <code>index.html</code>。打开编辑器并创建一个包含以下内容的 HTML 文件 <code>/var/www/example.com/public_html/index.html</code>：</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
-  &lt;head&gt;
-    &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;title&gt;Welcome to example.com&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Success! example.com home page!&lt;/h1&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
 <p>所有命令都以 sudo 用户身份执行，因此新创建的文件和目录归 root 用户所有。为了保没有权限问题，需要将域文档根目录的所有权更改为 <code>apache</code> 用户：</p>
-
-<pre><code class="language-console-bash">sudo chown -R apache: /var/www/example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R apache: /var/www/example.com</code></pre></div>
 <h2 id="创建虚拟主机文件">创建虚拟主机文件</h2>
 
 <p>有几种方法可以设置虚拟主机。您可以在单个文件中添加所有虚拟主机指令，也可以为每个虚拟主机指令创建新的配置文件。就个人而言，我更喜欢第二种方法，因为它更易于维护。</p>
@@ -195,23 +185,20 @@
 <p>默认情况下， Apache 配置为从 <code>/etc/httpd/conf.d/</code> 目录加载以 <code>.conf</code> 结束的所有配置文件。</p>
 
 <p>要为特定网站创建虚拟主机，请打开您选择的编辑器并创建以下基本虚拟主机配置文件 <code>/etc/httpd/conf.d/example.com.conf</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> example.com
+    <span class="nb">ServerAlias</span> www.example.com
+    <span class="nb">ServerAdmin</span> webmaster@example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com/public_html</span>
 
-<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
-    ServerName example.com
-    ServerAlias www.example.com
-    ServerAdmin webmaster@example.com
-    DocumentRoot /var/www/example.com/public_html
+    <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com/public_html</span><span class="nt">&gt;</span>
+        <span class="nb">Options</span> -Indexes +FollowSymLinks
+        <span class="nb">AllowOverride</span> <span class="k">All</span>
+    <span class="nt">&lt;/Directory&gt;</span>
 
-    &lt;Directory /var/www/example.com/public_html&gt;
-        Options -Indexes +FollowSymLinks
-        AllowOverride All
-    &lt;/Directory&gt;
-
-    ErrorLog /var/log/httpd/example.com-error.log
-    CustomLog /var/log/httpd/example.com-access.log combined
-&lt;/VirtualHost&gt;
-</code></pre>
-
+    <span class="nb">ErrorLog</span> <span class="sx">/var/log/httpd/example.com-error.log</span>
+    <span class="nb">CustomLog</span> <span class="sx">/var/log/httpd/example.com-access.log</span> combined
+<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
 <ul>
 <li><code>ServerName</code>：应与此虚拟主机配置匹配的域名。这应该是您的域名。</li>
 <li><code>ServerAlias</code>：所有其他应与此虚拟主机匹配的域，例如 <code>www</code> 子域名。</li>
@@ -231,20 +218,11 @@
 <p>配置文件名以 <code>.conf</code> 结尾，这一点很重要。您可以根据需要命名配置文件，但最佳做法是使用域名作为虚拟主机配置文件的名称。</p>
 
 <p>使用以下命令测试配置文件语法</p>
-
-<pre><code class="language-console-bash">sudo apachectl configtest
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apachectl configtest</code></pre></div>
 <p>如果没有错误，您将看到以下输出：</p>
-
-<pre><code class="language-output">Syntax OK
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Syntax OK</code></pre></div>
 <p>要激活新创建的虚拟主机，请使用以下命令重新启动 Apache 服务：</p>
-
-<pre><code class="language-console-bash">sudo systemctl restart httpd
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd</code></pre></div>
 <p>打开 <code>http://example.com</code> ：验证一切是否按预期工作：</p>
 
 <p><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/apache-welcome-page.jpg" alt="" /></p>

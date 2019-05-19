@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何重置 MySQL root 密码</h1>
+      
+      <h1 class="f1 mb1">如何重置 MySQL root 密码</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-09T08:00:00&#43;08:00">March 9, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>如果你忘记了 MySQL 的 root 密码，请不要担心，因为它经常会发生在我们所有人身上。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>如果你忘记了 MySQL 的 root 密码，请不要担心，因为它经常会发生在我们所有人身上。</p>
 
 <p>在本教程中，我们将向您展示如何重置 MySQL 的 root 密码，当你望你密码的时候就用的上了。本指南适用于任何现代 Linux 发行版，如 Ubuntu 18.04 和 CentOS 7 。</p>
 
@@ -148,20 +150,11 @@
 <p>根据您在系统上运行的 MySQL 或 MariaDB 服务器版本，您需要使用不同的命令来恢复 root 密码。</p>
 
 <p>您可以通过运行以下命令确定您的服务器版本：</p>
-
-<pre><code class="language-bash">mysql --version
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql --version</code></pre></div>
 <p>如果你的系统中安装了 MySQL ，输出将如下所示：</p>
-
-<pre><code class="language-bash">mysql  Ver 14.14 Distrib 5.7.22, for Linux (x86_64) using  EditLine wrapper
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql  Ver <span class="m">14</span>.14 Distrib <span class="m">5</span>.7.22, <span class="k">for</span> Linux <span class="o">(</span>x86_64<span class="o">)</span> using  EditLine wrapper</code></pre></div>
 <p>或者为 MariaDB 输出如下：</p>
-
-<pre><code class="language-bash">mysql  Ver 15.1 Distrib 10.1.33-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql  Ver <span class="m">15</span>.1 Distrib <span class="m">10</span>.1.33-MariaDB, <span class="k">for</span> debian-linux-gnu <span class="o">(</span>x86_64<span class="o">)</span> using readline <span class="m">5</span>.2</code></pre></div>
 <p>请务必记下正在运行的 MySQL 或 MariaDB 版本。</p>
 
 <h2 id="如何重置-mysql-或-mariadb-root-密码">如何重置 MySQL 或 MariaDB Root 密码</h2>
@@ -171,84 +164,51 @@
 <h3 id="1-停止-mysql-mariadb-服务">1. 停止 MySQL / MariaDB 服务</h3>
 
 <p>要更改 root 密码，首先我们需要停止 MySQL 服务器。为此，请键入以下命令：</p>
-
-<pre><code class="language-bash">sudo systemctl stop mysql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl stop mysql</code></pre></div>
 <h3 id="2-启动-mysql-mariadb-服务器而不加载授权表">2. 启动 MySQL / MariaDB 服务器而不加载授权表</h3>
 
 <p>启用选项 <code>--skip-grant-tables</code> 后，任何人都可以在没有密码和所有权限的情况下连接到数据库服务器。</p>
 
 <p>要启动数据库服务器而不加载授权表，请键入：</p>
-
-<pre><code class="language-bash">sudo mysqld_safe --skip-grant-tables &amp;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mysqld_safe --skip-grant-tables <span class="p">&amp;</span></code></pre></div>
 <p>上面命令末尾的 <code>＆</code> 符会让程序在后台运行，因此我们可以继续使用 shell 。</p>
 
 <h3 id="3-登录-mysql-shell">3.登录 MySQL shell</h3>
 
 <p>现在，您可以以使用 root 用户身份连接到数据库服务器，而不会提示您输入密码：</p>
-
-<pre><code class="language-bash">mysql -u root
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root</code></pre></div>
 <h3 id="4-设置新的-root-密码">4.设置新的 root 密码</h3>
 
 <p>如果您有 MySQL 5.7.6 及更高版本或 MariaDB 10.1.20 及更高版本，请运行以下命令：</p>
-
-<pre><code class="language-sql">ALTER USER 'root'@'localhost' IDENTIFIED BY 'MY_NEW_PASSWORD';
-FLUSH PRIVILEGES;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;MY_NEW_PASSWORD&#39;</span><span class="p">;</span>
+<span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span></code></pre></div>
 <p>如果 ALTER USER 语句不适合您，请尝试直接修改用户表：</p>
-
-<pre><code class="language-sql">UPDATE mysql.user SET authentication_string = PASSWORD('MY_NEW_PASSWORD')
-WHERE User = 'root' AND Host = 'localhost';
-FLUSH PRIVILEGES;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">UPDATE</span> <span class="n">mysql</span><span class="p">.</span><span class="k">user</span> <span class="k">SET</span> <span class="n">authentication_string</span> <span class="o">=</span> <span class="n">PASSWORD</span><span class="p">(</span><span class="s1">&#39;MY_NEW_PASSWORD&#39;</span><span class="p">)</span>
+<span class="k">WHERE</span> <span class="k">User</span> <span class="o">=</span> <span class="s1">&#39;root&#39;</span> <span class="k">AND</span> <span class="k">Host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span></code></pre></div>
 <p>如果您有 MySQL 5.7.5 及更早版本或 MariaDB 10.1.20 及更早版本，请运行以下命令：</p>
-
-<pre><code class="language-sql">SET PASSWORD FOR 'root'@'localhost' = PASSWORD('MY_NEW_PASSWORD');
-FLUSH PRIVILEGES;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SET</span> <span class="n">PASSWORD</span> <span class="k">FOR</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="o">=</span> <span class="n">PASSWORD</span><span class="p">(</span><span class="s1">&#39;MY_NEW_PASSWORD&#39;</span><span class="p">);</span>
+<span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span></code></pre></div>
 <p>在这两种情况下，如果一切顺利，您应该看到以下输出：</p>
-
-<pre><code class="language-sql">Query OK, 0 rows affected (0.00 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <h3 id="5-正常停止并启动数据库服务器">5.正常停止并启动数据库服务器</h3>
 
 <p>现在已经设置了 root 密码，我们需要停止数据库服务器并正常启动它。</p>
 
 <p>使用以下命令停止数据库服务器：</p>
-
-<pre><code class="language-bash">mysqladmin -u root -p shutdown
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqladmin -u root -p shutdown</code></pre></div>
 <p>系统将提示您输入新的 root 密码：</p>
 
 <p>正常启动数据库服务器：</p>
 
 <p>对于 MySQL ，请键入：</p>
-
-<pre><code class="language-bash">sudo systemctl start mysql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start mysql</code></pre></div>
 <p>对于 MariaDB ，键入：</p>
-
-<pre><code class="language-bash">sudo systemctl start mariadb
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start mariadb</code></pre></div>
 <h3 id="6-验证密码">6. 验证密码</h3>
 
 <p>要验证是否已正确应用新的 root 密码，请键入：</p>
-
-<pre><code class="language-bash">mysql -u root -p
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p</code></pre></div>
 <p>系统将提示您输入新的 root 密码。输入它，您应该登录到数据库服务器。</p>
 
 <h2 id="结论">结论</h2>

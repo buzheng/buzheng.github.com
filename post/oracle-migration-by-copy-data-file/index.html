@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2015-09-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-09-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="289">
+<meta itemprop="wordCount" content="288">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">通过直接拷贝数据文件实现 Oracle 迁移</h1>
+      
+      <h1 class="f1 mb1">通过直接拷贝数据文件实现 Oracle 迁移</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-09-17T00:00:00Z">September 17, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。</p>
 
 <h2 id="背景">背景</h2>
 
@@ -157,47 +159,40 @@
 需要切换到 oracle 用户
 使用 sqlplus 登录进 Oracle 数据库</p>
 </blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">sqlplus / as sysdba</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SQL</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">parameter</span> <span class="n">pfile</span>
+<span class="n">NAME</span>                                 <span class="k">TYPE</span>        <span class="n">VALUE</span>
+<span class="c1">------------------------------------ ----------- ------------------------------
+</span><span class="c1"></span><span class="n">spfile</span>                               <span class="n">string</span>      <span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">product</span><span class="o">/</span><span class="mi">11</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="o">/</span><span class="n">dbhome_1</span><span class="o">/</span><span class="n">dbs</span><span class="o">/</span><span class="n">spfileorcl</span><span class="p">.</span><span class="n">ora</span>
 
-<pre><code class="language-shell">sqlplus / as sysdba
-</code></pre>
+<span class="k">SQL</span><span class="o">&gt;</span> <span class="k">show</span> <span class="k">parameter</span> <span class="n">control</span>
+<span class="n">NAME</span>                                 <span class="k">TYPE</span>        <span class="n">VALUE</span>
+<span class="c1">------------------------------------ ----------- ------------------------------
+</span><span class="c1"></span><span class="n">control_file_record_keep_time</span>        <span class="nb">integer</span>     <span class="mi">7</span>
+<span class="n">control_files</span>                        <span class="n">string</span>      <span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">control01</span><span class="p">.</span><span class="n">ctl</span><span class="p">,</span> <span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">recovery_area</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">control02</span><span class="p">.</span><span class="n">ctl</span>
+<span class="n">control_management_pack_access</span>       <span class="n">string</span>      <span class="n">DIAGNOSTIC</span><span class="o">+</span><span class="n">TUNING</span>
 
-<pre><code class="language-sql">SQL&gt; show parameter pfile
-NAME                                 TYPE        VALUE
------------------------------------- ----------- ------------------------------
-spfile                               string      /u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+<span class="k">SQL</span><span class="o">&gt;</span> <span class="k">select</span>  <span class="o">*</span> <span class="k">from</span> <span class="n">v$logfile</span><span class="p">;</span>
+    <span class="k">GROUP</span><span class="o">#</span> <span class="n">STATUS</span>  <span class="k">TYPE</span>    <span class="n">MEMBER</span>                                                                           <span class="n">IS_RECOVERY_DEST_FILE</span>
+<span class="c1">---------- ------- ------- -------------------------------------------------------------------------------- ---------------------
+</span><span class="c1"></span>         <span class="mi">3</span>         <span class="n">ONLINE</span>  <span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">redo03</span><span class="p">.</span><span class="n">log</span>                                          <span class="k">NO</span>
+         <span class="mi">2</span>         <span class="n">ONLINE</span>  <span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">redo02</span><span class="p">.</span><span class="n">log</span>                                          <span class="k">NO</span>
+         <span class="mi">1</span>         <span class="n">ONLINE</span>  <span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">redo01</span><span class="p">.</span><span class="n">log</span>                                          <span class="k">NO</span>
 
-SQL&gt; show parameter control
-NAME                                 TYPE        VALUE
------------------------------------- ----------- ------------------------------
-control_file_record_keep_time        integer     7
-control_files                        string      /u01/app/oracle/oradata/orcl/control01.ctl, /u01/app/oracle/recovery_area/orcl/control02.ctl
-control_management_pack_access       string      DIAGNOSTIC+TUNING
+<span class="k">SQL</span><span class="o">&gt;</span> <span class="k">select</span> <span class="n">name</span> <span class="k">from</span> <span class="n">v$datafile</span><span class="p">;</span>
+<span class="n">NAME</span>
+<span class="c1">--------------------------------------------------------------------------------
+</span><span class="c1"></span><span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">system01</span><span class="p">.</span><span class="n">dbf</span>
+<span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">sysaux01</span><span class="p">.</span><span class="n">dbf</span>
+<span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">undotbs01</span><span class="p">.</span><span class="n">dbf</span>
+<span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">users01</span><span class="p">.</span><span class="n">dbf</span>
+<span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">users02</span><span class="p">.</span><span class="n">dbf</span>
 
-SQL&gt; select  * from v$logfile;
-    GROUP# STATUS  TYPE    MEMBER                                                                           IS_RECOVERY_DEST_FILE
----------- ------- ------- -------------------------------------------------------------------------------- ---------------------
-         3         ONLINE  /u01/app/oracle/oradata/orcl/redo03.log                                          NO
-         2         ONLINE  /u01/app/oracle/oradata/orcl/redo02.log                                          NO
-         1         ONLINE  /u01/app/oracle/oradata/orcl/redo01.log                                          NO
-
-SQL&gt; select name from v$datafile;
-NAME
---------------------------------------------------------------------------------
-/u01/app/oracle/oradata/orcl/system01.dbf
-/u01/app/oracle/oradata/orcl/sysaux01.dbf
-/u01/app/oracle/oradata/orcl/undotbs01.dbf
-/u01/app/oracle/oradata/orcl/users01.dbf
-/u01/app/oracle/oradata/orcl/users02.dbf
-
-SQL&gt; select name from v$tempfile;
-NAME
---------------------------------------------------------------------------------
-/u01/app/oracle/oradata/orcl/temp01.dbf
-</code></pre>
-
+<span class="k">SQL</span><span class="o">&gt;</span> <span class="k">select</span> <span class="n">name</span> <span class="k">from</span> <span class="n">v$tempfile</span><span class="p">;</span>
+<span class="n">NAME</span>
+<span class="c1">--------------------------------------------------------------------------------
+</span><span class="c1"></span><span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">temp01</span><span class="p">.</span><span class="n">dbf</span></code></pre></div>
 <p>根据以上查询结果，发现有以下文件需要拷贝：</p>
-
-<pre><code>/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+<div class="highlight"><pre class="chroma">/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
 /u01/app/oracle/oradata/orcl/control01.ctl
 /u01/app/oracle/recovery_area/orcl/control02.ctl
 /u01/app/oracle/oradata/orcl/redo03.log
@@ -209,27 +204,21 @@ NAME
 /u01/app/oracle/oradata/orcl/users01.dbf
 /u01/app/oracle/oradata/orcl/users02.dbf
 /u01/app/oracle/oradata/orcl/users03.dbf
-/u01/app/oracle/oradata/orcl/temp01.dbf
-</code></pre>
-
+/u01/app/oracle/oradata/orcl/temp01.dbf</pre></div>
 <h2 id="停掉原数据库与新数据库">停掉原数据库与新数据库</h2>
 
 <blockquote>
 <p>192.168.1.15 和 192.168.1.18
 使用 root 用户</p>
 </blockquote>
-
-<pre><code class="language-shell">service oracle stop
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">service oracle stop</code></pre></div>
 <h2 id="使用scp拷贝文件到新服务器">使用scp拷贝文件到新服务器</h2>
 
 <blockquote>
 <p>192.168.1.15
 scp 命令可以把文件复制到远程 Linux 服务器，可以参考：<a href="/2015/linux-scp-notes.html">scp 命令</a></p>
 </blockquote>
-
-<pre><code class="language-shell">scp /u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora oracle@192.168.1.18:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">scp /u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora oracle@192.168.1.18:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
 scp /u01/app/oracle/oradata/orcl/control01.ctl oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/control01.ctl
 scp /u01/app/oracle/recovery_area/orcl/control02.ctl oracle@192.168.1.18:/u01/app/oracle/recovery_area/orcl/control02.ctl
 scp /u01/app/oracle/oradata/orcl/redo03.log oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/redo03.log
@@ -241,9 +230,7 @@ scp /u01/app/oracle/oradata/orcl/undotbs01.dbf oracle@192.168.1.18:/u01/app/orac
 scp /u01/app/oracle/oradata/orcl/users01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users01.dbf
 scp /u01/app/oracle/oradata/orcl/users02.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users02.dbf
 scp /u01/app/oracle/oradata/orcl/users03.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users03.dbf
-scp /u01/app/oracle/oradata/orcl/temp01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/temp01.dbf
-</code></pre>
-
+scp /u01/app/oracle/oradata/orcl/temp01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/temp01.dbf</code></pre></div>
 <p>等待拷贝完成</p>
 
 <h2 id="尝试启动新数据库">尝试启动新数据库</h2>
@@ -254,46 +241,34 @@ scp /u01/app/oracle/oradata/orcl/temp01.dbf oracle@192.168.1.18:/u01/app/oracle/
 </blockquote>
 
 <p>dba 登录进行启动数据库</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>oracle@oracle ~<span class="o">]</span>$ sqlplus / as sysdba
 
-<pre><code class="language-shell">[oracle@oracle ~]$ sqlplus / as sysdba
+SQL*Plus: Release <span class="m">11</span>.2.0.1.0 Production on Thu Sep <span class="m">17</span> <span class="m">09</span>:26:11 <span class="m">2015</span>
 
-SQL*Plus: Release 11.2.0.1.0 Production on Thu Sep 17 09:26:11 2015
-
-Copyright (c) 1982, 2009, Oracle.  All rights reserved.
+Copyright <span class="o">(</span>c<span class="o">)</span> <span class="m">1982</span>, <span class="m">2009</span>, Oracle.  All rights reserved.
 
 Connected to an idle instance.
 
 SQL&gt; startup
 ORACLE instance started.
 
-Total System Global Area 6747725824 bytes
-Fixed Size                  2213976 bytes
-Variable Size            5100275624 bytes
-Database Buffers         1610612736 bytes
-Redo Buffers               34623488 bytes
+Total System Global Area <span class="m">6747725824</span> bytes
+Fixed Size                  <span class="m">2213976</span> bytes
+Variable Size            <span class="m">5100275624</span> bytes
+Database Buffers         <span class="m">1610612736</span> bytes
+Redo Buffers               <span class="m">34623488</span> bytes
 Database mounted.
-Database opened.
-</code></pre>
-
+Database opened.</code></pre></div>
 <p>注意最后一句，到这里就启动成功了。这次很顺利，没有出现意外。也可以通过以下语句检测数据库的状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SQL</span><span class="o">&gt;</span> <span class="k">select</span> <span class="n">status</span> <span class="k">from</span> <span class="n">v$instance</span><span class="p">;</span>
 
-<pre><code class="language-sql">SQL&gt; select status from v$instance;
-
-STATUS
-------------
-OPEN
-</code></pre>
-
+<span class="n">STATUS</span>
+<span class="c1">------------
+</span><span class="c1"></span><span class="k">OPEN</span></code></pre></div>
 <p>如果 <code>Database mounted</code> 成功后报错，也就是数据库最终不是 open 状态，只是 mounted 状态， 可以尝试恢复数据库。</p>
-
-<pre><code class="language-sql">recover database;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">recover</span> <span class="k">database</span><span class="p">;</span></code></pre></div>
 <p>完成后，再打开数据库，一般可以成功。</p>
-
-<pre><code class="language-sql">alter database open;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="k">database</span> <span class="k">open</span><span class="p">;</span></code></pre></div>
 <h2 id="验证两个库的数据">验证两个库的数据</h2>
 
 <p>根据自己的实际情况进行验证, 这里不再赘述.</p>

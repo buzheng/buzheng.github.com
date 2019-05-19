@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2019-03-09T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-09T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="433">
+<meta itemprop="wordCount" content="432">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 Tomcat 8.5</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上安装 Tomcat 8.5</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-09T06:00:00&#43;08:00">March 9, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Tomcat 是 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术的开源实现。本教程介绍如何在 CentOS 7 上安装 Tomcat 8.5 。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Tomcat 是 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术的开源实现。本教程介绍如何在 CentOS 7 上安装 Tomcat 8.5 。</p>
 
 <h2 id="先决条件">先决条件</h2>
 
@@ -140,10 +142,7 @@
 <p>Tomcat 8.5 需要 Java SE 7 或更高版本。在本教程中，我们将安装 OpenJDK ，它是 Java 平台的开源实现，也是 CentOS 7 中的默认 Java 开发和运行时。</p>
 
 <p>OpenJDK 的安装简单直接：</p>
-
-<pre><code class="language-bash">sudo yum install java-1.8.0-openjdk-devel
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install java-1.8.0-openjdk-devel</code></pre></div>
 <blockquote>
 <p>如果要安装 Oracle Java 而不是 OpenJDK ，请查看<a href="/linux/install-java-on-centos-7/">本指南</a>。</p>
 </blockquote>
@@ -151,108 +150,72 @@
 <h2 id="创建-tomcat-系统用户">创建 Tomcat 系统用户</h2>
 
 <p>不建议使用 root 用户身份运行 Tomcat ，因为存在安全风险。相反，我们将创建一个新的系统用户和组来运行 Tomcat 服务，用户的主目录是 <code>/opt/tomcat</code> ：</p>
-
-<pre><code class="language-bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat</code></pre></div>
 <h2 id="下载-tomcat">下载 Tomcat</h2>
 
 <p>我们将会从 <a href="https://tomcat.apache.org/download-80.cgi">Tomcat 下载页面</a>下载最新版本的 Tomcat 8.5.x 。在撰写本文时，最新版本为 8.5.37 。在继续下一步之前，您应该在下载页面检查是否有新版本。</p>
 
 <p>切换到 <code>/tmp</code> 目录并使用 wget 下载 zip 文件：</p>
-
-<pre><code class="language-bash">cd /tmp
-wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.zip
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /tmp
+wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.zip</code></pre></div>
 <p>下载完成后，解压缩 zip 文件并将其移至 <code>/opt/tomcat</code> 目录：</p>
-
-<pre><code class="language-bash">unzip apache-tomcat-*.zip
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">unzip apache-tomcat-*.zip
 sudo mkdir -p /opt/tomcat
-sudo mv apache-tomcat-8.5.37 /opt/tomcat/
-</code></pre>
-
+sudo mv apache-tomcat-8.5.37 /opt/tomcat/</code></pre></div>
 <p>Tomcat 8.5 经常更新，为了更好地控制版本和更新，我们将创建 latest 指向 Tomcat 安装目录的符号链接：</p>
-
-<pre><code class="language-bash">sudo ln -s /opt/tomcat/apache-tomcat-8.5.37 /opt/tomcat/latest
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /opt/tomcat/apache-tomcat-8.5.37 /opt/tomcat/latest</code></pre></div>
 <p>我们之前添加的 <code>tomcat</code> 用户需要访问 <code>/opt/tomcat</code> 目录，将目录所有权更改为用户和组 <code>tomcat</code> ：</p>
-
-<pre><code class="language-bash">sudo chown -R tomcat: /opt/tomcat
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R tomcat: /opt/tomcat</code></pre></div>
 <p>赋予 <code>bin</code> 目录中的脚本具有执行权限：</p>
-
-<pre><code class="language-bash">sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sh -c <span class="s1">&#39;chmod +x /opt/tomcat/latest/bin/*.sh&#39;</span></code></pre></div>
 <h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
 
 <p>要将 Tomcat 作为服务运行，请在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件 <code>tomcat.service</code> ：</p>
 
 <p><code>/etc/systemd/system/tomcat.service</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Tomcat <span class="m">8</span>.5 servlet container
+<span class="nv">After</span><span class="o">=</span>network.target
 
-<pre><code class="language-bash">[Unit]
-Description=Tomcat 8.5 servlet container
-After=network.target
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>forking
 
-[Service]
-Type=forking
+<span class="nv">User</span><span class="o">=</span>tomcat
+<span class="nv">Group</span><span class="o">=</span>tomcat
 
-User=tomcat
-Group=tomcat
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">&#34;JAVA_HOME=/usr/lib/jvm/jre&#34;</span>
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">&#34;JAVA_OPTS=-Djava.security.egd=file:///dev/urandom&#34;</span>
 
-Environment=&quot;JAVA_HOME=/usr/lib/jvm/jre&quot;
-Environment=&quot;JAVA_OPTS=-Djava.security.egd=file:///dev/urandom&quot;
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">&#34;CATALINA_BASE=/opt/tomcat/latest&#34;</span>
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">&#34;CATALINA_HOME=/opt/tomcat/latest&#34;</span>
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">&#34;CATALINA_PID=/opt/tomcat/latest/temp/tomcat.pid&#34;</span>
+<span class="nv">Environment</span><span class="o">=</span><span class="s2">&#34;CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC&#34;</span>
 
-Environment=&quot;CATALINA_BASE=/opt/tomcat/latest&quot;
-Environment=&quot;CATALINA_HOME=/opt/tomcat/latest&quot;
-Environment=&quot;CATALINA_PID=/opt/tomcat/latest/temp/tomcat.pid&quot;
-Environment=&quot;CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC&quot;
+<span class="nv">ExecStart</span><span class="o">=</span>/opt/tomcat/latest/bin/startup.sh
+<span class="nv">ExecStop</span><span class="o">=</span>/opt/tomcat/latest/bin/shutdown.sh
 
-ExecStart=/opt/tomcat/latest/bin/startup.sh
-ExecStop=/opt/tomcat/latest/bin/shutdown.sh
-
-[Install]
-WantedBy=multi-user.target
-</code></pre>
-
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</code></pre></div>
 <p>通过执行以下命令通知 systemd 加载我们创建的新的单元文件并启动 Tomcat 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl daemon-reload
-sudo systemctl start tomcat
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
+sudo systemctl start tomcat</code></pre></div>
 <p>使用以下命令检查服务状态：</p>
-
-<pre><code class="language-bash">sudo systemctl status tomcat
-</code></pre>
-
-<pre><code class="language-bash"> tomcat.service - Tomcat 8.5 servlet container
-   Loaded: loaded (/etc/systemd/system/tomcat.service; disabled; vendor preset: disabled)
-   Active: active (running) since Sat 2018-03-31 16:30:48 UTC; 3s ago
-  Process: 23826 ExecStart=/opt/tomcat/latest/bin/startup.sh (code=exited, status=0/SUCCESS)
- Main PID: 23833 (java)
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status tomcat</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"> tomcat.service - Tomcat <span class="m">8</span>.5 servlet container
+   Loaded: loaded <span class="o">(</span>/etc/systemd/system/tomcat.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Sat <span class="m">2018</span>-03-31 <span class="m">16</span>:30:48 UTC<span class="p">;</span> 3s ago
+  Process: <span class="m">23826</span> <span class="nv">ExecStart</span><span class="o">=</span>/opt/tomcat/latest/bin/startup.sh <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span><span class="m">0</span>/SUCCESS<span class="o">)</span>
+ Main PID: <span class="m">23833</span> <span class="o">(</span>java<span class="o">)</span>
    CGroup: /system.slice/tomcat.service
-           └─23833 /usr/lib/jvm/jre/bin/java -Djava.util.logging.config.file=/opt/tomcat/latest/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.security.egd=fi...
-</code></pre>
-
+           └─23833 /usr/lib/jvm/jre/bin/java -Djava.util.logging.config.file<span class="o">=</span>/opt/tomcat/latest/conf/logging.properties -Djava.util.logging.manager<span class="o">=</span>org.apache.juli.ClassLoaderLogManager -Djava.security.egd<span class="o">=</span><span class="k">fi</span>...</code></pre></div>
 <p>如果没有错误，您可以启用 Tomcat 服务随系统自动启动：</p>
-
-<pre><code class="language-bash">sudo systemctl enable tomcat
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> tomcat</code></pre></div>
 <h2 id="调整防火墙">调整防火墙</h2>
 
 <p>如果您的服务器受防火墙保护，并且您想从本地网络外部访问 tomcat 接口，请打开端口 8080 。</p>
 
 <p>使用以下命令打开必要的端口：</p>
-
-<pre><code class="language-bash">sudo firewall-cmd --zone=public --permanent --add-port=8080/tcp
-sudo firewall-cmd --reload
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo firewall-cmd --zone<span class="o">=</span>public --permanent --add-port<span class="o">=</span><span class="m">8080</span>/tcp
+sudo firewall-cmd --reload</code></pre></div>
 <p>在大多数情况下，在生产环境中运行 Tomcat 时，一般会使用负载平衡器或反向代理服务器，最佳做法是仅允许内部网络访问 <code>8080</code> 端口。</p>
 
 <h2 id="配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</h2>
@@ -260,73 +223,52 @@ sudo firewall-cmd --reload
 <p>此时已安装 Tomcat ，我们可以在 Web 浏览器通过 <code>8080</code> 端口访问它，但我们无法访问 Web 管理界面，因为我们尚未创建用户。</p>
 
 <p>Tomcat 用户及其角色在 <code>tomcat-users.xml</code> 文件中定义。打开该文件，您会注意到它里面充满了描述如何配置文件的注释和示例。</p>
-
-<pre><code class="language-bash">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml</code></pre></div>
 <p>要添加一个能够访问 tomcat web 界面的新用户（ <code>manager-gui</code> 和 <code>admin-gui</code> ），我们需要在 <code>tomcat-users.xml</code> 文件中定义用户，如下所示。请自己确保将用户名和密码更改的更加安全：</p>
 
 <p><code>/opt/tomcat/latest/conf/tomcat-users.xml</code></p>
-
-<pre><code class="language-xml">&lt;tomcat-users&gt;
-&lt;!--
-    Comments
---&gt;
-   &lt;role rolename=&quot;admin-gui&quot;/&gt;
-   &lt;role rolename=&quot;manager-gui&quot;/&gt;
-   &lt;user username=&quot;admin&quot; password=&quot;admin_password&quot; roles=&quot;admin-gui,manager-gui&quot;/&gt;
-&lt;/tomcat-users&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">    Comments
+</span><span class="c">--&gt;</span>
+   <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;admin-gui&#34;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;admin_password&#34;</span> <span class="na">roles=</span><span class="s">&#34;admin-gui,manager-gui&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/tomcat-users&gt;</span></code></pre></div>
 <p>默认情况下， Tomcat Web 管理界面配置为仅允许从 <code>localhost</code> 访问。如果您希望能够从远程 IP 或任何不推荐的地方访问 Web 界面(因为存在安全风险)，您可以打开以下文件并进行以下更改。</p>
 
 <p>如果您需要从任何地方访问 Web 界面，请打开以下文件并注释掉如下所示的行：</p>
 
 <p><code>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</code></p>
-
-<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
-&lt;!--
-  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
-         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1&quot; /&gt;
---&gt;
-&lt;/Context&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
+</span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
+</span><span class="c">--&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
 <p><code>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</code></p>
-
-<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
-&lt;!--
-  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
-         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1&quot; /&gt;
---&gt;
-&lt;/Context&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
+</span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
+</span><span class="c">--&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
 <p>如果您只需要从指定的 IP 访问 Web 界面，请将您的公共 IP 添加到列表中。假设您的公共 IP 是 <code>41.41.41.41</code> 并且您希望仅允许来自该 IP 的访问：</p>
 
 <p><code>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</code></p>
-
-<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
-  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
-         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1|41.41.41.41&quot; /&gt;
-&lt;/Context&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;Valve</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.valves.RemoteAddrValve&#34;</span>
+         <span class="na">allow=</span><span class="s">&#34;127\.\d+\.\d+\.\d+|::1|0000:1|41.41.41.41&#34;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
 <p><code>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</code></p>
-
-<pre><code class="language-xml">&lt;Context antiResourceLocking=&quot;false&quot; privileged=&quot;true&quot; &gt;
-  &lt;Valve className=&quot;org.apache.catalina.valves.RemoteAddrValve&quot;
-         allow=&quot;127\.\d+\.\d+\.\d+|::1|0000:1|41.41.41.41&quot; /&gt;
-&lt;/Context&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;Valve</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.valves.RemoteAddrValve&#34;</span>
+         <span class="na">allow=</span><span class="s">&#34;127\.\d+\.\d+\.\d+|::1|0000:1|41.41.41.41&#34;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
 <p>允许的 IP 地址列表是用竖线 <code>|</code> 分隔的列表。 您可以添加单个 IP 地址或使用正则表达式。</p>
 
 <p>重新启动 Tomcat 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl restart tomcat
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart tomcat</code></pre></div>
 <h2 id="测试安装">测试安装</h2>
 
 <p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8080</code>，如果成功安装，将出现类似于以下内容的屏幕：</p>

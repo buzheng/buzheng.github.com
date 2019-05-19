@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -49,7 +49,7 @@
 
 <meta itemprop="datePublished" content="2019-03-03T09:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-03T09:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="474">
+<meta itemprop="wordCount" content="473">
 
 
 
@@ -64,7 +64,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">使用 PostfixAdmin 设置邮件服务器</h1>
+      
+      <h1 class="f1 mb1">使用 PostfixAdmin 设置邮件服务器</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-03T09:00:00&#43;08:00">March 3, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Postfix Admin 是一个基于Web的界面，帮助用户配置和管理基于 Postfix 的电子邮件服务器。使用Postfix Admin，您可以创建和管理多个虚拟域，用户和别名。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Postfix Admin 是一个基于Web的界面，帮助用户配置和管理基于 Postfix 的电子邮件服务器。使用Postfix Admin，您可以创建和管理多个虚拟域，用户和别名。</p>
 
 <p>这是设置和配置邮件服务器系列中的第一篇文章，其中包括创建必要的 DNS 记录，并解释如何使用免费的 Let&rsquo;s Encrypt 证书，PHP 和 MySQL 安装和配置 Postfix Admin，Nginx。</p>
 
@@ -161,22 +163,13 @@
 <p>您需要为您的邮件系统设置以下 DNS 记录：</p>
 
 <p>一条记录，用于将系统的 FQDN（主机名）指向您的邮件服务器 IPv4 地址。</p>
-
-<pre><code class="language-config">mail.example.com. 3600 IN A   23.45.67.89
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">mail.example.com. 3600 IN A   23.45.67.89</code></pre></div>
 <p>FQDN 由两部分组成，主机名和域名。</p>
 
 <p>MX 记录，用于指定哪个邮件服务器负责代表收件人的域接受电子邮件。在我们的案例中，我们希望邮件服务器@example.com接受发送到电子邮件地址的所有电子邮件mail.example.com。</p>
-
-<pre><code class="language-config">example.com.      3600 IN MX  0 mail.example.com.
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">example.com.      3600 IN MX  0 mail.example.com.</code></pre></div>
 <p>SPF记录，用于验证哪些邮件服务器被批准代表给定域发送电子邮件。在下面的示例中，我们批准域邮件服务器（mx），如果SPF检查失败，结果将是软故障（~all）：</p>
-
-<pre><code class="language-config">example.com.      3600 IN TXT &quot;v=spf1 mx ~all&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">example.com.      3600 IN TXT &#34;v=spf1 mx ~all&#34;</code></pre></div>
 <blockquote>
 <p>当然，您需要使用您的真实域名和邮件服务器IP地址替换域名和IP地址。</p>
 </blockquote>
@@ -190,23 +183,14 @@
 <p>在大多数情况下，可以通过您的托管服务提供商Web界面设置PTR条目，或者联系支持团队并要求他们为您设置正确的PTR记录。</p>
 
 <p>您可以使用dig命令查找给定IP地址的反向DNS。</p>
-
-<pre><code class="language-bash">dig -x 23.45.67.89
-</code></pre>
-
-<pre><code class="language-bash">23.45.67.89.in-addr.arpa domain name pointer mail.example.com.
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">dig -x <span class="m">23</span>.45.67.89</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">23</span>.45.67.89.in-addr.arpa domain name pointer mail.example.com.</code></pre></div>
 <h2 id="创建系统用户">创建系统用户</h2>
 
 <p>由于我们使用虚拟用户配置邮件服务器，因此我们需要一个系统用户，该用户将成为所有邮箱的所有者，虚拟用户将使用这些用户访问服务器上的电子邮件。</p>
 
 <p>以下命令将创建一个名为的新组和用户 vmail，并将用户的主目录设置为 <code>/var/mail/vmail</code>：</p>
-
-<pre><code class="language-bash">sudo groupadd -g 5000 vmail
-sudo useradd -u 5000 -g vmail -s /usr/sbin/nologin -d /var/mail/vmail -m vmail
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo groupadd -g <span class="m">5000</span> vmail
+sudo useradd -u <span class="m">5000</span> -g vmail -s /usr/sbin/nologin -d /var/mail/vmail -m vmail</code></pre></div>
 <p>所有虚拟邮箱都将存储在 <code>/var/mail/vmail</code> 目录中。</p>
 
 <h2 id="安装-nginx-php-和-mysql">安装 Nginx, PHP 和 MySQL</h2>
@@ -214,10 +198,7 @@ sudo useradd -u 5000 -g vmail -s /usr/sbin/nologin -d /var/mail/vmail -m vmail
 <p>Postfix Admin 是一个基于PHP的应用程序。为了能够访问 PostfixAdmin Web 界面，我们需要安装 <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">Web 服务器</a>和 PHP。</p>
 
 <p>运行以下命令以安装 Nginx，PHP和所有必需的PHP模块：</p>
-
-<pre><code class="language-bash">sudo apt install nginx mysql-server php7.0-fpm php7.0-cli php7.0-imap php7.0-json php7.0-mysql php7.0-opcache php7.0-mbstring php7.0-readline
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install nginx mysql-server php7.0-fpm php7.0-cli php7.0-imap php7.0-json php7.0-mysql php7.0-opcache php7.0-mbstring php7.0-readline</code></pre></div>
 <p>在安装过程中，系统会提示您创建 MySQL root 密码。</p>
 
 <h2 id="下载并配置-postfix-admin">下载并配置 Postfix Admin</h2>
@@ -225,42 +206,24 @@ sudo useradd -u 5000 -g vmail -s /usr/sbin/nologin -d /var/mail/vmail -m vmail
 <p>在撰写本文时，3.1是Postfix Admin的最新稳定版本。</p>
 
 <p>使用以下 wget 命令下载 Postfix Admin 存档：</p>
-
-<pre><code class="language-bash">VERSION=3.1
-wget -q https://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-${VERSION}/postfixadmin-${VERSION}.tar.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">VERSION</span><span class="o">=</span><span class="m">3</span>.1
+wget -q https://downloads.sourceforge.net/project/postfixadmin/postfixadmin/postfixadmin-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>/postfixadmin-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>.tar.gz</code></pre></div>
 <p>下载完成后，解压文档：</p>
-
-<pre><code class="language-bash">tar xzf postfixadmin-${VERSION}.tar.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tar xzf postfixadmin-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>.tar.gz</code></pre></div>
 <p>将 Postfix Admin 源文件移动到 <code>/var/www</code> 目录和创建 <code>templates_c</code> 目录（smarty cache）：</p>
-
-<pre><code class="language-bash">sudo mv postfixadmin-${VERSION}/ /var/www/postfixadmin
-rm -f postfixadmin-${VERSION}.tar.gz
-mkdir /var/www/postfixadmin/templates_c
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mv postfixadmin-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>/ /var/www/postfixadmin
+rm -f postfixadmin-<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>.tar.gz
+mkdir /var/www/postfixadmin/templates_c</code></pre></div>
 <p>Nginx 和 PHP-FPM 都在用户 <code>www-data</code> 下运行， 因此我们需要更改 <code>/var/www/postfixadmin</code> 的用户所有权：</p>
-
-<pre><code class="language-bash">sudo chown -R www-data: /var/www/postfixadmin
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/postfixadmin</code></pre></div>
 <p>Postfix Admin 将使用 MySQL 数据库来存储有关用户，域和应用程序配置的信息。</p>
 
 <p>登录MySQL shell：</p>
-
-<pre><code class="language-bash">mysql -u root -p
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p</code></pre></div>
 <p>使用以下命令创建新的 MySQL 用户和数据库：</p>
-
-<pre><code class="language-bash">CREATE DATABASE postfixadmin;
-GRANT ALL ON postfixadmin.* TO 'postfixadmin'@'localhost' IDENTIFIED BY 'P4ssvv0rD';
-FLUSH PRIVILEGES;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE postfixadmin<span class="p">;</span>
+GRANT ALL ON postfixadmin.* TO <span class="s1">&#39;postfixadmin&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;P4ssvv0rD&#39;</span><span class="p">;</span>
+FLUSH PRIVILEGES<span class="p">;</span></code></pre></div>
 <blockquote>
 <p>不要忘记将密码（P4ssvv0rD）更改为更安全的密码。</p>
 </blockquote>
@@ -268,72 +231,58 @@ FLUSH PRIVILEGES;
 <p>我们将创建一个文件名为 <code>config.local.php</code> 覆盖默认应用程序配置文件，而不是编辑默认的 Postfix Admin 配置：</p>
 
 <p>使用您的文本文件打开文件：</p>
-
-<pre><code class="language-bash">sudo nano /var/www/postfixadmin/config.local.php
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /var/www/postfixadmin/config.local.php</code></pre></div>
 <p>粘贴以下 php 代码：</p>
 
 <p>/var/www/postfixadmin/config.local.php</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;configured&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
 
-<pre><code class="language-php">&lt;?php
-$CONF['configured'] = true;
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;database_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysqli&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;database_host&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;database_user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;postfixadmin&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;database_password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;P4ssvv0rD&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;database_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;postfixadmin&#39;</span><span class="p">;</span>
 
-$CONF['database_type'] = 'mysqli';
-$CONF['database_host'] = 'localhost';
-$CONF['database_user'] = 'postfixadmin';
-$CONF['database_password'] = 'P4ssvv0rD';
-$CONF['database_name'] = 'postfixadmin';
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;default_aliases&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span>
+  <span class="s1">&#39;abuse&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;abuse@example.com&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;hostmaster&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;hostmaster@example.com&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;postmaster&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;postmaster@example.com&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;webmaster&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;webmaster@example.com&#39;</span>
+<span class="p">);</span>
 
-$CONF['default_aliases'] = array (
-  'abuse'      =&gt; 'abuse@example.com',
-  'hostmaster' =&gt; 'hostmaster@example.com',
-  'postmaster' =&gt; 'postmaster@example.com',
-  'webmaster'  =&gt; 'webmaster@example.com'
-);
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;fetchmail&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NO&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;show_footer_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NO&#39;</span><span class="p">;</span>
 
-$CONF['fetchmail'] = 'NO';
-$CONF['show_footer_text'] = 'NO';
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;quota&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;YES&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;domain_quota&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;YES&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;quota_multiplier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1024000&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;used_quotas&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;YES&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;new_quota_table&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;YES&#39;</span><span class="p">;</span>
 
-$CONF['quota'] = 'YES';
-$CONF['domain_quota'] = 'YES';
-$CONF['quota_multiplier'] = '1024000';
-$CONF['used_quotas'] = 'YES';
-$CONF['new_quota_table'] = 'YES';
-
-$CONF['aliases'] = '0';
-$CONF['mailboxes'] = '0';
-$CONF['maxquota'] = '0';
-$CONF['domain_quota_default'] = '0';
-?&gt;
-</code></pre>
-
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;aliases&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;mailboxes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;maxquota&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>
+<span class="nv">$CONF</span><span class="p">[</span><span class="s1">&#39;domain_quota_default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre></div>
 <p>保存并关闭文件。</p>
 
 <p>通过上面的配置，我们定义了数据库类型和登录凭据。此外，我们还指定了默认别名，禁用 fetchmail 和启用配额。</p>
 
 <p>接下来，运行以下命令为 Postfix Admin 数据库创建架构：</p>
-
-<pre><code class="language-bash">sudo -u www-data php /var/www/postfixadmin/upgrade.php
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo -u www-data php /var/www/postfixadmin/upgrade.php</code></pre></div>
 <p>填充数据库后，我们可以继续使用 <code>postfixadmin-cli</code> 工具创建我们的第一个 PostfixAdmin  superadmin 用户。</p>
 
 <p>此用户将具有管理权限以修改任何域或应用程序设置。</p>
-
-<pre><code class="language-bash">sudo bash /var/www/postfixadmin/scripts/postfixadmin-cli admin add superadmin@example.com --superadmin 1 --active 1 --password P4ssvv0rD --password2 P4ssvv0rD
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo bash /var/www/postfixadmin/scripts/postfixadmin-cli admin add superadmin@example.com --superadmin <span class="m">1</span> --active <span class="m">1</span> --password P4ssvv0rD --password2 P4ssvv0rD</code></pre></div>
 <p>输出应该如下所示：</p>
-
-<pre><code class="language-bash">Welcome to Postfixadmin-CLI v0.2
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Welcome to Postfixadmin-CLI v0.2
 ---------------------------------------------------------------
 
 The admin superadmin@example.com has been added!
 
----------------------------------------------------------------
-</code></pre>
-
+---------------------------------------------------------------</code></pre></div>
 <blockquote>
 <p>不要忘记将superadmin帐户的密码 <code>P4ssvv0rD</code> 更改为更安全的密码。</p>
 </blockquote>
@@ -347,8 +296,7 @@ The admin superadmin@example.com has been added!
 <p>按照上面链接的教程生成SSL证书后，编辑 Nginx 服务器块，如下所示：</p>
 
 <p>/etc/nginx/sites-enabled/mail.example.com.conf</p>
-
-<pre><code class="language-config">server {
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">server {
     listen 80;
     server_name mail.example.com;
 
@@ -384,14 +332,9 @@ server {
          include fastcgi_params;
          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
-}
-</code></pre>
-
+}</code></pre></div>
 <p>重新加载 Nginx 服务以使更改生效：</p>
-
-<pre><code class="language-bash">sudo systemctl reload nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
 <p>此时，您应该可以在 <code>https://mail.example.com/postfixadmin</code> 使用本教程前面安装过程中创建的 superadmin 用户登录 Postfix Admin 。</p>
 
 <h2 id="结论">结论</h2>

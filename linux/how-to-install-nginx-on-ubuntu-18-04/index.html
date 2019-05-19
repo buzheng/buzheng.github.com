@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -70,7 +70,7 @@ Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@ Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的�
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 Nginx</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上安装 Nginx</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-12T07:00:00&#43;08:00">March 12, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Nginx的发音是 &ldquo;engine x&rdquo;, 是一个免费的，开源的，高性能的 HTTP 服务器和反向代理服务器。互联网上一些很大的站点都使用 Nginx 来负载。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Nginx的发音是 &ldquo;engine x&rdquo;, 是一个免费的，开源的，高性能的 HTTP 服务器和反向代理服务器。互联网上一些很大的站点都使用 Nginx 来负载。</p>
 
 <p>Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的和其它的 web 服务器的<!--link:nginx-reverse-proxy-->反向代理<!--link-->。</p>
 
@@ -164,55 +166,37 @@ Nginx 的可以被用作一个独立的 Web 服务器，并可作为 Apache 的�
 <p>Nginx 软件包在 Ubuntu 自有仓库中可用，安装非常简单。</p>
 
 <p>我们首先更新包列表，然后安装 Nginx ：</p>
-
-<pre><code class="language-bash">sudo apt update
-sudo apt install nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
+sudo apt install nginx</code></pre></div>
 <p>安装完成后， Nginx 服务将自动启动。您可以使用以下命令检查服务的状态：</p>
-
-<pre><code class="language-bash">sudo systemctl status nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status nginx</code></pre></div>
 <p>输出看起来像这样：</p>
-
-<pre><code class="language-bash">● nginx.service - A high performance web server and a reverse proxy server
-   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
-   Active: active (running) since Sun 2018-04-29 06:43:26 UTC; 8s ago
-     Docs: man:nginx(8)
-  Process: 3091 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
-  Process: 3080 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
- Main PID: 3095 (nginx)
-    Tasks: 2 (limit: 507)
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded <span class="o">(</span>/lib/systemd/system/nginx.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Sun <span class="m">2018</span>-04-29 <span class="m">06</span>:43:26 UTC<span class="p">;</span> 8s ago
+     Docs: man:nginx<span class="o">(</span><span class="m">8</span><span class="o">)</span>
+  Process: <span class="m">3091</span> <span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/nginx -g daemon on<span class="p">;</span> master_process on<span class="p">;</span> <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span><span class="m">0</span>/SUCCESS<span class="o">)</span>
+  Process: <span class="m">3080</span> <span class="nv">ExecStartPre</span><span class="o">=</span>/usr/sbin/nginx -t -q -g daemon on<span class="p">;</span> master_process on<span class="p">;</span> <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span><span class="m">0</span>/SUCCESS<span class="o">)</span>
+ Main PID: <span class="m">3095</span> <span class="o">(</span>nginx<span class="o">)</span>
+    Tasks: <span class="m">2</span> <span class="o">(</span>limit: <span class="m">507</span><span class="o">)</span>
    CGroup: /system.slice/nginx.service
-           ├─3095 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
-           └─3097 nginx: worker process
-</code></pre>
-
+           ├─3095 nginx: master process /usr/sbin/nginx -g daemon on<span class="p">;</span> master_process on<span class="p">;</span>
+           └─3097 nginx: worker process</code></pre></div>
 <h2 id="配置防火墙">配置防火墙</h2>
 
 <p>假设您正在使用 UFW 管理防火墙，则需要打开 HTTP (80)和 HTTPS (443)端口。你可以通过启用 &lsquo;Nginx Full&rsquo; 配置文件来实现这一点，该配置文件包含两个端口的规则：</p>
-
-<pre><code class="language-bash">sudo ufw allow 'Nginx Full'
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow <span class="s1">&#39;Nginx Full&#39;</span></code></pre></div>
 <p>要验证状态类型：</p>
-
-<pre><code class="language-bash">sudo ufw status
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw status</code></pre></div>
 <p>输出将如下所示：</p>
-
-<pre><code class="language-bash">Status: active
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Status: active
 
 To                         Action      From
 --                         ------      ----
-22/tcp                     ALLOW       Anywhere
+<span class="m">22</span>/tcp                     ALLOW       Anywhere
 Nginx Full                 ALLOW       Anywhere
-22/tcp (v6)                ALLOW       Anywhere (v6)
-Nginx Full (v6)            ALLOW       Anywhere (v6)
-</code></pre>
-
+<span class="m">22</span>/tcp <span class="o">(</span>v6<span class="o">)</span>                ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
+Nginx Full <span class="o">(</span>v6<span class="o">)</span>            ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span></code></pre></div>
 <h2 id="测试安装">测试安装</h2>
 
 <p>您可以通过在浏览器中访问 <code>http://YOUR_IP</code> 来测试新的 Nginx 安装，然后您将看到默认的 Nginx 登录页面，如下图所示：</p>
@@ -224,35 +208,17 @@ Nginx Full (v6)            ALLOW       Anywhere (v6)
 <p>您可以像管理任何其他系统服务一样管理 Nginx 服务。</p>
 
 <p>要停止 Nginx 服务，请运行：</p>
-
-<pre><code class="language-bash">sudo systemctl stop nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl stop nginx</code></pre></div>
 <p>要再次启动它，请键入：</p>
-
-<pre><code class="language-bash">sudo systemctl start nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start nginx</code></pre></div>
 <p>要重新启动 Nginx 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl restart nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
 <p>完成一些配置更改后重新加载 Nginx 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl reload nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
 <p>默认情况下， Nginx 服务将在启动时启动。如果要禁用 Nginx 服务随机启动：</p>
-
-<pre><code class="language-bash">sudo systemctl disable nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl disable nginx</code></pre></div>
 <p>并重新启用它：</p>
-
-<pre><code class="language-bash">sudo systemctl enable nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> nginx</code></pre></div>
 <h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
 
 <ul>

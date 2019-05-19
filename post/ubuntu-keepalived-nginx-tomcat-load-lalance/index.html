@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -41,7 +41,7 @@
 
 <meta itemprop="datePublished" content="2014-06-29T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2014-06-29T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="620">
+<meta itemprop="wordCount" content="619">
 
 
 
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Ubuntu下配置 keepalived&#43;nginx&#43;tomcat 负载均衡</h1>
+      
+      <h1 class="f1 mb1">Ubuntu下配置 keepalived&#43;nginx&#43;tomcat 负载均衡</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2014-06-29T00:00:00Z">June 29, 2014</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文力图阐述在 Ubuntu Server 环境下使用 Keepalived + Nginx + Tomcat 搭建高可用负载均衡环境的操作步骤和简约配置，这里不涉及性能调优。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文力图阐述在 Ubuntu Server 环境下使用 Keepalived + Nginx + Tomcat 搭建高可用负载均衡环境的操作步骤和简约配置，这里不涉及性能调优。</p>
 
 <p>先说一下他们各自扮演的角色：</p>
 
@@ -166,38 +168,26 @@
 <h2 id="安装-virtual-box-和-ubuntu-server">安装 Virtual box 和 Ubuntu Server</h2>
 
 <p>分别到 Oracle 官网和 Ubuntu 官网下载相应的版本，安装 Virtual Box， 并新建虚拟机安装 Ubuntu Server。这里Virtual Box 中的网络设置选择“桥接网卡”，启动Ubuntu Server 后， 配置IP地址为 192.168.1.50。</p>
-
-<pre><code class="language-bash">sudo vi /etc/network/interfaces
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/network/interfaces</code></pre></div>
 <p>修改文件内容为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># This file describes the network interfaces available on your system</span>
+<span class="c1"># and how to activate them. For more information, see interfaces(5).</span>
 
-<pre><code class="language-bash"># This file describes the network interfaces available on your system
-# and how to activate them. For more information, see interfaces(5).
-
-# The loopback network interface
+<span class="c1"># The loopback network interface</span>
 auto lo
 iface lo inet loopback
 
-# The primary network interface
+<span class="c1"># The primary network interface</span>
 auto eth0
-#iface eth0 inet dhcp
+<span class="c1">#iface eth0 inet dhcp</span>
 
 iface eth0 inet static
-address 192.168.1.50
-netmask 255.255.255.0
-gateway 192.168.1.1
-</code></pre>
-
+address <span class="m">192</span>.168.1.50
+netmask <span class="m">255</span>.255.255.0
+gateway <span class="m">192</span>.168.1.1</code></pre></div>
 <p>设置DNS</p>
-
-<pre><code class="language-bash">sudo vi /etc/resolvconf/resolv.conf.d/base
-</code></pre>
-
-<pre><code class="language-bash">nameserver 192.168.1.1
-nameserver 8.8.8.8
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/resolvconf/resolv.conf.d/base</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nameserver <span class="m">192</span>.168.1.1
+nameserver <span class="m">8</span>.8.8.8</code></pre></div>
 <p>设置完成后重启生效。</p>
 
 <h2 id="安装-jre-与-tomcat">安装 JRE 与 Tomcat</h2>
@@ -205,47 +195,29 @@ nameserver 8.8.8.8
 <p>1,先到oracle官网下载 jre， 以下是 oracle java 下载首页：<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html，然后选择相应的版本下载即可。这里选择版本是：server-jre-7u60-linux-x64.tar.gz">http://www.oracle.com/technetwork/java/javase/downloads/index.html，然后选择相应的版本下载即可。这里选择版本是：server-jre-7u60-linux-x64.tar.gz</a></p>
 
 <p>2，上传到 用户目录下，解压缩</p>
-
-<pre><code class="language-bash">tar -xvf server-jre-7u60-linux-x64.tar.gz
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tar -xvf server-jre-7u60-linux-x64.tar.gz</code></pre></div>
 <p>完成后，同目录下会出现文件夹 jdk1.7.0_60</p>
 
 <p>3，创建 /usr/local/java ，然后将jdk目录拷贝过来</p>
-
-<pre><code class="language-bash">sodu mkdir /usr/local/java
-sudo cp -r ./jdk1.7.0_60 /usr/local/java/
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sodu mkdir /usr/local/java
+sudo cp -r ./jdk1.7.0_60 /usr/local/java/</code></pre></div>
 <p>4，设置环境变量</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/profile
 
-<pre><code class="language-bash">sudo vi /etc/profile
-
-# 添加一下内容
-# java
-export JAVA_HOME=/usr/local/java/jdk1.7.0_60
-export PATH=$JAVA_HOME/bin:$PATH
-</code></pre>
-
+<span class="c1"># 添加一下内容</span>
+<span class="c1"># java</span>
+<span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/usr/local/java/jdk1.7.0_60
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span></code></pre></div>
 <p>5，使环境变量生效</p>
-
-<pre><code class="language-bash">source /etc/profile
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> /etc/profile</code></pre></div>
 <p>6，下载 tomcat：<a href="http://tomcat.apache.org/download-70.cgi，">http://tomcat.apache.org/download-70.cgi，</a> 选择7.0.54 进行下载，解压缩即可。</p>
 
 <p>7，上传应用 load-balance 到 tomcat 的 webapps 目录下。 load-balance只包含一个jsp页面:index.jsp，内容如下：</p>
-
-<pre><code class="language-text">&lt;%=request.getLocalAddr() %&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">&lt;%=request.getLocalAddr() %&gt;</code></pre></div>
 <p>request.getLocalAddr() 获取服务器本机IP地址</p>
 
 <p>8，启动tomcat</p>
-
-<pre><code class="language-bash">apache-tomcat-7.0.54/bin/startup.sh
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">apache-tomcat-7.0.54/bin/startup.sh</code></pre></div>
 <p>查看地址 <a href="http://192.168.1.50:8080/load-balance/">http://192.168.1.50:8080/load-balance/</a> 页面正常显示，并输出服务器的IP地址。</p>
 
 <h2 id="创建-51-52-40-节点">创建 51，52，40 节点</h2>
@@ -257,12 +229,9 @@ export PATH=$JAVA_HOME/bin:$PATH
 <h2 id="安装-nginx-并配置负载均衡">安装 Nginx 并配置负载均衡</h2>
 
 <p>1，在节点 192.168.1.40 上执行安装 nginx，操作如下：</p>
-
-<pre><code class="language-bash">sudo apt-add-repository ppa:nginx/development
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-add-repository ppa:nginx/development
 sudo apt-get update
-sudo apt-get install nginx
-</code></pre>
-
+sudo apt-get install nginx</code></pre></div>
 <p>nginx启动命令为 sudo /etc/init.d/nginx start   或者 service nginx start</p>
 
 <p>多说几句，以下是对 nginx 的几个参数的说明</p>
@@ -280,28 +249,25 @@ sudo apt-get install nginx
 <p>2，配置Nginx 负载均衡</p>
 
 <p>通过命令 sudo vi /etc/nginx/nginx.conf 编辑 nginx 配置文件，在 http 节点中添加如下信息</p>
-
-<pre><code class="language-bash">upstream myserver {
-  server 192.168.1.50:8080 weight=1 max_fails=3 fail_timeout=20s;
-  server 192.168.1.51:8080 weight=1 max_fails=3 fail_timeout=20s;
-  server 192.168.1.52:8080 weight=1 max_fails=3 fail_timeout=20s;
-}
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">upstream myserver <span class="o">{</span>
+  server <span class="m">192</span>.168.1.50:8080 <span class="nv">weight</span><span class="o">=</span><span class="m">1</span> <span class="nv">max_fails</span><span class="o">=</span><span class="m">3</span> <span class="nv">fail_timeout</span><span class="o">=</span>20s<span class="p">;</span>
+  server <span class="m">192</span>.168.1.51:8080 <span class="nv">weight</span><span class="o">=</span><span class="m">1</span> <span class="nv">max_fails</span><span class="o">=</span><span class="m">3</span> <span class="nv">fail_timeout</span><span class="o">=</span>20s<span class="p">;</span>
+  server <span class="m">192</span>.168.1.52:8080 <span class="nv">weight</span><span class="o">=</span><span class="m">1</span> <span class="nv">max_fails</span><span class="o">=</span><span class="m">3</span> <span class="nv">fail_timeout</span><span class="o">=</span>20s<span class="p">;</span>
+<span class="o">}</span>
 
 server
-{
-    listen 80;
-    server_name 192.168.1.40;
-    index index.htm index.html;
-    root /etc/wwwroot;
+<span class="o">{</span>
+    listen <span class="m">80</span><span class="p">;</span>
+    server_name <span class="m">192</span>.168.1.40<span class="p">;</span>
+    index index.htm index.html<span class="p">;</span>
+    root /etc/wwwroot<span class="p">;</span>
 
-        location / {
-                proxy_pass http://myserver;
-                proxy_next_upstream http_500 http_502 http_503 error timeout invalid_header;
-                include /etc/nginx/proxy_params;
-        }
-}
-</code></pre>
-
+        location / <span class="o">{</span>
+                proxy_pass http://myserver<span class="p">;</span>
+                proxy_next_upstream http_500 http_502 http_503 error timeout invalid_header<span class="p">;</span>
+                include /etc/nginx/proxy_params<span class="p">;</span>
+        <span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>upstream 节点配置负载均衡，后面的myserver 必须与 server 节点中 location 姐弟啊你的 proxy_pass <a href="http://myserver保持一致。">http://myserver保持一致。</a> 负载均衡默认采用轮询算法，根据权重将请求分发到不同的后台tomcat节点上。当然也可以设置其他的分发算法，比如ip_hash等。</p>
 
 <p>weight 表示的分发的权重。</p>
@@ -309,10 +275,7 @@ server
 <p>server 节点定义服务器信息，server_name 节点为本机的IP地址。</p>
 
 <p>修改完配置后，使用如下命令是配置生效</p>
-
-<pre><code class="language-bash">sudo service nginx reload
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service nginx reload</code></pre></div>
 <p>3，验证</p>
 
 <p>使用URL: <a href="http://192.168.1.40/load-balance">http://192.168.1.40/load-balance</a> 来验证请求是否分发到tomcat节点上，如果配置成功，不停的刷新页面，会发现页面的内容为3个tomcat节点的IP地址交替出现。</p>
@@ -324,62 +287,50 @@ server
 <p>nginx 负载均衡虽然提高了性能，但是一个 nginx 节点会成为很容易成带来一个问题，那就是“单点故障”。万一机器挂掉怎么办？如何平滑切换到备份机？ keepalived 可以在主 nginx 节点挂掉时，能自动帮助我们切换到备份节点。这里主要用到一个虚拟IP，即主 nginx 节点和备份 nginx 节点都使用同一个虚拟IP 192.168.1.44，访问的时候，我们通过虚拟IP来访问应用，具体步骤请继续往下（以下操作都在 192.168.1.40 节点上进行， 等配置完成后，直接克隆出 192.168.1.41 节点，只需要修改 IP地址和keepalived 的配置文件）。</p>
 
 <p>1，增加虚拟IP</p>
-
-<pre><code class="language-bash">sudo ifconfig  eth0:0 192.168.1.44 netmask 255.255.255.0
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ifconfig  eth0:0 <span class="m">192</span>.168.1.44 netmask <span class="m">255</span>.255.255.0</code></pre></div>
 <p>通过 ifconfig 或者 ip a 或者 ip address show eth0 便可以看出此时机器已经有两个IP，如下</p>
-
-<pre><code class="language-bash">adam@vm1:~$ ip a show eth0
-2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:b9:3c:f7 brd ff:ff:ff:ff:ff:ff
-    inet 192.168.1.40/24 brd 192.168.1.255 scope global eth0
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">adam@vm1:~$ ip a show eth0
+<span class="m">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc pfifo_fast state UP group default qlen <span class="m">1000</span>
+    link/ether <span class="m">08</span>:00:27:b9:3c:f7 brd ff:ff:ff:ff:ff:ff
+    inet <span class="m">192</span>.168.1.40/24 brd <span class="m">192</span>.168.1.255 scope global eth0
        valid_lft forever preferred_lft forever
-    inet 192.168.1.44/32 scope global eth0
+    inet <span class="m">192</span>.168.1.44/32 scope global eth0
        valid_lft forever preferred_lft forever
     inet6 fe80::a00:27ff:feb9:3cf7/64 scope link 
-       valid_lft forever preferred_lft forever
-</code></pre>
-
+       valid_lft forever preferred_lft forever</code></pre></div>
 <p>2，安装 keepalived</p>
-
-<pre><code class="language-bash">sudo apt-get install keepalived
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get install keepalived</code></pre></div>
 <p>安装完成 keepalived后，需要手动增加配置文件 /etc/keepalived/keepalived.conf，如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vrrp_script chk_nginx <span class="o">{</span>
+	script <span class="p">&amp;</span>quot<span class="p">;</span>/etc/keepalived/check_nginx.sh<span class="p">&amp;</span>quot<span class="p">;</span>
+	interval <span class="m">2</span>
+	weight <span class="m">2</span>
+<span class="o">}</span>
 
-<pre><code class="language-bash">vrrp_script chk_nginx {
-	script &amp;quot;/etc/keepalived/check_nginx.sh&amp;quot;
-	interval 2
-	weight 2
-}
-
-global_defs {
-	notification_email {
+global_defs <span class="o">{</span>
+	notification_email <span class="o">{</span>
 		
-	}
-}
-vrrp_instance VI_1 {
+	<span class="o">}</span>
+<span class="o">}</span>
+vrrp_instance VI_1 <span class="o">{</span>
 	state MASTER
 	interface eth0
-	virtual_router_id 51 
-	mcast_src_ip 192.168.1.40
-	priority 20
-	advert_int 1
+	virtual_router_id <span class="m">51</span> 
+	mcast_src_ip <span class="m">192</span>.168.1.40
+	priority <span class="m">20</span>
+	advert_int <span class="m">1</span>
 	
-	authentication {
+	authentication <span class="o">{</span>
 		auth_type PASS
-		auth_pass 123456
-	}
-	track_script {
+		auth_pass <span class="m">123456</span>
+	<span class="o">}</span>
+	track_script <span class="o">{</span>
 		chk_nginx
-	}
-	virtual_ipaddress {
-		192.168.1.44
-	}
-}
-</code></pre>
-
+	<span class="o">}</span>
+	virtual_ipaddress <span class="o">{</span>
+		<span class="m">192</span>.168.1.44
+	<span class="o">}</span>
+<span class="o">}</span></code></pre></div>
 <p>这里说一下 keepalived 配置在两台 nginx节点上的区别：</p>
 
 <ul>
@@ -391,28 +342,19 @@ vrrp_instance VI_1 {
 <p>除了以上配置外，两台 Nginx 节点上的 keepalived.conf 内容完全相同。</p>
 
 <p>还有  /etc/keepalived/check_nginx.sh 是一个脚本，用来检查 nginx 的状态，大意为如果nginx 进程不存在，则启动 nginx， 如果启动不成功，则关闭keepalived。内容如下</p>
-
-<pre><code class="language-bash">#!/bin/bash  
-A=`ps -C nginx --no-header |wc -l`  
-if [ $A -eq 0 ];then  
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash  
+</span><span class="cp"></span><span class="nv">A</span><span class="o">=</span><span class="sb">`</span>ps -C nginx --no-header <span class="p">|</span>wc -l<span class="sb">`</span>  
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$A</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>  
  /etc/init.d/nginx start  
-sleep 3  
-if [ `ps -C nginx --no-header |wc -l`-eq 0 ];then  
+sleep <span class="m">3</span>  
+<span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>ps -C nginx --no-header <span class="p">|</span>wc -l<span class="sb">`</span>-eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>  
  /etc/init.d/keepalived stop
-fi  
-fi
-</code></pre>
-
+<span class="k">fi</span>  
+<span class="k">fi</span></code></pre></div>
 <p>使配置生效</p>
-
-<pre><code class="language-bash">sudo service keepalived reload
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service keepalived reload</code></pre></div>
 <p>3，修改 nginx 的配置， 将 server_name 的值由本机IP（192.168.1.40），修改为 虚拟IP地址（192.168.1.44），然后使配置生效。</p>
-
-<pre><code class="language-bash">sudo service nginx reload
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service nginx reload</code></pre></div>
 <p>4，验证，<a href="http://192.168.1.44/load-balance">http://192.168.1.44/load-balance</a> 看是否能负载分发到不同的tomcat节点。</p>
 
 <p>5，从 Virtual Box 中 复制 192.168.1.40 虚拟机 到 192.168.1.41，然后修改 IP地址为 192.168.1.41，再修改 keepalived 配置文件， state 为 BACKUP, mcast_src_ip 为 192.168.1.40，priority 为一个小点值。然后使配置生效。</p>

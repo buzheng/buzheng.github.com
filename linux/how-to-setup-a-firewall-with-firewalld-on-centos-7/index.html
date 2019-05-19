@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -49,7 +49,7 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 
 <meta itemprop="datePublished" content="2019-04-11T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-11T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="665">
+<meta itemprop="wordCount" content="656">
 
 
 
@@ -64,7 +64,7 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上使用 FirewallD 设置防火墙</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上使用 FirewallD 设置防火墙</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-04-11T05:00:00&#43;08:00">April 11, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>正确配置的防火墙是整个系统安全性最重要的方面之一。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>正确配置的防火墙是整个系统安全性最重要的方面之一。</p>
 
 <p><a href="https://firewalld.org/">FirewallD</a> 是一个完整的防火墙解决方案，可管理系统的 iptables 规则，并提供 D-Bus 接口以对其进行操作。从 CentOS 7 开始， FirewallD 将 iptables 替换为默认的防火墙管理工具。</p>
 
@@ -193,65 +195,35 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 <li><p>安装 FirewallD</p>
 
 <p>默认情况下， Firewalld 安装在 CentOS 7 上，但如果系统上未安装 Firewalld ，则可以键入以下内容安装软件包：</p>
-
-<pre><code class="language-console-bash">sudo yum install firewalld
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install firewalld</code></pre></div>
 <ol>
 <li>检查防火墙状态。</li>
 </ol>
 
 <p>默认情况下禁用 Firewalld 服务。您可以使用以下命令检查防火墙状态</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --state
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --state</code></pre></div>
 <p>如果您刚刚安装或从未激活过，那么命令将打印 <code>not running</code>， 否则您将看到 <code>running</code> 。</p></li>
 
 <li><p>启用 FirewallD</p>
 
 <p>要启动 FirewallD 服务并在引导系统时上启用它：</p>
-
-<pre><code class="language-console-bash">sudo systemctl start firewalld
-sudo systemctl enable firewalld
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start firewalld
+sudo systemctl enable firewalld</code></pre></div>
 <h2 id="使用-firewalld-分区">使用 Firewalld 分区</h2>
 
 <p>首次启用 FirewallD 服务后，该 <code>public</code> 分区将设置为默认分区。您可以键入以下内容来查看默认分区：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --get-default-zone
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-default-zone</code></pre></div></li>
 </ol>
-
-<pre><code class="language-output">public
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">public</code></pre></div>
 <p>要获取所有可用分区的列表，请键入：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --get-zones
-</code></pre>
-
-<pre><code class="language-output">block dmz drop external home internal public trusted work
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-zones</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">block dmz drop external home internal public trusted work</code></pre></div>
 <p>默认情况下，为所有网络接口分配默认分区。要检查网络接口使用的分区类型，请执行以下操作：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --get-active-zones
-</code></pre>
-
-<pre><code class="language-output">public
-  interfaces: eth0 eth1
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-active-zones</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">public
+  interfaces: eth0 eth1</code></pre></div>
 <p>上面的输出告诉我们，这两个接口 <code>eth0</code>, <code>eth1</code> 分配给 public 区。</p>
 
 <p>您可以使用以下方式打印分区配置设置：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --list-all
-</code></pre>
-
-<pre><code class="language-output">public (active)
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --list-all</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">public (active)
   target: default
   icmp-block-inversion: no
   interfaces: eth0 eth1
@@ -263,107 +235,57 @@ sudo systemctl enable firewalld
   forward-ports:
   source-ports:
   icmp-blocks:
-  rich rules:
-</code></pre>
-
+  rich rules:</code></pre></div>
 <p>从上面的输出中，我们可以看到公共分区处于活动状态并设置为默认值，由两个接口 <code>eth0</code> 和 <code>eth1</code> 使用。还允许与 DHCP 客户端和 SSH 相关的连接。</p>
 
 <p>如果要检查所有可用分区的配置，请键入：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --list-all-zones
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --list-all-zones</code></pre></div>
 <p>该命令将打印一个巨大的列表，将所有可用分区的设置。</p>
 
 <h3 id="更改接口分区">更改接口分区</h3>
 
 <p>您可以使用 using <code>--zone</code> 标志和 <code>--change-interface</code> 标志轻松更改接口分区。以下命令将 <code>eth1</code> 接口分配给 work 区：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=work --change-interface=eth1
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=work --change-interface=eth1</code></pre></div>
 <p>输入以下内容验证更改：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --get-active-zones
-</code></pre>
-
-<pre><code class="language-output">work
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-active-zones</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">work
   interfaces: eth1
 public
-  interfaces: eth0
-</code></pre>
-
+  interfaces: eth0</code></pre></div>
 <h3 id="更改默认分区">更改默认分区</h3>
 
 <p>要更改默认分区，请使用 <code>--set-default-zone</code> 标志，后跟要作为默认分区的名称。例如，要将默认分区更改为 home ，您应该运行以下命令：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --set-default-zone=home
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --set-default-zone=home</code></pre></div>
 <p>验证更改：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --get-default-zone
-</code></pre>
-
-<pre><code class="language-output">home
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-default-zone</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">home</code></pre></div>
 <h2 id="打开端口或服务">打开端口或服务</h2>
 
 <p>使用 FirewallD ，您可以根据预定义规则允许特定端口的流量，称之为服务。</p>
 
 <p>要获取所有默认可用服务的列表，请输入：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --get-services
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-services</code></pre></div>
 <p><img src="/images/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/firewalld-services.jpg" alt="" /></p>
 
 <p>您可以通过在 <code>/usr/lib/firewalld/services</code> 目录中打开相关的 <code>.xml</code> 文件来查找有关每项服务的更多信息。例如， HTTP 服务 <code>/usr/lib/firewalld/services/http.xml</code> 定义如下：</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;service&gt;
-  &lt;short&gt;WWW (HTTP)&lt;/short&gt;
-  &lt;description&gt;HTTP is the protocol used to serve Web pages. If you plan to make your Web server publicly available, enable this option. This option is not required for viewing pages locally or developing Web pages.&lt;/description&gt;
-  &lt;port protocol=&quot;tcp&quot; port=&quot;80&quot;/&gt;
-&lt;/service&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span class="nt">&lt;service&gt;</span>
+  <span class="nt">&lt;short&gt;</span>WWW (HTTP)<span class="nt">&lt;/short&gt;</span>
+  <span class="nt">&lt;description&gt;</span>HTTP is the protocol used to serve Web pages. If you plan to make your Web server publicly available, enable this option. This option is not required for viewing pages locally or developing Web pages.<span class="nt">&lt;/description&gt;</span>
+  <span class="nt">&lt;port</span> <span class="na">protocol=</span><span class="s">&#34;tcp&#34;</span> <span class="na">port=</span><span class="s">&#34;80&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/service&gt;</span></code></pre></div>
 <p>要允许公共分区中的接口传入 HTTP 流量 (端口 80)，仅针对当前会话(运行时配置)，请输入：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --add-service=http
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --add-service=http</code></pre></div>
 <blockquote>
 <p>如果要修改默认分区，可以省略 <code>--zone</code> 标记。</p>
 </blockquote>
 
 <p>要验证是否已成功添加服务，请使用以下 <code>--list-services</code> 标志：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --list-services
-</code></pre>
-
-<pre><code class="language-output">ssh dhcpv6-client http
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --list-services</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ssh dhcpv6-client http</code></pre></div>
 <p>如果要在重新启动后保持端口 80 打开，则需要再次键入相同的命令，但这次使用 <code>--permanent</code> 标志：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --permanent --zone=public --add-service=http
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=http</code></pre></div>
 <p>使用 <code>--list-services</code>with 和 <code>--permanent</code>flag 来验证您的更改：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --permanent --zone=public --list-services
-</code></pre>
-
-<pre><code class="language-output">ssh dhcpv6-client http
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --list-services</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ssh dhcpv6-client http</code></pre></div>
 <p>删除服务的语法与添加服务时的语法相同。只需使用 <code>--remove-service</code> 而不是 <code>--add-service</code> 标志：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --remove-service=http --permanent
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --remove-service=http --permanent</code></pre></div>
 <p>上面的命令将从公共分区永久配置中删除 http 服务。</p>
 
 <p>如果您正在运行没有可用服务的应用程序比如 <a href="/linux/how-to-install-plex-media-server-on-centos-7/">Plex Media Server</a> ，该怎么办？</p>
@@ -371,92 +293,59 @@ public
 <p>在这种情况下，您有两种选择。您可以打开相应的端口或定义新的 FirewallD 服务。</p>
 
 <p>例如， Plex Server 侦听端口 32400 并使用 TCP ，在当前会话的公共分区中打开端口使用<code>--add-port=</code>标志：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --add-port=32400/tcp
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --add-port=32400/tcp</code></pre></div>
 <blockquote>
 <p>协议可以是 <code>tcp</code> 或 <code>udp</code> 。</p>
 </blockquote>
 
 <p>要验证端口是否已成功添加，请使用以下 <code>--list-ports</code> 标志：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --list-ports
-</code></pre>
-
-<pre><code class="language-output">32400/tcp
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --list-ports</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">32400/tcp</code></pre></div>
 <p>要 <code>32400</code> 在重新引导后保持端口打开，请通过使用 <code>--permanent</code> 标志运行相同的命令将规则添加到永久设置。</p>
 
 <p>删除端口的语法与添加端口时的语法相同。只需使用 <code>--remove-port</code> 而不是 <code>--add-port</code> 标志。</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=public --remove-port=32400/tcp
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --remove-port=32400/tcp</code></pre></div>
 <h3 id="创建新的-firewalld-服务">创建新的 FirewallD 服务</h3>
 
 <p>正如我们已经提到的，默认服务存储在 <code>/usr/lib/firewalld/services</code> 目录中。创建新服务的最简单方法是将现有服务文件复制到 <code>/etc/firewalld/services</code> 目录，该目录是用户创建服务的位置并修改文件设置。</p>
 
 <p>例如，要为 Plex Media Server 创建服务定义，我们可以使用 SSH 服务文件：</p>
-
-<pre><code class="language-console-bash">sudo cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/plexmediaserver.xml
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/plexmediaserver.xml</code></pre></div>
 <p>打开新创建的 <code>plexmediaserver.xml</code> 文件，并在 <code>&lt;short&gt;</code> 和 <code>&lt;description&gt;</code> 标记内更改服务的短名称和描述。您需要更改的最重要的标记是 <code>port</code> 标记，它定义了您要打开的端口号和协议。</p>
 
 <p>在以下示例中，我们打开 UDP 端口 <code>1900</code> 和 TCP 端口 <code>32400</code> 。</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;service version=&quot;1.0&quot;&gt;
-&lt;short&gt;plexmediaserver&lt;/short&gt;
-&lt;description&gt;Plex is a streaming media server that brings all your video, music and photo collections together and stream them to your devices at anytime and from anywhere.&lt;/description&gt;
-&lt;port protocol=&quot;udp&quot; port=&quot;1900&quot;/&gt;
-&lt;port protocol=&quot;tcp&quot; port=&quot;32400&quot;/&gt;
-&lt;/service&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span class="nt">&lt;service</span> <span class="na">version=</span><span class="s">&#34;1.0&#34;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;short&gt;</span>plexmediaserver<span class="nt">&lt;/short&gt;</span>
+<span class="nt">&lt;description&gt;</span>Plex is a streaming media server that brings all your video, music and photo collections together and stream them to your devices at anytime and from anywhere.<span class="nt">&lt;/description&gt;</span>
+<span class="nt">&lt;port</span> <span class="na">protocol=</span><span class="s">&#34;udp&#34;</span> <span class="na">port=</span><span class="s">&#34;1900&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;port</span> <span class="na">protocol=</span><span class="s">&#34;tcp&#34;</span> <span class="na">port=</span><span class="s">&#34;32400&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/service&gt;</span></code></pre></div>
 <p>保存文件并重新加载 FirewallD 服务：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --reload
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --reload</code></pre></div>
 <p>您现在可以在分区中使用 <code>plexmediaserver</code> 服务了，这与使用任何其他服务相同。</p>
 
 <h2 id="使用-firewalld-转发端口">使用 Firewalld 转发端口</h2>
 
 <p>要将流量从一个端口转发到另一个端口或地址，请首先使用该 <code>--add-masquerade</code> 开关为所需分区启用伪装。例如，为 <code>external</code> 分区类型启用伪装：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=external --add-masquerade
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=external --add-masquerade</code></pre></div>
 <ul>
 <li><strong>在同一服务器上将流量从一个端口转发到另一个端口</strong></li>
 </ul>
 
 <p>在以下示例中，我们将流量从端口 <code>80</code> 转发到同一服务器上的端口 <code>8080</code> ：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toport=8080
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toport=8080</code></pre></div>
 <ul>
 <li><strong>将流量转发到其他服务器</strong></li>
 </ul>
 
 <p>在以下示例中，我们将将流量从端口 <code>80</code> 转发到 IP 地址为 <code>10.10.10.2</code> 的服务器上的端口 <code>80</code> ：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toaddr=10.10.10.2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toaddr=10.10.10.2</code></pre></div>
 <ul>
 <li><strong>将流量转发到其他服务器的其他端口上</strong></li>
 </ul>
 
 <p>在以下示例中，我们将将流量从端口 <code>80</code> 转发到 IP 地址为 <code>10.10.10.2</code> 的服务器上的端口 <code>8080</code> ：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toport=8080:toaddr=10.10.10.2
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=external --add-forward-port=port=80:proto=tcp:toport=8080:toaddr=10.10.10.2</code></pre></div>
 <p>如果你想使转发永久生效只是附加 <code>--permanent</code> 标志。</p>
 
 <h2 id="使用-firewalld-创建规则集">使用 FirewallD 创建规则集</h2>
@@ -467,36 +356,23 @@ public
 <li><p>将默认分区更改为 dmz</p>
 
 <p>我们将使用 dmz (非军事化)分区，因为默认情况下它只允许 SSH 流量。要将默认分区更改为 dmz 并将其分配给 <code>eth0</code> 接口，请运行以下命令：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --set-default-zone=dmz
-sudo firewall-cmd --zone=dmz --add-interface=eth0
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --set-default-zone=dmz
+sudo firewall-cmd --zone=dmz --add-interface=eth0</code></pre></div>
 <ol>
 <li>打开 HTTP 和 HTTPS 端口：</li>
 </ol>
 
 <p>要打开 HTTP 和 HTTPS 端口，请向 dmz 分区添加永久服务规则：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --permanent --zone=dmz --add-service=http
-sudo firewall-cmd --permanent --zone=dmz --add-service=https
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=dmz --add-service=http
+sudo firewall-cmd --permanent --zone=dmz --add-service=https</code></pre></div>
 <p>通过重新加载防火墙立即使更改生效：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --reload
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --reload</code></pre></div>
 <ol>
 <li>验证更改</li>
 </ol>
 
 <p>要检查 dmz 分区配置设置，请键入：</p>
-
-<pre><code class="language-console-bash">sudo firewall-cmd --zone=dmz --list-all
-</code></pre>
-
-<pre><code class="language-output">dmz (active)
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=dmz --list-all</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">dmz (active)
   target: default
   icmp-block-inversion: no
   interfaces: eth0
@@ -508,9 +384,7 @@ sudo firewall-cmd --permanent --zone=dmz --add-service=https
   forward-ports:
   source-ports:
   icmp-blocks:
-  rich rules:
-</code></pre>
-
+  rich rules:</code></pre></div>
 <p>上面的输出告诉我们 dmz 是默认分区，应用于 <code>eth0</code> 接口， ssh (22), http (80) 和 https (443) 端口打开。</p>
 
 <h2 id="结论">结论</h2>

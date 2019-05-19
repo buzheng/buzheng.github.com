@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -49,7 +49,7 @@
 
 <meta itemprop="datePublished" content="2019-03-25T10:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-25T10:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="532">
+<meta itemprop="wordCount" content="531">
 
 
 
@@ -64,7 +64,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 PrestaShop</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上安装 PrestaShop</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-25T10:00:00&#43;08:00">March 25, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://www.prestashop.com/en">PrestaShop</a> 是一个免费的开源电子商务平台。它基于 PHP 和 MySQL ，可以使用免费和高级插件和主题进行扩展。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://www.prestashop.com/en">PrestaShop</a> 是一个免费的开源电子商务平台。它基于 PHP 和 MySQL ，可以使用免费和高级插件和主题进行扩展。</p>
 
 <p>凭借直观的管理界面，多种支付网关，多语言，分析和报告等功能， PrestaShop 成为众多在线商家的首选平台。</p>
 
@@ -158,209 +160,149 @@
 </ul>
 
 <p>将系统软件包更新到最新版本并安装<!--link:how-to-unzip-files-in-linux--> unzip 解压缩实用程序<!--link-->：</p>
-
-<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
-sudo apt install unzip
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade
+sudo apt install unzip</code></pre></div>
 <h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
 
 <p>PrestaShop 将其信息存储在 MySQL 数据库中。</p>
 
 <p>如果您的服务器上安装了 <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">MySQL</a> 或 <!--link:how-to-install-mariadb-on-ubuntu-18-04-->MariaDB<!--link--> ，则可以跳过此步骤，否则可以通过键入以下命令从 Ubuntu 的默认存储库安装 MySQL 5.7 服务器包：</p>
-
-<pre><code class="language-bash">sudo apt install mysql-server mysql-client
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install mysql-server mysql-client</code></pre></div>
 <blockquote>
 <p>对于全新的 MySQL 安装，建议运行 <code>mysql_secure_installation</code> 命令以提高 MySQL 服务器的安全性。</p>
 </blockquote>
 
 <p>要创建数据库，请登录 mysql shell ：</p>
-
-<pre><code class="language-bash">sudo mysql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mysql</code></pre></div>
 <p>在 mysql 控制台内部，运行以下 SQL 语句以<!--link:how-to-create-a-mysql-database-->创建名为的新数据库<!--link--> <code>prestashop：</code></p>
-
-<pre><code class="language-sql">CREATE DATABASE prestashop;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">prestashop</span><span class="p">;</span></code></pre></div>
 <p>接下来，通过运行以下命令创建一个名为 <code>prestashop</code> 的 MySQL 用户帐户，并<!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->向用户授予必要的权限<!--link-->：</p>
-
-<pre><code class="language-sql">GRANT ALL ON prestashop.* TO 'prestashop'@'localhost' IDENTIFIED BY 'change-with-strong-password';
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">prestashop</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;prestashop&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;change-with-strong-password&#39;</span><span class="p">;</span></code></pre></div>
 <blockquote>
 <p>不要忘记把 <code>change-with-strong-password</code> 更改为强密码。</p>
 </blockquote>
 
 <p>完成后，键入以下命令退出 mysql 控制台：</p>
-
-<pre><code class="language-bash">EXIT;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">EXIT<span class="p">;</span></code></pre></div>
 <h2 id="安装和配置-php">安装和配置 PHP</h2>
 
 <p><a href="/linux/how-to-install-php-on-ubuntu-18-04/">PHP 7.2</a> 是 Ubuntu 18.04 中的默认 PHP 版本，PrestaShop 完全支持并推荐使用。</p>
 
 <p>运行以下命令以安装 PHP 和所有必需的 PHP 模块：</p>
-
-<pre><code class="language-bash">sudo apt install php7.2-common php7.2-cli php7.2-fpm php7.2-opcache php7.2-gd php7.2-mysql php7.2-curl php7.2-intl php7.2-xsl php7.2-mbstring php7.2-zip php7.2-bcmath php7.2-soap
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install php7.2-common php7.2-cli php7.2-fpm php7.2-opcache php7.2-gd php7.2-mysql php7.2-curl php7.2-intl php7.2-xsl php7.2-mbstring php7.2-zip php7.2-bcmath php7.2-soap</code></pre></div>
 <p>安装过程完成后， PHP-FPM 服务将自动启动。您可以输入以下命令进行验证：</p>
-
-<pre><code class="language-bash">sudo systemctl status php7.2-fpm
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status php7.2-fpm</code></pre></div>
 <p>输出应该如下所示：</p>
-
-<pre><code class="language-bash">* php7.2-fpm.service - The PHP 7.2 FastCGI Process Manager
-   Loaded: loaded (/lib/systemd/system/php7.2-fpm.service; enabled; vendor preset: enabled)
-   Active: active (running) since Sun 2019-03-24 11:53:33 PDT; 14s ago
-     Docs: man:php-fpm7.2(8)
- Main PID: 15853 (php-fpm7.2)
-   Status: &quot;Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0req/sec&quot;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">* php7.2-fpm.service - The PHP <span class="m">7</span>.2 FastCGI Process Manager
+   Loaded: loaded <span class="o">(</span>/lib/systemd/system/php7.2-fpm.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Sun <span class="m">2019</span>-03-24 <span class="m">11</span>:53:33 PDT<span class="p">;</span> 14s ago
+     Docs: man:php-fpm7.2<span class="o">(</span><span class="m">8</span><span class="o">)</span>
+ Main PID: <span class="m">15853</span> <span class="o">(</span>php-fpm7.2<span class="o">)</span>
+   Status: <span class="s2">&#34;Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0req/sec&#34;</span></code></pre></div>
 <p>运行以下命令以设置推荐的PHP选项：</p>
-
-<pre><code class="language-bash">sudo sed -i &quot;s/memory_limit = .*/memory_limit = 1024M/&quot; /etc/php/7.2/fpm/php.ini
-sudo sed -i &quot;s/upload_max_filesize = .*/upload_max_filesize = 256M/&quot; /etc/php/7.2/fpm/php.ini
-sudo sed -i &quot;s/zlib.output_compression = .*/zlib.output_compression = on/&quot; /etc/php/7.2/fpm/php.ini
-sudo sed -i &quot;s/max_execution_time = .*/max_execution_time = 18000/&quot; /etc/php/7.2/fpm/php.ini
-sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/fpm/php.ini
-sudo sed -i &quot;s/;opcache.save_comments.*/opcache.save_comments = 1/&quot; /etc/php/7.2/fpm/php.ini
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sed -i <span class="s2">&#34;s/memory_limit = .*/memory_limit = 1024M/&#34;</span> /etc/php/7.2/fpm/php.ini
+sudo sed -i <span class="s2">&#34;s/upload_max_filesize = .*/upload_max_filesize = 256M/&#34;</span> /etc/php/7.2/fpm/php.ini
+sudo sed -i <span class="s2">&#34;s/zlib.output_compression = .*/zlib.output_compression = on/&#34;</span> /etc/php/7.2/fpm/php.ini
+sudo sed -i <span class="s2">&#34;s/max_execution_time = .*/max_execution_time = 18000/&#34;</span> /etc/php/7.2/fpm/php.ini
+sudo sed -i <span class="s2">&#34;s/;date.timezone.*/date.timezone = UTC/&#34;</span> /etc/php/7.2/fpm/php.ini
+sudo sed -i <span class="s2">&#34;s/;opcache.save_comments.*/opcache.save_comments = 1/&#34;</span> /etc/php/7.2/fpm/php.ini</code></pre></div>
 <h2 id="下载-prestashop">下载 PrestaShop</h2>
 
 <p>在撰写本文时， PrestaShop 的最新稳定版本是版本 1.7.5.1 。</p>
 
 <p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>从 <a href="https://www.prestashop.com/en/download">PrestaShop 下载页面</a>下载最新版本的 PrestaShop  ：</p>
-
-<pre><code class="language-bash">cd /tmp
-wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /tmp
+wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip</code></pre></div>
 <p>下载完成后，创建一个目录用来存放 PrestaShop 的文件：</p>
-
-<pre><code class="language-bash">sudo mkdir -p /var/www/html/example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /var/www/html/example.com</code></pre></div>
 <p>接下来，<!--link:how-to-create-and-extract-archives-using-the-tar-command-in-linux-->解压缩 PrestaShop 文档<!--link-->：</p>
-
-<pre><code class="language-bash">unzip prestashop_*.zip
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">unzip prestashop_*.zip</code></pre></div>
 <p>此存档包含另一个 <a href="/linux/how-to-zip-files-and-directories-in-linux/">zip</a> 文件 <code>prestashop.zip</code> ，其中包含所有 PrestaShop 文件。将文件解压缩到网站的文档根目录：</p>
-
-<pre><code class="language-bash">sudo unzip prestashop.zip -d /var/www/html/example.com
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo unzip prestashop.zip -d /var/www/html/example.com</code></pre></div>
 <p>使用以下 <!--link:linux-chown-command-->chown 命令设置正确的权限<!--link-->，以便 Web 服务器对站点的文件和目录具有完全访问权限：</p>
-
-<pre><code class="language-bash">sudo chown -R www-data: /var/www/html
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/html</code></pre></div>
 <h2 id="配置-nginx">配置 Nginx</h2>
 
 <p>到目前为止，您应该已经在 Ubuntu 服务器上安装了具有 SSL 证书的 Nginx ，如果没有检查本教程的先决条件。</p>
 
 <p>打开文本编辑器并创建以下文件 <code>/etc/nginx/sites-available/example.com</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/example.com</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Redirect HTTP -&gt; HTTPS
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-<pre><code class="language-bash">sudo nano /etc/nginx/sites-available/example.com
-</code></pre>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-<pre><code class="language-nginx"># Redirect HTTP -&gt; HTTPS
-server {
-    listen 80;
-    server_name www.example.com example.com;
+<span class="c1"># Redirect WWW -&gt; NON WWW
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span><span class="p">;</span>
 
-    include snippets/letsencrypt.conf;
-    return 301 https://example.com$request_uri;
-}
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
 
-# Redirect WWW -&gt; NON WWW
-server {
-    listen 443 ssl http2;
-    server_name www.example.com;
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
 
-    return 301 https://example.com$request_uri;
-}
+    <span class="kn">root</span> <span class="s">/var/www/html/example.com</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.php</span><span class="p">;</span>
 
-server {
-    listen 443 ssl http2;
-    server_name example.com;
+    <span class="c1"># SSL parameters
+</span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
 
-    root /var/www/html/example.com;
-    index index.php;
+    <span class="c1"># log files
+</span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/example.com.error.log</span><span class="p">;</span>
 
-    # SSL parameters
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    ssl_trusted_certificate /etc/letsencrypt/live/example.com/chain.pem;
-    include snippets/ssl.conf;
-    include snippets/letsencrypt.conf;
+    <span class="kn">location</span> <span class="p">=</span> <span class="s">/favicon.ico</span> <span class="p">{</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    # log files
-    access_log /var/log/nginx/example.com.access.log;
-    error_log /var/log/nginx/example.com.error.log;
+    <span class="kn">location</span> <span class="p">=</span> <span class="s">/robots.txt</span> <span class="p">{</span>
+        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location = /favicon.ico {
-        log_not_found off;
-        access_log off;
-    }
+    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.php?</span><span class="nv">$args</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location = /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+        <span class="kn">include</span> <span class="s">snippets/fastcgi-php.conf</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="s">unix:/run/php/php7.2-fpm.sock</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location / {
-        try_files $uri $uri/ /index.php?$args;
-    }
+    <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">\.(js|css|png|jpg|jpeg|gif|ico|svg)</span>$ <span class="p">{</span>
+        <span class="kn">expires</span> <span class="s">max</span><span class="p">;</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
-    }
-
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
-        expires max;
-        log_not_found off;
-    }
-
-}
-</code></pre>
-
+<span class="p">}</span></code></pre></div>
 <blockquote>
 <p>不要忘记将 <code>example.com</code> 替换为 PrestaShop 域，并设置 SSL 证书文件的正确路径。此配置中使用的片段在本指南中创建。</p>
 </blockquote>
 
 <p>在重新启动 Nginx 服务之前，请进行测试以确保没有语法错误：</p>
-
-<pre><code class="language-bash">sudo nginx -t
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -t</code></pre></div>
 <p>如果没有错误，输出应如下所示：</p>
-
-<pre><code class="language-bash">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful</code></pre></div>
 <p>最后，键入以下命令重启 Nginx 服务：</p>
-
-<pre><code class="language-bash">sudo systemctl restart nginx
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
 <h2 id="安装-prestashop">安装 PrestaShop</h2>
 
 <p>现在已下载 PrestaShop 并完成服务器配置，您可以通过 Web 界面完成安装。</p>
@@ -398,10 +340,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 <p><img src="/images/linux/how-to-install-prestashop-on-ubuntu/install-prestashop-installed.jpg" alt="" /></p>
 
 <p>出于安全原因，您需要删除安装目录。为此，请返回终端并输入以下命令：</p>
-
-<pre><code class="language-bash">sudo rm -rf /var/www/html/example.com/install
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm -rf /var/www/html/example.com/install</code></pre></div>
 <p>要访问 PrestaShop 管理仪表板，请单击“管理您的商店”按钮。输入您的电子邮件和密码，您将被重定向到管理仪表板。</p>
 
 <p>现在开始，您可以开始自定义 PrestaShop 并添加新产品。</p>

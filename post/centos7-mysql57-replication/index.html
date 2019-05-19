@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,72 +122,58 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Mysql 配置主从复制</h1>
+      
+      <h1 class="f1 mb1">Mysql 配置主从复制</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2016-01-18T00:00:00Z">January 18, 2016</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Mysql 5.7.10 配置主从复制的步骤很简单，这里记录下配置全新的主从复制的步骤。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Mysql 5.7.10 配置主从复制的步骤很简单，这里记录下配置全新的主从复制的步骤。</p>
 
 <h2 id="master">Master</h2>
 
 <h3 id="配置文件">配置文件</h3>
-
-<pre><code>[root@centos7-1 ~]# vi /etc/my.cnf
+<div class="highlight"><pre class="chroma">[root@centos7-1 ~]# vi /etc/my.cnf
 
 [mysqld]
 log-bin=mysql-bin
-server-id=1
-</code></pre>
-
+server-id=1</pre></div>
 <p>重启 mysql</p>
-
-<pre><code>[root@centos7-1 ~]# systemctl restart mysqld.service
-</code></pre>
-
+<div class="highlight"><pre class="chroma">[root@centos7-1 ~]# systemctl restart mysqld.service</pre></div>
 <h3 id="创建独立的主从复制用户">创建独立的主从复制用户</h3>
-
-<pre><code>[root@centos7-1 ~]# mysql -u root -p
+<div class="highlight"><pre class="chroma">[root@centos7-1 ~]# mysql -u root -p
 Enter password: 
 
-mysql&gt; CREATE USER 'repl'@'%' IDENTIFIED BY 'password';
-mysql&gt; GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
-</code></pre>
-
+mysql&gt; CREATE USER &#39;repl&#39;@&#39;%&#39; IDENTIFIED BY &#39;password&#39;;
+mysql&gt; GRANT REPLICATION SLAVE ON *.* TO &#39;repl&#39;@&#39;%&#39;;</pre></div>
 <h3 id="查看日志文件和位置">查看日志文件和位置</h3>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="n">TABLES</span> <span class="k">WITH</span> <span class="k">READ</span> <span class="k">LOCK</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
-<pre><code class="language-sql">mysql&gt; FLUSH TABLES WITH READ LOCK;
-Query OK, 0 rows affected (0.00 sec)
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">SHOW</span> <span class="n">MASTER</span> <span class="n">STATUS</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------------+----------+--------------+------------------+-------------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">File</span>             <span class="o">|</span> <span class="k">Position</span> <span class="o">|</span> <span class="n">Binlog_Do_DB</span> <span class="o">|</span> <span class="n">Binlog_Ignore_DB</span> <span class="o">|</span> <span class="n">Executed_Gtid_Set</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+----------+--------------+------------------+-------------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">mysql</span><span class="o">-</span><span class="n">bin</span><span class="p">.</span><span class="mi">000001</span> <span class="o">|</span>      <span class="mi">595</span> <span class="o">|</span>              <span class="o">|</span>                  <span class="o">|</span>                   <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------+----------+--------------+------------------+-------------------+
+</span><span class="c1"></span><span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
-mysql&gt; SHOW MASTER STATUS;
-+------------------+----------+--------------+------------------+-------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+------------------+----------+--------------+------------------+-------------------+
-| mysql-bin.000001 |      595 |              |                  |                   |
-+------------------+----------+--------------+------------------+-------------------+
-1 row in set (0.00 sec)
-
-mysql&gt; UNLOCK TABLES;
-Query OK, 0 rows affected (0.00 sec) 
-</code></pre>
-
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="n">UNLOCK</span> <span class="n">TABLES</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span> </code></pre></div>
 <h2 id="slave">Slave</h2>
 
 <h3 id="配置文件-1">配置文件</h3>
-
-<pre><code>[root@centos7-1 ~]# vi /etc/my.cnf
+<div class="highlight"><pre class="chroma">[root@centos7-1 ~]# vi /etc/my.cnf
 
 [mysqld]
-server-id=2
-</code></pre>
-
+server-id=2</pre></div>
 <p>重启 Slave</p>
 
 <h3 id="设置复制源">设置复制源</h3>
-
-<pre><code>mysql&gt; stop slave;
+<div class="highlight"><pre class="chroma">mysql&gt; stop slave;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 mysql&gt; 
@@ -195,23 +181,18 @@ mysql&gt;
 mysql&gt; 
 mysql&gt; 
 mysql&gt; CHANGE MASTER TO
-    -&gt; MASTER_HOST='192.168.0.180',
-    -&gt; MASTER_PORT='3306',
-    -&gt; MASTER_USER='repl',
-    -&gt; MASTER_PASSWORD='password',
-    -&gt; MASTER_LOG_FILE='mysql-bin.000001',
+    -&gt; MASTER_HOST=&#39;192.168.0.180&#39;,
+    -&gt; MASTER_PORT=&#39;3306&#39;,
+    -&gt; MASTER_USER=&#39;repl&#39;,
+    -&gt; MASTER_PASSWORD=&#39;password&#39;,
+    -&gt; MASTER_LOG_FILE=&#39;mysql-bin.000001&#39;,
     -&gt; MASTER_LOG_POS=595;
 Query OK, 0 rows affected, 2 warnings (0.02 sec)
 
 mysql&gt; 
-mysql&gt; start slave;
-</code></pre>
-
+mysql&gt; start slave;</pre></div>
 <p>然后查看 slave 状态，看是否有问题</p>
-
-<pre><code>show slave staus
-</code></pre>
-
+<div class="highlight"><pre class="chroma">show slave staus</pre></div>
 <p>几个问题：</p>
 
 <ol>

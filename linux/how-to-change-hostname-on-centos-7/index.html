@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -64,7 +64,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -134,14 +134,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上更改主机名</h1>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上更改主机名</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-29T05:00:00&#43;08:00">March 29, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程将指导您完成在 CentOS 7 系统上更改主机名的过程。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本教程将指导您完成在 CentOS 7 系统上更改主机名的过程。</p>
 
 <p>主机名在安装 CentOS 操作系统时设置，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。</p>
 
@@ -168,10 +170,7 @@
 <h2 id="显示当前主机名">显示当前主机名</h2>
 
 <p>要查看当前主机名，请输入以下命令：</p>
-
-<pre><code class="language-console-bash">hostnamectl
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">hostnamectl</code></pre></div>
 <p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-7-hostnamectl.jpg" alt="" /></p>
 
 <p>从上图中可以看出，当前主机名设置为 <code>localhost.localdomain</code> 。</p>
@@ -181,20 +180,11 @@
 <h3 id="方法1-使用-hostnamectl-命令">方法1：使用 <code>hostnamectl</code> 命令</h3>
 
 <p>在 CentOS 7 中我们可以使用命令 <code>hostnamectl</code> 更改系统主机名和相关设置，语法如下：</p>
-
-<pre><code class="language-console-bash">sudo hostnamectl set-hostname host.example.comsudo hostnamectl set-hostname &quot;Your Pretty HostName&quot; --prettysudo hostnamectl set-hostname host.example.com --staticsudo hostnamectl set-hostname host.example.com --transient
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname host.example.comsudo hostnamectl set-hostname &#34;Your Pretty HostName&#34; --prettysudo hostnamectl set-hostname host.example.com --staticsudo hostnamectl set-hostname host.example.com --transient</code></pre></div>
 <p>例如，我们要将系统静态主机名更改为 <code>host.buzheng.org</code> ，我们可以使用以下命令：</p>
-
-<pre><code class="language-console-bash">sudo hostnamectl set-hostname host.buzheng.org
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname host.buzheng.org</code></pre></div>
 <p>要将 <code>pretty</code> 主机名设置为 <code>buzheng's desktop</code> ，请输入：</p>
-
-<pre><code class="language-console-bash">sudo hostnamectl set-hostname &quot;buzheng's desktop&quot; --pretty
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname &#34;buzheng&#39;s desktop&#34; --pretty</code></pre></div>
 <p><code>hostnamectl</code> 命令不产生输出。成功时，返回 0 ，否则返回非零故障代码。</p>
 
 <h3 id="方法-2-使用-nmtui-命令">方法 2 ：使用 <code>nmtui</code> 命令</h3>
@@ -202,10 +192,7 @@
 <p><code>nmtui</code>  是 NetworkManager 的文本用户界面，也可用于更改主机名。</p>
 
 <p>要启动该 <code>nmtui</code> 实用程序，请运行以下命令：</p>
-
-<pre><code class="language-console-bash">sudo nmtui
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nmtui</code></pre></div>
 <p>使用箭头键浏览选项，选择 <code>Set system hostname</code> 并按 <code>Enter</code> ：</p>
 
 <p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-nmtui.jpg" alt="" /></p>
@@ -219,41 +206,24 @@
 <p><img src="/images/linux/how-to-change-hostname-on-centos-7/centos-nmtui-set-hostname.jpg" alt="" /></p>
 
 <p>最后，重新启动 <code>systemd-hostnamed</code> 服务以使更改生效：</p>
-
-<pre><code class="language-console-bash">sudo systemctl restart systemd-hostnamed
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart systemd-hostnamed</code></pre></div>
 <h3 id="方法3-使用-nmcli-命令">方法3：使用 <code>nmcli</code> 命令</h3>
 
 <p><code>nmcli</code>  是一个用于控制 NetworkManager 的命令行工具，它也可用于更改主机名。</p>
 
 <p>要查看当前主机名类型：</p>
-
-<pre><code class="language-console-bash">sudo nmcli general hostname
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nmcli general hostname</code></pre></div>
 <p>要更改主机名为 <code>host.buzheng.org</code> 使用以下命令：</p>
-
-<pre><code class="language-console-bash">sudo nmcli general hostname host.buzheng.org
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nmcli general hostname host.buzheng.org</code></pre></div>
 <p>最后，重新启动 <code>systemd-hostnamed</code> 服务以使更改生效：</p>
-
-<pre><code class="language-console-bash">sudo systemctl restart systemd-hostnamed
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart systemd-hostnamed</code></pre></div>
 <h2 id="验证更改">验证更改</h2>
 
 <p>要验证主机名是否已成功更改，请使用以下 <code>hostnamectl</code> 命令：</p>
-
-<pre><code>hostnamectl
-
-</code></pre>
-
+<div class="highlight"><pre class="chroma">hostnamectl</pre></div>
 <p>您的新主机名将打印在控制台上：</p>
-
-<pre><code class="language-output">   Static hostname: host.buzheng.org
-   Pretty hostname: buzheng's desktop
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">   Static hostname: host.buzheng.org
+   Pretty hostname: buzheng&#39;s desktop
          Icon name: computer-vm
            Chassis: vm
         Machine ID: 52d6807a6ae34327871ae568f7a1387e
@@ -262,9 +232,7 @@
   Operating System: CentOS Linux 7 (Core)
        CPE OS Name: cpe:/o:centos:centos:7
             Kernel: Linux 3.10.0-693.11.6.el7.x86_64
-      Architecture: x86-64
-</code></pre>
-
+      Architecture: x86-64</code></pre></div>
 <h2 id="结论">结论</h2>
 
 <p>在本教程中，我们向您展示了 3 种不同的方法，用于在不重新启动计算机的情况下更改 CentOS 7 服务器的主机名。</p><ul class="pa0">

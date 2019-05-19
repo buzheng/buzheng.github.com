@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -70,7 +70,7 @@ github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -140,14 +140,16 @@ github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">使用github作为maven仓库</h1>
+      
+      <h1 class="f1 mb1">使用github作为maven仓库</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2014-06-17T00:00:00Z">June 17, 2014</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文介绍的这种使用 github 作为 maven 仓库的思路主要为：</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文介绍的这种使用 github 作为 maven 仓库的思路主要为：</p>
 
 <ol>
 <li>github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库</li>
@@ -158,134 +160,116 @@ github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 <p>以我的项目为例：<a href="https://github.com/buzheng/mybatis-pageable">https://github.com/buzheng/mybatis-pageable</a></p>
 
 <p>首先通过配置pom.xml告诉maven将artifacts部署到一个target下的一个临时目录中，具体配置如下：</p>
-
-<pre><code class="language-xml">&lt;plugin&gt;
-	&lt;artifactId&gt;maven-deploy-plugin&lt;/artifactId&gt;
-	&lt;version&gt;2.8.1&lt;/version&gt;
-	&lt;configuration&gt;
-		&lt;altDeploymentRepository&gt;internal.repo::default::file://${project.build.directory}/mvn-repo&lt;/altDeploymentRepository&gt;
-	&lt;/configuration&gt;
-&lt;/plugin&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>maven-deploy-plugin<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>2.8.1<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;configuration&gt;</span>
+		<span class="nt">&lt;altDeploymentRepository&gt;</span>internal.repo::default::file://${project.build.directory}/mvn-repo<span class="nt">&lt;/altDeploymentRepository&gt;</span>
+	<span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span></code></pre></div>
 <p>配置完成后，运行命令 mvn clean deploy 后发现已经部署maven仓库到 target/mvn-repo 目录下。然后我们要做的就是将该目录上传到github中。</p>
 
 <p>在 ~/.m2/settings.xml 中添加github的授权信息，以便 github 的 site-maven-plugin 能够push文件到github，配置信息如下：</p>
-
-<pre><code class="language-xml">&lt;server&gt;
-    &lt;id&gt;github&lt;/id&gt;
-    &lt;username&gt;你在github的帐号&lt;/username&gt;
-    &lt;password&gt;你在github的用户名&lt;/password&gt;
-&lt;/server&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;server&gt;</span>
+    <span class="nt">&lt;id&gt;</span>github<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;username&gt;</span>你在github的帐号<span class="nt">&lt;/username&gt;</span>
+    <span class="nt">&lt;password&gt;</span>你在github的用户名<span class="nt">&lt;/password&gt;</span>
+<span class="nt">&lt;/server&gt;</span></code></pre></div>
 <p>添加如下配置到 pom.xml 以告诉 github site-maven-plugin 服务器信息</p>
-
-<pre><code class="language-xml">&lt;properties&gt;
-	&lt;!-- github server corresponds to entry in ~/.m2/settings.xml --&gt;
-	&lt;github.global.server&gt;github&lt;/github.global.server&gt;
-&lt;/properties&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;properties&gt;</span>
+	<span class="c">&lt;!-- github server corresponds to entry in ~/.m2/settings.xml --&gt;</span>
+	<span class="nt">&lt;github.global.server&gt;</span>github<span class="nt">&lt;/github.global.server&gt;</span>
+<span class="nt">&lt;/properties&gt;</span></code></pre></div>
 <p>最后配置 github site-maven-plugin 插件</p>
-
-<pre><code class="language-xml">&lt;plugin&gt;
-	&lt;groupId&gt;com.github.github&lt;/groupId&gt;
-	&lt;artifactId&gt;site-maven-plugin&lt;/artifactId&gt;
-	&lt;version&gt;0.9&lt;/version&gt;
-	&lt;configuration&gt;
-		&lt;message&gt;Maven artifacts for ${project.version}&lt;/message&gt;  &lt;!-- git commit message --&gt;
-		&lt;noJekyll&gt;true&lt;/noJekyll&gt;                                  &lt;!-- disable webpage processing --&gt;
-		&lt;outputDirectory&gt;${project.build.directory}/mvn-repo&lt;/outputDirectory&gt; &lt;!-- matches distribution management repository url above --&gt;
-		&lt;branch&gt;refs/heads/mvn-repo&lt;/branch&gt;                       &lt;!-- remote branch name --&gt;
-		&lt;includes&gt;
-			&lt;include&gt;**/*&lt;/include&gt;
-		&lt;/includes&gt;
-		&lt;repositoryName&gt;mybatis-pageable&lt;/repositoryName&gt;      &lt;!-- github repo name --&gt;
-		&lt;repositoryOwner&gt;buzheng&lt;/repositoryOwner&gt;    &lt;!-- github username --&gt;
-	&lt;/configuration&gt;
-	&lt;executions&gt;
-		&lt;!-- run site-maven-plugin&amp;#039;s &amp;#039;site&amp;#039; target as part of the build&amp;#039;s normal 
-			&amp;#039;deploy&amp;#039; phase --&gt;
-		&lt;execution&gt;
-			&lt;goals&gt;
-				&lt;goal&gt;site&lt;/goal&gt;
-			&lt;/goals&gt;
-			&lt;phase&gt;deploy&lt;/phase&gt;
-		&lt;/execution&gt;
-	&lt;/executions&gt;
-&lt;/plugin&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>com.github.github<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>site-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>0.9<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;configuration&gt;</span>
+		<span class="nt">&lt;message&gt;</span>Maven artifacts for ${project.version}<span class="nt">&lt;/message&gt;</span>  <span class="c">&lt;!-- git commit message --&gt;</span>
+		<span class="nt">&lt;noJekyll&gt;</span>true<span class="nt">&lt;/noJekyll&gt;</span>                                  <span class="c">&lt;!-- disable webpage processing --&gt;</span>
+		<span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/mvn-repo<span class="nt">&lt;/outputDirectory&gt;</span> <span class="c">&lt;!-- matches distribution management repository url above --&gt;</span>
+		<span class="nt">&lt;branch&gt;</span>refs/heads/mvn-repo<span class="nt">&lt;/branch&gt;</span>                       <span class="c">&lt;!-- remote branch name --&gt;</span>
+		<span class="nt">&lt;includes&gt;</span>
+			<span class="nt">&lt;include&gt;</span>**/*<span class="nt">&lt;/include&gt;</span>
+		<span class="nt">&lt;/includes&gt;</span>
+		<span class="nt">&lt;repositoryName&gt;</span>mybatis-pageable<span class="nt">&lt;/repositoryName&gt;</span>      <span class="c">&lt;!-- github repo name --&gt;</span>
+		<span class="nt">&lt;repositoryOwner&gt;</span>buzheng<span class="nt">&lt;/repositoryOwner&gt;</span>    <span class="c">&lt;!-- github username --&gt;</span>
+	<span class="nt">&lt;/configuration&gt;</span>
+	<span class="nt">&lt;executions&gt;</span>
+		<span class="c">&lt;!-- run site-maven-plugin&amp;#039;s &amp;#039;site&amp;#039; target as part of the build&amp;#039;s normal 
+</span><span class="c">			&amp;#039;deploy&amp;#039; phase --&gt;</span>
+		<span class="nt">&lt;execution&gt;</span>
+			<span class="nt">&lt;goals&gt;</span>
+				<span class="nt">&lt;goal&gt;</span>site<span class="nt">&lt;/goal&gt;</span>
+			<span class="nt">&lt;/goals&gt;</span>
+			<span class="nt">&lt;phase&gt;</span>deploy<span class="nt">&lt;/phase&gt;</span>
+		<span class="nt">&lt;/execution&gt;</span>
+	<span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span></code></pre></div>
 <p>配置完成，运行命令 mvn clean deploy后，登录github，发现已经创建 mvn-repo 分支，并上传了 本地的 target/mvn-repo 目录。</p>
-
-<pre><code class="language-bash">[INFO] Scanning for projects...
-[INFO]
-[INFO] ------------------------------------------------------------------------
-[INFO] Building mybatis-pageable 0.1
-[INFO] ------------------------------------------------------------------------
-[INFO]
-[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ mybatis-pageable ---
-[INFO] Deleting E:\workspace\mybatis-pageable\target
-[INFO]
-[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ mybatis-pageable ---
-[WARNING] Using platform encoding (GBK actually) to copy filtered resources, i.e. build is platform dependent!
-[INFO] Copying 0 resource
-[INFO]
-[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ mybatis-pageable ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 6 source files to E:/workspace/mybatis-pageable/target/classes
-[INFO]
-[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ mybatis-pageable ---
-[INFO] Not copying test resources
-[INFO]
-[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ mybatis-pageable ---
-[INFO] Not compiling test sources
-[INFO]
-[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ mybatis-pageable ---
-[INFO] Tests are skipped.
-[INFO]
-[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ mybatis-pageable ---
-[INFO] Building jar: E:/workspace/mybatis-pageable/target/mybatis-pageable-0.1.jar
-[INFO]
-[INFO] --- maven-install-plugin:2.4:install (default-install) @ mybatis-pageable ---
-[INFO] Installing E:/workspace/mybatis-pageable/target/mybatis-pageable-0.1.jar to C:/Users/Adam.my-pc/.m2/repository/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar
-[INFO] Installing E:/workspace/mybatis-pageable/pom.xml to C:/Users/Adam.my-pc/.m2/repository/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom
-[INFO]
-[INFO] --- maven-deploy-plugin:2.8.1:deploy (default-deploy) @ mybatis-pageable ---
-[INFO] Using alternate deployment repository internal.repo::default::file://E:/workspace/mybatis-pageable/target/mvn-repo
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>INFO<span class="o">]</span> Scanning <span class="k">for</span> projects...
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+<span class="o">[</span>INFO<span class="o">]</span> Building mybatis-pageable <span class="m">0</span>.1
+<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-clean-plugin:2.5:clean <span class="o">(</span>default-clean<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Deleting E:<span class="se">\w</span>orkspace<span class="se">\m</span>ybatis-pageable<span class="se">\t</span>arget
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-resources-plugin:2.6:resources <span class="o">(</span>default-resources<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>WARNING<span class="o">]</span> Using platform encoding <span class="o">(</span>GBK actually<span class="o">)</span> to copy filtered resources, i.e. build is platform dependent!
+<span class="o">[</span>INFO<span class="o">]</span> Copying <span class="m">0</span> resource
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-compiler-plugin:3.1:compile <span class="o">(</span>default-compile<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Changes detected - recompiling the module!
+<span class="o">[</span>INFO<span class="o">]</span> Compiling <span class="m">6</span> <span class="nb">source</span> files to E:/workspace/mybatis-pageable/target/classes
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-resources-plugin:2.6:testResources <span class="o">(</span>default-testResources<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Not copying <span class="nb">test</span> resources
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-compiler-plugin:3.1:testCompile <span class="o">(</span>default-testCompile<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Not compiling <span class="nb">test</span> sources
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-surefire-plugin:2.12.4:test <span class="o">(</span>default-test<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Tests are skipped.
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-jar-plugin:2.4:jar <span class="o">(</span>default-jar<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Building jar: E:/workspace/mybatis-pageable/target/mybatis-pageable-0.1.jar
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-install-plugin:2.4:install <span class="o">(</span>default-install<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Installing E:/workspace/mybatis-pageable/target/mybatis-pageable-0.1.jar to C:/Users/Adam.my-pc/.m2/repository/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar
+<span class="o">[</span>INFO<span class="o">]</span> Installing E:/workspace/mybatis-pageable/pom.xml to C:/Users/Adam.my-pc/.m2/repository/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- maven-deploy-plugin:2.8.1:deploy <span class="o">(</span>default-deploy<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Using alternate deployment repository internal.repo::default::file://E:/workspace/mybatis-pageable/target/mvn-repo
 Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar
-Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar (15 KB at 1020.2 KB/sec)
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar <span class="o">(</span><span class="m">15</span> KB at <span class="m">1020</span>.2 KB/sec<span class="o">)</span>
 Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom
-Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom (4 KB at 907.5 KB/sec)
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom <span class="o">(</span><span class="m">4</span> KB at <span class="m">907</span>.5 KB/sec<span class="o">)</span>
 Downloading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml
 Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml
-Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml (303 B at 147.9 KB/sec)
-[INFO]
-[INFO] --- site-maven-plugin:0.9:site (default) @ mybatis-pageable ---
-[INFO] Creating 9 blobs
-[INFO] Creating tree with 10 blob entries
-[INFO] Creating commit with SHA-1: ac8a117fa05c3a24f057a684519d5edade5d4e64
-[INFO] Updating reference refs/heads/mvn-repo from cf1389181d9559b6926a26e852aa2b605b46da1e to ac8a117fa05c3a24f057a684519d5edade5d4e64
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 8.124s
-[INFO] Finished at: Mon Jun 16 15:47:54 CST 2014
-[INFO] Final Memory: 24M/178M
-[INFO] ------------------------------------------------------------------------
-</code></pre>
-
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml <span class="o">(</span><span class="m">303</span> B at <span class="m">147</span>.9 KB/sec<span class="o">)</span>
+<span class="o">[</span>INFO<span class="o">]</span>
+<span class="o">[</span>INFO<span class="o">]</span> --- site-maven-plugin:0.9:site <span class="o">(</span>default<span class="o">)</span> @ mybatis-pageable ---
+<span class="o">[</span>INFO<span class="o">]</span> Creating <span class="m">9</span> blobs
+<span class="o">[</span>INFO<span class="o">]</span> Creating tree with <span class="m">10</span> blob entries
+<span class="o">[</span>INFO<span class="o">]</span> Creating commit with SHA-1: ac8a117fa05c3a24f057a684519d5edade5d4e64
+<span class="o">[</span>INFO<span class="o">]</span> Updating reference refs/heads/mvn-repo from cf1389181d9559b6926a26e852aa2b605b46da1e to ac8a117fa05c3a24f057a684519d5edade5d4e64
+<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+<span class="o">[</span>INFO<span class="o">]</span> BUILD SUCCESS
+<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+<span class="o">[</span>INFO<span class="o">]</span> Total time: <span class="m">8</span>.124s
+<span class="o">[</span>INFO<span class="o">]</span> Finished at: Mon Jun <span class="m">16</span> <span class="m">15</span>:47:54 CST <span class="m">2014</span>
+<span class="o">[</span>INFO<span class="o">]</span> Final Memory: 24M/178M
+<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------</code></pre></div>
 <p>到此为止，项目的已经部署到github上。如果其他项目依赖此项目，需要在pom.xml中添加如下配置后，再添加相应的依赖关系即可。</p>
-
-<pre><code class="language-xml">&lt;repositories&gt;
-	&lt;repository&gt;
-		&lt;id&gt;mybatis-pageable-mvn-repo&lt;/id&gt;
-		&lt;url&gt;https://raw.github.com/buzheng/mybatis-pageable/mvn-repo/&lt;/url&gt;
-	&lt;/repository&gt;
-&lt;/repositories&gt;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;repositories&gt;</span>
+	<span class="nt">&lt;repository&gt;</span>
+		<span class="nt">&lt;id&gt;</span>mybatis-pageable-mvn-repo<span class="nt">&lt;/id&gt;</span>
+		<span class="nt">&lt;url&gt;</span>https://raw.github.com/buzheng/mybatis-pageable/mvn-repo/<span class="nt">&lt;/url&gt;</span>
+	<span class="nt">&lt;/repository&gt;</span>
+<span class="nt">&lt;/repositories&gt;</span></code></pre></div>
 <p>完成！</p>
 
 <p>这种方法相当方便，只需要几个简单的配置，便能自动将jar包发布到github上。</p>

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -73,7 +73,7 @@ JSON.stringify：将javascript对象序列化成json数据
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -143,14 +143,16 @@ JSON.stringify：将javascript对象序列化成json数据
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">原生 JSON 工具类对象</h1>
+      
+      <h1 class="f1 mb1">原生 JSON 工具类对象</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2013-07-03T00:00:00Z">July 3, 2013</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>今天才知道原生的JSON对象，惭愧惭愧， 这里对他的用法做一下记录。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>今天才知道原生的JSON对象，惭愧惭愧， 这里对他的用法做一下记录。</p>
 
 <p>我们都知道json是采用javascript对象的格式来存储数据的数据格式，这就不免和javascript对象之间经常转化，以前经常需要地方的库，现在不用了，原生的javascript自带了JSON对象，可以很方便的完成转化。JSON对象提供了2个方法：parse 和 stringify。</p>
 
@@ -167,21 +169,20 @@ JSON.stringify：将javascript对象序列化成json数据
 </ul>
 
 <p>稍微解释一下，visitor是在遍历过程中加入的自己的处理，space 是用来格式化输出的。不做过多解释，看一下代码并运行就明白了。</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">json</span> <span class="o">=</span> <span class="s1">&#39;{&#34;name&#34;:&#34;adam&#34;, &#34;age&#34;:20}&#39;</span><span class="p">;</span>
+<span class="c1">// 直接转成javascript对象
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">person</span><span class="p">));</span>
 
-<pre><code class="language-javascript">var json = '{&quot;name&quot;:&quot;adam&quot;, &quot;age&quot;:20}';
-// 直接转成javascript对象
-var person = JSON.parse(json);
-console.log(JSON.stringify(person));
-
-// 转换的过程中修改某些值
-var person2 = JSON.parse(json, function(k, v) {
-	if (k == 'age') {
-		return 30;
-	}
-	return v;
-});
-console.log(JSON.stringify(person2));
-</code></pre><ul class="pa0">
+<span class="c1">// 转换的过程中修改某些值
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">person2</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="o">==</span> <span class="s1">&#39;age&#39;</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="mi">30</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">person2</span><span class="p">));</span>
+</code></pre></div><ul class="pa0">
   
    <li class="list">
      <a href="/tags/web-front" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Web Front</a>

@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -79,7 +79,7 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -149,14 +149,16 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">Mysql 5.7 从节点配置多线程主从复制</h1>
+      
+      <h1 class="f1 mb1">Mysql 5.7 从节点配置多线程主从复制</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2017-02-22T00:00:00Z">February 22, 2017</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Mysql 采用多线程进行复制是从 Mysql 5.6 开始支持的内容，但是 5.6 版本下有缺陷，虽然支持多线程，但是每个数据库只能一个线程，也就是说如果我们只有一个数据库，则主从复制时也只有一个线程在工作。相当于还是以前的单线程。 从 Mysql 5.7 开始支持同一数据库下并行主从复制。不过默认情况下，还是单数据库单个线程，如果需要使用多线程，需要在从节点进行配置。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Mysql 采用多线程进行复制是从 Mysql 5.6 开始支持的内容，但是 5.6 版本下有缺陷，虽然支持多线程，但是每个数据库只能一个线程，也就是说如果我们只有一个数据库，则主从复制时也只有一个线程在工作。相当于还是以前的单线程。 从 Mysql 5.7 开始支持同一数据库下并行主从复制。不过默认情况下，还是单数据库单个线程，如果需要使用多线程，需要在从节点进行配置。</p>
 
 <p>Mysql 5.7 对主从复制增加了一种类型，共有两种类型，如下：</p>
 
@@ -170,104 +172,80 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
 <h2 id="查看当前配置">查看当前配置</h2>
 
 <p>在开始配置之前，我们先看一下当前配置下的主从复制的进程数。</p>
-
-<pre><code class="language-sql">mysql&gt; show processlist;
-+----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
-| Id | User        | Host      | db   | Command | Time  | State                                                  | Info             |
-+----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
-|  1 | system user |           | NULL | Connect | 91749 | Waiting for master to send event                       | NULL             |
-|  2 | system user |           | NULL | Connect |   208 | Slave has read all relay log; waiting for more updates | NULL             |
-| 37 | root        | localhost | NULL | Query   |     0 | starting                                               | show processlist |
-+----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
-3 rows in set (0.00 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">processlist</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">Id</span> <span class="o">|</span> <span class="k">User</span>        <span class="o">|</span> <span class="k">Host</span>      <span class="o">|</span> <span class="n">db</span>   <span class="o">|</span> <span class="n">Command</span> <span class="o">|</span> <span class="n">Time</span>  <span class="o">|</span> <span class="k">State</span>                                                  <span class="o">|</span> <span class="n">Info</span>             <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
+</span><span class="c1"></span><span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span> <span class="mi">91749</span> <span class="o">|</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">master</span> <span class="k">to</span> <span class="n">send</span> <span class="n">event</span>                       <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>   <span class="mi">208</span> <span class="o">|</span> <span class="n">Slave</span> <span class="n">has</span> <span class="k">read</span> <span class="k">all</span> <span class="n">relay</span> <span class="n">log</span><span class="p">;</span> <span class="n">waiting</span> <span class="k">for</span> <span class="k">more</span> <span class="n">updates</span> <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="mi">37</span> <span class="o">|</span> <span class="n">root</span>        <span class="o">|</span> <span class="n">localhost</span> <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="n">Query</span>   <span class="o">|</span>     <span class="mi">0</span> <span class="o">|</span> <span class="n">starting</span>                                               <span class="o">|</span> <span class="k">show</span> <span class="n">processlist</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+-------------+-----------+------+---------+-------+--------------------------------------------------------+------------------+
+</span><span class="c1"></span><span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>从上面看出只有一个主进程在等待同步。</p>
 
 <p><strong>下面查看复制类型和并行数量配置</strong></p>
-
-<pre><code class="language-sql">mysql&gt; show variables like 'slave_parallel_type';
-+---------------------+----------+
-| Variable_name       | Value    |
-+---------------------+----------+
-| slave_parallel_type | DATABASE |
-+---------------------+----------+
-1 row in set (0.00 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_type&#39;</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------------------+----------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>       <span class="o">|</span> <span class="n">Value</span>    <span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+----------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">slave_parallel_type</span> <span class="o">|</span> <span class="k">DATABASE</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+----------+
+</span><span class="c1"></span><span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>当前的复制类型是 DATABASE，也就是统一数据库下只有一个线程进行复制，不能并行复制。</p>
-
-<pre><code class="language-sql">mysql&gt; show variables like 'slave_parallel_workers';
-+------------------------+-------+
-| Variable_name          | Value |
-+------------------------+-------+
-| slave_parallel_workers | 0     |
-+------------------------+-------+
-1 row in set (0.01 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_workers&#39;</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------------------+-------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>          <span class="o">|</span> <span class="n">Value</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------------+-------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">slave_parallel_workers</span> <span class="o">|</span> <span class="mi">0</span>     <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------------+-------+
+</span><span class="c1"></span><span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>当前并行工作的进程数是 0</p>
 
 <h2 id="配置多线程">配置多线程</h2>
 
 <p>1、停止从节点复制</p>
-
-<pre><code class="language-sql">mysql&gt; stop slave;
-Query OK, 0 rows affected (0.01 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">stop</span> <span class="n">slave</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>2、设置复制类型为 LOGICAL_CLOCK</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">set</span> <span class="k">global</span> <span class="n">slave_parallel_type</span><span class="o">=</span><span class="s1">&#39;logical_clock&#39;</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
-<pre><code class="language-sql">mysql&gt; set global slave_parallel_type='logical_clock';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql&gt; show variables like 'slave_parallel_type';
-+---------------------+---------------+
-| Variable_name       | Value         |
-+---------------------+---------------+
-| slave_parallel_type | LOGICAL_CLOCK |
-+---------------------+---------------+
-1 row in set (0.01 sec)
-</code></pre>
-
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_type&#39;</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">---------------------+---------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>       <span class="o">|</span> <span class="n">Value</span>         <span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+---------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">slave_parallel_type</span> <span class="o">|</span> <span class="n">LOGICAL_CLOCK</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">---------------------+---------------+
+</span><span class="c1"></span><span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>3、设置并行数量为 4</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">set</span> <span class="k">global</span> <span class="n">slave_parallel_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
-<pre><code class="language-sql">mysql&gt; set global slave_parallel_workers=4;
-Query OK, 0 rows affected (0.00 sec)
 
-
-mysql&gt; show variables like 'slave_parallel_workers';
-+------------------------+-------+
-| Variable_name          | Value |
-+------------------------+-------+
-| slave_parallel_workers | 4     |
-+------------------------+-------+
-1 row in set (0.00 sec)
-</code></pre>
-
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_workers&#39;</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">------------------------+-------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>          <span class="o">|</span> <span class="n">Value</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------------+-------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">slave_parallel_workers</span> <span class="o">|</span> <span class="mi">4</span>     <span class="o">|</span>
+<span class="o">+</span><span class="c1">------------------------+-------+
+</span><span class="c1"></span><span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>4、启动从节点复制</p>
-
-<pre><code class="language-sql">mysql&gt; start slave;
-Query OK, 0 rows affected (0.02 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">start</span> <span class="n">slave</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>5、查看一下当前工作的线程数</p>
-
-<pre><code class="language-sql">mysql&gt; show processlist;
-+----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
-| Id | User        | Host      | db   | Command | Time | State                                                  | Info             |
-+----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
-| 37 | root        | localhost | NULL | Query   |    0 | starting                                               | show processlist |
-| 38 | system user |           | NULL | Connect |    8 | Waiting for master to send event                       | NULL             |
-| 39 | system user |           | NULL | Connect |    7 | Slave has read all relay log; waiting for more updates | NULL             |
-| 40 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
-| 41 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
-| 42 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
-| 43 | system user |           | NULL | Connect |    8 | Waiting for an event from Coordinator                  | NULL             |
-+----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
-7 rows in set (0.00 sec)
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">processlist</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="n">Id</span> <span class="o">|</span> <span class="k">User</span>        <span class="o">|</span> <span class="k">Host</span>      <span class="o">|</span> <span class="n">db</span>   <span class="o">|</span> <span class="n">Command</span> <span class="o">|</span> <span class="n">Time</span> <span class="o">|</span> <span class="k">State</span>                                                  <span class="o">|</span> <span class="n">Info</span>             <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
+</span><span class="c1"></span><span class="o">|</span> <span class="mi">37</span> <span class="o">|</span> <span class="n">root</span>        <span class="o">|</span> <span class="n">localhost</span> <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="n">Query</span>   <span class="o">|</span>    <span class="mi">0</span> <span class="o">|</span> <span class="n">starting</span>                                               <span class="o">|</span> <span class="k">show</span> <span class="n">processlist</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mi">38</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>    <span class="mi">8</span> <span class="o">|</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">master</span> <span class="k">to</span> <span class="n">send</span> <span class="n">event</span>                       <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="mi">39</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>    <span class="mi">7</span> <span class="o">|</span> <span class="n">Slave</span> <span class="n">has</span> <span class="k">read</span> <span class="k">all</span> <span class="n">relay</span> <span class="n">log</span><span class="p">;</span> <span class="n">waiting</span> <span class="k">for</span> <span class="k">more</span> <span class="n">updates</span> <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="mi">40</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>    <span class="mi">8</span> <span class="o">|</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">an</span> <span class="n">event</span> <span class="k">from</span> <span class="n">Coordinator</span>                  <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="mi">41</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>    <span class="mi">8</span> <span class="o">|</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">an</span> <span class="n">event</span> <span class="k">from</span> <span class="n">Coordinator</span>                  <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="mi">42</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>    <span class="mi">8</span> <span class="o">|</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">an</span> <span class="n">event</span> <span class="k">from</span> <span class="n">Coordinator</span>                  <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">|</span> <span class="mi">43</span> <span class="o">|</span> <span class="k">system</span> <span class="k">user</span> <span class="o">|</span>           <span class="o">|</span> <span class="k">NULL</span> <span class="o">|</span> <span class="k">Connect</span> <span class="o">|</span>    <span class="mi">8</span> <span class="o">|</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">an</span> <span class="n">event</span> <span class="k">from</span> <span class="n">Coordinator</span>                  <span class="o">|</span> <span class="k">NULL</span>             <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+-------------+-----------+------+---------+------+--------------------------------------------------------+------------------+
+</span><span class="c1"></span><span class="mi">7</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span></code></pre></div>
 <p>最后说一下为什么需要多线程复制？因为主从之间的同步会有延时，多线程的目的是为了尽量减少这个延时时间。虽然如何优化主从是一个系统的功能，不同的场景需要不同的解决方案，但是多线程至少从基础上能减少延迟时间。另外根据数据库的实际情况，能否真正减少延时，以及配置多少线程，则需要反复的测试得出适合自己的数据。</p><ul class="pa0">
   
    <li class="list">

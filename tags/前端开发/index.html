@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -47,7 +47,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
 
@@ -112,11 +112,7 @@
 
     <main class="pb7" role="main">
       
-  <article class="cf pa3 pa4-m pa4-l">
-    <div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
-      <p>Below you will find pages that utilize the taxonomy term “前端开发”</p>
-    </div>
-  </article>
+  
   <div class="mw8 center">    
     <section class="flex-ns flex-wrap justify-around mt5">
       
@@ -134,9 +130,9 @@
 IE6,IE7,IE8会将标签转为大写，对没有关闭的html标签（注意是html标签，比如）进行关闭，并不在意其他的自定义标签(比如)是否关闭，并且会将属性值的引号也给丢掉了。
 IE9,firefox,chrome会将标签专为小写，并关闭所有没有关闭的标签。
 例如下面一段html代码，要求取div#test的innerHTML值：
-&lt;div id=&quot;test&quot;&gt; &lt;span&gt;you are here&lt;/span&gt; &lt;XXXX&gt;xxxx &lt;p&gt;aaa &lt;/div&gt;  在IE9,firefox,chrome下取出的内容为：
-&lt;span&gt;you are here&lt;/span&gt; &lt;xxxx&gt;xxxx &lt;p&gt;aaa &lt;/p&gt;&lt;/xxxx&gt;  IE6,IE7,IE8下取出的内容为：
-&lt;SPAN class=a&gt;you are here&lt;/SPAN&gt; &lt;XXXX&gt;xxxx &lt;P&gt;aaa &lt;/P&gt;  有时候仅仅是想取出里面的原始内容进行处理的话，还真是个麻烦事。
+&lt;div id=&#34;test&#34;&gt; &lt;span&gt;you are here&lt;/span&gt; &lt;XXXX&gt;xxxx &lt;p&gt;aaa &lt;/div&gt; 在IE9,firefox,chrome下取出的内容为：
+&lt;span&gt;you are here&lt;/span&gt; &lt;xxxx&gt;xxxx &lt;p&gt;aaa &lt;/p&gt;&lt;/xxxx&gt; IE6,IE7,IE8下取出的内容为：
+&lt;SPAN class=a&gt;you are here&lt;/SPAN&gt; &lt;XXXX&gt;xxxx &lt;P&gt;aaa &lt;/P&gt; 有时候仅仅是想取出里面的原始内容进行处理的话，还真是个麻烦事。
     </div>
   </div>
 </div>
@@ -159,9 +155,9 @@ IE9,firefox,chrome会将标签专为小写，并关闭所有没有关闭的标�
 我这里会试着用这种前端开发理念，来实现一个首页弹出层登录的功能，我们可以先来探讨一下为什么要使用弹出层登录？我觉得弹出层会有如下2个好处（可能会有些肤浅）：
 对用户来说，不用心打开一个页面，节省下载时间；带给用户更好的体验； 对网站提供者来说，至少可以减少一次页面请求，降低服务器负载； 好了，我们来开始来做这个登录的例子。首先我们先按照最原始的思路实现一个登录页面，功能要求就是当用户点击页顶部的登录链接时会跳转到登录页面。我先来完成基本的代码：
 html代码：
-&lt;div id=&quot;top&quot;&gt; &lt;div class=&quot;wrapper&quot;&gt; &lt;a href=&quot;login.html&quot; id=&quot;signinlink&quot;&gt;Sign In&lt;/a&gt; &lt;/div&gt; &lt;/div&gt;  基本的样式：
-#top { width: 100%; border-botton: 1px solid #ccc; background: #eee; line-height: 24px; height: 24px; over-flow: hidden; } .wrapper { margin: 0 auto; width: 960px; }  就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：
-&lt;div id=&quot;top&quot;&gt; &lt;div class=&quot;wrapper&quot;&gt; &lt;a href=&quot;login.html&quot; id=&quot;signinlink&quot;&gt;Sign In&lt;/a&gt; &lt;div id=&quot;signinpanel&quot;&gt; &lt;label for=&quot;username&quot;&gt;username&lt;/label&gt; &lt;input id=&quot;username&quot; name=&quot;username&quot; /&gt; &lt;label for=&quot;password&quot;&gt;password&lt;/label&gt; &lt;input id=&quot;password&quot; name=&quot;password&quot; /&gt; &lt;button&gt;Sign In&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt;  然后给登录链接添加事件，这里使用了jquery库：
+&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; 基本的样式：
+#top { width: 100%; border-botton: 1px solid #ccc; background: #eee; line-height: 24px; height: 24px; over-flow: hidden; } .wrapper { margin: 0 auto; width: 960px; } 就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：
+&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;div id=&#34;signinpanel&#34;&gt; &lt;label for=&#34;username&#34;&gt;username&lt;/label&gt; &lt;input id=&#34;username&#34; name=&#34;username&#34; /&gt; &lt;label for=&#34;password&#34;&gt;password&lt;/label&gt; &lt;input id=&#34;password&#34; name=&#34;password&#34; /&gt; &lt;button&gt;Sign In&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; 然后给登录链接添加事件，这里使用了jquery库：
     </div>
   </div>
 </div>

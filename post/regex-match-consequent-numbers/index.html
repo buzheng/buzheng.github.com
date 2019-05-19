@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -52,7 +52,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -122,14 +122,16 @@
           
         博文
       </p>
-      <h1 class="f1 athelas mb1">正则匹配连续数字</h1>
+      
+      <h1 class="f1 mb1">正则匹配连续数字</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2015-11-13T00:00:00Z">November 13, 2015</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>今天有个网友问了匹配连续数字的正则，刚好无事，就帮忙写了一下，算是当作温习一下吧。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>今天有个网友问了匹配连续数字的正则，刚好无事，就帮忙写了一下，算是当作温习一下吧。</p>
 
 <p>要求如下：
 - 纯数字
@@ -138,41 +140,29 @@
 - 从第四位开始连续</p>
 
 <p>如下面的例子：</p>
-
-<pre><code class="language-shell">11123       #正确
-22234       #正确
-33345       #正确
-333456      #正确
-2223456     #正确
-0001234     #正确
-00012345    #错误：此行长度超标
-000234      #错误：第3位与第4位不连续
-111235      #错误：第5位和第6位不连续
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="m">11123</span>       <span class="c1">#正确</span>
+<span class="m">22234</span>       <span class="c1">#正确</span>
+<span class="m">33345</span>       <span class="c1">#正确</span>
+<span class="m">333456</span>      <span class="c1">#正确</span>
+<span class="m">2223456</span>     <span class="c1">#正确</span>
+<span class="m">0001234</span>     <span class="c1">#正确</span>
+<span class="m">00012345</span>    <span class="c1">#错误：此行长度超标</span>
+<span class="m">000234</span>      <span class="c1">#错误：第3位与第4位不连续</span>
+<span class="m">111235</span>      <span class="c1">#错误：第5位和第6位不连续</span></code></pre></div>
 <p><strong>1, 匹配三位相同数字</strong></p>
-
-<pre><code class="language-regex">(\d)\1{2}
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-regex" data-lang="regex">(\d)\1{2}</code></pre></div>
 <p><strong>2, 匹配连续数字</strong></p>
 
 <p>匹配连续数字可以通过零宽断言来匹配，当然也没什么好办法，只能通过列举，如下两行都可以匹配3位连续数字</p>
-
-<pre><code class="language-regex">(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){2}\d
-\d((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2}
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-regex" data-lang="regex">(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){2}\d
+\d((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2}</code></pre></div>
 <p>说明： 第一行采用正向零宽断言，第二行采用反向零宽断言</p>
 
 <p><strong>结论</strong></p>
 
 <p>集合本题中的要求，由于要求相同前三，并且后面连续从第三位开始，完成正则如下：</p>
-
-<pre><code class="language-regex">^(\d)\1{2}((?&lt;=(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)))\d){2,4}$
-^(\d)\1{2}((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2,4}$
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-regex" data-lang="regex">^(\d)\1{2}((?&lt;=(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)))\d){2,4}$
+^(\d)\1{2}((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2,4}$</code></pre></div>
 <p>Done.</p><ul class="pa0">
   
    <li class="list">

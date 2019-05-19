@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.d98f2eb6bcd1eaedb7edf166bd16af26.css" rel="stylesheet">
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
     
 
     
@@ -45,7 +45,7 @@
 
 <meta itemprop="datePublished" content="2019-03-31T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-31T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="857">
+<meta itemprop="wordCount" content="856">
 
 
 
@@ -58,7 +58,7 @@
 
   </head>
 
-  <body class="ma0 avenir bg-near-white">
+  <body class="ma0 avenir bg-white">
 
     
    
@@ -128,14 +128,16 @@
           
         LINUX 教程
       </p>
-      <h1 class="f1 athelas mb1">如何在 Ubuntu 18.04 上安装 Ghost</h1>
+      
+      <h1 class="f1 mb1">如何在 Ubuntu 18.04 上安装 Ghost</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-03-31T05:00:00&#43;08:00">March 31, 2019</time>      
       
       
     </header>
 
-    <section class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Ghost 是一个基于 Node.js 平台构建的现代的博克发布平台。它完全可定制且易于使用，允许您以几乎为零的学习曲线发布内容。</p>
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Ghost 是一个基于 Node.js 平台构建的现代的博克发布平台。它完全可定制且易于使用，允许您以几乎为零的学习曲线发布内容。</p>
 
 <p>在本教程中，我们将向您展示如何使用 Nginx 作为代理在 Ubuntu 18.04 服务器上部署安全 Ghost 博客，免费使用 Let&rsquo;s Encrypt SSL 证书，最新的 Node.js LTS 版本以及 MySQL / MariaDB 作为数据库后端。</p>
 
@@ -157,45 +159,27 @@
 <p>在撰写本文时，Ghost 推荐的 Node.js 版本是 v8 carbon LTS 。我们将从 NodeSource 存储库安装 Node.js.</p>
 
 <p>使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>为 Node.js v8 启用 NodeSource 存储库：</p>
-
-<pre><code class="language-console-bash">curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -</code></pre></div>
 <p>键入以下命令安装 Node.js ：</p>
-
-<pre><code class="language-console-bash">sudo apt install nodejs
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install nodejs</code></pre></div>
 <blockquote>
 <p>对于其他安装方法，请查看我们的教程<a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js. </a></p>
 </blockquote>
 
 <p>为了要<a href="/linux/how-to-install-yarn-on-ubuntu-18-04/">安装 Yarn</a> ，请先使用以下命令启用系统上的 Yarn 存储库：</p>
-
-<pre><code class="language-console-bash">curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo &quot;deb https://dl.yarnpkg.com/debian/ stable main&quot; | sudo tee /etc/apt/sources.list.d/yarn.list
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo &#34;deb https://dl.yarnpkg.com/debian/ stable main&#34; | sudo tee /etc/apt/sources.list.d/yarn.list</code></pre></div>
 <p>启用存储库后，使用以下命令安装 yarn ：</p>
-
-<pre><code class="language-console-bash">sudo apt update
-sudo apt-get -o Dpkg::Options::=&quot;--force-overwrite&quot; install yarn
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt-get -o Dpkg::Options::=&#34;--force-overwrite&#34; install yarn</code></pre></div>
 <h2 id="安装-mysql">安装 MySQL</h2>
 
 <p>Ghost 支持 <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">MySQL</a> ， <!--link:how-to-install-mariadb-on-ubuntu-18-04-->MariaDB<!--link--> 和 SQLite 数据库。在本教程中，我们将使用 MySQL ，它是 Ghost 在生产模式下运行时推荐的数据库。</p>
 
 <p>使用以下命令安装 MySQL 包：</p>
-
-<pre><code class="language-console-bash">sudo apt install mysql-server
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install mysql-server</code></pre></div>
 <p>运行 <code>mysql_secure_installation</code> 命令以提高 MySQL 的安全性：</p>
-
-<pre><code class="language-console-bash">sudo mysql_secure_installation
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql_secure_installation</code></pre></div>
 <p>系统将要求您配置 <code>VALIDATE PASSWORD PLUGIN</code> 用于测试 MySQL 用户密码强度的内容。密码验证策略有三个级别，低，中和强。按下 <code>ENTER</code> 如果你不想来设置验证密码插件。</p>
 
 <p>在下一个提示中，将要求您为 MySQL root 用户设置密码。</p>
@@ -203,16 +187,10 @@ sudo apt-get -o Dpkg::Options::=&quot;--force-overwrite&quot; install yarn
 <p>设置 root 密码后，脚本还会要求您删除匿名用户，限制 root 用户访问本地计算机并删除测试数据库。你应对所有问题回答 <code>Y</code> （是）。</p>
 
 <p>接下来我们需要将身份验证方法从 <code>auth_socket</code> 更改为 <code>mysql_native_password</code> ，这样 Ghost 安装程序才可以访问我们的 MySQL 服务器。为此，请以 root 用户身份登录 MySQL 服务器：</p>
-
-<pre><code class="language-console-bash">sudo mysql
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
 <p>并运行以下查询，在使用 <code>mysql_native_password</code> 方法时将设置 MySQL root 用户的密码：</p>
-
-<pre><code class="language-console-mysql">ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'very_strong_pasword';
-FLUSH PRIVILEGES;
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED WITH mysql_native_password BY &#39;very_strong_pasword&#39;;
+FLUSH PRIVILEGES;</code></pre></div>
 <p>确保使用强密码更改 <code>very_strong_pasword</code> 。</p>
 
 <h2 id="安装-ghost-cli">安装 Ghost-CLI</h2>
@@ -220,120 +198,80 @@ FLUSH PRIVILEGES;
 <p>我们将使用官方 Ghost CLI 实用程序安装 Ghost 。此实用程序允许您在单个命令中安装或更新 Ghost 。</p>
 
 <p>Ghost CLI 作为 npm 包提供。以下命令将在您的 Ubuntu 系统上全局安装 Ghost CLI ：</p>
-
-<pre><code class="language-console-bash">sudo yarn global add ghost-cli
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yarn global add ghost-cli</code></pre></div>
 <h2 id="创建-ghost-安装位置">创建 Ghost 安装位置</h2>
 
 <p>我们将在 <code>/var/www/ghost</code> 目录中下载并安装 Ghost ，这是推荐的安装位置。</p>
 
 <p>请输入以下命令创建目录：</p>
-
-<pre><code class="language-console-bash">sudo mkdir -p /var/www/ghost
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/ghost</code></pre></div>
 <p>将目录的所有权更改为您的用户：</p>
-
-<pre><code class="language-console-bash">sudo chown $USER:$USER /var/www/ghost
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown $USER:$USER /var/www/ghost</code></pre></div>
 <p>设置正确的目录权限：</p>
-
-<pre><code class="language-console-bash">sudo chmod 775 /var/www/ghost
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chmod 775 /var/www/ghost</code></pre></div>
 <h2 id="安装-ghost">安装 Ghost</h2>
 
 <p>现在您已经安装了 Ghost CLI 并且所有先决条件都已完成，我们可以从安装开始。</p>
 
 <p>切换到 <code>/var/www/ghost</code> 目录。</p>
-
-<pre><code class="language-console-bash">cd /var/www/ghost
-</code></pre>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /var/www/ghost</code></pre></div>
 <p>要开始安装运行 <code>ghost install</code> ，这将会安装和配置 Ghost ，将 Nginx 配置为<a href="/linux/nginx-reverse-proxy/">反向代理</a>，并使用免费的 let&rsquo;s Encrypt SSL 证书保护站点。</p>
-
-<pre><code class="language-console-bash">ghost install
-</code></pre>
-
-<pre><code class="language-output">✔ Checking system Node.js version
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ghost install</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">✔ Checking system Node.js version
 ✔ Checking logged in user
 ✔ Checking current folder permissions
-System checks failed with message: 'Linux version is not Ubuntu 16'
+System checks failed with message: &#39;Linux version is not Ubuntu 16&#39;
 Some features of Ghost-CLI may not work without additional configuration.
 For local installs we recommend using `ghost install local` instead.
-? Continue anyway? (y/N) y
-</code></pre>
-
+? Continue anyway? (y/N) y</code></pre></div>
 <p>安装程序将检查您的系统并打印一些警告，如上所示。键入 <code>y</code> 以继续，然后安装程序将下载并安装 Ghost ：</p>
-
-<pre><code class="language-output">ℹ Checking operating system compatibility [skipped]
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ℹ Checking operating system compatibility [skipped]
 ✔ Checking for a MySQL installation
 ✔ Checking memory availability
 ✔ Checking for latest Ghost version
 ✔ Setting up install directory
 ✔ Downloading and installing Ghost v1.24.9
-✔ Finishing install process
-</code></pre>
-
+✔ Finishing install process</code></pre></div>
 <p>接下来，系统将提示您设置博客 URL 和 MySQL 信息。提供我们在 <code>安装 MySQL</code> 部分中设置的 root 用户名和密码，并使用默认数据库名称 <code>ghost_prod</code> 。</p>
-
-<pre><code class="language-output">? Enter your blog URL: https://example.com
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">? Enter your blog URL: https://example.com
 ? Enter your MySQL hostname: localhost
 ? Enter your MySQL username: root
 ? Enter your MySQL password: [hidden]
-? Enter your Ghost database name: ghost_prod
-</code></pre>
-
+? Enter your Ghost database name: ghost_prod</code></pre></div>
 <p>安装程序将创建一个名为 <code>ghost</code> 的系统用户，并询问您是否要创建一个MySQL 用户 ghost ，键入 <code>Yes</code> 。</p>
-
-<pre><code class="language-output">✔ Configuring Ghost
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">✔ Configuring Ghost
 ✔ Setting up instance
 Running sudo command: chown -R ghost:ghost /var/www/ghost/content
-✔ Setting up &quot;ghost&quot; system user
-? Do you wish to set up &quot;ghost&quot; mysql user? Yes
-✔ Setting up &quot;ghost&quot; mysql user
-</code></pre>
-
+✔ Setting up &#34;ghost&#34; system user
+? Do you wish to set up &#34;ghost&#34; mysql user? Yes
+✔ Setting up &#34;ghost&#34; mysql user</code></pre></div>
 <p>接下来，安装程序会询问您是否要设置 Nginx 。通过键入确认 <code>Yes</code> 。</p>
-
-<pre><code class="language-output">? Do you wish to set up Nginx? Yes
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">? Do you wish to set up Nginx? Yes
 ✔ Creating nginx config file at /var/www/ghost/system/files/example.com.conf
 Running sudo command: ln -sf /var/www/ghost/system/files/example.com.conf /etc/nginx/sites-available/example.com.conf
 Running sudo command: ln -sf /etc/nginx/sites-available/example.com.conf /etc/nginx/sites-enabled/example.com.conf
 Running sudo command: nginx -s reload
-✔ Setting up Nginx
-</code></pre>
-
+✔ Setting up Nginx</code></pre></div>
 <p>设置 Nginx 后，安装程序会询问您是否要设置 SSL 。通过键入确认， <code>Yes</code> 配置向导将要求您输入您的电子邮件地址，然后它将为您的域生成免费的 Let&rsquo;s Encrypt SSL 证书并配置 Nginx 。</p>
-
-<pre><code class="language-output">? Do you wish to set up SSL? Yes
-? Enter your email (used for Let's Encrypt notifications) admin@example.com
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">? Do you wish to set up SSL? Yes
+? Enter your email (used for Let&#39;s Encrypt notifications) admin@example.com
 Running sudo command: mkdir -p /etc/letsencrypt
 Running sudo command: ./acme.sh --install --home /etc/letsencrypt
-Running sudo command: /etc/letsencrypt/acme.sh --issue --home /etc/letsencrypt --domain example.com --webroot /var/www/ghost/system/nginx-root --reloadcmd &quot;nginx -s reload&quot; --accountemail admin@example.com
+Running sudo command: /etc/letsencrypt/acme.sh --issue --home /etc/letsencrypt --domain example.com --webroot /var/www/ghost/system/nginx-root --reloadcmd &#34;nginx -s reload&#34; --accountemail admin@example.com
 Running sudo command: openssl dhparam -out /etc/nginx/snippets/dhparam.pem 2048
 Running sudo command: mv /tmp/ssl-params.conf /etc/nginx/snippets/ssl-params.conf
 ✔ Creating ssl config file at /var/www/ghost/system/files/example.com-ssl.conf
 Running sudo command: ln -sf /var/www/ghost/system/files/example.com-ssl.conf /etc/nginx/sites-available/example.com-ssl.conf
 Running sudo command: ln -sf /etc/nginx/sites-available/example.com-ssl.conf /etc/nginx/sites-enabled/example.com-ssl.conf
 Running sudo command: nginx -s reload
-✔ Setting up SSL
-</code></pre>
-
+✔ Setting up SSL</code></pre></div>
 <p>接下来，安装程序将询问您是否要设置 systemd 服务。键入 <code>Y</code> 以接受，安装程序将创建一个名为 ghost_example-com 的新 systemd 服务，并使其在启动时启动：</p>
-
-<pre><code class="language-output">? Do you wish to set up Systemd? Yes
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">? Do you wish to set up Systemd? Yes
 ✔ Creating systemd service file at /var/www/ghost/system/files/ghost_example-com.service
 Running sudo command: ln -sf /var/www/ghost/system/files/ghost_example-com.service /lib/systemd/system/ghost_example-com.service
 Running sudo command: systemctl daemon-reload
-✔ Setting up Systemd
-</code></pre>
-
+✔ Setting up Systemd</code></pre></div>
 <p>最后，安装程序将设置数据库并询问您是否要启动 Ghost ，键入 <code>Yes</code> 。</p>
-
-<pre><code class="language-output">Running sudo command: /var/www/ghost/current/node_modules/.bin/knex-migrator-migrate --init --mgpath /var/www/ghost/current
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Running sudo command: /var/www/ghost/current/node_modules/.bin/knex-migrator-migrate --init --mgpath /var/www/ghost/current
 ✔ Running database migrations
 ? Do you want to start Ghost? Yes
 Running sudo command: systemctl is-active ghost_example-com
@@ -355,9 +293,7 @@ You can access your publication at https://example.com
 Next, go to your admin interface at https://example.com/ghost/ to complete the setup of your publication
 
 Ghost uses direct mail by default
-To set up an alternative email method read our docs at https://docs.ghost.org/docs/mail-config
-</code></pre>
-
+To set up an alternative email method read our docs at https://docs.ghost.org/docs/mail-config</code></pre></div>
 <h2 id="完成ghost设置">完成Ghost设置</h2>
 
 <p>打开浏览器，转到 Ghost 管理界面， <code>https://example.com/ghost/</code> 您将看到以下界面：</p>
