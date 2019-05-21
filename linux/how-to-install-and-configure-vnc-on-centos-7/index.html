@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 CentOS 7 上安装和配置 VNC | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上安装和配置 VNC" />
+<meta property="og:description" content="在本教程中，我们将引导您完成在 CentOS 7 系统上安装和配置 VNC 服务器的步骤。我们还将向您展示如何通过 SSH 隧道安全地连接到 VNC 服务器。
+
+虚拟网络计算(VNC)是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-configure-vnc-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-22T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-22T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上安装和配置 VNC">
+<meta itemprop="description" content="在本教程中，我们将引导您完成在 CentOS 7 系统上安装和配置 VNC 服务器的步骤。我们还将向您展示如何通过 SSH 隧道安全地连接到 VNC 服务器。
+
+虚拟网络计算(VNC)是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。">
+
+
+<meta itemprop="datePublished" content="2019-05-22T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-22T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="533">
+
+
+
+<meta itemprop="keywords" content="centos,vnc," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上安装和配置 VNC"/>
+<meta name="twitter:description" content="在本教程中，我们将引导您完成在 CentOS 7 系统上安装和配置 VNC 服务器的步骤。我们还将向您展示如何通过 SSH 隧道安全地连接到 VNC 服务器。
+
+虚拟网络计算(VNC)是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上安装和配置 VNC</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-22T05:00:00&#43;08:00">May 22, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在本教程中，我们将引导您完成在 CentOS 7 系统上安装和配置 VNC 服务器的步骤。我们还将向您展示如何通过 SSH 隧道安全地连接到 VNC 服务器。</p>
+
+<p>虚拟网络计算(VNC)是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续学习本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。我们假设您以名 <code>buzheng</code> 为的用户身份登录。</p>
+
+<h2 id="安装-xfce-桌面环境">安装 Xfce 桌面环境</h2>
+
+<p>CentOS 服务器安装通常不会安装桌面环境，因此我们首先要安装轻量级桌面环境。</p>
+
+<p>在本指南中，我们将安装 <a href="https://xfce.org/">Xfce</a> 。它快速，稳定且占用系统资源较少，因此非常适合在远程服务器上使用。</p>
+
+<p>EPEL 存储库中提供了 Xfce 包。如果您的服务器上没有启用 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>，则可以键入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release</code></pre></div>
+<p>添加存储库后，在 CentOS 上安装 Xfce ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum groupinstall xfce</code></pre></div>
+<p>根据您的系统，下载和安装 Xfce 软件包和依赖项可能需要一些时间。</p>
+
+<h2 id="安装-vnc-服务器">安装 VNC 服务器</h2>
+
+<p>我们将使用 TigerVNC 作为我们首选的 VNC 服务器。 <a href="http://tigervnc.org/">TigerVNC</a> 是一款积极维护的高性能开源 VNC 服务器。</p>
+
+<p>键入以下命令以在 CentOS 服务器上安装 TigerVNC ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">yum install tigervnc-server</code></pre></div>
+<p>现在安装了 VNC 服务器，下一步是运行 <code>vncserver</code> 命令，该命令将创建初始配置并设置密码。运行以下命令时不要使用 sudo ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">vncserver</code></pre></div>
+<p>系统将提示您输入并确认密码，以及是否将其设置为仅查看密码。如果您选择设置仅查看密码，则用户将无法使用鼠标和键盘与 VNC 实例进行交互。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">You will require a password to access your desktops.
+
+Password:
+Verify:
+Would you like to enter a view-only password (y/n)? n
+/usr/bin/xauth:  file /home/buzheng/.Xauthority does not exist
+
+New &#39;server2.buzheng.org:1 (buzheng)&#39; desktop at :1 on machine server2.buzheng.org
+
+Starting applications specified in /etc/X11/Xvnc-session
+Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log</code></pre></div>
+<p>第一次运行 <code>vncserver</code> 命令时，它将创建密码文件并将其存储在 <code>~/.vnc</code> 目录中，如果不存在，将创建该目录。</p>
+
+<p>注意上面输出中的<a href="/linux/how-to-change-hostname-on-centos-7/">主机名</a>之后的 <code>:1</code>。这表示运行 vnc 服务器的显示端口号。在我们的例子中，服务器在 TCP 端口 <code>5901</code> (5900 + 1)上运行。如果您创建第二个实例， <code>vncserver</code> 它将在下一个空闲端口上运行，即 <code>:2</code>，这意味着服务器正在端口 <code>5902</code> (5900 + 2)上运行。</p>
+
+<blockquote>
+<p>当使用 VNC 服务器时， 服务器编号 <code>:X</code> 代表了显示的端口是 <code>5900+X</code> 。</p>
+</blockquote>
+
+<p>在继续下一步之前，首先使用 <code>vncserver</code> 带有 <code>-kill</code> 选项和服务器编号作为参数的命令停止 VNC 实例。在我们的例子中，服务器在端口 5901 (<code>:1</code>)中运行，因此我们将使用以下命令停止它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">vncserver -kill :1</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Killing Xvnc process ID 2432</code></pre></div>
+<h2 id="配置-vnc-服务器">配置 VNC 服务器</h2>
+
+<p>现在我们的 CentOS 服务器上安装了 Xfce 和 TigerVNC ，下一步是配置 TigerVNC 使用 Xfce 。为此，请打开以下文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/.vnc/xstartup</code></pre></div>
+<p>并将最后一行 <code>exec /etc/X11/xinit/xinitrc</code> 更改为 <code>exec startxfce4</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/sh
+</span><span class="cp"></span><span class="nb">unset</span> SESSION_MANAGER
+<span class="nb">unset</span> DBUS_SESSION_BUS_ADDRESS
+<span class="nb">exec</span> startxfce4 </code></pre></div>
+<p>保存并关闭文件。无论何时启动或重新启动 TigerVNC 服务器，都将自动执行上述脚本。</p>
+
+<p>如果需要将<a href="http://tigervnc.org/doc/vncserver.html">附加选项</a>传递给 VNC 服务器，则可以打开 <code>~/.vnc/config</code> 文件并在每行添加一个选项。最常见的选项列在文件中。取消注释并根据自己的喜好进行修改。</p>
+
+<p>这是一个例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># securitytypes=vncauth,tlsvnc</span>
+<span class="c1"># desktop=sandbox</span>
+<span class="nv">geometry</span><span class="o">=</span>1920x1080
+<span class="c1"># localhost</span>
+<span class="c1"># alwaysshared</span>
+<span class="nv">dpi</span><span class="o">=</span><span class="m">96</span></code></pre></div>
+<h2 id="创建-systemd-单元文件">创建 Systemd 单元文件</h2>
+
+<p>我们将创建一个 systemd 单元文件，使我们能够根据需要轻松启动，停止和重新启动 VNC 服务，与任何其他 systemd 服务相同。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service</code></pre></div>
+<p>使用文本编辑器打开文件，并替换 <code>&lt;USER&gt;</code> 为您的实际用户名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/vncserver@\:1.service</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Remote desktop service (VNC)</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+
+<span class="c"># Clean any existing files in /tmp/.X11-unix environment</span>
+<span class="na">ExecStartPre</span><span class="o">=</span><span class="s">/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/sbin/runuser -l buzheng -c &#34;/usr/bin/vncserver %i&#34;</span>
+<span class="na">PIDFile</span><span class="o">=</span><span class="s">/home/buzheng/.vnc/%H%i.pid</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
+<p>保存并关闭文件。通知 systemd 我们创建了一个新的单元文件，让其重新加载：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload</code></pre></div>
+<p>下一步是使用以下命令启用单元文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable vncserver@:1.service</code></pre></div>
+<p>符号 <code>1</code> 后面的数字 <code>@</code> 定义了 VNC 服务将在其上运行的显示端口，在我们的情况下，这是默认设置 <code>1</code> ， VNC 服务器将在端口上侦听， <code>5901</code> 如我们在上一节中讨论的那样。</p>
+
+<p>执行以下命令启动 VNC 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start vncserver@:1.service</code></pre></div>
+<p>验证服务是否已成功启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vncserver@:1.service</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● vncserver@:1.service - Remote desktop service (VNC)
+   Loaded: loaded (/etc/systemd/system/vncserver@:1.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2018-09-16 09:59:53 UTC; 4s ago
+  Process: 6391 ExecStart=/usr/sbin/runuser -l buzheng -c /usr/bin/vncserver %i (code=exited, status=0/SUCCESS)
+  Process: 6389 ExecStartPre=/bin/sh -c /usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || : (code=exited, status=0/SUCCESS)
+ Main PID: 6413 (Xvnc)
+   CGroup: /system.slice/system-vncserver.slice/vncserver@:1.service
+           ‣ 6413 /usr/bin/Xvnc :1 -auth /home/buzheng/.Xauthority -desktop server2.buzheng.org:1 (buzheng) -fp catalogue:/etc/X11/fontpath.d -geometry 1024x768 -pn -rfbauth /home/buzheng/.vnc/passwd -rfbport ...</code></pre></div>
+<h2 id="连接到-vnc-服务器">连接到 VNC 服务器</h2>
+
+<p>VNC 不是加密协议，可以进行数据包嗅探。建议的方法是创建一个 SSH 隧道，该隧道将安全地将来自本地计算机的端口 5901 上的流量转发到同一端口上的服务器。</p>
+
+<h3 id="在-linux-和-macos-上设置-ssh-隧道">在 Linux 和 macOS 上设置 SSH 隧道</h3>
+
+<p>如果在计算机上运行 Linux ， macOS 或任何其他基于 Unix 的操作系统，则可以使用以下命令轻松创建 SSH 隧道：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -L 5901:127.0.0.1:5901 -N -f -l username server_ip_address</code></pre></div>
+<p>系统将提示您输入用户密码。</p>
+
+<p>不要忘了更换 <code>username</code> 和 <code>server_ip_address</code> 为您的用户名和服务器的 IP 地址。</p>
+
+<h3 id="在-windows-上设置-ssh-隧道">在 Windows 上设置 SSH 隧道</h3>
+
+<p>如果运行 Windows ，则可以使用 <a href="https://www.putty.org/">PuTTY SSH 客户端</a>设置 SSH 隧道。</p>
+
+<p>打开 Putty 并在 <code>Host name or IP address</code> 字段中输入您的服务器 IP 地址。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-putty.jpg" alt="" /></p>
+
+<p>在 <code>Connection</code> 菜单下，展开 <code>SSH</code> 并选择 <code>Tunnels</code> 。在<code>Source Port</code> 字段输入 VNC 服务器端口(<code>5901</code>) ，并在 <code>Destination</code>字段输入 <code>server_ip_address:5901</code>，最后点击如下图所示的图像按钮 <code>Add</code> ：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-ssh-tunnel-putty.jpg" alt="" /></p>
+
+<p>返回 <code>Session</code> 页面以保存设置，这样您每次都不需要输入它们。现在，您只需选择已保存的会话并通过单击 <code>Open</code> 按钮登录到远程服务器。</p>
+
+<h3 id="使用-vncviewer-连接">使用 Vncviewer 连接</h3>
+
+<p>现在您已经设置了 SSH 隧道，现在可以打开 Vncviewer 并连接到 <code>localhost:5901</code> 的 VNC 服务器了。</p>
+
+<p>您可以使用任何 VNC Viewer，如 TigerVNC ， TightVNC ， RealVNC ， UltraVNC Vinagre 和 VNC Viewer for Google Chrome 。</p>
+
+<p>在这个例子中，我们将使用 TigerVNC 。打开 VNC Viewer，输入 <code>localhost:5901</code> 并单击 <code>Connect</code> 按钮。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-viewer.jpg" alt="" /></p>
+
+<p>出现提示时输入密码，您应该会看到默认的 Xfce 桌面。它应该看起来像这样：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-xfce-desktop.jpg" alt="" /></p>
+
+<p>您现在可以使用键盘和鼠标从本地计算机开始与远程 XFCE 桌面交互。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您已经启动并运行 VNC 服务器，并且可以使用图形界面轻松管理 CentOS 7 服务器。</p>
+
+<p>要配置 VNC 服务器以启动多个用户的显示，请使用 <code>vncserver</code> 命令创建初始配置并设置密码，并使用其他端口创建新的服务文件。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/vnc" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">vnc</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/configure-automatic-updates-with-yum-cron-on-centos-7/">在 CentOS 7 上使用 yum-cron 配置自动更新</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-your-centos-version/">如何查看您的 CentOS 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-centos-7/">如何在 CentOS 7 上安装 Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-vnc-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 VNC</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-disable-selinux-on-centos-7/">如何在 CentOS 7 上禁用 SELinux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-centos-7/">如何在 CentOS 7 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-centos-7/">如何在 CentOS 7 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 CentOS 7 上使用 FirewallD 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-edit-your-hosts-file/">如何编辑 hosts 文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-plex-media-server-on-centos-7/">如何在 CentOS 7 上安装 Plex Media Server</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
