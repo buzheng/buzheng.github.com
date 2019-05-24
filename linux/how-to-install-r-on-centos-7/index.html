@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 CentOS 7 上安装 R | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上安装 R" />
+<meta property="og:description" content="R 是一种快速增长的开源编程语言和自由环境，专门用于统计计算和图形表示。它由 R 统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。
+
+本教程将教您如何在 CentOS 7 上安装 R 以及如何从官方的 Comprehensive R Archive Network（CRAN） 安装 R 软件包。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-r-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-25T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-25T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上安装 R">
+<meta itemprop="description" content="R 是一种快速增长的开源编程语言和自由环境，专门用于统计计算和图形表示。它由 R 统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。
+
+本教程将教您如何在 CentOS 7 上安装 R 以及如何从官方的 Comprehensive R Archive Network（CRAN） 安装 R 软件包。">
+
+
+<meta itemprop="datePublished" content="2019-05-25T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-25T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="335">
+
+
+
+<meta itemprop="keywords" content="centos,r," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上安装 R"/>
+<meta name="twitter:description" content="R 是一种快速增长的开源编程语言和自由环境，专门用于统计计算和图形表示。它由 R 统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。
+
+本教程将教您如何在 CentOS 7 上安装 R 以及如何从官方的 Comprehensive R Archive Network（CRAN） 安装 R 软件包。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在 CentOS 7 上安装 R</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-25T05:00:00&#43;08:00">May 25, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>R 是一种快速增长的开源编程语言和自由环境，专门用于统计计算和图形表示。它由 R 统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。</p>
+
+<p>本教程将教您如何在 CentOS 7 上安装 R 以及如何从官方的 <a href="https://cloud.r-project.org/">Comprehensive R Archive Network（CRAN）</a> 安装 R 软件包。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>您的系统至少有 1G 的 RAM 。否则，您可以<a href="/linux/create-a-linux-swap-file/">创建交换文件</a>。</li>
+<li>您以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</li>
+</ul>
+
+<h2 id="在-centos-上安装-r">在 Centos 上安装 R</h2>
+
+<p>在撰写本文时， R 的最新稳定版本是 3.5 版本。</p>
+
+<p>要在 CentOS 7 上安装 R ，请按照下列步骤操作：</p>
+
+<ol>
+<li><p>EP 包存储库中提供了 R 包。如果您的计算机上没有安装 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>，可以输入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release</code></pre></div>
+<p>系统将提示您接受存储库 GPG 密钥，键入 <code>y</code> 并按下 <code>Enter</code> 。</p>
+
+<ol>
+<li>添加存储库后，键入以下命令安装 R ：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install R</code></pre></div>
+<p>R 是一个元包，包含所有必需的 R 组件。</p></li>
+
+<li><p>通过键入以下命令来验证安装，该命令将打印 R 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">R --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">R version 3.5.0 (2018-04-23) -- &#34;Joy in Playing&#34;
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+http://www.gnu.org/licenses/.</code></pre></div></li>
+</ol>
+
+<h2 id="从-cran-安装-r-软件包">从 CRAN 安装 R 软件包</h2>
+
+<p>R 如此受欢迎的主要原因之一是通过 Comprehensive R Archive Network（CRAN）提供的各种软件包。</p>
+
+<p>出于演示目的，我们将安装一个名为 <a href="https://stringr.tidyverse.org/"><code>stringr</code></a> 的包，它提供了常见字符串操作的快速和正确的实现。</p>
+
+<p>以 root 身份启动时，程序包将全局安装并可供所有系统用户使用。如果您在没有 sudo 的情况下启动 R ，则会为您的用户设置个人库。</p>
+
+<p>首先打开 R 控制台作为 root ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -i R</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">R version 3.5.0 (2018-04-23) -- &#34;Joy in Playing&#34;
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-redhat-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type &#39;license()&#39; or &#39;licence()&#39; for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type &#39;contributors()&#39; for more information and
+&#39;citation()&#39; on how to cite R or R packages in publications.
+
+Type &#39;demo()&#39; for some demos, &#39;help()&#39; for on-line help, or
+&#39;help.start()&#39; for an HTML browser interface to help.
+Type &#39;q()&#39; to quit R.
+
+&gt;</code></pre></div>
+<p>以下所有命令均在 R 控制台中执行。</p>
+
+<p>通过运行以下命令安装程序包 <code>stringr</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R">install.packages<span class="p">(</span><span class="s">&#34;stringr&#34;</span><span class="p">)</span></code></pre></div>
+<p>系统将要求您选择 CRAN 镜像：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"><span class="nx">Installing</span> <span class="kn">package</span> <span class="nx">into</span> <span class="err">‘</span><span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">lib64</span><span class="o">/</span><span class="nx">R</span><span class="o">/</span><span class="nx">library</span><span class="err">’</span>
+<span class="p">(</span><span class="nx">as</span> <span class="err">‘</span><span class="nx">lib</span><span class="err">’</span> <span class="nx">is</span> <span class="nx">unspecified</span><span class="p">)</span>
+<span class="o">---</span> <span class="nx">Please</span> <span class="k">select</span> <span class="nx">a</span> <span class="nx">CRAN</span> <span class="nx">mirror</span> <span class="k">for</span> <span class="nx">use</span> <span class="nx">in</span> <span class="nx">this</span> <span class="nx">session</span> <span class="o">---</span>
+<span class="nx">Secure</span> <span class="nx">CRAN</span> <span class="nx">mirrors</span> </code></pre></div>
+<p>选择距离您所在位置最近的镜像。</p>
+
+<p>安装需要一些时间，一旦完成，请键入以下内容加载库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R"><span class="kn">library</span><span class="p">(</span>stringr<span class="p">)</span></code></pre></div>
+<p>接下来，创建一个名为 <code>tutorial</code> 的简单字符向量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R">tutorial <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#34;How&#34;</span><span class="p">,</span> <span class="s">&#34;to&#34;</span><span class="p">,</span> <span class="s">&#34;Install&#34;</span><span class="p">,</span> <span class="s">&#34;R&#34;</span><span class="p">,</span> <span class="s">&#34;on&#34;</span><span class="p">,</span> <span class="s">&#34;CentOS&#34;</span><span class="p">,</span> <span class="s">&#34;7&#34;</span><span class="p">)</span></code></pre></div>
+<p>运行以下函数，它将打印每个字符串的长度：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R">str_length<span class="p">(</span>tutorial<span class="p">)</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[1] 3 2 7 1 2 6 1</code></pre></div>
+<p>您可以在<a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">可用的 CRAN 包名称</a>中找到更多 R 包，并通过 <code>install.packages()</code> 安装它们。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已成功安装 R 您的 CentOS 机器并学习如何安装 R 软件包。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/r" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">r</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-vnc-on-centos-7/">如何在 CentOS 7 上安装和配置 VNC</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/configure-automatic-updates-with-yum-cron-on-centos-7/">在 CentOS 7 上使用 yum-cron 配置自动更新</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-r-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 R</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-your-centos-version/">如何查看您的 CentOS 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-centos-7/">如何在 CentOS 7 上安装 Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-disable-selinux-on-centos-7/">如何在 CentOS 7 上禁用 SELinux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-asterisk-on-centos-7/">如何在 CentOS 7 上安装 Asterisk</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-centos-7/">如何在 CentOS 7 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-rpm-packages-on-centos/">如何在 CentOS 上安装 RPM 软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 CentOS 7 上使用 FirewallD 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-edit-your-hosts-file/">如何编辑 hosts 文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
