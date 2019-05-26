@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Bash For Loop | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash For Loop" />
+<meta property="og:description" content="循环是编程语言的基本概念之一。当你想要一遍又一遍地运行一系列命令时，循环很方便，直到达到某个条件。
+
+在诸如Bash之类的脚本语言中，循环对于自动执行重复性任务非常有用。
+
+在Bash脚本中有3个基本的循环结构，用于循环，while循环，直到循环。
+
+在本教程中，我们将介绍Bash中for循环的基础知识以及用于改变循环流的break和continue语句。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/bash-for-loop/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Bash For Loop">
+<meta itemprop="description" content="循环是编程语言的基本概念之一。当你想要一遍又一遍地运行一系列命令时，循环很方便，直到达到某个条件。
+
+在诸如Bash之类的脚本语言中，循环对于自动执行重复性任务非常有用。
+
+在Bash脚本中有3个基本的循环结构，用于循环，while循环，直到循环。
+
+在本教程中，我们将介绍Bash中for循环的基础知识以及用于改变循环流的break和continue语句。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="268">
+
+
+
+<meta itemprop="keywords" content="bash,loop,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Bash For Loop"/>
+<meta name="twitter:description" content="循环是编程语言的基本概念之一。当你想要一遍又一遍地运行一系列命令时，循环很方便，直到达到某个条件。
+
+在诸如Bash之类的脚本语言中，循环对于自动执行重复性任务非常有用。
+
+在Bash脚本中有3个基本的循环结构，用于循环，while循环，直到循环。
+
+在本教程中，我们将介绍Bash中for循环的基础知识以及用于改变循环流的break和continue语句。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">Bash For Loop</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>循环是编程语言的基本概念之一。当你想要一遍又一遍地运行一系列命令时，循环很方便，直到达到某个条件。</p>
+
+<p>在诸如Bash之类的脚本语言中，循环对于自动执行重复性任务非常有用。</p>
+
+<p>在Bash脚本中有3个基本的循环结构，用于循环，<a href="/linux/bash-while-loop/">while循环</a>，<a href="/linux/bash-until-loop/">直到循环</a>。</p>
+
+<p>在本教程中，我们将介绍Bash中for循环的基础知识以及用于改变循环流的break和continue语句。</p>
+
+<h2 id="循环的标准bash">循环的标准Bash</h2>
+
+<p>for循环遍历项列表并执行给定的命令集。</p>
+
+<p>Bash for循环采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> item in <span class="o">[</span>LIST<span class="o">]</span>
+<span class="k">do</span>
+  <span class="o">[</span>COMMANDS<span class="o">]</span>
+<span class="k">done</span></code></pre></div>
+<p>列表可以是由空格分隔的一系列字符串，一系列数字，命令输出，数组等。</p>
+
+<h3 id="循环遍历字符串">循环遍历字符串</h3>
+
+<p>在下面的示例中，循环将遍历字符串列表中的每个项目，并且变量<code>element</code>将设置为当前项目。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> element in Hydrogen Helium Lithium Beryllium
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Element: </span><span class="nv">$element</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div>
+<p>循环将产生以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Element: Hydrogen
+Element: Helium
+Element: Lithium
+Element: Beryllium</code></pre></div>
+<h3 id="循环遍历数字范围">循环遍历数字范围</h3>
+
+<p>您可以使用序列表达式通过定义范围的起点和终点来指定数字或字符的范围。序列表达式采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">{</span>START..END<span class="o">}</span></code></pre></div>
+<p>在下面的示例中，循环将遍历从0到3的所有数字。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span><span class="m">0</span>..3<span class="o">}</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Number: 0
+Number: 1
+Number: 2
+Number: 3</code></pre></div>
+<p>从Bash 4开始，还可以在使用范围时指定增量。表达式采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">{</span>START..END..INCREMENT<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span><span class="m">0</span>..20..5<span class="o">}</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Number: 0
+Number: 5
+Number: 10
+Number: 15
+Number: 20</code></pre></div>
+<h3 id="循环数组元素">循环数组元素</h3>
+
+<p>您还可以使用for循环迭代元素数组：</p>
+
+<p>在下面的示例中，我们定义一个数组<code>BOOKS</code>并迭代数组的每个元素。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">BOOKS</span><span class="o">=(</span><span class="s1">&#39;In Search of Lost Time&#39;</span> <span class="s1">&#39;Don Quixote&#39;</span> <span class="s1">&#39;Ulysses&#39;</span> <span class="s1">&#39;The Great Gatsby&#39;</span><span class="o">)</span>
+
+<span class="k">for</span> book in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">BOOKS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Book: </span><span class="nv">$book</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Book: In Search of Lost Time
+Book: Don Quixote
+Book: Ulysses
+Book: The Great Gatsby</code></pre></div>
+<h2 id="循环的c风格bash">循环的C风格Bash</h2>
+
+<p>C-style for循环的语法采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> <span class="o">((</span>INITIALIZATION<span class="p">;</span> TEST<span class="p">;</span> STEP<span class="o">))</span>
+<span class="k">do</span>
+  <span class="o">[</span>COMMANDS<span class="o">]</span>
+<span class="k">done</span></code></pre></div>
+<p>INITIALIZATION部分仅在循环开始时执行一次。然后，评估TEST部分。如果为假，则for循环终止。如果TEST为真，则执行for循环体内的命令并更新STEP部分。</p>
+
+<p>在下面的代码中，循环通过初始化星型<code>i = 0</code>，然后在每次迭代之前检查是否<code>i ≤ 10</code>。如果为true，则<a href="/linux/echo-command-in-linux-with-examples/">打印</a>当前值<code>i</code>并将变量递增<code>i</code>1（<code>i++</code>），否则循环终止。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> <span class="o">((</span><span class="nv">i</span> <span class="o">=</span> <span class="m">0</span> <span class="p">;</span> i &lt;<span class="o">=</span> <span class="m">1000</span> <span class="p">;</span> i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Counter: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div>
+<p>循环迭代1001次并将产生以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Counter: 0
+Counter: 1
+Counter: 2
+...
+Counter: 998
+Counter: 999
+Counter: 1000</code></pre></div>
+<h2 id="打破并继续发表声明">打破并继续发表声明</h2>
+
+<p>break和continue语句可用于控制for循环执行。</p>
+
+<h3 id="休息声明">休息声明</h3>
+
+<p>break语句终止当前循环并将程序控制传递给终止语句后面的语句。它通常用于在满足某个条件时终止循环。</p>
+
+<p>在下面的示例中，一旦当前迭代项等于&rsquo;Lithium&rsquo;，循环的执行将终止。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> element in Hydrogen Helium Lithium Beryllium<span class="p">;</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$element</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s1">&#39;Lithium&#39;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">break</span>
+  <span class="k">fi</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Element: </span><span class="nv">$element</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Element: Hydrogen
+Element: Helium
+All Done!</code></pre></div>
+<h3 id="继续声明">继续声明</h3>
+
+<p>continue语句退出循环的当前迭代，并将程序控制传递给循环的下一次迭代。</p>
+
+<p>在下面的示例中，我们迭代一系列数字，当当前迭代项等于&rsquo;2&rsquo;时，continue语句将导致执行返回到循环的开头并继续下一次迭代。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span><span class="m">1</span>..5<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">continue</span>
+  <span class="k">fi</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Number: 1
+Number: 3
+Number: 4
+Number: 5</code></pre></div>
+<h2 id="bash-for-loop示例">Bash For Loop示例</h2>
+
+<h3 id="重命名文件名中包含空格的文件">重命名文件名中包含空格的文件</h3>
+
+<p>下面的示例演示如何使用Bash for循环通过将空格替换为下划线来重命名当前目录中的所有文件，并在其名称中包含空格。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> file in *<span class="se">\ </span>*<span class="p">;</span> <span class="k">do</span>
+  mv <span class="s2">&#34;</span><span class="nv">$file</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">file</span><span class="p">// /_</span><span class="si">}</span><span class="s2">&#34;</span>
+<span class="k">done</span></code></pre></div>
+<p>让我们逐行分解代码：</p>
+
+<ul>
+<li>第一行创建一个for循环，并遍历其名称中带有空格的所有文件的列表。表达式<code>*\ *</code>创建列表。</li>
+<li>第二行适用于列表中的每个项目，并将文件移动到新的文件，用下划线（<code>_</code>）替换空格。该部分<code>${file// /_}</code>使用<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">shell参数扩展</a>来用字符串替换<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">参数中</a>的模式。</li>
+<li><code>done</code> 表示循环段的结束。</li>
+</ul>
+
+<h3 id="更改文件扩展名">更改文件扩展名</h3>
+
+<p>以下示例显示如何使用Bash for循环通过将文件扩展名从.jpeg替换为.jpg来重命名当前目录中以.jpeg结尾的所有文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> file in *.jpeg<span class="p">;</span> <span class="k">do</span>
+    mv -- <span class="s2">&#34;</span><span class="nv">$file</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">file</span><span class="p">%.jpeg</span><span class="si">}</span><span class="s2">.jpg&#34;</span>
+<span class="k">done</span></code></pre></div>
+<p>让我们逐行分析代码：</p>
+
+<ul>
+<li>第一行创建一个for循环，并遍历一个包含.jpeg边缘的所有文件的列表。</li>
+<li>第二行适用于列表中的每个项目，并将文件移动到一个用.jpg替换.jpeg的新文件。该部分<code>${file%.jpeg}</code>使用<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">shell参数扩展</a>从文件名中删除.jpeg部分。</li>
+<li><code>done</code> 表示循环段的结束。</li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用bash for循环遍历列表。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/bash" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">bash</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/loop" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">loop</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-bash-aliases/">如何创建Bash别名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-compare-strings-in-bash/">如何在 Bash 中比较字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-copy-files-and-directories-in-linux/">如何在 Linux 中复制文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cd-command/">Linux cd 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/creating-a-self-signed-ssl-certificate/">创建自签名的 SSL 证书</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/echo-command-in-linux-with-examples/">Linux 中的 Echo 命令用法与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/current-working-directory/">使用 pwd 命令在 Linux 中确定当前的工作目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-concatenate-strings/">在 Bash 中拼接字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-check-if-file-exists/">Bash 中如何检查文件或目录是否存在</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-until-loop/">Bash 中 until loop 用法</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

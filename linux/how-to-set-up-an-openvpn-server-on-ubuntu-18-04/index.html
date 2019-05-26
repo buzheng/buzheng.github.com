@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Ubuntu 18.04上设置OpenVPN服务器 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Ubuntu 18.04上设置OpenVPN服务器" />
+<meta property="og:description" content="无论您是想在不信任的公共Wi-Fi网络上连接时安全可靠地访问互联网，还是绕过地理限制内容，或者允许您的同事在远程工作时安全地连接到您的公司网络，使用VPN是最佳解决方案。
+
+VPN允许您连接到远程VPN服务器，使您的连接加密和安全，并通过保持您的流量数据私密匿名浏览网页。
+
+您可以选择许多商业VPN提供商，但您永远无法确定提供商未记录您的活动。最安全的选择是设置自己的VPN服务器。
+
+本教程将指导您通过在Ubuntu 18.04上安装和配置OpenVPN来设置自己的VPN服务器。我们还将向您展示如何生成客户端证书和创建配置文件
+
+OpenVPN是一个功能齐全的开源安全套接字层（SSL）VPN解决方案。它使用SSL / TLS协议实现OSI第2层或第3层安全网络扩展。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-set-up-an-openvpn-server-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Ubuntu 18.04上设置OpenVPN服务器">
+<meta itemprop="description" content="无论您是想在不信任的公共Wi-Fi网络上连接时安全可靠地访问互联网，还是绕过地理限制内容，或者允许您的同事在远程工作时安全地连接到您的公司网络，使用VPN是最佳解决方案。
+
+VPN允许您连接到远程VPN服务器，使您的连接加密和安全，并通过保持您的流量数据私密匿名浏览网页。
+
+您可以选择许多商业VPN提供商，但您永远无法确定提供商未记录您的活动。最安全的选择是设置自己的VPN服务器。
+
+本教程将指导您通过在Ubuntu 18.04上安装和配置OpenVPN来设置自己的VPN服务器。我们还将向您展示如何生成客户端证书和创建配置文件
+
+OpenVPN是一个功能齐全的开源安全套接字层（SSL）VPN解决方案。它使用SSL / TLS协议实现OSI第2层或第3层安全网络扩展。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1345">
+
+
+
+<meta itemprop="keywords" content="vpn,security,ubuntu," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Ubuntu 18.04上设置OpenVPN服务器"/>
+<meta name="twitter:description" content="无论您是想在不信任的公共Wi-Fi网络上连接时安全可靠地访问互联网，还是绕过地理限制内容，或者允许您的同事在远程工作时安全地连接到您的公司网络，使用VPN是最佳解决方案。
+
+VPN允许您连接到远程VPN服务器，使您的连接加密和安全，并通过保持您的流量数据私密匿名浏览网页。
+
+您可以选择许多商业VPN提供商，但您永远无法确定提供商未记录您的活动。最安全的选择是设置自己的VPN服务器。
+
+本教程将指导您通过在Ubuntu 18.04上安装和配置OpenVPN来设置自己的VPN服务器。我们还将向您展示如何生成客户端证书和创建配置文件
+
+OpenVPN是一个功能齐全的开源安全套接字层（SSL）VPN解决方案。它使用SSL / TLS协议实现OSI第2层或第3层安全网络扩展。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Ubuntu 18.04上设置OpenVPN服务器</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>无论您是想在不信任的公共Wi-Fi网络上连接时安全可靠地访问互联网，还是绕过地理限制内容，或者允许您的同事在远程工作时安全地连接到您的公司网络，使用VPN是最佳解决方案。</p>
+
+<p>VPN允许您连接到远程VPN服务器，使您的连接加密和安全，并通过保持您的流量数据私密匿名浏览网页。</p>
+
+<p>您可以选择许多商业VPN提供商，但您永远无法确定提供商未记录您的活动。最安全的选择是设置自己的VPN服务器。</p>
+
+<p>本教程将指导您通过在Ubuntu 18.04上安装和配置OpenVPN来设置自己的VPN服务器。我们还将向您展示如何生成客户端证书和创建配置文件</p>
+
+<p>OpenVPN是一个功能齐全的开源安全套接字层（SSL）VPN解决方案。它使用SSL / TLS协议实现OSI第2层或第3层安全网络扩展。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>要完成本教程，您需要：</p>
+
+<ul>
+<li><a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">Sudo访问</a> Ubuntu 18.04服务器以托管您的OpenVPN实例。</li>
+<li>服务器应配置基本<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">UFW防火墙</a>。</li>
+<li>单独的专用计算机用作CA（证书颁发机构）。如果您不想为CA使用专用计算机，则可以在OpenVPN服务器或本地计算机上构建CA. 构建完CA后，建议将CA目录移动到安全或离线的位置。</li>
+</ul>
+
+<p>本教程假定CA位于单独的Ubuntu 18.04计算机上。如果您将服务器用作CA，则将应用相同的步骤（稍作修改）。</p>
+
+<p>我们使用单独的CA机器的原因是为了防止攻击者渗入服务器。如果攻击者设法访问CA私钥，他们可以使用它来签署新证书，这将使他们能够访问VPN服务器。</p>
+
+<h2 id="使用easyrsa构建ca">使用EasyRSA构建CA.</h2>
+
+<p>在设置新的OpenVPN服务器时，第一步是构建公钥基础结构（<a href="https://en.wikipedia.org/wiki/Public_key_infrastructure">PKI</a>）。为此，我们需要创建以下内容：</p>
+
+<ul>
+<li>证书颁发机构（CA）证书和私钥。</li>
+<li>我们的CA颁发的服务器的单独证书和私钥对。</li>
+<li>我们的CA颁发的每个客户的单独证书和私钥对。</li>
+</ul>
+
+<p>正如出于安全原因的先决条件中所述，我们将在独立计算机上构建CA.</p>
+
+<p>要创建CA，证书请求和签名证书，我们将使用名为EasyRSA的CLI实用程序。</p>
+
+<p>在<strong>CA计算机</strong>上执行以下步骤。</p>
+
+<ol>
+<li><p>首先，使用以下<a href="/linux/wget-command-examples/">wget</a>命令从项目<a href="https://github.com/OpenVPN/easy-rsa">Github存储库</a>下载最新版本的EasyRSA ：[](/linux/wget-command-examples/)</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd &amp;&amp; wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.5/EasyRSA-nix-3.0.5.tgz</code></pre></div>
+<ol>
+<li>下载完成后，<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">提取存档</a>：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">tar xzf EasyRSA-nix-3.0.5.tgz</code></pre></div></li>
+
+<li><p>切换到EasyRSA目录并创建一个<code>vars</code>通过复制文件命名的配置<code>vars.example</code>文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd ~/EasyRSA-3.0.5/cp vars.example vars</code></pre></div>
+<ol>
+<li>打开文件并取消注释并更新以下条目以匹配您的信息。</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">nano ~/EasyRSA-3.0.5/vars</code></pre></div>
+<p>〜/ EasyRSA-3.0.5 /瓦尔</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">set_var EASYRSA_REQ_COUNTRY    &#34;US&#34;</span>
+<span class="na">set_var EASYRSA_REQ_PROVINCE   &#34;Pennsylvania&#34;</span>
+<span class="na">set_var EASYRSA_REQ_CITY       &#34;Pittsburgh&#34;</span>
+<span class="na">set_var EASYRSA_REQ_ORG        &#34;Linuxize&#34;</span>
+<span class="na">set_var EASYRSA_REQ_EMAIL      &#34;admin@linuxize.com&#34;</span>
+<span class="na">set_var EASYRSA_REQ_OU         &#34;Community&#34;</span></code></pre></div>
+<ol>
+<li>在首先生成CA密钥对之前，我们需要使用以下命令初始化新的PKI：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">./easyrsa init-pki</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">init-pki complete; you may now create a CA or requests.
+Your newly created PKI dir is: /home/causer/EasyRSA-3.0.5/pki</code></pre></div>
+<ol>
+<li>下一步是构建CA：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">./easyrsa build-ca</code></pre></div><div class="highlight"><pre class="chroma">If you don’t want to be prompted for a password each time you sign your certificates, run the `build-ca` command using the `nopass` option: `./easyrsa build-ca nopass`.  </pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
+-----
+...
+-----
+Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
+
+CA creation complete and you may now import and sign cert requests.
+Your new CA certificate file for publishing is at:
+/home/causer/EasyRSA-3.0.5/pki/ca.crt</code></pre></div>
+<p>系统将要求您为CA密钥设置密码，并为CA输入公用名。</p>
+
+<p>完成后，该脚本将创建两个文件 - CA公共证书<code>ca.crt</code>和CA私钥<code>ca.key</code>。</p>
+
+<p>现在已创建证书颁发机构（CA），您可以使用它为一个或多个OpenVPN服务器和客户端签署证书请求。</p>
+
+<h2 id="安装openvpn和easyrsa">安装OpenVPN和EasyRSA</h2>
+
+<p>我们的下一步是安装OpenVPN软件包，该软件包可以在Ubuntu的存储库中找到并下载最新版本的EasyRSA。</p>
+
+<p>在<strong>OpenVPN服务器</strong>上执行以下步骤。</p>
+
+<ol>
+<li>OpenVPN安装非常简单，只需在<strong>OpenVPN服务器</strong>上运行以下命令：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install openvpn</code></pre></div></li>
+
+<li><p>下载最新版本的EasyRSA：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd &amp;&amp; wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.5/EasyRSA-nix-3.0.5.tgz</code></pre></div>
+<p>下载完成后，键入以下命令以解压缩存档：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">tar xzf EasyRSA-nix-3.0.5.tgz</code></pre></div>
+<p>虽然我们已经在CA机器上初始化了PKI，但我们还需要在OpenVPN服务器上创建一个新的PKI。为此，请使用与以前相同的命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/EasyRSA-3.0.5/./easyrsa init-pki</code></pre></div>
+<p>如果您仍然想知道为什么我们需要安装两个EasyRSA，那是因为我们将使用此EasyRSA实例生成证书请求，这些证书请求将使用<strong>CA计算机</strong>上的EasyRSA实例进行签名。</p>
+
+<p>这可能听起来很复杂，而且很容易混淆，但是一旦你阅读完整个教程，你就会发现它并不复杂。</p>
+
+<h2 id="创建diffie-hellman和hmac密钥">创建Diffie-Hellman和HMAC密钥</h2>
+
+<p>在本节中，我们将生成一个强密的Diffie-Hellman密钥，该密钥将在密钥交换期间使用，并且HMAC签名文件将为连接添加额外的安全层。</p>
+
+<ol>
+<li>首先导航到<strong>OpenVPN服务器</strong>上的EasyRSA目录。</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/EasyRSA-3.0.5/</code></pre></div></li>
+
+<li><p>生成Diffie-Hellman密钥：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">./easyrsa gen-dh</code></pre></div>
+<p>该脚本将生成2048位长的DH参数。这可能需要一些时间，尤其是在资源很少的服务器上。完成后，屏幕上将显示以下信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">DH parameters of size 2048 created at /home/serveruser/EasyRSA-3.0.5/pki/dh.pem</code></pre></div>
+<p>将<code>dh.pem</code>文件复制到<code>/etc/openvpn</code>目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp ~/EasyRSA-3.0.5/pki/dh.pem /etc/openvpn/</code></pre></div>
+<ol>
+<li>生成HMAC签名：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">openvpn --genkey --secret ta.key</code></pre></div>
+<p>完成后将<code>ta.key</code>文件复制到<code>/etc/openvpn</code>目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp ~/EasyRSA-3.0.5/ta.key /etc/openvpn/</code></pre></div>
+<h2 id="创建服务器证书和私钥">创建服务器证书和私钥</h2>
+
+<p>本节介绍如何为OpenVPN服务器生成私钥和证书请求。</p>
+
+<ol>
+<li>导航到<strong>OpenVPN服务器</strong>上的EasyRSA目录，并为服务器和证书请求文件生成新的私钥：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/EasyRSA-3.0.5/./easyrsa gen-req server1 nopass</code></pre></div>
+<p>我们正在使用该<code>nopass</code>参数，因为我们想要在没有密码输入的情况下启动OpenVPN服务器。同样在此示例中，我们将<code>server1</code>用作服务器名称（实体）标识符。如果为服务器选择其他名称，请不要忘记调整使用服务器名称的下面的说明。</p>
+
+<p>该命令将创建两个文件，一个私钥（<code>server1.key</code>）和一个证书请求文件（<code>server1.req</code>）。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">-----
+Common Name (eg: your user, host, or server name) [server1]:
+
+Keypair and certificate request completed. Your files are:
+req: /home/serveruser/EasyRSA-3.0.5/pki/reqs/server1.req
+key: /home/serveruser/EasyRSA-3.0.5/pki/private/server1.key</code></pre></div>
+<ol>
+<li>将私钥复制到<code>/etc/openvpn</code>目录：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp ~/EasyRSA-3.0.5/pki/private/server1.key /etc/openvpn/</code></pre></div></li>
+
+<li><p>将证书请求文件传输到CA计算机：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">scp ~/EasyRSA-3.0.5/pki/reqs/server1.req causer@your_ca_ip:/tmp</code></pre></div>
+<p>在此示例中，我们使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/"><code>scp</code></a>传输文件，您也可以使用<a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/"><code>rsync</code></a>ssh或任何其他安全方法。</p>
+
+<ol>
+<li>登录到您的<strong>CA计算机</strong>，切换到EasyRSA目录并导入证书请求文件：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd ~/EasyRSA-3.0.5./easyrsa import-req /tmp/server1.req server1</code></pre></div>
+<p>第一个参数是证书请求文件的路径，第二个参数是服务器短（实体）名称。在我们的例子中，服务器名称是<code>server1</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">The request has been successfully imported with a short name of: server1
+You may now use this name to perform signing operations on this request.</code></pre></div>
+<p>此命令只是将请求文件复制到<code>pki/reqs</code>目录中。</p>
+
+<ol>
+<li>仍在<strong>CA计算机</strong>上的EasyRSA目录中时，运行以下命令以对请求进行签名：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd ~/EasyRSA-3.0.5./easyrsa sign-req server server1</code></pre></div>
+<p>第一个参数可以是<code>server</code>或者<code>client</code>第二个参数是服务器短（实体）名称。</p>
+
+<p>系统将提示您验证请求是否来自可信来源。输入<code>yes</code>并按<code>enter</code>确认：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">You are about to sign the following certificate.
+Please check over the details shown below for accuracy. Note that this request
+has not been cryptographically verified. Please be sure it came from a trusted
+source or that you have verified the request checksum with the sender.
+
+Request subject, to be signed as a server certificate for 1080 days:
+
+subject=
+    commonName                = server1
+
+Type the word &#39;yes&#39; to continue, or any other input to abort.
+Confirm request details: yes
+...</code></pre></div>
+<p>如果您的CA密钥受密码保护，系统将提示您输入密码。验证后，脚本将生成SSL证书并打印完整路径。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Certificate is to be certified until Sep 17 10:54:48 2021 GMT (1080 days)
+
+Write out database with 1 new entries
+Data Base Updated
+
+Certificate created at: /home/causer/EasyRSA-3.0.5/pki/issued/server1.crt</code></pre></div></li>
+
+<li><p>下一步是将签名的证书<code>server1.crt</code>和<code>ca.crt</code>文件传输回OpenVPN服务器。您可以再次使用<code>scp</code>，<code>rsync</code>或者任何其他安全的方法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">scp ~/EasyRSA-3.0.5/pki/issued/server1.crt serveruser@your_server_ip:/tmpscp ~/EasyRSA-3.0.5/pki/ca.crt serveruser@your_server_ip:/tmp</code></pre></div>
+<ol>
+<li>登录到您的<strong>OpenVPN服务器</strong>，并将<code>server1.crt</code>和<code>ca.crt</code>文件移动到<code>/etc/openvpn/</code>目录中：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mv /tmp/{server1,ca}.crt /etc/openvpn/</code></pre></div></li>
+</ol>
+
+<p>完成本节中概述的步骤后，您的<strong>OpenVPN服务器</strong>上应该有以下新文件：</p>
+
+<ul>
+<li>/etc/openvpn/ca.crt</li>
+<li>/etc/openvpn/dh.pem</li>
+<li>/etc/openvpn/ta.key</li>
+<li>/etc/openvpn/server1.crt</li>
+<li>/etc/openvpn/server1.key</li>
+</ul>
+
+<h2 id="配置openvpn服务">配置OpenVPN服务</h2>
+
+<p>现在您已获得CA签署的服务器证书并传输到<strong>OpenVPN服务器</strong>，现在可以配置OpenVPN服务了。</p>
+
+<p>我们将使用随OpenVPN安装包提供的示例配置文件作为起点，然后将自己的自定义配置选项添加到其中。</p>
+
+<p>首先将配置文件解压缩到<code>/etc/openvpn/</code>目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo sh -c &#34;gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz &gt; /etc/openvpn/server1.conf&#34;</code></pre></div>
+<p>使用您喜欢的<a href="/linux/how-to-install-sublime-text-3-on-ubuntu-18-04/">文本编辑器</a>打开文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/openvpn/server1.conf</code></pre></div>
+<ul>
+<li><p>找到Certificate，Key和DH参数指令并更改文件名：</p>
+
+<p>/etc/openvpn/server1.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">cert server1.crt</span>
+<span class="na">key server1.key </span>
+
+<span class="na">dh dh.pem</span></code></pre></div>
+<ul>
+<li>要通过VPN重定向客户端流量，请查找并取消注释<code>redirect-gateway</code>和<code>dhcp-option</code>选项：</li>
+</ul>
+
+<p>/etc/openvpn/server1.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">push &#34;redirect-gateway def1 bypass-dhcp&#34;</span>
+
+<span class="na">push &#34;dhcp-option DNS 208.67.222.222&#34;</span>
+<span class="na">push &#34;dhcp-option DNS 208.67.220.220&#34;</span></code></pre></div>
+<p>默认情况下，使用OpenDNS解析程序。您可以更改它并使用CloudFlare，Google或您想要的任何其他DNS解析器。</p></li>
+
+<li><p>通过删除每行开头的“ ”来查找<code>user</code>和<code>group</code>指令并取消注释这些设置<code>;</code>：</p>
+
+<p>/etc/openvpn/server1.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">user nobody</span>
+<span class="na">group nogroup</span></code></pre></div>
+<ul>
+<li>在文件末尾附加以下行。该指令将消息验证算法（HMAC）从SHA1更改为SHA256</li>
+</ul>
+
+<p>/etc/openvpn/server1.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">auth SHA256</span></code></pre></div></li>
+</ul>
+
+<p>完成后，服务器配置文件（注释除外）应如下所示：</p>
+
+<p>/etc/openvpn/server1.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">port 1194</span>
+<span class="na">proto udp</span>
+<span class="na">dev tun</span>
+<span class="na">ca ca.crt</span>
+<span class="na">cert server1.crt</span>
+<span class="na">key server1.key  # This file should be kept secret</span>
+<span class="na">dh dh.pem</span>
+<span class="na">server 10.8.0.0 255.255.255.0</span>
+<span class="na">ifconfig-pool-persist /var/log/openvpn/ipp.txt</span>
+<span class="na">push &#34;redirect-gateway def1 bypass-dhcp&#34;</span>
+<span class="na">push &#34;dhcp-option DNS 208.67.222.222&#34;</span>
+<span class="na">push &#34;dhcp-option DNS 208.67.220.220&#34;</span>
+<span class="na">keepalive 10 120</span>
+<span class="na">tls-auth ta.key 0 # This file is secret</span>
+<span class="na">cipher AES-256-CBC</span>
+<span class="na">user nobody</span>
+<span class="na">group nogroup</span>
+<span class="na">persist-key</span>
+<span class="na">persist-tun</span>
+<span class="na">status /var/log/openvpn/openvpn-status.log</span>
+<span class="na">verb 3</span>
+<span class="na">explicit-exit-notify 1</span>
+<span class="na">auth SHA256</span></code></pre></div>
+<h2 id="启动openvpn服务">启动OpenVPN服务</h2>
+
+<p>在本教程中，我们将其<code>server1.conf</code>用作配置文件。要使用此配置启动OpenVPN服务，我们需要在systemd单元文件名后指定配置文件名：</p>
+
+<p>在<strong>OpenVPN服务器上</strong>运行以下命令以启动OpenVPN服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start openvpn@server1</code></pre></div>
+<p>键入以下命令验证服务是否已成功启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status openvpn@server1</code></pre></div>
+<p>如果服务处于活动状态并且正在运行，则输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● openvpn@server1.service - OpenVPN connection to server1
+   Loaded: loaded (/lib/systemd/system/openvpn@.service; disabled; vendor preset: enabled)
+   Active: active (running) since Mon 2018-10-08 20:11:57 UTC; 6min ago
+     Docs: man:openvpn(8)
+           https://community.openvpn.net/openvpn/wiki/Openvpn24ManPage
+           https://community.openvpn.net/openvpn/wiki/HOWTO
+ Main PID: 26739 (openvpn)
+   Status: &#34;Initialization Sequence Completed&#34;</code></pre></div>
+<p>使服务能够在启动时自动启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable openvpn@server1</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Created symlink /etc/systemd/system/multi-user.target.wants/openvpn@server1.service → /lib/systemd/system/openvpn@.service.</code></pre></div>
+<p>如果OpenVPN服务无法启动，请检查日志 <code>sudo journalctl -u openvpn@server1</code></p>
+
+<p>OpenVPN Server将创建一个新的tun设备<code>tun0</code>。要检查设备是否可用，请使用以下<a href="/linux/linux-ip-command/">ip命令</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ip a show tun0</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">4: tun0: &lt;POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP&gt; mtu 1500 qdisc fq state UNKNOWN group default qlen 100
+    link/none 
+    inet 10.8.0.1 peer 10.8.0.2/32 scope global tun0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::1627:9a20:bca8:e6a5/64 scope link stable-privacy 
+       valid_lft forever preferred_lft forever</code></pre></div>
+<p>此时，您的OpenVPN服务器已配置并正常运行。</p>
+
+<h2 id="防火墙和服务器网络配置">防火墙和服务器网络配置</h2>
+
+<p>为了正确转发网络数据包，我们需要启用IP转发。</p>
+
+<p>在<strong>OpenVPN服务器</strong>上执行以下步骤。</p>
+
+<p>打开<code>/etc/sysctl.conf</code>文件并添加或取消注释读取的行<code>net.ipv4.ip_forward = 0</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/sysctl.conf</code></pre></div>
+<p>/etc/sysctl.conf中</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="c1"># Uncomment the next line to enable packet forwarding for IPv4</span>
+<span class="na">net.ipv4.ip_forward</span><span class="o">=</span><span class="s">1</span></code></pre></div>
+<p>完成后，保存并关闭文件。</p>
+
+<p>运行以下命令应用新设置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo sysctl -p</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">net.ipv4.ip_forward = 1</code></pre></div>
+<p>如果您遵循先决条件，则应该已在服务器上运行<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">UFW防火墙</a>。</p>
+
+<p>现在我们需要添加防火墙规则以启用伪装。这将允许流量离开VPN，使您的VPN客户端可以访问Internet。</p>
+
+<p>在添加规则之前，您需要了解Ubuntu OpenVPN服务器的公共网络接口。您可以通过运行以下命令轻松找到该接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ip -o -4 route show to default | awk &#39;{print $5}&#39;</code></pre></div>
+<p>在我们的例子中，接口的名称<code>ens3</code>如下面的输出所示。您的界面可能有不同的名称。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ens3</code></pre></div>
+<p>默认情况下，使用UFW时，转发的数据包将被丢弃。我们需要更改它并指示我们的防火墙允许转发的数据包。</p>
+
+<p>打开UFW配置文件，找到<code>DEFAULT_FORWARD_POLICY</code>密钥并将值更改<code>DROP</code>为<code>ACCEPT</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/default/ufw</code></pre></div>
+<p>在/ etc /默认/ UFW</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">...</span>
+<span class="c1"># Set the default forward policy to ACCEPT, DROP or REJECT.  Please note that</span>
+<span class="c1"># if you change this you will most likely want to adjust your rules</span>
+<span class="na">DEFAULT_FORWARD_POLICY</span><span class="o">=</span><span class="s">&#34;ACCEPT&#34;</span>
+<span class="na">...</span></code></pre></div>
+<p>接下来，我们需要<code>POSTROUTING</code>在nat表中设置链的默认策略并设置伪装规则。</p>
+
+<p>为此，请打开<code>/etc/ufw/before.rules</code>文件并附加以黄色突出显示的行，如下所示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/ufw/before.rules</code></pre></div>
+<p>不要忘了替换<code>ens3</code>的<code>-A POSTROUTING</code>行与您在前面的命令中找到的公共网络接口的名称。粘贴以最后一行开头的行<code>COMMIT</code>。</p>
+
+<p>/etc/ufw/before.rules</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">...</span>
+<span class="c1"># don&#39;t delete the &#39;COMMIT&#39; line or these rules won&#39;t be processed</span>
+<span class="na">COMMIT</span>
+
+<span class="c1">#NAT table rules</span>
+<span class="na">*nat</span>
+<span class="na">:POSTROUTING ACCEPT [0:0]</span>
+
+<span class="c1"># Forward traffic through ens3 - Change to public network interface</span>
+<span class="na">-A POSTROUTING -s 10.8.0.0/16 -o ens3 -j MASQUERADE</span>
+
+<span class="c1"># don&#39;t delete the &#39;COMMIT&#39; line or these rules won&#39;t be processed</span>
+<span class="na">COMMIT</span></code></pre></div>
+<p>完成后，保存并关闭文件。</p>
+
+<p>我们还需要在端口上打开UDP流量，<code>1194</code>这是默认的OpenVPN端口。为此，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 1194/udp</code></pre></div>
+<p>如果您忘记打开SSH端口，为避免被锁定，请运行以下命令以打开端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow OpenSSH</code></pre></div>
+<p>最后通过禁用和重新启用UFW来重新加载UFW规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw disablesudo ufw enable</code></pre></div>
+<p>要验证更改，请运行以下命令以列出POSTROUTING规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo iptables -nvL POSTROUTING -t nat</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination
+    0     0 MASQUERADE  all  --  *      ens3    10.8.0.0/16          0.0.0.0/0  </code></pre></div>
+<h2 id="创建客户端配置基础结构">创建客户端配置基础结构</h2>
+
+<p>在本教程中，我们将创建一个单独的SSL证书，并为每个VPN客户端生成不同的配置文件。</p>
+
+<p>客户端私钥和证书请求可以在客户端计算机上或服务器上生成。为简单起见，我们将在服务器上生成证书请求，然后将其发送给CA进行签名。</p>
+
+<p>生成客户端证书和配置文件的整个过程如下：</p>
+
+<ol>
+<li>在OpenVPN服务器上生成私钥和证书请求。</li>
+<li>将请求发送到要签名的CA计算机。</li>
+<li>将签名的SSL证书复制到OpenVPN服务器并生成配置文件。</li>
+<li>将配置文件发送到VPN客户端的计算机。</li>
+</ol>
+
+<p>首先创建一组目录来存储客户端文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/openvpn-clients/{configs,base,files}</code></pre></div>
+<ul>
+<li><code>base</code> directory将存储将在所有客户端文件之间共享的基本文件和配置。</li>
+<li><code>configs</code> directory将存储生成的客户端配置。</li>
+<li><code>files</code> 目录将存储客户端特定的证书/密钥对。</li>
+</ul>
+
+<p>将<code>ca.crt</code>和<code>ta.key</code>文件复制到<code>~/openvpn-clients/base</code>目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cp ~/EasyRSA-3.0.5/ta.key ~/openvpn-clients/base/cp /etc/openvpn/ca.crt ~/openvpn-clients/base/</code></pre></div>
+<p>接下来，将示例VPN客户端配置文件复制到客户端<code>~/openvpn-clients/base</code>目录中。我们将使用此文件作为基本配置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ~/openvpn-clients/base/</code></pre></div>
+<p>现在我们需要编辑文件以匹配我们的服务器设置和配置。使用文本编辑器打开配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/openvpn-clients/base/client.conf</code></pre></div>
+<ul>
+<li><p>找到远程指令并使用OpenVPN服务器的公共IP地址更改默认占位符：</p>
+
+<p>〜/ openvpn下的客户端/碱/ client.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="c1"># The hostname/IP and port of the server.</span>
+<span class="c1"># You can have multiple remote entries</span>
+<span class="c1"># to load balance between the servers.</span>
+<span class="na">remote YOUR_SERVER_IP 1194</span></code></pre></div>
+<ul>
+<li>找到并发表意见<code>ca</code>，<code>cert</code>和<code>key</code>指令。证书和密钥将添加到配置文件中：</li>
+</ul>
+
+<p>〜/ openvpn下的客户端/碱/ client.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="c1"># SSL/TLS parms.</span>
+<span class="c1"># See the server config file for more</span>
+<span class="c1"># description.  It&#39;s best to use</span>
+<span class="c1"># a separate .crt/.key file pair</span>
+<span class="c1"># for each client.  A single ca</span>
+<span class="c1"># file can be used for all clients.</span>
+<span class="c1"># ca ca.crt</span>
+<span class="c1"># cert client.crt</span>
+<span class="c1"># key client.key</span></code></pre></div></li>
+
+<li><p>在文件末尾附加以下行以匹配服务器设置：</p>
+
+<p>〜/ openvpn下的客户端/碱/ client.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">auth SHA256</span></code></pre></div>
+<p>完成后，服务器配置文件应如下所示：</p>
+
+<p>〜/ openvpn下的客户端/碱/ client.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">client</span>
+<span class="na">dev tun</span>
+<span class="na">proto udp</span>
+<span class="na">remote YOUR_SERVER_IP 1194</span>
+<span class="na">resolv-retry infinite</span>
+<span class="na">nobind</span>
+<span class="na">persist-key</span>
+<span class="na">persist-tun</span>
+<span class="na">remote-cert-tls server</span>
+<span class="na">cipher AES-256-CBC</span>
+<span class="na">verb 3</span>
+<span class="na">auth SHA256</span>
+<span class="na">key-direction 1</span></code></pre></div></li>
+</ul>
+
+<p>接下来，创建一个简单的bash脚本，它将基本配置和文件与客户端证书和密钥合并，并将生成的配置存储在<code>~/openvpn-clients/configs</code>目录中。</p>
+
+<p>打开文本编辑器并创建以下脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/openvpn-clients/gen_config.sh</code></pre></div>
+<p>〜/ OpenVPN的客户机/ gen_config.sh</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nv">FILES_DIR</span><span class="o">=</span><span class="nv">$HOME</span>/openvpn-clients/files
+<span class="nv">BASE_DIR</span><span class="o">=</span><span class="nv">$HOME</span>/openvpn-clients/base
+<span class="nv">CONFIGS_DIR</span><span class="o">=</span><span class="nv">$HOME</span>/openvpn-clients/configs
+
+<span class="nv">BASE_CONF</span><span class="o">=</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span>/client.conf
+<span class="nv">CA_FILE</span><span class="o">=</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span>/ca.crt
+<span class="nv">TA_FILE</span><span class="o">=</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span>/ta.key
+
+<span class="nv">CLIENT_CERT</span><span class="o">=</span><span class="si">${</span><span class="nv">FILES_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">1</span><span class="si">}</span>.crt
+<span class="nv">CLIENT_KEY</span><span class="o">=</span><span class="si">${</span><span class="nv">FILES_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">1</span><span class="si">}</span>.key
+
+<span class="c1"># Test for files</span>
+<span class="k">for</span> i in <span class="s2">&#34;</span><span class="nv">$BASE_CONF</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$CA_FILE</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$TA_FILE</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$CLIENT_CERT</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$CLIENT_KEY</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="o">[[</span> ! -f <span class="nv">$i</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&#34; The file </span><span class="nv">$i</span><span class="s2"> does not exist&#34;</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+    <span class="k">fi</span>
+
+    <span class="k">if</span> <span class="o">[[</span> ! -r <span class="nv">$i</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&#34; The file </span><span class="nv">$i</span><span class="s2"> is not readable.&#34;</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+    <span class="k">fi</span>
+<span class="k">done</span>
+
+<span class="c1"># Generate client config</span>
+cat &gt; <span class="si">${</span><span class="nv">CONFIGS_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">1</span><span class="si">}</span>.ovpn <span class="s">&lt;&lt;EOF
+</span><span class="s">$(cat ${BASE_CONF})
+</span><span class="s">&lt;key&gt;
+</span><span class="s">$(cat ${CLIENT_KEY})
+</span><span class="s">&lt;/key&gt;
+</span><span class="s">&lt;cert&gt;
+</span><span class="s">$(cat ${CLIENT_CERT})
+</span><span class="s">&lt;/cert&gt;
+</span><span class="s">&lt;ca&gt;
+</span><span class="s">$(cat ${CA_FILE})
+</span><span class="s">&lt;/ca&gt;
+</span><span class="s">&lt;tls-auth&gt;
+</span><span class="s">$(cat ${TA_FILE})
+</span><span class="s">&lt;/tls-auth&gt;
+</span><span class="s">EOF</span></code></pre></div>
+<p>保存文件并通过运行使其可执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chmod u+x ~/openvpn-clients/gen_config.sh</code></pre></div>
+<h2 id="创建客户端证书私钥和配置">创建客户端证书私钥和配置</h2>
+
+<p>生成客户端私钥和证书请求的过程与生成服务器密钥和证书请求时的过程相同。</p>
+
+<p>正如我们在上一节中已经提到的，我们将在OpenVPN服务器上生成客户端私钥和证书请求。在此示例中，第一个VPN客户端的名称将是<code>client1</code>。</p>
+
+<ol>
+<li><p>导航到<strong>OpenVPN服务器</strong>上的EasyRSA目录，并为客户端生成新的私钥和证书请求文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/EasyRSA-3.0.5/./easyrsa gen-req client1 nopass</code></pre></div>
+<p>该命令将创建两个文件，一个私钥（<code>client1.key</code>）和一个证书请求文件（<code>client1.req</code>）。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Common Name (eg: your user, host, or server name) [client1]:
+
+Keypair and certificate request completed. Your files are:
+req: /home/serveruser/EasyRSA-3.0.5/pki/reqs/client1.req
+key: /home/serveruser/EasyRSA-3.0.5/pki/private/client1.key</code></pre></div></li>
+
+<li><p>将私钥复制<code>client1.key</code>到<code>~/openvpn-clients/files</code>您在上一节中创建的目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cp ~/EasyRSA-3.0.5/pki/private/client1.key ~/openvpn-clients/files/</code></pre></div>
+<ol>
+<li>将证书请求文件传输到CA计算机：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">scp ~/EasyRSA-3.0.5/pki/reqs/client1.req causer@your_ca_ip:/tmp</code></pre></div>
+<p>在此示例中，我们使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/"><code>scp</code></a>传输文件，您也可以使用<a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/"><code>rsync</code></a>ssh或任何其他安全方法。</p></li>
+
+<li><p>登录到您的<strong>CA计算机</strong>，切换到EasyRSA目录并导入证书请求文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd ~/EasyRSA-3.0.5./easyrsa import-req /tmp/client1.req client1</code></pre></div>
+<p>第一个参数是证书请求文件的路径，第二个参数是客户端名称。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">The request has been successfully imported with a short name of: client1
+You may now use this name to perform signing operations on this request.</code></pre></div></li>
+
+<li><p>在<strong>CA计算机</strong>上的EasyRSA目录中，运行以下命令以对请求进行签名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd ~/EasyRSA-3.0.5./easyrsa sign-req client client1</code></pre></div>
+<p>系统将提示您验证请求是否来自可信来源。输入<code>yes</code>并按<code>enter</code>确认：</p>
+
+<p>如果您的CA密钥受密码保护，系统将提示您输入密码。验证后，脚本将生成SSL证书并打印完整路径。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Certificate created at: /home/causer/EasyRSA-3.0.5/pki/issued/client1.crt</code></pre></div></li>
+
+<li><p>接下来，将签名的证书<code>client1.crt</code>文件传输回OpenVPN服务器。您可以使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/"><code>scp</code></a>，<a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/"><code>rsync</code></a>或任何其他安全的方法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">scp ~/EasyRSA-3.0.5/pki/issued/client1.crt serveruser@your_server_ip:/tmp</code></pre></div>
+<ol>
+<li>登录到您的<strong>OpenVPN服务器</strong>，并将<code>client1.crt</code>文件移动到<code>~/openvpn-clients/files</code>目录中：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mv /tmp/client1.crt ~/openvpn-clients/files</code></pre></div></li>
+
+<li><p>最后一步是使用<code>gen_config.sh</code>脚本生成客户端配置。切换到<code>~/openvpn-clients</code>目录并使用客户端名称作为参数运行脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/openvpn-clients./gen_config.sh client1</code></pre></div>
+<p>该脚本将创建目录中指定<code>client1.ovpn</code>的<code>~/client-configs/configs</code>文件。您可以通过列出目录来检查：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ls ~/openvpn-clients/configs</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">client1.ovpn</code></pre></div>
+<p>此时，将创建客户端配置。您现在可以将配置文件传输到要用作客户端的设备。</p>
+
+<p>例如，要将配置文件传输到本地计算机，<code>scp</code>应运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">scp ~/client-configs/files/client1.ovpn your_local_ip:/</code></pre></div></li>
+</ol>
+
+<p>要添加其他客户端，只需重复相同的步骤即可。</p>
+
+<h2 id="连接客户端">连接客户端</h2>
+
+<h3 id="linux的">Linux的</h3>
+
+<p>您的分发或桌面环境可能提供工具或图形用户界面以连接到OpenVPN服务器。在本教程中，我们将向您展示如何使用该<code>openvpn</code>工具连接到服务器。</p>
+
+<ul>
+<li><p>在Ubuntu和Debian上安装OpenVPN</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install openvpn</code></pre></div>
+<ul>
+<li>在CentOS和Fedora上安装OpenVPN</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-releasesudo yum install openvpn</code></pre></div></li>
+</ul>
+
+<p>安装软件包后，要连接到VPN服务器，请使用该<code>openvpn</code>命令并指定客户端配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo openvpn --config client1.ovpn</code></pre></div>
+<h3 id="苹果系统">苹果系统</h3>
+
+<p><a href="https://tunnelblick.net/">Tunnelblick</a>是OS X和macOS上OpenVPN的免费开源图形用户界面。</p>
+
+<h3 id="视窗">视窗</h3>
+
+<p>在<a href="https://openvpn.net/community-downloads/">OpenVPN的下载页面</a>下载并安装最新版本的OpenVPN应用程序。</p>
+
+<p>将<code>.ovpn</code>文件复制到OpenVPN配置文件夹（<code>\Users\&lt;Name&gt;\OpenVPN\Config</code>或<code>\Program Files\OpenVPN\config</code>）。</p>
+
+<p>启动OpenVPN应用程序。</p>
+
+<p>右键单击OpenVPN系统托盘图标，您复制的OpenVPN配置文件的名称将列在菜单上。单击连接。</p>
+
+<h3 id="android和ios">Android和iOS</h3>
+
+<p>由OpenVPN开发的VPN应用程序适用于Android和iOS。安装应用程序并导入客户端<code>.ovp</code>文件。</p>
+
+<ul>
+<li><a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn">Android OpenVPN Connect</a></li>
+<li><a href="https://itunes.apple.com/us/app/openvpn-connect/id590379981">iOS OpenVPN Connect</a></li>
+</ul>
+
+<h2 id="撤销客户证书">撤销客户证书</h2>
+
+<p>撤销证书意味着使签名证书无效，以便它不能再用于访问OpenVPN服务器。</p>
+
+<p>要撤消客户端证书，请按照以下步骤操作：</p>
+
+<ol>
+<li><p>登录到您的<strong>CA计算机</strong>并切换到EasyRSA目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">cd EasyRSA-3.0.5</code></pre></div>
+<ol>
+<li>使用<code>revoke</code>参数运行easyrsa脚本，然后使用要撤消的客户端名称：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">./easyrsa revoke client1</code></pre></div>
+<p>系统将提示您确认是否要撤消证书。输入<code>yes</code>并按<code>enter</code>确认：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Please confirm you wish to revoke the certificate with the following subject:
+
+subject=
+    commonName                = client1
+
+Type the word &#39;yes&#39; to continue, or any other input to abort.
+Continue with revocation: yes
+...</code></pre></div>
+<p>如果您的CA密钥受密码保护，系统将提示您输入密码。验证后，脚本将撤消证书。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Revocation was successful. You must run gen-crl and upload a CRL to your
+infrastructure in order to prevent the revoked cert from being accepted.</code></pre></div></li>
+
+<li><p>使用该<code>gen-crl</code>选项生成证书吊销列表（CRL）：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">./easyrsa gen-crl</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">An updated CRL has been created.
+CRL file: /home/causer/EasyRSA-3.0.5/pki/crl.pem</code></pre></div></li>
+
+<li><p>将CRL文件上载到OpenVPN服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">scp ~/EasyRSA-3.0.5/pki/crl.pem serveruser@your_server_ip:/tmp</code></pre></div>
+<ol>
+<li>登录您的<strong>OpenVPN服务器</strong>服务器并将文件移动到<code>/etc/openvpn</code>目录：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mv /tmp/crl.pem /etc/openvpn</code></pre></div></li>
+
+<li><p>打开OpenVPN服务器配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/openvpn/server1.conf</code></pre></div>
+<p>将以下行粘贴到文件末尾</p>
+
+<p>/etc/openvpn/server1.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">crl-verify crl.pem</span></code></pre></div>
+<p>保存并关闭文件。</p></li>
+
+<li><p>重新启动OpenVPN服务以使吊销指令生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart openvpn@server1</code></pre></div>
+<p>此时，客户端应该不再能够使用已撤销的证书访问OpenVPN服务器。</p>
+
+<p>如果您需要撤销其他客户端证书，请重复相同的步骤。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何在Ubuntu 18.04计算机上安装和配置OpenVPN服务器。</p></li>
+</ol><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/vpn" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">vpn</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/security" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-an-openvpn-server-on-centos-7/">如何在CentOS 7上设置OpenVPN服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ssh-socks-tunnel-for-private-browsing/">如何为私有浏览设置SSH SOCKS隧道</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian 9上使用UFW设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-ssh-keys-on-debian-9/">如何在Debian 9上设置SSH密钥</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-bootable-ubuntu-18-04-usb-stick-on-linux/">如何在Linux上创建可启动的Ubuntu 18.04 USB记忆棒</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/">如何在Ubuntu 18.04上使用Apache安装和配置ownCloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-ubuntu-18-04/">如何在Ubuntu 18.04上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-intellij-idea-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装IntelliJ IDEA</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-kodi-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Kodi</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Linux中重命名文件 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Linux中重命名文件" />
+<meta property="og:description" content="重命名文件和目录是您经常需要在Linux系统上执行的最基本任务之一。
+
+重命名单个文件很简单，但一次重命名多个文件可能是一个挑战，特别是对于刚接触Linux的用户而言。您可以使用GUI文件管理器或命令行终端重命名文件。
+
+在本教程中，我们将向您展示如何使用mv和rename命令重命名文件和目录。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-rename-files-in-linux/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Linux中重命名文件">
+<meta itemprop="description" content="重命名文件和目录是您经常需要在Linux系统上执行的最基本任务之一。
+
+重命名单个文件很简单，但一次重命名多个文件可能是一个挑战，特别是对于刚接触Linux的用户而言。您可以使用GUI文件管理器或命令行终端重命名文件。
+
+在本教程中，我们将向您展示如何使用mv和rename命令重命名文件和目录。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="123">
+
+
+
+<meta itemprop="keywords" content="rename,mv,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Linux中重命名文件"/>
+<meta name="twitter:description" content="重命名文件和目录是您经常需要在Linux系统上执行的最基本任务之一。
+
+重命名单个文件很简单，但一次重命名多个文件可能是一个挑战，特别是对于刚接触Linux的用户而言。您可以使用GUI文件管理器或命令行终端重命名文件。
+
+在本教程中，我们将向您展示如何使用mv和rename命令重命名文件和目录。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Linux中重命名文件</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>重命名文件和目录是您经常需要在Linux系统上执行的最基本任务之一。</p>
+
+<p>重命名单个文件很简单，但一次重命名多个文件可能是一个挑战，特别是对于刚接触Linux的用户而言。您可以使用GUI文件管理器或命令行终端重命名文件。</p>
+
+<p>在本教程中，我们将向您展示如何使用<code>mv</code>和<code>rename</code>命令重命名文件和目录。</p>
+
+<h2 id="使用mv命令重命名文件">使用mv命令重命名文件</h2>
+
+<p>该<code>mv</code>命令（移动时间短）用于将文件从一个位置重命名或移动到另一个位置。该<code>mv</code>命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mv <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="nb">source</span> destination</code></pre></div>
+<p>该<code>source</code>可以是一个或多个文件或目录，<code>destination</code>可以是单个文件或目录。</p>
+
+<ul>
+<li>如果指定多个文件<code>source</code>，则<code>destination</code>必须是目录。在这种情况下，<code>source</code>文件将移动到目标目录。</li>
+<li>如果将单个文件指定为<code>source</code>，并且<code>destination</code>目标是现有目录，则该文件将移动到指定目录。</li>
+<li>要重命名文件，您需要将单个文件指定为<code>source</code>，并将单个文件指定为<code>destination</code>目标。</li>
+</ul>
+
+<p>例如，要<code>file1.txt</code>像<code>file2.txt</code>运行一样重命名文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mv file1.txt file2.txt</code></pre></div>
+<h3 id="使用mv命令重命名多个文件">使用mv命令重命名多个文件</h3>
+
+<p>该<code>mv</code>命令一次只能重命名一个文件，但它可以与其他命令一起使用，例如<a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a>在bash <a href="/linux/bash-for-loop/">for</a>或<a href="/linux/bash-while-loop/">while</a>循环中重命名多个文件。</p>
+
+<p>以下示例显示如何使用Bash for循环<code>.html</code>通过将<code>.html</code>扩展名更改为重命名当前目录中的所有文件<code>.php</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> f in *.html<span class="p">;</span> <span class="k">do</span> 
+    mv -- <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">f</span><span class="p">%.html</span><span class="si">}</span><span class="s2">.php&#34;</span>
+<span class="k">done</span></code></pre></div>
+<p>让我们逐行分析代码：</p>
+
+<ul>
+<li>第一行创建一个for循环并遍历一个包含所有文件的列表<code>.html</code>。</li>
+<li>第二行适用于列表中的每个项目和文件移动到一个新的替换<code>.html</code>用<code>.php</code>。该部分<code>${file%.html}</code>使用<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">shell参数扩展</a><code>.html</code>从文件名中删除部分。</li>
+<li>done表示循环段的结束。</li>
+</ul>
+
+<p>我们也可以<code>mv</code>结合使用该命令<code>find</code>来实现与上面相同的功能。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">find . -depth -name <span class="s2">&#34;*.html&#34;</span> -exec sh -c <span class="s1">&#39;f=&#34;{}&#34;; mv -- &#34;$f&#34; &#34;${f%.html}.php&#34;&#39;</span> <span class="se">\;</span></code></pre></div>
+<p>find命令使用该开关将所有<code>.html</code>以当前目录结尾的文件<code>mv</code>一个接一个地传递给命令<code>-exec</code>。该字符串<code>{}</code>是当前正在处理的文件的名称。</p>
+
+<p>从上面的示例中可以看出，使用该<code>mv</code>命令重命名多个文件并不是一件容易的事，因为它需要很好地了解Bash脚本。</p>
+
+<h2 id="使用重命名命令重命名文件">使用重命名命令重命名文件</h2>
+
+<p>该<code>rename</code>命令用于重命名多个文件。此命令比<code>mv</code>需要正则表达式的一些基本知识更高级。</p>
+
+<p>该<code>rename</code>命令有两个版本，语法不同。在本教程中，我们将使用<code>rename</code>命令的perl版本。如果您的系统上未安装此版本，则可以使用发行版的软件包管理器轻松安装该版本。</p>
+
+<ul>
+<li><p><strong>在Ubuntu和Debian上安装重命名</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install rename</code></pre></div>
+<ul>
+<li><strong>在CentOS和Fedora上安装重命名</strong></li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install prename</code></pre></div></li>
+
+<li><p><strong>在Arch Linux上安装重命名</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">yay perl-rename ## or yaourt -S perl-rename</code></pre></div>
+<p>该<code>rename</code>命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">rename <span class="o">[</span>OPTIONS<span class="o">]</span> perlexpr files</code></pre></div></li>
+</ul>
+
+<p>该<code>rename</code>命令将<code>files</code>根据指定的<code>perlexpr</code>正则表达式重命名all 。你可以阅读更多有关Perl的正则表达式<a href="https://perldoc.perl.org/perlre.html#Regular-Expressions">在这里</a>。</p>
+
+<p>例如，下面的命令将更改与扩展名的文件<code>.html</code>到<code>.php</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rename &#39;s/.html/.php/&#39; *.html</code></pre></div>
+<p>您可以使用<code>-n</code>参数打印要重命名的文件的名称，而无需重命名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rename -n &#39;s/.html/.php/&#39; *.html</code></pre></div>
+<p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">rename(file-90.html, file-90.php)
+rename(file-91.html, file-91.php)
+rename(file-92.html, file-92.php)
+rename(file-93.html, file-93.php)
+rename(file-94.html, file-94.php)</code></pre></div>
+<p>默认情况下，重命名命令不会覆盖现有文件。传递<code>-f</code>参数以允许覆盖现有文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rename -f &#39;s/.html/.php/&#39; *.html</code></pre></div>
+<p>以下是一些如何使用rename命令的常见示例：</p>
+
+<ul>
+<li><p><strong>用下划线替换文件名中的空格</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rename &#39;y/ /_/&#39; *</code></pre></div>
+<ul>
+<li><strong>将文件名转换为小写</strong></li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rename &#39;y/A-Z/a-z/&#39; *</code></pre></div></li>
+
+<li><p><strong>将文件名转换为大写</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rename &#39;y/a-z/A-Z/&#39; *</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用<code>mv</code>和<code>rename</code>命令重命名文件。当然，还有其他命令可以在Linux中重命名文件，例如<a href="https://ss64.com/bash/mmv.html"><code>mmv</code></a>。受命令行威胁的新Linux用户可以使用GUI批量重命名工具，例如<a href="http://file-folder-ren.sourceforge.net/index.php?page=Main">Métamorphose</a>。</p></li>
+</ul><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/rename" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">rename</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mv" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mv</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/find-large-files-in-linux/">在Linux中查找大文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

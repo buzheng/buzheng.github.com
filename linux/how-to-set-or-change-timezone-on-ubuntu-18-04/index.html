@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Ubuntu 18.04上设置或更改时区 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Ubuntu 18.04上设置或更改时区" />
+<meta property="og:description" content="在Ubuntu上，系统的时区在安装期间设置，但可以在以后轻松更改。
+
+对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如，cron守护程序使用系统的时区执行cron作业，日志文件中的时间戳基于同一系统的时区。
+
+本教程演示如何从命令行或通过GUI设置或更改Ubuntu 18.04及以前版本的时区。相同的说明适用于任何基于Ubuntu的发行版，包括Kubuntu，Linux Mint和Elementary OS。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-set-or-change-timezone-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Ubuntu 18.04上设置或更改时区">
+<meta itemprop="description" content="在Ubuntu上，系统的时区在安装期间设置，但可以在以后轻松更改。
+
+对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如，cron守护程序使用系统的时区执行cron作业，日志文件中的时间戳基于同一系统的时区。
+
+本教程演示如何从命令行或通过GUI设置或更改Ubuntu 18.04及以前版本的时区。相同的说明适用于任何基于Ubuntu的发行版，包括Kubuntu，Linux Mint和Elementary OS。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="177">
+
+
+
+<meta itemprop="keywords" content="ubuntu,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Ubuntu 18.04上设置或更改时区"/>
+<meta name="twitter:description" content="在Ubuntu上，系统的时区在安装期间设置，但可以在以后轻松更改。
+
+对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如，cron守护程序使用系统的时区执行cron作业，日志文件中的时间戳基于同一系统的时区。
+
+本教程演示如何从命令行或通过GUI设置或更改Ubuntu 18.04及以前版本的时区。相同的说明适用于任何基于Ubuntu的发行版，包括Kubuntu，Linux Mint和Elementary OS。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Ubuntu 18.04上设置或更改时区</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在Ubuntu上，系统的时区在安装期间设置，但可以在以后轻松更改。</p>
+
+<p>对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如，cron守护程序使用系统的时区执行cron作业，日志文件中的时间戳基于同一系统的时区。</p>
+
+<p>本教程演示如何从命令行或通过GUI设置或更改Ubuntu 18.04及以前版本的时区。相同的说明适用于任何基于Ubuntu的发行版，包括Kubuntu，Linux Mint和Elementary OS。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">用户</a>身份登录才能更改系统的时区。</p>
+
+<h2 id="检查当前时区">检查当前时区</h2>
+
+<p>在Ubuntu和大多数其他Linux发行版中，我们可以使用该<code>timedatectl</code>命令显示和设置当前系统的时间和时区。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">timedatectl</code></pre></div>
+<p>正如您在下面的输出中看到的，时区设置为UTC：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                      Local time: Wed 2019-01-23 22:45:47 UTC
+                  Universal time: Wed 2019-01-23 22:45:47 UTC
+                        RTC time: Wed 2019-01-23 22:45:48
+                       Time zone: Etc/UTC (UTC, +0000)
+       System clock synchronized: yes
+systemd-timesyncd.service active: yes
+                 RTC in local TZ: no</code></pre></div>
+<p>通过符号链接<code>/etc/localtime</code>到<code>/usr/share/zoneinfo</code>目录中的二进制时区标识符来配置系统时区。因此，另一种选择是使用<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls命令</a>显示符号链接指向的路径：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ls -l /etc/localtime</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">lrwxrwxrwx 1 root root 27 Dec 10 12:59 /etc/localtime -&gt; /usr/share/zoneinfo/Etc/UTC</code></pre></div>
+<p>或者，您也可以通过显示<code>/etc/timezone</code>文件的内容来检查当前系统的时区。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /etc/timezone</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Etc/UTC</code></pre></div>
+<h2 id="使用timedatectl命令更改时区">使用timedatectl命令更改时区</h2>
+
+<p>在更改时区之前，您需要找到要使用的时区的长名称。时区命名约定通常使用“区域/城市”格式。</p>
+
+<p>要列出所有可用时区，您可以列出目录中的文件<code>/usr/share/zoneinfo</code>或使用该<code>timedatectl</code>命令。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">timedatectl list-timezones</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Europe/Oslo
+Europe/Paris
+Europe/Podgorica
+Europe/Prague
+Europe/Riga
+Europe/Rome
+Europe/Samara
+...</code></pre></div>
+<p>确定哪个时区对您的位置准确无误后，请以sudo用户身份运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo timedatectl set-timezone your_time_zone</code></pre></div>
+<p>例如，要将系统的时区更改为<code>Europe/Rome</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo timedatectl set-timezone Europe/Rome</code></pre></div>
+<p>运行<code>timedatectl</code>命令以验证更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">timedatectl</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                      Local time: Thu 2019-01-24 00:27:43 CET
+                  Universal time: Wed 2019-01-23 23:27:43 UTC
+                        RTC time: Wed 2019-01-23 23:27:44
+                       Time zone: Europe/Rome (CET, +0100)
+       System clock synchronized: yes
+systemd-timesyncd.service active: yes
+                 RTC in local TZ: no</code></pre></div>
+<h2 id="通过重新配置tzdata来更改时区">通过重新配置tzdata来更改时区</h2>
+
+<p>如果您运行的是旧<a href="/linux/how-to-check-your-ubuntu-version/">版本的Ubuntu</a>并且<code>timedatectl</code>系统上没有该命令，则可以通过重新配置tzdata来更改时区。</p>
+
+<ol>
+<li>确定要配置的时区。</li>
+
+<li><p><code>/etc/timezone</code>使用以下<a href="/linux/linux-tee-command/">tee命令</a>将新时区名称保存到文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;Europe/Rome&#34; | sudo tee /etc/timezone</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Europe/Rome</code></pre></div></li>
+
+<li><p>运行以下命令以更改系统的时区：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dpkg-reconfigure --frontend noninteractive tzdata</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Current default time zone: &#39;Europe/Rome&#39;
+Local time is now:      Thu Jan 24 00:40:48 CET 2019.
+Universal Time is now:  Wed Jan 23 23:40:48 UTC 2019.</code></pre></div></li>
+</ol>
+
+<h2 id="使用gui更改时区">使用GUI更改时区</h2>
+
+<p>如果您不喜欢命令行，则可以通过GUI更改当前系统的时区。</p>
+
+<ol>
+<li><p>单击<code>Settings</code>图标，打开系统设置窗口，如下图所示：</p>
+
+<p><img src="/images/linux/how-to-set-or-change-timezone-on-ubuntu-18-04/ubuntu-system-settings.jpg" alt="" /></p></li>
+
+<li><p>在系统设置窗口中单击上<code>Date &amp; Time</code>选项卡，打开<code>Automatic Time Zone</code>来<code>OFF</code>，并点击<code>Time Zone</code>框：</p>
+
+<p><img src="/images/linux/how-to-set-or-change-timezone-on-ubuntu-18-04/ubuntu-date-time.jpg" alt="" /></p>
+
+<p>如果<code>Automatic Time Zone</code>设置为<code>ON</code>，并且您具有Internet连接，则应根据您的位置自动设置时区。</p></li>
+
+<li><p>要选择新时区，您可以单击地图或通过搜索栏搜索时区。</p>
+
+<p><img src="/images/linux/how-to-set-or-change-timezone-on-ubuntu-18-04/ubuntu-change-timezone.jpg" alt="" /></p>
+
+<p>完成后，单击✖关闭窗口。</p></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>在本指南中，我们已经显示您更改了Ubuntu系统的时区。如果您有任何疑问，请随时发表评论。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">如何在Ubuntu 18.04上添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-curl-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 curl</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

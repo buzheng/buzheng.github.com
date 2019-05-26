@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装和使用FFmpeg | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装和使用FFmpeg" />
+<meta property="og:description" content="FFmpeg是一个免费和开源的工具集合，用于处理多媒体文件。它包含一组共享的音频和视频库，如libavcodec，libavformat和libavutil。使用FFmpeg，您可以在各种视频和音频格式之间进行转换，设置采样率，捕获流式音频/视频和调整视频大小。
+
+本教程将指导您在CentOS 7上安装FFmpeg。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-ffmpeg-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装和使用FFmpeg">
+<meta itemprop="description" content="FFmpeg是一个免费和开源的工具集合，用于处理多媒体文件。它包含一组共享的音频和视频库，如libavcodec，libavformat和libavutil。使用FFmpeg，您可以在各种视频和音频格式之间进行转换，设置采样率，捕获流式音频/视频和调整视频大小。
+
+本教程将指导您在CentOS 7上安装FFmpeg。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="95">
+
+
+
+<meta itemprop="keywords" content="ffmpeg,centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装和使用FFmpeg"/>
+<meta name="twitter:description" content="FFmpeg是一个免费和开源的工具集合，用于处理多媒体文件。它包含一组共享的音频和视频库，如libavcodec，libavformat和libavutil。使用FFmpeg，您可以在各种视频和音频格式之间进行转换，设置采样率，捕获流式音频/视频和调整视频大小。
+
+本教程将指导您在CentOS 7上安装FFmpeg。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装和使用FFmpeg</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>FFmpeg是一个免费和开源的工具集合，用于处理多媒体文件。它包含一组共享的音频和视频库，如libavcodec，libavformat和libavutil。使用FFmpeg，您可以在各种视频和音频格式之间进行转换，设置采样率，捕获流式音频/视频和调整视频大小。</p>
+
+<p>本教程将指导您在CentOS 7上安装FFmpeg。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>为了能够在CentOS系统上添加新存储库和安装软件包，您必须以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</p>
+
+<h2 id="在centos上安装ffmpeg">在CentOS上安装FFmpeg</h2>
+
+<p>FFmpeg在CentOS 7核心存储库中不可用。您可以选择<a href="https://trac.ffmpeg.org/wiki/CompilationGuide/Centos">从源构建FFmpeg工具，</a>或者使用Nux Dextop存储库中的yum安装它。我们将选择第二种方案。</p>
+
+<p>执行以下步骤在CentOS 7上安装FFmpeg：</p>
+
+<ol>
+<li><p>Nux存储库依赖于EPEL软件存储库。如果系统上未启用EPEL存储库，请键入以下命令启用它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release</code></pre></div>
+<ol>
+<li>接下来，导入Repository GPG密钥并通过<a href="/linux/how-to-install-rpm-packages-on-centos/">安装rpm软件包</a>启用Nux存储库：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.rosudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</code></pre></div></li>
+
+<li><p>启用存储库后，安装FFmpeg：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install ffmpeg ffmpeg-devel</code></pre></div>
+<ol>
+<li>通过运行以下<code>ffmpeg -version</code>命令验证FFmpeg安装：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ffmpeg -version</code></pre></div>
+<p>在撰写本文时，Nux Dextop存储库中提供的当前版本的FFmpeg是<code>2.8.15</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ffmpeg version 2.8.15 Copyright (c) 2000-2018 the FFmpeg developers
+built with gcc 4.8.5 (GCC) 20150623 (Red Hat 4.8.5-28)
+...</code></pre></div>
+<p>而已。FFmpeg已安装在您的CentOS机器上。</p>
+
+<h2 id="ffmpeg示例">FFmpeg示例</h2>
+
+<p>在本节中，我们将介绍有关如何使用该<code>ffmpeg</code>实用程序的一些基本示例。</p>
+
+<h3 id="基本转换">基本转换</h3>
+
+<p>使用<code>ffmpeg</code>您转换音频和视频文件时，无需指定输入和输出格式。自动检测输入文件格式，并从文件扩展名中猜出输出格式。</p>
+
+<ul>
+<li>将视频文件从mp4转换为webm：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp4 output.webm</code></pre></div></li>
+</ol>
+
+<ul>
+<li><p>将音频文件从mp3转换为ogg：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp3 output.ogg</code></pre></div>
+<h3 id="指定编解码器">指定编解码器</h3>
+
+<p>转换文件时，您可以使用该<code>-c</code>选项指定要使用的编解码器。编解码器可以是任何支持的解码器/编码器的名称或<code>copy</code>仅复制输入流的特殊值。</p>
+
+<ul>
+<li>使用<code>libvpx</code>视频编解码器和<code>libvorbis</code>音频编解码器将视频文件从mp4转换为webm ：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp4 -c:v libvpx -c:a libvorbis output.webm</code></pre></div></li>
+
+<li><p>将音频文件从mp3转换为使用<code>libopus</code>编解码器编码的ogg 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp3 -c:a libopus output.ogg</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>您已经在CentOS 7上成功安装了FFmpeg。您现在可以访问官方<a href="https://www.ffmpeg.org/ffmpeg.html">FFmpeg文档</a>页面，了解如何使用FFmpeg进行转换以及您的视频和音频文件。</p></li>
+</ul><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ffmpeg" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ffmpeg</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-centos-7/">如何在CentOS 7上安装Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-centos-7/">如何在CentOS 7上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">如何在CentOS 7上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-centos-7/">如何在CentOS 7上安装Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-iptables-on-centos-7/">如何在CentOS 7上安装Iptables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-centos-7/">如何在CentOS 7上安装Minecraft服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

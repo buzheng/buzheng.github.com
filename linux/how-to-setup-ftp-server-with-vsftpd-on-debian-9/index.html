@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Debian 9上使用VSFTPD设置FTP服务器 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Debian 9上使用VSFTPD设置FTP服务器" />
+<meta property="og:description" content="FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。要获得更安全和更快速的数据传输，请使用SCP或SFTP。
+
+有许多可用于Linux的开源FTP服务器。最流行和最广泛使用的是PureFTPd，ProFTPD和vsftpd。
+
+本教程解释了如何在Debian 9上安装和配置vsftpd（非常安全的Ftp守护进程）.vsftpd是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-setup-ftp-server-with-vsftpd-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Debian 9上使用VSFTPD设置FTP服务器">
+<meta itemprop="description" content="FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。要获得更安全和更快速的数据传输，请使用SCP或SFTP。
+
+有许多可用于Linux的开源FTP服务器。最流行和最广泛使用的是PureFTPd，ProFTPD和vsftpd。
+
+本教程解释了如何在Debian 9上安装和配置vsftpd（非常安全的Ftp守护进程）.vsftpd是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="301">
+
+
+
+<meta itemprop="keywords" content="ftp,debian," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Debian 9上使用VSFTPD设置FTP服务器"/>
+<meta name="twitter:description" content="FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。要获得更安全和更快速的数据传输，请使用SCP或SFTP。
+
+有许多可用于Linux的开源FTP服务器。最流行和最广泛使用的是PureFTPd，ProFTPD和vsftpd。
+
+本教程解释了如何在Debian 9上安装和配置vsftpd（非常安全的Ftp守护进程）.vsftpd是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Debian 9上使用VSFTPD设置FTP服务器</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。要获得更安全和更快速的数据传输，请使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/">SCP</a>或<a href="/linux/how-to-use-linux-sftp-command-to-transfer-files/">SFTP</a>。</p>
+
+<p>有许多可用于Linux的开源FTP服务器。最流行和最广泛使用的是<a href="https://www.pureftpd.org/project/pure-ftpd">PureFTPd</a>，<a href="http://www.proftpd.org/">ProFTPD</a>和<a href="https://security.appspot.com/vsftpd.html">vsftpd</a>。</p>
+
+<p>本教程解释了如何在Debian 9上安装和配置vsftpd（非常安全的Ftp守护进程）.vsftpd是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您登录的用户必须具有<a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo权限</a>才能安装软件包。</p>
+
+<h2 id="在debian-9上安装vsftpd">在Debian 9上安装vsftpd</h2>
+
+<p>Debian存储库中提供了vsftpd软件包。安装非常简单：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install vsftpd</code></pre></div>
+<p>安装过程完成后，vsftpd服务将自动启动。通过打印服务状态进行验证：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vsftpd</code></pre></div>
+<p>输出将如下所示，表明vsftpd服务处于活动状态并正在运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● vsftpd.service - vsftpd FTP server
+   Loaded: loaded (/lib/systemd/system/vsftpd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2018-12-10 11:42:51 UTC; 53s ago
+ Main PID: 1394 (vsftpd)
+   CGroup: /system.slice/vsftpd.service
+           └─1394 /usr/sbin/vsftpd /etc/vsftpd.conf</code></pre></div>
+<h2 id="配置vsftpd">配置vsftpd</h2>
+
+<p>可以通过修改目录中的<code>vsftpd.conf</code>文件来配置vsftpd服务器<code>/etc</code>。</p>
+
+<p>大多数设置都在配置文件中有详细记录。有关所有可用选项，请访问<a href="http://vsftpd.beasts.org/vsftpd_conf.html">官方vsftpd</a>页面。</p>
+
+<p>在以下部分中，我们将介绍配置安全vsftpd安装所需的一些重要设置。</p>
+
+<p>首先打开vsftpd配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/vsftpd.conf</code></pre></div>
+<h3 id="1-ftp访问">1. FTP访问</h3>
+
+<p>找到<code>anonymous_enable</code>和<code>local_enable</code>指令并验证您的配置是否与以下行匹配：</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">anonymous_enable</span><span class="o">=</span><span class="s">NO</span>
+<span class="na">local_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
+<p>这可确保只有本地用户才能访问FTP服务器。</p>
+
+<h3 id="2-启用上传">2.启用上传</h3>
+
+<p>取消注释<code>write_enable</code>设置以允许更改文件系统，例如上载和删除文件。</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">write_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
+<h3 id="3-chroot-jail">3. Chroot Jail</h3>
+
+<p>要防止FTP用户访问其主目录之外的任何文件，请取消注释该<code>chroot</code>设置。</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">chroot_local_user</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
+<p>默认情况下，为了防止安全漏洞，当启用chroot时，如果锁定用户的目录是可写的，vsftpd将拒绝上载文件。</p>
+
+<p>使用以下方法之一允许在启用chroot时上载。</p>
+
+<ul>
+<li><p><strong>方法1.</strong> - 允许上载的推荐方法是保持chroot启用并配置FTP目录。在本教程中，我们将<code>ftp</code>在用户主目录中创建一个目录，该目录将用作chroot和<code>uploads</code>用于上载文件的可写目录。</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">user_sub_token</span><span class="o">=</span><span class="s">$USER</span>
+<span class="na">local_root</span><span class="o">=</span><span class="s">/home/$USER/ftp</span></code></pre></div>
+<ul>
+<li><strong>方法2.</strong> - 另一个选项是在vsftpd配置文件中添加以下指令。如果必须将用户的可写访问权限授予其主目录，请使用此选项。</li>
+</ul>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">allow_writeable_chroot</span><span class="o">=</span><span class="s">YES</span></code></pre></div></li>
+</ul>
+
+<h3 id="4-被动ftp连接">4.被动FTP连接</h3>
+
+<p>vsftpd可以使用任何端口进行被动FTP连接。我们将指定端口的最小和最大范围，然后在防火墙中打开范围。</p>
+
+<p>将以下行添加到配置文件中：</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">pasv_min_port</span><span class="o">=</span><span class="s">30000</span>
+<span class="na">pasv_max_port</span><span class="o">=</span><span class="s">31000</span></code></pre></div>
+<h3 id="5-限制用户登录">5.限制用户登录</h3>
+
+<p>要仅允许某些用户登录FTP服务器，请在文件末尾添加以下行：</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">userlist_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">userlist_file</span><span class="o">=</span><span class="s">/etc/vsftpd.user_list</span>
+<span class="na">userlist_deny</span><span class="o">=</span><span class="s">NO</span></code></pre></div>
+<p>启用此选项后，您需要通过向<code>/etc/vsftpd.user_list</code>文件添加用户名（每行一个用户）明确指定哪些用户能够登录。</p>
+
+<h3 id="6-使用ssl-tls保护传输">6.使用SSL / TLS保护传输</h3>
+
+<p>为了使用SSL / TLS加密FTP传输，您需要拥有SSL证书并配置FTP服务器才能使用它。</p>
+
+<p>您可以使用由受信任的证书颁发机构签名的现有SSL证书，也可以创建自签名证书。</p>
+
+<p>如果您有指向FTP服务器IP地址的域或子域，则可以轻松生成免费的<a href="/linux/secure-apache-with-let-s-encrypt-on-debian-9/">Let&rsquo;s Encrypt</a> SSL证书。</p>
+
+<p>在本教程中，我们将使用该命令生成<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名SSL证书</a><code>openssl</code>。</p>
+
+<p>以下命令将创建一个2048位私钥和自签名证书，有效期为10年。私钥和证书都将保存在同一个文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem</code></pre></div>
+<p>创建SSL证书后，打开vsftpd配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/vsftpd.conf</code></pre></div>
+<p>找到<code>rsa_cert_file</code>和<code>rsa_private_key_file</code>指令，将它们的值更改为<code>pam</code>文件路径并将<code>ssl_enable</code>指令设置为<code>YES</code>：</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">rsa_cert_file</span><span class="o">=</span><span class="s">/etc/ssl/private/vsftpd.pem</span>
+<span class="na">rsa_private_key_file</span><span class="o">=</span><span class="s">/etc/ssl/private/vsftpd.pem</span>
+<span class="na">ssl_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
+<p>如果没有另外指定，FTP服务器将仅使用TLS进行安全连接。</p>
+
+<h3 id="重新启动vsftpd服务">重新启动vsftpd服务</h3>
+
+<p>完成编辑后，vsftpd配置文件（不包括注释）应如下所示：</p>
+
+<p>/etc/vsftpd.conf文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">listen</span><span class="o">=</span><span class="s">NO</span>
+<span class="na">listen_ipv6</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">anonymous_enable</span><span class="o">=</span><span class="s">NO</span>
+<span class="na">local_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">write_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">dirmessage_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">use_localtime</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">xferlog_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">connect_from_port_20</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">chroot_local_user</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">secure_chroot_dir</span><span class="o">=</span><span class="s">/var/run/vsftpd/empty</span>
+<span class="na">pam_service_name</span><span class="o">=</span><span class="s">vsftpd</span>
+<span class="na">rsa_cert_file</span><span class="o">=</span><span class="s">/etc/ssl/certs/ssl-cert-snakeoil.pem</span>
+<span class="na">rsa_private_key_file</span><span class="o">=</span><span class="s">/etc/ssl/private/ssl-cert-snakeoil.key</span>
+<span class="na">ssl_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">user_sub_token</span><span class="o">=</span><span class="s">$USER</span>
+<span class="na">local_root</span><span class="o">=</span><span class="s">/home/$USER/ftp</span>
+<span class="na">pasv_min_port</span><span class="o">=</span><span class="s">30000</span>
+<span class="na">pasv_max_port</span><span class="o">=</span><span class="s">31000</span>
+<span class="na">userlist_enable</span><span class="o">=</span><span class="s">YES</span>
+<span class="na">userlist_file</span><span class="o">=</span><span class="s">/etc/vsftpd.user_list</span>
+<span class="na">userlist_deny</span><span class="o">=</span><span class="s">NO</span></code></pre></div>
+<p>保存文件并重新启动vsftpd服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart vsftpd</code></pre></div>
+<h2 id="打开防火墙">打开防火墙</h2>
+
+<p>如果您运行的是<a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">UFW防火墙</a>，则需要允许FTP流量。</p>
+
+<p>要打开端口<code>21</code>（FTP命令端口），端口<code>20</code>（FTP数据端口）和<code>30000-31000</code>（被动端口范围），请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 20:21/tcpsudo ufw allow 30000:31000/tcp</code></pre></div>
+<p>为了避免被锁定，我们还将打开端口<code>22</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow OpenSSH</code></pre></div>
+<p>通过禁用和重新启用UFW来重新加载UFW规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw disablesudo ufw enable</code></pre></div>
+<p>要验证更改运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+
+To                         Action      From
+--                         ------      ----
+20:21/tcp                  ALLOW       Anywhere
+30000:31000/tcp            ALLOW       Anywhere
+OpenSSH                    ALLOW       Anywhere
+20:21/tcp (v6)             ALLOW       Anywhere (v6)
+30000:31000/tcp (v6)       ALLOW       Anywhere (v6)
+OpenSSH (v6)               ALLOW       Anywhere (v6)</code></pre></div>
+<h2 id="创建ftp用户">创建FTP用户</h2>
+
+<p>为了测试我们的FTP服务器，我们将创建一个新用户。</p>
+
+<ul>
+<li>如果您已经拥有要授予FTP访问权限的用户，请跳过第1步。</li>
+<li>如果<code>allow_writeable_chroot=YES</code>在配置文件中设置，请跳过第3步。</li>
+</ul>
+
+<ol>
+<li><p>创建一个名为的新用户<code>newftpuser</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser newftpuser</code></pre></div>
+<ol>
+<li>将用户添加到允许的FTP用户列表：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;newftpuser&#34; | sudo tee -a /etc/vsftpd.user_list</code></pre></div></li>
+
+<li><p>创建FTP目录树并设置正确的权限：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /home/newftpuser/ftp/uploadsudo chmod 550 /home/newftpuser/ftpsudo chmod 750 /home/newftpuser/ftp/uploadsudo chown -R newftpuser: /home/newftpuser/ftp</code></pre></div>
+<p>如上一节所述，用户可以将其文件上传到<code>ftp/upload</code>目录。</p>
+
+<p>此时，您的FTP服务器功能齐全，您应该能够使用任何可配置为使用TLS加密的FTP客户端（如<a href="https://filezilla-project.org/">FileZilla）</a>连接到您的服务器。</p>
+
+<h2 id="禁用shell访问">禁用Shell访问</h2>
+
+<p>默认情况下，在创建用户时，如果未明确指定，则用户将具有对服务器的SSH访问权限。</p>
+
+<p>要禁用shell访问，我们将创建一个新的shell，它只会打印一条消息，告诉用户他们的帐户仅限于FTP访问。</p>
+
+<p>创建<code>/bin/ftponly</code>shell并使其可执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo -e &#39;#!/bin/sh\necho &#34;This account is limited to FTP access only.&#34;&#39; | sudo tee -a  /bin/ftponlysudo chmod a+x /bin/ftponly</code></pre></div></li>
+</ol>
+
+<p>将新shell附加到<code>/etc/shells</code>文件中的有效shell列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;/bin/ftponly&#34; | sudo tee -a /etc/shells</code></pre></div>
+<p>将用户shell更改为<code>/bin/ftponly</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo usermod newftpuser -s /bin/ftponly</code></pre></div>
+<p>使用相同的命令更改要仅​​提供FTP访问权限的所有用户的shell。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何在Debian 9系统上安装和配置安全，快速的FTP服务器。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ftp" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ftp</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-debian-9/">使用Debian 9上的Let加密来保护Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-9/">在Debian 9上使用Let&#39;s Encrypt来保护Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-linux-ftp-command-to-transfer-files/">如何使用Linux FTP命令传输文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-debian-9/">如何在 Debian 9 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-debian-9/">如何在Debian 9 Linux上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-debian-9/">如何在Debian 9 Linux上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian 9上使用UFW设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-debian-9/">如何在Debian 9上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-debian-9/">如何在Debian 9上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-jenkins-on-debian-9/">如何在Debian 9上安装Jenkins</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-r-on-debian-9/">如何在Debian 9上安装R</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-9/">如何在Debian 9上安装Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vmware-workstation-player-on-debian-9/">如何在Debian 9上安装VMware Workstation Player</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

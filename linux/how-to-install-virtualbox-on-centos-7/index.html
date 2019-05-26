@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装VirtualBox | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装VirtualBox" />
+<meta property="og:description" content="VirtualBox是一种开源的跨平台虚拟化软件，允许您同时运行多个客户操作系统（虚拟机）。
+
+在本教程中，我们将向您展示如何从CentOS 7系统上的Oracle存储库安装VirtualBox。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-virtualbox-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装VirtualBox">
+<meta itemprop="description" content="VirtualBox是一种开源的跨平台虚拟化软件，允许您同时运行多个客户操作系统（虚拟机）。
+
+在本教程中，我们将向您展示如何从CentOS 7系统上的Oracle存储库安装VirtualBox。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="126">
+
+
+
+<meta itemprop="keywords" content="virtualbox,centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装VirtualBox"/>
+<meta name="twitter:description" content="VirtualBox是一种开源的跨平台虚拟化软件，允许您同时运行多个客户操作系统（虚拟机）。
+
+在本教程中，我们将向您展示如何从CentOS 7系统上的Oracle存储库安装VirtualBox。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装VirtualBox</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://www.virtualbox.org/">VirtualBox</a>是一种开源的跨平台虚拟化软件，允许您同时运行多个客户操作系统（虚拟机）。</p>
+
+<p>在本教程中，我们将向您展示如何从CentOS 7系统上的Oracle存储库安装VirtualBox。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</p>
+
+<h2 id="从oracle存储库安装virtualbox">从Oracle存储库安装VirtualBox</h2>
+
+<p>按照以下步骤在CentOS 7计算机上安装VirtualBox：</p>
+
+<ol>
+<li><p>首先下载编译<code>vboxdrv</code>内核模块所需的构建工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install kernel-devel kernel-headers make patch gcc</code></pre></div>
+<ol>
+<li><code>/etc/yum.repos.d</code>使用以下<a href="/linux/wget-command-examples/">wget命令</a>将Oracle Linux repo文件下载到目录：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo wget https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo -P /etc/yum.repos.d</code></pre></div></li>
+
+<li><p>键入以下命令安装最新版本的VirtualBox 5.2.x：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install VirtualBox-5.2</code></pre></div>
+<p>在安装过程中，系统将提示您导入存储库GPG密钥。输入<code>y</code>并点击<code>Enter</code>。安装完成后，您将看到以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Creating group &#39;vboxusers&#39;. VM users must be member of that group!
+
+Verifying  : VirtualBox-5.2-5.2.20_125813_el7-1.x86_64
+
+Installed:
+VirtualBox-5.2.x86_64 0:5.2.20_125813_el7-1</code></pre></div></li>
+
+<li><p>要验证VirtualBox安装是否成功，请运行以下命令以检查<code>vboxdrv</code>服务的状态。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">systemctl status vboxdrv</code></pre></div>
+<p>输出应该类似于此，表示该服务已启用并处于活动状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● vboxdrv.service - VirtualBox Linux kernel module
+    Loaded: loaded (/usr/lib/virtualbox/vboxdrv.sh; enabled; vendor preset: disabled)
+    Active: active (exited) since Thu 2018-10-25 21:31:52 UTC; 6s ago</code></pre></div></li>
+</ol>
+
+<h2 id="安装virtualbox扩展包">安装VirtualBox扩展包</h2>
+
+<p>VirtualBox Extension Pack为客户机提供了一些有用的功能，如虚拟USB 2.0和3.0设备，支持RDP，图像加密等。</p>
+
+<p>在撰写本文时，最新版本的VirtualBox是5.2.20。在使用以下命令下载扩展包之前，您应该检查<a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox下载页面</a>以查看是否有更新的版本。</p>
+
+<p>键入以下命令下载扩展包文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://download.virtualbox.org/virtualbox/5.2.20/Oracle_VM_VirtualBox_Extension_Pack-5.2.20.vbox-extpack</code></pre></div>
+<p>下载完成后，使用以下命令导入扩展包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo VBoxManage extpack install  Oracle_VM_VirtualBox_Extension_Pack-5.2.20.vbox-extpack</code></pre></div>
+<p>您将看到Oracle许可证，并提示您接受条款和条件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Do you agree to these license terms and conditions (y/n)?</code></pre></div>
+<p>输入<code>y</code>并点击<code>Enter</code>。安装完成后，您将看到以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+Successfully installed &#34;Oracle VM VirtualBox Extension Pack&#34;.</code></pre></div>
+<h2 id="启动virtualbox">启动VirtualBox</h2>
+
+<p>现在您已经在CentOS系统上安装了VirtualBox，您可以通过键入<code>VirtualBox</code>或单击VirtualBox图标（<code>Applications -&gt; System Tools -&gt; Oracle VM VirtualBox</code>）从命令行启动它。</p>
+
+<p><img src="/images/linux/how-to-install-virtualbox-on-centos-7/centos-start-virtualbox.jpg" alt="" /></p>
+
+<p>首次启动VirtualBox时，应显示如下窗口：</p>
+
+<p><img src="/images/linux/how-to-install-virtualbox-on-centos-7/centos-virtualbox.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在CentOS 7计算机上安装VirtualBox。您现在可以安装第一台Windows或Linux客户机。要查找有关VirtualBox的更多信息，请访问官方<a href="https://www.virtualbox.org/wiki/Documentation">VirtualBox文档</a>页面。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/virtualbox" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">virtualbox</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-centos-7/">如何在CentOS 7上安装Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-centos-7/">如何在CentOS 7上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">如何在CentOS 7上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-centos-7/">如何在CentOS 7上安装Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-iptables-on-centos-7/">如何在CentOS 7上安装Iptables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-centos-7/">如何在CentOS 7上安装Minecraft服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux Ping命令 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux Ping命令" />
+<meta property="og:description" content="ping命令是用于故障排除，测试和诊断网络连接问题的最常用实用程序之一。
+
+Ping通过将一个或多个ICMP（Internet控制消息协议）Echo请求包发送到网络上的指定目标IP并等待回复来工作。当目的地收到包时，它将回复ICMP回应回复。
+
+使用ping命令，我们可以确定远程目标IP是处于活动状态还是非活动状态，找到与目标通信的往返延迟并检查是否存在数据包丢失。
+
+ping实用程序是iputils（或iputils-ping）程序包的一部分，该程序包预先安装在几乎所有Linux发行版上。ping命令也可用于Windows，MacOSX和FreeBSD。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/linux-ping-command/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux Ping命令">
+<meta itemprop="description" content="ping命令是用于故障排除，测试和诊断网络连接问题的最常用实用程序之一。
+
+Ping通过将一个或多个ICMP（Internet控制消息协议）Echo请求包发送到网络上的指定目标IP并等待回复来工作。当目的地收到包时，它将回复ICMP回应回复。
+
+使用ping命令，我们可以确定远程目标IP是处于活动状态还是非活动状态，找到与目标通信的往返延迟并检查是否存在数据包丢失。
+
+ping实用程序是iputils（或iputils-ping）程序包的一部分，该程序包预先安装在几乎所有Linux发行版上。ping命令也可用于Windows，MacOSX和FreeBSD。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="139">
+
+
+
+<meta itemprop="keywords" content="ping,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux Ping命令"/>
+<meta name="twitter:description" content="ping命令是用于故障排除，测试和诊断网络连接问题的最常用实用程序之一。
+
+Ping通过将一个或多个ICMP（Internet控制消息协议）Echo请求包发送到网络上的指定目标IP并等待回复来工作。当目的地收到包时，它将回复ICMP回应回复。
+
+使用ping命令，我们可以确定远程目标IP是处于活动状态还是非活动状态，找到与目标通信的往返延迟并检查是否存在数据包丢失。
+
+ping实用程序是iputils（或iputils-ping）程序包的一部分，该程序包预先安装在几乎所有Linux发行版上。ping命令也可用于Windows，MacOSX和FreeBSD。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">Linux Ping命令</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>ping命令是用于故障排除，测试和诊断网络连接问题的最常用实用程序之一。</p>
+
+<p>Ping通过将一个或多个ICMP（Internet控制消息协议）Echo请求包发送到网络上的指定目标IP并等待回复来工作。当目的地收到包时，它将回复ICMP回应回复。</p>
+
+<p>使用ping命令，我们可以确定远程目标IP是处于活动状态还是非活动状态，找到与目标通信的往返延迟并检查是否存在数据包丢失。</p>
+
+<p>ping实用程序是<code>iputils</code>（或<code>iputils-ping</code>）程序包的一部分，该程序包预先安装在几乎所有Linux发行版上。ping命令也可用于Windows，MacOSX和FreeBSD。</p>
+
+<h2 id="如何使用ping命令">如何使用Ping命令</h2>
+
+<p>ping命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping <span class="o">[</span>OPTIONS<span class="o">]</span> DESTINATION</code></pre></div>
+<p>为了更好地说明ping命令如何工作，让我们ping <code>google.com</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ping google.com</code></pre></div>
+<p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">PING google.com (172.217.22.206) 56(84) bytes of data.
+64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=1 ttl=53 time=40.2 ms
+64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=2 ttl=53 time=41.8 ms
+64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=3 ttl=53 time=47.4 ms
+64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=4 ttl=53 time=41.4 ms
+^C
+--- google.com ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 7ms
+rtt min/avg/max/mdev = 40.163/42.700/47.408/2.790 ms</code></pre></div>
+<p>ping命令将域名解析为一个地址，并开始将ICMP包发送到目标IP。如果目标IP可达，它将响应并且ping命令将打印包含以下字段的行：</p>
+
+<ul>
+<li>数据字节数。默认值为56，转换为64个ICMP数据字节 - <code>64 bytes</code></li>
+<li>目的地的IP地址 - <code>from muc11s01-in-f14.1e100.net (172.217.22.206)</code></li>
+<li>每个数据包的ICMP序列号。 <code>icmp_seq=1</code></li>
+<li>生存的时间。- <code>ttl=53</code>- <a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/">TTL如何工作？</a></li>
+<li>ping时间（以毫秒为单位）是数据包到达主机的往返时间以及返回发送方的响应。 - <code>time=41.4 ms</code></li>
+</ul>
+
+<p>缺省情况下，发送新报文的时间间隔为1秒。</p>
+
+<p>ping命令将继续将ICMP包发送到目标IP地址，直到收到中断为止。要停止命令，只需按下<code>Ctrl+C</code>组合键即可。</p>
+
+<p>命令停止后，它将显示一个统计信息，包括丢包百分比。数据包丢失意味着数据被丢弃在网络中的某个位置，表明网络中存在问题。如果丢包，您可以使用该<code>traceroute</code>命令识别丢包发生的位置。</p>
+
+<p>如果ping没有返回答复，则表示未建立网络通信。如果发生这种情况，并不总是意味着目标IP未处于活动状态，某些主机可能具有阻止ICMP流量的防火墙或设置为不响应ping请求。</p>
+
+<p>成功时，ping命令退出代码，<code>0</code>否则将退出代码<code>1</code>或<code>2</code>。如果您在shell脚本中使用ping实用程序，这将非常有用。</p>
+
+<p>在以下部分中，我们将介绍最常用的ping命令选项。</p>
+
+<h2 id="指定数据包数">指定数据包数</h2>
+
+<p>正如我们已经讨论的那样，默认情况下，ping命令将继续发送ICMP包，直到收到中断信号。要指定要在ping退出之后发送的Echo Request包的数量，请使用<code>-c</code>选项后跟包的数量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -c <span class="m">1</span> DESTINATION</code></pre></div>
+<p>例如，要<code>linuxize.com</code>只使用一次ping</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ping -c 1 linuxize.com</code></pre></div>
+<h2 id="指定源接口">指定源接口</h2>
+
+<p>默认情况下，ping将通过默认路由发送ICMP包。如果您的计算机上有多个接口，则可以使用以下<code>-I</code>选项指定源接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -I INTERFACE_NAME DESTINATION</code></pre></div>
+<p>下面的命令将执行ping <code>linuxize.com</code>使用<code>em2</code>作为源接口</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ping -I em2 linuxize.com</code></pre></div>
+<h2 id="指定internet协议">指定Internet协议</h2>
+
+<p>运行ping命令时，它将使用IPv4或IPv6，具体取决于您的计算机DNS设置。</p>
+
+<p>强制ping使用IPv4传递<code>-4</code>选项或使用其别名<code>ping4</code>。对于IPv6传递<code>-6</code>选项或使用<code>ping6</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -4 DESTINATION</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -6 DESTINATION</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用Linux <code>ping</code>命令。您始终可以<code>ping</code>通过键入<code>man ping</code>终端来查看所有可用的命令选项。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ping" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ping</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/find-large-files-in-linux/">在Linux中查找大文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">如何使用Grep命令在Linux中搜索文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

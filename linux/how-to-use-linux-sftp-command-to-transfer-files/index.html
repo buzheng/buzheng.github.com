@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何使用Linux SFTP命令传输文件 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何使用Linux SFTP命令传输文件" />
+<meta property="og:description" content="SFTP（SSH文件传输协议）是一种安全文件协议，用于通过加密的SSH传输访问，管理和传输文件。
+
+与传统的FTP协议相比，SFTP提供了FTP的所有功能，并且更易于配置。
+
+与scp command仅允许文件传输的sftp命令不同，该命令允许您对远程文件执行一系列操作并恢复文件传输。
+
+在本教程中，我们将向您展示如何使用Linux sftp命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-use-linux-sftp-command-to-transfer-files/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何使用Linux SFTP命令传输文件">
+<meta itemprop="description" content="SFTP（SSH文件传输协议）是一种安全文件协议，用于通过加密的SSH传输访问，管理和传输文件。
+
+与传统的FTP协议相比，SFTP提供了FTP的所有功能，并且更易于配置。
+
+与scp command仅允许文件传输的sftp命令不同，该命令允许您对远程文件执行一系列操作并恢复文件传输。
+
+在本教程中，我们将向您展示如何使用Linux sftp命令。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="183">
+
+
+
+<meta itemprop="keywords" content="sftp,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何使用Linux SFTP命令传输文件"/>
+<meta name="twitter:description" content="SFTP（SSH文件传输协议）是一种安全文件协议，用于通过加密的SSH传输访问，管理和传输文件。
+
+与传统的FTP协议相比，SFTP提供了FTP的所有功能，并且更易于配置。
+
+与scp command仅允许文件传输的sftp命令不同，该命令允许您对远程文件执行一系列操作并恢复文件传输。
+
+在本教程中，我们将向您展示如何使用Linux sftp命令。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何使用Linux SFTP命令传输文件</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>SFTP（SSH文件传输协议）是一种安全文件协议，用于通过加密的SSH传输访问，管理和传输文件。</p>
+
+<p>与传统的<a href="/linux/how-to-setup-passwordless-ssh-login/">FTP</a>协议相比，SFTP提供了FTP的所有功能，并且更易于配置。</p>
+
+<p>与<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/"><code>scp command</code></a>仅允许文件传输的<code>sftp</code>命令不同，该命令允许您对远程文件执行一系列操作并恢复文件传输。</p>
+
+<p>在本教程中，我们将向您展示如何使用Linux <code>sftp</code>命令。</p>
+
+<h2 id="在你开始之前">在你开始之前</h2>
+
+<p>为了能够通过SFTP传输和管理文件，您必须具有远程系统的写入权限。</p>
+
+<p>传输大文件时，建议在<a href="/linux/how-to-use-linux-screen/">屏幕</a>或<a href="/linux/getting-started-with-tmux/">tmux</a>会话中运行sftp命令。</p>
+
+<p>运行该<code>sftp</code>命令的目录是本地工作目录。</p>
+
+<h2 id="建立sftp连接">建立SFTP连接</h2>
+
+<p>SFTP适用于客户端 - 服务器模型。它是SSH的子系统，支持所有SSH身份验证机制。</p>
+
+<p>虽然默认设置传统密码验证并且更易于使用，但如果您经常通过SSH / SFTP连接到服务器，建议创建SSH密钥并设置无<a href="/linux/how-to-setup-passwordless-ssh-login/">密码SFTP登录</a>。</p>
+
+<p>要打开与远程系统的SFTP连接，请使用<code>sftp</code>命令，后跟远程服务器用户名和IP地址或域名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sftp remote_username@server_ip_or_hostname</code></pre></div>
+<p>如果您使用的是密码验证，系统将提示您输入用户密码。连接后，远程服务器将显示确认消息和<code>sftp&gt;</code>提示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Connected to remote_username@server_ip_or_hostname.
+sftp&gt;</code></pre></div>
+<p>如果SSH服务器未在默认端口22上侦听，请使用<code>oPort</code>指定备用端口的选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sftp -oPort=custom_port remote_username@server_ip_or_hostname</code></pre></div>
+<h2 id="sftp命令">SFTP命令</h2>
+
+<p>大多数SFTP命令与您在Linux shell提示符中使用的命令类似或相同。</p>
+
+<p>您可以通过键入<code>help</code>或获取所有可用SFTP命令的列表<code>?</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">help</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Available commands:
+bye                                Quit sftp
+cd path                            Change remote directory to &#39;path&#39;
+...
+...
+version                            Show SFTP version
+!command                           Execute &#39;command&#39; in local shell
+!                                  Escape to local shell
+?                                  Synonym for help</code></pre></div>
+<h2 id="使用sftp导航">使用SFTP导航</h2>
+
+<p>登录到远程服务器后，当前工作目录是远程用户主目录。你可以输入以下内容来检查：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">pwd</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Remote working directory: /home/remote_username</code></pre></div>
+<p>要列出文件和目录，请使用以下<code>ls</code>命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">ls</code></pre></div>
+<p>要使用该<code>cd</code>命令导航到另一个目录。例如，要切换到<code>/tmp</code>您要键入的目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">cd /tmp</code></pre></div>
+<p>所有上述命令都用于导航和处理远程位置。该<code>sftp</code>提示还提供用于本地导航，信息和文件管理的命令。</p>
+
+<p>例如，要打印本地工作目录，您可以键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">cd lpwd</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Local working directory: /home/local_username</code></pre></div>
+<h2 id="使用sftp传输文件">使用SFTP传输文件</h2>
+
+<p>SFTP允许您在两台计算机之间安全地传输文件。</p>
+
+<p>在大多数情况下，您将使用桌面SFTP客户端（如<a href="https://winscp.net/eng/index.php">WinSCP</a>或<a href="https://filezilla-project.org/">FileZilla）</a>连接到远程服务器并下载或上载文件。但是，<code>sftp</code>当您在没有GUI的服务器上工作并且想要传输文件或希望对远程文件执行其他操作时，该命令很有用。</p>
+
+<h3 id="使用sftp命令下载文件">使用SFTP命令下载文件</h3>
+
+<p>登录到远程服务器后，当前工作目录是远程用户主目录。</p>
+
+<p>使用该<code>sftp</code>命令下载文件时，文件将下载到您键入<code>sftp</code>命令的目录中。</p>
+
+<p>要从远程服务器下载单个文件，请使用以下<code>get</code>命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">get filename.zip</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Fetching /home/remote_username/filename.zip to filename.zip
+/home/remote_username/filename.zip                           100%   24MB   1.8MB/s   00:13</code></pre></div>
+<p>如果要使用其他名称保存下载的文件，请在以后指定名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">get filename.zip local_filename.zip</code></pre></div>
+<p>要从远程系统下载目录，请使用递归<code>-r</code>选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">get -r remote_directory</code></pre></div>
+<p>如果文件传输失败或中断，您可以使用该<code>reget</code>命令恢复它。语法与语法<code>reget</code>相同<code>get</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">reget filename.zip</code></pre></div>
+<h3 id="使用sftp命令上载文件">使用SFTP命令上载文件</h3>
+
+<p>要将文件从本地目录上载到远程FTP服务器，请使用以下<code>put</code>命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">put filename.zip</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Uploading filename.zip to /home/remote_username/filename.zip
+filename.zip                          100%   12MB   1.7MB/s   00:06</code></pre></div>
+<p>如果要上载不在当前工作目录中的文件，请使用该文件的绝对路径。</p>
+
+<p>使用时，<code>put</code>可以使用<code>get</code>命令提供的相同选项。</p>
+
+<p>要复制本地目录，请键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">put -r locale_directory</code></pre></div>
+<p>要恢复中断的上传：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">reput filename.zip</code></pre></div>
+<h2 id="使用sftp进行文件操作">使用SFTP进行文件操作</h2>
+
+<p>通常，您将通过SSH连接到服务器并使用shell终端，但在某些情况下，您的用户可能只有SFTP访问远程服务器。</p>
+
+<p>SFTP允许您执行一些基本的文件操作命令。以下是如何使用SFTP shell的一些示例：</p>
+
+<ul>
+<li><p>显示远程系统磁盘使用情况的统计信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">df</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">        Size         Used        Avail       (root)    %Capacity
+    20616252      1548776     18002580     19067476           7%</code></pre></div></li>
+
+<li><p>在远程服务器上创建一个新目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">mkdir directory_name</code></pre></div>
+<ul>
+<li>重命名远程服务器上的文件：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">rename file_name new_file_name</code></pre></div></li>
+
+<li><p>删除远程服务器上的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">rm file_name</code></pre></div>
+<ul>
+<li>删除远程服务器上的目录：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">rmdir directory_name</code></pre></div></li>
+
+<li><p>更改远程系统上文件的权限：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">chmod 644 file_name</code></pre></div>
+<ul>
+<li>更改远程系统上文件的所有者：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">chown user_id file_name</code></pre></div>
+<p>您必须为<a href="/linux/linux-chown-command/"><code>chown</code></a>和<code>chgrp</code>命令提供用户标识。</p></li>
+
+<li><p>使用以下命令更改远程文件的组所有者：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-sftp" data-lang="console-sftp">chgrp group_id file_name</code></pre></div>
+<p>完成工作后，您可以通过键入<code>bye</code>或关闭连接<code>quit</code>。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何使用sftp命令下载文件并将文件上载到远程SFTP服务器。</p>
+
+<p>您可能还需要设置基于<a href="/linux/how-to-setup-passwordless-ssh-login/">SSH密钥的身份验证</a>并连接到Linux服务器而无需输入密码。</p>
+
+<p>如果您经常连接到相同的系统，则可以通过在<a href="/linux/using-the-ssh-config-file/">SSH配置文件中</a>定义所有连接来简化工作流程。</p></li>
+</ul><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/sftp" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">sftp</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/find-large-files-in-linux/">在Linux中查找大文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

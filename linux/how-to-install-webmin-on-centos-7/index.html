@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装Webmin | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装Webmin" />
+<meta property="og:description" content="Webmin是一个用于Linux / UNIX系统管理的开源Web控制面板。Webmin允许您管理用户，组，磁盘配额以及配置最流行的服务，包括Web，FTP，电子邮件和数据库服务器。
+
+本教程介绍如何在CentOS 7服务器上安装Webmin。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-webmin-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装Webmin">
+<meta itemprop="description" content="Webmin是一个用于Linux / UNIX系统管理的开源Web控制面板。Webmin允许您管理用户，组，磁盘配额以及配置最流行的服务，包括Web，FTP，电子邮件和数据库服务器。
+
+本教程介绍如何在CentOS 7服务器上安装Webmin。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="83">
+
+
+
+<meta itemprop="keywords" content="webmin,centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装Webmin"/>
+<meta name="twitter:description" content="Webmin是一个用于Linux / UNIX系统管理的开源Web控制面板。Webmin允许您管理用户，组，磁盘配额以及配置最流行的服务，包括Web，FTP，电子邮件和数据库服务器。
+
+本教程介绍如何在CentOS 7服务器上安装Webmin。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装Webmin</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="http://www.webmin.com/">Webmin</a>是一个用于Linux / UNIX系统管理的开源Web控制面板。Webmin允许您管理用户，组，磁盘配额以及配置最流行的服务，包括Web，FTP，电子邮件和数据库服务器。</p>
+
+<p>本教程介绍如何在CentOS 7服务器上安装Webmin。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</p>
+
+<h2 id="在centos上安装webmin">在CentOS上安装Webmin</h2>
+
+<p>在CentOS机器上安装Webmin的最简单和推荐的方法是启用Webmin存储库并通过命令行安装Webmin软件包。</p>
+
+<p>完成以下步骤在CentOS上安装Webmin：</p>
+
+<ol>
+<li><p>打开您选择的编辑器并创建以下存储库文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/yum.repos.d/webmin.repo</code></pre></div>
+<p>将以下内容粘贴到文件中：</p>
+
+<p>/etc/yum.repos.d/webmin.repo</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Webmin]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Webmin Distribution Neutral</span>
+<span class="c1">#baseurl=https://download.webmin.com/download/yum</span>
+<span class="na">mirrorlist</span><span class="o">=</span><span class="s">https://download.webmin.com/download/yum/mirrorlist</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">1</span></code></pre></div>
+<p>保存文件并关闭编辑器。</p></li>
+
+<li><p>接下来，使用以下命令导入Webmin GPG密钥：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm --import http://www.webmin.com/jcameron-key.asc</code></pre></div>
+<ol>
+<li>键入以下命令安装最新版本的Webmin：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install webmin</code></pre></div>
+<p>所有依赖项将自动解决。安装完成后，将显示以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Webmin install complete. You can now login to https://your_server_ip_or_hostname:10000/
+as root with your root password.</code></pre></div>
+<p>Webmin服务将自动启动。</p>
+
+<p>而已！此时，您已在CentOS 7服务器上成功安装了Webmin。</p>
+
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>默认情况下，Webmin <code>10000</code>在所有网络接口上侦听端口上的连接。</p>
+
+<p>如果您的CentOS服务器上运行了<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙</a>，则需要打开Webmin端口。</p>
+
+<p>要允许端口<code>10000</code>上的流量运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --add-port=10000/tcp --permanentsudo firewall-cmd --reload</code></pre></div></li>
+</ol>
+
+<h2 id="访问webmin-web界面">访问Webmin Web界面</h2>
+
+<p>现在，在CentOS服务器上安装了Webmin，打开您<a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">喜欢的浏览器</a>并键入服务器的主机名或公共IP地址，然后键入Webmin端口<code>10000</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">https://your_server_ip_or_hostname:10000/</code></pre></div>
+<p>浏览器会抱怨证书无效，因为默认情况下Webmin使用不受信任的<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名SSL证书</a>。</p>
+
+<p>使用root或sudo用户凭据登录Webmin Web界面：</p>
+
+<p><img src="/images/linux/how-to-install-webmin-on-centos-7/webmin-login-form.jpg" alt="" /></p>
+
+<p>登录后，您将被重定向到Webmin仪表板，该仪表板提供有关系统的基本信息。</p>
+
+<p><img src="/images/linux/how-to-install-webmin-on-centos-7/webmin-dashboard.jpg" alt="" /></p>
+
+<p>从这里开始，您可以根据需要开始配置和管理CentOS 7服务器。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在CentOS 7计算机上成功安装了Webmin。您现在可以安装<a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">FTP服务器</a>或<a href="https://linuxize.com/series/install-lamp-stack-on-centos-7/">LAMP</a> / <a href="https://linuxize.com/series/install-lemp-stack-on-centos-7/">LEMP</a>堆栈，并开始通过Webmin Web界面管理服务。</p>
+
+<p>要了解有关Webmin的更多信息，请访问其官方<a href="http://www.webmin.com/docs.html">文档</a>页面。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/webmin" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">webmin</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-centos-7/">如何在CentOS 7上安装Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-centos-7/">如何在CentOS 7上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">如何在CentOS 7上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-centos-7/">如何在CentOS 7上安装Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-iptables-on-centos-7/">如何在CentOS 7上安装Iptables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-centos-7/">如何在CentOS 7上安装Minecraft服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

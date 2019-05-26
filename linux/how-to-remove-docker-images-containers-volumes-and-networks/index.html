@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何删除Docker容器，映像，卷和网络 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何删除Docker容器，映像，卷和网络" />
+<meta property="og:description" content="Docker允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。
+
+Docker不会删除未使用的对象，如容器，图像，卷和网络，除非您明确告诉它这样做。在使用Docker时，您可以轻松地累积大量未使用的对象，这些对象占用大量磁盘空间并使Docker命令产生的输出混乱。
+
+本指南作为“备忘单”，帮助Docker用户保持系统组织，并通过删除未使用的Docker容器，图像，卷和网络来释放磁盘空间。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-remove-docker-images-containers-volumes-and-networks/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何删除Docker容器，映像，卷和网络">
+<meta itemprop="description" content="Docker允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。
+
+Docker不会删除未使用的对象，如容器，图像，卷和网络，除非您明确告诉它这样做。在使用Docker时，您可以轻松地累积大量未使用的对象，这些对象占用大量磁盘空间并使Docker命令产生的输出混乱。
+
+本指南作为“备忘单”，帮助Docker用户保持系统组织，并通过删除未使用的Docker容器，图像，卷和网络来释放磁盘空间。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="552">
+
+
+
+<meta itemprop="keywords" content="docker," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何删除Docker容器，映像，卷和网络"/>
+<meta name="twitter:description" content="Docker允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。
+
+Docker不会删除未使用的对象，如容器，图像，卷和网络，除非您明确告诉它这样做。在使用Docker时，您可以轻松地累积大量未使用的对象，这些对象占用大量磁盘空间并使Docker命令产生的输出混乱。
+
+本指南作为“备忘单”，帮助Docker用户保持系统组织，并通过删除未使用的Docker容器，图像，卷和网络来释放磁盘空间。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何删除Docker容器，映像，卷和网络</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Docker允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。</p>
+
+<p>Docker不会删除未使用的对象，如容器，图像，卷和网络，除非您明确告诉它这样做。在使用Docker时，您可以轻松地累积大量未使用的对象，这些对象占用大量磁盘空间并使Docker命令产生的输出混乱。</p>
+
+<p>本指南作为“备忘单”，帮助Docker用户保持系统组织，并通过删除未使用的Docker容器，图像，卷和网络来释放磁盘空间。</p>
+
+<h2 id="删除所有未使用的对象">删除所有未使用的对象</h2>
+
+<p>该<code>docker system prune</code>命令将删除所有已停止的容器，所有悬空图像和所有未使用的网络：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker system prune</code></pre></div>
+<p>系统将提示您继续，使用<code>-f</code>或<code>--force</code>标记绕过提示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove:
+        - all stopped containers
+        - all networks not used by at least one container
+        - all dangling images
+        - all build cache
+Are you sure you want to continue? [y/N]</code></pre></div>
+<p>如果您还想删除所有未使用的卷，请传递<code>--volumes</code>标记：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker system prune --volumes</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove:
+        - all stopped containers
+        - all networks not used by at least one container
+        - all volumes not used by at least one container
+        - all dangling images
+        - all build cache
+Are you sure you want to continue? [y/N] y</code></pre></div>
+<h2 id="删除docker容器">删除Docker容器</h2>
+
+<p>除非使用<code>--rm</code>标志启动容器，否则停止时不会自动删除Docker容器。</p>
+
+<h3 id="删除一个或多个容器">删除一个或多个容器</h3>
+
+<p>要删除一个或多个Docker镜像，请使用<code>docker container rm</code>命令，后跟要删除的容器的ID。</p>
+
+<p>您可以通过将<code>-a</code>标志传递给<code>docker container ls</code>命令来获取所有活动和非活动容器的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container ls -a</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS                      PORTS               NAMES
+cc3f2ff51cab        centos                  &#34;/bin/bash&#34;              2 months ago        Created                                         competent_nightingale
+cd20b396a061        solita/ubuntu-systemd   &#34;/bin/bash -c &#39;exec …&#34;   2 months ago        Exited (137) 2 months ago                       systemd
+fb62432cf3c1        ubuntu                  &#34;/bin/bash&#34;              3 months ago        Exited (130) 3 months ago                       jolly_mirzakhani</code></pre></div>
+<p>一旦知道了<code>CONTAINER ID</code>要删除的容器，就将其传递给<code>docker container rm</code>命令。例如，要删除上面输出中列出的前两个容器，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container rm cc3f2ff51cab cd20b396a061</code></pre></div>
+<p>如果您收到类似于以下内容的错误，则表示容器正在运行。在移除容器之前，您需要先停止容器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Error response from daemon: You cannot remove a running container fc983ebf4771d42a8bd0029df061cb74dc12cb174530b2036987575b83442b47\. Stop the container before attempting removal or force remove.</code></pre></div>
+<h3 id="删除所有已停止的容器">删除所有已停止的容器</h3>
+
+<p>在执行删除命令之前，您可以使用以下命令获取将要删除的所有未运行（已停止）容器的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container ls -a --filter status=exited --filter status=created</code></pre></div>
+<p>要删除所有已停止的容器，请使用以下<code>docker container prune</code>命</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container prune</code></pre></div>
+<p>系统将提示您继续，使用<code>-f</code>或<code>--force</code>标记绕过提示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove all stopped containers.
+Are you sure you want to continue? [y/N] y</code></pre></div>
+<h3 id="使用过滤器删除容器">使用过滤器删除容器</h3>
+
+<p>该<code>docker container prune</code>命令允许您使用过滤标志根据条件删除容器<code>--filter</code>。</p>
+
+<p>在撰写本文时，当前<a href="https://docs.docker.com/engine/reference/commandline/container_prune">支持的过滤器</a>是<code>until</code>和<code>label</code>。您可以通过传递多个<code>--filter</code>标志来使用多个过滤器。</p>
+
+<p>例如，要删除超过12小时前创建的所有图像，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container prune --filter &#34;until=12h&#34;</code></pre></div>
+<h3 id="停止并移除所有容器">停止并移除所有容器</h3>
+
+<p>您可以使用该<code>docker container ls -aq</code>命令获取系统上所有Docker容器的列表。</p>
+
+<p>要停止所有正在运行的容器，请使用<code>docker container stop</code>命令后跟所有容器ID的列表。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container stop $(docker container ls -aq)</code></pre></div>
+<p>一旦所有容器都停止，您可以使用<code>docker container stop</code>命令后跟容器ID列表删除它们。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container rm $(docker container ls -aq)</code></pre></div>
+<h2 id="删除docker镜像">删除Docker镜像</h2>
+
+<h3 id="删除一个或多个图像">删除一个或多个图像</h3>
+
+<p>要删除一个或多个Docker镜像，请使用该<code>docker images ls</code>命令查找要删除的图像的ID。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker image ls</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+centos                  latest              75835a67d134        7 days ago          200MB
+ubuntu                  latest              2a4cca5ac898        2 months ago        111MB
+linuxize/fedora         latest              a45d6dca3361        3 months ago        311MB
+java                    8-jre               e44d62cf8862        3 months ago        311MB</code></pre></div>
+<p>找到要删除的图像后，将其传递<code>IMAGE ID</code>给<code>docker image rm</code>命令。例如，要删除上面输出中列出的前两个图像：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker image rm 75835a67d134 2a4cca5ac898</code></pre></div>
+<p>如果您收到类似于以下内容的错误，则表示该图像由现有容器使用。要删除图像，您必须先删除容器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-docker" data-lang="docker">Error response from daemon: conflict: unable to remove repository reference <span class="s2">&#34;centos&#34;</span> <span class="o">(</span>must force<span class="o">)</span> - container cd20b396a061 is using its referenced image 75835a67d134</code></pre></div>
+<h3 id="删除悬空和未使用的图像">删除悬空和未使用的图像</h3>
+
+<p>Docker提供了一个<code>docker image prune</code>命令，可用于删除悬空和未使用的图像。</p>
+
+<p>悬空图像是未标记且未被任何容器使用的图像。要删除悬空图像类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker image prune</code></pre></div>
+<p>系统将提示您继续，使用<code>-f</code>或<code>--force</code>标记绕过提示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove all dangling images.
+Are you sure you want to continue? [y/N] y</code></pre></div>
+<p>删除悬空图像时，如果您构建的图像未标记，则也会将其删除。</p>
+
+<p>要删除任何现有容器未引用的所有图像，而不仅仅是悬空图像，请使用<code>-a</code>标记：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker image prune -a</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove all images without at least one container associated to them.
+Are you sure you want to continue? [y/N] y</code></pre></div>
+<h3 id="使用过滤器删除图像">使用过滤器删除图像</h3>
+
+<p>使用该<code>docker image prune</code>命令，您可以使用过滤标志根据条件删除图像<code>--filter</code>。</p>
+
+<p>在撰写本文时，当前<a href="https://docs.docker.com/engine/reference/commandline/image_prune/#examples">支持的过滤器</a>是<code>until</code>和<code>label</code>。您可以通过传递多个<code>--filter</code>标志来使用多个过滤器。</p>
+
+<p>例如，要删除超过12小时前创建的所有图像，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker image prune -a --filter &#34;until=12h&#34;</code></pre></div>
+<h2 id="删除docker卷">删除Docker卷</h2>
+
+<h3 id="删除一个或多个卷">删除一个或多个卷</h3>
+
+<p>要删除一个或多个Docker卷，请使用该<code>docker volume ls</code>命令查找要删除的卷的ID。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker volume ls</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">DRIVER              VOLUME NAME
+local               4e12af8913af888ba67243dec78419bf18adddc3c7a4b2345754b6db64293163
+local               terano</code></pre></div>
+<p>找到<code>VOLUME NAME</code>要删除的卷后，将它们传递给<code>docker volume rm</code>命令。例如，要删除上面输出中列出的第一个卷，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker volume rm 4e12af8913af888ba67243dec78419bf18adddc3c7a4b2345754b6db64293163</code></pre></div>
+<p>如果您收到类似于以下内容的错误，则表示该卷已由现有容器使用。要删除卷，您必须先删除容器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-docker" data-lang="docker">Error response from daemon: remove 4e12af8913af888ba67243dec78419bf18adddc3c7a4b2345754b6db64293163: volume is in use - <span class="o">[</span>c7188935a38a6c3f9f11297f8c98ce9996ef5ddad6e6187be62bad3001a66c8e<span class="o">]</span></code></pre></div>
+<h3 id="删除未使用的卷">删除未使用的卷</h3>
+
+<p>要删除所有未使用的卷，请使用以下<code>docker image prune</code>命</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker volume prune</code></pre></div>
+<p>系统将提示您继续，使用<code>-f</code>或<code>--force</code>标记绕过提示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove all local volumes not used by at least one container.
+Are you sure you want to continue? [y/N]</code></pre></div>
+<h2 id="删除docker网络">删除Docker网络</h2>
+
+<h3 id="删除一个或多个网络">删除一个或多个网络</h3>
+
+<p>要删除一个或多个Docker网络，请使用该<code>docker network ls</code>命令查找要删除的网络的ID。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker network ls</code></pre></div>
+<p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">NETWORK ID          NAME                DRIVER              SCOPE
+107b8ac977e3        bridge              bridge              local
+ab998267377d        host                host                local
+c520032c3d31        my-bridge-network   bridge              local
+9bc81b63f740        none                null                local</code></pre></div>
+<p>找到要删除的网络后，将其传递<code>NETWORK ID</code>给<code>docker network rm</code>命令。例如，要删除名称为<code>my-bridge-network</code>run 的网络：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker network rm c520032c3d31</code></pre></div>
+<p>如果您收到类似于以下内容的错误，则表示网络由现有容器使用。要删除网络，您必须先删除容器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-docker" data-lang="docker">Error response from daemon: network my-bridge-network id 6f5293268bb91ad2498b38b0bca970083af87237784017be24ea208d2233c5aa has active endpoints</code></pre></div>
+<h3 id="删除未使用的网络">删除未使用的网络</h3>
+
+<p>使用该<code>docker network prune</code>命令删除所有未使用的网络。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker network prune</code></pre></div>
+<p>系统将提示您继续，使用<code>-f</code>或<code>--force</code>标记绕过提示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">WARNING! This will remove all networks not used by at least one container.
+Are you sure you want to continue? [y/N] </code></pre></div>
+<h3 id="使用过滤器删除网络">使用过滤器删除网络</h3>
+
+<p>使用该<code>docker network prune</code>命令，您可以使用过滤标志根据条件删除网络<code>--filter</code>。</p>
+
+<p>在撰写本文时，当前<a href="https://docs.docker.com/engine/reference/commandline/network_prune/">支持的过滤器</a>是<code>until</code>和<code>label</code>。您可以通过传递多个<code>--filter</code>标志来使用多个过滤器。</p>
+
+<p>例如，要删除超过12小时前创建的所有网络，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker network prune -a --filter &#34;until=12h&#34;</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>在本指南中，我们向您展示了一些用于删除Docker容器，映像，卷和网络的常用命令。</p>
+
+<p>您还应该查看官方<a href="https://docs.docker.com/">Docker文档</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/docker" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">docker</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-centos-7/">如何在CentOS 7上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-debian-9/">如何在Debian 9上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-centos-7/">如何在 CentOS 7 上安装和使用 Docker</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

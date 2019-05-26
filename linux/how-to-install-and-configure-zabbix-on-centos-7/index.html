@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装和配置Zabbix | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装和配置Zabbix" />
+<meta property="og:description" content="Zabbix是一个功能齐全的开源监控软件。Zabbix从您的网络设备，系统和应用程序收集指标，并确保它们正常运行。如有任何问题，Zabbix将通过各种方法发送通知警报。
+
+Zabbix可以部署用于基于代理和无代理的监控。Zabbix代理占用空间小，可以在各种平台上运行，包括Linux，UNIX，macOS和Windows。
+
+本教程介绍如何使用MariaDB作为数据库后端在CentOS 7服务器上安装和配置最新版本的Zabbix 4.0。我们还将向您展示如何在远程主机上安装Zabbix代理并将主机添加到Zabbix服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-configure-zabbix-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装和配置Zabbix">
+<meta itemprop="description" content="Zabbix是一个功能齐全的开源监控软件。Zabbix从您的网络设备，系统和应用程序收集指标，并确保它们正常运行。如有任何问题，Zabbix将通过各种方法发送通知警报。
+
+Zabbix可以部署用于基于代理和无代理的监控。Zabbix代理占用空间小，可以在各种平台上运行，包括Linux，UNIX，macOS和Windows。
+
+本教程介绍如何使用MariaDB作为数据库后端在CentOS 7服务器上安装和配置最新版本的Zabbix 4.0。我们还将向您展示如何在远程主机上安装Zabbix代理并将主机添加到Zabbix服务器。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="577">
+
+
+
+<meta itemprop="keywords" content="centos,zabbix,monitoring," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装和配置Zabbix"/>
+<meta name="twitter:description" content="Zabbix是一个功能齐全的开源监控软件。Zabbix从您的网络设备，系统和应用程序收集指标，并确保它们正常运行。如有任何问题，Zabbix将通过各种方法发送通知警报。
+
+Zabbix可以部署用于基于代理和无代理的监控。Zabbix代理占用空间小，可以在各种平台上运行，包括Linux，UNIX，macOS和Windows。
+
+本教程介绍如何使用MariaDB作为数据库后端在CentOS 7服务器上安装和配置最新版本的Zabbix 4.0。我们还将向您展示如何在远程主机上安装Zabbix代理并将主机添加到Zabbix服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装和配置Zabbix</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Zabbix是一个功能齐全的开源监控软件。Zabbix从您的网络设备，系统和应用程序收集指标，并确保它们正常运行。如有任何问题，Zabbix将通过各种方法发送通知警报。</p>
+
+<p>Zabbix可以部署用于基于代理和无代理的监控。Zabbix代理占用空间小，可以在各种平台上运行，包括Linux，UNIX，macOS和Windows。</p>
+
+<p>本教程介绍如何使用MariaDB作为数据库后端在CentOS 7服务器上安装和配置最新版本的Zabbix 4.0。我们还将向您展示如何在远程主机上安装Zabbix代理并将主机添加到Zabbix服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您需要以具有<a href="/linux/create-a-sudo-user-on-centos/">sudo访问权限</a>的用户身份登录才能安装软件包。</p>
+
+<h2 id="创建mysql数据库">创建MySQL数据库</h2>
+
+<p>Zabbix支持MySQL（<a href="https://linuxize.com/post/install-mysql-on-centos-7/)/">https://linuxize.com/post/install-mysql-on-centos-7/)/</a> MariaDB和<a href="/linux/how-to-install-postgresql-on-centos-7/">PostgreSQL</a>作为数据库服务器。在本教程中，我们将使用MariaDB作为数据库后端。</p>
+
+<p>如果您没有在CentOS服务器上安装MariaDB，可以按照<a href="/linux/install-mariadb-on-centos-7/">这些说明</a>进行安装。</p>
+
+<p>键入以下命令登录MySQL shell：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
+<p>在MySQL shell中，运行以下SQL命令以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE zabbix CHARACTER SET utf8 collate utf8_bin;</code></pre></div>
+<p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON zabbix.* TO &#39;zabbix&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;</code></pre></div>
+<p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
+
+<p>完成后，键入以下命令退出mysql控制台：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">EXIT;</code></pre></div>
+<h2 id="在centos上安装zabbix">在CentOS上安装Zabbix</h2>
+
+<p>在撰写本文时，Zabbix的最新稳定版本是4.0版。CentOS存储库中提供的Zabbix软件包已过时，因此我们将使用官方<a href="https://www.zabbix.com/download">Zabbix存储库</a>。</p>
+
+<h3 id="1-安装zabbix">1.安装Zabbix</h3>
+
+<p>使用以下<a href="/linux/wget-command-examples/">wget命令</a>下载最新的Zabbix存储库<a href="/linux/how-to-install-rpm-packages-on-centos/">rpm包</a>：[](/linux/wget-command-examples/)</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm</code></pre></div>
+<p>下载文件后，键入以下命令将Zabbix存储库添加到CentOS 7系统：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum localinstall zabbix-release-4.0-1.el7.noarch.rpm</code></pre></div>
+<p>安装Zabbix服务器，带有MySQL数据库支持的Web前端和Zabbix代理程序包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install zabbix-server-mysql zabbix-web-mysql zabbix-agent</code></pre></div>
+<p>如果您的服务上尚未安装<a href="/linux/how-to-install-apache-on-centos-7/">Apache</a>和<a href="/linux/install-php-7-on-centos-7/">PHP，</a>则上面的命令将安装它们。</p>
+
+<h3 id="2-为zabbix前端配置php">2.为Zabbix前端配置PHP</h3>
+
+<p>在安装过程中，将创建一个包含所有必需的Apache和PHP设置的Apache配置文件。您只需进行一些小改动并设置适当的时区。</p>
+
+<p>打开配置文件，取消注释时区线并将其更改为您的时区。您可以在<a href="https://php.net/manual/en/timezones.php">此处</a>找到PHP支持的完整时区列表。</p>
+
+<p>/etc/httpd/conf.d/zabbix.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+    <span class="na">&lt;IfModule mod_php5.c&gt;</span>
+        <span class="na">php_value max_execution_time 300</span>
+        <span class="na">php_value memory_limit 128M</span>
+        <span class="na">php_value post_max_size 16M</span>
+        <span class="na">php_value upload_max_filesize 2M</span>
+        <span class="na">php_value max_input_time 300</span>
+        <span class="na">php_value max_input_vars 10000</span>
+        <span class="na">php_value always_populate_raw_post_data -1</span>
+        <span class="na">php_value date.timezone Europe/Riga</span>
+    <span class="na">&lt;/IfModule&gt;</span>
+<span class="na">...</span></code></pre></div>
+<p>完成后，保存配置文件并重新启动Apache服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd</code></pre></div>
+<h3 id="3-为zabbix-server配置mysql数据库">3.为Zabbix Server配置MySQL数据库</h3>
+
+<p>Zabbix安装包提供了一个转储文件，其中包含Zabbix服务器和MySQL的初始模式和数据。</p>
+
+<p>通过运行以下命令导入MySQL转储文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p zabbix</code></pre></div>
+<p>出现提示时，输入您之前创建的用户密码。成功时，没有给出输出。</p>
+
+<p>接下来，在编辑器中打开Zabbix配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/zabbix/zabbix_server.conf</code></pre></div>
+<p>搜索以下部分，取消注释该<code>DBPassword</code>指令并添加数据库密码。</p>
+
+<p>/etc/zabbix/zabbix_server.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="c1">### Option: DBPassword</span>
+<span class="c1">#       Database password.</span>
+<span class="c1">#       Comment this line if no password is used.</span>
+<span class="c1">#</span>
+<span class="c1"># Mandatory: no</span>
+<span class="c1"># Default:</span>
+<span class="na">DBPassword</span><span class="o">=</span><span class="s">change-with-strong-password</span>
+<span class="na">...</span></code></pre></div>
+<p>保存并关闭文件。</p>
+
+<p>重新启动Zabbix服务器和代理服务，并使它们在系统引导时启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart zabbix-server zabbix-agentsudo systemctl enable zabbix-server zabbix-agent</code></pre></div>
+<p>检查Zabbix服务器的状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status zabbix-server</code></pre></div>
+<p>输出应显示<code>active (running)</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● zabbix-server.service - Zabbix Server
+   Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2018-12-30 21:18:01 UTC; 51s ago
+ Main PID: 5558 (zabbix_server)
+   CGroup: /system.slice/zabbix-server.service
+   ...</code></pre></div>
+<h2 id="安装和配置zabbix前端">安装和配置Zabbix前端</h2>
+
+<p>Zabbix Web界面是用PHP编写的，允许我们配置服务器，查看收集的数据并添加我们想要监控的主机。</p>
+
+<p>在开始使用Web界面之前，我们需要安装它。</p>
+
+<p>打开您<a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">喜欢的浏览器</a>并键入服务器的域名或公共IP地址，然后<code>/zabbix</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/zabbix</code></pre></div>
+<p>在第一个屏幕上，您将看到一条欢迎信息。点击<code>Next step</code>继续。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-welcome-screen.jpg" alt="" /></p>
+
+<p>接下来，您将看到以下信息页面，其中列出了运行Zabbix前端所需的所有PHP先决条件。此表中的所有值都应该<code>OK</code>向下滚动以验证是否已正确设置所有内容。验证后，单击<code>Next step</code>继续。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-check-pre-requisites.jpg" alt="" /></p>
+
+<p>在下一个屏幕上，安装向导将要求您输入数据库连接详细信息。输入您之前创建的MySQL用户和数据库详细信息。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-configure-db-connection.jpg" alt="" /></p>
+
+<p>输入服务器的名称是可选的。如果您有多个Zabbix监控服务器，请输入它。如果提供，它将显示在菜单栏和页面标题中。</p>
+
+<p>点击<code>Next step</code>继续。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-server-details.jpg" alt="" /></p>
+
+<p>在下一个屏幕上，您将看到安装前摘要。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-pre-installation-summary.jpg" alt="" /></p>
+
+<p>单击<code>Next step</code>，安装完成后，您将进入一个页面，通知您已安装Zabbix Web界面。要访问Zabbix登录页面，请单击<code>Finish</code>按钮。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-install.jpg" alt="" /></p>
+
+<p>默认用户为“Admin”，密码为“zabbix”。输入用户名和密码，然后单击<code>Log in</code>按钮。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-login-screen.jpg" alt="" /></p>
+
+<p>登录后，您将被重定向到Zabbix管理仪表板。</p>
+
+<p>从这里开始，您可以开始自定义Zabbix安装并添加新主机。您的第一步应该是更改当前密码。为此，请通过单击顶部导航上的配置文件图标导航到用户配置文件页面。</p>
+
+<h2 id="将新主机添加到zabbix服务器">将新主机添加到Zabbix服务器</h2>
+
+<p>将新主机添加到Zabbix服务器的过程包括两个步骤。</p>
+
+<p>首先，您需要在远程主机上安装Zabbix代理，然后通过Web界面将主机添加到Zabbix服务器。</p>
+
+<h3 id="安装zabbix代理">安装Zabbix代理</h3>
+
+<p>本教程假定主机也使用CentOS 7。</p>
+
+<p>与安装Zabbix服务器时相同，运行以下命令以启用Zabbix存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">wget https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpmsudo yum localinstall zabbix-release-4.0-1.el7.noarch.rpm</code></pre></div>
+<p>安装Zabbix代理程序包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo yum install zabbix-agent</code></pre></div>
+<p>Zabbix支持两种服务器 - 客户端通信加密方法，预共享密钥（PSK）和基于证书的加密。在本教程中，我们将使用预共享密钥（PSK）方法来保护服务器和代理之间的连接。</p>
+
+<p>使用以下命令生成预共享密钥并将其保存到文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.psk</code></pre></div>
+<p>PSK键看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">fc3077ed3db8589ec920ac98a7ddea96aca205eb63bbd29c66ae91743a7ecbb6</code></pre></div>
+<p>打开Zabbix代理配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo nano /etc/zabbix/zabbix_agentd.conf</code></pre></div>
+<p>搜索<code>Server</code>IP地址并将其从默认值更改为Zabbix服务器IP：</p>
+
+<p>/etc/zabbix/zabbix_agentd.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="c1">### Option: Server</span>
+<span class="c1">#       List of comma delimited IP addresses, optionally in CIDR notation, or DNS names of Zabbix servers and Zabbix proxies.</span>
+<span class="c1">#       Incoming connections will be accepted only from the hosts listed here.</span>
+<span class="c1">#       If IPv6 support is enabled then &#39;127.0.0.1&#39;, &#39;::127.0.0.1&#39;, &#39;:127.0.0.1&#39; are treated equally</span>
+<span class="c1">#       and &#39;::/0&#39; will allow any IPv4 or IPv6 address.</span>
+<span class="c1">#       &#39;0.0.0.0/0&#39; can be used to allow any IPv4 address.</span>
+<span class="c1">#       Example: Server=127.0.0.1,192.168.1.0/24,::1,2001:/32,zabbix.example.com</span>
+<span class="c1">#</span>
+<span class="c1"># Mandatory: yes, if StartAgents is not explicitly set to 0</span>
+<span class="c1"># Default:</span>
+<span class="c1"># Server=</span>
+
+<span class="na">Server</span><span class="o">=</span><span class="s">127.0.0.1</span>
+<span class="na">...</span></code></pre></div>
+<p>接下来，找到该<code>TSLConnect</code>选项，取消注释并将其设置为<code>psk</code>：</p>
+
+<p>/etc/zabbix/zabbix_agentd.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="c1">### Option: TLSConnect</span>
+<span class="c1">#       How the agent should connect to server or proxy. Used for active checks.</span>
+<span class="c1">#       Only one value can be specified:</span>
+<span class="c1">#               unencrypted - connect without encryption</span>
+<span class="c1">#               psk         - connect using TLS and a pre-shared key</span>
+<span class="c1">#               cert        - connect using TLS and a certificate</span>
+<span class="c1">#</span>
+<span class="c1"># Mandatory: yes, if TLS certificate or PSK parameters are defined (even for &#39;unencrypted&#39; connection)</span>
+<span class="c1"># Default:</span>
+<span class="na">TLSConnect</span><span class="o">=</span><span class="s">psk</span>
+<span class="na">...</span></code></pre></div>
+<p>找到该<code>TLSAccept</code>选项，取消注释并将其设置为<code>psk</code>：</p>
+
+<p>/etc/zabbix/zabbix_agentd.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="c1">### Option: TLSAccept</span>
+<span class="c1">#       What incoming connections to accept.</span>
+<span class="c1">#       Multiple values can be specified, separated by comma:</span>
+<span class="c1">#               unencrypted - accept connections without encryption</span>
+<span class="c1">#               psk         - accept connections secured with TLS and a pre-shared key</span>
+<span class="c1">#               cert        - accept connections secured with TLS and a certificate</span>
+<span class="c1">#</span>
+<span class="c1"># Mandatory: yes, if TLS certificate or PSK parameters are defined (even for &#39;unencrypted&#39; connection)</span>
+<span class="c1"># Default:</span>
+<span class="na">TLSAccept</span><span class="o">=</span><span class="s">psk</span>
+<span class="na">...</span></code></pre></div>
+<p>接下来，找到该<code>TLSPSKIdentity</code>选项，取消注释并将其设置为<code>PSK 001</code>。值必须是唯一的字符串：</p>
+
+<p>/etc/zabbix/zabbix_agentd.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="c1">### Option: TLSPSKIdentity</span>
+<span class="c1">#       Unique, case sensitive string used to identify the pre-shared key.</span>
+<span class="c1">#</span>
+<span class="c1"># Mandatory: no</span>
+<span class="c1"># Default:</span>
+<span class="na">TLSPSKIdentity</span><span class="o">=</span><span class="s">PSK 001</span>
+<span class="na">...</span></code></pre></div>
+<p>最后，找到该<code>TLSPSKFile</code>选项，取消注释并将其设置为指向先前创建的预共享密钥：</p>
+
+<p>/etc/zabbix/zabbix_agentd.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="c1">### Option: TLSPSKFile</span>
+<span class="c1">#       Full pathname of a file containing the pre-shared key.</span>
+<span class="c1">#</span>
+<span class="c1"># Mandatory: no</span>
+<span class="c1"># Default:</span>
+<span class="na">TLSPSKFile</span><span class="o">=</span><span class="s">/etc/zabbix/zabbix_agentd.psk </span>
+<span class="na">...</span></code></pre></div>
+<p>完成后，保存并关闭文件。</p>
+
+<p>启动Zabbix代理服务并将其设置为在启动时启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo systemctl start zabbix-agentsudo systemctl enable zabbix-agent</code></pre></div>
+<p>接下来，您需要添加防火墙规则，以便在TCP端口上启用来自Zabbix服务器的流量<code>10050</code>。</p>
+
+<p>假设您正在使用<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/"><code>FirewallD</code></a>管理防火墙，并且希望允许从<code>192.168.121.70</code>IP地址进行访问，则可以运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo firewall-cmd --new-zone=zabbix --permanentsudo firewall-cmd --zone=special --add-source=192.168.121.70/32sudo firewall-cmd --zone=special --add-port=10050/tcp</code></pre></div>
+<h3 id="设置新主机">设置新主机</h3>
+
+<p>既然已安装并配置了要监视的远程主机上的代理，则下一步是在Zabbix服务器上注册主机。</p>
+
+<p>以admin用户登录Zabbix Server Web界面：</p>
+<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/zabbix</code></pre></div>
+<p>进入后，在顶部导航栏中单击<code>Configuration</code>，然后单击<code>Hosts</code></p>
+
+<p>接下来，单击<code>Create host</code>屏幕右上角的蓝色按钮，将打开主机配置页面：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-hosts-host.jpg" alt="" /></p>
+
+<p>输入要监视的远程主机的主机名和IP地址。通过从列表中选择组，将主机添加到一个或多个组，或输入不存在的组名称以创建新组。该<code>Linux Servers</code>团体是一个不错的选择。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-hosts-templates.jpg" alt="" /></p>
+
+<p>完成后，单击<code>Templates</code>选项卡。选择<code>Template OS Linux</code>并单击<code>Add</code>链接以将模板添加到主机。</p>
+
+<p>接下来，单击<code>Encryption</code>选项卡。选择PSK两个<code>Connections to host</code>和<code>Connections from host</code>。</p>
+
+<p>将<code>PSK identity</code>值设置为您在上一步中配置的Zabbix代理选项<code>PSK 001</code>的值<code>TLSPSKIdentity</code>。</p>
+
+<p>在<code>PSK value</code>字段中添加您为Zabbix代理生成的密钥，即存储在<code>/etc/zabbix/zabbix_agentd.psk</code>文件中的密钥。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-zabbix-on-centos-7/zabbix-hosts-encryption.jpg" alt="" /></p>
+
+<p>最后，要添加主机，请单击蓝色添加<code>button</code>。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在CentOS系统上成功安装了最新的Zabbix，并学习了如何添加要监视的新主机。</p>
+
+<p>您现在应该查看<a href="https://www.zabbix.com/documentation/current/">Zabbix文档</a>并了解有关如何配置和使用Zabbix的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/zabbix" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">zabbix</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/monitoring" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">monitoring</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nagios-on-centos-7/">如何在CentOS 7上安装和配置Nagios</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-debian-9/">如何在Debian 9 Linux上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-centos-7/">如何在CentOS 7上安装Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-centos-7/">如何在CentOS 7上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">如何在CentOS 7上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-centos-7/">如何在CentOS 7上安装Gradle</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

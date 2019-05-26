@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux Chown命令 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux Chown命令" />
+<meta property="og:description" content="在Linux中，所有文件都与所有者和组相关联。chown命令用于更改给定文件，目录或链接的用户和组所有权。
+
+在本教程中，我们将通过简单的示例向您展示如何使用chown命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/linux-chown-command/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux Chown命令">
+<meta itemprop="description" content="在Linux中，所有文件都与所有者和组相关联。chown命令用于更改给定文件，目录或链接的用户和组所有权。
+
+在本教程中，我们将通过简单的示例向您展示如何使用chown命令。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="71">
+
+
+
+<meta itemprop="keywords" content="chown,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux Chown命令"/>
+<meta name="twitter:description" content="在Linux中，所有文件都与所有者和组相关联。chown命令用于更改给定文件，目录或链接的用户和组所有权。
+
+在本教程中，我们将通过简单的示例向您展示如何使用chown命令。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">Linux Chown命令</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在Linux中，所有文件都与所有者和组相关联。chown命令用于更改给定文件，目录或链接的用户和组所有权。</p>
+
+<p>在本教程中，我们将通过简单的示例向您展示如何使用chown命令。</p>
+
+<h2 id="chown命令语法">Chown命令语法</h2>
+
+<p>在讨论如何使用chown命令之前，让我们先回顾一下基本语法。</p>
+
+<p>chown命令表达式采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chown <span class="o">[</span>OPTIONS<span class="o">]</span> USER<span class="o">[</span>:GROUP<span class="o">]</span> FILE<span class="o">(</span>s<span class="o">)</span></code></pre></div>
+<p><code>USER</code>是新所有者的用户名或用户ID（UID），<code>GROUP</code>是新组的名称或组ID（GID），<code>FILE(s)</code>是一个或多个文件，目录或链接的名称。</p>
+
+<p>使用该<code>ls -l</code>命令可以找出谁拥有文件或属于哪个组。</p>
+
+<p>为了能够更改文件的所有权，运行chown命令的用户必须具有sudo权限。</p>
+
+<h2 id="如何更改文件的所有者">如何更改文件的所有者</h2>
+
+<p>要更改文件的所有者，请使用<code>chown</code>命令，后跟新所有者的用户名和目标文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chown USER FILE</code></pre></div>
+<p>例如，以下命令将更改名为<code>file1</code>新名为的所有者的文件的所有权<code>linuxize</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown linuxize file1</code></pre></div>
+<p>要更改多个文件或目录的所有权，请将它们指定为以空格分隔的列表。例如，下面的命令将名为<code>file1</code>directory的目录的所有权更改为名为<code>dir1</code>的新所有者<code>linuxize</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown linuxize file1 dir1</code></pre></div>
+<p>可以使用数字用户ID（UID）代替用户名。以下示例将更改名为<code>file2</code>UID为1000的新所有者的文件的所有权：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown 1000 file2</code></pre></div>
+<p>如果数字所有者作为用户名存在，则所有权将转移到用户名。</p>
+
+<h2 id="如何更改文件的所有者和组">如何更改文件的所有者和组</h2>
+
+<p>要更改文件的所有者和组，请使用<code>chown</code>命令后跟由冒号（<code>:</code>）分隔的新所有者和组，而不使用插入空格和目标文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chown USER:GROUP FILE</code></pre></div>
+<p>以下命令将更改名为name <code>file1</code>new <code>linuxize</code>和group 的新所有者的文件的所有权<code>users</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown linuxize:users file1</code></pre></div>
+<p>如果在冒号（<code>:</code>）后省略组名，则将文件组更改为指定用户的登录组。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown linuxize: file1</code></pre></div>
+<h2 id="如何更改文件组">如何更改文件组</h2>
+
+<p>该<code>chown</code>命令可以执行与命令相同的功能<code>chgrp</code>，即它可以更改文件组。</p>
+
+<p>要仅更改文件组，请使用<code>chown</code>命令后跟冒号（<code>:</code>）和新组名称以及目标文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chown :GROUP FILE</code></pre></div>
+<p>以下命令将更改名为文件的所属组<code>file1</code>到<code>www-data</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown :www-data file1</code></pre></div>
+<h2 id="如何递归更改文件所有权">如何递归更改文件所有权</h2>
+
+<p>要递归操作输入目录下的所有文件和目录，请使用<code>-r</code>（<code>--recursive</code>）选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chown -R USER:GROUP DIRECTORY</code></pre></div>
+<p>例如，以下命令会将目录下所有文件和目录的所有权更改<code>/var/www</code>为名为的新所有者和组<code>www-data</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chown www-data: /var/www</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用Linux <code>chown</code>命令。如果您想了解有关该<code>chown</code>命令的更多信息，请访问<a href="hhttps://linux.die.net/man/1/chown">chown手册</a>页。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/chown" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">chown</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/find-large-files-in-linux/">在Linux中查找大文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">如何使用Grep命令在Linux中搜索文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

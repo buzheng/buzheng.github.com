@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Debian 9上安装和配置Nagios | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Debian 9上安装和配置Nagios" />
+<meta property="og:description" content="Nagios是一种流行的开源监控软件。它可以保留整个IT基础架构的清单，并确保您的网络，服务器，应用程序，服务和流程正常运行。如果关键基础架构组件发生故障，Nagios会发送通知警报。
+
+本教程介绍如何在Debian 9上安装和配置最新版本的Nagios Core。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-configure-nagios-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Debian 9上安装和配置Nagios">
+<meta itemprop="description" content="Nagios是一种流行的开源监控软件。它可以保留整个IT基础架构的清单，并确保您的网络，服务器，应用程序，服务和流程正常运行。如果关键基础架构组件发生故障，Nagios会发送通知警报。
+
+本教程介绍如何在Debian 9上安装和配置最新版本的Nagios Core。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="385">
+
+
+
+<meta itemprop="keywords" content="debian,nagios,monitoring," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Debian 9上安装和配置Nagios"/>
+<meta name="twitter:description" content="Nagios是一种流行的开源监控软件。它可以保留整个IT基础架构的清单，并确保您的网络，服务器，应用程序，服务和流程正常运行。如果关键基础架构组件发生故障，Nagios会发送通知警报。
+
+本教程介绍如何在Debian 9上安装和配置最新版本的Nagios Core。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Debian 9上安装和配置Nagios</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Nagios是一种流行的开源监控软件。它可以保留整个IT基础架构的清单，并确保您的网络，服务器，应用程序，服务和流程正常运行。如果关键基础架构组件发生故障，Nagios会发送通知警报。</p>
+
+<p>本教程介绍如何在Debian 9上安装和配置最新版本的Nagios Core。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo访问权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录才能安装软件包。</p>
+
+<h2 id="在debian上安装nagios">在Debian上安装Nagios</h2>
+
+<p>以下步骤介绍如何从源安装最新版本的Nagios Core。</p>
+
+<p>首先安装编译和运行Nagios所需的以下软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgradesudo apt install autoconf gcc libc6 make wget unzip apache2 php libapache2-mod-php7.0 libgd-devsudo apt install libmcrypt-dev libssl-dev bc gawk dc build-essential libnet-snmp-perl gettext</code></pre></div>
+<h3 id="1-下载nagios">1.下载Nagios</h3>
+
+<p>导航到该<code>/usr/src</code>目录并使用<a href="/linux/wget-command-examples/">wget</a>从<a href="https://github.com/NagiosEnterprises/nagioscore/releases">项目Github存储库</a>下载最新版本的Nagios ：[](/linux/wget-command-examples/)</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /usr/src/sudo wget https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.3.tar.gz</code></pre></div>
+<p>下载完成后，解<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">压缩tar文件</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar zxf nagios-*.tar.gz</code></pre></div>
+<p>在继续执行后续步骤之前，请确保键入以下内容以切换到Nagios源目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd nagioscore-nagios-*/</code></pre></div>
+<h3 id="2-编译nagios">2.编译Nagios</h3>
+
+<p>通过运行<code>configure</code>脚本启动构建过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled</code></pre></div>
+<p>成功完成后，您将看到以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** Configuration summary for nagios 4.4.3 2019-01-15 ***:
+
+ General Options:
+ -------------------------
+        Nagios executable:  nagios
+        Nagios user/group:  nagios,nagios
+       Command user/group:  nagios,nagios
+             Event Broker:  yes
+        Install ${prefix}:  /usr/local/nagios
+    Install ${includedir}:  /usr/local/nagios/include/nagios
+                Lock file:  /run/nagios.lock
+   Check result directory:  /usr/local/nagios/var/spool/checkresults
+           Init directory:  /lib/systemd/system
+  Apache conf.d directory:  /etc/apache2/sites-enabled
+             Mail program:  /usr/sbin/sendmail
+                  Host OS:  linux-gnu
+          IOBroker Method:  epoll
+
+ Web Interface Options:
+ ------------------------
+                 HTML URL:  http://localhost/nagios/
+                  CGI URL:  http://localhost/nagios/cgi-bin/
+ Traceroute (used by WAP):  /usr/sbin/traceroute
+
+Review the options above for accuracy.  If they look okay,
+type &#39;make all&#39; to compile the main program and CGIs.</code></pre></div>
+<p>运行<code>make</code>命令以启动构建过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make all</code></pre></div>
+<p>编译可能需要一些时间，具体取决于您的系统。构建过程完成后，您将看到如下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** Compile finished ***
+...
+Enjoy.</code></pre></div>
+<h3 id="3-创建nagios用户和组">3.创建Nagios用户和组</h3>
+
+<p>要创建新的系统<code>nagios</code>用户和组类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install-groups-users</code></pre></div>
+<p>将Apache <code>www-data</code>用户添加到<code>nagios</code>组：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G nagios www-data</code></pre></div>
+<h3 id="4-安装nagios二进制文件">4.安装Nagios二进制文件</h3>
+
+<p>运行以下命令以安装Nagios二进制文件，CGI和HTML文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install</code></pre></div>
+<p>您应该看到以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** Main program, CGIs and HTML files installed ***</code></pre></div>
+<h3 id="5-创建外部命令目录">5.创建外部命令目录</h3>
+
+<p>通过键入以下内容创建外部命令目录并设置适当的权限：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install-commandmode</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** External command directory configured ***</code></pre></div>
+<h3 id="6-安装nagios配置文件">6.安装Nagios配置文件</h3>
+
+<p>安装示例Nagios配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install-config</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** Config files installed ***
+
+Remember, these are *SAMPLE* config files.  You&#39;ll need to read
+the documentation for more information on how to actually define
+services, hosts, etc. to fit your particular needs.</code></pre></div>
+<h3 id="7-安装apache配置文件">7.安装Apache配置文件</h3>
+
+<p>以下命令将创建Apache配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install-webconf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** Nagios/Apache conf file installed ***</code></pre></div>
+<p>确保启用了Apache重写和cgi模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo a2enmod rewritesudo a2enmod cgi</code></pre></div>
+<h3 id="8-创建系统单元文件">8.创建系统单元文件</h3>
+
+<p>以下命令将安装systemd单元文件，并使Nagios服务能够在引导时启动。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install-daemoninit</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+*** Init script installed ***</code></pre></div>
+<h3 id="9-创建用户帐户">9.创建用户帐户</h3>
+
+<p>为了能够访问Nagios Web界面，您需要创建一个管理员用户。</p>
+
+<p>在本教程中，我们将创建一个名为的用户<code>nagiosadmin</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin</code></pre></div>
+<p>系统将提示您输入并确认用户密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">New password: 
+Re-type new password: 
+Adding password for user nagiosadmin</code></pre></div>
+<p>重新启动Apache服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2</code></pre></div>
+<h3 id="10-配置防火墙">10.配置防火墙</h3>
+
+<p>防火墙将保护您的服务器免受不必要的流量。</p>
+
+<p>如果您的服务器上没有配置防火墙，您可以查看我们的指南，了解<a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian上使用ufw设置防火墙</a></p>
+
+<p>输入以下命令打开Apache端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow Apache</code></pre></div>
+<h2 id="安装nagios插件">安装Nagios插件</h2>
+
+<p>切换回<code>/usr/src</code>目录并从<a href="https://github.com/nagios-plugins/nagios-plugins/">项目Github存储库</a>下载最新版本的Nagios插件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /usr/src/sudo wget -O nagios-plugins.tar.gz https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz</code></pre></div>
+<p>下载完成后，键入以下命令提取tar文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar zxf nagios-plugins.tar.gz</code></pre></div>
+<p>切换到插件源目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd nagios-plugins-release-2.2.1</code></pre></div>
+<p>逐个运行以下命令来编译和安装Nagios插件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ./tools/setupsudo ./configuresudo makesudo make install</code></pre></div>
+<h2 id="启动nagios">启动Nagios</h2>
+
+<p>现在你已经在你的Debian服务器上安装了Nagios，启动它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start nagios</code></pre></div>
+<p>要验证Nagios是否正在运行，请检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status nagios</code></pre></div>
+<p>输出应如下所示，表示Nagios服务处于活动状态并正在运行。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● nagios.service - Nagios Core 4.4.3
+   Loaded: loaded (/lib/systemd/system/nagios.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2019-02-10 17:07:21 CST; 9s ago
+     Docs: https://www.nagios.org/documentation
+  Process: 26241 ExecStart=/usr/local/nagios/bin/nagios -d /usr/local/nagios/etc/nagios.cfg (code=exited, status=0/SUCCESS)
+  Process: 26239 ExecStartPre=/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg (code=exited, status=0/SUCCESS)
+ Main PID: 26243 (nagios)
+    Tasks: 6 (limit: 4915)
+   CGroup: /system.slice/nagios.service</code></pre></div>
+<h2 id="访问nagios-web界面">访问Nagios Web界面</h2>
+
+<p>要访问Nagios Web界面，请打开您喜欢的浏览器并键入服务器的域名或公共IP地址，然后执行以下操作<code>/nagios</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/nagios</code></pre></div>
+<p>输入<code>nagiosadmin</code>用户登录凭据，您将被重定向到默认的Nagios主页，如下图所示：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-nagios-on-debian-9/install-nagios-debian.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在Debian系统上从源代码成功安装了最新的Nagios版本。</p>
+
+<p>您现在应该访问<a href="https://www.nagios.org/documentation/">Nagios文档</a>并了解有关如何配置和使用Nagios的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nagios" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nagios</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/monitoring" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">monitoring</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nagios-on-centos-7/">如何在CentOS 7上安装和配置Nagios</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-debian-9/">如何在Debian 9 Linux上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-debian-9/">使用Debian 9上的Let加密来保护Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-9/">在Debian 9上使用Let&#39;s Encrypt来保护Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-debian-9/">如何在 Debian 9 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-centos-7/">如何在CentOS 7上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-debian-9/">如何在Debian 9 Linux上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian 9上使用UFW设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-debian-9/">如何在Debian 9上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-debian-9/">如何在Debian 9上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-debian-9/">如何在Debian 9上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-jenkins-on-debian-9/">如何在Debian 9上安装Jenkins</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-r-on-debian-9/">如何在Debian 9上安装R</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-9/">如何在Debian 9上安装Tomcat 9</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

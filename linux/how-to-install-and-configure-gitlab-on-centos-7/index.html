@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装和配置GitLab | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装和配置GitLab" />
+<meta property="og:description" content="GitLab是一个基于Web的开源Git存储库管理器，用Ruby编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。
+
+有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。
+
+如果你想将项目从GitHub移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。
+
+根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-and-configure-gitlab-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装和配置GitLab">
+<meta itemprop="description" content="GitLab是一个基于Web的开源Git存储库管理器，用Ruby编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。
+
+有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。
+
+如果你想将项目从GitHub移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。
+
+根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="181">
+
+
+
+<meta itemprop="keywords" content="centos,git,gitlab," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装和配置GitLab"/>
+<meta name="twitter:description" content="GitLab是一个基于Web的开源Git存储库管理器，用Ruby编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。
+
+有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。
+
+如果你想将项目从GitHub移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。
+
+根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装和配置GitLab</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>GitLab是一个基于Web的开源<a href="/linux/how-to-install-git-on-centos-7/">Git</a>存储库管理器，用<a href="/linux/how-to-install-ruby-on-centos-7/">Ruby</a>编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。</p>
+
+<p>有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。</p>
+
+<p>如果你想将项目从<a href="https://github.com/">GitHub</a>移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。</p>
+
+<p>根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>本教程假设您安装了全新的CentOS 7。</p>
+
+<p>根据<a href="https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements">GitLab要求页面</a>，建议使用服务器：</p>
+
+<ul>
+<li>至少4GB的RAM内存</li>
+<li>2核心</li>
+<li>至少2GB的<a href="/linux/create-a-linux-swap-file/">交换空间</a>。</li>
+<li>（可选）指向服务器IP地址的域或子域。</li>
+</ul>
+
+<p>为了增加安全层，建议设置基本防火墙。您可以按照我们的<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">HHow中</a>的步骤在<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">CentOS 7</a>指南中<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">使用FirewallD设置防火墙</a>。</p>
+
+<p>您登录的用户必须具有<a href="/linux/create-a-sudo-user-on-centos/">sudo权限</a>才能安装软件包。</p>
+
+<h2 id="安装所需的依赖项">安装所需的依赖项</h2>
+
+<p>刷新本地程序包索引并使用以下命令安装依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install curl policycoreutils-python openssh-server</code></pre></div>
+<p>为了使GitLab能够发送通知电子邮件，您可以安装和使用Postfix或使用一些事务性邮件服务，如SendGrid，MailChimp，MailGun或SES，在这种情况下，您可以跳过此后续步骤并配置<a href="https://docs.gitlab.com/omnibus/settings/smtp.html">GitLab的SMTP设置</a>。安装完成。</p>
+
+<p>运行以下命令在CentOS服务器上安装Postfix：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install postfix</code></pre></div>
+<p>在安装过程中，系统将要求您选择邮件服务器配置类型。默认选项是<code>Internet Site</code>。这是推荐的选项，只需按<code>TAB</code>，然后<code>ENTER</code>。</p>
+
+<p>接下来，系统将提示您输入与<code>System mail name</code>服务器<a href="/linux/how-to-change-hostname-on-centos-7/">主机名</a>相同的内容。</p>
+
+<p>安装完成后，通过运行以下命令启动并启用后缀服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start postfixsudo systemctl enable postfix</code></pre></div>
+<h2 id="安装gitlab">安装GitLab</h2>
+
+<p>GitLab安装是一个非常简单的过程。我们将使用<code>yum</code>包管理器安装GitLab CE包。</p>
+
+<p>首先使用以下<a href="/linux/curl-command-examples/">curl命令</a>将GitLab存储库添加到系统源列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash</code></pre></div>
+<p>该脚本将启用存储库并安装必要的依赖项。完成后，运行以下命令安装GitLab软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install gitlab-ce</code></pre></div>
+<p>系统将提示您接受GitLab存储库GPG密钥。输入<code>y</code>并按<code>Enter</code>。</p>
+
+<p>安装过程可能需要一段时间，安装成功后，您将看到以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Thank you for installing GitLab!
+...
+Complete!</code></pre></div>
+<h2 id="调整防火墙规则">调整防火墙规则</h2>
+
+<p>有关设置基本防火墙的指南在先决条件部分中进行了链接。为了能够访问GitLab接口，您需要打开端口<code>80</code>和<code>443</code>。为此，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=httpsudo firewall-cmd --permanent --zone=public --add-service=httpssudo firewall-cmd --reload</code></pre></div>
+<h2 id="设置gitlab-url">设置GitLab URL</h2>
+
+<p>在访问GitLab Web界面之前，我们需要设置可以访问GitLab的URL。打开Gitlab的配置文件并进行以下更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/gitlab/gitlab.rb</code></pre></div>
+<p>在配置文件的顶部附近，您将看到以<code>external_url</code>。开头的行。更改值以匹配您的域/子域或IP地址。如果您有域使用，<code>https</code>并且如果要通过服务器IP地址使用来访问GitLab接口<code>http</code>。</p>
+
+<p>/etc/gitlab/gitlab.rb</p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">external_url</span> <span class="s1">&#39;https://gitlab.example.com&#39;</span></code></pre></div>
+<p>接下来搜索“Let&rsquo;s Encrypt integration”，取消注释以＃开头的行<code>letsencrypt['enable']</code>并将其设置为true。（可选）如果您希望从Let&rsquo;s Encrypt收到有关您的域的电子邮件，请取消注释以该行开头的行<code>letsencrypt['contact_emails']</code>并添加您的电子邮件地址。</p>
+
+<p>如果您设置<code>external_url</code>为IP地址，则不应启用Let的加密集成。</p>
+
+<p>/etc/gitlab/gitlab.rb</p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">letsencrypt</span><span class="o">[</span><span class="s1">&#39;enable&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="n">letsencrypt</span><span class="o">[</span><span class="s1">&#39;contact_emails&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;admin@example.com&#39;</span><span class="o">]</span> <span class="c1"># This should be an array of email addresses to add as contacts</span></code></pre></div>
+<p>最后保存并关闭文件并运行以下命令重新配置Gitlab：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo gitlab-ctl reconfigure</code></pre></div>
+<p>该命令将重新配置GitLab设置并生成一个免费的Let的加密SSL证书。</p>
+
+<h2 id="通过web-interface配置gitlab">通过Web Interface配置GitLab</h2>
+
+<p>现在您已经配置了GitLab URL，您可以通过GitLab Web界面从初始配置开始。</p>
+
+<p>启动<a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">Web浏览器</a>并导航至：</p>
+<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">https://your_gitlab_domain_or_server_IP.com</code></pre></div>
+<h3 id="1-设置管理帐户密码">1.设置管理帐户密码</h3>
+
+<p>首次访问Web界面时，系统会提示您设置管理帐户的密码。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-initial-page.jpg" alt="" /></p>
+
+<p>输入安全密码，完成后单击<code>Change your password</code>按钮。</p>
+
+<p>您将被重定向到登录页面：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-login-page.jpg" alt="" /></p>
+
+<p>默认管理帐户用户名是<code>root</code>。在本教程的后面部分，我们将向您展示如何更改用户名。</p>
+
+<ul>
+<li>用户名：root</li>
+<li>密码：[您设置的密码]</li>
+</ul>
+
+<p>输入登录凭据，单击<code>Sign in</code>按钮，您将被重定向到GitLab欢迎页面。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-welcome-page.jpg" alt="" /></p>
+
+<h3 id="2-编辑用户配置文件">2.编辑用户配置文件</h3>
+
+<p>您要做的第一件事是编辑您的用户个人资料。单击用户头像（右上角），然后从下拉菜单中选择<code>Settings</code>：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-access-user-profile.jpg" alt="" /></p>
+
+<p>您可以在此处更改姓名，电子邮件和其他个人资料信息和设置。根据自己的喜好进行更改。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-profile-page.jpg" alt="" /></p>
+
+<p>完成后，单击<code>Update Profile settings</code>按钮，很快您将收到一封确认电子邮件，其中包含您提供的地址。要确认您的帐户，请按照电子邮件中提供的说明操作。</p>
+
+<h3 id="3-更改用户名">3.更改用户名</h3>
+
+<p>要访问“配置文件”页面，请单击<code>Account</code>左侧垂直导航菜单中的链接。</p>
+
+<p>您已经知道第一个管理帐户的默认用户名是<code>root</code>。要更改它，只需键入新用户名并单击<code>Update username</code>按钮即可。</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-change-user-name.jpg" alt="" /></p>
+
+<p>在此屏幕上，您还可以启用双因素身份验证。</p>
+
+<p>下次登录GitLab仪表板时，您需要输入新的用户名。</p>
+
+<h3 id="4-添加ssh密钥">4.添加SSH密钥</h3>
+
+<p>为了能够将您的本地git更改推送到GitLab服务器，您需要将SSH公钥添加到GitLab帐户。</p>
+
+<p>如果您已在本地系统上创建了SSH密钥对，则可以通过键入以下内容来显示公钥：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat ~/.ssh/id_rsa.pub</code></pre></div>
+<p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDd/mnMzHwjUzK8g3ldfsfRpJuC16mhWamaXRk8ySQrD/dzpbRLfDnZsLxCzRoq+ZzFHGwcQlJergtergdHGRrO8FE5jl3IWRRp+mP12qYw== admin@linuxize.com</code></pre></div>
+<p>如果上面的命令打印，<code>No such file or directory</code>则意味着您没有在计算机上生成SSH密钥对。</p>
+
+<p>要<a href="/linux/how-to-set-up-ssh-keys-on-centos-7/">生成新的SSH密钥对，请</a>使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh-keygen -t rsa -b 4096 -C &#34;your_email@domain.com&#34;</code></pre></div>
+<p>复制<a href="/linux/linux-cat-command/">cat命令</a>的输出并返回GitLab的Web界面。单击<code>SSH Keys</code>左侧垂直导航菜单以访问SSH Keys配置页面。</p>
+
+<p>在<code>Key</code>textarea粘贴您之前从本地计算机复制的公钥，设置描述性标题并单击<code>Add key</code>按钮：</p>
+
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-add-ssh-key.jpg" alt="" /></p>
+
+<p>现在，您应该能够从本地计算机推送和提取项目更改，而无需提供GitLab帐户凭据。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>本教程向您介绍了在CentOS 7上安装和配置GitLab的过程。您还学习了如何编辑配置文件设置，如何更改用户名以及添加SSH密钥。您现在可以创建第一个项目并开始使用GitLab。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/git" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">git</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/gitlab" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">gitlab</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-git-on-centos-7/">如何在 CentOS 7 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 GitLab</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-delete-local-and-remote-git-branch/">如何删除本地和远程Git分支</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-centos-7/">如何在CentOS 7上安装Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-centos-7/">如何在CentOS 7上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">如何在CentOS 7上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-centos-7/">如何在CentOS 7上安装Gradle</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

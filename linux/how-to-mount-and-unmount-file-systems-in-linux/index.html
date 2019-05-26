@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Linux中挂载和卸载文件系统 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Linux中挂载和卸载文件系统" />
+<meta property="og:description" content="在Linux和UNIX操作系统上，您可以使用该mount命令在目录树中的特定安装点附加（安装）文件系统和可移动设备（如USB闪存驱动器）。
+
+该umount命令从目录树中分离（卸载）已安装的文件系统。
+
+在本教程中，我们将介绍使用mount和umount命令附加和分离各种文件系统的基础知识。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-mount-and-unmount-file-systems-in-linux/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Linux中挂载和卸载文件系统">
+<meta itemprop="description" content="在Linux和UNIX操作系统上，您可以使用该mount命令在目录树中的特定安装点附加（安装）文件系统和可移动设备（如USB闪存驱动器）。
+
+该umount命令从目录树中分离（卸载）已安装的文件系统。
+
+在本教程中，我们将介绍使用mount和umount命令附加和分离各种文件系统的基础知识。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="171">
+
+
+
+<meta itemprop="keywords" content="mount,umount,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Linux中挂载和卸载文件系统"/>
+<meta name="twitter:description" content="在Linux和UNIX操作系统上，您可以使用该mount命令在目录树中的特定安装点附加（安装）文件系统和可移动设备（如USB闪存驱动器）。
+
+该umount命令从目录树中分离（卸载）已安装的文件系统。
+
+在本教程中，我们将介绍使用mount和umount命令附加和分离各种文件系统的基础知识。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Linux中挂载和卸载文件系统</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在Linux和UNIX操作系统上，您可以使用该<code>mount</code>命令在目录树中的特定安装点附加（安装）文件系统和可移动设备（如USB闪存驱动器）。</p>
+
+<p>该<code>umount</code>命令从目录树中分离（卸载）已安装的文件系统。</p>
+
+<p>在本教程中，我们将介绍使用<code>mount</code>和<code>umount</code>命令附加和分离各种文件系统的基础知识。</p>
+
+<h2 id="如何列出已安装的文件系统">如何列出已安装的文件系统</h2>
+
+<p>如果在没有任何参数的情况下使用，该<code>mount</code>命令将显示所有当前连接的文件系</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mount</code></pre></div>
+<p>默认情况下，输出将包括所有文件系统，包括虚拟文件系统，如cgroup，sysfs等。每行包括有关设备名称，设备安装目录，文件系统类型和安装选项的信息，格式如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">device_name on directory type filesystem_type (options)</code></pre></div>
+<p>要仅显示某些文件系统，请使用该<code>-t</code>选项。</p>
+
+<p>例如，要仅打印您将使用的ext4分区：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mount -t ext4</code></pre></div>
+<h2 id="挂载文件系统">挂载文件系统</h2>
+
+<p>要在指定位置（挂载点）附加文件系统，请使用<code>mount</code>以下格式的命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME DIRECTORY</code></pre></div>
+<p>连接文件系统后，安装点将成为已安装文件系统的根目录。</p>
+
+<p>例如，要将<code>/dev/sdb1</code>文件系统挂载到<code>/mnt/media</code>您将使用的目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount /dev/sdb1 /mnt/media</code></pre></div>
+<p>通常在安装具有公共文件系统（如ext4或xfs）的设备时，该<code>mount</code>命令将自动检测文件系统类型。但是，有些文件系统无法识别，需要明确指定。</p>
+
+<p>使用该<code>-t</code>选项指定文件系统类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount -t TYPE DEVICE_NAME DIRECTORY</code></pre></div>
+<p>要指定其他<a href="http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS">安装选项</a>，请使用以下<code>-o</code>选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount -o OPTIONS DEVICE_NAME DIRECTORY</code></pre></div>
+<p>可以提供多个选项作为逗号分隔列表（不要在逗号后插入空格）。</p>
+
+<p>您可以通过键入<code>man mount</code>终端获取所有挂载选项的列表。</p>
+
+<h3 id="使用-etc-fstab挂载文件系统">使用/ etc / fstab挂载文件系统</h3>
+
+<p>当只为<code>mount</code>命令提供一个参数（目录或设备）时，它将读取<code>/etc/fstab</code>配置文件的内容以检查是否列出了指定的文件系统。</p>
+
+<p>如果<code>/etc/fstab</code>包含有关给定文件系统的信息，该<code>mount</code>命令将填写另一个参数的值，并使用fstab文件中指定的mount选项。</p>
+
+<p>该<code>/etc/fstab</code>文件包含以下格式的条目列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">[File System] [Mount Point] [File System Type] [Options] [Dump] [Pass]</code></pre></div>
+<p>使用<code>mount</code>以下某种形式的命令附加文件中指定的文件系统<code>/etc/fstab</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount <span class="o">[</span>OPTION...<span class="o">]</span> DIRECTORY
+mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME</code></pre></div>
+<h3 id="安装usb驱动器">安装USB驱动器</h3>
+
+<p>在大多数现代Linux发行版中，如Ubuntu USB驱动器在插入时会自动挂载，但有时您可能需要手动安装驱动器。</p>
+
+<p>要手动安装USB设备，请执行以下步骤：</p>
+
+<ol>
+<li><p>创建挂载点：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /media/usb</code></pre></div>
+<ol>
+<li>假设USB驱动器使用该<code>/dev/sdd1</code>设备，您可以<code>/media/usb</code>通过键入以下内容将其安装到目录：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount /dev/sdd1 /media/usb</code></pre></div>
+<p>要查找设备和文件系统类型，可以使用以下任何命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">fdisk -lls -l /dev/disk/by-id/usb*dmesglsblk</code></pre></div>
+<h3 id="挂载iso文件">挂载ISO文件</h3>
+
+<p>我们可以使用循环设备挂载ISO文件。循环设备是一种特殊的伪设备，它使文件可作为块设备访问。</p>
+
+<ol>
+<li>首先创建挂载点，它可以是您想要的任何位置：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /media/iso</code></pre></div></li>
+
+<li><p>通过键入以下命令将ISO文件挂载到挂载点：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mount /path/to/image.iso /mnt/iso -o loop</code></pre></div>
+<p>不要忘记替换<code>/path/to/image.iso</code>ISO文件的路径。</p>
+
+<h3 id="挂载nfs">挂载NFS</h3>
+
+<p>要安装NFS系统，您需要在系统上安装NFS客户端软件包。</p>
+
+<ul>
+<li>在Ubuntu和Debian上安装NFS客户端：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install nfs-common</code></pre></div></li>
+</ol>
+
+<ul>
+<li><p>在CentOS和Fedora上安装NFS客户端：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install nfs-utils</code></pre></div>
+<p>使用以下步骤在系统上安装远程NFS目录：</p>
+
+<ol>
+<li>创建一个目录作为远程文件系统的挂载点：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /media/nfs</code></pre></div></li>
+</ul>
+
+<ol>
+<li><p>通常，您需要在引导时自动挂载远程NFS目录。为此<code>/etc/fstab</code>，请使用文本编辑器打开文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/fstab</code></pre></div>
+<p><code>remote.server:/dir</code>将以下行添加到文件中，替换为NFS服务器IP地址或主机名以及导出的目录：</p>
+
+<p>/ etc / fstab文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># &lt;file system&gt;    &lt;dir&gt;       &lt;type&gt;   &lt;options&gt;   &lt;dump&gt;  &lt;pass&gt;</span>
+<span class="na">remote.server:/dir /media/nfs  nfs      defaults    0       0</span></code></pre></div></li>
+
+<li><p>通过运行以下命令挂载NFS共享：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount /mnt/nfs</code></pre></div>
+<h2 id="卸载文件系统">卸载文件系统</h2>
+
+<p>要分离已装入的文件系统，请使用<code>umount</code>命令后面的安装目录（安装点）或设备名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umount DIRECTORYumount DEVICE_NAME</code></pre></div></li>
+</ol>
+
+<p>如果文件系统正在使用，该<code>umount</code>命令将无法分离文件系统。在这些情况下，您可以使用该<code>fuser</code>命令找出正在访问文件系统的进程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">fuser -m DIRECTORY</code></pre></div>
+<p>确定进程后，可以停止它们并卸载文件系统。</p>
+
+<h3 id="懒惰卸载">懒惰卸载</h3>
+
+<p>使用<code>-l</code>（<code>--lazy</code>）选项可以在忙碌文件系统不再忙时立即卸载它。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umount -l DIRECTORY</code></pre></div>
+<h3 id="强行卸下">强行卸下</h3>
+
+<p>使用<code>-f</code>（<code>--force</code>）选项强制卸载。此选项通常用于卸载无法访问的NFS系统。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umount -f DIRECTORY</code></pre></div>
+<p>强制卸载通常不是一个好主意，因为它可能会破坏文件系统上的数据。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用该<code>mount</code>命令将各种文件系统附加到目录树并使用该<code>umount</code>命令分离安装。</p>
+
+<p>要了解有关命令<code>mount</code>和<code>umount</code>命令选项的更多信息，请参阅各自的手册页。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/mount" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mount</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/umount" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">umount</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/find-large-files-in-linux/">在Linux中查找大文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在CentOS 7上安装Odoo 12 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在CentOS 7上安装Odoo 12" />
+<meta property="og:description" content="Odoo是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括CRM，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+在本教程中，我们将向您展示如何在CentOS 7计算机上的Python虚拟环境中从源安装Odoo12。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/install-odoo-12-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="在CentOS 7上安装Odoo 12">
+<meta itemprop="description" content="Odoo是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括CRM，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+在本教程中，我们将向您展示如何在CentOS 7计算机上的Python虚拟环境中从源安装Odoo12。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="292">
+
+
+
+<meta itemprop="keywords" content="centos,odoo,postgresql,python,pip," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在CentOS 7上安装Odoo 12"/>
+<meta name="twitter:description" content="Odoo是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括CRM，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
+
+在本教程中，我们将向您展示如何在CentOS 7计算机上的Python虚拟环境中从源安装Odoo12。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">在CentOS 7上安装Odoo 12</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Odoo是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括CRM，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。</p>
+
+<p>在本教程中，我们将向您展示如何在CentOS 7计算机上的Python虚拟环境中从源安装<a href="https://www.odoo.com/">Odoo</a>12。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续学习本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</p>
+
+<h2 id="安装python-3-6和odoo依赖项">安装Python 3.6和Odoo依赖项</h2>
+
+<p>我们将从Software Collections（SCL）存储库<a href="/linux/how-to-install-python-3-on-centos-7/">安装Python 3.6</a>软件包。</p>
+
+<p>通过启用SCL，您将可以访问核心存储库中不可用的较新版本的编程语言和服务。</p>
+
+<p>使用以下命令启用EPEL和SCL存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release centos-release-scl</code></pre></div>
+<p>启用存储库后，安装Python 3.6构建Odoo依赖项所需的所有工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install rh-python36 git gcc wget nodejs-less libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel</code></pre></div>
+<p>在安装过程中，系统将提示您接受GPG密钥。</p>
+
+<h2 id="创建odoo用户">创建Odoo用户</h2>
+
+<p>使用<code>/opt/odoo</code>将运行Odoo服务的主目录创建新的系统用户和组：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -m -U -r -d /opt/odoo12 -s /bin/bash odoo12</code></pre></div>
+<p>您可以为用户命名，只需确保创建具有相同名称的PostgreSQL用户即可。</p>
+
+<h2 id="安装和配置postgresql">安装和配置PostgreSQL</h2>
+
+<p>在撰写本文时，CentOS存储库提供的PostgreSQL的最新版本是PostgreSQL版本9.2，Odoo没有正式支持。</p>
+
+<p>我们将从官方PostgreSQL存储库安装PostgreSQL 10。</p>
+
+<p>首先启用PostgreSQL存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm</code></pre></div>
+<p>安装<a href="/linux/how-to-install-postgresql-on-centos-7/">PostgreSQL</a>服务器并创建一个新的PostgreSQL数据库集群：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install postgresql10-server postgresql10-develsudo /usr/pgsql-10/bin/postgresql-10-setup initdb</code></pre></div>
+<p>安装完成后，启用并启动PostgreSQL服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable postgresql-10sudo systemctl start postgresql-10</code></pre></div>
+<p>在我们的示例中，创建一个与先前创建的系统用户同名的PostgreSQL用户<code>odoo12</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgres -c &#34;createuser -s odoo12&#34;</code></pre></div>
+<h2 id="安装wkhtmltopdf">安装Wkhtmltopdf</h2>
+
+<p>该<code>wkhtmltox</code>软件包提供了一组开源命令行工具，可以将HTML呈现为PDF和各种图像格式。要打印PDF报告，您需要使用该<code>wkhtmltopdf</code>工具。Odoo的推荐版本<code>0.12.1</code>在官方CentOS 7存储库中不可用。</p>
+
+<p>使用以下<a href="/linux/wget-command-examples/">wget命令</a>下载推荐的版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm</code></pre></div>
+<p>下载完成后，<code>rpm</code>键入以下命令安装包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum localinstall wkhtmltox-0.12.1_linux-centos7-amd64.rpm</code></pre></div>
+<h2 id="安装和配置odoo-12">安装和配置Odoo 12</h2>
+
+<p>在开始安装过程之前，请确保切换到<code>odoo12</code>用户。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - odoo12</code></pre></div>
+<p>首先从Odoo GitHub存储库中克隆Odoo 12源代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 12.0 /opt/odoo12/odoo</code></pre></div>
+<p>启用软件集合，以便我们可以访问python 3.6二进制文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">scl enable rh-python36 bash</code></pre></div>
+<p>使用以下命令为Odoo安装创建新的Python虚拟环境：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /opt/odoo12python3 -m venv venv</code></pre></div>
+<p>激活环境：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source venv/bin/activate</code></pre></div>
+<p>安装所有必需的Python模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-venv" data-lang="console-venv">pip3 install -r odoo/requirements.txt</code></pre></div>
+<p>如果在安装过程中遇到任何编译错误，请确保已安装该<code>Install Python 3.6 and Odoo Dependencies</code>部分中列出的所有必需依赖项。</p>
+
+<p>安装完成后，使用以下命令停用环境：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-venv" data-lang="console-venv">deactivate</code></pre></div>
+<p>为自定义插件创建新目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir /opt/odoo12/odoo-custom-addons</code></pre></div>
+<p>切换回你的sudo用户：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">exit</code></pre></div>
+<p>接下来，打开文本编辑器并创建以下配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/odoo12.conf</code></pre></div>
+<p>/etc/odoo12.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[options]</span>
+<span class="c1">; This is the password that allows database operations:</span>
+<span class="na">admin_passwd</span> <span class="o">=</span> <span class="s">superadmin_passwd</span>
+<span class="na">db_host</span> <span class="o">=</span> <span class="s">False</span>
+<span class="na">db_port</span> <span class="o">=</span> <span class="s">False</span>
+<span class="na">db_user</span> <span class="o">=</span> <span class="s">odoo12</span>
+<span class="na">db_password</span> <span class="o">=</span> <span class="s">False</span>
+<span class="na">addons_path</span> <span class="o">=</span> <span class="s">/opt/odoo12/odoo/addons, /opt/odoo12/odoo-custom-addons</span></code></pre></div>
+<p>保存并关闭文件。</p>
+
+<p>不要忘记改变<code>superadmin_passwd</code>更安全的东西。</p>
+
+<h2 id="创建systemd单元文件">创建systemd单元文件</h2>
+
+<p>要将Odoo作为服务运行，我们将创建一个单元文件。</p>
+
+<p>打开文本编辑器并<code>odoo12.service</code>在<code>/etc/systemd/system/</code>目录中创建一个名为的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/odoo12.service</code></pre></div>
+<p>粘贴以下内容：</p>
+
+<p>/etc/systemd/system/odoo12.service</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Odoo12</span>
+<span class="na">Requires</span><span class="o">=</span><span class="s">postgresql-10.service</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target postgresql-10.service</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">SyslogIdentifier</span><span class="o">=</span><span class="s">odoo12</span>
+<span class="na">PermissionsStartOnly</span><span class="o">=</span><span class="s">true</span>
+<span class="na">User</span><span class="o">=</span><span class="s">odoo12</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">odoo12</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/scl enable rh-python36 -- /opt/odoo12/venv/bin/python3 /opt/odoo12/odoo/odoo-bin -c /etc/odoo12.conf</span>
+<span class="na">StandardOutput</span><span class="o">=</span><span class="s">journal+console</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
+<p>保存文件并关闭编辑器。</p>
+
+<p>通知Systemd我们创建了一个新的单元文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload</code></pre></div>
+<p>通过执行以下命令启动并启用Odoo服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable odoo12sudo systemctl start odoo12</code></pre></div>
+<p>您可以使用以下命令检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status odoo12</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● odoo12.service - Odoo12
+   Loaded: loaded (/etc/systemd/system/odoo12.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2018-10-30 16:35:09 UTC; 6s ago
+ Main PID: 24649 (scl)
+   CGroup: /system.slice/odoo12.service
+           ├─24649 /usr/bin/scl enable rh-python36 -- /opt/odoo12/venv/bin/python3 /opt/odoo12/odoo/odoo-bin -c /etc/odoo12.conf
+           ├─24650 /bin/bash /var/tmp/scldyaa9h
+           └─24653 /opt/odoo12/venv/bin/python3 /opt/odoo12/odoo/odoo-bin -c /etc/odoo12.conf</code></pre></div>
+<p>如果要查看Odoo服务记录的消息，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo journalctl -u odoo12</code></pre></div>
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
+
+<p>假设安装成功，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/install-odoo-12-on-centos-7/odoo-12-centos.jpg" alt="" /></p>
+
+<p>如果您无法访问该页面，则可能是您的<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙</a>阻塞了端口<code>8069</code>。</p>
+
+<p>使用以下命令打开必要的端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-port=8069/tcpsudo firewall-cmd --reload</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>本教程向您介绍了在Python虚拟环境中在CentOS 7上安装Odoo 12的过程。</p>
+
+<p>您可能还想查看有关<a href="/linux/how-to-setup-automatic-odoo-backup/">如何为Odoo数据库创建自动每日备份的教程</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/odoo" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">odoo</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/postgresql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">postgresql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/python" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/pip" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">pip</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-12-on-ubuntu-18-04/">如何在Ubuntu 18.04上部署Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-centos-7/">如何在 CentOS 7 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-python-3-on-centos-7/">如何在 CentOS 7 上安装 Python 3</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-centos-7/">如何在 CentOS 7 上安装 Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-debian-9/">如何在 Debian 9 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

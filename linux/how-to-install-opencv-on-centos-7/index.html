@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装OpenCV | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装OpenCV" />
+<meta property="og:description" content="OpenCV（开源计算机视觉库）是一个开源计算机视觉库，具有C &#43;&#43;，Python和Java的绑定，并支持所有主要的操作系统。它可以利用多核处理，并具有GPU加速功能，可实现实时操作。
+
+OpenCV用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别人脸，跟踪移动物体，提取3D模型等等。
+
+在本教程中，我们将展示如何在CentOS 7上安装OpenCV。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-opencv-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装OpenCV">
+<meta itemprop="description" content="OpenCV（开源计算机视觉库）是一个开源计算机视觉库，具有C &#43;&#43;，Python和Java的绑定，并支持所有主要的操作系统。它可以利用多核处理，并具有GPU加速功能，可实现实时操作。
+
+OpenCV用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别人脸，跟踪移动物体，提取3D模型等等。
+
+在本教程中，我们将展示如何在CentOS 7上安装OpenCV。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="182">
+
+
+
+<meta itemprop="keywords" content="opencv,python,centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装OpenCV"/>
+<meta name="twitter:description" content="OpenCV（开源计算机视觉库）是一个开源计算机视觉库，具有C &#43;&#43;，Python和Java的绑定，并支持所有主要的操作系统。它可以利用多核处理，并具有GPU加速功能，可实现实时操作。
+
+OpenCV用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别人脸，跟踪移动物体，提取3D模型等等。
+
+在本教程中，我们将展示如何在CentOS 7上安装OpenCV。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装OpenCV</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href="https://opencv.org/">OpenCV</a>（开源计算机视觉库）是一个开源计算机视觉库，具有C ++，Python和Java的绑定，并支持所有主要的操作系统。它可以利用多核处理，并具有GPU加速功能，可实现实时操作。</p>
+
+<p>OpenCV用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别人脸，跟踪移动物体，提取3D模型等等。</p>
+
+<p>在本教程中，我们将展示如何在CentOS 7上安装OpenCV。</p>
+
+<h2 id="从centos存储库安装opencv">从CentOS存储库安装OpenCV</h2>
+
+<p>OpenCV软件包可从CentOS 7分发存储库获得，但它已经过时了。在撰写本文时，存储库中的版本是2.4.5。</p>
+
+<p>键入以下命令安装OpenCV软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install opencv opencv-devel opencv-python</code></pre></div>
+<p>安装完成后，您可以通过运行来验证它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pkg-config --modversion opencv</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">2.4.5</code></pre></div>
+<p>或者通过导入Python <code>cv2</code>模块并打印OpenCV版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">python -c <span class="s2">&#34;\
+</span><span class="s2">import cv2
+</span><span class="s2">print(cv2.__version__)&#34;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">2.4.5</code></pre></div>
+<h2 id="从source安装opencv">从Source安装OpenCV</h2>
+
+<p>从源代码构建OpenCV库将允许您拥有最新的可用版本。它将针对您的特定系统进行优化，您可以完全控制构建选项。</p>
+
+<p>要从源安装最新的OpenCV版本，请按照下列步骤操作：</p>
+
+<ol>
+<li><p>安装必需和可选的依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release git gcc gcc-c++ cmake3 qt5-qtbase-devel python python-devel python-pip cmakesudo yum install python-devel numpy python34-numpy gtk2-devel libpng-devel jasper-devel openexr-devel libwebp-develsudo yum install libjpeg-turbo-devel libtiff-devel  libdc1394-devel tbb-devel eigen3-devel gstreamer-plugins-base-develsudo yum install freeglut-devel mesa-libGL mesa-libGL-devel  boost boost-thread boost-devel libv4l-devel</code></pre></div>
+<ol>
+<li>创建一个目录，该目录将保存存储库并克隆OpenCV和OpenCV contrib存储库：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/opencv_build &amp;&amp; cd ~/opencv_buildgit clone https://github.com/opencv/opencv.gitgit clone https://github.com/opencv/opencv_contrib.git</code></pre></div>
+<p>在撰写本文时，github存储库中的默认版本是4.0.0版。如果要安装旧版本的OpenCV，CD既<code>opencv</code>和<code>opencv_contrib</code>目录，并运行<code>git checkout &lt;opencv-version&gt;</code></p></li>
+
+<li><p>下载完成后，创建一个临时构建目录，然后切换到该目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/opencv_build/opencv &amp;&amp; mkdir build &amp;&amp; cd build</code></pre></div>
+<p>使用以下CMake命令配置OpenCV构建：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cmake3 -D <span class="nv">CMAKE_BUILD_TYPE</span><span class="o">=</span>RELEASE <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">CMAKE_INSTALL_PREFIX</span><span class="o">=</span>/usr/local <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">INSTALL_C_EXAMPLES</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">INSTALL_PYTHON_EXAMPLES</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_GENERATE_PKGCONFIG</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_EXTRA_MODULES_PATH</span><span class="o">=</span>~/opencv_build/opencv_contrib/modules <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">BUILD_EXAMPLES</span><span class="o">=</span>ON ..</code></pre></div>
+<p>完成CMake构建系统后，您将看到如下所示的内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/linuxize/opencv_build/opencv/build</code></pre></div>
+<ol>
+<li>通过运行以下命令启动编译过程。<code>-j</code>根据您的处理器修改标志。如果您不知道处理器的核心数量，可以通过键入来找到它<code>nproc</code>。我的系统有8个核心，所以我使用的是<code>-j8</code>旗帜</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">make -j8</code></pre></div>
+<p>编译可能需要几分钟或更长时间，具体取决于您的系统配置。完成后，您将看到如下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[100%] Built target example_tutorial_Threshold_inRange
+[100%] Linking CXX shared module ../../lib/cv2.so
+[100%] Built target opencv_python2</code></pre></div>
+<ol>
+<li>安装OpenCV：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install</code></pre></div></li>
+
+<li><p>创建符号链接<code>opencv4.pc</code>文件到<code>/usr/share/pkgconfig</code>目录并运行<code>ldconfig</code>以重建库缓存。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ln -s /usr/local/lib64/pkgconfig/opencv4.pc /usr/share/pkgconfig/sudo ldconfig</code></pre></div>
+<p>键入以下命令检查OpenCV版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">pkg-config --modversion opencv4</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">4.0.1</code></pre></div>
+<ol>
+<li>要启用Python <code>cv2</code>模块运行：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ln -s /usr/local/lib/python2.7/site-packages/cv2  /usr/lib/python2.7/site-packages/</code></pre></div>
+<p>导入模块并打印OpenCV版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">python -c <span class="s2">&#34;\
+</span><span class="s2">import cv2
+</span><span class="s2">print(cv2.__version__)&#34;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">4.0.1-dev</code></pre></div></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>我们已经向您展示了在CentOS 7服务器上安装OpenCV的两种不同方法。您选择的方法取决于您的要求和偏好。即使从CentOS存储库安装打包版本更容易，从源代码构建OpenCV可以提供更大的灵活性，它应该是您安装OpenCV时的第一个选择。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/opencv" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">opencv</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/python" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-centos-7/">如何在 CentOS 7 上安装 Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 OpenCV</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-pip-on-centos-7/">如何在 CentOS 7 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-python-3-on-centos-7/">如何在 CentOS 7 上安装 Python 3</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/">如何在CentOS 7上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-anaconda-on-centos-7/">如何在CentOS 7上安装Anaconda</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-centos-7/">如何在CentOS 7上安装Atom文本编辑器</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

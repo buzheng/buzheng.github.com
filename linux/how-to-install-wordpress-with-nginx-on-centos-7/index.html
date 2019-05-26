@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上使用Nginx安装WordPress | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上使用Nginx安装WordPress" />
+<meta property="og:description" content="WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。
+
+本教程介绍如何在CentOS 7上安装WordPress。这是一个相当简单的过程，只需不到十分钟即可完成。
+
+我们将使用带有Nginx 的LEMP堆栈作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-wordpress-with-nginx-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上使用Nginx安装WordPress">
+<meta itemprop="description" content="WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。
+
+本教程介绍如何在CentOS 7上安装WordPress。这是一个相当简单的过程，只需不到十分钟即可完成。
+
+我们将使用带有Nginx 的LEMP堆栈作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="331">
+
+
+
+<meta itemprop="keywords" content="centos,wordpress,mysql,mariadb,cms,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上使用Nginx安装WordPress"/>
+<meta name="twitter:description" content="WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。
+
+本教程介绍如何在CentOS 7上安装WordPress。这是一个相当简单的过程，只需不到十分钟即可完成。
+
+我们将使用带有Nginx 的LEMP堆栈作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上使用Nginx安装WordPress</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。</p>
+
+<p>本教程介绍如何在CentOS 7上安装WordPress。这是一个相当简单的过程，只需不到十分钟即可完成。</p>
+
+<p>我们将使用带有Nginx 的<a href="https://linuxize.com/series/install-lemp-stack-on-centos-7/">LEMP堆栈</a>作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>让域名指向您的服务器公共IP地址。在本教程中我们将使用<code>example.com</code>。</li>
+<li>以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</li>
+<li>按照<a href="/linux/how-to-install-nginx-on-centos-7/">这些说明</a>安装Nginx 。</li>
+<li>您已为您的域安装了SSL证书。您可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">这些说明</a>生成免费的Let&rsquo;s加密SSL证书。</li>
+</ul>
+
+<h2 id="创建mysql数据库">创建MySQL数据库</h2>
+
+<p>WordPress将其数据和配置存储在MySQL数据库中。第一步是创建MySQL数据库，<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>。</p>
+
+<p>如果您已经没有在Ubuntu服务器上安装MySQL或MariaDB，可以按照以下说明之一进行安装：</p>
+
+<ul>
+<li><a href="/linux/install-mysql-on-centos-7/">在CentOS 7上安装MySQL</a>。</li>
+<li><a href="/linux/install-mariadb-on-centos-7/">在CentOS 7上安装MariaDB</a>。</li>
+</ul>
+
+<p>执行以下命令登录MySQL shell：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u root -p</code></pre></div>
+<p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建</a>名为<code>wordpress</code>user user <a href="/linux/how-to-create-a-mysql-database/">的数据库</a>，<code>wordpressuser</code>并向用户授予所有必要的权限：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;GRANT ALL ON wordpress.* TO &#39;wordpressuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;FLUSH PRIVILEGES;EXIT;</code></pre></div>
+<h2 id="安装php-7-2">安装PHP 7.2</h2>
+
+<p>CentOS 7附带PHP 5.4版。推荐的WordPress PHP版本是PHP 7.2。</p>
+
+<p>要<a href="/linux/install-php-7-on-centos-7/">安装PHP</a>和所有必需的PHP扩展，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release yum-utilssudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpmsudo yum-config-manager --enable remi-php72sudo yum install php-cli php-fpm php-mysql php-json php-opcache php-mbstring php-xml php-gd php-curl</code></pre></div>
+<p>我们安装了PHP FPM，因为我们将使用Nginx作为Web服务器。</p>
+
+<p>默认情况下，PHP FPM将<code>apache</code>在端口9000上以用户身份运行。我们将用户更改为<code>nginx</code>从TCP套接字切换到Unix套接字。为此，请打开<code>/etc/php-fpm.d/www.conf</code>文件，编辑以黄色突出显示的行：</p>
+
+<p>/etc/php-fpm.d/www.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
+user = nginx
+...
+group = nginx
+...
+listen = /run/php-fpm/www.sock
+...
+listen.owner = nginx
+listen.group = nginx</code></pre></div>
+<p><code>/var/lib/php</code>使用以下<a href="/linux/linux-chown-command/">chown命令</a>确保目录具有正确的所有权：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R root:nginx /var/lib/php</code></pre></div>
+<p>完成更改后，启用并启动PHP FPM服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable php-fpmsudo systemctl start php-fpm</code></pre></div>
+<h2 id="正在下载wordpress">正在下载Wordpress</h2>
+
+<p>在下载Wordpress存档之前，首先要创建一个我们将放置WordPress文件的目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/html/example.com</code></pre></div>
+<p>下一步是使用以下<a href="/linux/wget-command-examples/">wget命令</a>从<a href="https://wordpress.org/download/">WordPress下载页面</a>下载最新版本的WordPress ：[](/linux/wget-command-examples/)</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /tmpwget https://wordpress.org/latest.tar.gz</code></pre></div>
+<p>下载完成后，解<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">压缩WordPress存档</a>并将整个内容移动到域的文档根目录中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">tar xf latest.tar.gzsudo mv /tmp/wordpress/* /var/www/html/example.com/</code></pre></div>
+<p>设置正确的权限，以便Web服务器可以完全访问站点的文件和目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sudo chown -R nginx: /var/www/html/example.com</code></pre></div>
+<h2 id="配置nginx">配置Nginx</h2>
+
+<p>到目前为止，您应该已经在系统上安装了Nginx和SSL证书，如果没有，请检查本教程的先决条件。</p>
+
+<p>要为我们的WordPress实例创建一个新的服务器块，我们将使用官方Nginx站点的<a href="https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/">Nginx配方</a>。</p>
+
+<p>打开文本编辑器并创建一个新的<a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">nginx服务器块</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf</code></pre></div>
+<p>添加以下行：</p>
+
+<p>/etc/nginx/conf.d/example.com.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Redirect HTTP -&gt; HTTPS
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
+
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1"># Redirect WWW -&gt; NON WWW
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span><span class="p">;</span>
+
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
+
+    <span class="kn">root</span> <span class="s">/var/www/html/example.com</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.php</span><span class="p">;</span>
+
+    <span class="c1"># SSL parameters
+</span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+
+    <span class="c1"># log files
+</span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/example.com.error.log</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="p">=</span> <span class="s">/favicon.ico</span> <span class="p">{</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">=</span> <span class="s">/robots.txt</span> <span class="p">{</span>
+        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.php?</span><span class="nv">$args</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="s">unix:/run/php-fpm/www.sock</span><span class="p">;</span>
+        <span class="kn">fastcgi_index</span>   <span class="s">index.php</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+        <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">\.(js|css|png|jpg|jpeg|gif|ico|svg)</span>$ <span class="p">{</span>
+        <span class="kn">expires</span> <span class="s">max</span><span class="p">;</span>
+        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span></code></pre></div>
+<p>不要忘记将example.com替换为Wordpress域，并设置SSL证书文件的正确路径。此配置中使用的片段在<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">本指南</a>中创建。</p>
+
+<p>在重新启动Nginx服务之前测试配置以确保没有语法错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nginx -t</code></pre></div>
+<p>如果没有错误，输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre></div>
+<p>我们可以输入以下命令重新启动Nginx：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx</code></pre></div>
+<h2 id="完成wordpress安装">完成WordPress安装</h2>
+
+<p>现在已下载Wordpress并完成服务器配置，您可以通过Web界面完成安装。</p>
+
+<p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/install-wordpress-language-selector.jpg" alt="" /></p>
+
+<p>选择您要使用的语言，然后单击<code>Continue</code>按钮。</p>
+
+<p>接下来，您将看到以下信息页面，单击<code>Let's go!</code>按钮。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/install-wordpress-information.jpg" alt="" /></p>
+
+<p>在下一个屏幕上，安装向导将要求您输入数据库连接详细信息。输入您之前创建的MySQL用户和数据库详细信息。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/install-wordpress-database-information.jpg" alt="" /></p>
+
+<p>单击<code>Run the Installation</code>按钮启动WordPress安装。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/install-wordpress-run-installation.jpg" alt="" /></p>
+
+<p>在下一步中，您需要输入WordPress站点的名称并选择用户名（出于安全考虑，请不要使用“admin”）。</p>
+
+<p>安装程序将自动为您生成强密码。不要忘记保存此密码。您也可以自己设置密码。</p>
+
+<p>输入您的电子邮件地址，然后选择是否要阻止搜索引擎索引网站（不推荐）。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/install-wordpress-welcome.jpg" alt="" /></p>
+
+<p>单击<code>Install WordPress</code>，安装完成后，您将进入一个页面，通知您已安装WordPress。</p>
+
+<p>要访问WordPress登录页面，请单击<code>Log in</code>按钮。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/install-wordpress-completed.jpg" alt="" /></p>
+
+<p>输入您的用户名和密码。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/wordpress-login-form.jpg" alt="" /></p>
+
+<p>您将被重定向到WordPress管理仪表板。</p>
+
+<p><img src="/images/linux/how-to-install-wordpress-with-nginx-on-centos-7/wordpress-dashboard.jpg" alt="" /></p>
+
+<p>从这里开始，您可以通过安装新主题和插件来开始自定义WordPress安装。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在CentOS 7服务器上成功安装了带Nginx的WordPress。<a href="https://codex.wordpress.org/Getting_Started_with_WordPress">第一步使用WordPress</a>是一个很好的起点，可以了解如何使您的新WordPress网站成为您自己的。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/wordpress" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">wordpress</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/cms" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">cms</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-7/">如何在CentOS 7上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/">如何在CentOS 7上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装带有Apache的WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-magento-2-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencart-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-redmine-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-mysql-user-password/">如何更改MySQL用户密码</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-show-mysql-users/">如何查看 MySQL 中的用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

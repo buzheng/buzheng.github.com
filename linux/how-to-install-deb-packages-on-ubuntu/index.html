@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Ubuntu上安装Deb包 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Ubuntu上安装Deb包" />
+<meta property="og:description" content="Deb是所有基于Debian的发行版使用的安装包格式。可以使用命令行或图形包管理器安装和卸载Deb软件包。
+
+在本教程中，我们将解释如何.deb在Ubuntu 18.04上安装debian 软件包。相同的说明适用于Ubuntu 16.04和任何基于Debian的发行版，包括Debian，Linux Mint和Elementary OS。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-deb-packages-on-ubuntu/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Ubuntu上安装Deb包">
+<meta itemprop="description" content="Deb是所有基于Debian的发行版使用的安装包格式。可以使用命令行或图形包管理器安装和卸载Deb软件包。
+
+在本教程中，我们将解释如何.deb在Ubuntu 18.04上安装debian 软件包。相同的说明适用于Ubuntu 16.04和任何基于Debian的发行版，包括Debian，Linux Mint和Elementary OS。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="116">
+
+
+
+<meta itemprop="keywords" content="ubuntu,apt,dpkg," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Ubuntu上安装Deb包"/>
+<meta name="twitter:description" content="Deb是所有基于Debian的发行版使用的安装包格式。可以使用命令行或图形包管理器安装和卸载Deb软件包。
+
+在本教程中，我们将解释如何.deb在Ubuntu 18.04上安装debian 软件包。相同的说明适用于Ubuntu 16.04和任何基于Debian的发行版，包括Debian，Linux Mint和Elementary OS。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Ubuntu上安装Deb包</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Deb是所有基于Debian的发行版使用的安装包格式。可以使用命令行或图形包管理器安装和卸载Deb软件包。</p>
+
+<p>在本教程中，我们将解释如何<code>.deb</code>在Ubuntu 18.04上安装debian 软件包。相同的说明适用于Ubuntu 16.04和任何基于Debian的发行版，包括Debian，Linux Mint和Elementary OS。</p>
+
+<h2 id="在你开始之前">在你开始之前</h2>
+
+<p>Ubuntu存储库包含数千个deb软件包，可以从Ubuntu软件中心安装。如果您更喜欢从命令行安装，则可以使用<code>apt</code>命令行实用程序。</p>
+
+<p>但是有些应用程序未包含在Ubuntu或任何第三方存储库中。这些应用程序必须从开发人员网站下载并手动安装。</p>
+
+<p>从非官方来源安装deb软件包时要格外小心。</p>
+
+<h2 id="正在下载deb软件包">正在下载deb软件包</h2>
+
+<p>出于演示目的，在本教程中，我们将下载并安装TeamViewer deb文件。TeamViewer是一款一体化解决方案，适用于远程支持，桌面共享，在线会议以及计算机之间的文件传输。</p>
+
+<p>启动Web浏览器并导航到TeamViewer for Linux <a href="https://www.teamviewer.com/en/download/linux/">下载页面</a>。点击Ubuntu和Debian下载链接下载deb软件包。</p>
+
+<p>如果您更喜欢使用终端，可以使用<a href="/linux/wget-command-examples/"><code>wget</code></a>或下载deb文件<a href="/linux/curl-command-examples/"><code>curl</code></a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget --no-check-certificate https://download.teamviewer.com/download/linux/teamviewer_amd64.deb</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -k -O -L https://download.teamviewer.com/download/linux/teamviewer_amd64.deb</code></pre></div>
+<h2 id="从命令行安装deb软件包">从命令行安装deb软件包</h2>
+
+<p>从命令行安装deb软件包时，您可以使用多种工具。在下面的章节中，我们将向您展示如何使用<code>apt</code>，<code>gdebi</code>以及<code>dpkg</code>实用程序安装deb包。</p>
+
+<h3 id="使用apt安装deb软件包">使用apt安装deb软件包</h3>
+
+<p><a href="http://manpages.ubuntu.com/manpages/cosmic/man8/apt.8.html">APT</a>（高级软件包工具）是软件包管理系统的命令行界面。它是在Ubuntu 14.04中引入的，它结合了最常用的命令<code>apt-get</code>和<code>apt-cache</code>。</p>
+
+<p>要安装本地deb软件包，<code>apt</code>需要提供deb软件包的完整路径。如果程序包位于当前工作目录中，而不是使用绝对路径，则可以<code>./</code>在程序包名称之前添加前缀。否则<code>apt</code>将尝试从Ubuntu的存储库中检索并安装该软件包。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install ./teamviewer_amd64.deb</code></pre></div>
+<p>系统将提示您键入<code>Y</code>以继续：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+0 upgraded, 84 newly installed, 0 to remove and 64 not upgraded.
+Need to get 21.0 MB of archives.
+After this operation, 66.3 MB of additional disk space will be used.
+Do you want to continue? [Y/n] </code></pre></div>
+<p>该<code>apt</code>软件包管理器将解决并安装所有的包依赖关系。</p>
+
+<h3 id="使用gdebi安装deb软件包">使用gdebi安装deb软件包</h3>
+
+<p><code>gdebi</code>是一个安装本地deb包的工具。它在Ubuntu中默认不安装，但您可以从Ubuntu软件中心或使用以下命令安装它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install gdebi</code></pre></div>
+<p>您现在可以<code>gdebi</code>通过键入以下内容来安装deb软件包</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo gdebi teamviewer_amd64.deb</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Do you want to install the software package? [y/N]:</code></pre></div>
+<p><code>y</code>在提示时键入，<code>gdebi</code>将解析并安装deb包及其所有依赖项。</p>
+
+<h3 id="使用dpkg安装deb软件包">使用dpkg安装deb软件包</h3>
+
+<p><code>dpkg</code>是基于Debian的系统的低级包管理器。使用<code>-i</code>（或<code>--install</code>）选项安装deb软件包<code>dpkg</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dpkg -i teamviewer_amd64.deb</code></pre></div>
+<p>与<code>apt</code>和不同<code>gdebi</code>，<code>dpkg</code>并不解决依赖关系。如果在安装deb软件包时遇到任何依赖性错误，可以使用以下<code>apt</code>命令来解析和安装所有软件包依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install -f</code></pre></div>
+<h2 id="使用gui安装deb软件包">使用GUI安装deb软件包</h2>
+
+<p>如果您更喜欢使用图形界面，只需下载deb文件并双击打开即可。</p>
+
+<p>这将打开默认的发行版图形软件中心</p>
+
+<p><img src="/images/linux/how-to-install-deb-packages-on-ubuntu/install-deb-package.jpg" alt="" /></p>
+
+<p>单击“安装”按钮，将打开“身份验证”对话框。</p>
+
+<p><img src="/images/linux/how-to-install-deb-packages-on-ubuntu/authenticate-software-center.jpg" alt="" /></p>
+
+<p>输入管理密码，然后单击“验证”按钮。</p>
+
+<p><img src="/images/linux/how-to-install-deb-packages-on-ubuntu/installing-deb-package.jpg" alt="" /></p>
+
+<p>安装可能需要一些时间，具体取决于文件大小及其依赖性。安装deb软件包后，Ubuntu软件中心内的Install按钮将更改为Remove。</p>
+
+<p>多数情况下，应用程序已安装在您的系统上，您可以从应用程序菜单启动它。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，您学习了如何安装本地deb软件包。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/apt" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apt</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/dpkg" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">dpkg</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-installed-packages-on-ubuntu/">如何在 Ubuntu 上列出已安装的软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-list-installed-packages-on-debian/">如何在Debian上列出已安装的软件包</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-a-bootable-ubuntu-18-04-usb-stick-on-linux/">如何在Linux上创建可启动的Ubuntu 18.04 USB记忆棒</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/">如何在Ubuntu 18.04上使用Apache安装和配置ownCloud</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-ubuntu-18-04/">如何在Ubuntu 18.04上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-atom-text-editor-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Atom文本编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-flask-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Flask</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-intellij-idea-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装IntelliJ IDEA</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-kodi-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Kodi</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-laravel-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Laravel</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

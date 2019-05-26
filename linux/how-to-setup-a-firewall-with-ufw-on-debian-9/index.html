@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Debian 9上使用UFW设置防火墙 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Debian 9上使用UFW设置防火墙" />
+<meta property="og:description" content="Debian包括几个提供管理防火墙工具的软件包。Iptables作为基本系统的一部分安装初学者学习如何使用iptables工具正确配置和管理防火墙可能很复杂，但UFW简化了它。
+
+UFW（简单防火墙）是一个用户友好的前端，用于管理iptables防火墙规则，其主要目标是使管理iptables更容易，或者名称不复杂。
+
+在本教程中，我们将向您展示如何在Debian 9上使用UFW设置防火墙。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Debian 9上使用UFW设置防火墙">
+<meta itemprop="description" content="Debian包括几个提供管理防火墙工具的软件包。Iptables作为基本系统的一部分安装初学者学习如何使用iptables工具正确配置和管理防火墙可能很复杂，但UFW简化了它。
+
+UFW（简单防火墙）是一个用户友好的前端，用于管理iptables防火墙规则，其主要目标是使管理iptables更容易，或者名称不复杂。
+
+在本教程中，我们将向您展示如何在Debian 9上使用UFW设置防火墙。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="304">
+
+
+
+<meta itemprop="keywords" content="ufw,firewall,iptables,debian,security," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Debian 9上使用UFW设置防火墙"/>
+<meta name="twitter:description" content="Debian包括几个提供管理防火墙工具的软件包。Iptables作为基本系统的一部分安装初学者学习如何使用iptables工具正确配置和管理防火墙可能很复杂，但UFW简化了它。
+
+UFW（简单防火墙）是一个用户友好的前端，用于管理iptables防火墙规则，其主要目标是使管理iptables更容易，或者名称不复杂。
+
+在本教程中，我们将向您展示如何在Debian 9上使用UFW设置防火墙。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Debian 9上使用UFW设置防火墙</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Debian包括几个提供管理防火墙工具的软件包。Iptables作为基本系统的一部分安装初学者学习如何使用iptables工具正确配置和管理防火墙可能很复杂，但UFW简化了它。</p>
+
+<p>UFW（简单防火墙）是一个用户友好的前端，用于管理iptables防火墙规则，其主要目标是使管理iptables更容易，或者名称不复杂。</p>
+
+<p>在本教程中，我们将向您展示如何在Debian 9上使用UFW设置防火墙。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保您登录的用户具有<a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo权限</a>。</p>
+
+<h2 id="安装ufw">安装UFW</h2>
+
+<p>默认情况下，Debian 9中未安装UFW。您可以<code>ufw</code>通过键入以下内容来安装软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install ufw</code></pre></div>
+<h2 id="检查ufw状态">检查UFW状态</h2>
+
+<p>安装过程完成后，您可以使用以下命令检查UFW的状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status verbose</code></pre></div>
+<p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: inactive</code></pre></div>
+<p>默认情况下禁用UFW。安装不会自动激活防火墙以避免从服务器锁定。</p>
+
+<p>如果激活了UFW，输出将类似于以下内容：</p>
+
+<p><img src="/images/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/debian-ufw-status.jpg" alt="" /></p>
+
+<h2 id="ufw默认策略">UFW默认策略</h2>
+
+<p>默认情况下，UFW将阻止所有传入连接并允许所有出站连接。这意味着除非您专门打开端口，否则任何尝试访问您的服务器的人都无法连接，而您服务器上运行的所有应用程序和服务都将能够访问外部世界。</p>
+
+<p>默认策略在<code>/etc/default/ufw</code>文件中定义，可以使用该<code>sudo ufw default &lt;policy&gt; &lt;chain&gt;</code>命令进行更改。</p>
+
+<p>防火墙策略是构建更详细和用户定义规则的基础。在大多数情况下，最初的UFW默认策略是一个很好的起点。</p>
+
+<h2 id="应用简介">应用简介</h2>
+
+<p>使用<code>apt</code>它安装软件包时，会将应用程序配置文件添加到<code>/etc/ufw/applications.d</code>描述服务的目录并包含UFW设置。</p>
+
+<p>要列出系统类型上可用的所有应用程序配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw app list</code></pre></div>
+<p>根据系统上安装的软件包，输出将类似于以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Available applications:
+  DNS
+  IMAP
+  IMAPS
+  OpenSSH
+  POP3
+  POP3S
+  Postfix
+  Postfix SMTPS
+  Postfix Submission
+  ...</code></pre></div>
+<p>要查找有关特定配置文件和包含规则的更多信息，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw app info OpenSSH</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Profile: OpenSSH
+Title: Secure shell server, an rshd replacement
+Description: OpenSSH is a free implementation of the Secure Shell protocol.
+
+Port:
+  22/tcp</code></pre></div>
+<p>上面的输出告诉我们OpenSSH配置文件打开端口<code>22</code>。</p>
+
+<h2 id="允许ssh连接">允许SSH连接</h2>
+
+<p>在首先启用UFW防火墙之前，我们需要允许传入的SSH连接。</p>
+
+<p>如果您从远程位置连接到服务器（几乎总是如此）并且在明确允许传入SSH连接之前启用UFW防火墙，您将无法再连接到Debian服务器。</p>
+
+<p>要配置UFW防火墙以允许传入SSH连接，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow OpenSSH</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Rules updated
+Rules updated (v6)</code></pre></div>
+<p>如果SSH服务器正在侦听默认端口22以外的端口，则需要打开该端口。</p>
+
+<p>例如，您的ssh服务器侦听端口<code>8822</code>，然后您可以使用以下命令允许该端口上的连接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 8822/tcp</code></pre></div>
+<h2 id="启用ufw">启用UFW</h2>
+
+<p>既然您的UFW防火墙已配置为允许传入的SSH连接，您可以通过运行以下命令来启用它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw enable</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Command may disrupt existing ssh connections. Proceed with operation (y|n)? y
+Firewall is active and enabled on system startup</code></pre></div>
+<p>您将收到警告，启用防火墙可能会破坏现有的ssh连接，只需键入<code>y</code>并命中即可<code>Enter</code>。</p>
+
+<h2 id="允许其他端口上的连接">允许其他端口上的连接</h2>
+
+<p>根据服务器上运行的应用程序和您的特定需求，您还需要允许对其他端口的传入访问。</p>
+
+<p>以下是如何允许传入连接到一些最常见服务的几个示例：</p>
+
+<h3 id="打开端口80-http">打开端口80 - HTTP</h3>
+
+<p>使用以下命令可以允许HTTP连接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow http</code></pre></div>
+<p><code>http</code>您可以使用端口号代替配置文件<code>80</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 80/tcp</code></pre></div>
+<h3 id="打开端口443-https">打开端口443 - HTTPS</h3>
+
+<p>使用以下命令可以允许HTTP连接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow https</code></pre></div>
+<p>要实现相同而不是<code>https</code>您可以使用端口号，<code>443</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 443/tcp</code></pre></div>
+<h3 id="打开端口8080">打开端口8080</h3>
+
+<p>如果您运行<a href="/linux/how-to-install-tomcat-8-5-on-debian-9/">Tomcat</a>或任何其他侦听端口8080的应用程序，您可以允许传入连接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 8080/tcp</code></pre></div>
+<h2 id="允许端口范围">允许端口范围</h2>
+
+<p>使用UFW，您还可以允许访问端口范围。允许使用UFW的端口范围时，必须指定协议，<code>tcp</code>或者<code>udp</code>。</p>
+
+<p>例如，为了允许从端口<code>7100</code>到<code>7200</code>在两个<code>tcp</code>和<code>udp</code>，运行下面的命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 7100:7200/tcpsudo ufw allow 7100:7200/udp</code></pre></div>
+<h2 id="允许特定的ip地址">允许特定的IP地址</h2>
+
+<p>如果要允许从特定IP地址访问所有端口，请使用<code>ufw allow from</code>命令后跟IP地址：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow from 64.63.62.61</code></pre></div>
+<h2 id="允许特定端口上的特定ip地址">允许特定端口上的特定IP地址</h2>
+
+<p>要允许在特定端口上进行访问，假设您的工作机器上的端口22的IP地址为64.63.62.61，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow from 64.63.62.61 to any port 22</code></pre></div>
+<h2 id="允许子网">允许子网</h2>
+
+<p>允许连接到IP地址子网的命令与使用单个IP地址时的命令相同，唯一的区别是您需要指定网络掩码。例如，如果要允许访问范围从192.168.1.1到192.168.1.254到端口3360（<a href="/linux/how-to-install-mysql-on-debian-9/">MySQL</a>）的IP地址，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow from 192.168.1.0/24 to any port 3306</code></pre></div>
+<h2 id="允许连接到特定的网络接口">允许连接到特定的网络接口</h2>
+
+<p>为了允许在特定端口上访问，我们只将端口3360 称为特定网络接口<code>eth2</code>，使用<code>allow in on</code>和网络接口的名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow in on eth2 to any port 3306</code></pre></div>
+<h2 id="否认连接">否认连接</h2>
+
+<p>所有传入连接的默认策略都设置为<code>deny</code>，这意味着除非您专门打开连接，否则UFW将阻止所有传入连接。</p>
+
+<p>假设您打开了端口<code>80</code>，<code>443</code>并且您的服务器受到来自<code>23.24.25.0/24</code>网络的攻击。要拒绝所有连接<code>23.24.25.0/24</code>，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw deny from 23.24.25.0/24</code></pre></div>
+<p>如果你只是想拒绝端口的访问<code>80</code>，并<code>443</code>从<code>23.24.25.0/24</code>使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw deny from 23.24.25.0/24 to any port 80sudo ufw deny from 23.24.25.0/24 to any port 443</code></pre></div>
+<p>写拒绝规则是一样的写作允许规则，你只需要更换<code>allow</code>用<code>deny</code>。</p>
+
+<h2 id="删除ufw规则">删除UFW规则</h2>
+
+<p>根据规则编号和指定实际规则，有两种不同的方法可以删除UFW规则。</p>
+
+<p>如果您不熟悉UFW，则按规则编号删除UFW规则会更容易。</p>
+
+<p>要首先按规则号删除规则，您需要找到要删除的规则的编号。为此，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status numbered</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 22/tcp                     ALLOW IN    Anywhere
+[ 2] 80/tcp                     ALLOW IN    Anywhere
+[ 3] 8080/tcp                   ALLOW IN    Anywhere</code></pre></div>
+<p>要删除允许连接到端口8080的规则3的规则，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw delete 2</code></pre></div>
+<p>第二种方法是通过指定实际规则来删除规则。例如，如果您添加了打开端口的规则，则<code>8069</code>可以使用以下命令将其删除：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw delete allow 8069</code></pre></div>
+<h2 id="禁用ufw">禁用UFW</h2>
+
+<p>如果出于任何原因想要停止UFW并停用所有规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw disable</code></pre></div>
+<p>稍后如果要重新启用UTF并激活所有规则，只需键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw enable</code></pre></div>
+<h2 id="重置ufw">重置UFW</h2>
+
+<p>重置UFW将禁用UFW，并删除所有活动规则。如果您想要还原所有更改并重新开始，这将非常有用。</p>
+
+<p>要重置UFW，只需输入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw reset</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在Debian 9计算机上安装和配置UFW防火墙。确保允许系统正常运行所需的所有传入连接，同时限制所有不必要的连接。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ufw" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ufw</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/firewall" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">firewall</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/iptables" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">iptables</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/security" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-ssh-keys-on-debian-9/">如何在Debian 9上设置SSH密钥</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-debian-9/">使用Debian 9上的Let加密来保护Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-9/">在Debian 9上使用Let&#39;s Encrypt来保护Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ssh-socks-tunnel-for-private-browsing/">如何为私有浏览设置SSH SOCKS隧道</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-debian-9/">如何在 Debian 9 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-iptables-on-centos-7/">如何在CentOS 7上安装Iptables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-an-openvpn-server-on-centos-7/">如何在CentOS 7上设置OpenVPN服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-debian-9/">如何在Debian 9 Linux上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-debian-9/">如何在Debian 9 Linux上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-debian-9/">如何在Debian 9上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-debian-9/">如何在Debian 9上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-debian-9/">如何在Debian 9上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-jenkins-on-debian-9/">如何在Debian 9上安装Jenkins</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

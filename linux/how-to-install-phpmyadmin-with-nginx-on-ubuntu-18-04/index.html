@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin" />
+<meta property="og:description" content="phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。
+
+phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执行SQL语句，以各种数据格式导入和导出数据等等。
+
+本教程描述了如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin">
+<meta itemprop="description" content="phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。
+
+phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执行SQL语句，以各种数据格式导入和导出数据等等。
+
+本教程描述了如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="133">
+
+
+
+<meta itemprop="keywords" content="ubuntu,phpmyadmin,mysql,mariadb,nginx,php," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin"/>
+<meta name="twitter:description" content="phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。
+
+phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执行SQL语句，以各种数据格式导入和导出数据等等。
+
+本教程描述了如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。</p>
+
+<p>phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执行SQL语句，以各种数据格式导入和导出数据等等。</p>
+
+<p>本教程描述了如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li><a href="https://linuxize.com/series/how-to-install-lemp-stack-on-ubuntu-18-04/">LEMP（Linux，Nginx，MySQL和PHP 7）安装在您的Ubuntu服务器上</a>。</li>
+<li>以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">用户</a>身份登录。</li>
+</ul>
+
+<p>虽然没有必要，但强烈建议您通过HTTPS访问phpMyAdmin实例。如果您的网站上没有启用SSL，请查看我们的文章，了解如何<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">使用Ubuntu 18.04上的Let&rsquo;s Encrypt</a>保护您的<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">Nginx</a>。</p>
+
+<h2 id="在ubuntu上安装phpmyadmin">在Ubuntu上安装phpMyAdmin</h2>
+
+<p>安装phpMyAdmin是一项相当简单的任务。首先更新包列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div>
+<p>接下来，运行以下命令从默认的Ubuntu存储库安装phpMyAdmin包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install phpmyadmin</code></pre></div>
+<p>在安装phpMyAdmin之前，请确保在系统上安装了Nginx和PHP FPM。</p>
+
+<p>安装程序将要求您选择应自动配置为运行phpMyAdmin的Web服务器。没有选择Nginx的选项，按<code>TAB</code>选择<code>OK</code>然后再选择<code>Enter</code>。我们将在下一节中配置Nginx。</p>
+
+<p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/configuring-phpmyadmin-web-server.jpg" alt="" /></p>
+
+<p>接下来，安装程序将询问您是否要使用<code>dbconfig-common</code>工具来设置数据库。选择<code>Yes</code>并点击<code>Enter</code>。</p>
+
+<p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/configuring-phpmyadmin-database.jpg" alt="" /></p>
+
+<p>输入phpMyAdmin的密码以注册数据库，选择<code>OK</code>并按<code>Enter</code>。</p>
+
+<p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/configuring-phpmyadmin-password.jpg" alt="" /></p>
+
+<p>系统将提示您确认密码，输入相同的密码，<code>OK</code>然后选择并按<code>Enter</code>。</p>
+
+<p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/configuring-phpmyadmin-confirm-password.jpg" alt="" /></p>
+
+<p>此时phpMyAdmin已安装在您的Ubuntu服务器上。</p>
+
+<h2 id="创建管理mysql用户">创建管理MySQL用户</h2>
+
+<p>在运行MySQL 5.7（及更高版本）的Ubuntu系统中，root用户<code>auth_socket</code>默认设置为使用身份验证方法。</p>
+
+<p>该<code>auth_socket</code>插件对从localhost通过Unix套接字文件连接的用户进行身份验证。这意味着您无法通过提供密码进行身份验证。</p>
+
+<p>我们将创建一个新的管理MySQL用户，而不是更改MySQL用户root的身份验证方法。此用户将具有与root用户相同的权限，并将设置为使用<code>mysql_native_password</code>身份验证方法。</p>
+
+<p>我们将使用此用户登录phpMyAdmin仪表板并在MySQL服务器上执行管理任务。</p>
+
+<p>首先以root用户身份登录MySQL服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
+<p>在MySQL shell中执行以下命令，这些命令将创建新的管理用户并授予适当的权限：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE USER &#39;padmin&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-your-secure-password&#39;;GRANT ALL PRIVILEGES ON *.* TO &#39;padmin&#39;@&#39;localhost&#39; WITH GRANT OPTION;</code></pre></div>
+<p>在此示例中，我们将管理用户命名为<code>padmin</code>。您可以使用任何您喜欢的名称，只需确保设置一个强密码即可。</p>
+
+<h2 id="配置nginx和phpmyadmin">配置Nginx和phpMyAdmin</h2>
+
+<p>有几种方法可以配置Nginx来提供phpMyAdmin文件。如果您的域的服务器块已经设置为提供PHP请求，那么您只需创建一个从phpMyAdmin安装文件到域文档根目录的符号链接。</p>
+
+<p>在本指南中，我们将创建一个片段，我们可以将其包含在任何Nginx服务器块文件中。</p>
+
+<p>打开文本编辑器并创建以下文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/snippets/phpmyadmin.conf</code></pre></div>
+<p>粘贴以下内容：</p>
+
+<p>/etc/nginx/snippets/phpmyadmin.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">location</span> <span class="s">/phpmyadmin</span> <span class="p">{</span>
+    <span class="kn">root</span> <span class="s">/usr/share/</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/phpmyadmin/(.+\.php)$</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+        <span class="kn">root</span> <span class="s">/usr/share/</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="s">unix:/run/php/php7.2-fpm.sock</span><span class="p">;</span>
+        <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+        <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+        <span class="kn">include</span> <span class="s">/etc/nginx/fastcgi_params</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))</span>$ <span class="p">{</span>
+        <span class="kn">root</span> <span class="s">/usr/share/</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>确保使用正确的套接字路径或<code>fastcgi_pass</code>指令的地址/端口。</p>
+
+<p>保存文件并关闭编辑器。</p>
+
+<p>您现在可以将以下行添加到要使用以下命令访问phpMyAdmin的每个<a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">域的服务器块</a>：<code>domain.com/phpmyadmin</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">include</span> <span class="n">snippets/phpmyadmin.conf</span>;</code></pre></div>
+<p>这是一个例子：</p>
+
+<p>/etc/nginx/conf.d/domain.com.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+
+    <span class="c1"># . . . other code
+</span><span class="c1"></span>
+    <span class="kn">include</span> <span class="s">snippets/phpMyAdmin.conf</span><span class="p">;</span>
+
+    <span class="c1"># . . . other code 
+</span><span class="c1"></span>
+<span class="p">}</span></code></pre></div>
+<h2 id="访问phpmyadmin">访问phpMyAdmin</h2>
+
+<p>要访问phpMyAdmin界面，请打开您喜欢的浏览器并键入服务器的域名或公共IP地址，然后<code>/phpmyadmin</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/phpmyadmin</code></pre></div>
+<p>输入管理用户登录凭据，然后单击<code>Go</code>。</p>
+
+<p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/phpmyadmin-login.jpg" alt="" /></p>
+
+<p>登录后，您将看到phpMyAdmin仪表板，其外观如下所示：</p>
+
+<p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/phpmyadmin-interface.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已在Ubuntu 18.04服务器上成功安装了phpMyAdmin。您现在可以开始<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">创建MySQL数据库，用户和表，</a>并执行各种MySQL查询和操作。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/phpmyadmin" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">phpmyadmin</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mysql" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mysql</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mariadb</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">nginx</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/php" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">php</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/">如何在CentOS 7上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-magento-2-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencart-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装OpenCart</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装带有 Nginx 的 WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-7/">如何在CentOS 7上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-redmine-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装带有Apache的WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Joomla和Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

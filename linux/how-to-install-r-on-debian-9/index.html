@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在Debian 9上安装R | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在Debian 9上安装R" />
+<meta property="og:description" content="R是一种快速增长的开源编程语言和环境，专门用于统计计算和图形表示。它由R统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。
+
+本教程将指导您如何在Debian 9系统上安装R." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-r-on-debian-9/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在Debian 9上安装R">
+<meta itemprop="description" content="R是一种快速增长的开源编程语言和环境，专门用于统计计算和图形表示。它由R统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。
+
+本教程将指导您如何在Debian 9系统上安装R.">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="247">
+
+
+
+<meta itemprop="keywords" content="debian,r," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在Debian 9上安装R"/>
+<meta name="twitter:description" content="R是一种快速增长的开源编程语言和环境，专门用于统计计算和图形表示。它由R统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。
+
+本教程将指导您如何在Debian 9系统上安装R."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在Debian 9上安装R</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>R是一种快速增长的开源编程语言和环境，专门用于统计计算和图形表示。它由R统计计算基金会支持，主要由统计人员和数据挖掘者用于开发统计软件和执行数据分析。</p>
+
+<p>本教程将指导您如何在Debian 9系统上安装R.</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续本教程之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>Debian 9系统至少有1G的RAM。如果您的计算机的RAM少于1GB，则可以<a href="/linux/create-a-linux-swap-file/">创建交换文件</a>。</li>
+<li>以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录。</li>
+</ul>
+
+<h2 id="在debian上安装r">在Debian上安装R.</h2>
+
+<p>在撰写本文时，R的最新稳定版本是3.5版。从Debian仓库的R程序包通常是过时的，所以我们将通过添加维护信息库安装R <a href="https://cran.r-project.org/">CRAN</a>。</p>
+
+<p>以下步骤描述了如何在Debian 9上安装最新的稳定版R：</p>
+
+<ol>
+<li><p>安装通过HTTPS添加新存储库所需的依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install dirmngr apt-transport-https ca-certificates software-properties-common gnupg2</code></pre></div>
+<ol>
+<li>通过运行以下命令，启用CRAN存储库并将CRAN GPG密钥添加到系统：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt-key adv --keyserver keys.gnupg.net --recv-key &#39;E19F5F87128899B192B1A2C2AD5F960A256A04AF&#39;sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/debian stretch-cran35/&#39;</code></pre></div></li>
+
+<li><p>添加存储库后，通过键入以下命令更新包列表并安装R包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install r-base</code></pre></div>
+<ol>
+<li>通过运行以下命令验证安装，该命令将打印R版本：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">R --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">R version 3.5.1 (2018-07-02) -- &#34;Feather Spray&#34;
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+http://www.gnu.org/licenses/.</code></pre></div>
+<h2 id="从cran安装r软件包">从CRAN安装R软件包</h2>
+
+<p>R如此受欢迎的主要原因之一是通过Comprehensive R Archive Network（CRAN）提供的各种软件包。</p>
+
+<p>如果尚未安装，请安装<code>build-essential</code>包含编译R软件包所需工具的软件包。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install build-essential</code></pre></div></li>
+</ol>
+
+<p>出于演示目的，我们将安装一个名为的包<a href="https://stringr.tidyverse.org/"><code>stringr</code></a>，它提供快速，正确的常见字符串操作实现。</p>
+
+<p>以root身份启动时，程序包将全局安装并可供所有系统用户使用。如果您在没有sudo的情况下启动R，则会为您的用户设置个人库。</p>
+
+<p>首先以root身份打开R控制台：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -i R</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">R version 3.5.1 (2018-07-02) -- &#34;Feather Spray&#34;
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type &#39;license()&#39; or &#39;licence()&#39; for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type &#39;contributors()&#39; for more information and
+&#39;citation()&#39; on how to cite R or R packages in publications.
+
+Type &#39;demo()&#39; for some demos, &#39;help()&#39; for on-line help, or
+&#39;help.start()&#39; for an HTML browser interface to help.
+Type &#39;q()&#39; to quit R.
+
+&gt; </code></pre></div>
+<p>以下所有命令均在R控制台中执行。</p>
+
+<p>要安装<code>stringr</code>软件包，只需键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R">install.packages<span class="p">(</span><span class="s">&#34;stringr&#34;</span><span class="p">)</span></code></pre></div>
+<p>安装需要一些时间，一旦完成，加载库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R"><span class="kn">library</span><span class="p">(</span>stringr<span class="p">)</span></code></pre></div>
+<p>创建一个名为的简单字符向量<code>tutorial</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R">tutorial <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#34;How&#34;</span><span class="p">,</span> <span class="s">&#34;to&#34;</span><span class="p">,</span> <span class="s">&#34;Install&#34;</span><span class="p">,</span> <span class="s">&#34;R&#34;</span><span class="p">,</span> <span class="s">&#34;on&#34;</span><span class="p">,</span> <span class="s">&#34;Debian&#34;</span><span class="p">,</span> <span class="s">&#34;9&#34;</span><span class="p">)</span></code></pre></div>
+<p>运行以下函数，打印字符串的长度：</p>
+<div class="highlight"><pre class="chroma"><code class="language-R" data-lang="R">str_length<span class="p">(</span>tutorial<span class="p">)</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[1] 3 2 7 1 2 6 1</code></pre></div>
+<p>您可以在“ <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">可用的CRAN包名称”中</a>找到更多R包，并安装它们<code>install.packages()</code>。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经成功安装了R Debian系统并学习了如何安装R软件包。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/debian" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debian</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/r" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">r</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-debian-9/">使用Debian 9上的Let加密来保护Apache</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-9/">在Debian 9上使用Let&#39;s Encrypt来保护Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-nginx-on-debian-9/">如何在 Debian 9 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-debian-9/">如何在Debian 9 Linux上安装Django</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-zabbix-on-debian-9/">如何在Debian 9 Linux上安装和配置Zabbix</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian 9上使用UFW设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-debian-9/">如何在Debian 9上使用VSFTPD设置FTP服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-debian-9/">如何在Debian 9上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-google-chrome-web-browser-on-debian-9/">如何在Debian 9上安装Google Chrome Web浏览器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-jenkins-on-debian-9/">如何在Debian 9上安装Jenkins</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-9/">如何在Debian 9上安装Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vmware-workstation-player-on-debian-9/">如何在Debian 9上安装VMware Workstation Player</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-visual-studio-code-on-debian-9/">如何在Debian 9上安装Visual Studio Code</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-webmin-on-debian-9/">如何在Debian 9上安装Webmin</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

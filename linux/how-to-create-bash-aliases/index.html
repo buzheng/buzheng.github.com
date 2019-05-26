@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何创建Bash别名 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何创建Bash别名" />
+<meta property="og:description" content="您是否经常发现自己在命令行上键入一个长命令或在bash历史记录中搜索以前键入的命令？如果您对这些问题的答案都是肯定的，那么您会发现bash别名很方便。Bash别名允许您为较长的命令设置可记忆的快捷命令。
+
+Bash别名本质上是一个快捷方式，可以使您不必记住长命令，并在使用命令行时消除大量的输入。例如，您可以将别名设置tgz为tar -xvfz命令的快捷方式。
+
+本文介绍如何创建bash别名，以便在命令行上提高工作效率。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-create-bash-aliases/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何创建Bash别名">
+<meta itemprop="description" content="您是否经常发现自己在命令行上键入一个长命令或在bash历史记录中搜索以前键入的命令？如果您对这些问题的答案都是肯定的，那么您会发现bash别名很方便。Bash别名允许您为较长的命令设置可记忆的快捷命令。
+
+Bash别名本质上是一个快捷方式，可以使您不必记住长命令，并在使用命令行时消除大量的输入。例如，您可以将别名设置tgz为tar -xvfz命令的快捷方式。
+
+本文介绍如何创建bash别名，以便在命令行上提高工作效率。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="96">
+
+
+
+<meta itemprop="keywords" content="bash,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何创建Bash别名"/>
+<meta name="twitter:description" content="您是否经常发现自己在命令行上键入一个长命令或在bash历史记录中搜索以前键入的命令？如果您对这些问题的答案都是肯定的，那么您会发现bash别名很方便。Bash别名允许您为较长的命令设置可记忆的快捷命令。
+
+Bash别名本质上是一个快捷方式，可以使您不必记住长命令，并在使用命令行时消除大量的输入。例如，您可以将别名设置tgz为tar -xvfz命令的快捷方式。
+
+本文介绍如何创建bash别名，以便在命令行上提高工作效率。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何创建Bash别名</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>您是否经常发现自己在命令行上键入一个长命令或在bash历史记录中搜索以前键入的命令？如果您对这些问题的答案都是肯定的，那么您会发现bash别名很方便。Bash别名允许您为较长的命令设置可记忆的快捷命令。</p>
+
+<p>Bash别名本质上是一个快捷方式，可以使您不必记住长命令，并在使用命令行时消除大量的输入。例如，您可以将别名设置<code>tgz</code>为<code>tar -xvfz</code>命令的快捷方式。</p>
+
+<p>本文介绍如何创建bash别名，以便在命令行上提高工作效率。</p>
+
+<h2 id="创建bash别名">创建Bash别名</h2>
+
+<p>在bash中创建别名非常简单。语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">alias</span> <span class="nv">alias_name</span><span class="o">=</span><span class="s2">&#34;command_to_run&#34;</span></code></pre></div>
+<p>要通过键入<code>alias</code>keyword 来创建新的bash别名。然后声明别名，后跟等号和您在键入别名时要运行的命令。该命令需要用引号括起来，并且等号周围没有间距。每个别名都需要在新行上声明。</p>
+
+<p>该<code>ls</code>命令可能是Linux命令行中最常用的命令之一。我通常使用此命令与<code>-la</code>开关列出所有文件和目录，包括长列表格式的隐藏文件和目录。</p>
+
+<p>让我们创建一个名为的简单bash别名<code>ll</code>，它将是<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls -la</code>命令</a>的快捷方式。为此，请键入打开终端窗口并键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">alias ll=&#34;ls -la&#34;</code></pre></div>
+<p>现在，如果您输入<code>ll</code>控制台，您将获得与输入相同的输出<code>ls -la</code>。</p>
+
+<p>该<code>ll</code>别名将只在当前shell会话可用。如果退出会话或从另一个终端打开新会话，则别名将不可用。</p>
+
+<p>要使别名持久化，您需要在<code>~/.bash_profile</code>或<code>~/.bashrc</code>文件中声明它。<code>~/.bashrc</code>在文本编辑器中打开：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/.bashrc</code></pre></div>
+<p>并添加你的别名：</p>
+
+<p>在〜/ .bashrc</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># Aliases</span>
+<span class="c1"># alias alias_name=&#34;command_to_run&#34;</span>
+
+<span class="c1"># Long format list</span>
+<span class="nb">alias</span> <span class="nv">ll</span><span class="o">=</span><span class="s2">&#34;ls -la&#34;</span>
+
+<span class="c1"># Print my public IP</span>
+<span class="nb">alias</span> <span class="nv">myip</span><span class="o">=</span><span class="s1">&#39;curl ipinfo.io/ip&#39;</span></code></pre></div>
+<p>您应该以易于记忆的方式命名别名。还建议添加注释以供将来参考。</p>
+
+<p>完成后，保存并关闭文件。键入以下内容，使当前会话中的别名可用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source ~/.bash_profile</code></pre></div>
+<p>如您所见，创建简单的bash别名非常简单快捷。</p>
+
+<p>如果要使<code>.bashrc</code>模块更加模块化，可以将别名存储在单独的文件中。像Ubuntu和Debian这样的一些发行版包含一个<code>.bash_aliases</code>文件，它源自<code>~/.bashrc</code>。</p>
+
+<h2 id="使用参数创建bash别名-bash函数">使用参数创建Bash别名（Bash函数）</h2>
+
+<p>有时您可能需要创建一个接受一个或多个参数的别名，这就是bash函数派上用场的地方。</p>
+
+<p>创建bash函数的语法非常简单。它们可以以两种不同的格式声明：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">function_name <span class="o">()</span> <span class="o">{</span>
+  <span class="o">[</span>commands<span class="o">]</span>
+<span class="o">}</span></code></pre></div>
+<p>要么</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">function</span> function_name <span class="o">{</span>
+  <span class="o">[</span>commands<span class="o">]</span>
+<span class="o">}</span></code></pre></div>
+<p>要将任意数量的参数传递给bash函数，只需将它们放在函数名称后面，用空格分隔即可。传递的参数是<code>$1</code>，<code>$2</code>，<code>$3</code>，等，对应于该参数的函数名后的位置。该<code>$0</code>变量是保留给函数名。</p>
+
+<p>让我们首先创建一个简单的bash函数，它将创建一个目录，然后导航到它：</p>
+
+<p>在〜/ .bashrc</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mkcd <span class="o">()</span>
+<span class="o">{</span>
+  mkdir -p -- <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">cd</span> -P -- <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+<span class="o">}</span></code></pre></div>
+<p>与创建新别名时相同，将函数添加到<code>~/.bashrc</code>文件中并运行<code>source ~/.bash_profile</code>以重新加载。</p>
+
+<p>现在，您只需键入：而不是使用<code>mkdir</code>创建新目录然后<code>cd</code>进入该目录。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkcd new_directory</code></pre></div>
+<p>如果你想知道什么是<code>--</code>，<code>&amp;&amp;</code>这里是一个简短的解释。</p>
+
+<ul>
+<li><code>--</code> - 确保您不会意外地向命令传递额外的参数。例如，如果尝试创建以<code>-</code>（破折号）开头而不使用<code>--</code>目录名的目录，则会将其解释为命令参数。</li>
+<li><code>&amp;&amp;</code> - 确保第二个命令仅在第一个命令成功时运行。</li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何创建bash别名和函数，这将使您在命令行上的生活更轻松，更高效。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/bash" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">bash</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-compare-strings-in-bash/">如何在 Bash 中比较字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-copy-files-and-directories-in-linux/">如何在 Linux 中复制文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cd-command/">Linux cd 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/creating-a-self-signed-ssl-certificate/">创建自签名的 SSL 证书</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/echo-command-in-linux-with-examples/">Linux 中的 Echo 命令用法与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/current-working-directory/">使用 pwd 命令在 Linux 中确定当前的工作目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-concatenate-strings/">在 Bash 中拼接字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-check-if-file-exists/">Bash 中如何检查文件或目录是否存在</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

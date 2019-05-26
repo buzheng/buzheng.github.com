@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在CentOS 7上安装Tomcat 9 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在CentOS 7上安装Tomcat 9" />
+<meta property="og:description" content="Tomcat是Java Servlet，JavaServer Pages，Java Expression Language和Java WebSocket技术的开源实现。
+
+本教程介绍在CentOS 7上安装Tomcat 9.0所需的步骤。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-tomcat-9-on-centos-7/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在CentOS 7上安装Tomcat 9">
+<meta itemprop="description" content="Tomcat是Java Servlet，JavaServer Pages，Java Expression Language和Java WebSocket技术的开源实现。
+
+本教程介绍在CentOS 7上安装Tomcat 9.0所需的步骤。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="261">
+
+
+
+<meta itemprop="keywords" content="java,tomcat,centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何在CentOS 7上安装Tomcat 9"/>
+<meta name="twitter:description" content="Tomcat是Java Servlet，JavaServer Pages，Java Expression Language和Java WebSocket技术的开源实现。
+
+本教程介绍在CentOS 7上安装Tomcat 9.0所需的步骤。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">如何在CentOS 7上安装Tomcat 9</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Tomcat是Java Servlet，JavaServer Pages，Java Expression Language和Java WebSocket技术的开源实现。</p>
+
+<p>本教程介绍在CentOS 7上安装Tomcat 9.0所需的步骤。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>您登录的用户必须具有<a href="/linux/create-a-sudo-user-on-centos/">sudo权限</a>才能安装软件包。</p>
+
+<h2 id="安装openjdk">安装OpenJDK</h2>
+
+<p>Tomcat 9需要Java SE 8或更高版本。在本教程中，我们将安装OpenJDK，它是Java平台的开源实现，它是CentOS 7中的默认Java开发和运行时。</p>
+
+<p>键入以下命令安装OpenJDK：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install java-1.8.0-openjdk-devel</code></pre></div>
+<p>如果要安装Oracle Java而不是OpenJDK，请查看<a href="/linux/install-java-on-centos-7/">本指南</a>。</p>
+
+<h2 id="创建tomcat系统用户">创建Tomcat系统用户</h2>
+
+<p>以root用户身份运行Tomcat存在安全风险，不被视为最佳做法。</p>
+
+<p>我们将使用将运行Tomcat服务的主目录<a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/">创建一个新的系统用户</a>和组<code>/opt/tomcat</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat</code></pre></div>
+<h2 id="下载tomcat">下载Tomcat</h2>
+
+<p>我们将会从下载最新版本的Tomcat 9.0.x的<a href="https://tomcat.apache.org/download-90.cgi">Tomcat下载页面</a>。</p>
+
+<p>在撰写本文时，最新的Tomcat版本是9.0.14。在继续下一步之前，您应该检查Tomcat 9下载页面以查看是否有更新的版本。</p>
+
+<p>导航到该<code>/tmp</code>目录并使用以下<a href="/linux/wget-command-examples/">wget命令</a>下载Tomcat zip文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /tmpwget https://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.14/bin/apache-tomcat-9.0.14.tar.gz</code></pre></div>
+<p>下载完成后，解<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">压缩tar文件</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">tar -xf apache-tomcat-9.0.14.tar.gz</code></pre></div>
+<p>将Tomcat源文件移动到<code>/opt/tomcat</code>目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mv apache-tomcat-9.0.14 /opt/tomcat/</code></pre></div>
+<p>Tomcat 9经常更新。为了更好地控制版本和更新，我们将创建一个<code>latest</code>指向Tomcat安装目录的符号链接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ln -s /opt/tomcat/apache-tomcat-9.0.14 /opt/tomcat/latest</code></pre></div>
+<p>我们之前设置的tomcat用户需要访问tomcat安装目录。</p>
+
+<p>运行以下命令<a href="/linux/linux-chown-command/">将目录所有权更改</a>为用户和组tomcat：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R tomcat: /opt/tomcat</code></pre></div>
+<p>使<code>bin</code>目录中的脚本可执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo sh -c &#39;chmod +x /opt/tomcat/latest/bin/*.sh&#39;</code></pre></div>
+<h2 id="创建systemd单元文件">创建systemd单元文件</h2>
+
+<p>要使Tomcat作为服务运行，请打开文本编辑器并<code>tomcat.service</code>在<code>/etc/systemd/system/</code>目录中创建一个单元文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/tomcat.service</code></pre></div>
+<p>粘贴以下内容：</p>
+
+<p>/etc/systemd/system/tomcat.service</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Tomcat 9 servlet container</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+
+<span class="na">User</span><span class="o">=</span><span class="s">tomcat</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">tomcat</span>
+
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;JAVA_HOME=/usr/lib/jvm/jre&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;JAVA_OPTS=-Djava.security.egd=file:///dev/urandom&#34;</span>
+
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_BASE=/opt/tomcat/latest&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_HOME=/opt/tomcat/latest&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_PID=/opt/tomcat/latest/temp/tomcat.pid&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC&#34;</span>
+
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/opt/tomcat/latest/bin/startup.sh</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/opt/tomcat/latest/bin/shutdown.sh</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
+<p>保存并关闭文件。</p>
+
+<p>通过输入以下内容通知systemd我们创建了一个新的单元文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload</code></pre></div>
+<p>启用并启动Tomcat服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable tomcatsudo systemctl start tomcat</code></pre></div>
+<p>使用以下命令检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status tomcat</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● tomcat.service - Tomcat 9 servlet container
+   Loaded: loaded (/etc/systemd/system/tomcat.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2018-11-15 20:47:50 UTC; 4s ago
+  Process: 1759 ExecStart=/opt/tomcat/latest/bin/startup.sh (code=exited, status=0/SUCCESS)
+ Main PID: 1767 (java)
+   CGroup: /system.slice/tomcat.service</code></pre></div>
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果您的服务器<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">受防火墙保护，</a>并且您想从本地网络外部访问tomcat接口，则还需要打开端口<code>8080</code>。</p>
+
+<p>使用以下命令打开必要的端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --permanent --add-port=8080/tcpsudo firewall-cmd --reload</code></pre></div>
+<p>在大多数情况下，在生产环境中运行Tomcat时，您将使用负载平衡器或<a href="/linux/nginx-reverse-proxy/">反向代理，</a>并且最佳做法是仅允许访问端口8080到您的内部网络。</p>
+
+<h2 id="配置tomcat-web管理界面">配置Tomcat Web管理界面</h2>
+
+<p>此时已安装Tomcat，我们可以通过端口上的Web浏览器访问它<code>8080</code>，但我们无法访问Web管理界面，因为我们尚未创建用户。</p>
+
+<p>Tomcat用户及其角色在<code>tomcat-users.xml</code>文件中定义。</p>
+
+<p>如果您打开该文件，您会注意到它中充满了描述如何配置文件的注释和示例。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml</code></pre></div>
+<p>要添加一个能够访问tomcat web界面的新用户（manager-gui和admin-gui），我们需要在<code>tomcat-users.xml</code>文件中定义用户，如下所示。确保将用户名和密码更改为更安全的内容：</p>
+
+<p>/opt/tomcat/latest/conf/tomcat-users.xml</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">    Comments
+</span><span class="c">--&gt;</span>
+   <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;admin-gui&#34;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;admin_password&#34;</span> <span class="na">roles=</span><span class="s">&#34;admin-gui,manager-gui&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/tomcat-users&gt;</span></code></pre></div>
+<p>默认情况下，Tomcat Web管理界面配置为仅允许从localhost访问。如果您希望能够从远程IP或任何不推荐的地方访问Web界面，因为存在安全风险，您可以打开以下文件并进行以下更改。</p>
+
+<p>如果您需要从任何地方访问Web界面，请打开以下文件并注释或删除以黄色突出显示的行：</p>
+
+<p>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
+</span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
+</span><span class="c">--&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
+</span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
+</span><span class="c">--&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>如果您只需要从特定IP访问Web界面，而不是注释块，请将您的公共IP添加到列表中。假设您的公共IP是，<code>41.41.41.41</code>并且您希望仅允许来自该IP的访问：</p>
+
+<p>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;Valve</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.valves.RemoteAddrValve&#34;</span>
+         <span class="na">allow=</span><span class="s">&#34;127\.\d+\.\d+\.\d+|::1|0000:1|41.41.41.41&#34;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;Valve</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.valves.RemoteAddrValve&#34;</span>
+         <span class="na">allow=</span><span class="s">&#34;127\.\d+\.\d+\.\d+|::1|0000:1|41.41.41.41&#34;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>允许的IP地址列表是用竖线分隔的列表<code>|</code>。您可以添加单个IP地址或使用正则表达式。</p>
+
+<p>重新启动Tomcat服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart tomcat</code></pre></div>
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8080</code></p>
+
+<p>成功安装后，将出现类似于以下内容的屏幕：</p>
+
+<p><img src="/images/linux/how-to-install-tomcat-9-on-centos-7/tomcat-home.jpg" alt="" /></p>
+
+<p>Tomcat Web应用程序管理器仪表板可在以下位置获得<code>http://&lt;your_domain_or_IP_address&gt;:8080/manager/html</code>。从这里，您可以部署，取消部署，启动，停止和重新加载您的应用程序。</p>
+
+<p><img src="/images/linux/how-to-install-tomcat-9-on-centos-7/tomcat-manager.jpg" alt="" /></p>
+
+<p>Tomcat虚拟主机管理器仪表板可在以下位置获得<code>http://&lt;your_domain_or_IP_address&gt;:8080/host-manager/html</code>。从这里，您可以创建，删除和管理Tomcat虚拟主机。</p>
+
+<p><img src="/images/linux/how-to-install-tomcat-9-on-centos-7/tomcat-host-manager.jpg" alt="" /></p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在CentOS 7系统上成功安装了Tomcat 9.0，并学习了如何访问Tomcat管理界面。您现在可以访问官方的<a href="https://tomcat.apache.org/tomcat-9.0-doc/index.html">Apache Tomcat 9.0文档，</a>并了解有关Apache Tomcat功能的更多信息。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/tomcat" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tomcat</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/centos" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-centos-7/">如何在 CentOS 7 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-gradle-on-centos-7/">如何在CentOS 7上安装Gradle</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-minecraft-server-on-centos-7/">如何在CentOS 7上安装Minecraft服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-9/">如何在Debian 9上安装Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-7/">如何在 CentOS 7 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-cassandra-on-centos-7/">如何在 CentOS 7 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-debian-9/">如何在 Debian 9 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-java-on-centos-7/">如何在 CentOS 7 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wildfly-on-centos-7/">如何在 CentOS 7 上安装 WildFly(JBoss)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

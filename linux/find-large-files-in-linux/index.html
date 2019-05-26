@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在Linux中查找大文件 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在Linux中查找大文件" />
+<meta property="og:description" content="在一段时间内，您的磁盘驱动器可能会被大量占用大量磁盘空间的不必要文件弄得乱七八糟。通常，由于大型日志或备份文件，Linux机箱的磁盘空间不足。
+
+本教程介绍如何使用find和du命令在Linux系统中查找最大的文件和目录。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/find-large-files-in-linux/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="在Linux中查找大文件">
+<meta itemprop="description" content="在一段时间内，您的磁盘驱动器可能会被大量占用大量磁盘空间的不必要文件弄得乱七八糟。通常，由于大型日志或备份文件，Linux机箱的磁盘空间不足。
+
+本教程介绍如何使用find和du命令在Linux系统中查找最大的文件和目录。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="171">
+
+
+
+<meta itemprop="keywords" content="find,disk,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Linux中查找大文件"/>
+<meta name="twitter:description" content="在一段时间内，您的磁盘驱动器可能会被大量占用大量磁盘空间的不必要文件弄得乱七八糟。通常，由于大型日志或备份文件，Linux机箱的磁盘空间不足。
+
+本教程介绍如何使用find和du命令在Linux系统中查找最大的文件和目录。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">在Linux中查找大文件</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>在一段时间内，您的磁盘驱动器可能会被大量占用大量磁盘空间的不必要文件弄得乱七八糟。通常，由于大型日志或备份文件，Linux机箱的磁盘空间不足。</p>
+
+<p>本教程介绍如何使用<code>find</code>和<code>du</code>命令在Linux系统中查找最大的文件和目录。</p>
+
+<h2 id="使用find命令查找大文件">使用find命令查找大文件</h2>
+
+<p>find命令是Linux系统管理员工具库中最强大的工具之一。它允许您根据不同的标准（包括文件大小）搜索文件和目录。</p>
+
+<p>例如，如果要搜索大小超过100MB的文件，则可以在当前工作目录中使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo find . -xdev -type f -size +100M</code></pre></div>
+<p>替换<code>.</code>为要搜索最大文件的目录的路径。</p>
+
+<p>输出将显示没有任何其他信息的文件列表。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/var/lib/libvirt/images/centos-7-desktop_default.img
+/var/lib/libvirt/images/bionic64_default.img
+/var/lib/libvirt/images/win10.qcow2
+/var/lib/libvirt/images/debian-9_default.img
+/var/lib/libvirt/images/ubuntu-18-04-desktop_default.img
+/var/lib/libvirt/images/centos-7_default.img</code></pre></div>
+<p>find命令还可以与其他工具结合使用，例如对这些文件执行操作<code>ls</code>或<code>sort</code>对这些文件执行操作。</p>
+
+<p>这里我们传递<code>find</code>命令的输出<code>ls</code>，它将打印每个找到的文件的大小，然后将该输出传递给<code>sort</code>命令，以根据文件大小的第5列对其进行排序。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find . -xdev -type f -size +100M -print | xargs ls -lh | sort -k5,5 -h -r</code></pre></div>
+<p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">-rw-------  1 root   root 40967M Jan  5 14:12 /var/lib/libvirt/images/win10.qcow2
+-rw-------  1 root   root  3725M Jan  7 22:12 /var/lib/libvirt/images/debian-9_default.img
+-rw-------  1 root   root  1524M Dec 30 07:46 /var/lib/libvirt/images/centos-7-desktop_default.img
+-rw-------  1 root   root   999M Jan  5 14:43 /var/lib/libvirt/images/ubuntu-18-04-desktop_default.img
+-rw-------  1 root   root   562M Dec 31 07:38 /var/lib/libvirt/images/centos-7_default.img
+-rw-------  1 root   root   378M Jan  7 22:26 /var/lib/libvirt/images/bionic64_default.img</code></pre></div>
+<p>如果输出包含大量信息，您可以使用该<code>head</code>命令仅打印前10行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find . -xdev -type f -size +100M -print | xargs ls -lh | sort -k5,5 -h -r | head</code></pre></div>
+<p>让我们分解命令：</p>
+
+<ul>
+<li><code>find . -xdev -type f -size +100M -print</code>：<code>-type f</code>在当前工作目录（<code>.</code>）中搜索文件（），大于100MB（<code>-size +100M</code>），不要下载其他文件系统上的目录（<code>-xdev</code>）并在标准输出上打印完整文件名，然后是新行（-print ）。</li>
+<li><code>xargs ls -lh</code>：用于<code>xargs</code>执行将以长列表人类可读格式打印输出的<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls -lh</code>命令</a>。</li>
+<li><code>sort -k5,5 -h -r</code>：基于第5列（<code>-k5,5</code>）排序行，比较人类可读的格式（<code>-h</code>）并反转结果（<code>-r</code>）。</li>
+<li><code>head</code> ：仅打印管道输出的前10行。</li>
+</ul>
+
+<p>该<a href="/linux/how-to-find-files-in-linux-using-the-command-line/">find命令</a>带有很多强大的选项。例如，您可以搜索超过x天的大文件，具有特定扩展名的大文件或属于特定用户的大文件。</p>
+
+<h2 id="使用du命令查找大文件和目录">使用du命令查找大文件和目录</h2>
+
+<p>该<code>du</code>命令用于估计文件空间使用情况，对于查找占用大量磁盘空间的目录和文件特别有用。</p>
+
+<p>以下命令将打印最大的文件和目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">du -ahx . | sort -rh | head -5</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">55G	.
+24G	./.vagrant.d/boxes
+24G	./.vagrant.d
+13G	./Projects
+5.2G	./.minikube</code></pre></div>
+<p>命令说明：</p>
+
+<ul>
+<li><code>du -ahx .</code>：<a href="/linux/how-get-size-of-file-directory-linux/">估计</a>当前工作目录（<code>.</code>）中的<a href="/linux/how-get-size-of-file-directory-linux/">磁盘空间使用情况</a>，计算文件和目录（<code>a</code>），以人类可读格式打印大小（<code>h</code>）并跳过不同文件系统上的目录（<code>x</code>）。</li>
+<li><code>sort -rh</code>：通过比较人类可读格式（<code>-h</code>）和反转结果（<code>-r</code>）来排序行。</li>
+<li><a href="/linux/linux-head-command/"><code>head -5</code></a> ：仅打印管道输出的前5行。</li>
+</ul>
+
+<p>该<a href="https://linux.die.net/man/1/du"><code>du</code>命令</a>包括可用于优化磁盘空间使用量输出的其他选项。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>现在您已经找到了系统中最大的文件，您可能需要阅读有关<a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">如何使用Linux命令行删除文件和目录的指南</a>。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/find" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">find</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/disk" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">disk</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-disk-space-in-linux-using-the-df-command/">如何使用df命令检查Linux中的磁盘空间</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

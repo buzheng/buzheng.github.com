@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>使用Crontab安排Cron作业 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="使用Crontab安排Cron作业" />
+<meta property="og:description" content="Cron是一个调度守护进程，它以指定的时间间隔执行任务。这些任务称为cron作业，主要用于自动化系统维护或管理。
+
+例如，您可以设置cron作业来备份数据库或数据，使用最新的安全修补程序更新系统，检查磁盘空间使用情况，发送电子邮件等。某些应用程序（如Drupal或Magento）需要cron作业才能执行某些功能。
+
+您可以安排cron作业按分钟，小时，月，日，星期几或这些的任意组合运行。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/scheduling-cron-jobs-with-crontab/" />
+<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="使用Crontab安排Cron作业">
+<meta itemprop="description" content="Cron是一个调度守护进程，它以指定的时间间隔执行任务。这些任务称为cron作业，主要用于自动化系统维护或管理。
+
+例如，您可以设置cron作业来备份数据库或数据，使用最新的安全修补程序更新系统，检查磁盘空间使用情况，发送电子邮件等。某些应用程序（如Drupal或Magento）需要cron作业才能执行某些功能。
+
+您可以安排cron作业按分钟，小时，月，日，星期几或这些的任意组合运行。">
+
+
+<meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="360">
+
+
+
+<meta itemprop="keywords" content="cron,crontab,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用Crontab安排Cron作业"/>
+<meta name="twitter:description" content="Cron是一个调度守护进程，它以指定的时间间隔执行任务。这些任务称为cron作业，主要用于自动化系统维护或管理。
+
+例如，您可以设置cron作业来备份数据库或数据，使用最新的安全修补程序更新系统，检查磁盘空间使用情况，发送电子邮件等。某些应用程序（如Drupal或Magento）需要cron作业才能执行某些功能。
+
+您可以安排cron作业按分钟，小时，月，日，星期几或这些的任意组合运行。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">使用Crontab安排Cron作业</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-09T05:00:00&#43;08:00">May 9, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Cron是一个调度守护进程，它以指定的时间间隔执行任务。这些任务称为cron作业，主要用于自动化系统维护或管理。</p>
+
+<p>例如，您可以设置cron作业来备份数据库或数据，使用最新的安全修补程序更新系统，检查磁盘空间使用情况，发送电子邮件等。某些应用程序（如<a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">Drupal</a>或<a href="/linux/install-magento-2-on-centos-7/">Magento）</a>需要cron作业才能执行某些功能。</p>
+
+<p>您可以安排cron作业按分钟，小时，月，日，星期几或这些的任意组合运行。</p>
+
+<h2 id="什么是crontab文件">什么是Crontab文件</h2>
+
+<p>Crontab（cron表）是一个文本文件，用于指定cron作业的计划。有两种类型的crontab文件。系统范围的crontab文件和单个用户crontab文件。</p>
+
+<p>用户crontab文件按用户名存储，其位置因操作系统而异。在基于Red Hat的系统（如CentOS）中，crontab文件存储在<code>/var/spool/cron</code>目录中，而Debian和Ubuntu文件存储在<code>/var/spool/cron/crontabs</code>目录中。</p>
+
+<p>虽然您可以手动编辑用户crontab文件，但建议使用该<code>crontab</code>命令。</p>
+
+<p><code>/etc/crontab</code><code>/etc/cron.d</code>目录中的文件是系统范围的crontab文件，只能由系统管理员编辑。</p>
+
+<p>在大多数Linux发行版中，您还可以将脚本放在<code>/etc/cron.{hourly,daily,weekly,monthly}</code>目录中，并且每次都会执行脚本<code>hour/day/week/month</code>。</p>
+
+<h3 id="crontab语法和运算符">Crontab语法和运算符</h3>
+
+<p>用户crontab文件中的每一行包含六个以空格分隔的字段，后跟要运行的命令。</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">* * * * * command(s)
+- - - - -
+| | | | |
+| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
+| | | ------- Month (1 - 12)
+| | --------- Day of month (1 - 31)
+| ----------- Hour (0 - 23)
+------------- Minute (0 - 59)</code></pre></div>
+<p>前五个字段可能包含一个或多个值，用逗号或由连字符分隔的值范围分隔。</p>
+
+<ul>
+<li><code>*</code> - 星号运算符表示任何值或始终。如果您在小时字段中有星号符号，则表示该任务将每小时执行一次。</li>
+<li><code>,</code> - 逗号运算符允许您指定重复值的列表。例如，如果您<code>1,3,5</code>在“小时”字段中，则任务将在凌晨1点，凌晨3点和凌晨5点运行。</li>
+<li><code>-</code> - 连字符运算符允许您指定一系列值。如果您<code>1-5</code>在星期几字段中，任务将在每个工作日（从星期一到星期五）运行。</li>
+<li><code>/</code> - 斜杠运算符允许您指定将在它们之间的特定间隔重复的值。例如，如果您<code>*/4</code>在“小时”字段中，则表示该操作将每四个小时执行一次。它与指定相同<code>0,4,8,12,16,20</code>。相反，星号斜线操作之前，你也可以使用一个范围值的，<code>1-30/10</code>意思是一样的<code>1,11,21</code>。</li>
+</ul>
+
+<h3 id="系统范围的crontab文件">系统范围的Crontab文件</h3>
+
+<p>系统范围的crontab文件的语法与用户crontabs略有不同。它包含一个额外的必需用户字段，用于指定在哪个用户下运行cron作业。</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">* * * * * &lt;username&gt; command(s)</code></pre></div>
+<h3 id="预定义的宏">预定义的宏</h3>
+
+<p>有几个特殊的Cron调度宏用于指定公共间隔。您可以使用此快捷方式代替五列日期规范。</p>
+
+<ul>
+<li><code>@yearly</code> (or <code>@annually</code>) - Run the specified task once a year at midnight (12:00am) of 1st of January. Equivalent to <code>0 0 1 1 *</code>.</li>
+<li><code>@monthly</code> - Run the specified task once a month at midnight on the first day of the month. Equivalent to <code>0 0 1 * *</code>.</li>
+<li><code>@weekly</code> - Run the specified task nconcee a week at midnight on Sunday. Equivalent to <code>0 0 * * 0</code>.</li>
+<li><code>@daily</code> - Run the specified task once a day at midnight. Equivalent to <code>0 0 * * *</code>.</li>
+<li><code>@hourly</code> - Run the specified task once an hour at the beginning of the hour. Equivalent to <code>0 * * * *</code>.</li>
+<li><code>@reboot</code> - Run the specified task at the system startup (boot-time).</li>
+</ul>
+
+<h2 id="linux-crontab-command">Linux Crontab Command</h2>
+
+<p>The crontab command allows you to install or open a crontab file for editing. You can use the crontab command to view, add, remove or modify cron jobs using the following options:</p>
+
+<ul>
+<li><code>crontab -e</code> - 编辑crontab文件，或者如果它尚不存在则创建一个。</li>
+<li><code>crontab -l</code> - 显示crontab文件内容。</li>
+<li><code>crontab -r</code> - 删除当前的crontab文件。</li>
+<li><code>crontab -i</code> - 删除之前删除当前的crontab文件并提示。</li>
+<li><code>crontab -u &lt;username&gt;</code> - 编辑其他使用crontab文件。需要系统管理员权限。</li>
+</ul>
+
+<p>crontab命令使用由环境变量<code>VISUAL</code>或<code>EDITOR</code>环境变量指定的编辑器打开crontab文件。</p>
+
+<p><img src="/images/linux/scheduling-cron-jobs-with-crontab/create-cron-job.jpg" alt="" /></p>
+
+<h2 id="crontab变量">Crontab变量</h2>
+
+<p>cron守护程序自动设置几个环境变量。</p>
+
+<ul>
+<li>默认路径设置为<code>PATH=/usr/bin:/bin</code>。如果要调用的命令存在于cron指定的路径中，则可以使用命令的绝对路径或更改cron <code>$PATH</code>变量。您不能<code>:$PATH</code>像使用普通脚本那样隐式添加。</li>
+<li>默认shell设置为<code>/bin/sh</code>。您可以通过更改<code>SHELL</code>变量来设置不同的shell 。</li>
+<li>Cron从用户的主目录调用该命令。该<code>HOME</code>变量可以被crontab中的设置覆盖。</li>
+<li>电子邮件通知将发送给crontab的所有者。要覆盖默认行为，您可以使用<code>MAILTO</code>环境变量以及要接收电子邮件通知的所有电子邮件地址的列表（以逗号分隔）。如果<code>MAILTO</code>已定义但为空（<code>MAILTO=&quot;&quot;</code>），则不发送邮件。</li>
+</ul>
+
+<h2 id="crontab限制">Crontab限制</h2>
+
+<p>系统管理员可以<code>crontab</code>使用<code>/etc/cron.deny</code>和<code>/etc/cron.allow</code>文件控制哪些用户可以访问该命令。这些文件包含一个用户名列表，每行一个用户名。</p>
+
+<p>默认情况下，只有<code>/etc/cron.deny</code> <a href="/linux/bash-check-if-file-exists/">文件存在</a>且为空，这意味着所有用户都可以使用crontab命令。如果要拒绝对特定用户访问crontab命令，请将用户名添加到此文件中。</p>
+
+<p>如果<code>/etc/cron.allow</code>文件存在，则只有此文件中列出的用户才能使用该<code>crontab</code>命令。</p>
+
+<p>如果两个文件都不存在，则只有具有管理权限的用户才能使用<code>crontab</code>命令。</p>
+
+<h2 id="cron-jobs的例子">Cron Jobs的例子</h2>
+
+<p>下面是一些cron作业示例，它们将向您展示如何安排在不同时间段运行的任务。</p>
+
+<ul>
+<li><p>从星期一到星期五每天15:00运行命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 15 * * 1-5 command</code></pre></div>
+<ul>
+<li>每5分钟运行一次脚本并将标准输出重定向到<code>dev null</code>，只有标准错误才会发送到指定的电子邮件地址：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">MAILTO=email@example.com
+*/5 * * * * /path/to/script.sh &gt; /dev/null</code></pre></div></li>
+
+<li><p>每周一下午3点运行两个命令（<code>&amp;&amp;</code>在命令之间使用运算符）：</p>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 15 * * Mon command1 &amp;&amp; command2</code></pre></div>
+<ul>
+<li>每2分钟运行一次PHP脚本并将输出写入文件：</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">*/2 * * * * /usr/bin/php /path/to/script.php &gt;&gt; /var/log/script.log</code></pre></div></li>
+
+<li><p>从上午8点到下午4点，每小时，每小时，每小时运行一个脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">00 08-16 * * * /path/to/script.sh</code></pre></div>
+<ul>
+<li>在每个月的第一个星期一早上7点运行脚本</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 7 1-7 * 1 /path/to/script.sh</code></pre></div></li>
+
+<li><p>在每个月的1号和15号下午9:15运行脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">15 9 1,15 * * /path/to/script.sh</code></pre></div>
+<ul>
+<li>设置自定义<code>HOME</code>，<code>PATH</code>，<code>SHELL</code>和<code>MAILTO</code>变量和运行一个命令的每一分钟。</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">HOME=/opt
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+SHELL=/bin/zsh
+MAILTO=email@example.com
+
+*/1 * * * * command</code></pre></div></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何在特定日期和时间创建cron作业和计划任务。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/cron" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">cron</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/crontab" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">crontab</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cat-command/">Linux Cat命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-chown-command/">Linux Chown命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-ping-command/">Linux Ping命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-touch-command/">Linux Touch命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-watch-command/">Linux Watch Command</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tail-command/">Linux tail 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-file-command/">Linux文件命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-time-command/">Linux时间命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/using-the-ssh-config-file/">使用SSH配置文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/find-large-files-in-linux/">在Linux中查找大文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-dig-command-to-query-dns-in-linux/">如何使用Dig命令在Linux中查询DNS</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">如何使用Grep命令在Linux中搜索文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
