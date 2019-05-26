@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux Xargs 命令用法和示例 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.8b055e67f7f85d960aa38eeca75be271.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux Xargs 命令用法和示例" />
+<meta property="og:description" content="xargs 实用程序允许您从标准输入构建和执行命令。
+
+Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标准输入作为参数提供给命令行实用程序，如 mkdir 和 rm 。
+
+在本教程中，我们将介绍使用 xargs 命令的基础知识。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/linux-xargs-command/" />
+<meta property="article:published_time" content="2019-05-26T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-05-26T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux Xargs 命令用法和示例">
+<meta itemprop="description" content="xargs 实用程序允许您从标准输入构建和执行命令。
+
+Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标准输入作为参数提供给命令行实用程序，如 mkdir 和 rm 。
+
+在本教程中，我们将介绍使用 xargs 命令的基础知识。">
+
+
+<meta itemprop="datePublished" content="2019-05-26T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-05-26T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="428">
+
+
+
+<meta itemprop="keywords" content="xargs,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/linux-xargs-command/featured.jpg"/>
+<meta name="twitter:title" content="Linux Xargs 命令用法和示例"/>
+<meta name="twitter:description" content="xargs 实用程序允许您从标准输入构建和执行命令。
+
+Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标准输入作为参数提供给命令行实用程序，如 mkdir 和 rm 。
+
+在本教程中，我们将介绍使用 xargs 命令的基础知识。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f1 mb1">Linux Xargs 命令用法和示例</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-05-26T05:00:00&#43;08:00">May 26, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>xargs 实用程序允许您从标准输入构建和执行命令。</p>
+
+<p>Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标准输入作为参数提供给命令行实用程序，如 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">mkdir</a> 和 <a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">rm</a> 。</p>
+
+<p>在本教程中，我们将介绍使用 xargs 命令的基础知识。</p>
+
+<h2 id="如何使用-linux-xargs-命令">如何使用 Linux xargs 命令</h2>
+
+<p>Xargs 从标准输入读取参数，用空格或换行符分隔，并使用输入作为命令的参数执行指定的命令。如果未提供命令，则默认为 <a href="/linux/echo-command-in-linux-with-examples/">/bin/echo</a> 。</p>
+
+<p>xargs 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">xargs <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>COMMAND <span class="o">[</span>initial-arguments<span class="o">]]</span></code></pre></div>
+<p>使用 xargs 的最基本的例子是使用管道传递几个用空格分隔的字符串到 xargs 并运行一个命令，将这些字符串用作参数。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs touch</code></pre></div>
+<p>在上面的示例中，我们将标准输入传递给 xargs ，并为每个参数运行 <a href="/linux/linux-touch-command/">touch 命令</a>，创建三个文件。这与运行时相同：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">touch file1 file2 file3</code></pre></div>
+<h2 id="如何查看命令并提示用户">如何查看命令并提示用户</h2>
+
+<p>要在执行它之前在终端上打印命令，请使用 <code>-t</code> (<code>--verbose</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span>  <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs -t touch</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">touch file1 file2 file3</code></pre></div>
+<p>如果要在执行之前获得是否运行每个命令的提示，请使用 <code>-p</code>(<code>--interactive</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo  &#34;file1 file2 file3&#34; | xargs -p touch</code></pre></div>
+<p>输入 <code>y</code> 或 <code>Y</code> 确认并运行命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">touch file1 file2 file3 ?...y</code></pre></div>
+<p>执行破坏性命令时，此开关非常有用。</p>
+
+<h2 id="如何限制参数数量">如何限制参数数量</h2>
+
+<p>默认情况下，传递给命令的参数数量由系统限制决定。</p>
+
+<p>在 <code>-n</code>(<code>--max-args</code>) 选项指定要传递给所述给定命令的参数的数目。 Xargs 将根据需要多次运行指定的命令，直到所有参数都用完为止。</p>
+
+<p>在以下示例中，从标准输入读取的参数数量限制为 1 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo  &#34;file1 file2 file3&#34; |  xargs -n 1 -t touch</code></pre></div>
+<p>从下面的详细输出中可以看出， touch 命令是针对每个参数单独执行的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">touch file1
+touch file2
+touch file3</code></pre></div>
+<h2 id="如何运行多个命令">如何运行多个命令</h2>
+
+<p>要使用 xargs 运行多个命令，请使用该 <code>-I</code> 选项。它的工作原理是在 <code>-I</code> 选项之后定义一个 <code>replace-str</code> ，然后将针对 <code>replace-str</code> 的所有出现的内容替换为传递给 xargs 的参数。</p>
+
+<p>以下 xargs 示例将运行两个命令，首先它将使用 touch 创建文件，然后它将使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令</a>列出文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;file1 file2 file3&#34; | xargs -t -I % sh -c &#39;{ touch %; ls -l %; }&#39;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">-rw-r--r-- 1 linuxize users 0 May  6 11:54 file1
+-rw-r--r-- 1 linuxize users 0 May  6 11:54 file2
+-rw-r--r-- 1 linuxize users 0 May  6 11:54 file3</code></pre></div>
+<p>replace-str 的一个常见用法是 <code>%</code> ， 但是您可以使用另一个占位符，例如 <code>ARGS</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;file1 file2 file3&#34; | xargs -t -I ARGS sh -c &#39;{ touch ARGS; ls -l ARGS; }&#39;</code></pre></div>
+<h2 id="如何指定分隔符">如何指定分隔符</h2>
+
+<p>使用 <code>-d</code>(<code>--delimiter</code>) 选项设置自定义分隔符，该分隔符可以是单个字符，也可以是以 <code>\</code> 开头的转义序列。</p>
+
+<p>以下示例我们用 <code>;</code> 作分隔符：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span>  <span class="s2">&#34;file1;file2;file3&#34;</span> <span class="p">|</span> xargs -d <span class="se">\;</span> -t touch</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">touch file1 file2 file3</code></pre></div>
+<h2 id="如何从文件中读取项目">如何从文件中读取项目</h2>
+
+<p>xargs 命令还可以从文件而不是标准输入中读取项目。为此，请使用 <code>-a</code> (<code>--arg-file</code>) 选项，后跟文件名。</p>
+
+<p>在以下示例中， xargs 命令将读取 <code>ips.txt</code> 文件并 ping 每个 IP 地址。</p>
+
+<p>文件： ips.txt</p>
+
+<!--fire:ips.txt-->
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">8.8.8.8
+1.1.1.1</code></pre></div>
+<p>我们还使用了 <code>-L 1</code> 选项指示 xargs 每次读取一行。如果省略此选项， xargs 会将所有 IP 传递给单个 <a href="/linux/linux-ping-command/">ping 命令</a>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">xargs -t -L 1 -a ips.txt ping -c 1</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ping -c 1 8.8.8.8 
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=50 time=68.1 ms
+
+...
+ping -c 1 1.1.1.1 
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=59 time=21.4 ms</code></pre></div>
+<h2 id="使用带有-find-的-xargs">使用带有 find 的 xargs</h2>
+
+<p>xargs 最常与 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/">find 命令</a>结合使用。您可以使用 find 搜索特定文件，然后使用 xargs 对这些文件执行操作。</p>
+
+<p>要避免包含换行符或其他特殊字符的文件名出现问题，请始终使用 find 的 <code>-print0</code> 选项，这将导致 find 打印完整文件名后跟空字符。 xargs 可以使用 <code>-0</code>(<code>--null</code>) 选项正确解释此输出。</p>
+
+<p>在以下示例中， find 将打印 <code>/var/www/.cache</code> 目录中所有文件的全名， xargs 将文件路径传递给 rm 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find /var/www/.cache -type f -print0 | xargs -0 rm -f</code></pre></div>
+<h2 id="使用-xargs-修剪空白字符">使用 xargs 修剪空白字符</h2>
+
+<p>Xargs 还可以用作从给定字符串两侧删除空格的工具。只需将字符串传递给 xargs 命令，它就会进行修剪：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;  Long line &#34; | xargs</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Long line</code></pre></div>
+<p>在比较 shell 脚本中的字符串时，这很有用。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nv">VAR1</span><span class="o">=</span><span class="s2">&#34; buzheng &#34;</span>
+<span class="nv">VAR2</span><span class="o">=</span><span class="s2">&#34;buzheng&#34;</span>
+
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Strings are equal.&#34;</span>
+<span class="k">else</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Strings are not equal.&#34;</span>
+<span class="k">fi</span>
+
+<span class="c1">## Using xargs to trim VAR1</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="k">$(</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="p">|</span> xargs<span class="k">)</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Strings are equal.&#34;</span>
+<span class="k">else</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Strings are not equal.&#34;</span>
+<span class="k">fi</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Strings are not equal.
+Strings are equal.</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用 Linux xargs 命令。有关每个 xargs 选项的更多详细信息，请阅读 <a href="http://man7.org/linux/man-pages/man1/xargs.1.html">xargs 手册</a>页。</p><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/xargs" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">xargs</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/terminal" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/getting-started-with-tmux/">开始使用 Tmux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-kill-a-process-in-linux/">如何在 Linux 中杀死进程</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-unzip-files-in-linux/">如何在 Linux 中使用 unzip 解压缩文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">如何在 Linux 中使用 Tar 命令创建和提取存档</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-add-user-to-group-in-linux/">如何在 Linux 中将用户添加到组</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-compare-strings-in-bash/">如何在 Bash 中比较字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-copy-files-and-directories-in-linux/">如何在 Linux 中复制文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-clear-the-dns-cache/">如何清除 DNS 缓存</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-check-your-centos-version/">如何查看您的 CentOS 版本</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-cd-command/">Linux cd 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-head-command/">Linux head 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/nginx-commands-you-should-know/">你应该知道的 Nginx 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/creating-a-self-signed-ssl-certificate/">创建自签名的 SSL 证书</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/echo-command-in-linux-with-examples/">Linux 中的 Echo 命令用法与示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/current-working-directory/">使用 pwd 命令在 Linux 中确定当前的工作目录</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
