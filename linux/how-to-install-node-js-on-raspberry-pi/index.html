@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Raspberry Pi 上安装 Node.js 和 npm | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.7f5826ffc55f9648322d65251a32bac8.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Raspberry Pi 上安装 Node.js 和 npm" />
+<meta property="og:description" content="Node.js 是一个开源的跨平台 JavaScript 运行时环境，构建于 Chrome 的 JavaScript 引擎 V8 之上，允许在服务器端执行 JavaScript 代码。它主要用于构建服务器端应用程序，但它作为全栈和前端解决方案也非常受欢迎。 npm 是 Node.js 的默认包管理器，也是世界上最大的软件注册表。
+
+在本教程中，我们将解释如何在 Raspberry Pi 上安装 Node.js 和 npm 。我们假设您在 Raspberry Pi 上安装了 Raspbian 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-node-js-on-raspberry-pi/" />
+<meta property="article:published_time" content="2019-06-03T07:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-03T07:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Raspberry Pi 上安装 Node.js 和 npm">
+<meta itemprop="description" content="Node.js 是一个开源的跨平台 JavaScript 运行时环境，构建于 Chrome 的 JavaScript 引擎 V8 之上，允许在服务器端执行 JavaScript 代码。它主要用于构建服务器端应用程序，但它作为全栈和前端解决方案也非常受欢迎。 npm 是 Node.js 的默认包管理器，也是世界上最大的软件注册表。
+
+在本教程中，我们将解释如何在 Raspberry Pi 上安装 Node.js 和 npm 。我们假设您在 Raspberry Pi 上安装了 Raspbian 。">
+
+
+<meta itemprop="datePublished" content="2019-06-03T07:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-03T07:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="327">
+
+
+
+<meta itemprop="keywords" content="nodejs,npm,nvm,raspberry pi," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-node-js-on-raspberry-pi/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Raspberry Pi 上安装 Node.js 和 npm"/>
+<meta name="twitter:description" content="Node.js 是一个开源的跨平台 JavaScript 运行时环境，构建于 Chrome 的 JavaScript 引擎 V8 之上，允许在服务器端执行 JavaScript 代码。它主要用于构建服务器端应用程序，但它作为全栈和前端解决方案也非常受欢迎。 npm 是 Node.js 的默认包管理器，也是世界上最大的软件注册表。
+
+在本教程中，我们将解释如何在 Raspberry Pi 上安装 Node.js 和 npm 。我们假设您在 Raspberry Pi 上安装了 Raspbian 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f2 athelas mb1">如何在 Raspberry Pi 上安装 Node.js 和 npm</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-03T07:00:00&#43;08:00">June 3, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="markdown"><p>Node.js 是一个开源的跨平台 JavaScript 运行时环境，构建于 Chrome 的 JavaScript 引擎 V8 之上，允许在服务器端执行 JavaScript 代码。它主要用于构建服务器端应用程序，但它作为全栈和前端解决方案也非常受欢迎。 npm 是 Node.js 的默认包管理器，也是世界上最大的软件注册表。</p>
+
+<p>在本教程中，我们将解释如何在 Raspberry Pi 上安装 Node.js 和 npm 。我们假设您<a href="/linux/how-to-install-raspbian-on-raspberry-pi/">在 Raspberry Pi 上安装了 Raspbian</a> 。</p>
+
+<h2 id="从-nodesource-存储库安装-node-js-和-npm">从 NodeSource 存储库安装 Node.js 和 npm</h2>
+
+<p>NodeSource 是一家专注于提供企业级 Node 支持的公司。 NodeSource 维护一个包含最新版本 Node.js 的 APT 存储库。</p>
+
+<p>通过在终端中运行以下命令来启用 NodeSource 存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -</code></pre></div>
+<blockquote>
+<p>Node.js 的当前 LTS 版本是版本 10.x (Dubnium)。如果你想安装 Node.js 的 8.x 版本只是改变 <code>setup_10.x</code>, 替换为 <code>setup_8.x</code></p>
+</blockquote>
+
+<p>启用存储库后，键入以下命令安装 Node.js 和 npm ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install nodejs</code></pre></div>
+<p>要验证安装，请运行以下命令，该命令将打印 Node.js 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">node --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">v10.16.0</code></pre></div>
+<p>而已。您已在 Raspberry Pi 板上成功安装了 Node.js 和 npm 。</p>
+
+<h2 id="使用-nvm-安装-node-js-和-npm">使用 NVM 安装 Node.js 和 NPM</h2>
+
+<p>NVM( 节点版本管理器)是一个 bash 脚本，允许您安装和管理多个 Node.js 版本。如果需要安装特定的 Node.js 版本，或者需要在 Raspberry Pi 上安装多个 Node.js 版本，请使用此方法。</p>
+
+<p>要安装 nvm ，请运行以下 <a href="/linux/curl-command-examples/">curl 命令</a>，该命令将下载并运行 nvm 安装脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash</code></pre></div>
+<p>安装脚本将 <a href="https://github.com/nvm-sh/nvm">nvm 存储库</a>从 Github  克隆到 <code>~/.nvm</code> 目录，并将 nvm 路径添加到 Bash 配置文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">=&gt; Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR=&#34;$HOME/.nvm&#34;
+[ -s &#34;$NVM_DIR/nvm.sh&#34; ] &amp;&amp; \. &#34;$NVM_DIR/nvm.sh&#34;  # This loads nvm
+[ -s &#34;$NVM_DIR/bash_completion&#34; ] &amp;&amp; \. &#34;$NVM_DIR/bash_completion&#34;  # This loads nvm bash_completion</code></pre></div>
+<p>如输出所示，您可以打开新的 shell 会话，也可以运行那些将添加当前会话路径的命令。做任何更容易的事情。</p>
+
+<p>要确保正确安装 nvm ，请键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">0.34.00</code></pre></div>
+<p>您现在可以通过运行以下命令安装最新的 Node.js 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm install node</code></pre></div>
+<p>验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">node --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">v12.3.1</code></pre></div>
+<p>为了更好地解释 nvm 如何工作，我们将安装另外两个版本，最新的 LTS 版本和版本 8.9.4 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm install --ltsnvm install 8.9.4</code></pre></div>
+<p>安装两个版本后，键入以下内容列出 Node.js 实例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm ls</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">-&gt;       v8.9.4
+       v10.16.0
+        v12.3.1
+default -&gt; node (-&gt; v12.3.1)
+node -&gt; stable (-&gt; v12.3.1) (default)
+stable -&gt; 12.3 (-&gt; v12.3.1) (default)
+iojs -&gt; N/A (default)
+unstable -&gt; N/A (default)
+lts/* -&gt; lts/dubnium (-&gt; v10.16.0)
+lts/argon -&gt; v4.9.1 (-&gt; N/A)
+lts/boron -&gt; v6.17.1 (-&gt; N/A)
+lts/carbon -&gt; v8.16.0 (-&gt; N/A)
+lts/dubnium -&gt; v10.16.0</code></pre></div>
+<p>在上面的输出中，右侧带箭头的条目 <code>(-&gt; v8.9.4)</code> 是当前 shell 会话中使用的版本，默认版本设置为 <code>v12.3.1</code> 。</p>
+
+<p>默认版本是打开新 shell 会话时将使用的版本。</p>
+
+<p>要更改当前活动的版本为 <code>v10.16.0</code>， 使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm use 10.16.0</code></pre></div>
+<p>并通过键入以下来验证它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm current</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">v10.16.0</code></pre></div>
+<p>如果要将版本 <code>10.16.0</code> 设置为默认的 Node.js 版本类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nvm alias default 10.16.0</code></pre></div>
+<h2 id="安装开发工具">安装开发工具</h2>
+
+<p>为了能够从 npm 注册表编译和安装本机加载项，您需要安装开发工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install build-essential</code></pre></div>
+<h2 id="卸载-node-js">卸载 Node.js.</h2>
+
+<p>如果由于某些原因要卸载 Node.js 包，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt remove nodejs</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>我们已经向您展示了两种在 Raspberry Pi 板上安装 Node.js 和 npm 的方法。您选择的方法取决于您的要求和偏好。尽管从 NodeSource 存储库安装打包版本更容易，但 nvm 方法为您提供了更大的灵活性，可以在每个用户的基础上添加和删除不同的 Node.js 版本。</p>
+
+<p>现在您已经在 Raspberry Pi 系统上安装了 Node.js ，您可以开始开发应用程序了。</p></div>
+
+
+<div class="ph3 tags">
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">nodejs</a>
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">npm</a>
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">nvm</a>
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">raspberry pi</a>
+  
+</div><div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-debian-9/">如何在 Debian 9 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-centos-7/">如何在 CentOS 7 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-yarn-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Yarn</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-yarn-on-centos-7/">如何在CentOS 7上安装Yarn</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-yarn-on-debian-9/">如何在Debian 9上安装Yarn</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ghost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ghost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上部署 Rocket.Chat</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-mattermost-on-centos-7/">如何在 CentOS 7 上部署 Mattermost</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-rocket-chat-on-centos-7/">如何在 CentOS 7 上部署 Rocket.Chat</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
