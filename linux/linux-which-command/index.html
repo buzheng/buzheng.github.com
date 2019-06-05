@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux which 命令 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.7f5826ffc55f9648322d65251a32bac8.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux which 命令" />
+<meta property="og:description" content="在本教程中，我们将介绍 Linux 中的 which 命令。
+
+当您在终端提示符中键入可执行文件名(命令)时，which 命令用于确定给定可执行文件的位置。该命令在 PATH 环境变量中列出的目录中搜索指定为参数的可执行文件。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/linux-which-command/" />
+<meta property="article:published_time" content="2019-06-05T07:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-05T07:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux which 命令">
+<meta itemprop="description" content="在本教程中，我们将介绍 Linux 中的 which 命令。
+
+当您在终端提示符中键入可执行文件名(命令)时，which 命令用于确定给定可执行文件的位置。该命令在 PATH 环境变量中列出的目录中搜索指定为参数的可执行文件。">
+
+
+<meta itemprop="datePublished" content="2019-06-05T07:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-05T07:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="80">
+
+
+
+<meta itemprop="keywords" content="which,terminal," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux which 命令"/>
+<meta name="twitter:description" content="在本教程中，我们将介绍 Linux 中的 which 命令。
+
+当您在终端提示符中键入可执行文件名(命令)时，which 命令用于确定给定可执行文件的位置。该命令在 PATH 环境变量中列出的目录中搜索指定为参数的可执行文件。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f2 athelas mb1">Linux which 命令</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-05T07:00:00&#43;08:00">June 5, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="markdown"><p>在本教程中，我们将介绍 Linux 中的 <code>which</code> 命令。</p>
+
+<p>当您在终端提示符中键入可执行文件名(命令)时，<code>which</code> 命令用于确定给定可执行文件的位置。该命令在 PATH 环境变量中列出的目录中搜索指定为参数的可执行文件。</p>
+
+<h2 id="什么是-path">什么是 PATH</h2>
+
+<p>在 Linux 中， <code>PATH</code> 是一个<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>，它告诉 shell 和其他程序搜索可执行文件的目录。它由一系列冒号分隔的绝对路径列表组成，这些路径包含可执行文件。</p>
+
+<p>要查看 PATH 变量的内容，使用 <a href="/linux/echo-command-in-linux-with-examples/">echo 命令</a>与 <code>$PATH</code> 作为参数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo $PATH</code></pre></div>
+<p>输出结果如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</code></pre></div>
+<h2 id="如何使用-which-命令">如何使用 which 命令</h2>
+
+<p>该 <code>which</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">which <span class="o">[</span>OPTIONS<span class="o">]</span> FILE_NAME...</code></pre></div>
+<p>例如，要查找 <a href="/linux/linux-ping-command/">ping 命令</a>的完整路径，请键入以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">which ping</code></pre></div>
+<p>输出将是这样的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/bin/ping</code></pre></div>
+<p>您还可以为 <code>which</code> 命令提供多个参数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">which netcat uptime</code></pre></div>
+<p>输出将包括 <a href="/linux/netcat-nc-command-with-examples/">netcat</a> 和 <a href="/linux/linux-uptime-command/">uptime</a> 可执行文件的完整路径：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/bin/netcat
+/usr/bin/uptime</code></pre></div>
+<p>搜索从左到右进行，如果在 <code>PATH</code> 路径变量中列出的目录中找到多个匹配项， <code>which</code> 则只打印第一个。要打印所有匹配项，请使用以下 <code>-a</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">which -a touch</code></pre></div>
+<p>输出将显示 <a href="/linux/linux-touch-command/">touch 命令的</a>两个完整路径：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/usr/bin/touch
+/bin/touch</code></pre></div>
+<p>通常，其中一个可执行文件只是另一个的<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>，但在某些情况下，您可能在不同位置安装了相同命令的两个版本，或者使用相同名称的完全不同的命令。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>该 <code>which</code> 命令用于在 <code>PATH</code> 环境变量指定的目录中搜索可执行命令来查找命令的位置。</p></div>
+
+
+<div class="ph3 tags">
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">which</a>
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">terminal</a>
+  
+</div><div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/netcat-nc-command-with-examples/">Netcat (nc) 命令用法实例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-date-command/">Linux Date 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/reboot-linux-using-command-line/">如何在命令行中重新启动 Linux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/apache-commands-you-should-know/">您应该知道的 Apache 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-if-else-statement/">Bash if..else 语句</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-arrays/">Bash 数组</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-heredoc/">Bash Heredoc</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-file-in-linux/">如何在 Linux 中创建文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-xargs-command/">Linux Xargs 命令用法和示例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/getting-started-with-tmux/">开始使用 Tmux</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-kill-a-process-in-linux/">如何在 Linux 中杀死进程</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-unzip-files-in-linux/">如何在 Linux 中使用 unzip 解压缩文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">如何在 Linux 中使用 Tar 命令创建和提取存档</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
