@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何使用 Dockerfile 构建 Docker 镜像 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.5" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.7f5826ffc55f9648322d65251a32bac8.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何使用 Dockerfile 构建 Docker 镜像" />
+<meta property="og:description" content="Docker 镜像是 Docker 容器的蓝图，它包含应用程序以及运行应用程序所需的一切。容器是镜像的运行时实例。
+
+在本教程中，我们将解释 Dockerfile 是什么，如何创建 Dockerfile 以及如何使用 Dockerfile 构建 Docker 镜像。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-build-docker-images-with-dockerfile/" />
+<meta property="article:published_time" content="2019-06-11T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-11T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何使用 Dockerfile 构建 Docker 镜像">
+<meta itemprop="description" content="Docker 镜像是 Docker 容器的蓝图，它包含应用程序以及运行应用程序所需的一切。容器是镜像的运行时实例。
+
+在本教程中，我们将解释 Dockerfile 是什么，如何创建 Dockerfile 以及如何使用 Dockerfile 构建 Docker 镜像。">
+
+
+<meta itemprop="datePublished" content="2019-06-11T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-11T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="418">
+
+
+
+<meta itemprop="keywords" content="docker," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何使用 Dockerfile 构建 Docker 镜像"/>
+<meta name="twitter:description" content="Docker 镜像是 Docker 容器的蓝图，它包含应用程序以及运行应用程序所需的一切。容器是镜像的运行时实例。
+
+在本教程中，我们将解释 Dockerfile 是什么，如何创建 Dockerfile 以及如何使用 Dockerfile 构建 Docker 镜像。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f2 athelas mb1">如何使用 Dockerfile 构建 Docker 镜像</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-11T05:00:00&#43;08:00">June 11, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="markdown"><p>Docker 镜像是 Docker 容器的蓝图，它包含应用程序以及运行应用程序所需的一切。容器是镜像的运行时实例。</p>
+
+<p>在本教程中，我们将解释 Dockerfile 是什么，如何创建 Dockerfile 以及如何使用 Dockerfile 构建 Docker 镜像。</p>
+
+<h2 id="什么是-dockerfile">什么是 Dockerfile</h2>
+
+<p>Dockerfile 是一个文本文件，其中包含用户可以在命令行上运行以创建映像的所有命令。它包含 <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">Docker</a> 构建映像所需的所有指令。</p>
+
+<p>Docker 镜像由一系列文件系统层组成，这些文件系统层代表构成可执行软件应用程序的镜像 Dockerfile 中的指令。</p>
+
+<p>Docker 文件采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># Comment</span><span class="w">
+</span><span class="w"></span>INSTRUCTION<span class="w"> </span>arguments</code></pre></div>
+<p>虽然说明不区分大小写，但惯例是使用大写字母作为名称。</p>
+
+<p>下面列出了一些最常用的 Dockerfile 指令的简短描述：</p>
+
+<ul>
+<li><strong>ARG</strong> - 该指令允许您定义可在构建时传递的变量。您还可以定义默认值。</li>
+<li><strong>FROM</strong> - 用于构建新镜像的基本镜像。该指令必须是 Dockerfile 中的第一个非注释指令。此规则的唯一例外是当您想在 FROM 参数中使用变量时。在这种情况下， FROM 可以在一个或多个 ARG 指令之后。</li>
+
+<li><p><strong>LABEL</strong> - 用于向镜像添加元数据，例如 description ， version ， author 等等。您可以指定多个 LABEL ，每个 LABEL 指令都是键值对。</p></li>
+
+<li><p><strong>RUN</strong> - 将在构建过程中执行此指令中指定的命令。每个 RUN 指令在当前镜像的顶部创建一个新的层。</p></li>
+
+<li><p><strong>ADD</strong> - 用于将文件和目录从指定源复制到 docker 镜像上的指定目标。源可以是本地文件或目录或 URL 。如果源是本地 tar 存档，则它会自动解压缩到 Docker 镜像中。</p></li>
+
+<li><p><strong>COPY</strong> - 与 ADD 类似，但源只能是本地文件或目录。</p></li>
+
+<li><p><strong>ENV</strong> - 该指令允许您定义环境变量。</p></li>
+
+<li><p><strong>CMD</strong> - 用于指定在运行容器时将执行的命令。您只能在 Dockerfile 中使用一条 CMD 指令。</p></li>
+
+<li><p><strong>ENTRYPOINT</strong> - 与 CMD 类似，该指令定义运行容器时将执行的命令。</p></li>
+
+<li><p><strong>WORKDIR</strong> - 该指令设置任何后续 RUN ， CMD ， ENTRYPOINT ， COPY 和 ADD 指令的当前工作目录。</p></li>
+
+<li><p><strong>USER</strong> - 设置运行任何以下 RUN ， CMD ， ENTRYPOINT ， COPY 和 ADD 指令时要使用的用户名或 UID 。</p></li>
+
+<li><p><strong>VOLUME</strong> - 允许您将主机目录安装到容器。</p></li>
+
+<li><p><strong>EXPOSE</strong> - 用于指定容器在运行时侦听的端口。</p></li>
+</ul>
+
+<p>要将文件和目录排除在镜像之外，请在上下文目录中创建一个文件 <code>.dockerignore</code> 。 <code>.dockerignore</code> 的语法类似于 Git 的 <code>.gitignore</code> 文件。</p>
+
+<p>有关 Dockerfile 指令的完整参考和详细说明，请参阅官方 <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile 参考</a>页面。</p>
+
+<h2 id="创建一个-dockerfile">创建一个 Dockerfile</h2>
+
+<p>创建 Docker 映像的最常见方案是从镜像仓库(通常来自 Docker Hub) 中提取现有映像，并指定要在基本映像上进行的更改。创建 Docker 镜像时最常用的基本镜像是 Alpine ，因为它很小并且经过优化可以在 RAM 中运行。</p>
+
+<blockquote>
+<p>Docker Hub 是基于云的镜像仓库注册服务，用于将 Docker 镜像保存在公共或私有存储库中，还包括一些其他功能。</p>
+</blockquote>
+
+<p>在此示例中，我们将为 Redis 服务器创建 Docker 镜像。我们将使用最新的 ubuntu 18.04 作为基本映像。</p>
+
+<p>首先，<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个目录</a>来存储 Dockerfile 和所有必需的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/redis_docker</code></pre></div>
+<p><a href="/linux/linux-cd-command/">导航到该目录</a>并创建以下 Dockerfile ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/redis_docker
+nano Dockerfile</code></pre></div>
+<p>Dockerfile 的内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> ubuntu:18.04</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    apt-get install -y redis-server <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    apt-get clean<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 6379</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">CMD</span><span class="s"> [&#34;redis-server&#34;, &#34;--protected-mode no&#34;]</span></code></pre></div>
+<p>让我们解释一下 Dockerfile 中每一行的含义：</p>
+
+<ul>
+<li>第 <code>1</code> 行我们定义基本镜像。</li>
+<li>第 <code>3</code> 行开始的 <code>RUN</code>指令将更新 apt 索引，安装“ redis-server ”包并清理 apt 缓存。指令中使用的命令与用于在 <a href="/linux/how-to-install-and-configure-redis-on-ubuntu-18-04/">Ubuntu 服务器上安装 redis</a> 的命令相同。</li>
+<li><code>EXPOSE</code> 指令定义了 redis 服务器侦听的端口。</li>
+<li>在最后一行中，我们使用该 <code>CMD</code> 指令设置容器运行时将执行的默认命令。</li>
+</ul>
+
+<p>保存文件并关闭编辑器。</p>
+
+<h2 id="构建镜像">构建镜像</h2>
+
+<p>下一步是构建镜像。为此，请从 Dockerfile 所在的目录运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">docker build -t buzheng/redis .</code></pre></div>
+<p>选项 <code>-t</code> 以 <code>username/imagename:tag</code> 格式指定镜像名称和可选的用户名和标记。</p>
+
+<p>构建过程的输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Sending build context to Docker daemon  3.584kB
+Step 1/4 : FROM ubuntu:18.04
+ ---&gt; 7698f282e524
+Step 2/4 : RUN apt-get update &amp;&amp;     apt-get install -y gosu redis-server &amp;&amp;     apt-get clean
+ ---&gt; Running in e80d4dd69263
+...
+Removing intermediate container e80d4dd69263
+ ---&gt; e19fb7653fca
+Step 3/4 : EXPOSE 6379
+ ---&gt; Running in 8b2a45f457cc
+Removing intermediate container 8b2a45f457cc
+ ---&gt; 13b92565c201
+Step 4/4 : CMD [&#34;redis-server&#34;, &#34;--protected-mode no&#34;]
+ ---&gt; Running in a67ec50c7048
+Removing intermediate container a67ec50c7048
+ ---&gt; d8acc14d9b6b
+Successfully built d8acc14d9b6b
+Successfully tagged buzheng/redis:latest</code></pre></div>
+<p>构建过程完成后，新镜像将列在镜像列表中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">docker image ls</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+buzheng/redis      latest              d8acc14d9b6b        4 minutes ago       100MB
+ubuntu              18.04               7698f282e524        5 days ago          69.9MB</code></pre></div>
+<p>如果要将映像推送到 Docker Hub ，请参阅<a href="https://docs.docker.com/docker-hub/repos/#pushing-a-docker-container-image-to-docker-hub">将 Docker 容器映像推送到 Docker Hub</a> 。</p>
+
+<h2 id="运行容器">运行容器</h2>
+
+<p>现在创建了映像，您可以通过运行以下命令从中运行容器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">docker run -d -p <span class="m">6379</span>:6379 --name redis buzheng/redis</code></pre></div>
+<p>选项 <code>-d</code> 告诉 Docker 以分离模式运行容器，选项 <code>-p 6379:6379</code> 将端口 6379 发布到主机，选项 <code>--name redis</code> 指定容器名称。最后一个参数 <code>buzheng/redis</code> 是用于运行容器的镜像的名称。</p>
+
+<p>容器启动时，使用以下命令列出所有正在运行的容器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">docker container ls</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
+6b7d424cd915        buzheng/redis:v0.0.1   &#34;redis-server &#39;--pro…&#34;   5 minutes ago       Up 5 minutes        0.0.0.0:6379-&gt;6379/tcp   redis</code></pre></div>
+<p>要验证一切正常，应该使用 <code>redis-cli</code> 连接到 docker 容器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">redis-cli ping</code></pre></div>
+<p>redis 服务器应该响应 <code>PONG</code> 。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>本教程仅介绍了使用 Dockerfiles 构建映像的基础知识。要了解有关如何编写 Dockerfiles 的更多信息以及建议的最佳实践，请参阅<a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">编写 Dockerfiles 的最佳实践</a>。</p></div>
+
+
+<div class="ph3 tags">
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">docker</a>
+  
+</div><div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker Compose</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-remove-docker-images-containers-volumes-and-networks/">如何删除Docker容器，映像，卷和网络</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-centos-7/">如何在CentOS 7上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-debian-9/">如何在Debian 9上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-centos-7/">如何在 CentOS 7 上安装和使用 Docker</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
