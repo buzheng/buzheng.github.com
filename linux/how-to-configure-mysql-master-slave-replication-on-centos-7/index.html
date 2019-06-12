@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 CentOS 7 上配置 MySQL 主从 | 不争笔记 </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.7f5826ffc55f9648322d65251a32bac8.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上配置 MySQL 主从" />
+<meta property="og:description" content="MySQL 复制是一个允许您将数据从一个数据库服务器自动复制到一个或多个服务器的过程。
+
+MySQL 支持许多复制拓扑，其中主/从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在准备好时请求事件。
+
+在本教程中，我们将解释如何在 CentOS 7 上使用一个主服务器和一个从服务器设置 MySQL 主/从复制。相同的步骤适用于 MariaDB 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-configure-mysql-master-slave-replication-on-centos-7/" />
+<meta property="article:published_time" content="2019-06-12T06:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-12T06:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上配置 MySQL 主从">
+<meta itemprop="description" content="MySQL 复制是一个允许您将数据从一个数据库服务器自动复制到一个或多个服务器的过程。
+
+MySQL 支持许多复制拓扑，其中主/从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在准备好时请求事件。
+
+在本教程中，我们将解释如何在 CentOS 7 上使用一个主服务器和一个从服务器设置 MySQL 主/从复制。相同的步骤适用于 MariaDB 。">
+
+
+<meta itemprop="datePublished" content="2019-06-12T06:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-12T06:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="301">
+
+
+
+<meta itemprop="keywords" content="centos,mysql,mariadb," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-configure-mysql-master-slave-replication-on-centos-7/featured.jpg"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上配置 MySQL 主从"/>
+<meta name="twitter:description" content="MySQL 复制是一个允许您将数据从一个数据库服务器自动复制到一个或多个服务器的过程。
+
+MySQL 支持许多复制拓扑，其中主/从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在准备好时请求事件。
+
+在本教程中，我们将解释如何在 CentOS 7 上使用一个主服务器和一个从服务器设置 MySQL 主/从复制。相同的步骤适用于 MariaDB 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        LINUX 教程
+      </p>
+      
+      <h1 class="f2 athelas mb1">如何在 CentOS 7 上配置 MySQL 主从</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-12T06:00:00&#43;08:00">June 12, 2019</time>      
+      
+      
+    </header>
+
+    
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="markdown"><p>MySQL 复制是一个允许您将数据从一个数据库服务器自动复制到一个或多个服务器的过程。</p>
+
+<p>MySQL 支持许多复制拓扑，其中主/从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在准备好时请求事件。</p>
+
+<p>在本教程中，我们将解释如何在 CentOS 7 上使用一个主服务器和一个从服务器设置 MySQL 主/从复制。相同的步骤适用于 MariaDB 。</p>
+
+<p>此类复制拓扑最适合部署用于读取扩展的只读副本，用于灾难恢复和分析作业的实时数据库备份。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在这个例子中，我们假设您有两台运行 CentOS 7 的服务器，它们可以通过专用网络相互通信。如果您的托管服务提供商不提供私有 IP 地址，您可以使用公共 IP 地址并<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">配置防火墙</a>，以允许端口 3306 上的流量仅来自可信来源。</p>
+
+<p>此示例中的服务器具有以下 IP ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Master IP: 192.168.121.59
+Slave IP:  192.168.121.14</code></pre></div>
+<h2 id="安装-mysql">安装 MySQL</h2>
+
+<p>默认的 CentOS 7 存储库不包含 MySQL 包，因此我们将从其官方 Yum 存储库<a href="/linux/install-mysql-on-centos-7/">安装 MySQL</a> 。为避免任何问题，我们将在两台服务器上安装相同的 MySQL 5.7 版。</p>
+
+<p>在主服务器和从服务器上安装 MySQL ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpmsudo 
+yum install mysql-community-server</code></pre></div>
+<p>安装完成后，启动 MySQL 服务并启用它以在启动时自动启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable mysqld
+sudo systemctl start mysqld</code></pre></div>
+<p>当 MySQL 服务器第一次启动时，会为 MySQL root 用户生成临时密码。要查找密码，请使用以下 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">grep 命令</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo grep &#39;temporary password&#39; /var/log/mysqld.log</code></pre></div>
+<p>运行该 <code>mysql_secure_installation</code> 命令设置新的 root 密码，提高 MySQL 实例的安全性：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql_secure_installation</code></pre></div>
+<p>输入临时 root 密码并在所有问题回答 <code>Y</code>( 是)。</p>
+
+<blockquote>
+<p>新密码长度必须至少为8个字符，并且至少包含一个大写字母，一个小写字母，一个数字和一个特殊字符。</p>
+</blockquote>
+
+<h2 id="配置主服务器">配置主服务器</h2>
+
+<p>首先，我们将配置主 MySQL 服务器并进行以下更改：</p>
+
+<ul>
+<li>设置 MySQL 服务器以侦听专用 IP</li>
+<li>设置唯一的服务器 ID</li>
+<li>启用二进制日志记录</li>
+</ul>
+
+<p>为此，请打开 MySQL 配置文件，并在以下 <code>[mysqld]</code> 部分添加以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/my.cnf</code></pre></div>
+<p>主： <code>/etc/my.cnf</code> 中</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">192.168.121.59</span>
+<span class="na">server-id</span>              <span class="o">=</span> <span class="s">1</span>
+<span class="na">log_bin</span>                <span class="o">=</span> <span class="s">mysql-bin</span></code></pre></div>
+<p>完成后，重新启动 MySQL 服务以使更改生效</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysqld</code></pre></div>
+<p>下一步是创建一个新的复制用户。以 root 用户登录 MySQL 服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -uroot -p</code></pre></div>
+<p>在 MySQL 提示符内，运行以下将创建 <code>replica</code> 用户的 SQL 查询并将 <code>REPLICATION SLAVE</code> 权限授予用户：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE USER &#39;replica&#39;@&#39;192.168.121.14&#39; IDENTIFIED BY &#39;strong_password&#39;;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">GRANT REPLICATION SLAVE ON *.* TO &#39;replica&#39;@&#39;192.168.121.14&#39;;</code></pre></div>
+<p>确保使用从属 IP 地址更改 IP 。您可以根据需要为用户命名。</p>
+
+<p>仍然 MySQL 提示符内时，执行以下命令将打印二进制文件名和位置。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW MASTER STATUS\G</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*************************** 1\. row ***************************
+             File: mysql-bin.000001
+         Position: 1427
+     Binlog_Do_DB: 
+ Binlog_Ignore_DB: 
+Executed_Gtid_Set: 
+1 row in set (0.00 sec)</code></pre></div>
+<p>记下文件名<strong>&lsquo;mysql-bin.000001&rsquo;</strong>和位置<strong>&lsquo;1427&rsquo;</strong>。配置从属服务器时，您将需要这些值。您的服务器上的这些值可能会有所不同。</p>
+
+<h2 id="配置从属服务器">配置从属服务器</h2>
+
+<p>与上面的主服务器一样，我们将对从服务器进行以下更改：</p>
+
+<ul>
+<li>设置 MySQL 服务器以侦听专用 IP</li>
+<li>设置唯一的服务器 ID</li>
+<li>启用二进制日志记录</li>
+</ul>
+
+<p>打开 MySQL 配置文件并编辑以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo nano /etc/my.cnf</code></pre></div>
+<p>从站： <code>/etc/my.cnf</code> 中</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">192.168.121.14</span>
+<span class="na">server-id</span>              <span class="o">=</span> <span class="s">2</span>
+<span class="na">log_bin</span>                <span class="o">=</span> <span class="s">mysql-bin</span></code></pre></div>
+<p>重启 MySQL 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo systemctl restart mysqld</code></pre></div>
+<p>下一步是配置从服务器用于连接主服务器的参数。登录 MySQL shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">mysql -uroot -p</code></pre></div>
+<p>首先，停止从属线程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">STOP SLAVE;</code></pre></div>
+<p>运行以下查询以设置从属服务器以复制主服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CHANGE MASTER TOMASTER_HOST=&#39;192.168.121.59&#39;,MASTER_USER=&#39;replica&#39;,MASTER_PASSWORD=&#39;strong_password&#39;,MASTER_LOG_FILE=&#39;mysql-bin.000001&#39;,MASTER_LOG_POS=1427;</code></pre></div>
+<p>确保使用正确的 IP 地址，用户名和密码。日志文件名称和位置必须与从主服务器获取的值相同。</p>
+
+<p>完成后，启动从属线程。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">START SLAVE;</code></pre></div>
+<h2 id="测试配置">测试配置</h2>
+
+<p>此时，您有了一个正常工作的主/从复制设置。</p>
+
+<p>要验证一切是否按预期工作，我们将在主服务器上<a href="/linux/how-to-create-a-mysql-database/">创建一个新数据库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -uroot -p</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE replicatest;</code></pre></div>
+<p>登录到从属 MySQL shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">mysql -uroot -p</code></pre></div>
+<p>列出 MySQL 数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW DATABASES;</code></pre></div>
+<p>您会注意到在主服务器上创建的数据库是在从服务器上复制的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| replicatest        |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们展示了您在 CentOS 7 上创建 MySQL 主/从复制。</p></div>
+
+
+<div class="ph3 tags">
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">centos</a>
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">mysql</a>
+  
+  <a class="f6 link dim br2 ph3 pv2 mb2 dib white-90 bg-black" href="#0">mariadb</a>
+  
+</div><div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-7/">如何在CentOS 7上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/">如何在CentOS 7上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">如何创建 MySQL 用户帐户和授予权限</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-debian-9/">如何在 Debian 9 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-magento-2-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Magento 2</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装带有Apache的WordPress</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-mysql-user-password/">如何更改MySQL用户密码</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-show-mysql-users/">如何查看 MySQL 中的用户</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
