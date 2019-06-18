@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Bash Source 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.182b3c061a9a0e1d9e77b022ec9d405b.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash Source 命令" />
+<meta property="og:description" content="source 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。
+
+source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/bash-source-command/" />
+<meta property="article:published_time" content="2019-06-18T06:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-18T06:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Bash Source 命令">
+<meta itemprop="description" content="source 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。
+
+source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。">
+
+
+<meta itemprop="datePublished" content="2019-06-18T06:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-18T06:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="160">
+
+
+
+<meta itemprop="keywords" content="bash,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/bash-source-command/featured.jpg"/>
+<meta name="twitter:title" content="Bash Source 命令"/>
+<meta name="twitter:description" content="source 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。
+
+source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">Bash Source 命令</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-18T06:00:00&#43;08:00">June 18, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p><code>source</code> 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。</p>
+
+<p><code>source</code> 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。</p>
+
+<h2 id="source-命令语法">Source 命令语法</h2>
+
+<p>该 <code>source</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">source</span> FILENAME <span class="o">[</span>ARGUMENTS<span class="o">]</span>
+. FILENAME <span class="o">[</span>ARGUMENTS<span class="o">]</span></code></pre></div>
+<ul>
+<li><code>source</code>和 <code>.</code>(一个点)是同一个命令。</li>
+<li>如果该 <code>FILENAME</code> 文件不是文件的完整路径，则该命令将在 <code>$PATH</code>  <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量中</a>指定的目录中搜索该文件。如果在该 <code>$PATH</code> 命令中找不到该文件，则将在当前目录中查找该文件。</li>
+<li>如果给出了任意的 <code>ARGUMENTS</code>，它们将成为 <code>FILENAME</code> 的位置参数。</li>
+<li>如果 <code>FILENAME</code> 存在 <code>source</code> 命令返回代码 <code>0</code> ，否则如果找不到该文件则返回 <code>1</code> 。</li>
+</ul>
+
+<h2 id="source-命令示例">Source 命令示例</h2>
+
+<p>在本节中，我们将介绍 <code>source</code> 命令的一些基本示例。</p>
+
+<h2 id="采购职能">采购职能</h2>
+
+<p>如果你有使用相同功能的 shell 脚本，你可以在一个单独的文件中提取它们，然后在你的程序中找到该文件。</p>
+
+<p>在此示例中，我们将创建一个包含 <a href="/linux/bash-functions/">bash 函数</a>的文件，该<a href="/linux/bash-functions/">函数</a>检查运行脚本的用户是否为 root ，如果不是，则显示消息并退出脚本。</p>
+
+<p>functions.sh</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">check_root <span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="nv">$EUID</span> -ne <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;This script must be run as root&#34;</span> 
+    <span class="nb">exit</span> <span class="m">1</span>
+  <span class="k">fi</span>
+<span class="o">}</span></code></pre></div>
+<p>如果你的其他脚本需要仅仅由 root 用户运行，只需 source 一下 <code>functions.sh</code> 文件并调用该函数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/usr/bin/env bash
+</span><span class="cp"></span>
+<span class="nb">source</span> functions.sh
+check_root
+
+<span class="nb">echo</span> <span class="s2">&#34;I am root&#34;</span></code></pre></div>
+<p>如果以非 root 用户身份运行上述脚本，脚本将打印 &ldquo;This script must be run as root&rdquo; 并退出。</p>
+
+<p>这种方法的优点是您的脚本更小，更易读，您可以在需要时重用相同的函数文件，如果您需要修改函数，您只需编辑一个文件。</p>
+
+<h3 id="bash-配置文件">Bash 配置文件</h3>
+
+<p>使用 <code>source</code> 命令，您还可以从文件中读取变量。必须使用 Bash 语法设置变量 <code>VARIABLE=VALUE</code> 。</p>
+
+<p>让我们创建一个测试配置文件：</p>
+
+<p>config.sh</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">VAR1</span><span class="o">=</span><span class="s2">&#34;foo&#34;</span>
+<span class="nv">VAR2</span><span class="o">=</span><span class="s2">&#34;bar&#34;</span></code></pre></div>
+<p>在 bash 脚本中使用该 <code>source</code> 命令读取配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/usr/bin/env bash
+</span><span class="cp"></span>
+<span class="nb">source</span> config.sh
+
+<span class="nb">echo</span> <span class="s2">&#34;VAR1 is </span><span class="nv">$VAR1</span><span class="s2">&#34;</span>
+<span class="nb">echo</span> <span class="s2">&#34;VAR2 is </span><span class="nv">$VAR2</span><span class="s2">&#34;</span></code></pre></div>
+<p>如果您运行脚本，输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">VAR1 is foo
+VAR2 is bar</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>在本指南中，您学习了如何 <code>source</code> 在 shell 脚本中使用 builtin 命令。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/bash" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">bash</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#source-命令语法">Source 命令语法</a></li>
+<li><a href="#source-命令示例">Source 命令示例</a></li>
+<li><a href="#采购职能">采购职能</a>
+<ul>
+<li><a href="#bash-配置文件">Bash 配置文件</a></li>
+</ul></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-if-else-statement/">Bash if..else 语句</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-arrays/">Bash 数组</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-heredoc/">Bash Heredoc</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/create-a-file-in-linux/">如何在 Linux 中创建文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-for-loop/">Bash For Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-bash-aliases/">如何创建Bash别名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-compare-strings-in-bash/">如何在 Bash 中比较字符串</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-copy-files-and-directories-in-linux/">如何在 Linux 中复制文件和目录</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
