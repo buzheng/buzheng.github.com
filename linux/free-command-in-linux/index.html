@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux 中的 Free 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.182b3c061a9a0e1d9e77b022ec9d405b.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux 中的 Free 命令" />
+<meta property="og:description" content="我的 Linux 系统上有多少可用的 RAM 内存？是否有足够的可用内存来安装和运行新的应用程序？
+
+在 Linux 系统中，您可以使用该 free 命令获取有关系统内存使用情况的详细报告。
+
+该 free 命令提供有关物理和交换内存总量以及系统中的空闲和已用内存和交换空间的信息。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/free-command-in-linux/" />
+<meta property="article:published_time" content="2019-06-20T06:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-20T06:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux 中的 Free 命令">
+<meta itemprop="description" content="我的 Linux 系统上有多少可用的 RAM 内存？是否有足够的可用内存来安装和运行新的应用程序？
+
+在 Linux 系统中，您可以使用该 free 命令获取有关系统内存使用情况的详细报告。
+
+该 free 命令提供有关物理和交换内存总量以及系统中的空闲和已用内存和交换空间的信息。">
+
+
+<meta itemprop="datePublished" content="2019-06-20T06:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-20T06:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="254">
+
+
+
+<meta itemprop="keywords" content="memory,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/free-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux 中的 Free 命令"/>
+<meta name="twitter:description" content="我的 Linux 系统上有多少可用的 RAM 内存？是否有足够的可用内存来安装和运行新的应用程序？
+
+在 Linux 系统中，您可以使用该 free 命令获取有关系统内存使用情况的详细报告。
+
+该 free 命令提供有关物理和交换内存总量以及系统中的空闲和已用内存和交换空间的信息。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">Linux 中的 Free 命令</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-20T06:00:00&#43;08:00">June 20, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>我的 Linux 系统上有多少可用的 RAM 内存？是否有足够的可用内存来安装和运行新的应用程序？</p>
+
+<p>在 Linux 系统中，您可以使用该 <code>free</code> 命令获取有关系统内存使用情况的详细报告。</p>
+
+<p>该 <code>free</code> 命令提供有关物理和交换内存总量以及系统中的空闲和已用内存和<a href="/linux/create-a-linux-swap-file/">交换空间</a>的信息。</p>
+
+<h2 id="如何使用-free-命令">如何使用 free 命令</h2>
+
+<p>该 <code>free</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free [OPTIONS]</code></pre></div>
+<p>在没有任何选项的情况下使用时，该 <code>free</code> 命令将显示有关内存和交换的信息，单位是  kibibyte ， 1 kibibyte(KiB) 是 1024 字节。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free</code></pre></div>
+<p>输出将包括三行，一个标题，一行用于内存，一行用于交换：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">              total        used        free      shared  buff/cache   available
+Mem:        8075208     3204964     1310540      551232     3559704     4198340
+Swap:       2097148           0     2097148</code></pre></div>
+<p>在较旧的 Linux 版本中，输出可能略有不同。</p>
+
+<p>以下是每列的含义：</p>
+
+<ul>
+<li><strong>total</strong> - 此数字表示应用程序可以使用的内存总量。</li>
+<li><strong>used</strong> - 已使用的内存。计算方法如下： <code>used = total - free - buffers - cache</code></li>
+<li><strong>free</strong> - 未使用的内存。</li>
+<li><strong>shared</strong> - 此列可以忽略，因为它没有任何意义。这只是为了向后兼容。</li>
+<li><strong>buff/cache</strong> - 内核缓冲区和页面缓存和 slab 使用的组合内存。如果应用程序需要，可以随时回收此内存。如果要将缓冲区和缓存显示在两个单独的列中，请使用该 <code>-w</code> 选项。</li>
+<li><strong>available</strong> - 无需交换即可用于启动新应用程序的内存量估计值。</li>
+</ul>
+
+<h2 id="以人类可读格式显示内存使用情况">以人类可读格式显示内存使用情况</h2>
+
+<p>正如我们在上面的示例中看到的，默认情况下，该 <code>free</code> 命令以 kibibyte 显示内存信息。要以人类可读的格式(通常为兆字节和千兆字节)查看信息，请使用以下 <code>-h</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free -h</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">              total        used        free      shared  buff/cache   available
+Mem:           487M        219M         54M        4.5M        214M        228M
+Swap:          1.5G          0B        1.5G</code></pre></div>
+<h2 id="显示其他指标中的内存使用情况">显示其他指标中的内存使用情况</h2>
+
+<p>该 <code>free</code> 命令还允许您指定测量内存的单位。有效选项包括：</p>
+
+<ul>
+<li><code>-b</code>， <code>--bytes</code>-  以字节为单位显示输出。</li>
+<li><code>--kilo</code> - 以千字节 (1KB = 1000 字节)显示输出。</li>
+<li><code>--mega</code> - 以兆字节为单位显示输出。</li>
+<li><code>--giga</code> - 以千兆字节显示输出。</li>
+<li><code>--tera</code> - 以兆兆字节显示输出。</li>
+<li><code>-k</code>， <code>--kibi</code>-  以千比特显示输出。 (1KiB = 1024 字节)。这是默认单位。</li>
+<li><code>-m</code>， <code>--mebi</code>-  以 mebibytes 显示输出。</li>
+<li><code>-g</code>， <code>--gibi</code>-  以 gibytes 显示输出。</li>
+<li><code>--tebi</code> - 以 tebibytes 显示输出。</li>
+<li><code>--peti</code> - 以 pebibytes 显示输出。</li>
+<li><code>--si</code>- 而不是 1024 ，使用 1000 的幂。例如 <code>--mebi --si</code> 等于 <code>--mega</code> 。</li>
+</ul>
+
+<p>例如，要以兆字节为单位显示输出，请键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free --mega</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">              total        used        free      shared  buff/cache   available
+Mem:           8075        4022         233         614        3819        3336
+Swap:          2097           0        2097</code></pre></div>
+<h2 id="显示列总计">显示列总计</h2>
+
+<p>要显示汇总行，请使用该 <code>-t</code> 选项。这将为您提供总数，已用数和空闲列中的内存和交换总和。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free -h -t</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">              total        used        free      shared  buff/cache   available
+Mem:           7.7G        3.9G        483M        526M        3.4G        3.2G
+Swap:          2.0G          0B        2.0G
+Total:         9.7G        3.9G        2.5G</code></pre></div>
+<h2 id="连续打印输出">连续打印输出</h2>
+
+<p>要在屏幕上连续显示内存信息，请使用 <code>-s</code> ， <code>--seconds</code> 选项后跟一个指定延迟的数字。</p>
+
+<p>例如，要每隔五秒打印一次内存信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free -s 5</code></pre></div>
+<p>该 <code>free</code> 命令将继续显示结果，直到您按下 <code>CTRL+C</code> 。这与 <a href="/linux/linux-watch-command/"><code>watch</code> 命令</a>的行为类似。</p>
+
+<p>要显示特定次数的结果，请使用 <code>-c</code> ， <code>--count</code> 选项。在下面的示例中，命令将打印十次结果：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">free -s 5 -c 10</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>到目前为止，您应该很好地理解如何使用 <code>free</code> 命令。要查看终端中所有可用的 <code>free</code> 命令行选项 ，请键入 <code>man free</code>。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/memory" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">memory</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#如何使用-free-命令">如何使用 free 命令</a></li>
+<li><a href="#以人类可读格式显示内存使用情况">以人类可读格式显示内存使用情况</a></li>
+<li><a href="#显示其他指标中的内存使用情况">显示其他指标中的内存使用情况</a></li>
+<li><a href="#显示列总计">显示列总计</a></li>
+<li><a href="#连续打印输出">连续打印输出</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/bash-source-command/">Bash Source 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-nohup-command/">Linux Nohup 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/sudo-command-in-linux/">Linux 中的 Sudo 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-save-file-in-vim-quit-editor/">如何在 Vim/Vi 中保存文件并退出编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-type-command/">Linux type 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-move-files-in-linux-with-mv-command/">在 Linux 中如何使用 mv 命令移动文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-scp-command-to-securely-transfer-files/">如何使用 SCP 命令安全地传输文件</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-which-command/">Linux which 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/netcat-nc-command-with-examples/">Netcat (nc) 命令用法实例</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-date-command/">Linux Date 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.5" />
+    <meta name="generator" content="Hugo 0.55.6" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,7 +36,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="/" />
 
-<meta property="og:updated_time" content="2019-06-19T06:00:00&#43;08:00"/>
+<meta property="og:updated_time" content="2019-06-20T06:00:00&#43;08:00"/>
 
 <meta itemprop="name" content="不争笔记">
 <meta itemprop="description" content="">
@@ -110,6 +110,25 @@
     
     <div class="mw8 center">
       <section class="flex-ns flex-wrap justify-around mt5">
+        
+          <div class="relative w-100  mb4 bg-white">
+            <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">MAR 25, 2015</span>
+    <h1 class="f3 near-black">
+      <a href="/post/cxf-wsdl2java-simple-usage/" class="link black dim">
+        Apache CXF wsdl2java 生成客户端简单用法
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      cxf中带的工具包 wsdl2java 很方便的帮我们生成客户端程序，使用方式如下：
+wsdl2java -d d:\src -encoding utf-8 -autoNameResolution -client http://xx.x?wsdl 不指定包明的话，会按照 wsdl中的包结构生成。生成程序后，可直接参考 *_Client.java 中的例子即可执行，无需依赖 cxf 任何jar包。
+更多 wsdl2java 的用法可参考： http://cxf.apache.org/docs/wsdl-to-java.html cxf下载地址：http://cxf.apache.org/download.html
+    </div>
+  </div>
+</div>
+
+          </div>
         
           <div class="relative w-100  mb4 bg-white">
             <div class="relative w-100 mb4 bg-white nested-copy-line-height">
@@ -262,33 +281,6 @@
       我对分页组件有着比较简单原始的想法，就是传入一个分页参数对象，分页组件将分页对象返回。组件实现用到了Mybatis的拦截器，由于对Mybatis的原理并没有深入研究过，有些代码直接拷贝自网上，先按想法实现功能。
 主要思路 1、分页对象采用spring-data中的Page和Pageable，其中Pageable作为分页请求，Page为返回的分页对象。 2、拦截器会对方法中的参数进行分析，如果发现Pageable类型的参数，则认为是分页请求，将请求封装为Page对象返回。
 拦截器配置 &lt;plugins&gt; &lt;plugin interceptor=&#34;org.buzheng.commons.mybatis.MybatisPageableInterceptor&#34;&gt; &lt;property name=&#34;dialectClass&#34; value=&#34;org.buzheng.commons.mybatis.MySQLDialect&#34;/&gt; &lt;/plugin&gt; &lt;/plugins&gt; Mapper接口方法写法 public interface SysUserDao { Page&lt;SysUser&gt; findPageByParams(Map&lt;String, Object&gt; params, Pageable pageRequest); } Mapper.xml 写法(和普通查询一样) &lt;select id=&#34;findPageByParams&#34; resultType=&#34;SysUser&#34;&gt; &lt;include refid=&#34;findSql&#34; /&gt; &lt;where&gt; &lt;if test=&#34;param1.groupId != null&#34;&gt; u.group_id = #{param1.groupId} &lt;/if&gt; &lt;/where&gt; ORDER BY u.add_time &lt;/select&gt; service 调用写法 @Service public class SysUserServiceImpl implements SysUserService { @Resource private SysUserDao sysUserDao; @Override public Page&lt;SysUser&gt; findPage(Map&lt;String, Object&gt; params, int pageNo, int pageSize) { Pageable pageRequest = new PageRequest(pageNo, pageSize); return this.
-    </div>
-  </div>
-</div>
-
-          </div>
-        
-          <div class="relative w-100  mb4 bg-white">
-            <div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">JUL 19, 2013</span>
-    <h1 class="f3 near-black">
-      <a href="/post/keytools-tomcat-7-ssl/" class="link black dim">
-        使用keytools 为 tomcat 7 配置ssl 双向认证
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      <h2 id="第一-证书库-证书等生成">第一、证书库、证书等生成</h2>
-
-<h3 id="1-生成服务器证书库">1、生成服务器证书库</h3>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -validity <span class="m">36500</span> -genkey -v -alias tomcat_server -keyalg RSA -keystore tomcat_server.keystore -dname <span class="s2">&#34;CN=127.0.0.1,OU=,O=,L=,ST=,c=&#34;</span> -storepass <span class="m">123456</span> -keypass <span class="m">123456</span></code></pre></div>
-<p>-validity 36500 有效期，以天为单位
-CN 这项一定是服务器的域名或者IP地址
-OU 组织单位
-O 组织
-L 区域
-ST 州/省份
-C 国家</p>
     </div>
   </div>
 </div>
