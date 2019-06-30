@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何查看和删除 UFW 防火墙规则 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.182b3c061a9a0e1d9e77b022ec9d405b.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何查看和删除 UFW 防火墙规则" />
+<meta property="og:description" content="UFW 代表 Uncomplicated Firewall ，是用于管理 iptables(netfilter) 防火墙规则的对用户更加友好的前端工具。它是 Ubuntu 的默认防火墙配置工具，也可用于其他流行的 Linux 发行版，如 Debian 和 Arch Linux 。
+
+在本教程中，我们将介绍如何列出和删除 UFW 防火墙规则。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-list-and-delete-ufw-firewall-rules/" />
+<meta property="article:published_time" content="2019-06-30T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-30T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何查看和删除 UFW 防火墙规则">
+<meta itemprop="description" content="UFW 代表 Uncomplicated Firewall ，是用于管理 iptables(netfilter) 防火墙规则的对用户更加友好的前端工具。它是 Ubuntu 的默认防火墙配置工具，也可用于其他流行的 Linux 发行版，如 Debian 和 Arch Linux 。
+
+在本教程中，我们将介绍如何列出和删除 UFW 防火墙规则。">
+
+
+<meta itemprop="datePublished" content="2019-06-30T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-06-30T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="254">
+
+
+
+<meta itemprop="keywords" content="ufw,firewall,iptables,security," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-list-and-delete-ufw-firewall-rules/featured.jpg"/>
+<meta name="twitter:title" content="如何查看和删除 UFW 防火墙规则"/>
+<meta name="twitter:description" content="UFW 代表 Uncomplicated Firewall ，是用于管理 iptables(netfilter) 防火墙规则的对用户更加友好的前端工具。它是 Ubuntu 的默认防火墙配置工具，也可用于其他流行的 Linux 发行版，如 Debian 和 Arch Linux 。
+
+在本教程中，我们将介绍如何列出和删除 UFW 防火墙规则。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">如何查看和删除 UFW 防火墙规则</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-06-30T05:00:00&#43;08:00">June 30, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>UFW 代表 Uncomplicated Firewall ，是用于管理 iptables(netfilter) 防火墙规则的对用户更加友好的前端工具。它是 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">Ubuntu</a> 的默认防火墙配置工具，也可用于其他流行的 Linux 发行版，如 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">Debian</a> 和 Arch Linux 。</p>
+
+<p>在本教程中，我们将介绍如何列出和删除 UFW 防火墙规则。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>运行 UFW 命令的用户必须是 <a href="/linux/sudo-command-in-linux/">sudo</a> 用户。</p>
+
+<h2 id="列出-ufw-规则">列出 UFW 规则</h2>
+
+<p>管理防火墙时最常见的任务之一是列出规则。您可以检查 UFW 的状态并列出所有规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status</code></pre></div>
+<p>如果还未启用 UFW ，您将看到如下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: inactive</code></pre></div>
+<p>否则，如果 UFW 处于活动状态，输出将打印所有活动防火墙规则的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW       Anywhere          
+22/tcp (v6)                ALLOW       Anywhere (v6) </code></pre></div>
+<p>要获得额外信息，请使用 <code>status verbose</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status verbose</code></pre></div>
+<p>输出将包含有关日志记录，默认策略和新配置文件的信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW       Anywhere          
+22/tcp (v6)                ALLOW       Anywhere (v6) </code></pre></div>
+<p>用 <code>status numbered</code> 得到的所有活动规则的顺序和 ID。当您要插入新编号的规则或根据其编号删除现有规则时，这非常有用。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status numbered</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 22/tcp                     ALLOW IN    Anywhere
+[ 2] 22/tcp (v6)                ALLOW IN    Anywhere (v6) </code></pre></div>
+<h2 id="删除-ufw-规则">删除 UFW 规则</h2>
+
+<p>有两种方法可以删除 UFW 规则：</p>
+
+<ul>
+<li>按规则编号</li>
+<li>按规格说明</li>
+</ul>
+
+<p>如果要通过 SSH 删除防火墙规则，请确保不要删除允许 SSH 通信的规则，以免将自己锁定在远程服务器之外。默认情况下， <a href="/linux/how-to-change-ssh-port-in-linux/">SSH 侦听 22 端口</a> 。</p>
+
+<p>按规则号删除 UFW 规则更容易，因为您只需要查找并键入要删除的规则的编号，而不是完整的规则。</p>
+
+<h3 id="按规则编号删除-ufw-规则">按规则编号删除 UFW 规则</h3>
+
+<p>要首先删除其编号的 UFW 规则，您需要列出规则并找到要删除的规则编号：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status numbered</code></pre></div>
+<p>该命令将为您提供所有防火墙规则的列表，包含了规则的编号：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 22/tcp                     ALLOW IN    Anywhere
+[ 2] 80/tcp                     ALLOW IN    Anywhere
+[ 3] 443/tcp                    ALLOW IN    Anywhere
+[ 4] 8069/tcp                   ALLOW IN    Anywhere</code></pre></div>
+<p>知道规则编号后，请使用 <code>ufw delete</code> 命令后跟要删除的规则编号。</p>
+
+<p>例如，要删除编号为 <code>4</code> 的规则，您可以键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw delete 4</code></pre></div>
+<p>系统将提示您确认是否要删除该规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Deleting:
+ allow 22/tcp
+Proceed with operation (y|n)? y</code></pre></div>
+<p>键入 <code>y</code> ，点击 <code>Enter</code> 并删除规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Rule deleted</code></pre></div>
+<p>每次删除规则时，规则编号都将更改。为安全起见，请在删除其他规则之前查看规则列表并确认。</p>
+
+<h3 id="按规范删除-ufw-规则">按规范删除 UFW 规则</h3>
+
+<p>删除规则的第二种方法是使用 <code>ufw delete</code> 后面跟规则。</p>
+
+<p>例如，如果添加了打开端口的规则 <code>2222</code> ，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 2222</code></pre></div>
+<p>您可以键入以下命令删除规则：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw delete allow 2222</code></pre></div>
+<h3 id="重置-ufw-并删除所有规则">重置 UFW 并删除所有规则</h3>
+
+<p>重置 UFW 将禁用防火墙，并删除所有活动规则。当您想要还原所有更改并重新开始时，这非常有用。</p>
+
+<p>要重置 UFW ，请键入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw reset</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何列出和删除 UFW 防火墙规则。配置防火墙时，请确保始终只允许那些正常运行系统所需的传入连接。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/ufw" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">ufw</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/firewall" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">firewall</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/iptables" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">iptables</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/security" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">security</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#列出-ufw-规则">列出 UFW 规则</a></li>
+<li><a href="#删除-ufw-规则">删除 UFW 规则</a>
+<ul>
+<li><a href="#按规则编号删除-ufw-规则">按规则编号删除 UFW 规则</a></li>
+<li><a href="#按规范删除-ufw-规则">按规范删除 UFW 规则</a></li>
+<li><a href="#重置-ufw-并删除所有规则">重置 UFW 并删除所有规则</a></li>
+</ul></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian 9上使用UFW设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 UFW 设置防火墙</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-ssh-keys-on-centos-7/">如何在 CentOS 7 上设置 SSH 密钥</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-ssh-keys-on-ubuntu-1804/">如何在 Ubuntu 18.04 上设置 SSH 密钥</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-stop-and-disable-firewalld-on-centos-7/">如何在 CentOS 7 上停止和禁用 Firewalld</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/generate-ssh-keys-on-windows-with-puttygen/">在 Windows 使用 PuTTYgen 上生成 SSH 密钥</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-setup-ssh-socks-tunnel-for-private-browsing/">如何为私有浏览设置SSH SOCKS隧道</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-iptables-on-centos-7/">如何在CentOS 7上安装Iptables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-an-openvpn-server-on-centos-7/">如何在CentOS 7上设置OpenVPN服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-set-up-ssh-keys-on-debian-9/">如何在Debian 9上设置SSH密钥</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
