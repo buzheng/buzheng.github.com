@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Linux 中使用命令行文本编辑器 Nano |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.182b3c061a9a0e1d9e77b022ec9d405b.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Linux 中使用命令行文本编辑器 Nano" />
+<meta property="og:description" content="经常在命令行上工作时，您需要创建或编辑文本文件。 Vim 和 Emacs 是两个最强大和最受欢迎的命令行编辑器，但他们都有一个陡峭的学习曲线，可能会让新用户感到恐惧。对于那些需要简单编辑器的人来说，nano 提供了一个更好的选择。
+
+GNU nano 是一个易于使用的命令行文本编辑器，适用于 Unix 和 Linux 操作系统。它包含了您期望从常规文本编辑器中获得的所有基本功能，如语法突出显示，多个缓冲区，搜索和替换正则表达式支持，拼写检查， UTF-8 编码等。
+
+在本指南中，我们将介绍使用 nano 编辑器的基础知识，包括如何创建和打开文件，编辑文件，保存文件，搜索和替换文本，剪切和粘贴文本等。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-use-nano-text-editor/" />
+<meta property="article:published_time" content="2019-07-01T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-01T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Linux 中使用命令行文本编辑器 Nano">
+<meta itemprop="description" content="经常在命令行上工作时，您需要创建或编辑文本文件。 Vim 和 Emacs 是两个最强大和最受欢迎的命令行编辑器，但他们都有一个陡峭的学习曲线，可能会让新用户感到恐惧。对于那些需要简单编辑器的人来说，nano 提供了一个更好的选择。
+
+GNU nano 是一个易于使用的命令行文本编辑器，适用于 Unix 和 Linux 操作系统。它包含了您期望从常规文本编辑器中获得的所有基本功能，如语法突出显示，多个缓冲区，搜索和替换正则表达式支持，拼写检查， UTF-8 编码等。
+
+在本指南中，我们将介绍使用 nano 编辑器的基础知识，包括如何创建和打开文件，编辑文件，保存文件，搜索和替换文本，剪切和粘贴文本等。">
+
+
+<meta itemprop="datePublished" content="2019-07-01T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-01T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="248">
+
+
+
+<meta itemprop="keywords" content="nano,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-use-nano-text-editor/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Linux 中使用命令行文本编辑器 Nano"/>
+<meta name="twitter:description" content="经常在命令行上工作时，您需要创建或编辑文本文件。 Vim 和 Emacs 是两个最强大和最受欢迎的命令行编辑器，但他们都有一个陡峭的学习曲线，可能会让新用户感到恐惧。对于那些需要简单编辑器的人来说，nano 提供了一个更好的选择。
+
+GNU nano 是一个易于使用的命令行文本编辑器，适用于 Unix 和 Linux 操作系统。它包含了您期望从常规文本编辑器中获得的所有基本功能，如语法突出显示，多个缓冲区，搜索和替换正则表达式支持，拼写检查， UTF-8 编码等。
+
+在本指南中，我们将介绍使用 nano 编辑器的基础知识，包括如何创建和打开文件，编辑文件，保存文件，搜索和替换文本，剪切和粘贴文本等。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">如何在 Linux 中使用命令行文本编辑器 Nano</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-01T05:00:00&#43;08:00">July 1, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>经常在命令行上工作时，您需要创建或编辑文本文件。 Vim 和 Emacs 是两个最强大和最受欢迎的命令行编辑器，但他们都有一个陡峭的学习曲线，可能会让新用户感到恐惧。对于那些需要简单编辑器的人来说，nano 提供了一个更好的选择。</p>
+
+<p>GNU nano 是一个易于使用的命令行文本编辑器，适用于 Unix 和 Linux 操作系统。它包含了您期望从常规文本编辑器中获得的所有基本功能，如语法突出显示，多个缓冲区，搜索和替换正则表达式支持，拼写检查， UTF-8 编码等。</p>
+
+<p>在本指南中，我们将介绍使用 nano 编辑器的基础知识，包括如何创建和打开文件，编辑文件，保存文件，搜索和替换文本，剪切和粘贴文本等。</p>
+
+<h2 id="安装-nano">安装 Nano</h2>
+
+<p>Nano 文本编辑器预装在 macOS 和大多数 Linux 发行版上。要检查它是否已安装在您的系统类型上：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano --version</code></pre></div>
+<p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">GNU nano, version 2.9.3
+(C) 1999-2011, 2013-2018 Free Software Foundation, Inc.
+(C) 2014-2018 the contributors to nano
+Email: nano@nano-editor.org	Web: https://nano-editor.org/</code></pre></div>
+<p>如果您的系统上没有安装 nano ，则可以使用发行版的软件包管理器进行安装。</p>
+
+<h3 id="在-ubuntu-和-debian-上安装-nano">在 Ubuntu 和 Debian 上安装 Nano</h3>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install nano</code></pre></div>
+<h3 id="在-centos-和-fedora-上安装-nano">在 CentOS 和 Fedora 上安装 Nano</h3>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install nano</code></pre></div>
+<h2 id="打开和创建文件">打开和创建文件</h2>
+
+<p>要打开现有文件或创建新文件，请键入 <code>nano</code> 后跟文件名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano filename</code></pre></div>
+<p><img src="nano-text-editor.jpg" alt="" /></p>
+
+<p>这将打开一个新的编辑器窗口，您可以开始编辑文件。</p>
+
+<p>在窗口的底部，有一个与 nano 编辑器一起使用的最基本命令快捷方式列表。</p>
+
+<p>所有命令都以前缀<code>^</code>或 <code>M</code> 字符为前缀。插入符号 (<code>^</code>) 代表 <code>Ctrl</code> 键。例如，<code>^ J</code> 命令意味着同时按 <code>Ctrl</code> 和 <code>J</code> 键。而字母则 <code>M</code> 代表了 <code>Alt</code> 关键。</p>
+
+<p>您可以通过键入获得所有命令的列表 <code>Ctrl+g</code> 。</p>
+
+<p>要能够打开文件，您必须具有该文件的读取权限。</p>
+
+<p>如果要使用光标在特定行和字符上打开文件，请使用以下语法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano +line_number,character_number filename</code></pre></div>
+<p>如果省略， <code>character_number</code> 则光标将位于行的第一个字符上。</p>
+
+<h2 id="编辑文件">编辑文件</h2>
+
+<p>与 vi 不同， nano 是一种无模式编辑器，这意味着您可以在打开文件后立即开始输入和编辑文本。</p>
+
+<p>要将光标移动到特定的行和字符编号，请使用该 <code>Ctrl+_</code> 命令。屏幕底部的菜单会发生变化。在“输入行号，列号：”字段中输入数字，然后单击 <code>Enter</code> 。</p>
+
+<h3 id="搜索和替换">搜索和替换</h3>
+
+<p>要搜索文本匹配 <code>Ctrl+w</code> ，请键入搜索词，然后按 <code>Enter</code> 。光标将移动到第一个匹配。要转到下一场匹配，请按 <code>Alt+w</code> 。</p>
+
+<p>如果要搜索和替换，请按 <code>Ctrl+\</code> 。输入搜索词和要替换的文本。编辑器将转到第一个匹配的字词，并询问您是否要更换它。击球后 <code>Y</code> 或 <code>N</code> 将进入下一个匹配项。按下 <code>A</code> 将替换所有比赛。</p>
+
+<h3 id="复制-剪切和粘贴">复制，剪切和粘贴</h3>
+
+<p>要选择文本，请将光标移动到文本的开头，然后按 <code>Alt+a</code> 。这将设置选择标记。使用箭头键将光标移动到要选择的文本的末尾。选中的文本将突出显示。如果要取消选择，请按 <code>Ctrl+6</code></p>
+
+<p>使用 <code>Alt+6</code> 命令将所选文本复制到剪贴板。 <code>Ctrl+k</code> 将剪切选定的文本。</p>
+
+<p>如果要剪切整行，只需将光标移动到该行并按 <code>Ctrl+k</code> 。您可以通过 <code>Ctrl+k</code> 多次击打来剪切多行。</p>
+
+<p>要粘贴文本，请将光标移动到要放置文本的位置，然后按 <code>Ctrl+u</code> 。</p>
+
+<h2 id="保存和退出">保存和退出</h2>
+
+<p>要保存您对文件所做的更改，请按 <code>Ctrl+o</code> 。如果该文件尚不存在，则保存后将创建该文件。</p>
+
+<p>如果你想退出 nano ，请使用 <code>Ctrl+x</code> 。如果有未保存的更改，系统会询问您是否要保存更改。</p>
+
+<p>要保存文件，您必须具有该文件的写入权限。如果要<a href="/linux/create-a-file-in-linux/">创建新文件</a>，则需要对将要创建文件的目录具有写入权限。</p>
+
+<h2 id="定制-nano-nanorc">定制 nano  (nanorc)</h2>
+
+<p>启动 nano 时，它会从系统范围的配置文件 <code>/etc/nanorc</code> 和用户特定的文件 <code>~/.config/nano/nanorc</code>, <code>~/.nanorc</code> 中读取其配置参数， 。</p>
+
+<p>用户文件中指定的选项优先于全局选项。</p>
+
+<p>访问 <a href="https://www.nano-editor.org/dist/latest/nanorc.5.html">nanorc</a> 页面以获取所有可用选项的完整列表。</p>
+
+<h3 id="语法突出显示">语法突出显示</h3>
+
+<p>Nano 附带了针对大多数流行文件类型的语法突出显示规则。在大多数 Linux 系统上，语法文件存储在 <code>/usr/share/nano</code> 目录中，默认包含在 <code>/etc/nanorc</code> 配置文件中。</p>
+
+<p>在 /etc/nanorc 文件中</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">include &#34;/usr/share/nano/*.nanorc&#34;</span></code></pre></div>
+<p>为新文件类型启用突出显示的最简单选项是将语法突出显示规则文件添加到 <code>/usr/share/nano</code> 目录。</p>
+
+<h2 id="将-nano-设置为默认文本编辑器">将 Nano 设置为默认文本编辑器</h2>
+
+<p>默认情况下，在大多数 Linux 系统上，命令的默认文本编辑器(如 <code>visudo</code> 和 <a href="/linux/scheduling-cron-jobs-with-crontab/"><code>crontab</code></a>) 设置为 vi 。要使用 nano 作为默认文本编辑器，您需要更改 <code>VISUAL</code> 和 <code>EDITOR</code>  <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>。</p>
+
+<p>Bash 用户可以导出 <code>~/.bashrc</code> 文件中的变量：</p>
+
+<p>在 〜/.bashrc</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">export VISUAL</span><span class="o">=</span><span class="s">nano</span>
+<span class="na">export EDITOR</span><span class="o">=</span><span class="s">&#34;$VISUAL&#34;</span></code></pre></div>
+<h2 id="基本-nano-用法">基本 nano 用法</h2>
+
+<p>以下是 nano 入门的最基本步骤：</p>
+
+<ol>
+<li>在命令提示符下，键入 <code>nano</code> 后跟文件名。</li>
+<li>根据需要编辑文件。</li>
+<li>使用该 <code>Ctrl-x</code> 命令保存并退出文本编辑器。</li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了如何使用 Gnu nano 文本编辑器。它是 Linux 用户中流行的文本编辑器，易学易用。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/nano" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">nano</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#安装-nano">安装 Nano</a>
+<ul>
+<li><a href="#在-ubuntu-和-debian-上安装-nano">在 Ubuntu 和 Debian 上安装 Nano</a></li>
+<li><a href="#在-centos-和-fedora-上安装-nano">在 CentOS 和 Fedora 上安装 Nano</a></li>
+</ul></li>
+<li><a href="#打开和创建文件">打开和创建文件</a></li>
+<li><a href="#编辑文件">编辑文件</a>
+<ul>
+<li><a href="#搜索和替换">搜索和替换</a></li>
+<li><a href="#复制-剪切和粘贴">复制，剪切和粘贴</a></li>
+</ul></li>
+<li><a href="#保存和退出">保存和退出</a></li>
+<li><a href="#定制-nano-nanorc">定制 nano  (nanorc)</a>
+<ul>
+<li><a href="#语法突出显示">语法突出显示</a></li>
+</ul></li>
+<li><a href="#将-nano-设置为默认文本编辑器">将 Nano 设置为默认文本编辑器</a></li>
+<li><a href="#基本-nano-用法">基本 nano 用法</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/linux-tr-command/">Linux tr 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-an-nfs-server-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 NFS 服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/free-command-in-linux/">Linux 中的 Free 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-source-command/">Bash Source 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-nohup-command/">Linux Nohup 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/sudo-command-in-linux/">Linux 中的 Sudo 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-save-file-in-vim-quit-editor/">如何在 Vim/Vi 中保存文件并退出编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-type-command/">Linux type 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-move-files-in-linux-with-mv-command/">在 Linux 中如何使用 mv 命令移动文件和目录</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-scp-command-to-securely-transfer-files/">如何使用 SCP 命令安全地传输文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
