@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何使用 psql 列出 PostgreSQL 数据库和表 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.182b3c061a9a0e1d9e77b022ec9d405b.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何使用 psql 列出 PostgreSQL 数据库和表" />
+<meta property="og:description" content="PostgreSQL 附带了一个交互式工具 psql ，允许您连接到服务器并对其运行查询。使用时， psql 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。
+
+管理 PostgreSQL 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 psql 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-list-databases-tables-in-postgreqsl/" />
+<meta property="article:published_time" content="2019-07-02T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-02T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何使用 psql 列出 PostgreSQL 数据库和表">
+<meta itemprop="description" content="PostgreSQL 附带了一个交互式工具 psql ，允许您连接到服务器并对其运行查询。使用时， psql 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。
+
+管理 PostgreSQL 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 psql 。">
+
+
+<meta itemprop="datePublished" content="2019-07-02T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-02T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="253">
+
+
+
+<meta itemprop="keywords" content="postgresql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何使用 psql 列出 PostgreSQL 数据库和表"/>
+<meta name="twitter:description" content="PostgreSQL 附带了一个交互式工具 psql ，允许您连接到服务器并对其运行查询。使用时， psql 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。
+
+管理 PostgreSQL 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 psql 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">如何使用 psql 列出 PostgreSQL 数据库和表</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-02T05:00:00&#43;08:00">July 2, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>PostgreSQL 附带了一个交互式工具 <code>psql</code> ，允许您连接到服务器并对其运行查询。使用时， <code>psql</code> 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。</p>
+
+<p>管理 <a href="https://www.postgresql.org/">PostgreSQL</a> 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 <code>psql</code> 。</p>
+
+<h2 id="列出数据库">列出数据库</h2>
+
+<p>您可以使用该 <code>psql</code> 命令以任何系统用户身份连接到 PostgreSQL 服务器。根据服务器配置，用户可能需要输入其密码才能连接到 psql 终端。要以您当前登录的用户身份访问 psql 终端，只需键入即可 <code>psql</code> 。</p>
+
+<p>安装 PostgreSQL 软件包后，将创建名为 “postgres” 的管理用户。默认情况下，此用户可以在没有密码的情况下连接到本地 PostgreSQL 服务器。</p>
+
+<p>要以 “postgres” 用户身份访问终端 <code>psql</code> ，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
+<blockquote>
+<p>该 <a href="/linux/sudo-command-in-linux/"><code>sudo</code> 命令</a>允许您以其他用户身份运行命令。</p>
+</blockquote>
+
+<p>从 psql 终端执行 <code>\l</code> 或 <code>\list</code> meta-command 列出所有数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="err">\</span><span class="n">l</span></code></pre></div>
+<p>输出将包括数据库的数量，每个数据库的名称，其所有者，编码和访问权限：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                              List of databases
+   Name    |  Owner   | Encoding | Collate |  Ctype  |   Access privileges   
+-----------+----------+----------+---------+---------+-----------------------
+ odoo      | odoo     | UTF8     | C       | C.UTF-8 | 
+ postgres  | postgres | UTF8     | C.UTF-8 | C.UTF-8 | 
+ template0 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+ template1 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+           |          |          |         |         | postgres=CTc/postgres
+(4 rows)</code></pre></div>
+<p>PostgreSQL服务器有三个默认创建的数据库，template0，template1 和 postgres。前两个是创建新数据库时使用的模板。</p>
+
+<p>如果要获取有关数据库大小，默认表空间和描述的信息，请使用 <code>\l+</code> 或 <code>\list+</code> 。仅当当前用户可以连接到数据库时，才会显示数据库大小。</p>
+
+<p>要在不访问 psql shell 的情况下获取所有数据库的列表，请使用 <code>-c</code> 如下所示的开关：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &#34;\l&#34;</code></pre></div>
+<p>列出数据库的另一种方法是使用以下 SQL 语句：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">datname</span> <span class="k">FROM</span> <span class="n">pg_database</span><span class="p">;</span></code></pre></div>
+<p>与<code>\l</code>元命令不同，上面的查询将仅显示数据库的名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">  datname  
+-----------
+ postgres
+ odoo
+ template1
+ template0
+(4 rows)</code></pre></div>
+<h2 id="列出表">列出表</h2>
+
+<p>要首先列出特定数据库的所有表，您需要使用 <code>\c</code> 或者 <code>\connect</code> meta-command 连接到它。您登录 psql 终端的用户必须能够连接到数据库。</p>
+
+<p>例如，要连接到名为 “odoo” 的数据库，您应键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="err">\</span><span class="k">c</span> <span class="n">odoo</span></code></pre></div>
+<p>切换数据库后，使用 <code>\dt</code> 列出所有数据库表：</p>
+
+<p>输出将包括表的数量，每个表的名称及其架构，类型和所有者：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                              List of relations
+ Schema |                        Name                         | Type  | Owner 
+--------+-----------------------------------------------------+-------+-------
+ public | base_import_import                                  | table | odoo
+ public | base_import_mapping                                 | table | odoo
+ public | base_import_tests_models_char                       | table | odoo
+ ...
+ public | web_editor_converter_test_sub                       | table | odoo
+ public | web_tour_tour                                       | table | odoo
+ public | wizard_ir_model_menu_create                         | table | odoo
+(107 rows)</code></pre></div>
+<p>如果数据库为空，则输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">No relations found.</code></pre></div>
+<p>要获取有关表大小的信息，请使用说明 <code>\dt+</code>。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>您已经学习了如何使用该 <code>psql</code> 命令列出 PostgreSQL 数据库和表。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/postgresql" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">postgresql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#列出数据库">列出数据库</a></li>
+<li><a href="#列出表">列出表</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-debian-9/">如何在 Debian 9 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-deploy-odoo-12-on-ubuntu-18-04/">如何在Ubuntu 18.04上部署Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 PostgreSQL</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
