@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux 中的 Umask 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.14a5afa4a985b822d0a94ed3fe0d14ac.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux 中的 Umask 命令" />
+<meta property="og:description" content="在 Linux 和 Unix 操作系统上，所有新文件都使用一组默认权限创建。该 umask 实用程序允许您查看或设置文件模式创建掩码，该掩码确定新创建的文件或目录的权限位。
+
+它由 mkdir ， touch ， tee 和其他创建新文件和目录的命令使用。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/umask-command-in-linux/" />
+<meta property="article:published_time" content="2019-07-05T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-05T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux 中的 Umask 命令">
+<meta itemprop="description" content="在 Linux 和 Unix 操作系统上，所有新文件都使用一组默认权限创建。该 umask 实用程序允许您查看或设置文件模式创建掩码，该掩码确定新创建的文件或目录的权限位。
+
+它由 mkdir ， touch ， tee 和其他创建新文件和目录的命令使用。">
+
+
+<meta itemprop="datePublished" content="2019-07-05T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-05T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="336">
+
+
+
+<meta itemprop="keywords" content="umask,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/umask-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux 中的 Umask 命令"/>
+<meta name="twitter:description" content="在 Linux 和 Unix 操作系统上，所有新文件都使用一组默认权限创建。该 umask 实用程序允许您查看或设置文件模式创建掩码，该掩码确定新创建的文件或目录的权限位。
+
+它由 mkdir ， touch ， tee 和其他创建新文件和目录的命令使用。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">Linux 中的 Umask 命令</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-05T05:00:00&#43;08:00">July 5, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>在 Linux 和 Unix 操作系统上，所有新文件都使用一组默认权限创建。该 <code>umask</code> 实用程序允许您查看或设置文件模式创建掩码，该掩码确定新创建的文件或目录的权限位。</p>
+
+<p>它由 mkdir ， touch ， <a href="/linux/linux-tee-command/">tee</a> 和其他创建新文件和目录的命令使用。</p>
+
+<h2 id="linux-权限">Linux 权限</h2>
+
+<p>在进一步讨论之前，让我们简要介绍一下 Linux 权限模型。</p>
+
+<p>在 Linux 中，每个文件都与一个所有者和一个组相关联，并为三个不同类别的用户分配了权限访问权限：</p>
+
+<ul>
+<li>文件所有者。</li>
+<li>小组成员。</li>
+<li>其他人。</li>
+</ul>
+
+<p>每个用户类别都有三种权限类型：</p>
+
+<ul>
+<li>读取权限。</li>
+<li>写权限。</li>
+<li>执行权限。</li>
+</ul>
+
+<p>您可以设定允许哪些用户读取文件，写入文件或执行文件。</p>
+
+<p>要查看文件权限，请使用以下 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">ls -l filename.txt</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">drwxr-xr-x 12 linuxize users 4.0K Apr  8 20:51 dirname
+|[-][-][-]    [------] [---]
+| |  |  |        |       |       
+| |  |  |        |       +-----------&gt; Group
+| |  |  |        +-------------------&gt; Owner
+| |  |  +----------------------------&gt; Others Permissions
+| |  +-------------------------------&gt; Group Permissions
+| +----------------------------------&gt; Owner Permissions
++------------------------------------&gt; File Type</code></pre></div>
+<p>第一个字符表示文件类型，可以是常规文件 (<code>-</code>) ，目录 (<code>d</code>) ，<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>(<code>l</code>)或任何其他特殊类型的文件。</p>
+
+<p>接下来的九个字符代表三组权限，每组各有三个字符。第一组显示所有者权限，第二组显示组权限，最后一组显示所有其他人权限。</p>
+
+<p><code>r</code> 是读取权限，使用数字 <code>4</code> 表示， <code>w</code> 是写入权限，使用数字 <code>2</code> 表示， <code>x</code> 是执行权限，使用数字 <code>1</code> 表示，而 (<code>-</code>) 表示无权限，使用数字 <code>0</code> 表示。</p>
+
+<p>还有其他三个特殊的文件权限类型： <code>setuid</code> ， <code>setgid</code> 和 <code>Sticky Bit</code> 。</p>
+
+<p>在上面的示例中 (<code>rwxr-xr-x</code>) 表示所有者具有读取，写入和执行权限 (<code>rwx</code>) ，该组和其他人具有读取和执行权限。</p>
+
+<p>如果我们使用数字表示法表示文件权限，我们将得到数字 <code>755</code> ：</p>
+
+<ul>
+<li>所有者： <code>rwx</code>=<code>4+2+1 = 7</code></li>
+<li>组： <code>r-x</code>=<code>4+0+1 = 5</code></li>
+<li>其他： <code>r-x</code>=<code>4+0+1 = 5</code></li>
+</ul>
+
+<p>以数字表示法表示时，权限可以有三个或四个八进制数字 (0-7) 。第一个数字表示特殊权限，如果省略则表示没有为文件设置特殊权限。在我们的情况下 <code>755</code> 和 <code>0755</code> 是相同的。</p>
+
+<p>可以使用 <code>chmod</code> 命令使用命令和所有权更改文件权限 <a href="/linux/linux-chown-command/"><code>chown</code></a> 。</p>
+
+<h2 id="了解-umask">了解 umask</h2>
+
+<p>默认情况下，在 Linux 系统上，默认创建的文件权限 <code>666</code> (它为用户，组和其他人提供读写权限), 默认创建的目录权限是 <code>777</code>，这意味着对用户，组和其他人的读，写和执行权限。 Linux 不允许使用执行权限<a href="/linux/create-a-file-in-linux/">创建文件</a>。</p>
+
+<p>可以使用该 <code>umask</code> 实用程序修改默认创建权限。</p>
+
+<p><code>umask</code> 仅影响当前的 shell 环境。在大多数 Linux 发行版中，默认的系统范围值在 <code>pam_umask.so</code> 或者 <code>/etc/profile</code> 文件中设置。</p>
+
+<p>如果要基于每个用户指定不同的值，请编辑用户的 shell 配置文件，例如 <code>~/.bashrc</code> 或 <code>~/.zshrc</code> 。您还可以 通过运行 <code>umask</code> 后跟所需的值来更改当前会话的 <code>umask</code> 值。</p>
+
+<p>要查看当前掩码值，只需键入 <code>umask</code> 不带任何参数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umask</code></pre></div>
+<p>输出将包括</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">022</code></pre></div>
+<p>该 <code>umask</code> 值包含的权限位将<strong>不在</strong>新创建的文件和目录上设置。</p>
+
+<p>正如我们已经提到的，文件的默认创建权限是 <code>666</code> 和目录 <code>777</code> 。要计算新文件的权限位，请从默认值中减去 umask 值。</p>
+
+<p>例如，要计算 <code>uname 022</code> 将如何影响新创建的文件和目录，请使用：</p>
+
+<ul>
+<li>文件： <code>666 - 022 = 644</code> 。所有者可以读取和修改文件。 Group 和其他人只能读取文件。</li>
+<li>目录： <code>777 - 022 = 755</code> 。所有者可以 cd 进入目录并列出读取，修改，创建或<a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">删除目录</a>中的文件。组和其他人可以 <a href="/linux/linux-cd-command/"><code>cd</code></a> 进入目录并列出并读取文件。</li>
+</ul>
+
+<p>您还可以使用以下 <code>-S</code> 选项以符号表示法显示掩码值：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umask -S</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">u=rwx,g=rx,o=rx</code></pre></div>
+<p>与数字表示法不同，符号表示法值包含将在新创建的文件和目录上设置的权限位。</p>
+
+<h2 id="设置掩码值">设置掩码值</h2>
+
+<p>可以使用八进制或符号表示法设置文件创建掩码。要使更改永久化，请 <code>umask</code> 在全局配置文件(如 <code>/etc/profile</code> 文件)中设置新值，该文件将影响所有用户或用户的 shell 配置文件(例如 <code>~/.profile</code> ， <code>~/.bashrc</code> 或 <code>~/.zshrc</code> 仅影响用户)。用户文件优先于全局文件。</p>
+
+<p>在更改 <code>umask</code> 值之前，请确保新值不会带来潜在的安全风险。限制性较低的值 <code>022</code> 应该非常谨慎使用。例如， <code>umask 000</code> 意味着任何人都对所有新创建的文件具有读，写和执行权限。</p>
+
+<p>假设我们想为新创建的文件和目录设置更严格的权限，以便其他人无法访问 <code>cd</code> 目录和读取文件。我们想要的权限是 <code>750</code> 目录和 <code>640</code> 文件。</p>
+
+<p>要计算该 <code>umask</code> 值，只需从默认值中减去所需的权限：</p>
+
+<p>Umask 值：  <code>777-750 = 027</code></p>
+
+<p><code>umask</code> 用数字表示法表示的期望值是 <code>027</code> 。</p>
+
+<p>要在系统范围内永久设置新值 <code>/etc/profile</code> ，请使用文本编辑器打开文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/profile</code></pre></div>
+<p>并在文件的开头更改或添加以下行：</p>
+
+<p>/ etc/profile 文件</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">umask</span> <span class="m">027</span></code></pre></div>
+<p>要使更改生效，请运行以下 <code>source</code> 命令或注销并登录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source /etc/profile</code></pre></div>
+<p>要验证新设置，我们将使用 <a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/"><code>mkdir</code></a> 和创建一个新文件和目录 <a href="/linux/linux-touch-command/"><code>touch</code></a> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir newdirtouch newfile</code></pre></div>
+<p>如果使用该 <code>ls</code> 命令检查权限，您将注意到新文件具有 <code>640</code> 新目录 <code>750</code> 权限，如我们所愿：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">drwxr-x--- 2 linuxize users 4096 Jul  4 18:14  newdir
+-rw-r----- 1 linuxize users    0 Jul  4 18:14  newfile</code></pre></div>
+<p>设置文件创建掩码的另一种方法是使用符号表示法。例如 <code>umask u=rwx,g=rx,o=</code> 和 <code>umask 027</code> 。相同。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本指南中，我们已经解释了 Linux 权限以及如何使用该 <code>umask</code> 命令为新创建的文件或目录设置权限位。</p>
+
+<p>有关更多信息 <code>man umask</code> ，请在终端中输入。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/umask" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">umask</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#linux-权限">Linux 权限</a></li>
+<li><a href="#了解-umask">了解 umask</a></li>
+<li><a href="#设置掩码值">设置掩码值</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/less-command-in-linux/">Linux 中的 less 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-use-nano-text-editor/">如何在 Linux 中使用命令行文本编辑器 Nano</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-tr-command/">Linux tr 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-an-nfs-server-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 NFS 服务器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/free-command-in-linux/">Linux 中的 Free 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/bash-source-command/">Bash Source 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-nohup-command/">Linux Nohup 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/sudo-command-in-linux/">Linux 中的 Sudo 命令</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-save-file-in-vim-quit-editor/">如何在 Vim/Vi 中保存文件并退出编辑器</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/linux-type-command/">Linux type 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
