@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Raspberry Pi 上安装 OpenCV |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.14a5afa4a985b822d0a94ed3fe0d14ac.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Raspberry Pi 上安装 OpenCV" />
+<meta property="og:description" content="OpenCV(开源计算机视觉库)是一个开源计算机视觉库，具有 C&#43;&#43; ， Python 和 Java 的绑定。它用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别面部，跟踪移动物体，提取 3D 模型等等。
+
+OpenCV 可以利用多核处理功能，并具有 GPU 加速功能，可实现实时操作。
+
+在本教程中，我们将解释如何在 Raspberry Pi 上安装 OpenCV 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-opencv-on-raspberry-pi/" />
+<meta property="article:published_time" content="2019-07-05T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-05T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Raspberry Pi 上安装 OpenCV">
+<meta itemprop="description" content="OpenCV(开源计算机视觉库)是一个开源计算机视觉库，具有 C&#43;&#43; ， Python 和 Java 的绑定。它用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别面部，跟踪移动物体，提取 3D 模型等等。
+
+OpenCV 可以利用多核处理功能，并具有 GPU 加速功能，可实现实时操作。
+
+在本教程中，我们将解释如何在 Raspberry Pi 上安装 OpenCV 。">
+
+
+<meta itemprop="datePublished" content="2019-07-05T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-05T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="282">
+
+
+
+<meta itemprop="keywords" content="opencv,python,raspberry pi," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-opencv-on-raspberry-pi/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Raspberry Pi 上安装 OpenCV"/>
+<meta name="twitter:description" content="OpenCV(开源计算机视觉库)是一个开源计算机视觉库，具有 C&#43;&#43; ， Python 和 Java 的绑定。它用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别面部，跟踪移动物体，提取 3D 模型等等。
+
+OpenCV 可以利用多核处理功能，并具有 GPU 加速功能，可实现实时操作。
+
+在本教程中，我们将解释如何在 Raspberry Pi 上安装 OpenCV 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">如何在 Raspberry Pi 上安装 OpenCV</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-05T05:00:00&#43;08:00">July 5, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>OpenCV(开源计算机视觉库)是一个开源计算机视觉库，具有 C++ ， Python 和 Java 的绑定。它用于广泛的应用，包括医学图像分析，拼接街景图像，监控视频，检测和识别面部，跟踪移动物体，提取 3D 模型等等。</p>
+
+<p><a href="https://opencv.org/">OpenCV</a> 可以利用多核处理功能，并具有 GPU 加速功能，可实现实时操作。</p>
+
+<p>在本教程中，我们将解释如何在 Raspberry Pi 上安装 OpenCV 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>我们假设您<a href="/linux/how-to-install-raspbian-on-raspberry-pi/">在 Raspberry Pi 上安装了 Raspbian</a> 。</p>
+
+<h2 id="从-source-安装-opencv">从 Source 安装 OpenCV</h2>
+
+<p>最推荐的安装 OpenCV 的方法是从源代码构建库。这样您就可以完全控制构建选项， OpenCV 将针对您的系统进行优化。</p>
+
+<p>首先增加交换空间以避免因内存问题导致的编译挂起：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/dphys-swapfile</code></pre></div>
+<p>将 <code>CONF_SWAPSIZE</code> 值从默认值更改 <code>100</code> 为 <code>1024</code> ：</p>
+
+<p>的 /etc/dphys-swapfile</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">CONF_SWAPSIZE</span><span class="o">=</span><span class="s">1024</span></code></pre></div>
+<p>保存文件并运行以下命令以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo /etc/init.d/dphys-swapfile restart</code></pre></div>
+<p>我们现在可以开始构建 OpenCV 。首先，更新包索引并安装构建工具和所需的依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install build-essential cmake git pkg-config libgtk-3-dev libcanberra-gtk*
+sudo apt install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev
+sudo apt install libjpeg-dev libpng-dev libtiff-dev gfortran openexr libatlas-base-dev opencl-headers
+sudo apt install python3-dev python3-numpy libtbb2 libtbb-dev libdc1394-22-dev</code></pre></div>
+<p><a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个新目录</a>并从 Github 克隆 OpenCV 和 OpenCV contrib 存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/opencv_build &amp;&amp; cd ~/opencv_build
+git clone https://github.com/opencv/opencv.git
+git clone https://github.com/opencv/opencv_contrib.git</code></pre></div>
+<p>在撰写本文时， GitHub 存储库中的默认版本是 4.1.1 版。如果你想安装 OpenCV 的旧版本，导航既 <code>opencv</code> 和 <code>opencv_contrib</code> 目录，并运行 <code>git checkout &lt;opencv-version&gt;</code></p>
+
+<p>克隆存储库后，创建一个临时构建目录，然后<a href="/linux/linux-cd-command/">切换</a>到该目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/opencv_build/opencv/build
+cd ~/opencv_build/opencv/build</code></pre></div>
+<p>使用 CMake 设置 OpenCV 构建配置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-make" data-lang="make"><span class="err">cmake</span> -D <span class="nv">CMAKE_BUILD_TYPE</span><span class="o">=</span>RELEASE <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">CMAKE_INSTALL_PREFIX</span><span class="o">=</span>/usr/local <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">INSTALL_C_EXAMPLES</span><span class="o">=</span>OFF <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">INSTALL_PYTHON_EXAMPLES</span><span class="o">=</span>OFF <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_GENERATE_PKGCONFIG</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">ENABLE_NEON</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">ENABLE_VFPV3</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">BUILD_TESTS</span><span class="o">=</span>OFF <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_ENABLE_NONFREE</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_EXTRA_MODULES_PATH</span><span class="o">=</span>~/opencv_build/opencv_contrib/modules <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">BUILD_EXAMPLES</span><span class="o">=</span>OFF ..
+</code></pre></div>
+<p>输出结果如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/pi/opencv_build/opencv/build</code></pre></div>
+<p>运行 <code>make</code> 以启动编译过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">make -j4</code></pre></div>
+<p>这个过程需要一些时间，大约 1-2 小时，具体取决于 Raspberry Pi 模型。完成后，您将看到如下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+[100%] Linking CXX shared module ../../lib/python3/cv2.cpython-35m-arm-linux-gnueabihf.so
+[100%] Built target opencv_python3</code></pre></div>
+<p>如果编译在某些时候失败，由于资源不可用，请 <code>make</code> 再次运行该命令，该过程将从停止的位置继续。</p>
+
+<p>最后一步是安装已编译的 OpenCV 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+-- Installing: /usr/local/bin/opencv_version
+-- Set runtime path of &#34;/usr/local/bin/opencv_version&#34; to &#34;/usr/local/lib&#34;</code></pre></div>
+<p>要检查 OpenCV 是否已成功安装，请键入以下命令，您应该看到 OpenCV 版本：</p>
+
+<p><strong>C++库：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">pkg-config --modversion opencv4</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">4.1.1</code></pre></div>
+<p><strong>Python库：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">python3 -c &#34;import cv2; print(cv2.__version__)&#34;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">4.1.1-pre</code></pre></div>
+<h2 id="清理">清理</h2>
+
+<p>如果 SD 卡上没有足够的可用空间，请<a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">删除</a>源文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rm -rf ~/opencv_build</code></pre></div>
+<p>大量交换使用可能会损坏您的 SD 卡。将交换空间更改回原始大小：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/dphys-swapfile</code></pre></div>
+<p>将 <code>CONF_SWAPSIZE</code> 值编辑为 <code>100</code> ：</p>
+
+<p>文件 /etc/dphys-swapfile</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">CONF_SWAPSIZE</span><span class="o">=</span><span class="s">100</span></code></pre></div>
+<p>保存文件并激活更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo /etc/init.d/dphys-swapfile restart</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>我们已经向您展示了如何在 Raspberry Pi 板上安装 OpenCV 。从源代码构建 OpenCV 为您提供了更大的灵活性，它应该是您安装 OpenCV 时的优先使用的方法。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/opencv" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">opencv</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/python" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">python</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/raspberry-pi" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">raspberry pi</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#从-source-安装-opencv">从 Source 安装 OpenCV</a></li>
+<li><a href="#清理">清理</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-opencv-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 OpenCV</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-use-docker-on-raspberry-pi/">如何在 Raspberry Pi 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-raspbian-on-raspberry-pi/">如何在 Raspberry Pi 上安装 Raspbian</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-enable-ssh-on-raspberry-pi/">如何在 Raspberry Pi 上启用 SSH</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-apache-on-raspberry-pi/">如何在Raspberry Pi上安装Apache Web Server</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-create-python-virtual-environments-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上创建 Python 虚拟环境</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-node-js-on-raspberry-pi/">如何在 Raspberry Pi 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
