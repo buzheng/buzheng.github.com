@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Linux 上创建可启动的 Debian 10 U 盘 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.14a5afa4a985b822d0a94ed3fe0d14ac.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Linux 上创建可启动的 Debian 10 U 盘" />
+<meta property="og:description" content="本教程介绍如何使用该 dd 命令从 Linux 终端创建可启动的 Debian 10(Buster) U 盘。 U 盘可用于在支持从 USB 启动的任何计算机上启动和安装 Debian 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/create-bootable-debian-10-usb-stick-on-linux/" />
+<meta property="article:published_time" content="2019-07-15T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-15T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="在 Linux 上创建可启动的 Debian 10 U 盘">
+<meta itemprop="description" content="本教程介绍如何使用该 dd 命令从 Linux 终端创建可启动的 Debian 10(Buster) U 盘。 U 盘可用于在支持从 USB 启动的任何计算机上启动和安装 Debian 。">
+
+
+<meta itemprop="datePublished" content="2019-07-15T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-15T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="216">
+
+
+
+<meta itemprop="keywords" content="debian," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/create-bootable-debian-10-usb-stick-on-linux/featured.jpg"/>
+<meta name="twitter:title" content="在 Linux 上创建可启动的 Debian 10 U 盘"/>
+<meta name="twitter:description" content="本教程介绍如何使用该 dd 命令从 Linux 终端创建可启动的 Debian 10(Buster) U 盘。 U 盘可用于在支持从 USB 启动的任何计算机上启动和安装 Debian 。"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mt4 w-100">
+      
+      <h1 class="f1 athelas mb1">在 Linux 上创建可启动的 Debian 10 U 盘</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-15T05:00:00&#43;08:00">July 15, 2019</time>
+      
+      
+    </header>
+
+    <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
+      <div class="x-md"><p>本教程介绍如何使用该 <code>dd</code> 命令从 Linux 终端创建可启动的 Debian 10(Buster) U 盘。 U 盘可用于在支持从 USB 启动的任何计算机上启动和安装 Debian 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<ul>
+<li>1GB或更大的 U 盘</li>
+<li>计算机运行任何 Linux 发行版</li>
+<li>Debian 10 Buster ISO文件。访问 <a href="https://www.debian.org/distrib/">Getting Debian</a> 页面，您可以在其中找到各种 Debian 安装映像的下载链接。在本指南中，我们将使用 64 位 PC netinst iso 文件。</li>
+</ul>
+
+<h2 id="在-linux-上创建可启动的-debian-10-u-盘">在 Linux 上创建可启动的 Debian 10 U 盘</h2>
+
+<p>使用命令行将 ISO 映像闪烁到 U 盘比使用 GUI 工具容易得多。无需安装其他软件。</p>
+
+<p>按照下面列出的步骤创建一个可启动的 Debian 10 U 盘：</p>
+
+<ol>
+<li><p>将 USB 闪存盘插入 USB 端口。</p></li>
+
+<li><p>使用该 <code>lsblk</code> 工具找出 U 盘的名称：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">lsblk</code></pre></div>
+
+<p>输出将如下所示：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda           8:0    0 465.8G  0 disk 
+└─ sda1        8:1    0 465.8G  0 part /data 
+sdx           8:16   1   7.5G  0 disk 
+└─ sdx1        8:17   1   7.5G  0 part /run/media/linuxize/Kingston 
+nvme0n1     259:0    0 232.9G  0 disk 
+├─ nvme0n1p1 259:1    0   512M  0 part /boot 
+├─ nvme0n1p2 259:2    0    16G  0 part [SWAP] 
+└─ nvme0n1p3 259:3    0 216.4G  0 part / </code></pre></div>
+
+<p>在此示例中， USB 设备 <code>/dev/sdx</code> 可能会因您的系统而异。识别名称的最佳方法是检查设备的大小。</p></li>
+
+<li><p>在大多数 Linux 发行版中， USB 闪存驱动器将在插入时自动安装。</p>
+
+<p>在闪烁图像之前，请确保未安装 USB 设备。要卸载驱动器，请使用 <a href="/linux/how-to-mount-and-unmount-file-systems-in-linux/">umount 命令，</a>后跟安装它的目录(安装点)或设备名称：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sudo umount /dev/sdx1</code></pre></div></li>
+
+<li><p>最后一步是将 Debian ISO 映像刷新到 U 盘。确保 <code>/dev/sdx</code> 使用驱动器进行更换，并且不要附加分区号。</p>
+
+<p>另外，替换 <code>/path/to/debian-10.0.0-amd64-netinst.iso</code> 为 ISO 文件的路径。如果您使用 Web 浏览器下载文件，则应将其存储 <code>Downloads</code> 在您的用户帐户中的文件夹中。</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sudo dd bs=4M if=/path/to/debian-10.0.0-amd64-netinst.iso of=/dev/sdx status=progress oflag=sync</code></pre></div>
+
+<p>图像闪烁时将显示进度条。此过程可能需要几分钟，具体取决于 ISO 文件的大小和 U 盘的速度。完成后，您将看到如下内容：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">83+1 records in
+83+1 records out
+348127232 bytes (348 MB, 332 MiB) copied, 25.001 s, 13 MB/s</code></pre></div></li>
+</ol>
+
+<p>就这样！你的 U 盘上有一个可启动的 Debian 10 。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>我们已经向您展示了如何使用该 <code>dd</code> 实用程序创建可启动的 Debian U 盘。您现在可以将计算机 BIOS 配置为从 USB 启动，插入驱动器并安装 Debian 。</p></div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/debian" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+      <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
+    <p class="f5 b mb3">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#在-linux-上创建可启动的-debian-10-u-盘">在 Linux 上创建可启动的 Debian 10 U 盘</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mariadb-on-debian-10/">如何在 Debian 10 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-change-hostname-on-debian-10/">如何在Debian 10 Linux上更改主机名</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-upgrade-debian-9-stretch-to-debian-10-buster/">如何将 Debian 9 Stretch 升级到 Debian 10 Buster</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-vlc-on-debian-9/">如何在 Debian 9 上安装 VLC Media Player</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-and-configure-redmine-on-debian-9/">如何在 Debian 9 上安装和配置 Redmine</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-teamviewer-on-debian-9/">如何在 Debian 9 上安装 TeamViewer</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-skype-on-debian-9/">如何在 Debian 上安装 Skype</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-memcached-on-debian-9/">如何在 Debian 9 上安装 Memcached</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-ruby-on-debian-9/">如何在 Debian 9 上安装 Ruby</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/linux/how-to-install-mongodb-on-debian-9/">如何在 Debian 9 上安装 MongoDB</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</div>
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

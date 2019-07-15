@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>如何在 CentOS 7 上安装 exFAT 驱动器 |  不争笔记</title>
+    <title>如何在 Debian 10 上安装 MariaDB |  不争笔记</title>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
 
@@ -28,28 +28,34 @@
 
     
 
-    <meta property="og:title" content="如何在 CentOS 7 上安装 exFAT 驱动器" />
-<meta property="og:description" content="" />
+    <meta property="og:title" content="如何在 Debian 10 上安装 MariaDB" />
+<meta property="og:description" content="MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。 MariaDB 是 Debian 中 MySQL 的默认实现。
+
+本教程介绍如何在 Debian 10 上安装 MariaDB 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-mariadb-on-debian-10/" />
 <meta property="article:published_time" content="2019-07-15T05:00:00&#43;08:00"/>
 <meta property="article:modified_time" content="2019-07-15T05:00:00&#43;08:00"/>
 
-<meta itemprop="name" content="如何在 CentOS 7 上安装 exFAT 驱动器">
-<meta itemprop="description" content="">
+<meta itemprop="name" content="如何在 Debian 10 上安装 MariaDB">
+<meta itemprop="description" content="MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。 MariaDB 是 Debian 中 MySQL 的默认实现。
+
+本教程介绍如何在 Debian 10 上安装 MariaDB 。">
 
 
 <meta itemprop="datePublished" content="2019-07-15T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-15T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="0">
+<meta itemprop="wordCount" content="241">
 
 
 
 <meta itemprop="keywords" content="mariadb,mysql,debian," />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-mariadb-on-debian-10/featured.jpg"/>
-<meta name="twitter:title" content="如何在 CentOS 7 上安装 exFAT 驱动器"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="如何在 Debian 10 上安装 MariaDB"/>
+<meta name="twitter:description" content="MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。 MariaDB 是 Debian 中 MySQL 的默认实现。
+
+本教程介绍如何在 Debian 10 上安装 MariaDB 。"/>
 
   </head>
 
@@ -120,7 +126,7 @@
 
     <header class="mt4 w-100">
       
-      <h1 class="f1 athelas mb1">如何在 CentOS 7 上安装 exFAT 驱动器</h1>
+      <h1 class="f1 athelas mb1">如何在 Debian 10 上安装 MariaDB</h1>
       
       <time class="f6 mv4 dib tracked" datetime="2019-07-15T05:00:00&#43;08:00">July 15, 2019</time>
       
@@ -128,7 +134,91 @@
     </header>
 
     <section class="nested-copy-line-height lh-copy f45 nested-links nested-img mid-gray pr4-l w-two-thirds-l">
-      <div class="x-md"></div><ul class="pa0">
+      <div class="x-md"><p>MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。 MariaDB 是 Debian 中 MySQL 的默认实现。</p>
+
+<p>本教程介绍如何在 Debian 10 上安装 MariaDB 。</p>
+
+<h2 id="在-debian-10-上安装-mariadb">在 Debian 10 上安装 MariaDB</h2>
+
+<p>在撰写本文时， Debian main 中提供的最新 MariaDB 版本是版本 10.3 。</p>
+
+<p>以 root 身份或<a href="/linux/how-to-create-a-sudo-user-on-debian/">使用 sudo 权限的用户</a>执行以下步骤，在 Debian 10 上安装 MariaDB ：</p>
+
+<ol>
+<li><p>首先更新包索引：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div></li>
+
+<li><p>通过运行以下命令安装 MariaDB 服务器和客户端软件包：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install mariadb-server</code></pre></div>
+
+<ol>
+<li>MariaDB 服务将自动启动。要验证它，请检查服务状态：</li>
+</ol>
+
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status mariadb</code></pre></div>
+
+<p>输出应该如下所示：</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">●  mariadb.service - MariaDB 10.3.15 database server 
+   Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2019-07-11 14:36:28 PDT; 19min ago
+     Docs: man:mysqld(8)
+           https://mariadb.com/kb/en/library/systemd/
+ Main PID: 4509 (mysqld)
+   Status: &#34; Taking your SQL requests now... &#34;
+    Tasks: 30 (limit: 2359)
+   Memory: 78.6M
+   CGroup: /system.slice/mariadb.service
+           └─ 4509 /usr/sbin/mysqld   </code></pre></div></li>
+</ol>
+
+<h2 id="保护-mariadb">保护 MariaDB</h2>
+
+<p>MariaDB 附带了一个脚本 <code>mysql_secure_installation</code> ，可以帮助您提高安装的安全性。请在终端中运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql_secure_installation</code></pre></div>
+<p>系统将提示您为 root 帐户设置密码，删除匿名用户，限制 root 用户对本地计算机的访问权限并删除测试数据库。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
+Enter current password for root (enter for none):
+...
+Set root password? [Y/n] Y
+New password: 
+Re-enter new password: 
+...
+Remove anonymous users? [Y/n] Y
+...
+Disallow root login remotely? [Y/n] Y
+...
+Remove test database and access to it? [Y/n] Y
+...
+Reload privilege tables now? [Y/n] Y
+...
+Thanks for using MariaDB!</code></pre></div>
+<p>如果选中，脚本将重新加载权限表，确保更改立即生效。</p>
+
+<p>所有步骤都会详细解释，建议对所有问题回答“Y”。</p>
+
+<h2 id="认证方法">认证方法</h2>
+
+<p>默认情况下， MariaDB root 用户使用 <code>unix_socket</code> 身份验证插件，该插件在调用 <code>mysql</code> 客户端工具时检查有效用户 ID  。</p>
+
+<p>这意味着只有在 <code>mysql</code> 以系统 root 身份调用命令或将 sudo 添加到命令时，才能以 root 身份连接到 MariaDB 服务器。</p>
+
+<p>为了提高安全性，建议保留默认的身份验证插件，并允许 root 用户仅通过 Unix 套接字进行身份验证。</p>
+
+<p>如果要将根身份验证更改为经典身份验证，请登录 MariaDB 服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
+<p>运行以下语句以更改身份验证插件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="n">VIA</span> <span class="n">mysql_native_password</span><span class="p">;</span>
+<span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;your_root_passwd&#39;</span><span class="p">;</span></code></pre></div>
+<p>您现在可以使用新密码连接到 MariaDB 服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u root -p</code></pre></div>
+<p>更改身份验证插件后同样会允许您从外部程序(如 phpMyAdmin) 以 root 用户身份登录</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了如何在 Debian 10 服务器上安装和保护 MariaDB 。</p></div><ul class="pa0">
   
    <li class="list di">
      <a href="/tags/mariadb" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mariadb</a>
@@ -151,7 +241,17 @@
     <aside class="w-30-l">
       <div class="sticky"><div class="x-toc bg-light-gray pa3 nested-list-reset nested-links f5">
     <p class="f5 b mb3">文章目录</p>
-      
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#在-debian-10-上安装-mariadb">在 Debian 10 上安装 MariaDB</a></li>
+<li><a href="#保护-mariadb">保护 MariaDB</a></li>
+<li><a href="#认证方法">认证方法</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
   </div>
 
 
