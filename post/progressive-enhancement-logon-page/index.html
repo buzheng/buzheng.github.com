@@ -17,7 +17,7 @@
 
     
     
-      <link href="/dist/css/app.31108e6cc81b846a8f7f7873ef362590.css" rel="stylesheet">
+      <link href="/dist/css/app.e84dac3ad71b6ef663054c447d3da668.css" rel="stylesheet">
     
 
     
@@ -29,50 +29,26 @@
     
 
     <meta property="og:title" content="渐进增强实现首页弹出层登录" />
-<meta property="og:description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。
-与之对应的一个概念是“平稳退化“，这个开发理念主张首先针对高级的、现代的浏览器来开发设计网站，而对老的、落伍的浏览器提供一个仅仅可以工作的版本，却没有那么好的体验。
-在我看来，这两种理念的思想本身差不多，出发点不太一样，最终都是要保持网站在不同境况带给用户的完整功能，只是有些体验差点，有些体验好些。
-我这里会试着用这种前端开发理念，来实现一个首页弹出层登录的功能，我们可以先来探讨一下为什么要使用弹出层登录？我觉得弹出层会有如下2个好处（可能会有些肤浅）：
-对用户来说，不用心打开一个页面，节省下载时间；带给用户更好的体验； 对网站提供者来说，至少可以减少一次页面请求，降低服务器负载； 好了，我们来开始来做这个登录的例子。首先我们先按照最原始的思路实现一个登录页面，功能要求就是当用户点击页顶部的登录链接时会跳转到登录页面。我先来完成基本的代码：
-html代码：
-&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; 基本的样式：
-#top { width: 100%; border-botton: 1px solid #ccc; background: #eee; line-height: 24px; height: 24px; over-flow: hidden; } .wrapper { margin: 0 auto; width: 960px; } 就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：
-&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;div id=&#34;signinpanel&#34;&gt; &lt;label for=&#34;username&#34;&gt;username&lt;/label&gt; &lt;input id=&#34;username&#34; name=&#34;username&#34; /&gt; &lt;label for=&#34;password&#34;&gt;password&lt;/label&gt; &lt;input id=&#34;password&#34; name=&#34;password&#34; /&gt; &lt;button&gt;Sign In&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; 然后给登录链接添加事件，这里使用了jquery库：" />
+<meta property="og:description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/progressive-enhancement-logon-page/" />
 <meta property="article:published_time" content="2013-01-12T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2013-01-12T00:00:00&#43;00:00"/>
 
 <meta itemprop="name" content="渐进增强实现首页弹出层登录">
-<meta itemprop="description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。
-与之对应的一个概念是“平稳退化“，这个开发理念主张首先针对高级的、现代的浏览器来开发设计网站，而对老的、落伍的浏览器提供一个仅仅可以工作的版本，却没有那么好的体验。
-在我看来，这两种理念的思想本身差不多，出发点不太一样，最终都是要保持网站在不同境况带给用户的完整功能，只是有些体验差点，有些体验好些。
-我这里会试着用这种前端开发理念，来实现一个首页弹出层登录的功能，我们可以先来探讨一下为什么要使用弹出层登录？我觉得弹出层会有如下2个好处（可能会有些肤浅）：
-对用户来说，不用心打开一个页面，节省下载时间；带给用户更好的体验； 对网站提供者来说，至少可以减少一次页面请求，降低服务器负载； 好了，我们来开始来做这个登录的例子。首先我们先按照最原始的思路实现一个登录页面，功能要求就是当用户点击页顶部的登录链接时会跳转到登录页面。我先来完成基本的代码：
-html代码：
-&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; 基本的样式：
-#top { width: 100%; border-botton: 1px solid #ccc; background: #eee; line-height: 24px; height: 24px; over-flow: hidden; } .wrapper { margin: 0 auto; width: 960px; } 就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：
-&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;div id=&#34;signinpanel&#34;&gt; &lt;label for=&#34;username&#34;&gt;username&lt;/label&gt; &lt;input id=&#34;username&#34; name=&#34;username&#34; /&gt; &lt;label for=&#34;password&#34;&gt;password&lt;/label&gt; &lt;input id=&#34;password&#34; name=&#34;password&#34; /&gt; &lt;button&gt;Sign In&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; 然后给登录链接添加事件，这里使用了jquery库：">
+<meta itemprop="description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那">
 
 
 <meta itemprop="datePublished" content="2013-01-12T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-01-12T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="97">
+<meta itemprop="wordCount" content="928">
 
 
 
 <meta itemprop="keywords" content="前端开发," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="渐进增强实现首页弹出层登录"/>
-<meta name="twitter:description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。
-与之对应的一个概念是“平稳退化“，这个开发理念主张首先针对高级的、现代的浏览器来开发设计网站，而对老的、落伍的浏览器提供一个仅仅可以工作的版本，却没有那么好的体验。
-在我看来，这两种理念的思想本身差不多，出发点不太一样，最终都是要保持网站在不同境况带给用户的完整功能，只是有些体验差点，有些体验好些。
-我这里会试着用这种前端开发理念，来实现一个首页弹出层登录的功能，我们可以先来探讨一下为什么要使用弹出层登录？我觉得弹出层会有如下2个好处（可能会有些肤浅）：
-对用户来说，不用心打开一个页面，节省下载时间；带给用户更好的体验； 对网站提供者来说，至少可以减少一次页面请求，降低服务器负载； 好了，我们来开始来做这个登录的例子。首先我们先按照最原始的思路实现一个登录页面，功能要求就是当用户点击页顶部的登录链接时会跳转到登录页面。我先来完成基本的代码：
-html代码：
-&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; 基本的样式：
-#top { width: 100%; border-botton: 1px solid #ccc; background: #eee; line-height: 24px; height: 24px; over-flow: hidden; } .wrapper { margin: 0 auto; width: 960px; } 就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：
-&lt;div id=&#34;top&#34;&gt; &lt;div class=&#34;wrapper&#34;&gt; &lt;a href=&#34;login.html&#34; id=&#34;signinlink&#34;&gt;Sign In&lt;/a&gt; &lt;div id=&#34;signinpanel&#34;&gt; &lt;label for=&#34;username&#34;&gt;username&lt;/label&gt; &lt;input id=&#34;username&#34; name=&#34;username&#34; /&gt; &lt;label for=&#34;password&#34;&gt;password&lt;/label&gt; &lt;input id=&#34;password&#34; name=&#34;password&#34; /&gt; &lt;button&gt;Sign In&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; 然后给登录链接添加事件，这里使用了jquery库："/>
+<meta name="twitter:description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那"/>
 
   </head>
 
@@ -86,7 +62,7 @@ html代码：
     <div class="bg-black">
       <nav class="pv3 ph3 ph4-ns" role="navigation">
   <div class="flex-l justify-between items-center center">
-    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
       不争笔记
     </a>
     <div class="flex-l items-center">
@@ -95,19 +71,19 @@ html代码：
       
         <ul class="pl0 mr3 mv0">
           
-          <li class="list f5 b dib pr3">
+          <li class="list f5 fw4 dib pr3">
             <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
               BabylonJS 教程
             </a>
           </li>
           
-          <li class="list f5 b dib pr3">
+          <li class="list f5 fw4 dib pr3">
             <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
               Linux 教程
             </a>
           </li>
           
-          <li class="list f5 b dib pr3">
+          <li class="list f5 fw4 dib pr3">
             <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
               博文
             </a>
@@ -136,22 +112,36 @@ html代码：
 
 
 
-    <main class="pb7" role="main">
+    <main class="" role="main">
       
   
   <article class="flex-l flex-wrap justify-between mw8 center ph3">
 
-    <header class="mt4 w-100">
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">渐进增强实现首页弹出层登录</h1>
+      <div class="gray">
       
-      <h1 class="f2 mb1">渐进增强实现首页弹出层登录</h1>
-      
-      <time class="f6 mv4 dib tracked" datetime="2013-01-12T00:00:00Z">January 12, 2013</time>
-      
-      
+        <time class="f6 dib tracked" datetime="2013-01-12T00:00:00Z">2013年1月12日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
     </header>
     
     <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
-      <div class="x-md"><p>先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。</p>
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。</p>
 
 <p>与之对应的一个概念是“平稳退化“，这个开发理念主张首先针对高级的、现代的浏览器来开发设计网站，而对老的、落伍的浏览器提供一个仅仅可以工作的版本，却没有那么好的体验。</p>
 
@@ -215,7 +205,8 @@ html代码：
 <p>虽然简单几行代码，却也是先了基本的弹出功能，return false；表示链接的原生时间被忽略掉了，点击链接只会处理我指定的时间。而当遇到不支持javascript的浏览器时，并不会影响功能的使用，单击登录链接仍然会跳转到登陆页面。</p>
 
 <p>到此，demo完成。渐进增强的本质是强调内容本身，在内容丰富的基础上，对用户的体验进行优化，并且不会使功能受损。</p>
-</div><ul class="pa0">
+
+      </div><ul class="pa0">
   
    <li class="list di">
      <a href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">前端开发</a>

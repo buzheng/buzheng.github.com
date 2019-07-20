@@ -17,13 +17,7 @@
       <pubDate>Sun, 13 Jan 2013 00:00:00 +0000</pubDate>
       
       <guid>/post/innerhtml-ie-firefox-chrome/</guid>
-      <description>最近在用javascript 写一个代码语法高亮工具，由于取代码部分的时候需要用到innerHTML属性，发现了IE6, IE7, IE8与IE9, firefox, chrome对innerHTML实现的不同。现在IE9已经属于现代浏览器了，实现方式已经和firefox, chrome一致。下面说说区别：
-IE6,IE7,IE8会将标签转为大写，对没有关闭的html标签（注意是html标签，比如）进行关闭，并不在意其他的自定义标签(比如)是否关闭，并且会将属性值的引号也给丢掉了。
-IE9,firefox,chrome会将标签专为小写，并关闭所有没有关闭的标签。
-例如下面一段html代码，要求取div#test的innerHTML值：
-&amp;lt;div id=&amp;#34;test&amp;#34;&amp;gt; &amp;lt;span&amp;gt;you are here&amp;lt;/span&amp;gt; &amp;lt;XXXX&amp;gt;xxxx &amp;lt;p&amp;gt;aaa &amp;lt;/div&amp;gt; 在IE9,firefox,chrome下取出的内容为：
-&amp;lt;span&amp;gt;you are here&amp;lt;/span&amp;gt; &amp;lt;xxxx&amp;gt;xxxx &amp;lt;p&amp;gt;aaa &amp;lt;/p&amp;gt;&amp;lt;/xxxx&amp;gt; IE6,IE7,IE8下取出的内容为：
-&amp;lt;SPAN class=a&amp;gt;you are here&amp;lt;/SPAN&amp;gt; &amp;lt;XXXX&amp;gt;xxxx &amp;lt;P&amp;gt;aaa &amp;lt;/P&amp;gt; 有时候仅仅是想取出里面的原始内容进行处理的话，还真是个麻烦事。</description>
+      <description>最近在用javascript 写一个代码语法高亮工具，由于取代码部分的时候需要用到innerHTML属性，发现了IE6, IE7, IE8与IE9, firefox, c</description>
     </item>
     
     <item>
@@ -32,15 +26,7 @@ IE9,firefox,chrome会将标签专为小写，并关闭所有没有关闭的标�
       <pubDate>Sat, 12 Jan 2013 00:00:00 +0000</pubDate>
       
       <guid>/post/progressive-enhancement-logon-page/</guid>
-      <description>先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。
-与之对应的一个概念是“平稳退化“，这个开发理念主张首先针对高级的、现代的浏览器来开发设计网站，而对老的、落伍的浏览器提供一个仅仅可以工作的版本，却没有那么好的体验。
-在我看来，这两种理念的思想本身差不多，出发点不太一样，最终都是要保持网站在不同境况带给用户的完整功能，只是有些体验差点，有些体验好些。
-我这里会试着用这种前端开发理念，来实现一个首页弹出层登录的功能，我们可以先来探讨一下为什么要使用弹出层登录？我觉得弹出层会有如下2个好处（可能会有些肤浅）：
-对用户来说，不用心打开一个页面，节省下载时间；带给用户更好的体验； 对网站提供者来说，至少可以减少一次页面请求，降低服务器负载； 好了，我们来开始来做这个登录的例子。首先我们先按照最原始的思路实现一个登录页面，功能要求就是当用户点击页顶部的登录链接时会跳转到登录页面。我先来完成基本的代码：
-html代码：
-&amp;lt;div id=&amp;#34;top&amp;#34;&amp;gt; &amp;lt;div class=&amp;#34;wrapper&amp;#34;&amp;gt; &amp;lt;a href=&amp;#34;login.html&amp;#34; id=&amp;#34;signinlink&amp;#34;&amp;gt;Sign In&amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; 基本的样式：
-#top { width: 100%; border-botton: 1px solid #ccc; background: #eee; line-height: 24px; height: 24px; over-flow: hidden; } .wrapper { margin: 0 auto; width: 960px; } 就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：
-&amp;lt;div id=&amp;#34;top&amp;#34;&amp;gt; &amp;lt;div class=&amp;#34;wrapper&amp;#34;&amp;gt; &amp;lt;a href=&amp;#34;login.html&amp;#34; id=&amp;#34;signinlink&amp;#34;&amp;gt;Sign In&amp;lt;/a&amp;gt; &amp;lt;div id=&amp;#34;signinpanel&amp;#34;&amp;gt; &amp;lt;label for=&amp;#34;username&amp;#34;&amp;gt;username&amp;lt;/label&amp;gt; &amp;lt;input id=&amp;#34;username&amp;#34; name=&amp;#34;username&amp;#34; /&amp;gt; &amp;lt;label for=&amp;#34;password&amp;#34;&amp;gt;password&amp;lt;/label&amp;gt; &amp;lt;input id=&amp;#34;password&amp;#34; name=&amp;#34;password&amp;#34; /&amp;gt; &amp;lt;button&amp;gt;Sign In&amp;lt;/button&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; 然后给登录链接添加事件，这里使用了jquery库：</description>
+      <description>先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那</description>
     </item>
     
   </channel>
