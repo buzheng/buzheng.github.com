@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.5" />
+    <meta name="generator" content="Hugo 0.55.6" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,7 +36,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="/" />
 
-<meta property="og:updated_time" content="2019-07-19T05:00:00&#43;08:00"/>
+<meta property="og:updated_time" content="2019-07-20T05:00:00&#43;08:00"/>
 
 <meta itemprop="name" content="不争笔记">
 <meta itemprop="description" content="">
@@ -110,6 +110,25 @@
     
     <div class="mw8 center">
       <section class="flex-ns flex-wrap justify-around mt5">
+        
+          <div class="relative w-100  mb4 bg-white">
+            <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">DEC 18, 2013</span>
+    <h1 class="f3 near-black">
+      <a href="/post/mybatis-pageable-plugin/" class="link black dim">
+        MyBatis 物理分页插件
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      我对分页组件有着比较简单原始的想法，就是传入一个分页参数对象，分页组件将分页对象返回。组件实现用到了Mybatis的拦截器，由于对Mybatis的原理并没有深入研究过，有些代码直接拷贝自网上，先按想法实现功能。
+主要思路 1、分页对象采用spring-data中的Page和Pageable，其中Pageable作为分页请求，Page为返回的分页对象。 2、拦截器会对方法中的参数进行分析，如果发现Pageable类型的参数，则认为是分页请求，将请求封装为Page对象返回。
+拦截器配置 &lt;plugins&gt; &lt;plugin interceptor=&#34;org.buzheng.commons.mybatis.MybatisPageableInterceptor&#34;&gt; &lt;property name=&#34;dialectClass&#34; value=&#34;org.buzheng.commons.mybatis.MySQLDialect&#34;/&gt; &lt;/plugin&gt; &lt;/plugins&gt; Mapper接口方法写法 public interface SysUserDao { Page&lt;SysUser&gt; findPageByParams(Map&lt;String, Object&gt; params, Pageable pageRequest); } Mapper.xml 写法(和普通查询一样) &lt;select id=&#34;findPageByParams&#34; resultType=&#34;SysUser&#34;&gt; &lt;include refid=&#34;findSql&#34; /&gt; &lt;where&gt; &lt;if test=&#34;param1.groupId != null&#34;&gt; u.group_id = #{param1.groupId} &lt;/if&gt; &lt;/where&gt; ORDER BY u.add_time &lt;/select&gt; service 调用写法 @Service public class SysUserServiceImpl implements SysUserService { @Resource private SysUserDao sysUserDao; @Override public Page&lt;SysUser&gt; findPage(Map&lt;String, Object&gt; params, int pageNo, int pageSize) { Pageable pageRequest = new PageRequest(pageNo, pageSize); return this.
+    </div>
+  </div>
+</div>
+
+          </div>
         
           <div class="relative w-100  mb4 bg-white">
             <div class="relative w-100 mb4 bg-white nested-copy-line-height">
@@ -267,25 +286,6 @@ proxy pattern class diagram
 IHello接口定义个了一个操作sayHello。
 package org.buzheng.study.pattern.proxy; public interface IHello { public void sayHello(String name); } HelloSpeaker是IHello的一个具体实现。 ``` java package org.buzheng.study.pattern.proxy; public class HelloSpeaker implements IHello { public void sayHello(String name) { System.out.println(&#34;hello &#34; + name); } } HelloStaticProxy是一个代理类，负责添加日志的功能，在操作的前后都记录日志。
 package org.buzheng.study.pattern.proxy; public class HelloLoggingProxy implements IHello { private IHello hello; public HelloLoggingProxy(IHello hello) { super(); this.hello = hello; } public void sayHello(String name) { System.
-    </div>
-  </div>
-</div>
-
-          </div>
-        
-          <div class="relative w-100  mb4 bg-white">
-            <div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">APR 28, 2013</span>
-    <h1 class="f3 near-black">
-      <a href="/post/quick-sort/" class="link black dim">
-        快速排序
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      <p>快速排序也是一种交换排序。首先选定一个基准元素（一般取第一个或最后一个元素），根据基准元素，将序列分为2个子序列，左边子序列的全部元素都小于等于基准元素，右边序列的全部元素都大于等于该基准元素。然后对左右这两个序列，递归重复上面的算法，直到序列排序完成。</p>
-
-<p>快速排序的时间复杂度期望是 O(n<strong><em>log</em></strong>(n))，最慢可达到 O(n<sup>2</sup>)。一般在一个乱序的大列表中，快速排序还是最快的排序算法。</p>
     </div>
   </div>
 </div>
