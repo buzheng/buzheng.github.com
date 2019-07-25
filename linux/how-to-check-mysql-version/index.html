@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何检查 MySQL 版本 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何检查 MySQL 版本" />
+<meta property="og:description" content="MySQL 及其替代品 MariaDB 是最流行的开源关系数据库管理系统。 MySQL 版本之间存在一些重要差异，因此在某些情况下，了解服务器上运行的版本可能很重要。
+
+例如，如果要安装需要特定 MySQL 版本的应用程序，则需要在安装开始之前确定 MySQL 服务器的版本。
+
+在本文中，我们将向您展示如何检查系统上安装的 MySQL 或 MariaDB 服务器的版本。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-check-mysql-version/" />
+<meta property="article:published_time" content="2019-07-25T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-25T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何检查 MySQL 版本">
+<meta itemprop="description" content="MySQL 及其替代品 MariaDB 是最流行的开源关系数据库管理系统。 MySQL 版本之间存在一些重要差异，因此在某些情况下，了解服务器上运行的版本可能很重要。
+
+例如，如果要安装需要特定 MySQL 版本的应用程序，则需要在安装开始之前确定 MySQL 服务器的版本。
+
+在本文中，我们将向您展示如何检查系统上安装的 MySQL 或 MariaDB 服务器的版本。">
+
+
+<meta itemprop="datePublished" content="2019-07-25T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-25T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="791">
+
+
+
+<meta itemprop="keywords" content="mysql," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-check-mysql-version/featured.jpg"/>
+<meta name="twitter:title" content="如何检查 MySQL 版本"/>
+<meta name="twitter:description" content="MySQL 及其替代品 MariaDB 是最流行的开源关系数据库管理系统。 MySQL 版本之间存在一些重要差异，因此在某些情况下，了解服务器上运行的版本可能很重要。
+
+例如，如果要安装需要特定 MySQL 版本的应用程序，则需要在安装开始之前确定 MySQL 服务器的版本。
+
+在本文中，我们将向您展示如何检查系统上安装的 MySQL 或 MariaDB 服务器的版本。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何检查 MySQL 版本</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-07-25T05:00:00&#43;08:00">2019年7月25日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>MySQL 及其替代品 MariaDB 是最流行的开源关系数据库管理系统。 MySQL 版本之间存在一些重要差异，因此在某些情况下，了解服务器上运行的版本可能很重要。</p>
+
+<p>例如，如果要安装需要特定 MySQL 版本的应用程序，则需要在安装开始之前确定 MySQL 服务器的版本。</p>
+
+<p>在本文中，我们将向您展示如何检查系统上安装的 MySQL 或 MariaDB 服务器的版本。</p>
+
+<h2 id="使用命令行查看版本">使用命令行查看版本</h2>
+
+<p>如果您具有对服务器的 SSH 访问权限，则有几个不同的命令可以帮助您确定 MySQL 的版本。</p>
+
+<p>MySQL 服务器二进制文件已命名 <code>mysqld</code> 。要获取服务器版本，请使用 <code>--version</code> 或 <code>-V</code> 选项运行二进制文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysqld --version</code></pre></div>
+<p>该命令将输出有关 MySQL 版本的信息。在此示例中， MySQL 服务器的版本是 <code>5.7.27</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">mysqld  Ver 5.7.27-0ubuntu0.18.04.1 for Linux on x86_64 ((Ubuntu))</code></pre></div>
+<p>如果 MySQL 服务器需要身份验证，则需要使用 <code>sudo mysql</code> 或 <code>mysql -u username -p</code> 。</p>
+
+<p><code>mysqladmin</code> 是一个客户端实用程序，用于在 MySQL 服务器上执行管理操作。它也可以用于查询 MySQL 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysqladmin -V</code></pre></div>
+<p>输出与上一个命令略有不同：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">mysqladmin  Ver 8.42 Distrib 5.7.27, for Linux on x86_64</code></pre></div>
+<h2 id="使用-mysql-客户端查看版本">使用 MySQL 客户端查看版本</h2>
+
+<p>命令客户端实用程序 <code>mysql</code> 也可用于确定 MySQL 服务器的版本。</p>
+
+<p>要连接到 MySQL 服务器，只需键入 <code>mysql</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql</code></pre></div>
+<p>连接到 MySQL shell 后，该版本将打印在屏幕上：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.27-0ubuntu0.18.04.1 (Ubuntu)</code></pre></div>
+<p>要获取有关 MySQL 版本和其他组件的信息，请查询 <code>version</code> 变量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW VARIABLES LIKE &#34;%version%&#34;;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+-------------------------+-------------------------+
+| Variable_name           | Value                   |
++-------------------------+-------------------------+
+| innodb_version          | 5.7.27                  |
+| protocol_version        | 10                      |
+| slave_type_conversions  |                         |
+| tls_version             | TLSv1,TLSv1.1           |
+| version                 | 5.7.27-0ubuntu0.18.04.1 |
+| version_comment         | (Ubuntu)                |
+| version_compile_machine | x86_64                  |
+| version_compile_os      | Linux                   |
++-------------------------+-------------------------+
+8 rows in set (0.02 sec)</code></pre></div>
+<p>还有一些其他语句和命令可以显示服务器版本。 <code>SELECT VERSION()</code> 语句将仅显示 MySQL 版本。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SELECT VERSION();</code></pre></div>
+<p><code>STATUS</code> 命令也会显示 MySQL 版本以及有关服务器状态的信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">STATUS;</code></pre></div>
+<h2 id="使用-php-查看版本">使用 PHP 查看版本</h2>
+
+<p>如果您在共享主机上并且无法访问命令行或访问像 PhpMyAdmin 这样的 MySQL 客户端，则可以使用 PHP 确定 MySQL 服务器的版本。</p>
+
+<p>在您的网站文档根目录中，使用 <a href="/linux/how-to-use-linux-ftp-command-to-transfer-files/">FTP</a> 或 <a href="/linux/how-to-use-linux-sftp-command-to-transfer-files/">SFTP</a> 客户端上传以下 PHP 文件。确保使用实际的 <a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL 用户帐户</a>更改 <code>my_user</code> 和： <code>my_password</code> 的值</p>
+
+<p>文件: mysql-version.php</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="c1">// Create a database connection.
+</span><span class="c1"></span><span class="nv">$link</span> <span class="o">=</span> <span class="nx">mysqli_connect</span><span class="p">(</span><span class="s2">&#34;localhost&#34;</span><span class="p">,</span> <span class="s2">&#34;my_user&#34;</span><span class="p">,</span> <span class="s2">&#34;my_password&#34;</span><span class="p">);</span>
+
+<span class="c1">// Print the MySQL version.
+</span><span class="c1"></span><span class="k">echo</span> <span class="nx">mysqli_get_server_info</span><span class="p">(</span><span class="nv">$link</span><span class="p">);</span>
+
+<span class="c1">// Close the connection.
+</span><span class="c1"></span><span class="nx">mysqli_close</span><span class="p">(</span><span class="nv">$link</span><span class="p">);</span>
+</code></pre></div>
+<p>在浏览器中打开文件， MySQL 服务器的版本将显示在屏幕上：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">5.7.27-0ubuntu0.18.04.1</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>确定 MySQL 服务器的版本是一项相对容易的任务。在本指南中，我们展示了有关如何查找系统上运行的 MySQL 版本的几种不同方法。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/mysql" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mysql</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mariadb-on-debian-10/">如何在 Debian 10 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-show-databases-in-mysql/">如何在 MySQL 中显示所有的数据库</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-mysql-workbench-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 MySQL Workbench</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-debian-9/">如何在 Debian 9 上安装和配置 Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-centos-7/">如何在 CentOS 7 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">如何创建 MySQL 用户帐户和授予权限</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mariadb-on-debian-9/">如何在 Debian 9 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#使用命令行查看版本">使用命令行查看版本</a></li>
+<li><a href="#使用-mysql-客户端查看版本">使用 MySQL 客户端查看版本</a></li>
+<li><a href="#使用-php-查看版本">使用 PHP 查看版本</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
