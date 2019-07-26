@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux 中的 locate 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux 中的 locate 命令" />
+<meta property="og:description" content="在 Linux 上工作时最常见的操作之一是搜索文件和目录。在 Linux 系统中，有几个命令，它允许你搜索文件与 find 和 locate 是最常用的。
+
+该 locate 命令是按名称搜索文件和目录的最快捷，最简单的方法。
+
+在本教程中，我们将解释如何使用该 locate 命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/locate-command-in-linux/" />
+<meta property="article:published_time" content="2019-07-26T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-26T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="Linux 中的 locate 命令">
+<meta itemprop="description" content="在 Linux 上工作时最常见的操作之一是搜索文件和目录。在 Linux 系统中，有几个命令，它允许你搜索文件与 find 和 locate 是最常用的。
+
+该 locate 命令是按名称搜索文件和目录的最快捷，最简单的方法。
+
+在本教程中，我们将解释如何使用该 locate 命令。">
+
+
+<meta itemprop="datePublished" content="2019-07-26T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-26T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1246">
+
+
+
+<meta itemprop="keywords" content="terminal,locate," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/locate-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux 中的 locate 命令"/>
+<meta name="twitter:description" content="在 Linux 上工作时最常见的操作之一是搜索文件和目录。在 Linux 系统中，有几个命令，它允许你搜索文件与 find 和 locate 是最常用的。
+
+该 locate 命令是按名称搜索文件和目录的最快捷，最简单的方法。
+
+在本教程中，我们将解释如何使用该 locate 命令。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux 中的 locate 命令</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-07-26T05:00:00&#43;08:00">2019年7月26日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1300 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在 Linux 上工作时最常见的操作之一是搜索文件和目录。在 Linux 系统中，有几个命令，它允许你搜索文件与 <code>find</code> 和 <code>locate</code> 是最常用的。</p>
+
+<p>该 <code>locate</code> 命令是按名称搜索文件和目录的最快捷，最简单的方法。</p>
+
+<p>在本教程中，我们将解释如何使用该 <code>locate</code> 命令。</p>
+
+<h2 id="安装-locate">安装 <code>locate</code></h2>
+
+<p>根据发行版本的情况以及系统的配置方式，可以在 Linux 系统上预安装定位包，也可以不预先安装。</p>
+
+<p>要检查系统上是否 <code>locate</code> 安装了该实用程序，请打开终端，键入 <code>locate</code> 并按 <code>Enter</code> 。如果安装了包，系统将显示 <em><code>locate: no pattern to search for specified</code></em> ，否则你会看到类似的东西 <em><code>locate command not found</code></em> 。</p>
+
+<p>如果 <code>locate</code> 未安装，您可以使用发行版的软件包管理器轻松安装它。</p>
+
+<h3 id="在-ubuntu-和-debian-上安装-locate">在 Ubuntu 和 Debian 上安装 <code>locate</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install mlocate</code></pre></div>
+<h3 id="在-centos-和-fedora-上安装-locate">在 CentOS 和 Fedora 上安装 <code>locate</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install mlocate</code></pre></div>
+<h2 id="locate-如何工作"><code>locate</code> 如何工作</h2>
+
+<p><code>locate</code> 命令通过 <code>updatedb</code> 命令生成的数据库文件搜索给定模式。找到的结果显示在屏幕上，每行一个。</p>
+
+<p>在 mlocate 软件包安装期间，会创建一个每 24 小时运行一次 <code>updatedb</code> 命令的 <a href="/linux/scheduling-cron-jobs-with-crontab/">cron 作业</a>。这可确保定期更新数据库。有关 cron 作业的更多信息，请检查该 <code>/etc/cron.daily/mlocate</code> 文件。</p>
+
+<p>可以通过以 root 身份或使用 sudo 权限的用户运行 <code>updatedb</code> 命令来手动更新数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo updatedb</code></pre></div>
+<p>更新过程将需要一些时间，具体取决于文件和目录的数量以及系统的速度。</p>
+
+<p>数据库更新后才创建的文件不会显示在定位结果中。</p>
+
+<p>与 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a> 搜索文件系统的更强大的命令相比， <code>locate</code> 操作速度更快但缺少许多功能，并且只能通过文件名进行搜索。</p>
+
+<h2 id="如何使用-locate-命令">如何使用 <code>locate</code> 命令</h2>
+
+<p>该 <code>locate</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">locate <span class="o">[</span>OPTION<span class="o">]</span> PATTERN...</code></pre></div>
+<p>在最基本的形式中，当没有任何选项时， <code>locate</code> 命令将打印与搜索模式匹配且用户具有读取权限的所有文件和目录的绝对路径。</p>
+
+<p>例如，要搜索名为的文件， <code>.bashrc</code> 您可以键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate .bashrc</code></pre></div>
+<p>输出将包含名称中包含字符串的所有文件 <code>.bashrc</code> 的名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/etc/bash.bashrc
+/etc/skel/.bashrc
+/home/linuxize/.bashrc
+/usr/share/base-files/dot.bashrc
+/usr/share/doc/adduser/examples/adduser.local.conf.examples/bash.bashrc
+/usr/share/doc/adduser/examples/adduser.local.conf.examples/skel/dot.bashrc</code></pre></div>
+<p>该 <code>/root/.bashrc</code> 文件将不会显示，因为我们使用作为普通用户运行该命令的，该用户对该 <code>/root</code> 目录没有访问权限。</p>
+
+<p>如果结果列表很长，为了更好的可读性，您可以将输出传递给 <a href="/linux/less-command-in-linux/"><code>less</code></a> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate .bashrc | less</code></pre></div>
+<p>该 <code>locate</code> 命令还接受包含通配符(如通配符)的模式 <code>*</code> 。当模式不包含通配符是，将要搜索 <code>*PATTERN*</code> ，这就是为什么在前面的示例中显示了名称中包含搜索模式的所有文件。</p>
+
+<p>通配符是用于表示零个，一个或多个字符的符号。例如，要搜索 <code>.md</code> 系统上的所有文件，您将使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate *.md</code></pre></div>
+<p>要限制搜索结果的数量，请使用 <code>-n</code> 选项，后跟要显示的结果数。例如，以下命令将搜索所有 <code>.py</code> 文件并仅显示 10 个结果：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate -n 10 *.py</code></pre></div>
+<p>默认情况下， <code>locate</code> 执行区分大小写的搜索。 <code>-i</code>(<code>--ignore-case</code>) 选项告诉 <code>locate</code> 在搜索时忽略大小写。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate -i readme.md</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/home/linuxize/p1/readme.md
+/home/linuxize/p2/README.md
+/home/linuxize/p3/ReadMe.md</code></pre></div>
+<p>要显示所有匹配条目的计数，请使用 <code>-c</code>(<code>--count</code>) 选项。以下命令将返回其名称中包含 <code>.bashrc</code> 的所有文件的数量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate -c .bashrc</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">6</code></pre></div>
+<p>默认情况下， <code>locate</code> 不检查找到的文件是否仍存在于文件系统上。如果在最新数据库更新后删除文件，如果文件与搜索模式匹配，则它将包含在搜索结果中。</p>
+
+<p>要仅显示 <code>locate</code> 运行时存在的文件的名称，请使用 <code>-e</code>(<code>--existing</code>) 选项。例如，以下内容仅返回现有 <code>.json</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate -e *.json</code></pre></div>
+<p>如果您需要运行更复杂的搜索，可以使用 <code>-r</code>(<code>--regexp</code>) 选项，该选项允许您使用基本正则表达式而不是模式进行搜索。可以多次指定此选项。
+例如，要在系统中搜索所有 <code>.mp4</code> 与 <code>.avi</code> 文件，而忽略你可以运行情况：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">locate --regex -i &#34;(\.mp4|\.avi)&#34;</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>该 <code>locate</code> 命令在文件系统中搜索名称与给定模式匹配的文件和目录。命令语法易于记忆，结果几乎立即显示。</p>
+
+<p>在终端中运行 <code>man locate</code> 可以查看 <code>locate</code> 命令的所有可用选项的更多信息。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/locate" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">locate</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-shebang/">Bash Shebang</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-if-string-contains-substring-in-bash/">在 Bash 中如何检查字符串是否包含的子串</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-for-loop/">Bash 中的 For 循环</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-the-kernel-version-in-linux/">如何在 Linux 中检查内核版本</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-groups-in-linux/">在 Linux 中查看所有的用户组</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/check-open-ports-linux/">如何在 Linux 中检查(扫描)开放端口</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/umask-command-in-linux/">Linux 中的 Umask 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/less-command-in-linux/">Linux 中的 less 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-use-nano-text-editor/">如何在 Linux 中使用命令行文本编辑器 Nano</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/linux-tr-command/">Linux tr 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#安装-locate">安装 <code>locate</code></a>
+<ul>
+<li><a href="#在-ubuntu-和-debian-上安装-locate">在 Ubuntu 和 Debian 上安装 <code>locate</code></a></li>
+<li><a href="#在-centos-和-fedora-上安装-locate">在 CentOS 和 Fedora 上安装 <code>locate</code></a></li>
+</ul></li>
+<li><a href="#locate-如何工作"><code>locate</code> 如何工作</a></li>
+<li><a href="#如何使用-locate-命令">如何使用 <code>locate</code> 命令</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
