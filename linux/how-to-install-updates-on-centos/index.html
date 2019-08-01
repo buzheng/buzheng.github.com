@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 CentOS 7 上安装更新 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 7 上安装更新" />
+<meta property="og:description" content="保持 CentOS 系统的最新状态，安装最新的安全更新是整个系统安全性中最重要的部分之一。如果您未使用最新的安全修补程序更新操作系统的软件包，则您的计算机将容易受到攻击。
+
+推荐的方法是使用自动化更新程序 yum-cron 。另一种选择是手动更新系统。
+
+在本教程中，我们将向您展示如何在 CentOS 7 上手动更新系统包。相同的说明适用于 CentOS 6 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-updates-on-centos/" />
+<meta property="article:published_time" content="2019-07-31T05:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-31T05:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 CentOS 7 上安装更新">
+<meta itemprop="description" content="保持 CentOS 系统的最新状态，安装最新的安全更新是整个系统安全性中最重要的部分之一。如果您未使用最新的安全修补程序更新操作系统的软件包，则您的计算机将容易受到攻击。
+
+推荐的方法是使用自动化更新程序 yum-cron 。另一种选择是手动更新系统。
+
+在本教程中，我们将向您展示如何在 CentOS 7 上手动更新系统包。相同的说明适用于 CentOS 6 。">
+
+
+<meta itemprop="datePublished" content="2019-07-31T05:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-07-31T05:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="928">
+
+
+
+<meta itemprop="keywords" content="centos,yum," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-updates-on-centos/featured.jpg"/>
+<meta name="twitter:title" content="如何在 CentOS 7 上安装更新"/>
+<meta name="twitter:description" content="保持 CentOS 系统的最新状态，安装最新的安全更新是整个系统安全性中最重要的部分之一。如果您未使用最新的安全修补程序更新操作系统的软件包，则您的计算机将容易受到攻击。
+
+推荐的方法是使用自动化更新程序 yum-cron 。另一种选择是手动更新系统。
+
+在本教程中，我们将向您展示如何在 CentOS 7 上手动更新系统包。相同的说明适用于 CentOS 6 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 CentOS 7 上安装更新</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-07-31T05:00:00&#43;08:00">2019年7月31日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>保持 CentOS 系统的最新状态，安装最新的安全更新是整个系统安全性中最重要的部分之一。如果您未使用最新的安全修补程序更新操作系统的软件包，则您的计算机将容易受到攻击。</p>
+
+<p>推荐的方法是使用<a href="/linux/configure-automatic-updates-with-yum-cron-on-centos-7/">自动化更新程序 <code>yum-cron</code></a> 。另一种选择是手动更新系统。</p>
+
+<p>在本教程中，我们将向您展示如何在 CentOS 7 上手动更新系统包。相同的说明适用于 CentOS 6 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>要安装和更新软件包，您需要以 root 用户身份或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
+
+<h2 id="更新-centos-上的软件包">更新 CentOS 上的软件包</h2>
+
+<p><a href="/linux/how-to-install-rpm-packages-on-centos/">RPM</a> 是 Red Hat 及其衍生产品(如 CentOS) 使用的包管理程序。</p>
+
+<p>Yum 是 CentOS 中的默认包管理器工具。它用于从官方 CentOS 存储库以及其他第三方存储库安装，删除，下载，查询和更新软件包。</p>
+
+<p>在运行更新之前，您可以使用以下命令检查可用更新：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum check-update</code></pre></div>
+<p>输出将包含可用于更新的所有包的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.s.uw.edu
+ * centos-sclo-rh: centos.s.uw.edu
+ * centos-sclo-sclo: centos.s.uw.edu
+ * epel: mirror.cherryservers.com
+ * extras: centos.s.uw.edu
+ * updates: centos.s.uw.edu
+
+bind-libs-lite.x86_64                    32:9.9.4-74.el7_6.2             updates
+bind-license.noarch                      32:9.9.4-74.el7_6.2             updates
+curl.x86_64                              7.29.0-51.el7_6.3               updates
+device-mapper.x86_64                     7:1.02.149-10.el7_6.8           updates
+device-mapper-event.x86_64               7:1.02.149-10.el7_6.8           updates
+device-mapper-event-libs.x86_64          7:1.02.149-10.el7_6.8           updates
+device-mapper-libs.x86_64                7:1.02.149-10.el7_6.8           updates</code></pre></div>
+<p>要更新单个程序包，请使用 <code>yum install</code> 命令，后跟要更新的程序包的名称。例如，要仅更新 <a href="/linux/curl-command-examples/"><code>curl</code></a> 您要运行的包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install curl</code></pre></div>
+<p>Yum 将为您提供将要更新的软件包的摘要，并提示您进行确认。输入 <code>y</code> 进行更新。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Dependencies Resolved
+
+================================================================================
+ Package         Arch           Version                   Repository       Size
+================================================================================
+Updating:
+ curl            x86_64         7.29.0-51.el7_6.3         updates         269 k
+Updating for dependencies:
+ libcurl         x86_64         7.29.0-51.el7_6.3         updates         222 k
+
+Transaction Summary
+================================================================================
+Upgrade  1 Package (+1 Dependent package)
+
+Total download size: 492 k
+Is this ok [y/d/N]:</code></pre></div>
+<p>要更新所有包，请使用以下 <code>yum update</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum update</code></pre></div>
+<p>该命令将更新存储库，并为您提供可以更新的所有软件包的列表。提示输入 <code>y</code> 时继续。</p>
+
+<h2 id="禁用更新某些包">禁用更新某些包</h2>
+
+<p>有时您可能希望将程序包限制为更新为较新的版本。 Yum 插件 <code>versionlock</code> 允许您将包锁定到特定版本。</p>
+
+<p>默认情况下不安装该插件，因此首先需要安装它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">sudo yum install yum-plugin-versionlock</code></pre></div>
+<p>在安装过程中，将在系统上创建两个配置文件，这些文件存储在 <code>/etc/yum/pluginconf.d</code> 目录中。配置文件 <code>versionlock.conf</code> 和 <code>versionlock.list</code> 包含锁定包的文件。默认情况下，此文件中未列出任何包。</p>
+
+<p>要锁定软件包的版本，您可以手动在文件中添加软件包名称，也可以使用 <code>yum versionlock</code> 命令后跟软件包名称。例如，为了防止所有 PHP 包(以 “php-” 开头的所有包)被更新，您将运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">sudo yum versionlock php-*</code></pre></div>
+<p>这会将 <a href="/linux/install-php-7-on-centos-7/">PHP</a> 包锁定到当前版本。</p>
+
+<h2 id="查看-yum-日志">查看 Yum 日志</h2>
+
+<p><code>yum</code> 安装和更新的软件包的历史记录记录在 <code>/var/log/yum</code> 文件中。您可以使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> 或者 <a href="/linux/linux-tail-command/"><code>tail</code></a> 命令查看最新记录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tail /var/log/yum.log</code></pre></div>
+<p>输出将包含有关软件包安装和更新的记录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Jul 23 16:00:04 Installed: 7:squid-3.5.20-12.el7_6.1.x86_64
+Jul 31 22:27:16 Updated: libcurl-7.29.0-51.el7_6.3.x86_64
+Jul 31 22:27:16 Updated: curl-7.29.0-51.el7_6.3.x86_64</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>安装更新并使 CentOS 系统保持最新非常简单，但如果您管理多台 CentOS 计算机，可能会非常耗时，有时您可能会忽略重要更新。最好的选择是设置自动更新。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/yum" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">yum</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-installed-packages-on-centos/">如何在CentOS上列出已安装的软件包</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/configure-automatic-updates-with-yum-cron-on-centos-7/">在 CentOS 7 上使用 yum-cron 配置自动更新</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/post/install-and-config-k8s-cluster-on-centos-7/">在 centos 7 上安装和配置 Kubernetes 集群</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-mount-an-exfat-drive-on-centos-7/">如何在 CentOS 7 上安装 exFAT 驱动器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-squid-proxy-on-centos-7/">如何在 CentOS 7 上安装和配置 Squid 代理</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-gcc-compiler-on-centos-7/">如何在CentOS 7上安装GCC编译器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-slack-on-centos-7/">如何在 CentOS 7 上安装 Slack</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-memcached-on-centos-7/">如何在 CentOS 7 上安装 Memcached</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-centos-7/">如何在 CentOS 7 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-a-bootable-centos-7-usb-stick-on-linux/">如何在 Linux 上创建可启动的 CentOS 7 U 盘</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#更新-centos-上的软件包">更新 CentOS 上的软件包</a></li>
+<li><a href="#禁用更新某些包">禁用更新某些包</a></li>
+<li><a href="#查看-yum-日志">查看 Yum 日志</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
