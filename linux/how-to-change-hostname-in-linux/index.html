@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Linux 中设置或更改主机名 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Linux 中设置或更改主机名" />
+<meta property="og:description" content="默认情况下，系统主机名在安装过程中设置，或者如果要创建虚拟机，则会在启动时将其动态分配给实例，但有时需要更改它。
+
+本教程将引导您完成在 Linux 中更改主机名的过程，而无需重新启动系统。本教程中方法适用于任何使用 systemd 的现代 Linux 发行版。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-change-hostname-in-linux/" />
+<meta property="article:published_time" content="2019-08-12T12:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-08-12T12:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Linux 中设置或更改主机名">
+<meta itemprop="description" content="默认情况下，系统主机名在安装过程中设置，或者如果要创建虚拟机，则会在启动时将其动态分配给实例，但有时需要更改它。
+
+本教程将引导您完成在 Linux 中更改主机名的过程，而无需重新启动系统。本教程中方法适用于任何使用 systemd 的现代 Linux 发行版。">
+
+
+<meta itemprop="datePublished" content="2019-08-12T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-12T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="637">
+
+
+
+<meta itemprop="keywords" content="terminal,hostname," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-change-hostname-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Linux 中设置或更改主机名"/>
+<meta name="twitter:description" content="默认情况下，系统主机名在安装过程中设置，或者如果要创建虚拟机，则会在启动时将其动态分配给实例，但有时需要更改它。
+
+本教程将引导您完成在 Linux 中更改主机名的过程，而无需重新启动系统。本教程中方法适用于任何使用 systemd 的现代 Linux 发行版。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Linux 中设置或更改主机名</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-08-12T12:00:00&#43;08:00">2019年8月12日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>默认情况下，系统主机名在安装过程中设置，或者如果要创建虚拟机，则会在启动时将其动态分配给实例，但有时需要更改它。</p>
+
+<p>本教程将引导您完成在 Linux 中更改主机名的过程，而无需重新启动系统。本教程中方法适用于任何使用 systemd 的现代 Linux 发行版。</p>
+
+<h2 id="什么是主机名">什么是主机名</h2>
+
+<p>主机名是分配给机器的标签，用于标识网络上的计算机。网络中的每个设备都应具有唯一的主机名。</p>
+
+<p>主机名可以是包含字母数字字符，点和连字符的简单字符串。如果计算机已连接到 Internet(例如 Web 或邮件服务器)，建议使用完全限定的域名 (FQDN) 作为系统主机名。该 <a href="https://kb.iu.edu/d/aiuv">FQDN</a> 由两个部分组成，主机名和域名。</p>
+
+<h2 id="显示当前主机名">显示当前主机名</h2>
+
+<p>在使用 systemd 的 Linux 系统上，该 <code>hostnamectl</code> 命令可用于查询和更改给定计算机上的主机名和相关设置。</p>
+
+<p>要查看当前主机名，请调用 <code>hostnamectl</code> 不带任何参数的命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">hostnamectl</code></pre></div>
+<p>系统主机名在下图中突出显示：</p>
+
+<figure><img src="view-hostname.jpg" alt=""></figure>
+
+<h2 id="更改主机名">更改主机名</h2>
+
+<p>要更改主机名，请使用 <code>hostnamectl</code> 的 <code>set-hostname</code> 参数后跟新主机名。只有 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 权限的用户才能更改系统主机名。</p>
+
+<p>例如，要将系统主机名更改为 <code>mail.buzheng.com</code> ，您将使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname mail.buzheng.com</code></pre></div>
+<p>该 <code>hostnamectl</code> 命令不产生输出。成功后，返回 <code>0</code> ，否则为非零故障代码。</p>
+
+<p>最后，要验证主机名是否已成功更改，请再次使用 <code>hostnamectl</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">hostnamectl</code></pre></div>
+<p>新的系统主机名和一些其他系统信息(如<a href="/linux/how-to-check-linux-version/">内核版本</a>) 将显示在终端上。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">   Static hostname: mail.linuxize.com
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 70a3f06298014fd9ac42e5dc1de1034a
+           Boot ID: 6d45a1a8d436418e97519da01ea61c1b
+    Virtualization: oracle
+  Operating System: Debian GNU/Linux 10 (buster)
+            Kernel: Linux 4.19.0-5-amd64
+      Architecture: x86-64</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们向您展示了如何更改 Linux 系统的主机名。根据您的 <a href="/linux/how-to-check-linux-version/">Linux 发行版</a>和虚拟化类型，可能需要执行其他步骤才能完成此过程。</p>
+
+<p>有关特定于发行版的说明，请查看以下文章：</p>
+
+<ul>
+<li><a href="/linux/how-to-change-hostname-on-centos-7/">如何在 CentOS 上更改主机名</a></li>
+<li><a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">如何在 Ubuntu 上更改主机名</a></li>
+<li><a href="/linux/how-to-change-hostname-on-debian-10/">如何在 Debian 上更改主机名</a></li>
+</ul>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/hostname" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">hostname</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-increment-decrement-variable/">如何在 Bash 中对变量递增或者递减</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-find-ip-address-linux/">如何在 Linux 中查看 IP 地址</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/du-command-in-linux/">Linux 中的 du 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/remove-directory-linux/">如何在 Linux 中删除目录</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/cp-command-in-linux/">Linux 中的 Cp 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/ps-command-in-linux/">Linux 中的 Ps 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-directory-to-path-in-linux/">在 Linux 中如何将目录添加到 PATH 环境变量</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/locate-command-in-linux/">Linux 中的 locate 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-shebang/">Bash Shebang</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-if-string-contains-substring-in-bash/">在 Bash 中如何检查字符串是否包含的子串</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#什么是主机名">什么是主机名</a></li>
+<li><a href="#显示当前主机名">显示当前主机名</a></li>
+<li><a href="#更改主机名">更改主机名</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

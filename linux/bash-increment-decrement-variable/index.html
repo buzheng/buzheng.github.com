@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Bash 中对变量递增或者递减 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.55.6" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Bash 中对变量递增或者递减" />
+<meta property="og:description" content="编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。
+
+递增和递减意味着分别从数值变量的值中添加或减去值(通常为 1 )。可以使用双括号 ((...)) 和 $((...)) 或使用内置的 let 命令执行算术扩展。
+
+在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/bash-increment-decrement-variable/" />
+<meta property="article:published_time" content="2019-08-12T12:00:00&#43;08:00"/>
+<meta property="article:modified_time" content="2019-08-12T12:00:00&#43;08:00"/>
+
+<meta itemprop="name" content="如何在 Bash 中对变量递增或者递减">
+<meta itemprop="description" content="编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。
+
+递增和递减意味着分别从数值变量的值中添加或减去值(通常为 1 )。可以使用双括号 ((...)) 和 $((...)) 或使用内置的 let 命令执行算术扩展。
+
+在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。">
+
+
+<meta itemprop="datePublished" content="2019-08-12T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-12T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="708">
+
+
+
+<meta itemprop="keywords" content="bash,loop,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/bash-increment-decrement-variable/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Bash 中对变量递增或者递减"/>
+<meta name="twitter:description" content="编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。
+
+递增和递减意味着分别从数值变量的值中添加或减去值(通常为 1 )。可以使用双括号 ((...)) 和 $((...)) 或使用内置的 let 命令执行算术扩展。
+
+在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Bash 中对变量递增或者递减</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-08-12T12:00:00&#43;08:00">2019年8月12日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。</p>
+
+<p>递增和递减意味着分别从数值变量的值中添加或减去值(通常为 <code>1</code> )。可以使用双括号 <code>((...))</code> 和 <code>$((...))</code> 或使用内置的 <code>let</code> 命令执行算术扩展。</p>
+
+<p>在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。</p>
+
+<h2 id="使用-和-操作员">使用 <code>+</code> 和 <code>-</code> 操作员</h2>
+
+<p>加/减变量的最简单方法是使用 <code>+</code> 和 <code>-</code> 运算符。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
+<span class="o">((</span><span class="nv">i</span><span class="o">=</span>i+1<span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;i=i+1&#34;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i-1<span class="k">))</span>
+<span class="o">((</span><span class="nv">i</span><span class="o">=</span>i-1<span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;i=i-1&#34;</span></code></pre></div>
+<p>此方法允许您将变量递增/递减所需的任何值。</p>
+
+<p>以下是在 <a href="/linux/bash-until-loop/"><code>until</code></a> 循环中递增变量的示例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
+
+<span class="k">until</span> <span class="o">[</span> <span class="nv">$i</span> -gt <span class="m">3</span> <span class="o">]</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> i: <span class="nv">$i</span>
+  <span class="o">((</span><span class="nv">i</span><span class="o">=</span>i+1<span class="o">))</span>
+<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">i: 0
+i: 1
+i: 2
+i: 3</code></pre></div>
+<h2 id="使用-与-运算符">使用 <code>+=</code> 与 <code>-=</code> 运算符</h2>
+
+<p>除了上面解释的基本运算符之外， bash 还提供赋值运算符 <code>+=</code> 和 <code>-=</code> 。这些运算符用于使用运算符后指定的值递增/递减左操作数的值。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span><span class="nv">i</span><span class="o">+=</span><span class="m">1</span><span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;i+=1&#34;</span> </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span>i-<span class="o">=</span><span class="m">1</span><span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;i-=1&#34;</span> </code></pre></div>
+<p>在接下来的 <a href="/linux/bash-until-loop/"><code>while</code></a> 循环中，我们将 <code>i</code> 变量的值递减 <code>5</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">20</span>
+
+<span class="k">while</span> <span class="o">[</span> <span class="nv">$i</span> -ge <span class="m">5</span> <span class="o">]</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> Number: <span class="nv">$i</span>
+  <span class="nb">let</span> <span class="s2">&#34;i-=5&#34;</span> 
+<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Number: 20
+Number: 15
+Number: 10
+Number: 5</code></pre></div>
+<h2 id="使用-和-运算符">使用 <code>++</code> 和 <code>--</code> 运算符</h2>
+
+<p>在 <code>++</code> 和 <code>--</code> 分别运营商增量和减量，其操作 <code>1</code> 和返回值。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span>i++<span class="o">))</span>
+<span class="o">((</span>++i<span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;i++&#34;</span>
+<span class="nb">let</span> <span class="s2">&#34;++i&#34;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span>i--<span class="o">))</span>
+<span class="o">((</span>--i<span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;i--&#34;</span>
+<span class="nb">let</span> <span class="s2">&#34;--i&#34;</span></code></pre></div>
+<p>可以在操作数之前或之后使用运算符。它们也被称为：</p>
+
+<ul>
+<li>前缀增量：  <code>++i</code></li>
+<li>前缀减量：  <code>--i</code></li>
+<li>后缀增量：  <code>i++</code></li>
+<li>后缀减量：  <code>i--</code></li>
+</ul>
+
+<p>前缀运算符首先让变量加/减 <code>1</code> ，然后返回变量的新值。后缀运算符在变量加/减之前返回运算符的值。</p>
+
+<p>如果您只想增加/减少变量，那么如果您使用前缀或后缀运算符则没有区别。只有在某些其他操作中使用运算符的结果或将其分配给另一个变量时，它才会有所不同。</p>
+
+<p>以下示例演示了 <code>++</code> 操作符在其操作符之前和之后使用时的工作方式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">x</span><span class="o">=</span><span class="m">5</span>
+<span class="nv">y</span><span class="o">=</span><span class="k">$((</span>x++<span class="k">))</span>
+<span class="nb">echo</span> x: <span class="nv">$x</span>
+<span class="nb">echo</span> y: <span class="nv">$y</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">x: 6
+y: 5</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">x</span><span class="o">=</span><span class="m">5</span>
+<span class="nv">y</span><span class="o">=</span><span class="k">$((</span><span class="o">++</span>x<span class="k">))</span>
+<span class="nb">echo</span> x: <span class="nv">$x</span>
+<span class="nb">echo</span> y: <span class="nv">$y</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">x: 6
+y: 6</code></pre></div>
+<p>下面是在 bash 脚本中使用的示例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
+<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> -gt <span class="m">3</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+       <span class="nb">exit</span> <span class="m">1</span>
+  <span class="k">fi</span>
+  <span class="nb">echo</span> i: <span class="nv">$i</span>
+  <span class="o">((</span>i++<span class="o">))</span>
+<span class="k">done</span></code></pre></div>
+<p>使用这些运算符的缺点是变量只能递增或递减 <code>1</code> 。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>Bash 中的变量的递增和递减可以以许多不同的方式执行。无论使用何种方法，结果都是一样的。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/bash" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">bash</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/loop" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">loop</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-for-loop/">Bash 中的 For 循环</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-shebang/">Bash Shebang</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-if-string-contains-substring-in-bash/">在 Bash 中如何检查字符串是否包含的子串</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-source-command/">Bash Source 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-if-else-statement/">Bash if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-arrays/">Bash 数组</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-heredoc/">Bash Heredoc</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/create-a-file-in-linux/">如何在 Linux 中创建文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-functions/">Bash函数</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#使用-和-操作员">使用 <code>+</code> 和 <code>-</code> 操作员</a></li>
+<li><a href="#使用-与-运算符">使用 <code>+=</code> 与 <code>-=</code> 运算符</a></li>
+<li><a href="#使用-和-运算符">使用 <code>++</code> 和 <code>--</code> 运算符</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
