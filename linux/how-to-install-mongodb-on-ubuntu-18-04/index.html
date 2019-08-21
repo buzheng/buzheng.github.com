@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@
 在本教程中，我们将介绍从官方 MongoDB 存储库在 Ubuntu 18.04 计算机上安装和配置最新版 MongoDB Community Edition 的过程。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-mongodb-on-ubuntu-18-04/" />
-<meta property="article:published_time" content="2019-04-26T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-04-26T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-04-26T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-04-26T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 MongoDB">
 <meta itemprop="description" content="MongoDB 是一个免费的开源文档数据库。它属于一个名为 NoSQL 的数据库系列，它与传统的基于表的 SQL 数据库（如 MySQL 和 PostgreSQL ）不同。
 
@@ -203,10 +202,9 @@
 
 <p>安装完成后，通过键入以下内容启动 MongoDB 守护程序并启用随机自启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start mongod
-sudo systemctl enable mongod</code></pre></div>
-<ol>
-<li>验证 MongoDB 安装</li>
-</ol>
+sudo systemctl enable mongod</code></pre></div></li>
+
+<li><p>验证 MongoDB 安装</p>
 
 <p>要验证安装是否已成功完成，我们要使用 <code>mongo</code> 工具连接到 MongoDB 数据库服务器并打印连接状态：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mongo --eval &#39;db.runCommand({ connectionStatus: 1 })&#39;</code></pre></div>
@@ -221,7 +219,8 @@ MongoDB server version: 4.0.2
   },
   &#34;ok&#34; : 1
 }</code></pre></div>
-<p>字段 <code>ok</code> 的值为 <code>1</code> 表示成功。</p>
+<p>字段 <code>ok</code> 的值为 <code>1</code> 表示成功。</p></li>
+</ol>
 
 <h2 id="配置-mongodb">配置 MongoDB</h2>
 
@@ -229,9 +228,7 @@ MongoDB server version: 4.0.2
 
 <p>默认配置设置足以满足大多数用户的需求。但是，对于生产环境，建议把安全部分的注释取消并启用授权，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">security<span class="p">:</span><span class="w">
-</span><span class="w"></span>authorization<span class="p">:</span><span class="w"> </span>enabled</code></pre></div></li>
-</ol>
-
+</span><span class="w">  </span>authorization<span class="p">:</span><span class="w"> </span>enabled</code></pre></div>
 <p>选项 <code>authorization</code> 启用<a href="https://docs.mongodb.com/manual/core/authorization/">基于角色的访问控制(RBAC)</a>，以控制用户对数据库资源和操作的访问。如果禁用此选项，则每个用户都可以访问所有数据库并执行任何操作。</p>
 
 <p>在更改 MongoDB 配置文件后，使用以下命令重新启动 mongod 服务：</p>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
 在本教程中，我们将向您展示如何在CentOS 7上安装带有Nginx的phpMyAdmin。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上安装带有Nginx的phpMyAdmin">
 <meta itemprop="description" content="phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。
 
@@ -176,14 +175,15 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
 
 <ol>
 <li><p>phpMyAdmin包含在<a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL存储库中</a>。如果您尚未启用EPEL，可以键入以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release</code></pre></div>
-<ol>
-<li>启用EPEL存储库后，使用以下命令安装phpMyAdmin及其所有依赖项：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release</code></pre></div></li>
+
+<li><p>启用EPEL存储库后，使用以下命令安装phpMyAdmin及其所有依赖项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install phpmyadmin</code></pre></div><div class="highlight"><pre class="chroma">Make sure you have Nginx and PHP 7 installed on your system before installing phpMyAdmin.</pre></div></li>
 
 <li><p>将<code>/etc/phpMyAdmin</code>目录的组所有权更改为<code>nginx</code>（运行PHP FPM服务的用户）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chgrp -R nginx /etc/phpMyAdmin</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chgrp -R nginx /etc/phpMyAdmin</code></pre></div></li>
+</ol>
+
 <h2 id="配置nginx和phpmyadmin">配置Nginx和phpMyAdmin</h2>
 
 <p>有几种方法可以配置Nginx来提供phpMyAdmin文件。如果您的域的服务器块已经设置为提供PHP请求，那么您只需创建一个从phpMyAdmin安装文件到域文档根目录的符号链接。</p>
@@ -191,9 +191,7 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
 <p>在本指南中，我们将创建一个片段，我们可以将其包含在任何Nginx服务器块文件中。</p>
 
 <p>首先创建<code>snippets</code>目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /etc/nginx/snippets</code></pre></div></li>
-</ol>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /etc/nginx/snippets</code></pre></div>
 <p>打开文本编辑器并创建以下文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/snippets/phpMyAdmin.conf</code></pre></div>
 <p>粘贴以下内容：</p>

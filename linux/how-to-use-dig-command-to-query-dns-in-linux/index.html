@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@
 在本教程中，我们将通过实际示例和最常见挖掘选项的详细说明向您展示如何使用挖掘实用程序。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-use-dig-command-to-query-dns-in-linux/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何使用Dig命令在Linux中查询DNS">
 <meta itemprop="description" content="Dig（Domain Information Groper）是一个功能强大的命令行工具，用于查询DNS名称服务器。
 
@@ -189,11 +188,9 @@
 <li><p>输出的第一行打印已安装的dig版本以及调用的查询。第二行显示全局选项（默认情况下仅为cmd）。</p>
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org
 ;; global options: +cmd</code></pre></div>
-<p>如果您不希望这些行包含在输出中，请使用该<code>+nocmd</code>选项。此选项必须是dig命令后的第一个参数。</p>
+<p>如果您不希望这些行包含在输出中，请使用该<code>+nocmd</code>选项。此选项必须是dig命令后的第一个参数。</p></li>
 
-<ol>
-<li>本节包括有关从请求的权限（DNS服务器）收到的答案的技术详细信息。此部分的第一行是标题，包括操作码（由dig执行的操作）和操作的状态。在这种情况下，状态<code>NOERROR</code>意味着请求的权限服务于查询而没有任何问题。</li>
-</ol>
+<li><p>本节包括有关从请求的权限（DNS服务器）收到的答案的技术详细信息。此部分的第一行是标题，包括操作码（由dig执行的操作）和操作的状态。在这种情况下，状态<code>NOERROR</code>意味着请求的权限服务于查询而没有任何问题。</p>
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">;; Got answer:
 ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 37159
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 2, ADDITIONAL: 5</code></pre></div>
@@ -202,11 +199,9 @@
 <li><p>如果使用挖掘实用程序，则此部分仅在较新版本上显示。您可以<a href="https://en.wikipedia.org/wiki/Extension_mechanisms_for_DNS">在此处</a>阅读有关DNS扩展机制（EDNS）的更多<a href="https://en.wikipedia.org/wiki/Extension_mechanisms_for_DNS">信息</a>。</p>
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096</code></pre></div>
-<p>如果您不希望此部分包含在输出中，请使用该<code>+noedns</code>选项。</p>
+<p>如果您不希望此部分包含在输出中，请使用该<code>+noedns</code>选项。</p></li>
 
-<ol>
-<li>这是dig显示我们的查询（问题）的部分。默认情况下，dig会请求A记录。</li>
-</ol>
+<li><p>这是dig显示我们的查询（问题）的部分。默认情况下，dig会请求A记录。</p>
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">;; QUESTION SECTION:
 ;linux.org.         IN  A</code></pre></div>
 <p>您可以使用该<code>+noquestion</code>选项禁用此部分。</p></li>
@@ -215,11 +210,9 @@
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">;; ANSWER SECTION:
 linux.org.      300 IN  A   104.18.59.123
 linux.org.      300 IN  A   104.18.58.123</code></pre></div>
-<p>通常，您不想关闭答案，但可以使用<code>+noanswer</code>选项从输出中删除此部分。</p>
+<p>通常，您不想关闭答案，但可以使用<code>+noanswer</code>选项从输出中删除此部分。</p></li>
 
-<ol>
-<li>权限部分告诉我们哪些服务器是回答有关查询域的DNS查询的权限。</li>
-</ol>
+<li><p>权限部分告诉我们哪些服务器是回答有关查询域的DNS查询的权限。</p>
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">;; AUTHORITY SECTION:
 linux.org.      86379   IN  NS  lia.ns.cloudflare.com.
 linux.org.      86379   IN  NS  mark.ns.cloudflare.com.</code></pre></div>
@@ -230,10 +223,9 @@ linux.org.      86379   IN  NS  mark.ns.cloudflare.com.</code></pre></div>
 lia.ns.cloudflare.com.  84354   IN  A   173.245.58.185
 lia.ns.cloudflare.com.  170762  IN  AAAA    2400:cb00:2049:1::adf5:3ab9
 mark.ns.cloudflare.com. 170734  IN  A   173.245.59.130
-mark.ns.cloudflare.com. 170734  IN  AAAA    2400:cb00:2049:1::adf5:3b82</code></pre></div>
-<ol>
-<li>这是dig输出的最后一部分，其中包含有关查询的统计信息。</li>
-</ol>
+mark.ns.cloudflare.com. 170734  IN  AAAA    2400:cb00:2049:1::adf5:3b82</code></pre></div></li>
+
+<li><p>这是dig输出的最后一部分，其中包含有关查询的统计信息。</p>
 <div class="highlight"><pre class="chroma"><code class="language-dig" data-lang="dig">;; Query time: 58 msec
 ;; SERVER: 192.168.1.1#53(192.168.1.1)
 ;; WHEN: Fri Oct 12 11:46:46 CEST 2018

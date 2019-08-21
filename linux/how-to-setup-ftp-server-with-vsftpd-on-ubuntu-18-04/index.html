@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@
 虽然本教程是为Ubuntu 18.04编写的，但相同的说明适用于Ubuntu 16.04和任何基于Debian的发行版，包括Debian，Linux Mint和Elementary OS。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-setup-ftp-server-with-vsftpd-on-ubuntu-18-04/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Ubuntu 18.04上使用VSFTPD设置FTP服务器">
 <meta itemprop="description" content="FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。要获得更安全和更快速的数据传输，请使用SCP或SFTP。
 
@@ -213,10 +212,9 @@
 
 <p>/etc/vsftpd.conf文件</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">user_sub_token</span><span class="o">=</span><span class="s">$USER</span>
-<span class="na">local_root</span><span class="o">=</span><span class="s">/home/$USER/ftp</span></code></pre></div>
-<ul>
-<li><strong>方法2.</strong> - 另一个选项是在vsftpd配置文件中添加以下指令。如果必须将用户的可写访问权限授予其主目录，请使用此选项。</li>
-</ul>
+<span class="na">local_root</span><span class="o">=</span><span class="s">/home/$USER/ftp</span></code></pre></div></li>
+
+<li><p><strong>方法2.</strong> - 另一个选项是在vsftpd配置文件中添加以下指令。如果必须将用户的可写访问权限授予其主目录，请使用此选项。</p>
 
 <p>/etc/vsftpd.conf文件</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">allow_writeable_chroot</span><span class="o">=</span><span class="s">YES</span></code></pre></div></li>
@@ -324,15 +322,15 @@ OpenSSH (v6)               ALLOW       Anywhere (v6)</code></pre></div>
 
 <ol>
 <li><p>创建一个名为的新用户<code>newftpuser</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser newftpuser</code></pre></div>
-<ol>
-<li>将用户添加到允许的FTP用户列表：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser newftpuser</code></pre></div></li>
+
+<li><p>将用户添加到允许的FTP用户列表：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;newftpuser&#34; | sudo tee -a /etc/vsftpd.user_list</code></pre></div></li>
 
 <li><p>创建FTP目录树并设置正确的权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /home/newftpuser/ftp/uploadsudo chmod 550 /home/newftpuser/ftpsudo chmod 750 /home/newftpuser/ftp/uploadsudo chown -R newftpuser: /home/newftpuser/ftp</code></pre></div>
-<p>如上一节所述，用户可以将其文件上传到<code>ftp/upload</code>目录。</p>
+<p>如上一节所述，用户可以将其文件上传到<code>ftp/upload</code>目录。</p></li>
+</ol>
 
 <p>此时，您的FTP服务器功能齐全，您应该能够使用任何可配置为使用TLS加密的FTP客户端（如<a href="https://filezilla-project.org/">FileZilla）</a>连接到您的服务器。</p>
 
@@ -343,9 +341,7 @@ OpenSSH (v6)               ALLOW       Anywhere (v6)</code></pre></div>
 <p>要禁用shell访问，我们将创建一个新的shell，它只会打印一条消息，告诉用户他们的帐户仅限于FTP访问。</p>
 
 <p>创建<code>/bin/ftponly</code>shell并使其可执行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo -e &#39;#!/bin/sh\necho &#34;This account is limited to FTP access only.&#34;&#39; | sudo tee -a  /bin/ftponlysudo chmod a+x /bin/ftponly</code></pre></div></li>
-</ol>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo -e &#39;#!/bin/sh\necho &#34;This account is limited to FTP access only.&#34;&#39; | sudo tee -a  /bin/ftponlysudo chmod a+x /bin/ftponly</code></pre></div>
 <p>将新shell附加到<code>/etc/shells</code>文件中的有效shell列表：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;/bin/ftponly&#34; | sudo tee -a /etc/shells</code></pre></div>
 <p>将用户shell更改为<code>/bin/ftponly</code>：</p>

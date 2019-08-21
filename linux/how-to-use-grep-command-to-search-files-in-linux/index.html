@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@ Grep在一个或多个输入文件中搜索与给定模式匹配的行，并将�
 在本教程中，我们将通过实际示例和最常见的GNU grep选项的详细说明向您展示如何使用grep命令。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-use-grep-command-to-search-files-in-linux/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何使用Grep命令在Linux中搜索文件">
 <meta itemprop="description" content="grep命令代表“全局正则表达式打印”，是Linux中最强大和最常用的命令之一。
 
@@ -298,21 +297,21 @@ wingnut</code></pre></div>
 
 <ul>
 <li><p>使用<code>^</code>（插入符号）符号匹配行开头的表达式。在下面的示例中，<code>^kangaroo</code>仅当字符串出现在行的最开头时，该字符串才会匹配。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;^kangaroo&#34; file.txt</code></pre></div>
-<ul>
-<li>使用<code>$</code>（美元）符号匹配行尾的表达式。在以下示例中，<code>kangaroo$</code>仅当字符串出现在行的最后时，该字符串才会匹配。</li>
-</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;^kangaroo&#34; file.txt</code></pre></div></li>
+
+<li><p>使用<code>$</code>（美元）符号匹配行尾的表达式。在以下示例中，<code>kangaroo$</code>仅当字符串出现在行的最后时，该字符串才会匹配。</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;kangaroo$&#34; file.txt</code></pre></div></li>
 
 <li><p>使用<code>.</code>（句点）符号匹配任何单个字符。例如，要匹配以<code>kan</code>当时开头的任何内容有两个字符并以字符串结尾<code>roo</code>，您可以使用以下模式：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;kan..roo&#34; file.txt</code></pre></div>
-<ul>
-<li>使用<code>[ ]</code>（括号）匹配括号中的任何单个字符。例如，找到包含<code>accept</code>或“ 的行<code>accent</code>，您可以使用以下模式：</li>
-</ul>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;kan..roo&#34; file.txt</code></pre></div></li>
+
+<li><p>使用<code>[ ]</code>（括号）匹配括号中的任何单个字符。例如，找到包含<code>accept</code>或“ 的行<code>accent</code>，您可以使用以下模式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;acce[np]t&#34; file.txt</code></pre></div></li>
 
 <li><p>使用<code>[^ ]</code>（括号）匹配括号中的任何单个字符。以下模式将匹配包含的所有字符串组合<code>co(any_leter_except_l )a</code>，例如<code>coca</code>，<code>cobalt</code>等等，但不匹配包含的行<code>cola</code>，</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;co[^l]a&#34; file.txt</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep &#34;co[^l]a&#34; file.txt</code></pre></div></li>
+</ul>
+
 <p>要逃避下一个字符的特殊含义，请使用<code>\</code>（反斜杠）符号。</p>
 
 <h2 id="grep扩展正则表达式">Grep扩展正则表达式</h2>
@@ -320,12 +319,13 @@ wingnut</code></pre></div>
 <p>要将模式解释为扩展正则表达式，请使用<code>-E</code>（或<code>--extended-regexp</code>）选项。扩展正则表达式包括所有基本元字符，以及其他元字符，以创建更复杂和强大的搜索模式。以下是一些例子：</p>
 
 <ul>
-<li>匹配并提取给定文件中的所有电子邮件地址：</li>
-</ul>
+<li><p>匹配并提取给定文件中的所有电子邮件地址：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -E -o &#34;\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b&#34; file.txt</code></pre></div></li>
 
 <li><p>匹配并提取给定文件中的所有有效IP地址：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -E -o &#39;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&#39; file.txt</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -E -o &#39;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&#39; file.txt</code></pre></div></li>
+</ul>
+
 <p>该<code>-o</code>选项用于仅打印匹配的字符串。</p>
 
 <h2 id="比赛前的grep打印线">比赛前的Grep打印线</h2>
@@ -333,9 +333,7 @@ wingnut</code></pre></div>
 <p>要在匹配行之前打印特定数量的行，请使用<code>-B</code>（或<code>--before-context</code>）选项。</p>
 
 <p>例如，要在匹配行之前显示5行前导上下文，可以使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -B 5 root /etc/passwd</code></pre></div></li>
-</ul>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -B 5 root /etc/passwd</code></pre></div>
 <h2 id="匹配后grep打印线">匹配后Grep打印线</h2>
 
 <p>要在匹配行后打印特定数量的行，请使用<code>-A</code>（或<code>--after-context</code>）选项。</p>

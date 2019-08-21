@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@
 本教程介绍如何在CentOS 7系统上添加交换文件。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-add-swap-space-on-centos-7/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上添加交换空间">
 <meta itemprop="description" content="交换是磁盘上的空间，当物理RAM内存已满时使用。当Linux系统用完RAM时，非活动页面会从RAM移动到交换空间。
 
@@ -49,7 +48,7 @@
 
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1150">
+<meta itemprop="wordCount" content="1149">
 
 
 
@@ -183,10 +182,9 @@
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576</code></pre></div></li>
 
 <li><p>确保只有root用户才能读取和写入交换文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chmod 600 /swapfile</code></pre></div>
-<ol>
-<li>接下来，在文件上设置Linux交换区域：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chmod 600 /swapfile</code></pre></div></li>
+
+<li><p>接下来，在文件上设置Linux交换区域：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkswap /swapfile</code></pre></div></li>
 
 <li><p>运行以下命令以激活交换：</p>
@@ -196,22 +194,21 @@
 <p>并粘贴以下行：</p>
 
 <p>/ etc / fstab文件</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">/swapfile swap swap defaults 0 0</span></code></pre></div>
-<ol>
-<li>使用<code>swapon</code>或<code>free</code>命令验证交换是否处于活动状态，如下所示：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">/swapfile swap swap defaults 0 0</span></code></pre></div></li>
+
+<li><p>使用<code>swapon</code>或<code>free</code>命令验证交换是否处于活动状态，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo swapon --show</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">NAME      TYPE  SIZE   USED PRIO
 /swapfile file 1024M 507.4M   -1</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo free -h</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">              total        used        free      shared  buff/cache   available
 Mem:           488M        158M         83M        2.3M        246M        217M
-Swap:          1.0G        506M        517M</code></pre></div>
+Swap:          1.0G        506M        517M</code></pre></div></li>
+</ol>
+
 <h2 id="调整swappiness值">调整Swappiness值</h2>
 
 <p>Swappiness是一个Linux内核属性，用于定义系统使用交换空间的频率。Swappiness可以具有0到100之间的值。较低的值将使内核尽可能避免交换，而较高的值将使内核更积极地使用交换空间。</p>
 
 <p>CentOS 7上的默认swappiness值为30.您可以通过键入以下命令来检查当前的swappiness值：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /proc/sys/vm/swappiness</code></pre></div></li>
-</ol>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">30</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /proc/sys/vm/swappiness</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">30</code></pre></div>
 <p>虽然桌面和开发机器的swappiness值为30，但对于生产服务器，您可能需要设置较低的值。</p>
 
 <p>例如，要将swappiness值设置为10，请键入：</p>
@@ -228,12 +225,11 @@ Swap:          1.0G        506M        517M</code></pre></div>
 
 <ol>
 <li><p>首先输入以下命令停用交换空间：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo swapoff -v /swapfile</code></pre></div>
-<ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo swapoff -v /swapfile</code></pre></div></li>
+
 <li><p>接下来，<code>/swapfile swap swap defaults 0 0</code>从<code>/etc/fstab</code>文件中删除交换文件条目。</p></li>
 
-<li><p>最后，删除实际的swapfile文件：</p></li>
-</ol>
+<li><p>最后，删除实际的swapfile文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rm /swapfile</code></pre></div></li>
 </ol>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@ FirewallD是一个完整的防火墙解决方案，可以使用名为firewall-cm
 本教程将向您展示如何禁用FirewallD服务并安装iptables。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-iptables-on-centos-7/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上安装Iptables">
 <meta itemprop="description" content="从 CentOS 7 开始，FirewallD将iptables替换为默认的防火墙管理工具。
 
@@ -169,35 +168,33 @@ FirewallD是一个完整的防火墙解决方案，可以使用名为firewall-cm
 
 <ol>
 <li><p>键入以下命令以停止FirewallD服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop firewalld</code></pre></div>
-<ol>
-<li>禁用FirewallD服务以在系统引导时自动启动：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop firewalld</code></pre></div></li>
+
+<li><p>禁用FirewallD服务以在系统引导时自动启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl disable firewalld</code></pre></div></li>
 
 <li><p>屏蔽FirewallD服务以防止其他服务启动它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl mask --now firewalld</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl mask --now firewalld</code></pre></div></li>
+</ol>
+
 <h2 id="安装并启用iptables">安装并启用Iptables</h2>
 
 <p>执行以下步骤在CentOS 7系统上安装Iptables：</p>
 
 <ol>
-<li>运行以下命令<code>iptables-service</code>从CentOS存储库安装软件包：</li>
-</ol>
+<li><p>运行以下命令<code>iptables-service</code>从CentOS存储库安装软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install iptables-services</code></pre></div></li>
 
 <li><p>安装软件包后启动Iptables服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start iptablessudo systemctl start iptables6</code></pre></div>
-<ol>
-<li>启用Iptables服务以在系统引导时自动启动：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start iptablessudo systemctl start iptables6</code></pre></div></li>
+
+<li><p>启用Iptables服务以在系统引导时自动启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable iptablessudo systemctl enable iptables6</code></pre></div></li>
 
 <li><p>检查iptables服务状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status iptablessudo systemctl status iptables6</code></pre></div>
-<ol>
-<li>要检查当前的iptables规则，请使用以下命令：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status iptablessudo systemctl status iptables6</code></pre></div></li>
+
+<li><p>要检查当前的iptables规则，请使用以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo iptables -nvLsudo iptables6 -nvL</code></pre></div>
 <p>默认情况下，仅打开SSH端口22。输出应该如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
@@ -213,13 +210,14 @@ Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
     0     0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-host-prohibited
 
 Chain OUTPUT (policy ACCEPT 4298 packets, 295K bytes)
- pkts bytes target     prot opt in     out     source               destination     </code></pre></div>
+ pkts bytes target     prot opt in     out     source               destination     </code></pre></div></li>
+</ol>
+
 <p>此时，您已成功启用iptables服务，您可以开始构建防火墙。重新启动后更改将保持不变。</p>
 
 <h2 id="结论">结论</h2>
 
-<p>在本教程中，您学习了如何禁用FirewallD服务并安装iptables。</p></li>
-</ol>
+<p>在本教程中，您学习了如何禁用FirewallD服务并安装iptables。</p>
       </div><ul class="pa0">
   
    <li class="list di">

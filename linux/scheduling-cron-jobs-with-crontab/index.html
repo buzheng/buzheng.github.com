@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@
 您可以安排cron作业按分钟，小时，月，日，星期几或这些的任意组合运行。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/scheduling-cron-jobs-with-crontab/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="使用Crontab安排Cron作业">
 <meta itemprop="description" content="Cron是一个调度守护进程，它以指定的时间间隔执行任务。这些任务称为cron作业，主要用于自动化系统维护或管理。
 
@@ -251,32 +250,28 @@
 
 <ul>
 <li><p>从星期一到星期五每天15:00运行命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 15 * * 1-5 command</code></pre></div>
-<ul>
-<li>每5分钟运行一次脚本并将标准输出重定向到<code>dev null</code>，只有标准错误才会发送到指定的电子邮件地址：</li>
-</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 15 * * 1-5 command</code></pre></div></li>
+
+<li><p>每5分钟运行一次脚本并将标准输出重定向到<code>dev null</code>，只有标准错误才会发送到指定的电子邮件地址：</p>
 <div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">MAILTO=email@example.com
 */5 * * * * /path/to/script.sh &gt; /dev/null</code></pre></div></li>
 
 <li><p>每周一下午3点运行两个命令（<code>&amp;&amp;</code>在命令之间使用运算符）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 15 * * Mon command1 &amp;&amp; command2</code></pre></div>
-<ul>
-<li>每2分钟运行一次PHP脚本并将输出写入文件：</li>
-</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 15 * * Mon command1 &amp;&amp; command2</code></pre></div></li>
+
+<li><p>每2分钟运行一次PHP脚本并将输出写入文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">*/2 * * * * /usr/bin/php /path/to/script.php &gt;&gt; /var/log/script.log</code></pre></div></li>
 
 <li><p>从上午8点到下午4点，每小时，每小时，每小时运行一个脚本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">00 08-16 * * * /path/to/script.sh</code></pre></div>
-<ul>
-<li>在每个月的第一个星期一早上7点运行脚本</li>
-</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">00 08-16 * * * /path/to/script.sh</code></pre></div></li>
+
+<li><p>在每个月的第一个星期一早上7点运行脚本</p>
 <div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">0 7 1-7 * 1 /path/to/script.sh</code></pre></div></li>
 
 <li><p>在每个月的1号和15号下午9:15运行脚本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">15 9 1,15 * * /path/to/script.sh</code></pre></div>
-<ul>
-<li>设置自定义<code>HOME</code>，<code>PATH</code>，<code>SHELL</code>和<code>MAILTO</code>变量和运行一个命令的每一分钟。</li>
-</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">15 9 1,15 * * /path/to/script.sh</code></pre></div></li>
+
+<li><p>设置自定义<code>HOME</code>，<code>PATH</code>，<code>SHELL</code>和<code>MAILTO</code>变量和运行一个命令的每一分钟。</p>
 <div class="highlight"><pre class="chroma"><code class="language-cronjob" data-lang="cronjob">HOME=/opt
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 SHELL=/bin/zsh

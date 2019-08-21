@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 在本教程中，我们将向您展示如何在 CentOS 7 系统上使用 FirewallD 设置防火墙，并向您解释基本的 FirewallD 概念。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/" />
-<meta property="article:published_time" content="2019-04-11T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-04-11T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-04-11T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-04-11T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上使用 FirewallD 设置防火墙">
 <meta itemprop="description" content="正确配置的防火墙是整个系统安全性最重要的方面之一。
 
@@ -49,7 +48,7 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 
 <meta itemprop="datePublished" content="2019-04-11T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-11T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2992">
+<meta itemprop="wordCount" content="2991">
 
 
 
@@ -205,10 +204,9 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 <li><p>安装 FirewallD</p>
 
 <p>默认情况下， Firewalld 安装在 CentOS 7 上，但如果系统上未安装 Firewalld ，则可以键入以下内容安装软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install firewalld</code></pre></div>
-<ol>
-<li>检查防火墙状态。</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install firewalld</code></pre></div></li>
+
+<li><p>检查防火墙状态。</p>
 
 <p>默认情况下禁用 Firewalld 服务。您可以使用以下命令检查防火墙状态</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --state</code></pre></div>
@@ -218,13 +216,13 @@ FirewallD 是一个完整的防火墙解决方案，可管理系统的 iptables 
 
 <p>要启动 FirewallD 服务并在引导系统时上启用它：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start firewalld
-sudo systemctl enable firewalld</code></pre></div>
+sudo systemctl enable firewalld</code></pre></div></li>
+</ol>
+
 <h2 id="使用-firewalld-分区">使用 Firewalld 分区</h2>
 
 <p>首次启用 FirewallD 服务后，该 <code>public</code> 分区将设置为默认分区。您可以键入以下内容来查看默认分区：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-default-zone</code></pre></div></li>
-</ol>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">public</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-default-zone</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">public</code></pre></div>
 <p>要获取所有可用分区的列表，请键入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --get-zones</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">block dmz drop external home internal public trusted work</code></pre></div>
 <p>默认情况下，为所有网络接口分配默认分区。要检查网络接口使用的分区类型，请执行以下操作：</p>
@@ -367,19 +365,17 @@ public
 
 <p>我们将使用 dmz (非军事化)分区，因为默认情况下它只允许 SSH 流量。要将默认分区更改为 dmz 并将其分配给 <code>eth0</code> 接口，请运行以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --set-default-zone=dmz
-sudo firewall-cmd --zone=dmz --add-interface=eth0</code></pre></div>
-<ol>
-<li>打开 HTTP 和 HTTPS 端口：</li>
-</ol>
+sudo firewall-cmd --zone=dmz --add-interface=eth0</code></pre></div></li>
+
+<li><p>打开 HTTP 和 HTTPS 端口：</p>
 
 <p>要打开 HTTP 和 HTTPS 端口，请向 dmz 分区添加永久服务规则：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=dmz --add-service=http
 sudo firewall-cmd --permanent --zone=dmz --add-service=https</code></pre></div>
 <p>通过重新加载防火墙立即使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --reload</code></pre></div>
-<ol>
-<li>验证更改</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --reload</code></pre></div></li>
+
+<li><p>验证更改</p>
 
 <p>要检查 dmz 分区配置设置，请键入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=dmz --list-all</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">dmz (active)
@@ -395,14 +391,14 @@ sudo firewall-cmd --permanent --zone=dmz --add-service=https</code></pre></div>
   source-ports:
   icmp-blocks:
   rich rules:</code></pre></div>
-<p>上面的输出告诉我们 dmz 是默认分区，应用于 <code>eth0</code> 接口， ssh (22), http (80) 和 https (443) 端口打开。</p>
+<p>上面的输出告诉我们 dmz 是默认分区，应用于 <code>eth0</code> 接口， ssh (22), http (80) 和 https (443) 端口打开。</p></li>
+</ol>
 
 <h2 id="结论">结论</h2>
 
 <p>您已经学习了如何在 CentOS 系统上配置和管理 FirewallD 服务。</p>
 
-<p>请确保您自己的服务器上允许系统正常运行所需的所有传入连接，同时限制所有不必要的连接。</p></li>
-</ol>
+<p>请确保您自己的服务器上允许系统正常运行所需的所有传入连接，同时限制所有不必要的连接。</p>
       </div><ul class="pa0">
   
    <li class="list di">

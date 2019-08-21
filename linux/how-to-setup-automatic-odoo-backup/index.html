@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -34,9 +34,8 @@
 Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以保护您的数据，避免在受到潜在的灾难性时丢失。对于任何拥安装了Odoo 的人和企业来说都是绝对至关重要的。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-setup-automatic-odoo-backup/" />
-<meta property="article:published_time" content="2019-03-11T06:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-03-11T06:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-03-11T06:00:00+08:00" />
+<meta property="article:modified_time" content="2019-03-11T06:00:00+08:00" />
 <meta itemprop="name" content="如何设置 Odoo 自动备份">
 <meta itemprop="description" content="在本教程中，我们将引导您完成这样的过程：为 Odoo 数据库创建每日自动备份。 Odoo 是最流行的开源 ERP 系统，它使用 Python 编写，使用 PostgreSQL 作为数据库后端。
 
@@ -45,7 +44,7 @@ Odoo 将其数据存储在 PostgreSQL 数据库中。定期备份数据库可以
 
 <meta itemprop="datePublished" content="2019-03-11T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-11T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1230">
+<meta itemprop="wordCount" content="1238">
 
 
 
@@ -210,41 +209,44 @@ find <span class="si">${</span><span class="nv">BACKUP_DIR</span><span class="si
 <p>sudo chmod +x ~/backup_odoo.sh</p>
 <div class="highlight"><pre class="chroma">&gt; 不要忘了根据您的实际情况更改变量 BACKUP_DIR ， ODOO_DATABASE 和 ADMIN_PASSWORD 的值。
 
-最后一步是创建一个新的 cron 作业，每天凌晨 01:30 运行：
+最后一步是创建一个新的 cron 作业，每天凌晨 01:30 运行：</pre></div>
+<p>bash
+crontab -e</p>
+<div class="highlight"><pre class="chroma"></pre></div>
+<p>bash
+30 1 * * * /home/<yourusername>/backup_odoo.sh</p>
+<div class="highlight"><pre class="chroma">&gt; 不要忘记根据你的实际情况正确的设置备份脚本的名称和路径。
 
-```bash
-crontab -e</pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">30</span> <span class="m">1</span> * * * /home/&lt;yourusername&gt;/backup_odoo.sh</code></pre></div>
-<blockquote>
-<p>不要忘记根据你的实际情况正确的设置备份脚本的名称和路径。</p>
-</blockquote>
+您可以修改脚本并实现更强大的备份解决方案，例如使用远程备份存储，保留每周和每月备份等等。
 
-<p>您可以修改脚本并实现更强大的备份解决方案，例如使用远程备份存储，保留每周和每月备份等等。</p>
+## 恢复 Odoo 数据库
 
-<h2 id="恢复-odoo-数据库">恢复 Odoo 数据库</h2>
+要使用数据库管理界面恢复数据库备份，请打开浏览器并跳转到页面 `http://your_server_ip:8069/web/database/manager` 。
 
-<p>要使用数据库管理界面恢复数据库备份，请打开浏览器并跳转到页面 <code>http://your_server_ip:8069/web/database/manager</code> 。</p>
 
-<p>单击 <code>Restore Database</code> 按钮，将弹出一个新的窗口。</p>
+单击 `Restore Database` 按钮，将弹出一个新的窗口。
 
-<figure><img src="/images/linux/how-to-setup-automatic-odoo-backup/database-manager-restore.jpg" alt=""></figure>
+![](/images/linux/how-to-setup-automatic-odoo-backup/database-manager-restore.jpg)
 
-<p>输入您的 Odoo 数据库主密码，选择备份文件，输入新的数据库名称，然后单击蓝色 <code>Continue</code> 按钮恢复数据库。</p>
+输入您的 Odoo 数据库主密码，选择备份文件，输入新的数据库名称，然后单击蓝色 `Continue` 按钮恢复数据库。
 
-<blockquote>
-<p>在还原数据库之前，您需要删除数据库或使用其他数据库名称。</p>
-</blockquote>
+&gt; 在还原数据库之前，您需要删除数据库或使用其他数据库名称。
 
-<p>根据数据库大小和网速，还原过程可能需要一些时间。</p>
+根据数据库大小和网速，还原过程可能需要一些时间。
 
-<p>我们还可以从命令行恢复数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -F <span class="s1">&#39;master_pwd=superadmin_passwd&#39;</span> -F <span class="nv">backup_file</span><span class="o">=</span>@/opt/odoo/odoo_backups/db1.2018-04-14.zip -F <span class="s1">&#39;copy=true&#39;</span> -F <span class="s1">&#39;name=db3&#39;</span> http://localhost:8069/web/database/restore</code></pre></div>
-<p>当然，您需要修改上面命令中使用的 Odoo Master 密码，数据库备份的路径和数据库名称。</p>
+我们还可以从命令行恢复数据库：</pre></div>
+<p>bash
+curl -F &lsquo;master_pwd=superadmin_passwd&rsquo; -F backup_file=@/opt/odoo/odoo_backups/db1.2018-04-14.zip -F &lsquo;copy=true&rsquo; -F &lsquo;name=db3&rsquo; <a href="http://localhost:8069/web/database/restore">http://localhost:8069/web/database/restore</a></p>
+<div class="highlight"><pre class="chroma">当然，您需要修改上面命令中使用的 Odoo Master 密码，数据库备份的路径和数据库名称。
 
-<p>如果恢复成功，输出应如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">!DOCTYPE HTML PUBLIC <span class="s2">&#34;-//W3C//DTD HTML 3.2 Final//EN&#34;</span>&gt;
-&lt;title&gt;Redirecting...&lt;/title&gt;
-&lt;h1&gt;Redirecting...&lt;/h1&gt;
-&lt;p&gt;You should be redirected automatically to target URL: &lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;/web/database/manager&#34;</span>&gt;/web/database/manager&lt;/a&gt;.  If not click the link.</code></pre></div>
+如果恢复成功，输出应如下所示：</pre></div>
+<p>bash
+!DOCTYPE HTML PUBLIC &ldquo;-//W3C//DTD HTML 3.2 Final//EN&rdquo;&gt;
+<title>Redirecting&hellip;</title>
+<h1>Redirecting&hellip;</h1>
+<p>You should be redirected automatically to target URL: <a href="/web/database/manager">/web/database/manager</a>.  If not click the link.
+```</p>
+
 <h2 id="结论">结论</h2>
 
 <p>本教程引导您使用 cronjob 为 Odoo 数据库创建每日自动备份。</p>
@@ -332,7 +334,6 @@ crontab -e</pre></div><div class="highlight"><pre class="chroma"><code class="la
 <li><a href="#odoo-数据库管理界面">Odoo 数据库管理界面</a></li>
 <li><a href="#从命令行创建数据库备份">从命令行创建数据库备份</a></li>
 <li><a href="#设置自动备份-odoo-数据库">设置自动备份 Odoo 数据库</a></li>
-<li><a href="#恢复-odoo-数据库">恢复 Odoo 数据库</a></li>
 <li><a href="#结论">结论</a></li>
 </ul></li>
 </ul>

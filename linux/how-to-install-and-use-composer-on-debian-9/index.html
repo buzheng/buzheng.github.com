@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -34,9 +34,8 @@
 本教程提供了在Debian 9系统上安装Composer所需的步骤。我们还将介绍如何使用Composer创建和管理PHP项目。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-use-composer-on-debian-9/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Debian 9上安装和使用Composer">
 <meta itemprop="description" content="Composer是PHP的依赖管理器（类似于Node.js的npm或Python的pip）。Composer将引入您项目所依赖的所有必需PHP包并为您管理它们。
 
@@ -161,10 +160,9 @@
 
 <ol>
 <li><p>首先更新软件包索引并使用以下命令安装必要的软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install php-cli php-zip wget unzip</code></pre></div>
-<ol>
-<li>安装依赖项后，使用php cli toll下载Composer安装脚本：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install php-cli php-zip wget unzip</code></pre></div></li>
+
+<li><p>安装依赖项后，使用php cli toll下载Composer安装脚本：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">php -r &#34;copy(&#39;https://getcomposer.org/installer&#39;, &#39;composer-setup.php&#39;);&#34;</code></pre></div>
 <p>上面的命令将下载<code>composer-setup.php</code>当前工作目录中的文件。</p></li>
 
@@ -176,21 +174,17 @@
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">php -r &#34;if (hash_file(&#39;SHA384&#39;, &#39;composer-setup.php&#39;) === &#39;$HASH&#39;) { echo &#39;Installer verified&#39;; } else { echo &#39;Installer corrupt&#39;; unlink(&#39;composer-setup.php&#39;); } echo PHP_EOL;&#34;</code></pre></div>
 <p>如果哈希匹配，您将看到以下输出：</p>
 <div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Installer verified</code></pre></div>
-<p>如果哈希值不匹配，你会看到<code>Installer corrupt</code>。在这种情况下，您需要重新下载Composer安装脚本并仔细检查<code>$HASH</code>变量的值<a href="/linux/echo-command-in-linux-with-examples/"><code>echo $HASH</code></a>。验证安装程序后，您可以继续执行下一步。</p>
+<p>如果哈希值不匹配，你会看到<code>Installer corrupt</code>。在这种情况下，您需要重新下载Composer安装脚本并仔细检查<code>$HASH</code>变量的值<a href="/linux/echo-command-in-linux-with-examples/"><code>echo $HASH</code></a>。验证安装程序后，您可以继续执行下一步。</p></li>
 
-<ol>
-<li>以下命令将在<code>/usr/local/bin</code>目录中安装Composer ：</li>
-</ol>
+<li><p>以下命令将在<code>/usr/local/bin</code>目录中安装Composer ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">All settings correct for using Composer
 Downloading...
 
 Composer (version 1.7.2) successfully installed to: /usr/local/bin/composer
 Use it: php /usr/local/bin/composer</code></pre></div>
-<p>此时，您已在Debian系统上安装了Composer。它作为系统范围的命令安装，可供所有用户使用。</p>
+<p>此时，您已在Debian系统上安装了Composer。它作为系统范围的命令安装，可供所有用户使用。</p></li>
 
-<ol>
-<li>要验证安装，只需键入：</li>
-</ol>
+<li><p>要验证安装，只需键入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">composer</code></pre></div>
 <p>上面的命令将打印Composer的版本，命令和参数。</p>
 <div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">______
@@ -202,7 +196,9 @@ Use it: php /usr/local/bin/composer</code></pre></div>
 Composer version 1.7.2 2018-08-16 16:57:12
 
 Usage:
-    command [options] [arguments]</code></pre></div>
+    command [options] [arguments]</code></pre></div></li>
+</ol>
+
 <p>如果要使用每个项目的Composer安装，请运行以下命令<code>php composer-setup.php</code>，该命令将创建<code>composer.phar</code>在当前工作目录中命名的文件。您可以通过运行来使用composer<code>./composer.phar &lt;command&gt;.</code></p>
 
 <h2 id="composer入门">Composer入门</h2>
@@ -212,9 +208,7 @@ Usage:
 <p>首先创建一个目录，该目录将是项目根目录并保存<code>composer.json</code>文件。此文件描述了您的PHP项目，包括PHP依赖项和其他元数据。</p>
 
 <p>创建项目目录并切换到它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/my-first-composer-projectcd ~/my-first-composer-project</code></pre></div></li>
-</ol>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/my-first-composer-projectcd ~/my-first-composer-project</code></pre></div>
 <p>接下来，我们将<code>composer.json</code>使用该<code>composer require &lt;package name&gt;</code>命令初始化一个新文件，并指定我们要下载的包。在此示例中，我们将创建一个示例应用程序，该应用程序将使用名为<a href="https://carbon.nesbot.com/docs/">carbon</a>的包打印当前时间。</p>
 
 <p>运行以下命令以初始化新<code>composer.json</code>文件并安装碳包：</p>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,9 +36,8 @@ phpMyAdmin允许您管理MySQL数据库，用户帐户和权限，执行SQL语�
 本教程描述了使用Apache Web服务器在Debian 9上安装和保护phpMyAdmin所需的步骤。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/" />
-<meta property="article:published_time" content="2019-05-09T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-05-09T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Debian 9上使用Apache安装和保护phpMyAdmin">
 <meta itemprop="description" content="phpMyAdmin是一个免费的，开源的基于PHP的应用程序，旨在通过基于Web的界面简化MySQL和MariaDB服务器的管理。
 
@@ -176,10 +175,9 @@ phpMyAdmin允许您管理MySQL数据库，用户帐户和权限，执行SQL语�
 
 <ol>
 <li><p>更新软件包索引并将系统软件包升级到最新版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgrade</code></pre></div>
-<ol>
-<li>键入以下内容，从默认的Debian存储库安装phpMyAdmin软件包：</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgrade</code></pre></div></li>
+
+<li><p>键入以下内容，从默认的Debian存储库安装phpMyAdmin软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install phpmyadmin</code></pre></div>
 <p>安装程序将要求您选择应自动配置为运行phpMyAdmin的Web服务器，<code>Space</code>然后按，然后选择apache <code>Enter</code>。</p>
 
@@ -198,7 +196,9 @@ phpMyAdmin允许您管理MySQL数据库，用户帐户和权限，执行SQL语�
 <figure><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/configuring-phpmyadmin-confirm-password.jpg" alt=""></figure></li>
 
 <li><p>安装过程完成后，重新启动Apache以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2</code></pre></div></li>
+</ol>
+
 <h2 id="创建管理mysql用户">创建管理MySQL用户</h2>
 
 <p>在运行MariaDB 10.1（及更高版本）的Debian系统中，root用户<code>auth_socket</code>默认设置为使用身份验证方法。</p>
@@ -210,9 +210,7 @@ phpMyAdmin允许您管理MySQL数据库，用户帐户和权限，执行SQL语�
 <p>我们将使用此用户登录phpMyAdmin仪表板并在MySQL或MariaDB服务器上执行管理任务。</p>
 
 <p>首先以root用户身份登录MySQL服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div></li>
-</ol>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
 <p>在MySQL shell中执行以下命令，这些命令将创建新的管理用户并授予适当的权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE USER &#39;padmin&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;super-strong-password&#39;;GRANT ALL PRIVILEGES ON *.* TO &#39;padmin&#39;@&#39;localhost&#39; WITH GRANT OPTION;</code></pre></div>
 <p>我们命名了管理用户<code>padmin</code>。您可以使用任何您喜欢的名称，只需确保设置一个强密码即可。</p>

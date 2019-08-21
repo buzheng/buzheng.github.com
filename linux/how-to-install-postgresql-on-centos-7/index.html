@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -38,9 +38,8 @@
 我们还将探讨 PostgreSQL 数据库管理的基础知识。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-postgresql-on-centos-7/" />
-<meta property="article:published_time" content="2019-04-14T05:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-04-14T05:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-04-14T05:00:00+08:00" />
+<meta property="article:modified_time" content="2019-04-14T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上安装 PostgreSQL">
 <meta itemprop="description" content="PostgreSQL 或 Postgres 是一个开源的通用的对象/关系型数据库管理系统。 PostgreSQL 具有许多高级功能，允许您创建复杂的 Web 应用程序。
 
@@ -181,16 +180,14 @@
 <li><p>安装 PostgreSQL</p>
 
 <p>先安装 PostgreSQL 服务器以及 PostgreSQL contrib 包，它为 PostgreSQL 数据库提供了几个附加功能，只需输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install postgresql-server postgresql-contrib</code></pre></div>
-<ol>
-<li>初始化数据库</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install postgresql-server postgresql-contrib</code></pre></div></li>
+
+<li><p>初始化数据库</p>
 
 <p>使用以下命令初始化 PostgreSQL 数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo postgresql-setup initdb</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Initializing database ... OK</code></pre></div>
-<ol>
-<li>启动 PostgreSQL</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo postgresql-setup initdb</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Initializing database ... OK</code></pre></div></li>
+
+<li><p>启动 PostgreSQL</p>
 
 <p>要启动 PostgreSQL 服务并使其在随机启动，只需键入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start postgresql
@@ -217,10 +214,9 @@ sudo systemctl enable postgresql</code></pre></div></li>
 <li><p>启用 PostgreSQL 软件仓库</p>
 
 <p>要启用 PostgreSQL 软件仓库，只需安装 <code>rpm</code> 文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm</code></pre></div>
-<ol>
-<li>安装 PostgreSQL</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm</code></pre></div></li>
+
+<li><p>安装 PostgreSQL</p>
 
 <p>启用软件仓库后，安装 PostgreSQL 服务器和 PostgreSQL contrib 包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install postgresql10-server postgresql10-contrib</code></pre></div></li>
@@ -234,14 +230,15 @@ sudo systemctl enable postgresql</code></pre></div></li>
 
 <p>要启动 PostgreSQL 服务并使其随机自启动，请输入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start postgresql-10
-sudo systemctl enable postgresql-10</code></pre></div>
-<ol>
-<li>验证 PostgreSQL 安装</li>
-</ol>
+sudo systemctl enable postgresql-10</code></pre></div></li>
+
+<li><p>验证 PostgreSQL 安装</p>
 
 <p>要验证安装，我们将尝试使用该 <code>psql</code> 工具连接到 PostgreSQL 数据库服务器并打印服务器版本：</p>
 <div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres /usr/pgsql-10/bin/psql -c &#34;SELECT version();&#34;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">PostgreSQL 10.4 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-28), 64-bit
-(1 row)</code></pre></div>
+(1 row)</code></pre></div></li>
+</ol>
+
 <h2 id="postgresql-角色和身份验证方法">PostgreSQL 角色和身份验证方法</h2>
 
 <p>PostgreSQL 中的数据库访问权限是使用角色的概念处理的。角色可以表示一个数据库用户或一组数据库用户。</p>
@@ -260,9 +257,7 @@ sudo systemctl enable postgresql-10</code></pre></div>
 <p>用户 <code>postgres</code> 在当您安装 PostgreSQL 时自动创建。该用户是 PostgreSQL 实例的超级用户，它相当于 MySQL 的 root 用户。</p>
 
 <p>要想以 <code>postgres</code> 用户身份登录 PostgreSQL 服务器，您首先需要切换到 postgres 用户，然后使用该 <code>psql</code> 实用程序访问 PostgreSQL 提示符：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgrespsql</code></pre></div></li>
-</ol>
-
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgrespsql</code></pre></div>
 <p>从这里，您可以与 PostgreSQL 实例进行交互。如果要退出 PostgreSQL shell ，请键入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-psql" data-lang="psql">\q</code></pre></div>
 <p>您还可以在不使用 <code>sudo</code> 命令切换用户的情况下访问 PostgreSQL 提示符：</p>
@@ -279,10 +274,9 @@ sudo systemctl enable postgresql-10</code></pre></div>
 
 <ol>
 <li><p>连接到PostgreSQL Shell</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
-<ol>
-<li>创建一个新的 PostgreSQL 角色</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div></li>
+
+<li><p>创建一个新的 PostgreSQL 角色</p>
 
 <p>以下命令将创建一个名为 john 的新角色：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">role</span> <span class="n">john</span><span class="p">;</span></code></pre></div></li>
@@ -290,10 +284,9 @@ sudo systemctl enable postgresql-10</code></pre></div>
 <li><p>创建一个新的 PostgreSQL 数据库</p>
 
 <p>使用以下 <code>createdb</code> 命令创建名为 johndb 的新数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">johndb</span><span class="p">;</span></code></pre></div>
-<ol>
-<li>授予权限</li>
-</ol>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">johndb</span><span class="p">;</span></code></pre></div></li>
+
+<li><p>授予权限</p>
 
 <p>要在我们在上一步中创建的数据库上向用户 <code>john</code> 授予权限，请运行以下查询：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="k">database</span> <span class="n">johndb</span> <span class="k">to</span> <span class="n">john</span><span class="p">;</span></code></pre></div></li>

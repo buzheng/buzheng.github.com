@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何通过 SSH 使用 Rsync 传输文件 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.57.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何通过 SSH 使用 Rsync 传输文件" />
+<meta property="og:description" content="当涉及在网络上的系统之间传输文件时， Linux 和 Unix 用户可以使用许多工具。
+
+最流行的数据传输协议是 SSH 和 FTP 。虽然 FTP 很受欢迎，但使用 SSH 更有优势，因为它是传输文件最安全的方式。
+
+有专门的工具通过 SSH 进行文件传输，比如 scp ， sftp ，但是没有一个具有 rsync 提供的所有功能。 rsync 可用于镜像数据，增量备份，在系统之间复制文件等。
+
+在本教程中，我们将解释如何使用 rsync 复制文件。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-transfer-files-with-rsync-over-ssh/" />
+<meta property="article:published_time" content="2019-08-21T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-08-21T12:00:00+08:00" />
+<meta itemprop="name" content="如何通过 SSH 使用 Rsync 传输文件">
+<meta itemprop="description" content="当涉及在网络上的系统之间传输文件时， Linux 和 Unix 用户可以使用许多工具。
+
+最流行的数据传输协议是 SSH 和 FTP 。虽然 FTP 很受欢迎，但使用 SSH 更有优势，因为它是传输文件最安全的方式。
+
+有专门的工具通过 SSH 进行文件传输，比如 scp ， sftp ，但是没有一个具有 rsync 提供的所有功能。 rsync 可用于镜像数据，增量备份，在系统之间复制文件等。
+
+在本教程中，我们将解释如何使用 rsync 复制文件。">
+
+
+<meta itemprop="datePublished" content="2019-08-21T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-21T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1024">
+
+
+
+<meta itemprop="keywords" content="rsync,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-transfer-files-with-rsync-over-ssh/featured.jpg"/>
+<meta name="twitter:title" content="如何通过 SSH 使用 Rsync 传输文件"/>
+<meta name="twitter:description" content="当涉及在网络上的系统之间传输文件时， Linux 和 Unix 用户可以使用许多工具。
+
+最流行的数据传输协议是 SSH 和 FTP 。虽然 FTP 很受欢迎，但使用 SSH 更有优势，因为它是传输文件最安全的方式。
+
+有专门的工具通过 SSH 进行文件传输，比如 scp ， sftp ，但是没有一个具有 rsync 提供的所有功能。 rsync 可用于镜像数据，增量备份，在系统之间复制文件等。
+
+在本教程中，我们将解释如何使用 rsync 复制文件。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何通过 SSH 使用 Rsync 传输文件</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-08-21T12:00:00&#43;08:00">2019年8月21日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1100 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>当涉及在网络上的系统之间传输文件时， Linux 和 Unix 用户可以使用许多工具。</p>
+
+<p>最流行的数据传输协议是 SSH 和 <a href="/linux/how-to-use-linux-ftp-command-to-transfer-files/">FTP</a> 。虽然 FTP 很受欢迎，但使用 SSH 更有优势，因为它是传输文件最安全的方式。</p>
+
+<p>有专门的工具通过 SSH 进行文件传输，比如 <a href="/linux/how-to-use-scp-command-to-securely-transfer-files/"><code>scp</code></a> ， <a href="/linux/how-to-use-linux-sftp-command-to-transfer-files/"><code>sftp</code></a> ，但是没有一个具有 <code>rsync</code> 提供的所有功能。 <code>rsync</code> 可用于镜像数据，增量备份，在系统之间复制文件等。</p>
+
+<p>在本教程中，我们将解释如何使用 <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/"><code>rsync</code></a> 复制文件。</p>
+
+<h2 id="要求">要求</h2>
+
+<ul>
+<li><p><code>rsync</code> 必须在目标系统和源系统上安装该实用程序。如果未安装，您可以使用您的发行版的软件包管理器进行安装：</p>
+
+<p><strong>Ubuntu和 Debian ：</strong></p>
+
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install rsync</code></pre></div>
+
+<p><strong>CentOS和 Fedora ：</strong></p>
+
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install rsync</code></pre></div></li>
+
+<li><p>通过 SSH 访问远程计算机。</p></li>
+
+<li><p>运行该 <code>rsync</code> 命令的用户和远程 SSH 用户必须具有读取和写入文件的适当权限。</p></li>
+</ul>
+
+<h2 id="使用-rsync-通过-ssh-传输文件">使用 <code>rsync</code> 通过 SSH 传输文件</h2>
+
+<p>使用 <code>rsync</code> ，您可以通过 SSH 将文件和目录从远程服务器传输到远程服务器。</p>
+
+<p><code>rsync</code> 传输文件的一般语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Local to Remote: rsync <span class="o">[</span>OPTION<span class="o">]</span>... -e ssh <span class="o">[</span>SRC<span class="o">]</span>... <span class="o">[</span>USER@<span class="o">]</span>HOST:DEST
+Remote to Local: rsync <span class="o">[</span>OPTION<span class="o">]</span>... -e ssh <span class="o">[</span>USER@<span class="o">]</span>HOST:SRC... <span class="o">[</span>DEST<span class="o">]</span></code></pre></div>
+<p><code>SRC</code> 是源目录，<code>DEST</code> 是目标目录，<code>USER</code> 是远程 SSH 用户名， <code>HOST</code> 是远程 SSH 主机或 IP 地址。</p>
+
+<p>较新版本的 rsync 默认配置为使用 SSH 作为远程 shell ，因此您可以省略该 <code>-e ssh</code> 选项。</p>
+
+<p>例如，要使用将单个文件 <code>/opt/file.zip</code> 从本地系统传输到远程 IP 为 <code>12.12.12.12</code>系统上的目录 <code>/var/www/</code>， 请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /opt/file.zip user@12.12.12.12:/var/www/</code></pre></div>
+<p>该 <code>-a</code> 选项代表归档模式，它将递归同步目录，传输特殊和块设备，保留符号链接，修改时间，组，所有权和权限。</p>
+
+<p>如果尚未设置<a href="/linux/how-to-setup-passwordless-ssh-login/">无密码 SSH 登录</a>到远程计算机，系统将提示您输入用户密码。</p>
+
+<p>如果远程服务器上存在该文件，则该文件将被覆盖。如果要使用其他名称保存文件，请指定新名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /opt/file.zip user@12.12.12.12:/var/www/file2.zip</code></pre></div>
+<p>要将数据从远程计算机传输到本地计算机，请使用远程位置作为源，将本地位置用作目标：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a user@12.12.12.12:/var/www/file.zip /opt/</code></pre></div>
+<p>使用 <code>rsync</code> 传输目录与传输文件相同。</p>
+
+<p>重要的是要知道 <code>rsync</code> 使用尾部斜杠对源目录进行不同的处理 <code>/</code> 。当源目录具有尾部斜杠时， <code>rsync</code> 将仅将源目录的内容复制到目标目录。省略尾部斜杠时，源目录将复制到目标目录中。</p>
+
+<p>例如，要将本地 <code>/opt/website/images/</code> 目录传输到 <code>/var/www/images/</code> 远程计算机上的目录，您可以键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a /home/linuxize/images/ user@12.12.12.12:/var/www/images/</code></pre></div>
+<p>如果要同步本地和远程目录，请使用此选项 <code>--delete</code> 。使用此选项时要小心，因为如果源目录中不存在文件，它将删除目标目录中的文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --delete /home/linuxize/images/ user@12.12.12.12:/var/www/images/</code></pre></div>
+<p>如果远程主机上的 SSH 正在<a href="/linux/how-to-change-ssh-port-in-linux/">侦听</a>默认端口 <code>22</code> 以外的端口，请使用该 <code>-e</code> 选项指定端口。例如，如果 SSH 正在侦听端口 <code>3322</code> ， 请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a -e &#34;ssh -p 3322&#34; /home/linuxize/images/ user@12.12.12.12:/var/www/images/</code></pre></div>
+<p>传输大量数据时，建议在<a href="/linux/how-to-use-linux-screen/">屏幕</a>会话中运行 <code>rsync</code> 命令，或使用 <code>-P</code> 选项告诉 <code>rsync</code> 在传输过程中显示进度条并保留部分传输的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a -P /home/linuxize/images/ user@12.12.12.12:/var/www/images/</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>我们已经向您展示了如何使用 <code>rsync</code> 来复制和同步文件和目录。</p>
+
+<p>您可能还需要阅读如何在 <code>rsync</code> 命令中<a href="/linux/how-to-exclude-files-and-directories-with-rsync/">排除的文件或目录</a> 。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/rsync" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">rsync</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-exclude-files-and-directories-with-rsync/">如何使用Rsync排除文件和目录</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">如何使用 rsync 进行本地和远程数据传输和同步</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/rename-command-in-linux/">在 Linux 中 rename 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/check-listening-ports-linux/">如何在 Linux 中检查正在使用的端口</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-centos/">如何在 CentOS 中将用户添加到 sudoers</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-use-sed-to-find-and-replace-string-in-files/">如何使用 sed 在文件中查找和替换的字符串</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-increment-decrement-variable/">如何在 Bash 中对变量递增或者递减</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-find-ip-address-linux/">如何在 Linux 中查看 IP 地址</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-change-hostname-in-linux/">如何在 Linux 中设置或更改主机名</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/du-command-in-linux/">Linux 中的 du 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#要求">要求</a></li>
+<li><a href="#使用-rsync-通过-ssh-传输文件">使用 <code>rsync</code> 通过 SSH 传输文件</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

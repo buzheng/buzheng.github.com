@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -38,9 +38,8 @@
 本指南介绍了在 Ubuntu 18.04 系统上使用 Git 源码和在 Python 虚拟环境中安装和配置 Odoo 进行生产所需的步骤。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-deploy-odoo-11-on-ubuntu-18-04/" />
-<meta property="article:published_time" content="2019-03-14T06:00:00&#43;08:00"/>
-<meta property="article:modified_time" content="2019-03-14T06:00:00&#43;08:00"/>
-
+<meta property="article:published_time" content="2019-03-14T06:00:00+08:00" />
+<meta property="article:modified_time" content="2019-03-14T06:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上部署 Odoo 11">
 <meta itemprop="description" content="Odoo 是世界上最受欢迎的一体化商业软件。它提供一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都可以无缝集成。
 
@@ -53,7 +52,7 @@
 
 <meta itemprop="datePublished" content="2019-03-14T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-14T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2854">
+<meta itemprop="wordCount" content="2856">
 
 
 
@@ -440,19 +439,21 @@ sudo systemctl start odoo11</code></pre></div>
 
 上面的计算表明我们的 Odoo 安装需要大约 2GB 的RAM。
 
-要切换到多进程模式，请打开配置文件 <span class="sb">`</span>/etc/odoo11.conf<span class="sb">`</span> 并附加以下行：
+要切换到多进程模式，请打开配置文件 <span class="sb">`</span>/etc/odoo11.conf<span class="sb">`</span> 并附加以下行：</code></pre></div>
+<p>conf
+limit_memory_hard = 2684354560
+limit_memory_soft = 2147483648
+limit_request = 8192
+limit_time_cpu = 600
+limit_time_real = 1200
+max_cron_threads = 1
+workers = 5</p>
+<div class="highlight"><pre class="chroma">重新启动 Odoo 服务以使更改生效：</pre></div>
+<p>bash
+sudo systemctl restart odoo11
+```</p>
+</blockquote>
 
-<span class="sb">```</span>conf
-<span class="nv">limit_memory_hard</span> <span class="o">=</span> <span class="m">2684354560</span>
-<span class="nv">limit_memory_soft</span> <span class="o">=</span> <span class="m">2147483648</span>
-<span class="nv">limit_request</span> <span class="o">=</span> <span class="m">8192</span>
-<span class="nv">limit_time_cpu</span> <span class="o">=</span> <span class="m">600</span>
-<span class="nv">limit_time_real</span> <span class="o">=</span> <span class="m">1200</span>
-<span class="nv">max_cron_threads</span> <span class="o">=</span> <span class="m">1</span>
-<span class="nv">workers</span> <span class="o">=</span> <span class="m">5</span></code></pre></div></blockquote>
-
-<p>重新启动 Odoo 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart odoo11</code></pre></div>
 <p>其余的系统资源将由我们机器上运行的其他服务使用。在本指南中，我们将 Odoo 与 PostgreSQL 和 Nginx 一起安装在同一台服务器上，根据您的设置，您还可以在服务器上运行其他服务。</p>
 
 <h2 id="结论">结论</h2>
