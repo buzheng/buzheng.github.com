@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Ubuntu 中添加 apt 仓库 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.57.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Ubuntu 中添加 apt 仓库" />
+<meta property="og:description" content="使用 Ubuntu 软件中心或命令行实用程序安装软件包时， apt 或者 apt-get 从一个或多个 apt 软件软件仓库下载软件包。 APT 软件仓库是一个网络服务器或本地目录，包含 deb 软件包和元数据文件，由 APT 工具读取。
+
+虽然默认的 Ubuntu 软件仓库中有数千个应用程序可用，但有时您可能需要从第三方软件仓库安装软件。
+
+在本教程中，我们将向您展示在 Ubuntu 和 Debian 系统上添加 apt 软件仓库的两种方法。第一种方法是使用 add-apt-repository 命令，第二种方法是使用文本编辑器手动添加软件仓库。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-add-apt-repository-in-ubuntu/" />
+<meta property="article:published_time" content="2019-08-27T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-08-27T12:00:00+08:00" />
+<meta itemprop="name" content="如何在 Ubuntu 中添加 apt 仓库">
+<meta itemprop="description" content="使用 Ubuntu 软件中心或命令行实用程序安装软件包时， apt 或者 apt-get 从一个或多个 apt 软件软件仓库下载软件包。 APT 软件仓库是一个网络服务器或本地目录，包含 deb 软件包和元数据文件，由 APT 工具读取。
+
+虽然默认的 Ubuntu 软件仓库中有数千个应用程序可用，但有时您可能需要从第三方软件仓库安装软件。
+
+在本教程中，我们将向您展示在 Ubuntu 和 Debian 系统上添加 apt 软件仓库的两种方法。第一种方法是使用 add-apt-repository 命令，第二种方法是使用文本编辑器手动添加软件仓库。">
+
+
+<meta itemprop="datePublished" content="2019-08-27T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-27T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1608">
+
+
+
+<meta itemprop="keywords" content="ubuntu,apt," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-add-apt-repository-in-ubuntu/featured-3.jpg"/>
+<meta name="twitter:title" content="如何在 Ubuntu 中添加 apt 仓库"/>
+<meta name="twitter:description" content="使用 Ubuntu 软件中心或命令行实用程序安装软件包时， apt 或者 apt-get 从一个或多个 apt 软件软件仓库下载软件包。 APT 软件仓库是一个网络服务器或本地目录，包含 deb 软件包和元数据文件，由 APT 工具读取。
+
+虽然默认的 Ubuntu 软件仓库中有数千个应用程序可用，但有时您可能需要从第三方软件仓库安装软件。
+
+在本教程中，我们将向您展示在 Ubuntu 和 Debian 系统上添加 apt 软件仓库的两种方法。第一种方法是使用 add-apt-repository 命令，第二种方法是使用文本编辑器手动添加软件仓库。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Ubuntu 中添加 apt 仓库</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-08-27T12:00:00&#43;08:00">2019年8月27日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>使用 Ubuntu 软件中心或命令行实用程序安装软件包时， <code>apt</code> 或者 <code>apt-get</code> 从一个或多个 apt 软件软件仓库下载软件包。 APT 软件仓库是一个网络服务器或本地目录，包含 deb 软件包和元数据文件，由 APT 工具读取。</p>
+
+<p>虽然默认的 Ubuntu 软件仓库中有数千个应用程序可用，但有时您可能需要从第三方软件仓库安装软件。</p>
+
+<p>在本教程中，我们将向您展示在 Ubuntu 和 Debian 系统上添加 apt 软件仓库的两种方法。第一种方法是使用 <code>add-apt-repository</code> 命令，第二种方法是使用文本编辑器手动添加软件仓库。</p>
+
+<h2 id="apt-源">Apt 源</h2>
+
+<p>在 Ubuntu 和所有其他基于 Debian 的发行版中， apt 软件软件仓库在 <code>/etc/apt/sources.list</code> 文件中或在 <code>/etc/apt/sources.list.d/</code> 目录下的单独文件中定义。</p>
+
+<p><code>/etc/apt/sources.list.d/</code> 目录中的软件仓库文件的名称必须以 <code>.list</code> 结尾。</p>
+
+<p><code>/etc/apt/sources.list</code> 文件的一般语法采用以下格式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">deb http://repo.tld/ubuntu distro component...</span></code></pre></div>
+<ul>
+<li>该行中的第一个条目定义了存档的类型。存档类型可以是 <strong>deb</strong> 或 <strong>deb-src</strong>。 Deb 暗示软件仓库包含 <code>.deb</code> 包，而 deb-src 包含源程序包。</li>
+<li>第二个条目是软件仓库 URL 。</li>
+<li>第三个条目指定分发代码名称，例如 <code>beaver</code> ， <code>xenial</code> 等。</li>
+<li>最后的条目是软件仓库组件或类别。默认的 Ubuntu 软件仓库分为四个组件  - main ， restricted ， universe 和 multiverse 。通常，第三方软件仓库只有一个类别。</li>
+</ul>
+
+<p>目录 <code>/etc/apt/sources.list.d/</code> 下的文件格式与常规 <code>sources.list</code> 文件的格式相同。</p>
+
+<p>大多数软件仓库都提供公钥来验证需要下载和导入的下载软件包。</p>
+
+<p>为了能够添加或删除软件仓库，您需要以具有 <a href="/linux/how-to-add-user-to-sudoers-in-ubuntu/">sudo 访问权限</a>或 root 权限的用户身份登录。</p>
+
+<p>通常，有关如何启用某个软件仓库的说明包含在软件文档中。</p>
+
+<h2 id="安装-add-apt-repository">安装 <code>add-apt-repository</code></h2>
+
+<p><code>add-apt-repository</code> 是一个 Python 脚本，允许您将 APT 软件仓库添加到 <code>/etc/apt/sources.list</code> 文件或 <code>/etc/apt/sources.list.d</code> 目录中单独的文件中。该命令还可用于删除已存在的软件仓库。</p>
+
+<p>如果 <code>add-apt-repository</code> 您的系统上没有，您将收到一条错误消息，指出“add-apt-repository command not found”。</p>
+
+<p>该 <code>add-apt-repository</code> 实用程序包含在 <code>software-properties-common</code> 包中。要安装它，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install software-properties-common</code></pre></div>
+<h2 id="使用-add-apt-repository-添加软件仓库">使用 <code>add-apt-repository</code> 添加软件仓库</h2>
+
+<p>该 <code>add-apt-repository</code> 命令的基本语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">add-apt-repository <span class="o">[</span>options<span class="o">]</span> repository</code></pre></div>
+<p><code>repository</code> 可以是可以添加到 <code>sources.list</code> 文件中的常规软件仓库条目(比如 <code>deb http://repo.tld/ubuntu distro component</code>)，也可以是 PPA 软件仓库 <code>ppa:&lt;user&gt;/&lt;ppa-name&gt;</code> 。</p>
+
+<p>在终端中输入 <code>man add-apt-repository</code> 可查看 <code>add-apt-repository</code> 命令的所有可用选项。</p>
+
+<p>默认情况下，在 ubuntu 18.04 及更高版本上，如果导入了软件仓库公钥， <code>add-apt-repository</code> 还将更新包索引。</p>
+
+<p>包索引是一个数据库，用于保存系统中启用的软件仓库中可用包的记录。</p>
+
+<p>假设你想从他们的官方软件仓库<a href="/linux/how-to-install-mongodb-on-ubuntu-18-04/">安装 MongoDB</a> 。</p>
+
+<p>首先导入软件仓库公钥：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4</code></pre></div>
+<p>使用以下命令添加 MongoDB 软件仓库。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo add-apt-repository &#39;deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse&#39;</code></pre></div>
+<p>软件仓库将附加到 <code>sources.list</code> 文件。</p>
+
+<p>您现在可以从新启用的软件仓库安装任何软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install mongodb-org</code></pre></div>
+<p>如果出于任何原因要删除以前启用的软件仓库，请使用以下 <code>--remove</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo add-apt-repository --remove &#39;deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse&#39;</code></pre></div>
+<h3 id="添加-ppa-软件仓库">添加 PPA 软件仓库</h3>
+
+<p>Personal Package Archives(PPA) 是一项服务，允许用户上传使用 Launchpad 构建和发布的 Ubuntu 源包作为 apt 软件仓库。</p>
+
+<p>添加 PPA 软件仓库时，<code>add-apt-repository</code> 命令会在 <code>/etc/apt/sources.list.d/</code> 目录下创建一个新文件。</p>
+
+<p>例如，要添加提供 <a href="/linux/how-to-install-ffmpeg-on-ubuntu-18-04/">FFmpeg</a> 版本 4.x  的 Jonathon F 的 PPA ，您将运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo add-apt-repository ppa:jonathonf/ffmpeg-4</code></pre></div>
+<p>出现提示时输入 <code>Enter</code> ，将启用软件仓库。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Press [ENTER] to continue or Ctrl-c to cancel adding it.</code></pre></div>
+<p>PPA 软件仓库公钥将自动下载并注册。</p>
+
+<p>将 PPA 添加到系统后，您可以安装软件仓库包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install ffmpeg</code></pre></div>
+<p><a href="/linux/how-to-use-apt-command/"><code>apt</code></a> 命令将安装包及其所有依赖项。</p>
+
+<h2 id="手动添加软件仓库">手动添加软件仓库</h2>
+
+<p>如果您想要更好地控制源的组织方式，可以手动编辑 <code>/etc/apt/sources.list</code> 文件并将 apt 软件仓库行添加到文件中。</p>
+
+<p>为了演示，我们将启用 CouchDB 软件仓库并安装该软件。 <a href="/linux/how-to-install-couchdb-on-ubuntu-18-04/">CouchDB</a> 是 Apache Software Foundation 维护的免费开源容错 NoSQL 数据库。</p>
+
+<p>要添加软件仓库 <code>sources.list</code> ，请使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>打开文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apt/sources.list</code></pre></div>
+<p>将软件仓库行添加到文件末尾：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">deb https://apache.bintray.com/couchdb-deb bionic main</span></code></pre></div>
+<p>您可以使用以下命令将软件仓库行附加到文件，而不是使用文本编辑器编辑 <code>sources.list</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;deb https://apache.bintray.com/couchdb-deb $(lsb_release -cs) main&#34; | sudo tee -a /etc/apt/sources.list</code></pre></div>
+<p><code>$(lsb_release -cs)</code> 将打印 Ubuntu 代号。例如，如果您有 <a href="/linux/how-to-check-your-ubuntu-version/">Ubuntu 版本</a>  18.04 ，则该命令将打印 <code>bionic</code> 。</p>
+
+<p>另一种选择是在 <code>/etc/apt/sources.list.d/</code> 目录下创建一个新的软件仓库文件。</p>
+
+<p>手动配置软件仓库时，还需要手动将公共软件仓库密钥导入系统。要做到这一点，使用 <a href="/linux/wget-command-examples/"><code>wget</code></a> 或 <a href="/linux/curl-command-examples/"><code>curl</code></a> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add -</code></pre></div>
+<p>上面的命令应输出 <code>OK</code> ，这意味着已成功导入 GPG 密钥，并且此软件仓库中的包将被视为可信任。</p>
+
+<p>在从新添加的软件仓库安装软件包之前，您必须更新软件包索引：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div>
+<p>更新包索引后，您可以从新添加的软件仓库中安装包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install couchdb</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>我们已经向您展示了如何在 Ubuntu 中添加 apt 软件仓库。相同的说明适用于任何基于 Debian 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/apt" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apt</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-use-apt-command/">如何在 Linux 中使用 apt 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-deb-packages-on-ubuntu/">如何在Ubuntu上安装Deb包</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-installed-packages-on-ubuntu/">如何在 Ubuntu 上列出已安装的软件包</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-automatic-updates-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上启用和设置无人值守自动安全更新</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-ubuntu/">如何在 Ubuntu 中将用户添加到 sudoers</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-dns-nameservers-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上设置 DNS 域名服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-xrdp-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Xrdp 服务器(远程桌面)</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-virtualbox-guest-additions-in-ubuntu/">如何在 Ubuntu 18.04 上安装 VirtualBox Guest Additions</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tor-browser-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Tor 浏览器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-run-sudo-command-without-password/">如何配置运行 sudo 命令时不输入密码</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#apt-源">Apt 源</a></li>
+<li><a href="#安装-add-apt-repository">安装 <code>add-apt-repository</code></a></li>
+<li><a href="#使用-add-apt-repository-添加软件仓库">使用 <code>add-apt-repository</code> 添加软件仓库</a>
+<ul>
+<li><a href="#添加-ppa-软件仓库">添加 PPA 软件仓库</a></li>
+</ul></li>
+<li><a href="#手动添加软件仓库">手动添加软件仓库</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
