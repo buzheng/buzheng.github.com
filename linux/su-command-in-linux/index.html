@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux中使用 su 命令切换用户 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux中使用 su 命令切换用户" />
+<meta property="og:description" content="su ( 替代或切换用户的缩写) 实用程序，可以运行另一用户的特权命令，默认情况下是 root 用户。
+
+使用 su 是在当前登录会话中切换到管理帐户的最简单方法。当不允许 root 用户通过 ssh 或使用 GUI 显示管理器登录系统时，这特别方便。
+
+在本教程中，我们将解释如何使用该 su 命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/su-command-in-linux/" />
+<meta property="article:published_time" content="2019-10-14T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-14T12:00:00+08:00" />
+<meta itemprop="name" content="Linux中使用 su 命令切换用户">
+<meta itemprop="description" content="su ( 替代或切换用户的缩写) 实用程序，可以运行另一用户的特权命令，默认情况下是 root 用户。
+
+使用 su 是在当前登录会话中切换到管理帐户的最简单方法。当不允许 root 用户通过 ssh 或使用 GUI 显示管理器登录系统时，这特别方便。
+
+在本教程中，我们将解释如何使用该 su 命令。">
+
+
+<meta itemprop="datePublished" content="2019-10-14T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-14T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="844">
+
+
+
+<meta itemprop="keywords" content="terminal,su,sudo," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/su-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux中使用 su 命令切换用户"/>
+<meta name="twitter:description" content="su ( 替代或切换用户的缩写) 实用程序，可以运行另一用户的特权命令，默认情况下是 root 用户。
+
+使用 su 是在当前登录会话中切换到管理帐户的最简单方法。当不允许 root 用户通过 ssh 或使用 GUI 显示管理器登录系统时，这特别方便。
+
+在本教程中，我们将解释如何使用该 su 命令。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux中使用 su 命令切换用户</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-14T12:00:00&#43;08:00">2019年10月14日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>su</code> ( 替代或切换用户的缩写) 实用程序，可以运行另一用户的特权命令，默认情况下是 root 用户。</p>
+
+<p>使用 <code>su</code> 是在当前登录会话中切换到管理帐户的最简单方法。当不允许 root 用户通过 ssh 或使用 GUI 显示管理器登录系统时，这特别方便。</p>
+
+<p>在本教程中，我们将解释如何使用该 <code>su</code> 命令。</p>
+
+<h2 id="如何使用-su-命令">如何使用 <code>su</code> 命令</h2>
+
+<p>该 <code>su</code> 命令的常规语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">su <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>USER <span class="o">[</span>ARGUMENT...<span class="o">]]</span></code></pre></div>
+<p>不带任何选项调用时， <code>su</code> 的默认行为是以 root 用户身份运行交互式 shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">su</code></pre></div>
+<p>系统将提示您输入 root 密码，如果通过身份验证，则运行该命令的用户将临时成为 root 用户。</p>
+
+<p>会话中的 shell (<code>SHELL</code>) 和 home (<code>HOME</code>)<a href="/linux/how-to-set-and-list-environment-variables-in-linux/"> 环境变量</a>是通过替代用户的 <code>/etc/passwd</code> 条目设置的，并且当前目录不变。</p>
+
+<p>要确认用户已更改，请使用以下 <code>whoami</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">whoami</code></pre></div>
+<p>该命令将打印运行当前 shell 会话的用户的名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">root</code></pre></div>
+<p>调用 <code>su</code> 时最常用的选项是 <code>-</code> ， <code>-l</code> ， <code>--login</code> 。这使该 shell 成为登录 shell ，其环境与真实登录非常相似，并更改了<a href="/linux/current-working-directory/">当前目录</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">su -</code></pre></div>
+<p>如果要运行另一个 shell 程序而不是 <code>passwd</code> 文件中定义的外壳程序，请使用 <code>-s</code> ， <code>--shell</code> 选项。例如，要切换到 root 并运行 <code>zsh</code> shell ，您可以输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">su -s /usr/bin/zsh</code></pre></div>
+<p>为了保持整个环境 (<code>HOME</code> ， <code>SHELL</code> ， <code>USER</code> ，和 <code>LOGNAME</code> 主叫用户)使用 <code>-p</code> ， <code>--preserve-environment</code> 选项。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">su -p</code></pre></div>
+<p>使用该 <code>-</code> 选项时，将 <code>-p</code> 被忽略。</p>
+
+<p>如果要以替代用户身份运行命令而不启动交互式 shell ，请使用 <code>-c</code> ， <code>--command</code> 选项。例如，要以超级用户身份调用命令 <a href="/linux/ps-command-in-linux/"><code>ps</code></a> ，您可以输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">su -c ps</code></pre></div>
+<p>要切换到另一个用户帐户，请将用户名作为参数传递给 <code>su</code> 。例如，要切换到用户 <code>tyrion</code> ，您可以输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">su tyrion</code></pre></div>
+<h2 id="sudo-与-su">sudo 与 su</h2>
+
+<p>在某些 Linux 发行版(如 Ubuntu) 上，出于安全原因，默认情况下禁用了 <a href="/linux/how-to-enable-and-disable-root-user-account-in-ubuntu/">root 用户帐户</a>。这意味着没有为 root 设置密码，并且您不能用于 <code>su</code> 切换到 root 。</p>
+
+<p>更改为 root 的一种方法是在 <code>su</code> 命令前添加 <code>sudo</code> 并输入当前登录的用户密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo su -</code></pre></div>
+<p>该 <code>sudo</code> 命令允许您以其他用户(默认情况下为 root 用户)运行程序。</p>
+
+<p>如果授予用户 <code>sudo</code> 权限，则该 <code>su</code> 命令将以 root 身份调用。运行 <code>sudo su -</code> 和使用 root 运行 <code>su -</code> 效果相同。</p>
+
+<p>与该 <code>-i</code> 选项 <code>sudo</code> 一起使用时，请以 root 用户的环境运行交互式登录 shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo -i</code></pre></div>
+<p><code>sudo -i</code> 与 <code>su -</code> 运行基本相同。</p>
+
+<p>使用 <code>sudo</code>  的好处是不需要在多个管理用户帐户之间共享 root 密码。</p>
+
+<p>另外，通过， <code>sudo</code> 您可以允许用户仅以 root 特权运行特定程序。</p>
+
+<h2 id="结论">结论</h2>
+
+<p><code>su</code> 是一个命令行实用程序，可让您临时成为另一个用户并执行命令。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/su" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">su</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/sudo" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">sudo</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-ubuntu/">如何在 Ubuntu 中将用户添加到 sudoers</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-centos/">如何在 CentOS 中将用户添加到 sudoers</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/sudo-command-in-linux/">Linux 中的 Sudo 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/whereis-command-in-linux/">Linux 中的 whereis 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/chmod-command-in-linux/">Linux 中的 chmod 命令用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/gunzip-command-in-linux/">Linux 中的 gunzip 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/truncate-files-in-linux/">如何在 Linux 中清空文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-debian-10/">如何在 Debian 10 Linux 上安装和使用 curl</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-show-line-numbers-in-vim/">如何在 Vim/Vi 中显示行号</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/chgrp-command-in-linux/">Linux 中的 chgrp (更改用户组)命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#如何使用-su-命令">如何使用 <code>su</code> 命令</a></li>
+<li><a href="#sudo-与-su">sudo 与 su</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
