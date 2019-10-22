@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何更改 git 的提交消息 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何更改 git 的提交消息" />
+<meta property="og:description" content="使用 Git 时，可能会遇到需要编辑提交消息的情况。做出更改的原因有很多，例如，修正了错字，删除了敏感信息或添加了其他信息。
+
+本指南说明了如何更改最新或较旧的 Git 提交的消息。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/change-git-commit-message/" />
+<meta property="article:published_time" content="2019-10-22T13:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-22T13:00:00+08:00" />
+<meta itemprop="name" content="如何更改 git 的提交消息">
+<meta itemprop="description" content="使用 Git 时，可能会遇到需要编辑提交消息的情况。做出更改的原因有很多，例如，修正了错字，删除了敏感信息或添加了其他信息。
+
+本指南说明了如何更改最新或较旧的 Git 提交的消息。">
+
+
+<meta itemprop="datePublished" content="2019-10-22T13:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-22T13:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="901">
+
+
+
+<meta itemprop="keywords" content="git," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/change-git-commit-message/featured.jpg"/>
+<meta name="twitter:title" content="如何更改 git 的提交消息"/>
+<meta name="twitter:description" content="使用 Git 时，可能会遇到需要编辑提交消息的情况。做出更改的原因有很多，例如，修正了错字，删除了敏感信息或添加了其他信息。
+
+本指南说明了如何更改最新或较旧的 Git 提交的消息。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何更改 git 的提交消息</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-22T13:00:00&#43;08:00">2019年10月22日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>使用 Git 时，可能会遇到需要编辑提交消息的情况。做出更改的原因有很多，例如，修正了错字，删除了敏感信息或添加了其他信息。</p>
+
+<p>本指南说明了如何更改最新或较旧的 Git 提交的消息。</p>
+
+<h2 id="更改最近的提交">更改最近的提交</h2>
+
+<p>该 <code>git commit --amend</code> 命令允许您更改最新的提交消息。</p>
+
+<h3 id="未推送的提交">未推送的提交</h3>
+
+<p>要更改尚未推送到远程存储库的最新提交的消息，请使用该 <code>--amend</code> 标志再次提交。</p>
+
+<ol>
+<li><a href="/linux/linux-cd-command/">cd</a> 到终端中的存储库目录。</li>
+
+<li><p>运行以下命令以修改最新提交的消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git commit --amend -m &#34; New commit message. &#34;</code></pre></div>
+<p>该命令的作用是用新的覆盖新的提交。</p>
+
+<p>该 <code>-m</code> 选项允许您在不打开编辑器会话的情况下在命令行上编写新消息。</p></li>
+</ol>
+
+<p>在更改提交消息之前，您还可以添加以前忘记的其他更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git add .
+git commit --amend -m &#34;New commit message.&#34;</code></pre></div>
+<h3 id="推送提交">推送提交</h3>
+
+<p>被修改的提交是具有不同 SHA-1 的新实体。先前的提交将不再存在于当前分支中。</p>
+
+<p>通常，您应该避免修改已经推送的提交，因为这可能会给基于此提交工作的人们带来麻烦。在更改推送的提交之前，最好先咨询您的开发人员。</p>
+
+<p>如果更改了最近推送的提交的消息，则必须强制推送它。</p>
+
+<ol>
+<li>导航到存储库。</li>
+
+<li><p>修改最新的推送提交的消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git commit --amend -m &#34; New commit message. &#34;</code></pre></div></li>
+
+<li><p>强制推送以更新远程存储库的历史记录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git push --force branch-name</code></pre></div></li>
+</ol>
+
+<h2 id="更改较早或多次提交">更改较早或多次提交</h2>
+
+<p>如果需要更改较旧或多次提交的消息，则可以使用交互方式 <code>git rebase</code> 来更改一个或多个较早提交。</p>
+
+<p>该 <code>rebase</code> 命令将重写提交历史记录，强烈建议不要对已经推送到<a href="/linux/how-to-setup-a-git-server/">远程 Git 存储库的</a>提交进行重新整理。</p>
+
+<ol>
+<li>导航到包含要更改的提交消息的存储库。</li>
+
+<li><p>键入 <code>git rebase -i HEAD~N</code> ，其中 <code>N</code> 是执行基础更改的提交次数。例如，如果要更改第 4 次提交和第 5 次最新提交，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git rebase -i HEAD~5</code></pre></div>
+<p>该命令将在<a href="/linux/how-to-use-nano-text-editor/">默认的文本编辑器中</a>显示最新的 <code>X</code> 次提交：</p>
+<div class="highlight"><pre class="chroma"><code class="language-git" data-lang="git">pick 43f8707f9 fix: update dependency json5 to ^ 2.1.1 
+pick cea1fb88a fix: update dependency verdaccio to ^ 4.3.3 
+pick aa540c364 fix: update dependency webpack-dev-server to ^ 3.8.2 
+pick c5e078656 chore: update dependency flow-bin to ^ 0.109.0 
+pick 11ce0ab34 fix: Fix spelling.
+
+# Rebase 7e59e8ead..11ce0ab34 onto 7e59e8ead (5 commands)</code></pre></div></li>
+
+<li><p>移至要更改的提交消息的行，并替换 <code>pick</code> 为 <code>reword</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-git" data-lang="git">reword 43f8707f9 fix: update dependency json5 to ^ 2.1.1 
+reword cea1fb88a fix: update dependency verdaccio to ^ 4.3.3 
+pick aa540c364 fix: update dependency webpack-dev-server to ^ 3.8.2 
+pick c5e078656 chore: update dependency flow-bin to ^ 0.109.0 
+pick 11ce0ab34 fix: Fix spelling.
+
+# Rebase 7e59e8ead..11ce0ab34 onto 7e59e8ead (5 commands)</code></pre></div></li>
+
+<li><p>保存更改并关闭编辑器。</p></li>
+
+<li><p>对于每个选定的提交，将打开一个新的文本编辑器窗口。更改提交消息，保存文件，然后关闭编辑器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-git" data-lang="git">fix: update dependency json5 to ^ 2.1.1 </code></pre></div></li>
+
+<li><p>强制将更改推送到远程存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git push --force branch-name</code></pre></div></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>要更改最新的提交消息，请使用 <code>git commit --amend</code> 命令；使用 <code>git rebase -i HEAD~N</code> 来更改旧的或多条提交消息。</p>
+
+<p>一般不要修改推送的提交，因为它可能会给您的同事带来很多问题。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/git" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">git</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-setup-a-git-server/">如何设置 git 服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-remove-untracked-files-in-git/">如何在 Git 中删除未被跟踪的文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-debian-10/">如何在 Debian 10 Linux 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-and-list-git-branches/">在 Git 中创建和列出本地和远程分支</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-git-remotes/">如何添加 Git 远程源</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-delete-local-and-remote-git-branch/">如何删除本地和远程Git分支</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-centos-7/">如何在CentOS 7上安装和配置GitLab</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-rename-local-and-remote-git-branch/">如何重命名本地和远程Git分支</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 Gogs</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-debian-9/">如何在 Debian 9 上安装Git</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#更改最近的提交">更改最近的提交</a>
+<ul>
+<li><a href="#未推送的提交">未推送的提交</a></li>
+<li><a href="#推送提交">推送提交</a></li>
+</ul></li>
+<li><a href="#更改较早或多次提交">更改较早或多次提交</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

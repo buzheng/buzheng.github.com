@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何连接到 Docker 容器 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何连接到 Docker 容器" />
+<meta property="og:description" content="当您想查看容器内部正在发生什么时，连接到正在运行的 Docker 容器会很有帮助。如果 Docker 容器无法按预期工作，则可以将其连接到该容器或将 Shell 获取到该容器，然后" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-connect-to-docker-container/" />
+<meta property="article:published_time" content="2019-10-22T13:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-22T13:00:00+08:00" />
+<meta itemprop="name" content="如何连接到 Docker 容器">
+<meta itemprop="description" content="当您想查看容器内部正在发生什么时，连接到正在运行的 Docker 容器会很有帮助。如果 Docker 容器无法按预期工作，则可以将其连接到该容器或将 Shell 获取到该容器，然后">
+
+
+<meta itemprop="datePublished" content="2019-10-22T13:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-22T13:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1051">
+
+
+
+<meta itemprop="keywords" content="docker," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-connect-to-docker-container/featured.jpg"/>
+<meta name="twitter:title" content="如何连接到 Docker 容器"/>
+<meta name="twitter:description" content="当您想查看容器内部正在发生什么时，连接到正在运行的 Docker 容器会很有帮助。如果 Docker 容器无法按预期工作，则可以将其连接到该容器或将 Shell 获取到该容器，然后"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何连接到 Docker 容器</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-22T13:00:00&#43;08:00">2019年10月22日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1100 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          
+
+<p>当您想查看容器内部正在发生什么时，连接到正在运行的 Docker 容器会很有帮助。如果 Docker 容器无法按预期工作，则可以将其连接到该容器或将 Shell 获取到该容器，然后运行诸如 <a href="/linux/ps-command-in-linux/"><code>ps</code></a> 或 <code>top</code> 命令。您还可以输入容器，安装新软件包，并从中<a href="/linux/how-to-build-docker-images-with-dockerfile/">构建新的 Docker 映像</a>。</p>
+
+<p>在本教程中，我们将说明如何附加到容器的主要运行过程以及如何将外壳获取到正在运行的容器。</p>
+
+<h2 id="附加到容器">附加到容器</h2>
+
+<p>尽管可以在一个容器中运行多个进程，但是大多数 docker 容器仅运行一个进程。使用 <code>ENTRYPOINT</code> 或 <code>RUN</code> 指令指定启动容器时执行的命令。</p>
+
+<p>该 <a href="https://docs.docker.com/engine/reference/commandline/attach/"><code>docker attach</code> 命令</a>允许您将终端连接到正在运行的容器。当您想实时查看标准输出中写的内容或以交互方式控制过程时，此功能很有用。</p>
+
+<p>为了更好地理解该 <code>attach</code> 命令的工作原理，让我们使用官方的 Nginx 映像运行一个新的独立的 Nginx 容器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run --name my_nginx -d -p 8080:80 nginx</code></pre></div>
+<p>该 <code>-p 8080:80</code> 选项告诉 Docker 将容器的端口 8080 绑定到主机上的端口 80 。</p>
+
+<p>查看容器列表以确保 “my_nginx” 容器运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container ls</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+8e1c4974a8d8        nginx               &#34;nginx -g &#39;daemon of…&#34;   3 minutes ago       Up 2 seconds        0.0.0.0:8080-&gt;80/tcp   my_nginx</code></pre></div>
+<p>使用容器的 ID 或名称附加到容器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container attach my_nginx</code></pre></div>
+<p>运行容器时执行的 nginx 镜像的默认命令设置为 <code>CMD [ &quot; nginx &quot; ,  &quot; -g &quot; ,  &quot; daemon off; &quot;]</code>。运行 <code>attach</code> 命令时，终端将附加到该 <code>nginx</code> 进程。</p>
+
+<p>在<a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">浏览器中</a>打开 <code>127.0.0.1:8080</code> ，您可以实时观看 nginx 进程的输出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">192.168.33.1 - - [04/Oct/2019:21:12:28 +0000] &#34;GET/HTTP/1.1&#34; 200 612 &#34;-&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36&#34; &#34;-&#34;
+192.168.33.1 - - [04/Oct/2019:21:12:28 +0000] &#34;GET /favicon.ico HTTP/1.1&#34; 404 555 &#34;http://192.168.33.71:8080/&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36&#34; &#34;-&#34;</code></pre></div>
+<p>要访问容器日志，您应该首选使用该 <code>docker logs</code> 命令。</p>
+
+<p>要从容器上卸下而不停止容器，请使用 <code>CTRL-p</code>   <code>CTRL-q</code> 组合键。按下 <code>CTRL-c</code> 停止容器。</p>
+
+<p>如果要附加的正在运行的进程接受输入，则可以向其发送指令。</p>
+
+<h2 id="将外壳带到容器">将外壳带到容器</h2>
+
+<p>该 <a href="https://docs.docker.com/engine/reference/commandline/exec/"><code>docker exec</code> 命令</a>允许您在正在运行的容器中运行命令。</p>
+
+<p>要查看该 <code>exec</code> 命令的工作方式以及如何使用该命令进入容器外壳，请首先启动一个新容器。我们将使用官方的 MySQL 映像：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run --name my_mysql -d mysql</code></pre></div>
+<p>这将创建一个名为 “ my_mysql” 的容器。</p>
+
+<p>要在容器内执行命令，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container exec -it my_mysql ls /var</code></pre></div>
+<p>该 <code>-i</code> 选项代表交互式，<code>-t</code> 选项告诉 Docker 分配一个伪 TTY 设备。该 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令将列出容器目录内的所有文件和 <code>/var</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">backups  cache	lib  local  lock  log  mail  opt  run  spool  tmp</code></pre></div>
+<p>要将 shell 放入容器，即进入容器内部，请通过执行 shell 二进制文件开始新的 shell 会话。您可以使用 <code>sh</code> ， <code>bash</code> 或镜像中包含的任何 shell 。</p>
+
+<p>下面的命令将在容器内创建一个新的 Bash 会话：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container exec -it my_mysql /bin/bash</code></pre></div>
+<p>您的命令提示符将更改，表明您正在使用容器外壳。</p>
+
+<p>在这里，您可以像在任何其他 Linux 服务器上一样执行命令。例如，要获取当前<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>的列表，请输入 <code>env</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">env</code></pre></div>
+<p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">HOSTNAME=e0214d97e0fe
+MYSQL_ROOT_PASSWORD=my-secret-pw
+PWD=/
+HOME=/root
+MYSQL_MAJOR=8.0
+GOSU_VERSION=1.7
+MYSQL_VERSION=8.0.17-1debian9
+TERM=xterm
+SHLVL=1
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+_=/usr/bin/env</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>使用 <code>docker exec</code> 和 <code>docker attach</code> 命令可以连接到正在运行的容器。要将交互式 Shell 放入容器，请使用 <code>exec</code> 命令启动新的 Shell 会话。而 <code>attach</code> 命令可以将您的终端附加到正在运行的容器。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/docker" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">docker</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-10/">如何在 Debian 10 Linux 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-raspberry-pi/">如何在 Raspberry Pi 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-build-docker-images-with-dockerfile/">如何使用 Dockerfile 构建 Docker 镜像</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker Compose</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-remove-docker-images-containers-volumes-and-networks/">如何删除Docker容器，映像，卷和网络</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-centos-7/">如何在CentOS 7上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-debian-9/">如何在Debian 9上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-centos-7/">如何在 CentOS 7 上安装和使用 Docker</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#附加到容器">附加到容器</a></li>
+<li><a href="#将外壳带到容器">将外壳带到容器</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
