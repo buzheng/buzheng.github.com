@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 CentOS 8 上安装 Nginx |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 8 上安装 Nginx" />
+<meta property="og:description" content="Nginx 发音为 “engine x” ，是一种开源的高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可用作 HTTP 和非 HTTP 服务器的独立 Web 服务器，负载平衡器，内容缓存和反向代理。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量较小。
+
+本教程说明了如何在 CentOS 8 上安装和管理 Nginx 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-nginx-on-centos-8/" />
+<meta property="article:published_time" content="2019-10-22T18:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-22T18:00:00+08:00" />
+<meta itemprop="name" content="如何在 CentOS 8 上安装 Nginx">
+<meta itemprop="description" content="Nginx 发音为 “engine x” ，是一种开源的高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可用作 HTTP 和非 HTTP 服务器的独立 Web 服务器，负载平衡器，内容缓存和反向代理。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量较小。
+
+本教程说明了如何在 CentOS 8 上安装和管理 Nginx 。">
+
+
+<meta itemprop="datePublished" content="2019-10-22T18:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-22T18:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="792">
+
+
+
+<meta itemprop="keywords" content="nginx,centos," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-nginx-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="如何在 CentOS 8 上安装 Nginx"/>
+<meta name="twitter:description" content="Nginx 发音为 “engine x” ，是一种开源的高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可用作 HTTP 和非 HTTP 服务器的独立 Web 服务器，负载平衡器，内容缓存和反向代理。
+
+与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量较小。
+
+本教程说明了如何在 CentOS 8 上安装和管理 Nginx 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 CentOS 8 上安装 Nginx</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-22T18:00:00&#43;08:00">2019年10月22日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Nginx 发音为 “engine x” ，是一种开源的高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可用作 HTTP 和非 HTTP 服务器的独立 Web 服务器，负载平衡器，内容缓存和<a href="/linux/nginx-reverse-proxy/">反向代理</a>。</p>
+
+<p>与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量较小。</p>
+
+<p>本教程说明了如何在 CentOS 8 上安装和管理 Nginx 。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续之前，请确保您以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录，并且您没有在端口 80 或 443 上运行 Apache 或任何其他进程。</p>
+
+<h2 id="在-centos-8-上安装-nginx">在 CentOS 8 上安装 Nginx</h2>
+
+<p>从 CentOS 8 开始， Nginx 软件包在默认的 CentOS 存储库中可用。</p>
+
+<p>在 CentOS 8 上安装 Nginx 只需输入以下内容即可：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install nginx</code></pre></div>
+<p>安装完成后，使用以下命令启用并启动 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable nginx
+sudo systemctl start nginx</code></pre></div>
+<p>要验证服务是否正在运行，请通过以下命令检查其状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status nginx</code></pre></div>
+<p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">● nginx.service - The nginx HTTP and reverse proxy server
+Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; vendor preset: disabled)
+Active: active (running) since Sun 2019-10-06 18:35:55 UTC; 17min ago
+...</code></pre></div>
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>FirewallD 是 Centos 8 上的默认防火墙解决方案。</p>
+
+<p>在安装过程中， Nginx 使用预定义的规则创建防火墙服务文件，以允许访问 HTTP(<code>80</code>) 和 HTTPS(<code>443</code>) 端口。</p>
+
+<p>使用以下命令永久打开必要的端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload</code></pre></div>
+<p>现在，您可以通过在 Web 浏览器中打开 <code>http://YOUR_IP</code> 来测试 Nginx 的安装。您应该看到默认的 Nginx 欢迎页面，其外观应类似于下图：</p>
+
+<figure><img src="nginx-screenshot.jpg" alt=""></figure>
+
+<h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
+
+<ul>
+<li>所有 Nginx 配置文件都位于 <code>/etc/nginx/</code> 目录中。</li>
+<li>Nginx 的主要配置文件是 <code>/etc/nginx/nginx.conf</code> 。</li>
+<li>为每个网站创建一个单独的配置文件使服务器更加易于维护。</li>
+<li>Nginx 服务器文件必须以结尾 <code>.conf</code> 并存储在 <code>/etc/nginx/conf.d</code> 目录中。您可以根据需要拥有任意数量的服务器块。</li>
+<li>遵循标准命名约定是一个好习惯。例如，如果域名是 <code>mydomain.com</code> 则配置文件应命名为 <code>mydomain.com.conf</code></li>
+<li>如果在域服务器块中使用可重复的配置段，则最好将这些段重构为片段。</li>
+<li>Nginx日志文件 (<code>access.log</code> 和 <code>error.log</code>) 位于 <code>/var/log/nginx/</code> 目录中。建议每个服务器模块有不同 <code>access</code> 和 <code>error</code> 日志文件。</li>
+<li>您可以将网站文件的根目录设置为所需的任何位置。 最常见的位置包括：
+
+<ul>
+<li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
+<li><code>/var/www/&lt;site_name&gt;</code></li>
+<li><code>/var/www/html/&lt;site_name&gt;</code></li>
+<li><code>/opt/&lt;site_name&gt;</code></li>
+<li><code>/usr/share/nginx/html</code></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已经在 CentOS 8 服务器上成功安装了 Nginx 。现在，您已经准备好开始部署应用程序并将 Nginx 用作 Web 或代理服务器。</p>
+
+<p>您可以通过与其他任何 systemd 单元相同的方式来<a href="/linux/nginx-commands-you-should-know/">管理 Nginx 服务</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/nginx" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">nginx</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">如何在 CentOS 7 上设置 Nginx 服务器块</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-7/">如何在CentOS 7上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/">如何在CentOS 7上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-magento-2-on-centos-7/">在 CentOS 7 上安装 Magento 2</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-java-on-centos-8/">如何在 CentOS 8 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/redirect-http-to-https-in-nginx/">在 Nginx 中将 HTTP 重定向到 HTTPS</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#在-centos-8-上安装-nginx">在 CentOS 8 上安装 Nginx</a></li>
+<li><a href="#调整防火墙">调整防火墙</a></li>
+<li><a href="#nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
