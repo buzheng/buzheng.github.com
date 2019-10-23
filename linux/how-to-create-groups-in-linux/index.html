@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Linux 中使用 groupadd 创建组 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Linux 中使用 groupadd 创建组" />
+<meta property="og:description" content="在 Linux 中，组用于组织和管理用户帐户。组的主要目的是为一组可以在组内用户之间共享的给定资源定义一组特权，例如读取，写入或执行权限。
+
+在本文中，我们将讨论如何使用 groupadd 命令在 Linux 中创建新组。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-create-groups-in-linux/" />
+<meta property="article:published_time" content="2019-10-23T17:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-23T17:00:00+08:00" />
+<meta itemprop="name" content="在 Linux 中使用 groupadd 创建组">
+<meta itemprop="description" content="在 Linux 中，组用于组织和管理用户帐户。组的主要目的是为一组可以在组内用户之间共享的给定资源定义一组特权，例如读取，写入或执行权限。
+
+在本文中，我们将讨论如何使用 groupadd 命令在 Linux 中创建新组。">
+
+
+<meta itemprop="datePublished" content="2019-10-23T17:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-23T17:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="901">
+
+
+
+<meta itemprop="keywords" content="terminal,user,group," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-create-groups-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="在 Linux 中使用 groupadd 创建组"/>
+<meta name="twitter:description" content="在 Linux 中，组用于组织和管理用户帐户。组的主要目的是为一组可以在组内用户之间共享的给定资源定义一组特权，例如读取，写入或执行权限。
+
+在本文中，我们将讨论如何使用 groupadd 命令在 Linux 中创建新组。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Linux 中使用 groupadd 创建组</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-23T17:00:00&#43;08:00">2019年10月23日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在 Linux 中，组用于组织和管理用户帐户。组的主要目的是为一组可以在组内用户之间共享的给定资源定义一组特权，例如读取，写入或执行<a href="/linux/chmod-command-in-linux/">权限</a>。</p>
+
+<p>在本文中，我们将讨论如何使用 <code>groupadd</code> 命令在 Linux 中创建新组。</p>
+
+<h2 id="groupadd-命令语法"><code>groupadd</code> 命令语法</h2>
+
+<p>该 <code>groupadd</code> 命令的常规语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">groupadd <span class="o">[</span>OPTIONS<span class="o">]</span> GROUPNAME</code></pre></div>
+<p>只有 root 或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户才能创建新组。</p>
+
+<p>调用时， <code>groupadd</code> 使用命令行上指定的选项以及在 <a href="http://man7.org/linux/man-pages/man5/login.defs.5.html"><code>/etc/login.defs</code></a> 文件中指定的默认值创建一个新组。</p>
+
+<h2 id="在-linux-中创建组">在 Linux 中创建组</h2>
+
+<p>要创建新的组类型， 输入 <code>groupadd</code> 然后输入用户名。</p>
+
+<p>例如，要创建一个名为 <code>mygroup</code> 您的新组，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd mygroup</code></pre></div>
+<p>该命令将新组的条目添加到 <code>/etc/group</code> 和 <code>/etc/gshadow</code> 文件。</p>
+
+<p>创建群组后，您可以开始<a href="/linux/how-to-add-user-to-group-in-linux/">将用户添加到群组中</a>。</p>
+
+<p>如果已经存在相同名称的组，则系统将显示一条错误消息，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">groupadd: group &#39;mygroup&#39; already exists</code></pre></div>
+<p>要抑制错误消息(如果该组存在)并使命令成功退出，请使用 <code>-f</code>(<code>--force</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd -f mygroup</code></pre></div>
+<h2 id="创建具有特定-gid-的组">创建具有特定 GID 的组</h2>
+
+<p>在 Linux 和类似 Unix 的操作系统中，组由名称和唯一的正整数的 GID 标识。</p>
+
+<p>默认情况下，创建新组时，系统会从 <code>login.defs</code> 文件中指定的组 ID 范围中分配下一个可用的 GID  。</p>
+
+<p>使用 <code>-g</code>(<code>--gid</code>) 选项创建具有特定 GID 的组。</p>
+
+<p>例如，要创建一个名为 <code>mygroup</code> GID 为 <code>1010</code> 的组， 请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd -g 1010 mygroup</code></pre></div>
+<p>您可以通过<a href="/linux/how-to-list-groups-in-linux/">列出所有组</a>并使用 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">grep</a> 过滤结果来验证组的 GID  ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">getent group | grep mygroup</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">mygroup:x:1010:</code></pre></div>
+<p>如果已经存在具有给定 GID 的组，则会出现以下错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">groupadd: GID &#39;1010&#39; already exists</code></pre></div>
+<p>与 <code>-o</code>(<code>--non-unique</code>) 选项一起使用时，该 <code>groupadd</code> 命令可让您创建具有非唯一 GID 的组：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd -o -g 1010 mygroup</code></pre></div>
+<h2 id="创建系统组">创建系统组</h2>
+
+<p>系统和常规(普通)组之间没有真正的技术差异。通常，系统组用于某些特殊的系统操作目的，例如创建备份或进行系统维护。</p>
+
+<p>系统组 GID 的范围已经在 <code>login.defs</code> 文件中指定，该范围与常规组的范围不同。</p>
+
+<p>使用 <code>-r</code>(<code>--system</code>) 选项创建系统组。例如，要创建一个名为 <code>mysystemgroup</code> 您的新系统组，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd -r mysystemgroup</code></pre></div>
+<h2 id="覆盖-etc-login-defs-的默认值">覆盖 <code>/etc/login.defs</code> 的默认值</h2>
+
+<p>您可以通过 <code>-K</code>(<code>--key</code>) 选项后跟 <code>KEY=VAL</code> 覆盖 <code>/etc/login.defs</code> 文件中指定的默认值。</p>
+
+<p>基本上，您可以覆盖的是常规组 ID 和系统组 ID 的最大值和最小值，创建新组时会在其中自动选择 GID 。</p>
+
+<p>假设您要创建一个 GID 在 1200 到 1500 之间的新组。为此，请指定最小/最大值，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd -K GID_MIN=1200 -K GID_MAX=1500 mygroup</code></pre></div>
+<h2 id="使用密码创建系统组">使用密码创建系统组</h2>
+
+<p>向组中添加密码没有实际用途，并且可能会导致安全问题，因为多个用户需要知道该密码。</p>
+
+<p>您如果想设置设置新组的密码，使用 <code>-p</code>(<code>--password</code>) 选项后跟密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groupadd -p grouppassword mygroup</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>在 Linux 中，您可以使用以下 <code>groupadd</code> 命令创建新的组。</p>
+
+<p>相同的说明适用于任何 Linux 发行版，包括 Ubuntu ， CentOS ， RHEL ， Debian ， Fedora 和 Arch Linux 。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/user" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">user</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/group" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">group</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/">如何使用useradd命令在Linux中创建用户</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-group-in-linux/">如何在 Linux 中将用户添加到组</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-and-delete-users-on-centos-7/">如何在CentOS 7上添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">如何在Ubuntu 18.04上添加和删除用户</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-users-in-linux/">如何在 Linux 中查看用户列表</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-comments/">在 bash 脚本中使用注释</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-format-usb-sd-card-linux/">如何在 Linux 上格式化 U 盘和 SD 卡</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-extract-unzip-tar-bz2-file/">如何提取(解压缩) tar bz2 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/popd-and-pushd-commands-in-linux/">Linux中的 pushd 和 popd 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/paste-command-in-linux/">在 Linux 中使用 paste 命令合并行</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#groupadd-命令语法"><code>groupadd</code> 命令语法</a></li>
+<li><a href="#在-linux-中创建组">在 Linux 中创建组</a></li>
+<li><a href="#创建具有特定-gid-的组">创建具有特定 GID 的组</a></li>
+<li><a href="#创建系统组">创建系统组</a></li>
+<li><a href="#覆盖-etc-login-defs-的默认值">覆盖 <code>/etc/login.defs</code> 的默认值</a></li>
+<li><a href="#使用密码创建系统组">使用密码创建系统组</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装 Apache |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装 Apache" />
+<meta property="og:description" content="Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。
+
+在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-apache-on-centos-8/" />
+<meta property="article:published_time" content="2019-10-23T19:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-23T19:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装 Apache">
+<meta itemprop="description" content="Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。
+
+在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。">
+
+
+<meta itemprop="datePublished" content="2019-10-23T19:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-23T19:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="712">
+
+
+
+<meta itemprop="keywords" content="apache,centos," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-apache-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装 Apache"/>
+<meta name="twitter:description" content="Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。
+
+在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装 Apache</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-23T19:00:00&#43;08:00">2019年10月23日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。</p>
+
+<p>在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。</p>
+
+<h2 id="安装-apache">安装 Apache</h2>
+
+<p>Apache 在默认的 CentOS 存储库中可用，并且安装非常简单。</p>
+
+<p>在基于 RHEL 的发行版中， Apache 包和服务称为 <code>httpd</code> 。要安装 Apache，请以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install httpd</code></pre></div>
+<p>安装完成后，启用并启动 Apache 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable httpd
+sudo systemctl start httpd</code></pre></div>
+<p>要验证服务是否正在运行，请检查其状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status httpd</code></pre></div>
+<p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sat 2019-10-12 15:54:58 UTC; 6s ago
+  ...</code></pre></div>
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>FirewallD 是 Centos 8 上的默认防火墙解决方案。</p>
+
+<p>在安装过程中， Apache 使用预定义的规则创建防火墙服务文件，以允许访问 HTTP(<code>80</code>) 和 HTTPS(<code>443</code>) 端口。</p>
+
+<p>以下命令将永久打开必要的端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --permanent --zone=public --add-service=https
+sudo firewall-cmd --reload</code></pre></div>
+<h2 id="管理-apache">管理 Apache</h2>
+
+<p>本部分说明 Apache 配置文件的结构以及管理 Apache Web 服务器的最佳实践。</p>
+
+<ul>
+<li>所有 Apache 配置文件都位于该 <code>/etc/httpd</code> 目录中。</li>
+<li>Apache 的主要配置文件是 <code>/etc/httpd/conf/httpd.conf</code> 。</li>
+<li><code>/etc/httpd/conf.d</code> 目录中以 <code>.conf</code> 结尾的配置文件都会包含在主 Apache 配置文件中。</li>
+<li>目录 <code>/etc/httpd/conf.modules.d</code> 中包含负责加载各种 Apache 模块的配置文件。</li>
+<li>Apache vhost 文件必须以 <code>.conf</code> 并且结尾并存储在 <code>/etc/httpd/conf.d</code> 目录中。您可以根据需要拥有任意数量的虚拟主机。为每个域创建单独的配置文件 (vhost) 使服务器易于维护。</li>
+<li>遵循标准的命名约定是一个好习惯。例如，如果域名是 <code>mydomain.com</code>， 则配置文件应命名为 <code>mydomain.com.conf</code></li>
+<li>Apache日志文件(<code>access_log</code> 和 <code>error_log</code>) 位于 <code>/var/log/httpd/</code> 目录中。建议有不同 <code>access</code> 和 <code>error</code> 日志文件为每个虚拟主机。</li>
+<li>您可以将域文档的根目录设置为所需的任何位置。 webroot 的最常见位置包括：
+
+<ul>
+<li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
+<li><code>/var/www/&lt;site_name&gt;</code></li>
+<li><code>/var/www/html/&lt;site_name&gt;</code></li>
+<li><code>/opt/&lt;site_name&gt;</code></li>
+</ul></li>
+</ul>
+
+<h2 id="结论">结论</h2>
+
+<p>恭喜，您已经在 CentOS 8 服务器上成功安装了 Apache 。现在，您准备开始部署应用程序并将 Apache 用作 Web 或代理服务器。</p>
+
+<p>您可以通过与其他任何 systemd 单元相同的方式来<a href="/linux/apache-commands-you-should-know/">管理 Apache 服务</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用 CentOS 7 上使用 Let&#39;s Encrypt 来保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/rpm-command-in-linux/">Linux 中的 rpm 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-centos-8/">如何在 CentOS 8 上安装 git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-nginx-on-centos-8/">如何在 CentOS 8 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-java-on-centos-8/">如何在 CentOS 8 上安装 Java</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#安装-apache">安装 Apache</a></li>
+<li><a href="#调整防火墙">调整防火墙</a></li>
+<li><a href="#管理-apache">管理 Apache</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>列出 MySQL 数据库中的表 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="列出 MySQL 数据库中的表" />
+<meta property="og:description" content="在管理 MySQL 数据库服务器时，您将要执行的最常见任务之一就是熟悉环境。这包括列出在服务器上的数据库，显示数据库表或获取有关用户帐户及其权限信息。
+
+本文介绍如何通过命令行列出 MySQL 或 MariaDB 数据库中的表。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/show-tables-in-mysql-database/" />
+<meta property="article:published_time" content="2019-10-23T19:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-23T19:00:00+08:00" />
+<meta itemprop="name" content="列出 MySQL 数据库中的表">
+<meta itemprop="description" content="在管理 MySQL 数据库服务器时，您将要执行的最常见任务之一就是熟悉环境。这包括列出在服务器上的数据库，显示数据库表或获取有关用户帐户及其权限信息。
+
+本文介绍如何通过命令行列出 MySQL 或 MariaDB 数据库中的表。">
+
+
+<meta itemprop="datePublished" content="2019-10-23T19:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-23T19:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="650">
+
+
+
+<meta itemprop="keywords" content="mysql,mariadb," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/show-tables-in-mysql-database/featured.jpg"/>
+<meta name="twitter:title" content="列出 MySQL 数据库中的表"/>
+<meta name="twitter:description" content="在管理 MySQL 数据库服务器时，您将要执行的最常见任务之一就是熟悉环境。这包括列出在服务器上的数据库，显示数据库表或获取有关用户帐户及其权限信息。
+
+本文介绍如何通过命令行列出 MySQL 或 MariaDB 数据库中的表。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">列出 MySQL 数据库中的表</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-23T19:00:00&#43;08:00">2019年10月23日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在管理 <a href="https://www.mysql.com/">MySQL</a> 数据库服务器时，您将要执行的最常见任务之一就是熟悉环境。这包括<a href="/linux/how-to-show-databases-in-mysql/">列出</a>在服务器上的数据库，显示数据库表或获取有关<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">用户帐户及其权限信息</a>。</p>
+
+<p>本文介绍如何通过命令行列出 MySQL 或 MariaDB 数据库中的表。</p>
+
+<h2 id="列出-mysql-表">列出 MySQL 表</h2>
+
+<p>要获取 MySQL 数据库中的表，请使用 <code>mysql</code> 客户端工具连接到 MySQL 服务器并运行 <code>SHOW TABLES</code> 命令。</p>
+
+<p>访问 MySQL 服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u user -p</code></pre></div>
+<p>在 MySQL Shell 中，使用以下 <code>USE</code> 语句切换到数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">USE database_name;</code></pre></div>
+<p>执行以下命令以获取当前数据库中所有表和视图的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW TABLES;</code></pre></div>
+<p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+----------------------------+
+| Tables_in_database_name    |
++----------------------------+
+| actions                    |
+| permissions                |
+| permissions_roles          |
+| permissions_users          |
+| roles                      |
+| roles_users                |
+| settings                   |
+| users                      |
++----------------------------+
+8 rows in set (0.00 sec)</code></pre></div>
+<p>可选 <code>FULL</code> 修饰符将表类型显示为第二个输出列。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW FULL TABLES;</code></pre></div>
+<p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+----------------------------+------------+
+| Tables_in_database_name    | Table_type |
++----------------------------+------------+
+| actions                    | VIEW       |
+| permissions                | BASE TABLE |
+| permissions_roles          | BASE TABLE |
+| permissions_users          | BASE TABLE |
+| roles                      | BASE TABLE |
+| roles_users                | BASE TABLE |
+| settings                   | BASE TABLE |
+| users                      | BASE TABLE |
++----------------------------+------------+
+
+8 rows in set (0.00 sec)</code></pre></div>
+<p>要获得表列表而不切换到数据库，请使用 <code>FROM</code> 或者 <code>IN</code> 子句，后跟数据库名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW TABLES FROM database_name;</code></pre></div>
+<p>该 <code>LIKE</code> 子句可用于 <code>SHOW TABLES</code> 根据特定模式过滤命令的输出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW TABLES LIKE pattern;</code></pre></div>
+<p>例如，以下语句将返回名称以 “ open” 开头的所有数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW TABLES LIKE &#39;permissions%&#39;;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+-------------------------------------------+
+| Tables_in_database_name (permissions%)    |
++-------------------------------------------+
+| permissions                               |
+| permissions_roles                         |
+| permissions_users                         |
++-------------------------------------------+
+3 rows in set (0.00 sec)</code></pre></div>
+<p>百分号 (<code>%</code>) 表示零个，一个或多个字符。</p>
+
+<h2 id="从命令行显示-mysql-表">从命令行显示 MySQL 表</h2>
+
+<p>要从 Linux Shell 获取有关表的信息，可以使用 <code>mysql -e</code> 命令或 <a href="https://dev.mysql.com/doc/refman/8.0/en/mysqlshow.html"><code>mysqlshow</code></a> 显示数据库和表信息的命令。</p>
+
+<p>当您想使用 shell 脚本处理 MySQL 数据库时，这特别有用。</p>
+
+<p>在终端上运行以下命令以显示所有数据库的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u user -p -e &#39;SHOW TABLES FROM database_name;&#39;</code></pre></div>
+<p>输出将显示所有表的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+----------------------------+
+| Tables_in_database_name    |
++----------------------------+
+| actions                    |
+| permissions                |
+| permissions_roles          |
+| permissions_users          |
+| roles                      |
+| roles_users                |
+| settings                   |
+| users                      |
++----------------------------+</code></pre></div>
+<p>这是使用 <code>mysqlshow</code> 命令的示例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysqlshow database_name</code></pre></div>
+<p>您可以使用 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> 命令过滤输出。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>要获取有关 MySQL 数据库中表的信息，请使用 <code>SHOW TABLES</code> 命令。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/mysql" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mysql</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mariadb</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-debian-10/">如何在 Debian 10 上配置 MySQL(MariaDB) 主从</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/mysql-ssh-tunnel/">如何通过 SSH 隧道连接到 MySQL</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/mysql-remote-access/">如何设置远程连接 MySQL 数据库服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-delete-mysql-user-accounts/">如何删除 MySQL 用户帐户</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mariadb-on-debian-10/">如何在 Debian 10 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-show-databases-in-mysql/">如何在 MySQL 中显示所有的数据库</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-centos-7/">如何在 CentOS 7 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">如何创建 MySQL 用户帐户和授予权限</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mariadb-on-debian-9/">如何在 Debian 9 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#列出-mysql-表">列出 MySQL 表</a></li>
+<li><a href="#从命令行显示-mysql-表">从命令行显示 MySQL 表</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
