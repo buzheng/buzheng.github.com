@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>使用 .gitignore 忽略 Git 中的文件和目录 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.58.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="使用 .gitignore 忽略 Git 中的文件和目录" />
+<meta property="og:description" content="通常，在使用 Git 的项目上工作时，您会希望排除将特定文件或目录推送到远程存储库中的情况。可以使用 .gitignore 文件指定 Git 应忽略的未跟踪文件。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/gitignore-ignoring-files-in-git/" />
+<meta property="article:published_time" content="2019-10-23T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-23T12:00:00+08:00" />
+<meta itemprop="name" content="使用 .gitignore 忽略 Git 中的文件和目录">
+<meta itemprop="description" content="通常，在使用 Git 的项目上工作时，您会希望排除将特定文件或目录推送到远程存储库中的情况。可以使用 .gitignore 文件指定 Git 应忽略的未跟踪文件。">
+
+
+<meta itemprop="datePublished" content="2019-10-23T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-23T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1803">
+
+
+
+<meta itemprop="keywords" content="git," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/gitignore-ignoring-files-in-git/featured.jpg"/>
+<meta name="twitter:title" content="使用 .gitignore 忽略 Git 中的文件和目录"/>
+<meta name="twitter:description" content="通常，在使用 Git 的项目上工作时，您会希望排除将特定文件或目录推送到远程存储库中的情况。可以使用 .gitignore 文件指定 Git 应忽略的未跟踪文件。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">使用 .gitignore 忽略 Git 中的文件和目录</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-23T12:00:00&#43;08:00">2019年10月23日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>通常，在使用 Git 的项目上工作时，您会希望排除将特定文件或目录推送到远程存储库中的情况。可以使用 <code>.gitignore</code> 文件指定 Git 应忽略的未跟踪文件。</p>
+
+<h2 id="应该忽略哪些文件">应该忽略哪些文件？</h2>
+
+<p>忽略的文件通常是特定于平台的文件，或者是从构建系统自动创建的文件。一些常见的示例包括：</p>
+
+<ul>
+<li>运行时文件，例如日志，锁定，缓存或临时文件。</li>
+<li>具有敏感信息(例如密码或 API 密钥)的文件。</li>
+<li>编译的代码，例如 <code>.class</code> 或 <code>.o</code> 。</li>
+<li>依赖目录，例如 <code>/vendor</code> 或 <code>/node_modules</code> 。</li>
+<li>构建目录，如 <code>/public</code> ， <code>/out</code> 或 <code>/dist</code> 。</li>
+<li>系统文件，例如 <code>.DS_Store</code> 或 <code>Thumbs.db</code></li>
+<li>IDE或<a href="/linux/how-to-install-visual-studio-code-on-ubuntu-18-04/">文本编辑器</a>配置文件。</li>
+</ul>
+
+<h2 id="gitignore"><code>.gitignore</code> </h2>
+
+<p><code>.gitignore</code> 文件是一个纯文本文件，其中每一行定义了需要忽略文件或目录的模式。</p>
+
+<p><code>.gitignore</code> 使用<a href="http://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm">通配符模式</a>来匹配文件名。如果文件或目录包含通配符模式中的字符，则可以使用单个反斜杠 (<code>\</code>) 来转义字符。</p>
+
+<h3 id="注释">注释</h3>
+
+<p>以井号 (<code>#</code>) 开头的行是注释，将被忽略。空行可用于提高文件的可读性并对相关的模式行进行分组。</p>
+
+<h3 id="斜杠">斜杠</h3>
+
+<p>斜杠 (<code>/</code>) 表示目录分隔符。模式开头的斜线是相对于 <code>.gitignore</code> 所在的目录。</p>
+
+<p>如果模式以斜杠开头，则仅在存储库根目录中匹配文件和目录。</p>
+
+<p>如果模式不是以斜杠开头，则它将匹配任何目录或子目录中的文件和目录。</p>
+
+<p>如果模式以斜杠结尾，则仅匹配目录。当目录被忽略时，其所有文件和子目录也将被忽略。</p>
+
+<h3 id="文件名">文件名</h3>
+
+<p>最直接的模式是没有任何特殊字符的文字文件名。</p>
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>/access.log</code></td>
+<td><code>access.log</code></td>
+</tr>
+
+<tr>
+<td><code>access.log</code></td>
+<td><code>access.log</code><br /><code>logs/access.log</code><br /><code>var/logs/access.log</code></td>
+</tr>
+
+<tr>
+<td><code>build/</code></td>
+<td><code>build</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="通配符">通配符</h3>
+
+<p><strong><code>*</code></strong> - 星号符号匹配零个或多个字符。</p>
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>*.log</code></td>
+<td><code>error.log</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><code>logs/debug.log</code>
+ <code>build/logs/error.log</code>  |</p>
+
+<p><strong><code>**</code></strong> - 两个相邻的星号符号匹配任何文件或零个或多个目录。当后跟斜杠 (<code>/</code>) 时，它仅与目录匹配。</p>
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>logs/**</code></td>
+<td>匹配 <code>logs</code> 目录内的任何内容。</td>
+</tr>
+
+<tr>
+<td><code>**/build</code></td>
+<td><code>var/build</code><br /><code>pub/build</code><br /><code>build</code></td>
+</tr>
+
+<tr>
+<td><code>foo/**/bar</code></td>
+<td><code>foo/bar</code><br /><code>foo/a/bar</code><br /><code>foo/a/b/c/bar</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong><code>?</code></strong>  - 问号与任何单个字符匹配。</p>
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>access ? .log</code></td>
+<td><code>access0.log</code><br /><code>access1.log</code><br /><code>accessA.log</code></td>
+</tr>
+
+<tr>
+<td><code>foo ??</code></td>
+<td><code>fooab</code><br /><code>foo23</code><br /><code>foo0s</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="方括号">方括号</h3>
+
+<p><strong><code>[...]</code></strong> - 匹配方括号中包含的任何字符。当两个字符用连字符分隔时 <code>-</code> ，表示一个字符范围。该范围包括这两个字符之间的所有字符。范围可以是字母或数字。</p>
+
+<p>如果 <code>[</code> 后面的第一个字符是感叹号 (<code>!</code>) ，则该模式匹配除指定集合中的字符以外的任何字符。</p>
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>*.[oa]</code></td>
+<td><code>file.o</code> <br /><code>file.a</code></td>
+</tr>
+
+<tr>
+<td><code>*.[!oa]</code></td>
+<td><code>file.s</code> <br /><code>file.1</code> <br /><code>file.0</code></td>
+</tr>
+
+<tr>
+<td><code>access.[0-2].log</code></td>
+<td><code>access.0.log</code> <br /><code>access.1.log</code> <br /><code>access.2.log</code></td>
+</tr>
+
+<tr>
+<td><code>file.[a-c].out</code></td>
+<td><code>file.a.out</code> <br /><code>file.b.out</code> <br /><code>file.c.out</code></td>
+</tr>
+
+<tr>
+<td><code>file.[a-cx-z].out</code></td>
+<td><code>file.a.out</code> <br /> <code>file.b.out</code> <br /> <code>file.c.out</code> <br /> <code>file.x.out</code> <br /><code>file.y.out</code> <br /> <code>file.z.out</code></td>
+</tr>
+
+<tr>
+<td><code>access.[!0-2].log</code></td>
+<td><code>access.3.log</code> <br /> <code>access.4.log</code> <br /> <code>access.Q.log</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="取反模式">取反模式</h3>
+
+<p>以感叹号 (<code>!</code>) 开头的模式将否定(重新包括)先前模式忽略的任何文件。此规则的例外是，如果排除了其父目录，则重新包含文件。</p>
+
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>*.log</code><br /><code>!error.log</code></td>
+<td><code>error.log</code> 和 <code>logs/error.log</code> 将不会被忽略</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="gitignore-示例"><code>.gitignore</code> 示例</h2>
+
+<p>以下是一个 <code>.gitignore</code> 文件的示例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># 忽略 node_modules 目录</span>
+node_modules/
+
+<span class="c1"># 忽略日志</span>
+logs
+*.log
+
+<span class="c1"># 忽略构建目录</span>
+/dist
+
+<span class="c1"># 忽略环境变量目录</span>
+.env
+
+<span class="c1"># 忽略 IDE 设置</span>
+.idea/
+.vscode/
+*.sw*</code></pre></div>
+<h2 id="本地-gitignore">本地  <code>.gitignore</code></h2>
+
+<p>通常将 <code>.gitignore</code> 本地文件放在存储库的根目录中。但是，您可以 <code>.gitignore</code> 在存储库的不同子目录中创建多个文件。 <code>.gitignore</code> 文件中的模式相对于文件所在目录匹配。</p>
+
+<p>子目录中的文件中定义的模式优先于较高级别目录中的模式。</p>
+
+<p>本地 <code>.gitignore</code> 文件与其他开发人员共享，并且应包含对存储库的所有其他用户有用的模式。</p>
+
+<h2 id="私有的个人规则">私有的个人规则</h2>
+
+<p>应在 <code>.git/info/exclude</code> 文件中设置特定于本地存储库且不应分发到其他存储库的模式。</p>
+
+<p>例如，您可以使用此文件来忽略个人项目工具中生成的文件。</p>
+
+<h2 id="全局-gitignore">全局 <code>.gitignore</code></h2>
+
+<p>Git 还允许您创建一个全局 <code>.gitignore</code> 文件，您可以在其中为本地系统上的每个 Git 存储库定义忽略规则。</p>
+
+<p>该文件可以命名为任意名称，并存储在任何位置。保留此文件的最常见位置是主目录。您必须手动<a href="/linux/create-a-file-in-linux/">创建文件</a>并配置 Git 才能使用它。</p>
+
+<p>例如，要将设置 <code>~/.gitignore_global</code> 为全局 Git 忽略文件，请执行以下操作：</p>
+
+<ol>
+<li><p>创建文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch ~/.gitignore_global</code></pre></div></li>
+
+<li><p>将文件添加到 Git 配置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git config --global core.excludesfile ~/.gitignore_global</code></pre></div></li>
+
+<li><p>使用文本编辑器打开文件，然后向其中添加规则。</p></li>
+</ol>
+
+<p>全局规则对于忽略您永远不想提交的特定文件(例如带有敏感信息的文件或已编译的可执行文件)特别有用。</p>
+
+<h2 id="忽略以前提交的文件">忽略以前提交的文件</h2>
+
+<p>您的工作副本中的文件可以被跟踪也可以不被跟踪。</p>
+
+<p>要忽略先前提交的文件，您需要取消暂存并将其从索引中删除，然后在中为该文件添加规则 <code>.gitignore</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git rm --cached filename</code></pre></div>
+<p>该 <code>--cached</code> 选项告诉 git 不要从工作树中删除文件，而只是从索引中删除它。</p>
+
+<p>要递归删除目录，请使用 <code>-r</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git rm --cached filename</code></pre></div>
+<p>如果要同时从索引和本地文件系统中删除文件，请省略该 <code>--cached</code> 选项。</p>
+
+<p>递归删除文件时，请使用 <code>-n</code> 将执行<strong>空运行</strong>的选项，并向您显示要删除哪些文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git rm -r -n directory</code></pre></div>
+<h2 id="调试-gitignore-文件">调试 <code>.gitignore</code> 文件</h2>
+
+<p>有时，确定为什么要忽略特定文件可能会很有挑战性，尤其是在使用多个 <code>.gitignore</code> 文件或复杂模式时。这时 <a href="https://git-scm.com/docs/git-check-ignore"><code>git check-ignore</code></a> 就很有用，带上 <code>-v</code> 选项告诉 git 显示有关匹配模式的详细信息。</p>
+
+<p>例如，要检查为什么 <code>www/yarn.lock</code> 文件会被忽略，可以运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git check-ignore -v www/yarn.lock</code></pre></div>
+<p>输出显示 <code>gitignore</code> 文件路径，匹配行号和实际模式。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">www/.gitignore:31:/yarn.lock	www/yarn.lock</code></pre></div>
+<p>该命令还接受多个文件名作为参数，并且该文件不必存在于您的工作树中。</p>
+
+<h2 id="显示所有忽略的文件">显示所有忽略的文件</h2>
+
+<p><code>git status</code> 带有 <code>--ignored</code> 选项的命令显示所有忽略文件的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git status --ignored</code></pre></div>
+<h2 id="结论">结论</h2>
+
+<p>您可以通过 <code>.gitignore</code> 将特定的文件排除在检入存储库之外，该文件包含用于描述应忽略哪些文件和目录的模式。</p>
+
+<p><a href="https://gitignore.io/">gitignore.io</a> 是一项在线服务，可让您 <code>.gitignore</code> 为操作系统，编程语言或 IDE 生成文件。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/git" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">git</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/change-git-commit-message/">如何更改 git 的提交消息</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-setup-a-git-server/">如何设置 git 服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-remove-untracked-files-in-git/">如何在 Git 中删除未被跟踪的文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-debian-10/">如何在 Debian 10 Linux 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-and-list-git-branches/">在 Git 中创建和列出本地和远程分支</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-git-remotes/">如何添加 Git 远程源</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-delete-local-and-remote-git-branch/">如何删除本地和远程Git分支</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-centos-7/">如何在CentOS 7上安装和配置GitLab</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-rename-local-and-remote-git-branch/">如何重命名本地和远程Git分支</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 Gogs</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#应该忽略哪些文件">应该忽略哪些文件？</a></li>
+<li><a href="#gitignore"><code>.gitignore</code> </a>
+<ul>
+<li><a href="#注释">注释</a></li>
+<li><a href="#斜杠">斜杠</a></li>
+<li><a href="#文件名">文件名</a></li>
+<li><a href="#通配符">通配符</a></li>
+<li><a href="#方括号">方括号</a></li>
+<li><a href="#取反模式">取反模式</a></li>
+</ul></li>
+<li><a href="#gitignore-示例"><code>.gitignore</code> 示例</a></li>
+<li><a href="#本地-gitignore">本地  <code>.gitignore</code></a></li>
+<li><a href="#私有的个人规则">私有的个人规则</a></li>
+<li><a href="#全局-gitignore">全局 <code>.gitignore</code></a></li>
+<li><a href="#忽略以前提交的文件">忽略以前提交的文件</a></li>
+<li><a href="#调试-gitignore-文件">调试 <code>.gitignore</code> 文件</a></li>
+<li><a href="#显示所有忽略的文件">显示所有忽略的文件</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
