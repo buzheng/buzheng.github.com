@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书" />
+<meta property="og:description" content="Let&rsquo;s Encrypt 是由 Internet 安全研究组 (ISRG) 开发的免费，自动化和开放的证书颁发机构，它提供免费的 SSL 证书。
+
+Let&rsquo;s Encrypt 颁发的证书受到所有主要浏览器的信任，并且自颁发之日起有效期为 90 天。
+
+本教程说明了如何在运行 Apache 作为 Web 服务器的 CentOS 8 上安装免费的 Let&rsquo;s Encrypt SSL 证书。我们还将使用 certbot 工具获取并更新证书。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/secure-apache-with-let-s-encrypt-on-centos-8/" />
+<meta property="article:published_time" content="2019-10-29T08:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-29T08:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书">
+<meta itemprop="description" content="Let&rsquo;s Encrypt 是由 Internet 安全研究组 (ISRG) 开发的免费，自动化和开放的证书颁发机构，它提供免费的 SSL 证书。
+
+Let&rsquo;s Encrypt 颁发的证书受到所有主要浏览器的信任，并且自颁发之日起有效期为 90 天。
+
+本教程说明了如何在运行 Apache 作为 Web 服务器的 CentOS 8 上安装免费的 Let&rsquo;s Encrypt SSL 证书。我们还将使用 certbot 工具获取并更新证书。">
+
+
+<meta itemprop="datePublished" content="2019-10-29T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-29T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1521">
+
+
+
+<meta itemprop="keywords" content="apache,centos,let&#39;s encrypt,certbot,ssl," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/secure-apache-with-let-s-encrypt-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书"/>
+<meta name="twitter:description" content="Let&rsquo;s Encrypt 是由 Internet 安全研究组 (ISRG) 开发的免费，自动化和开放的证书颁发机构，它提供免费的 SSL 证书。
+
+Let&rsquo;s Encrypt 颁发的证书受到所有主要浏览器的信任，并且自颁发之日起有效期为 90 天。
+
+本教程说明了如何在运行 Apache 作为 Web 服务器的 CentOS 8 上安装免费的 Let&rsquo;s Encrypt SSL 证书。我们还将使用 certbot 工具获取并更新证书。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-29T08:00:00&#43;08:00">2019年10月29日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1600 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Let&rsquo;s Encrypt 是由 Internet 安全研究组 (ISRG) 开发的免费，自动化和开放的证书颁发机构，它提供免费的 SSL 证书。</p>
+
+<p>Let&rsquo;s Encrypt 颁发的证书受到所有主要浏览器的信任，并且自颁发之日起有效期为 90 天。</p>
+
+<p>本教程说明了如何在运行 Apache 作为 Web 服务器的 CentOS 8 上安装免费的 Let&rsquo;s Encrypt SSL 证书。我们还将使用 certbot 工具获取并更新证书。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>在继续之前，请确保满足以下先决条件：</p>
+
+<ul>
+<li>有一个指向您的公共服务器 IP 的域名。我们将使用 <code>example.com</code> 。</li>
+<li>已经<a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 8 上 安装了 Apache</a> 并在服务器上运行，并为您的域配置了<a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">虚拟主机</a>。</li>
+<li>已经在<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙</a>中打开了端口 80 和 443 。</li>
+</ul>
+
+<p>安装 Web 服务器所需的 SSL 加密相关的软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install mod_ssl openssl</code></pre></div>
+<p>安装 mod_ssl 软件包后，应为本地主机<a href="/linux/creating-a-self-signed-ssl-certificate/">创建一个自签名的密钥和证书文件</a>。如果没有自动创建文件，则可以使用以下 <code>openssl</code> 命令创建文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes \
+-out /etc/pki/tls/certs/localhost.crt \
+-keyout /etc/pki/tls/private/localhost.key</code></pre></div>
+<h2 id="安装-certbot">安装 Certbot</h2>
+
+<p>Certbot 是一个免费的命令行工具，可简化从服务器获取和续订 Let&rsquo;s Encrypt SSL 证书并自动启用 HTTPS 的过程。</p>
+
+<p>certbot 软件包不包含在标准 CentOS 8 存储库中，但可以从供应商的网站上下载。</p>
+
+<p>以 root 或 <a href="/linux/create-a-sudo-user-on-centos/">sudo 用户</a>身份运行以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令，将 certbot 脚本下载到该 <code>/usr/local/bin</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo wget -P /usr/local/bin https://dl.eff.org/certbot-auto</code></pre></div>
+<p>下载完成后，<a href="/linux/chmod-command-in-linux/">使文件可执行</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chmod +x /usr/local/bin/certbot-auto</code></pre></div>
+<h2 id="产生强-dh-diffie-hellman-组">产生强 Dh(Diffie-Hellman) 组</h2>
+
+<p>Diffie-Hellman 密钥交换 (DH) 是一种在不安全的通信通道上安全地交换加密密钥的方法。生成一组新的 2048 位 DH 参数以增强安全性：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048</code></pre></div>
+<p>您最多可以更改为 4096 位大小，但是生成时间可能会超过 30 分钟，具体取决于系统的处理能力。</p>
+
+<h2 id="获取-let-s-encrypt-ssl-证书">获取 Let&rsquo;s Encrypt SSL 证书</h2>
+
+<p>为了获得该域的 SSL 证书，我们将使用 Webroot 插件，该插件通过在 <code>${webroot-path}/.well-known/acme-challenge</code> 目录中创建用于验证请求的域的临时文件来工作。 Let&rsquo;s Encrypt 服务器对临时文件发出 HTTP 请求，以验证请求的域是否解析为 certbot 运行的服务器。</p>
+
+<p>为了简化设置，我们将所有对 <code>.well-known/acme-challenge</code> 的 HTTP 请求映射到一个目录 <code>/var/lib/letsencrypt</code> 。</p>
+
+<p>运行以下命令以创建目录并使该目录可用于 Apache 服务器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
+sudo chgrp apache /var/lib/letsencrypt
+sudo chmod g+s /var/lib/letsencrypt</code></pre></div>
+<p>为避免重复代码并使配置更易于维护，请创建以下两个配置片段：</p>
+
+<p>文件: <code>/etc/httpd/conf.d/letsencrypt.conf</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> /.well-known/acme-challenge/ <span class="s2">&#34;/var/lib/letsencrypt/.well-known/acme-challenge/&#34;</span>
+<span class="nt">&lt;Directory</span> <span class="s">&#34;/var/lib/letsencrypt/&#34;</span><span class="nt">&gt;</span>
+    <span class="nb">AllowOverride</span> <span class="k">None</span>
+    <span class="nb">Options</span> MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+    <span class="nb">Require</span> method GET POST OPTIONS
+<span class="nt">&lt;/Directory&gt;</span></code></pre></div>
+<p>文件: <code>/etc/httpd/conf.d/ssl-params.conf</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">SSLCipherSuite</span> EECDH+AESGCM:EDH+AESGCM
+<span class="c"># Requires Apache 2.4.36 &amp; OpenSSL 1.1.1</span>
+<span class="nb">SSLProtocol</span> -all +TLSv1.3 +TLSv1.2
+<span class="nb">SSLOpenSSLConfCmd</span> Curves X25519:secp521r1:secp384r1:prime256v1
+<span class="c"># Older versions</span>
+<span class="c"># SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1</span>
+<span class="nb">SSLHonorCipherOrder</span> <span class="k">On</span>
+<span class="nb">Header</span> always set Strict-Transport-Security <span class="s2">&#34;max-age=63072000; includeSubDomains; preload&#34;</span>
+<span class="nb">Header</span> always set X-Frame-Options DENY
+<span class="nb">Header</span> always set X-Content-Type-Options nosniff
+<span class="c"># Requires Apache &gt;= 2.4</span>
+<span class="nb">SSLCompression</span> <span class="k">off</span>
+<span class="nb">SSLUseStapling</span> <span class="k">on</span>
+<span class="nb">SSLStaplingCache</span> <span class="s2">&#34;shmcb:logs/stapling-cache(150000)&#34;</span>
+<span class="c"># Requires Apache &gt;= 2.4.11</span>
+<span class="nb">SSLSessionTickets</span> <span class="k">Off</span>
+
+<span class="nb">SSLOpenSSLConfCmd</span> DHParameters <span class="s2">&#34;/etc/ssl/certs/dhparam.pem&#34;</span></code></pre></div>
+<p>上面的代码段使用的是 <a href="https://cipherli.st/">Cipherli.st</a> 建议的配置段。它启用 OCSP 装订， HTTP 严格传输安全性 (HSTS) ， Dh 密钥，并强制执行少量以安全性为重点的 HTTP 标头。</p>
+
+<p>重新加载 Apache 配置以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload httpd</code></pre></div>
+<p>现在，您可以使用 webroot 插件运行 certbot 脚本并获取 SSL 证书文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo /usr/local/bin/certbot-auto certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com</code></pre></div>
+<p>成功后， certbot 将打印以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/example.com/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/example.com/privkey.pem
+   Your cert will expire on 2020-01-26\. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot-auto
+   again. To non-interactively renew *all* of your certificates, run
+   &#34;certbot-auto renew&#34;
+ - Your account credentials have been saved in your Certbot
+   configuration directory at /etc/letsencrypt. You should make a
+   secure backup of this folder now. This configuration directory will
+   also contain certificates and private keys obtained by Certbot so
+   making regular backups of this folder is ideal.
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG/Let&#39;s Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le</code></pre></div>
+<p>现在已完成所有设置，按如下所示编辑域虚拟主机配置 <code>/etc/httpd/conf.d/example.com.conf</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Redirect</span> permanent/https://example.com/
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Protocols</span> h2 http:/1.1
+
+  <span class="nt">&lt;If</span> <span class="s">&#34;%{HTTP_HOST} == &#39;www.example.com&#39;&#34;</span><span class="nt">&gt;</span>
+    <span class="nb">Redirect</span> permanent/https://example.com/
+  <span class="nt">&lt;/If&gt;</span>
+
+  <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com/public_html</span>
+  <span class="nb">ErrorLog</span> <span class="sx">/var/log/httpd/example.com-error.log</span>
+  <span class="nb">CustomLog</span> <span class="sx">/var/log/httpd/example.com-access.log</span> combined
+
+  <span class="nb">SSLEngine</span> <span class="k">On</span>
+  <span class="nb">SSLCertificateFile</span> <span class="sx">/etc/letsencrypt/live/example.com/fullchain.pem</span>
+  <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/etc/letsencrypt/live/example.com/privkey.pem</span>
+
+  <span class="c"># Other Apache Configuration</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
+<p>上面的配置是强制使用 HTTPS 并从 www 重定向到非 www 版本。它还启用 HTTP/2 ，这将使您的网站更快，更健壮。请根据您自己的需要调整配置。</p>
+
+<p>重新启动 Apache 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd</code></pre></div>
+<p>现在，您可以使用打开您的网站 <code>https://</code> ，您会注意到一个绿色的锁图标。</p>
+
+<p>如果您使用 <a href="https://www.ssllabs.com/ssltest/">SSL Labs Server Test</a> 测试您的域，则将获得 A+ 等级，如下所示：</p>
+
+<figure><img src="ssllabs-test.jpg" alt=""></figure>
+
+<h2 id="自动更新-let-s-encrypt-ssl-证书">自动更新 Let&rsquo;s Encrypt  SSL 证书</h2>
+
+<p>Let&rsquo;s Encrypt 的证书有效期为 90 天。要在证书过期之前自动更新证书，请<a href="/linux/scheduling-cron-jobs-with-crontab/">创建一个每天运行两次的 cronjob</a> ，并在证书过期前 30 天自动更新证书。</p>
+
+<p>运行以下命令以创建一个新的 cronjob ，它将更新证书并重新启动 Apache ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;0 0,12 * * * root python3 -c &#39;import random; import time; time.sleep(random.random() * 3600)&#39; &amp;&amp; /usr/local/bin/certbot-auto -q renew --renew-hook \&#34;systemctl reload httpd\&#34;&#34; | sudo tee -a /etc/crontab &gt; /dev/null</code></pre></div>
+<p>要测试续订过程，请使用 <code>certbot --dry-run</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo /usr/local/bin/certbot-auto renew --dry-run</code></pre></div>
+<p>如果没有错误，则表示更新过程成功。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>在本教程中，我们讨论了如何在 CentOS 上使用 Let&rsquo;s Encrypt 客户端 certbot 获得您域的 SSL 证书；还展示了如何配置 Apache 以使用证书，以及如何设置 cronjob 来自动更新证书。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/lets-encrypt" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">let&#39;s encrypt</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/certbot" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">certbot</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/ssl" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">ssl</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用 CentOS 7 上使用 Let&#39;s Encrypt 来保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-debian-9/">使用Debian 9上的Let加密来保护Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&#39;s Encrypt 保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-9/">在Debian 9上使用Let&#39;s Encrypt来保护Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 8 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#安装-certbot">安装 Certbot</a></li>
+<li><a href="#产生强-dh-diffie-hellman-组">产生强 Dh(Diffie-Hellman) 组</a></li>
+<li><a href="#获取-let-s-encrypt-ssl-证书">获取 Let&rsquo;s Encrypt SSL 证书</a></li>
+<li><a href="#自动更新-let-s-encrypt-ssl-证书">自动更新 Let&rsquo;s Encrypt  SSL 证书</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
