@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Vim/Vi 中复制，剪切和粘贴 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Vim/Vi 中复制，剪切和粘贴" />
+<meta property="og:description" content="使用文本文件时，复制，剪切和粘贴文本是最常执行的任务之一。Vim 或其早期版本 Vi 预装在 macOS 和几乎所有 Linux 发行版中。在您最喜欢的编辑器不可用的情况下，了解 Vim 的基础知识将很有帮助。
+
+本文介绍了如何在 Vim/Vi 编辑器中复制，剪切和粘贴。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-copy-cut-paste-in-vim/" />
+<meta property="article:published_time" content="2019-10-31T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-10-31T12:00:00+08:00" />
+<meta itemprop="name" content="如何在 Vim/Vi 中复制，剪切和粘贴">
+<meta itemprop="description" content="使用文本文件时，复制，剪切和粘贴文本是最常执行的任务之一。Vim 或其早期版本 Vi 预装在 macOS 和几乎所有 Linux 发行版中。在您最喜欢的编辑器不可用的情况下，了解 Vim 的基础知识将很有帮助。
+
+本文介绍了如何在 Vim/Vi 编辑器中复制，剪切和粘贴。">
+
+
+<meta itemprop="datePublished" content="2019-10-31T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-31T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="931">
+
+
+
+<meta itemprop="keywords" content="terminal,vim," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-copy-cut-paste-in-vim/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Vim/Vi 中复制，剪切和粘贴"/>
+<meta name="twitter:description" content="使用文本文件时，复制，剪切和粘贴文本是最常执行的任务之一。Vim 或其早期版本 Vi 预装在 macOS 和几乎所有 Linux 发行版中。在您最喜欢的编辑器不可用的情况下，了解 Vim 的基础知识将很有帮助。
+
+本文介绍了如何在 Vim/Vi 编辑器中复制，剪切和粘贴。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Vim/Vi 中复制，剪切和粘贴</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-10-31T12:00:00&#43;08:00">2019年10月31日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>使用文本文件时，复制，剪切和粘贴文本是最常执行的任务之一。Vim 或其早期版本 Vi 预装在 macOS 和几乎所有 Linux 发行版中。在您最喜欢的编辑器不可用的情况下，了解 Vim 的基础知识将很有帮助。</p>
+
+<p>本文介绍了如何在 Vim/Vi 编辑器中复制，剪切和粘贴。</p>
+
+<h2 id="在普通模式下复制-剪切和粘贴">在普通模式下复制，剪切和粘贴</h2>
+
+<p>启动 Vim 编辑器时，您处于正常模式。在这种模式下，您可以运行 Vim 命令并浏览文件。</p>
+
+<p>要从其他任何模式返回正常模式，只需按 <code>Esc</code> 按键。</p>
+
+<p>Vim 具有自己的复制，剪切和粘贴术语。复制称为 yank(<code>y</code>) ，剪切称为 delete(<code>d</code>) ，粘贴称为 put(<code>p</code>) 。</p>
+
+<h3 id="复制-yark">复制(yark)</h3>
+
+<p>要复制文本，请将光标置于所需位置，然后 <code>y</code> 按键，然后按移动命令。以下是一些有用的 yanking 命令：</p>
+
+<ul>
+<li><code>yy</code> - 复制当前行，包括换行符。</li>
+<li><code>3yy</code> - 从光标所处的行开始，复制三行。</li>
+<li><code>y$</code> - 复制从光标到行尾的所有内容。</li>
+<li><code>y^</code> - 复制从光标到行首的所有内容。</li>
+<li><code>yw</code> - 复制到下一个单词的开头。</li>
+<li><code>yiw</code> – 复制当前单词。</li>
+<li><code>y%</code> - 复制到匹配的字符。默认情况下，支持对是 <code>()</code> ，<code>{}</code>和 <code>[]</code> 。在匹配的括号之间复制文本很有用。</li>
+</ul>
+
+<h3 id="剪切-delete">剪切(delete)</h3>
+
+<p>在正常模式下， <code>d</code> 是删除按键，但是删除的同时会复制删除的内容，所以也是剪切文本的按键。将光标移动到所需位置，然后 <code>d</code> 按键，然后按移动命令。以下是一些有用的删除命令：</p>
+
+<ul>
+<li><code>dd</code> - 删除当​​前行，包括换行符。</li>
+<li><code>3dd</code> - 从光标所在的行开始，删除三行，</li>
+<li><code>d$</code> - 删除从光标到行尾的所有内容。</li>
+</ul>
+
+<p>适用于拉动的运动命令也可用于删除。例如 <code>dw</code> ，删除到下一个单词的开头，并 <code>d ^</code>删除从光标到行首的所有内容。</p>
+
+<h3 id="粘贴">粘贴</h3>
+
+<p>要放置被选中或删除的文本，请将光标移动到所需位置，然后按下小写的 <code>p</code> 将文本粘贴在光标之后或按下大写的 <code>P</code> 粘贴在光标之前。</p>
+
+<h2 id="在可视模式下复制-剪切和粘贴">在可视模式下复制，剪切和粘贴</h2>
+
+<p>Vim 的可视模式允许您选择和操作文本。</p>
+
+<ol>
+<li>将光标置于您要开始作图或剪切的行上。</li>
+
+<li><p>可视模式具有三个子类型。</p>
+
+<ul>
+<li>按 <code>v</code> 进入可视模式。</li>
+<li>按 <code>V</code> 进入可视行模式，其中按行选择文本。</li>
+<li>按 <code>Ctrl+v</code> 进入可视块模式。在此模式下，文本由矩形块选择。</li>
+</ul>
+
+<p>进入可视模式还标记了一个开始选择点。</p></li>
+
+<li><p>将光标移动到要复制或剪切的文本的末尾。您可以使用移动命令或上，下，右和左箭头键。</p>
+
+<figure><img src="vim-copy-paste-visual.jpg" alt=""></figure></li>
+
+<li><p>按 <code>y</code> 复制或 <code>d</code> 剪切选择。</p></li>
+
+<li><p>将光标移动到要粘贴内容的位置。</p></li>
+
+<li><p>按下 <code>P</code> 可将内容粘贴到光标之前，或 <code>p</code> 将其粘贴到光标之后。</p></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>在本指南中，我们向您展示了如何在 Vim 中复制，剪切和粘贴。</p>
+
+<p>如果您不熟悉 Vim ，请访问 <a href="https://www.openvim.com/">Open Vim</a> 站点，您可以在此通过交互式教程练习 Vim 。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/vim" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">vim</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-show-line-numbers-in-vim/">如何在 Vim/Vi 中显示行号</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-save-file-in-vim-quit-editor/">如何在 Vim/Vi 中保存文件并退出编辑器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/history-command-in-linux/">Linux 中 history 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pstree-command-in-linux/">Linux 中的 pstree 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-change-root-password-in-ubuntu/">如何更改 Ubuntu 的 root 密码</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/dmesg-command-in-linux/">Linux 中的 dmesg 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-an-nfs-server-on-centos-8/">如何在 CentOS 8 上安装和配置 NFS 服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/rpm-command-in-linux/">Linux 中的 rpm 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-groups-in-linux/">在 Linux 中使用 groupadd 创建组</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-comments/">在 bash 脚本中使用注释</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#在普通模式下复制-剪切和粘贴">在普通模式下复制，剪切和粘贴</a>
+<ul>
+<li><a href="#复制-yark">复制(yark)</a></li>
+<li><a href="#剪切-delete">剪切(delete)</a></li>
+<li><a href="#粘贴">粘贴</a></li>
+</ul></li>
+<li><a href="#在可视模式下复制-剪切和粘贴">在可视模式下复制，剪切和粘贴</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
