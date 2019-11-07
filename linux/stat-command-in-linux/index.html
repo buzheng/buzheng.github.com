@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux 中的 stat 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux 中的 stat 命令" />
+<meta property="og:description" content="stat  是一个命令行实用程序，用于显示有关给定文件或文件系统的详细信息。
+
+本文介绍 stat 命令的各种用法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/stat-command-in-linux/" />
+<meta property="article:published_time" content="2019-11-07T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-11-07T12:00:00+08:00" />
+<meta itemprop="name" content="Linux 中的 stat 命令">
+<meta itemprop="description" content="stat  是一个命令行实用程序，用于显示有关给定文件或文件系统的详细信息。
+
+本文介绍 stat 命令的各种用法。">
+
+
+<meta itemprop="datePublished" content="2019-11-07T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-11-07T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1247">
+
+
+
+<meta itemprop="keywords" content="stat,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/stat-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux 中的 stat 命令"/>
+<meta name="twitter:description" content="stat  是一个命令行实用程序，用于显示有关给定文件或文件系统的详细信息。
+
+本文介绍 stat 命令的各种用法。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux 中的 stat 命令</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-11-07T12:00:00&#43;08:00">2019年11月7日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1300 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>stat</code>  是一个命令行实用程序，用于显示有关给定文件或文件系统的详细信息。</p>
+
+<p>本文介绍 <code>stat</code> 命令的各种用法。</p>
+
+<h2 id="使用-stat-命令">使用 <code>stat</code> 命令</h2>
+
+<p>该 <code>stat</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">stat <span class="o">[</span>OPTION<span class="o">]</span>... FILE...</code></pre></div>
+<p><code>stat</code> 接受一个或多个输入文件名称 <code>FILE</code> ，并包含许多控制命令行为和输出的选项。</p>
+
+<p>让我们看下面的例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat file.txt</code></pre></div>
+<p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">  File: file.txt
+  Size: 4030      	Blocks: 8          IO Block: 4096   regular file
+Device: 801h/2049d	Inode: 13633379    Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/   linuxize)   Gid: ( 1000/   linuxize)
+Access: 2019-11-06 09:52:17.991979701 +0100
+Modify: 2019-11-06 09:52:17.971979713 +0100
+Change: 2019-11-06 09:52:17.971979713 +0100
+ Birth: -</code></pre></div>
+<p>不带任何选项调用时，将 <code>stat</code> 显示以下文件信息：</p>
+
+<ul>
+<li>File - 文件名。</li>
+<li>Size - 文件的大小(以字节为单位)。</li>
+<li>Blocks - 文件占用的已分配块数。</li>
+<li>IO Block - 每个块的大小(以字节为单位)。</li>
+<li>File type -( 例如 regular file, directory, symbolic link …)</li>
+<li>Device - 设备编号(十六进制和十进制)。</li>
+<li>Inode - 索引节点编号。</li>
+<li>Links - 硬链接数。</li>
+<li>Access - 数字和符号方法中的<a href="/linux/chmod-command-in-linux/">文件权限</a>。</li>
+<li>Uid - <a href="/linux/linux-chown-command/">所有者的</a>用户 ID 和名称。</li>
+<li>Gid - 群组 ID 和所有者名称。</li>
+<li>Context - SELinux 安全上下文。</li>
+<li>Access - 上次访问文件的时间。</li>
+<li>Modify - 上次修改文件内容的时间。</li>
+<li>Change - 上次更改文件属性或内容的时间。</li>
+<li>Birth - 文件创建时间 (Linux 不支持)。</li>
+</ul>
+
+<h2 id="显示有关文件系统的信息">显示有关文件系统的信息</h2>
+
+<p>要获取有关给定文件所在的文件系统的信息，而不是有关文件本身的信息，请使用 <code>-f</code>((<code>--file-system</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat -f file.txt</code></pre></div>
+<p>命令的输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">  File: &#34;package.json&#34;
+    ID: 8eb53097b4494d20 Namelen: 255     Type: ext2/ext3
+Block size: 4096       Fundamental block size: 4096
+Blocks: Total: 61271111   Free: 25395668   Available: 22265851
+Inodes: Total: 15630336   Free: 13979610</code></pre></div>
+<p>当 <code>stat</code> 使用 <code>-f</code> 选项调用时，它将显示以下信息：</p>
+
+<ul>
+<li>File - 文件名。</li>
+<li>ID-文件系统 ID( 十六进制)。</li>
+<li>Namelen - 文件名的最大长度。</li>
+<li>Fundamental block size - 文件系统上每个块的大小。</li>
+<li>Blocks：
+
+<ul>
+<li>Total - 文件系统中的总块数。</li>
+<li>Free - 文件系统中可用块的数量。</li>
+<li>Available - 非 root 用户可用的可用块数。</li>
+</ul></li>
+<li>Inodes：
+
+<ul>
+<li>Total - 文件系统中的总索引节点数。</li>
+<li>Free - 文件系统中空闲索引节点的数量。</li>
+</ul></li>
+</ul>
+
+<h2 id="取消引用-跟随-符号链接">取消引用(跟随)符号链接</h2>
+
+<p>默认情况下， <code>stat</code> 不遵循<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>。如果在符号链接上运行命令，则输出将包含有关符号链接的信息，而不是其指向的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat /etc/resolv.conf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">  File: /etc/resolv.conf -&gt; ../run/systemd/resolve/stub-resolv.conf
+  Size: 39        	Blocks: 0          IO Block: 4096   symbolic link
+Device: 801h/2049d	Inode: 8126659     Links: 1
+Access: (0777/lrwxrwxrwx)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2019-11-06 21:12:26.875956073 +0100
+Modify: 2018-07-24 11:11:48.128794519 +0200
+Change: 2018-07-24 11:11:48.128794519 +0200
+ Birth: -</code></pre></div>
+<p>要显示该符号链接指向的文件的信息，请使用 <code>-L</code> ， (<code>--dereference</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat -L /etc/resolv.conf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">  File: /etc/resolv.conf
+  Size: 715       	Blocks: 8          IO Block: 4096   regular file
+Device: 17h/23d	Inode: 989         Links: 1
+Access: (0644/-rw-r--r--)  Uid: (  101/systemd-resolve)   Gid: (  103/systemd-resolve)
+Access: 2019-11-06 20:35:25.603689619 +0100
+Modify: 2019-11-06 20:35:25.555689733 +0100
+Change: 2019-11-06 20:35:25.555689733 +0100
+ Birth: -</code></pre></div>
+<h2 id="自定义输出">自定义输出</h2>
+
+<p>该 <code>stat</code> 命令有两个选项，可让您根据需要自定义输出： <code>-c</code> (<code>--format= &quot;format&quot;</code>) 和 <code>--printf= &quot;format&quot;</code>。</p>
+
+<p>这两个选项之间的区别在于，当两个或多个文件时， <code>--format</code> 会在输出之后自动添加换行符。该 <code>--printf</code> 解释反斜杠。</p>
+
+<p>对文件和文件系统来说，有许多格式指令可以与 <code>--format</code> 和 <code>--printf</code> 一起使用。</p>
+
+<p>例如，仅查看文件类型，可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat --format=&#34;%F&#34; /dev/null</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">character special file</code></pre></div>
+<p>您可以组合任意数量的格式指令，并可以选择在它们之间使用自定义分隔符。分隔符可以是单个字符或字符串：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat --format=&#34;%n,%F&#34; /dev/null</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/dev/null,character special file</code></pre></div>
+<p>要解释特殊字符，例如换行符或制表符，请使用以下 <code>--printf</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat --printf=&#39;Name: %n\nPermissions: %a\n&#39; /etc</code></pre></div>
+<p><code>\n</code>  打印新行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Name: /etc
+Permissions: 755</code></pre></div>
+<p><code>stat</code> 也可以显示简洁形式的信息。此格式对于其他实用程序的解析很有用。</p>
+
+<p>使用 <code>-t</code>(<code>--terse</code>) 选项调用命令以以简洁形式打印输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat -t /etc</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/etc 12288 24 41ed 0 0 801 8126465 147 0 0 1573068933 1573068927 1573068927 0 4096</code></pre></div>
+<p>有关文件和文件系统的所有格式指令的完整列表，请在终端中输入 <code>man stat</code> 或 <code>stat --help</code>进行查看 。</p>
+
+<h2 id="结论">结论</h2>
+
+<p>该 <code>stat</code> 命令显示有关给定文件和文件系统的信息。</p>
+
+<p>在 Linux 中，还有其他几个命令可以显示有关给定文件的信息，其中 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 最常用的是一个命令，但它仅显示该 <code>stat</code> 命令提供的信息中的一部分。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/stat" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">stat</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-debian/">如何在 Debian 中将用户添加到 sudoers</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-run-linux-commands-in-background/">如何在后台运行 Linux 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-copy-cut-paste-in-vim/">如何在 Vim/Vi 中复制，剪切和粘贴</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/history-command-in-linux/">Linux 中 history 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pstree-command-in-linux/">Linux 中的 pstree 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-change-root-password-in-ubuntu/">如何更改 Ubuntu 的 root 密码</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/dmesg-command-in-linux/">Linux 中的 dmesg 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-an-nfs-server-on-centos-8/">如何在 CentOS 8 上安装和配置 NFS 服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/rpm-command-in-linux/">Linux 中的 rpm 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-groups-in-linux/">在 Linux 中使用 groupadd 创建组</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#使用-stat-命令">使用 <code>stat</code> 命令</a></li>
+<li><a href="#显示有关文件系统的信息">显示有关文件系统的信息</a></li>
+<li><a href="#取消引用-跟随-符号链接">取消引用(跟随)符号链接</a></li>
+<li><a href="#自定义输出">自定义输出</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
