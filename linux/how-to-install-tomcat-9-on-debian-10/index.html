@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Debian 10 Linux 上安装 Tomcat 9 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 10 Linux 上安装 Tomcat 9" />
+<meta property="og:description" content="Apache Tomcat 是基于 Java 的开源应用程序服务器，可实现 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-tomcat-9-on-debian-10/" />
+<meta property="article:published_time" content="2019-11-11T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-11-11T12:00:00+08:00" />
+<meta itemprop="name" content="如何在 Debian 10 Linux 上安装 Tomcat 9">
+<meta itemprop="description" content="Apache Tomcat 是基于 Java 的开源应用程序服务器，可实现 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。">
+
+
+<meta itemprop="datePublished" content="2019-11-11T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-11-11T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1381">
+
+
+
+<meta itemprop="keywords" content="java,debian,tomcat," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-tomcat-9-on-debian-10/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Debian 10 Linux 上安装 Tomcat 9"/>
+<meta name="twitter:description" content="Apache Tomcat 是基于 Java 的开源应用程序服务器，可实现 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Debian 10 Linux 上安装 Tomcat 9</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-11-11T12:00:00&#43;08:00">2019年11月11日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1400 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Apache Tomcat 是基于 Java 的开源应用程序服务器，可实现 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术。它是当今世界上使用最广泛的应用程序和 Web 服务器之一。</p>
+
+<p>本教程说明了如何在 Debian 10 Buster 上安装 Apache Tomcat 9.0 以及配置 Tomcat Web 管理界面。</p>
+
+<h2 id="先决条件">先决条件</h2>
+
+<p>这些说明假定您以 root 用户或<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 特权的用户</a>身份登录。</p>
+
+<h2 id="安装-openjdk">安装 OpenJDK</h2>
+
+<p>Tomcat 9.0 要求在服务器上安装 Java SE 8 或更高版本。</p>
+
+<p>执行以下命令以<a href="/linux/install-java-on-debian-9/">安装 OpenJDK</a> 软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install default-jdk</code></pre></div>
+<h2 id="创建-tomcat-用户">创建 Tomcat 用户</h2>
+
+<p>以 root 用户身份运行 Tomcat 存在安全风险，因此不建议这样做。我们将<a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/">创建一个新用户</a>，该用户将用于运行 Tomcat 服务。</p>
+
+<p>运行以下命令创建新的系统用户和组并使用 <code>/opt/tomcat</code> 作为用户主目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat</code></pre></div>
+<h2 id="下载-tomcat">下载 Tomcat</h2>
+
+<p>在撰写本文时，最新的 Tomcat 版本是 9.0.27 。在继续下一步之前，您应该到 <a href="https://tomcat.apache.org/download-90.cgi">Tomcat 9 下载页面</a>检查是否有较新的版本。</p>
+
+<p>转到 <code>/tmp</code> 目录并<a href="/linux/wget-command-examples/">下载</a>最新的 Tomcat 二进制发行版：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /tmp
+wget https://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz</code></pre></div>
+<p>下载完成后，<a href="/linux/how-to-extract-unzip-tar-gz-file/">解压缩压缩文件</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">tar -xf apache-tomcat-9.0.27.tar.gz</code></pre></div>
+<p>将 Tomcat 源文件移至该 <code>/opt/tomcat</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mv apache-tomcat-9.0.27 /opt/tomcat/</code></pre></div>
+<p>Tomcat 9 会定期更新。为了更好的控制版本和更新，<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">创建符号链接</a> <code>latest</code> 指向 Tomcat 的安装目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ln -s /opt/tomcat/apache-tomcat-9.0.27 /opt/tomcat/latest</code></pre></div>
+<p>稍后在升级 Tomcat 时，只需解压缩较新的版本并更改符号链接以指向最新版本即可。</p>
+
+<p>将 <code>/opt/tomcat</code> 目录的<a href="/linux/linux-chown-command/">所有权更改</a>为 <code>tomcat</code> 用户和组，以便用户可以访问安装目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R tomcat: /opt/tomcat</code></pre></div>
+<p>使 <code>bin</code> 目录内的脚本<a href="/linux/chmod-command-in-linux/">可执行</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo sh -c &#39;chmod +x /opt/tomcat/latest/bin/*.sh&#39;</code></pre></div>
+<h2 id="创建-systemd-单位文件">创建 SystemD 单位文件</h2>
+
+<p>打开您的<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>并创建一个新文件 <code>tomcat.service</code> ，其名称如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/tomcat.service</code></pre></div>
+<p>/etc/systemd/system/tomcat.service</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Tomcat 9.0 servlet container</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+
+<span class="na">User</span><span class="o">=</span><span class="s">tomcat</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">tomcat</span>
+
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;JAVA_HOME=/usr/lib/jvm/default-java&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;JAVA_OPTS=-Djava.security.egd=file:///dev/urandom&#34;</span>
+
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_BASE=/opt/tomcat/latest&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_HOME=/opt/tomcat/latest&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_PID=/opt/tomcat/latest/temp/tomcat.pid&#34;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">&#34;CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC&#34;</span>
+
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/opt/tomcat/latest/bin/startup.sh</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/opt/tomcat/latest/bin/shutdown.sh</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
+<p>通过键入以下内容通知 systemd 一个新的单元文件存在并启动 Tomcat 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload
+sudo systemctl start tomcat</code></pre></div>
+<p>通过输入以下命令检查 Tomcat 服务的状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status tomcat</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● tomcat.service - Tomcat 9.0 servlet container
+   Loaded: loaded (/etc/systemd/system/tomcat.service; disabled; vendor preset: 
+   Active: active (running) since Sat 2019-11-09 13:53:51 PST; 5s ago
+  Process: 5752 ExecStart=/opt/tomcat/latest/bin/startup.sh (code=exited, status
+ Main PID: 5759 (java)</code></pre></div>
+<p>如果没有错误，设置 Tomcat 服务随机启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable tomcat</code></pre></div>
+<p>您可以像操作其他任何 systemd 单元服务一样启动，停止和重新启动 Tomcat ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start tomcat
+sudo systemctl stop tomcat
+sudo systemctl restart tomcat</code></pre></div>
+<h2 id="调整防火墙">调整防火墙</h2>
+
+<p>如果您的 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">Debian 系统上运行着防火墙</a>并且想从本地网络外部访问 tomcat 界面，则需要打开以下端口 <code>8080</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 8080/tcp</code></pre></div>
+<p>在生产环境中运行 Tomcat 应用程序时，很可能您将拥有一个负载平衡器或<a href="/linux/nginx-reverse-proxy/">反向代理</a>，并且最佳做法是将对端口 8080 的访问限制为仅对内部网络的访问。</p>
+
+<h2 id="配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</h2>
+
+<p>现在已经安装了 Tomcat ，下一步就是创建一个可以访问 Web 管理界面的用户。</p>
+
+<p>Tomcat 用户及其角色在 <code>tomcat-users.xml</code> 文件中定义。如果打开文件，您会注意到该文件中充满了注释和描述如何配置文件的示例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml</code></pre></div>
+<p>我们将在 <code>/opt/tomcat/latest/conf/tomcat-users.xml</code> 文件中定义新用户，如下所示。用户将有权访问 tomcat Web 界面 (manager-gui 和 admin-gui) ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">    Comments
+</span><span class="c">--&gt;</span>
+   <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;admin-gui&#34;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;admin_password&#34;</span> <span class="na">roles=</span><span class="s">&#34;admin-gui,manager-gui&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/tomcat-users&gt;</span></code></pre></div>
+<p>默认情况下， Tomcat Web 管理界面仅允许从本地主机访问。如果要从远程 IP 或从任何地方访问 Web 界面，则可以打开以下文件并进行以下更改。</p>
+
+<p>如果您需要从任何地方访问 Web 界面，请打开以下文件并注释或删除行：</p>
+
+<p>文件 <code>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
+</span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1&#34; /&gt;
+</span><span class="c">--&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>文件 <code>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+<span class="c">&lt;!--
+</span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
+</span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1&#34; /&gt;
+</span><span class="c">--&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>如果您只需要从特定 IP 访问 Web 界面，则无需注释这些块，而是将您的公共 IP 添加到列表中。假设您的公用 IP 是 <code>32.32.32.32</code> 并且您只想允许从该 IP 访问：</p>
+
+<p>文件 <code>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;Valve</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.valves.RemoteAddrValve&#34;</span>
+         <span class="na">allow=</span><span class="s">&#34;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|32.32.32.32&#34;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>文件 <code>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;Valve</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.valves.RemoteAddrValve&#34;</span>
+         <span class="na">allow=</span><span class="s">&#34;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|32.32.32.32&#34;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Context&gt;</span></code></pre></div>
+<p>允许的 IP 地址列表是用竖线 <code>|</code> 分隔的列表。您可以添加单个 IP 地址或使用正则表达式。</p>
+
+<p>重新启动 Tomcat 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart tomcat</code></pre></div>
+<h2 id="测试安装">测试安装</h2>
+
+<p>打开浏览器并输入：  <code>http://&lt;your_domain_or_IP_address&gt;:8080</code></p>
+
+<p>如果安装成功，将显示类似于以下内容的屏幕：</p>
+
+<figure><img src="tomcat-home.jpg" alt=""></figure>
+
+<p>可以使用 Tomcat Web 应用程序管理器仪表板 <code>http://&lt;your_domain_or_IP_address&gt;:8080/manager/html</code> 。从这里，您可以部署，取消部署，启动，停止和重新加载应用程序。</p>
+
+<figure><img src="tomcat-manager.jpg" alt=""></figure>
+
+<p>Tomcat 虚拟主机管理器仪表板位于 <code>http://&lt;your_domain_or_IP_address&gt;:8080/host-manager/html</code> 。在这里，您可以创建，删除和管理 Tomcat 虚拟主机。</p>
+
+<figure><img src="tomcat-host-manager.jpg" alt=""></figure>
+
+<h2 id="结论">结论</h2>
+
+<p>您已在 Debian 10 系统上成功安装了 Tomcat 9.0，如果需要，您可以访问官方的 <a href="https://tomcat.apache.org/tomcat-9.0-doc/index.html">Apache Tomcat 9.0 文档</a>并了解有关 Apache Tomcat 功能的更多信息。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/java" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">java</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/debian" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">debian</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/tomcat" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">tomcat</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-9/">如何在Debian 9上安装Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-8-5-on-debian-9/">如何在 Debian 9 上安装 Tomcat 8.5</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-java-on-debian-10/">如何在 Debian 10 Linux 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-9-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-9-on-centos-7/">如何在CentOS 7上安装Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-maven-on-debian-9/">如何在Debian 9上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-debian-9/">如何在 Debian 9 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-9/">如何在 Debian 9 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-minecraft-server-on-debian-9/">如何在 Debian 9 上安装 Minecraft Server</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#先决条件">先决条件</a></li>
+<li><a href="#安装-openjdk">安装 OpenJDK</a></li>
+<li><a href="#创建-tomcat-用户">创建 Tomcat 用户</a></li>
+<li><a href="#下载-tomcat">下载 Tomcat</a></li>
+<li><a href="#创建-systemd-单位文件">创建 SystemD 单位文件</a></li>
+<li><a href="#调整防火墙">调整防火墙</a></li>
+<li><a href="#配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</a></li>
+<li><a href="#测试安装">测试安装</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
