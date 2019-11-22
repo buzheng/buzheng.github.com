@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装 go 语言 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装 go 语言" />
+<meta property="og:description" content="Go (通常称为 golang) 是 Google 创建的一种现代开源编程语言，可让您构建可靠且高效的应用程序。
+
+Go 编写了许多流行的应用程序，例如 Kubernetes ， Docker ， Prometheus 和 Terraform 。
+
+本教程说明了如何在 CentOS 8 系统上下载和安装 Go 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-go-on-centos-8/" />
+<meta property="article:published_time" content="2019-11-22T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-11-22T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装 go 语言">
+<meta itemprop="description" content="Go (通常称为 golang) 是 Google 创建的一种现代开源编程语言，可让您构建可靠且高效的应用程序。
+
+Go 编写了许多流行的应用程序，例如 Kubernetes ， Docker ， Prometheus 和 Terraform 。
+
+本教程说明了如何在 CentOS 8 系统上下载和安装 Go 。">
+
+
+<meta itemprop="datePublished" content="2019-11-22T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-11-22T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="673">
+
+
+
+<meta itemprop="keywords" content="centos,go," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-go-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装 go 语言"/>
+<meta name="twitter:description" content="Go (通常称为 golang) 是 Google 创建的一种现代开源编程语言，可让您构建可靠且高效的应用程序。
+
+Go 编写了许多流行的应用程序，例如 Kubernetes ， Docker ， Prometheus 和 Terraform 。
+
+本教程说明了如何在 CentOS 8 系统上下载和安装 Go 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装 go 语言</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-11-22T12:00:00&#43;08:00">2019年11月22日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Go (通常称为 <a href="https://golang.org/">golang)</a> 是 Google 创建的一种现代开源编程语言，可让您构建可靠且高效的应用程序。</p>
+
+<p>Go 编写了许多流行的应用程序，例如 Kubernetes ， Docker ， Prometheus 和 Terraform 。</p>
+
+<p>本教程说明了如何在 CentOS 8 系统上下载和安装 Go 。</p>
+
+<h2 id="在-centos-8-上下载并安装-go">在 CentOS 8 上下载并安装 Go</h2>
+
+<p>在撰写本文时， Go 的最新稳定版本为 1.13.4 。在下载压缩包之前，请访问官方的 Go  <a href="https://golang.org/dl/">下载页面</a>，并检查是否有可用的新版本。</p>
+
+<p>请按照以下步骤在 CentOS 8 上下载并安装 Go ：</p>
+
+<ol>
+<li><p>使用 <a href="/linux/wget-command-examples/"><code>wget</code></a> 或 <a href="/linux/curl-command-examples/"><code>curl</code></a> 下载 Go 二进制文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz</code></pre></div></li>
+
+<li><p>下载归档文件后，请输入以下内容来验证 tarball 校验和：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sha256sum go1.13.4.linux-amd64.tar.gz</code></pre></div>
+<p>确保 <code>sha256sum</code> 命令打印的哈希值与下载页面中的哈希值匹配。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">692d17071736f74be04a72a06dab9cac1cd759377bd85316e52b2227604c004c  go1.13.4.linux-amd64.tar.gz</code></pre></div>
+<ol>
+<li><p>使用以下 <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/"><code>tar</code></a> 命令将压缩包解压缩到 <code>/usr/local</code> 目录中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar -C /usr/local -xf go1.13.4.linux-amd64.tar.gz</code></pre></div></li>
+</ol>
+
+<p>上面的命令必须以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户身份运行</a>。</p></li>
+
+<li><p>通过调整 <a href="/linux/how-to-add-directory-to-path-in-linux/"><code>$PATH</code></a> 环境变量告诉系统在哪里可以找到 Go 可执行二进制文件。</p>
+
+<p>您可以通过将以下行添加到 <code>/etc/profile</code> 文件(对于系统范围的安装)或 <code>$HOME/.bash_profile</code> 文件(对于当前用户安装)来实现：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/go/bin</code></pre></div>
+<p>保存文件，并使用以下 <a href="/linux/bash-source-command/"><code>source</code></a> 命令将新的 <code>PATH</code> 环境变量加载到当前的 shell 会话中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source ~/.bash_profile</code></pre></div></li>
+</ol>
+
+<p>至此， Go 已经安装在您的 CentOS 系统上。</p>
+
+<h2 id="测试安装">测试安装</h2>
+
+<p>为了测试 Go 是否正确安装，我们将设置一个<a href="https://golang.org/doc/code.html#Workspaces">工作区</a>并构建一个简单的 “Hello world” 程序。</p>
+
+<ol>
+<li><p>工作区目录的位置由 <code>GOPATH</code> 环境变量指定。默认情况下，它设置为 <code>$HOME/go</code> 。要<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建目录</a>，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/go</code></pre></div></li>
+
+<li><p>在工作空间内创建一个新目录 <code>src/hello</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/go/src/hello</code></pre></div>
+<p>在该目录中<a href="/linux/create-a-file-in-linux/">创建一个名 <code>hello.go</code> 为的文件</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/go/src/hello/hello.go</code></pre></div>
+<p>将以下代码粘贴到 <code>~/go/src/hello/hello.go</code> 文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Hello, World\n&#34;</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<ol>
+<li><p><a href="/linux/linux-cd-command/">导航到 <code>~/go/src/hello</code> 目录</a>并运行 <code>go build</code> 以构建代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/go/src/hello
+go build</code></pre></div></li>
+</ol>
+
+<p>上面的命令将构建一个名为 <code>hello</code> 的可执行文件。</p></li>
+
+<li><p>通过键入以下命令来运行可执行文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">./hello</code></pre></div>
+<p>如果看到以下输出，则说明您已经成功安装了 Go 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Hello, World</code></pre></div></li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p>现在，您已经下载并安装了 Go ，现在可以开始<a href="https://golang.org/doc/code.html">编写 Go 代码了</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/go" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">go</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-go-on-centos-7/">如何在 CentOS 7 上安装 Go</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-postgresql-on-centos-8/">在 CentOS 8 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-webmin-on-centos-8/">在 CentOS 8 上安装 Webmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-and-manage-firewall-on-centos-8/">如何在 CentOS 8 上配置和管理防火墙</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-on-centos-8/">如何在 CentOS 8 上安装 Python</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-jenkins-on-centos-8/">如何在 CentOS 8 上安装 Jenkins</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-centos-8/">如何在 CentOS 8 Linux 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-php-on-centos-8/">如何在 CentOS 8 上安装 PHP</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mysql-on-centos-8/">在 CentOS 8 上安装 MySQL</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#在-centos-8-上下载并安装-go">在 CentOS 8 上下载并安装 Go</a></li>
+<li><a href="#测试安装">测试安装</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
