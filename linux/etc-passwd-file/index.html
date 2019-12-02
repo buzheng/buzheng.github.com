@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>深入理解 /etc/passwd 文件 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="深入理解 /etc/passwd 文件" />
+<meta property="og:description" content="在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 /etc/passwd 和 /etc/shadow 文件执行身份验证。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/etc-passwd-file/" />
+<meta property="article:published_time" content="2019-12-02T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-12-02T12:00:00+08:00" />
+<meta itemprop="name" content="深入理解 /etc/passwd 文件">
+<meta itemprop="description" content="在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 /etc/passwd 和 /etc/shadow 文件执行身份验证。">
+
+
+<meta itemprop="datePublished" content="2019-12-02T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-02T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="793">
+
+
+
+<meta itemprop="keywords" content="terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/etc-passwd-file/featured.jpg"/>
+<meta name="twitter:title" content="深入理解 /etc/passwd 文件"/>
+<meta name="twitter:description" content="在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 /etc/passwd 和 /etc/shadow 文件执行身份验证。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">深入理解 /etc/passwd 文件</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-12-02T12:00:00&#43;08:00">2019年12月2日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 <code>/etc/passwd</code> 和 <code>/etc/shadow</code> 文件执行身份验证。</p>
+
+<p><code>/etc/passwd</code> 是基于纯文本的数据库，其中包含系统上所有用户帐户的信息。它由 root 用户拥有，并具有 644 权限。该文件只能由 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户修改，并且所有系统用户都可以读取。</p>
+
+<p>除非您知道自己在做什么，否则请不要手工直接修改 <code>/etc/passwd</code> 文件，请始终使用专门的命令进行操作。例如，要修改用户帐户，请使用 <code>usermod</code> 命令，要添加新的用户帐户，请使用 <a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/"><code>useradd</code></a> 命令。</p>
+
+<h2 id="etc-passwd-格式"><code>/etc/passwd</code> 格式</h2>
+
+<p>该 <code>/etc/passwd</code> 文件是一个文本文件，每行一个条目，代表一个用户帐户。要查看文件的内容，请使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>或如下的命令 <a href="/linux/linux-cat-command/"><code>cat</code></a> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /etc/passwd</code></pre></div>
+<p>通常，第一行描述根用户，然后是系统帐户和普通用户帐户。新条目将附加在文件末尾。</p>
+
+<p><code>/etc/passwd</code> 文件的每一行都包含七个逗号分隔的字段：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">mark:x:1001:1001:mark,,,:/home/mark:/bin/bash
+[--] - [--] [--] [-----] [--------] [--------]
+|    |   |    |     |         |        |
+|    |   |    |     |         |        +-&gt; 7\. 登录 shell
+|    |   |    |     |         +----------&gt; 6\. 主目录
+|    |   |    |     +--------------------&gt; 5\. GECOS
+|    |   |    +--------------------------&gt; 4\. GID
+|    |   +-------------------------------&gt; 3\. UID
+|    +-----------------------------------&gt; 2\. 密码
++----------------------------------------&gt; 1\. 用户名</code></pre></div>
+<ol>
+<li>用户名。登录系统时输入的字符串。每个用户名在计算机上必须是唯一的字符串。用户名的最大长度限制为 32 个字符。</li>
+<li>密码。在较旧的 Linux 系统中，用户的加密密码存储在 <code>/etc/passwd</code> 文件中。而在大多数的现代系统上，此字段设置为 <code>x</code> ，<a href="/linux/how-to-change-user-password-in-linux/">用户密码</a>存储在 <code>/etc/shadow</code> 文件中。
+
+<ol>
+<li>UID 。用户标识符是分配给每个用户的号码。操作系统使用它来引用用户。</li>
+<li>GID 。用户的组标识号，是指用户的主要组。用户<a href="/linux/create-a-file-in-linux/">创建文件时</a>，文件的所属组将设置为此组。通常，组的名称与用户的名称相同。用户的<a href="/linux/how-to-add-user-to-group-in-linux/">辅助组</a>在 <code>/etc/groups</code> 文件中列出。</li>
+<li>GECOS 或用户的全名。该字段包含逗号分隔值的列表，并包含以下信息：</li>
+<li>用户的全名或应用程序名称。</li>
+<li>房间号。</li>
+<li>工作电话号码。</li>
+<li>家庭电话号码。</li>
+<li>其他联系信息。</li>
+</ol></li>
+<li>主目录。用户主目录的绝对路径。它包含用户的文件和配置。默认情况下，用户主目录以用户名命名，并在该 <code>/home</code> 目录下创建。</li>
+<li>登录 Shell。用户登录外壳程序的绝对路径。这是用户登录系统时启动的外壳程序。在大多数 Linux 发行版中，默认的登录 shell 是 Bash 。</li>
+</ol>
+
+<h2 id="结论">结论</h2>
+
+<p><code>/etc/passwd</code> 文件中存储着系统上的所有用户。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/diff-command-in-linux/">Linux 中的 diff 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-mount-cifs-windows-share-on-linux/">如何使用 CIFS 在 Linux 上挂载 Windows 共享</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/w-command-in-linux/">Linux 中的 w 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/whoami-command-in-linux/">Linux 中的 whoami 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/fsck-command-in-linux/">在 Linux 中使用 fsck 命令修复文件系统</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/start-stop-restart-apache/">如何启动，停止和重启 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/stat-command-in-linux/">Linux 中的 stat 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-debian/">如何在 Debian 中将用户添加到 sudoers</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-run-linux-commands-in-background/">如何在后台运行 Linux 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-copy-cut-paste-in-vim/">如何在 Vim/Vi 中复制，剪切和粘贴</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#etc-passwd-格式"><code>/etc/passwd</code> 格式</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
