@@ -36,7 +36,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="/" />
 
-<meta property="og:updated_time" content="2019-12-02T12:00:00+08:00" />
+<meta property="og:updated_time" content="2019-12-04T12:00:00+08:00" />
 <meta itemprop="name" content="不争笔记">
 <meta itemprop="description" content="">
 
@@ -109,6 +109,56 @@
     
     <div class="mw8 center">
       <section class="flex-ns flex-wrap justify-around">
+        
+          <div class="relative w-100 ph4">
+            <div class="relative w-100 nested-copy-line-height bb b--black-10">
+  <a href="/post/oracle-user-notes/" class="db ph3 ph0-l no-underline black dim">
+  <div class="pv4 gray overflow-hidden">
+    <span class="f6 db">2015年9月7日</span>
+    <h1 class="f3 near-black">
+        Oracle 用户相关操作
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      这里记录一下 Oracle 中用户相关的操作。
+    </div>
+  </div>
+  </a>
+</div>
+
+          </div>
+        
+          <div class="relative w-100 ph4">
+            <div class="relative w-100 nested-copy-line-height bb b--black-10">
+  <a href="/post/oracle-slow-sql/" class="db ph3 ph0-l no-underline black dim">
+  <div class="pv4 gray overflow-hidden">
+    <span class="f6 db">2015年8月21日</span>
+    <h1 class="f3 near-black">
+        oracle 查看执行最慢 sql
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      查询执行最慢的sql
+select *
+  from (select sa.SQL_TEXT,
+               sa.SQL_FULLTEXT,
+               sa.EXECUTIONS &#34;执行次数&#34;,
+               round(sa.ELAPSED_TIME / 1000000, 2) &#34;总执行时间&#34;,
+               round(sa.ELAPSED_TIME / 1000000 / sa.EXECUTIONS, 2) &#34;平均执行时间&#34;,
+               sa.COMMAND_TYPE,
+               sa.PARSING_USER_ID &#34;用户ID&#34;,
+               u.username &#34;用户名&#34;,
+               sa.HASH_VALUE
+          from v$sqlarea sa
+          left join all_users u
+            on sa.PARSING_USER_ID = u.user_id
+         where sa.EXECUTIONS &gt; 0
+         order by (sa.ELAPSED_TIME / sa.EXECUTIONS) desc)
+ where rownum &lt;= 50;
+    </div>
+  </div>
+  </a>
+</div>
+
+          </div>
         
           <div class="relative w-100 ph4">
             <div class="relative w-100 nested-copy-line-height bb b--black-10">
@@ -224,40 +274,6 @@
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
       今天开发环境 oracle 启动侦听的时候，出现了 TNS:permission denied 的问题，并最终找到了解决方案，现在共享出来。 错误描述 [oracle@oracle ~]$ lsnrctl start LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-MAR-2015 15:37:59 Copyright (c) 1991, 2009, Oracle. All rights reserved. Starting /u01/app/oracle/product/11.2.0/dbhome_1/bin/tnslsnr:
-    </div>
-  </div>
-  </a>
-</div>
-
-          </div>
-        
-          <div class="relative w-100 ph4">
-            <div class="relative w-100 nested-copy-line-height bb b--black-10">
-  <a href="/post/vi-usages/" class="db ph3 ph0-l no-underline black dim">
-  <div class="pv4 gray overflow-hidden">
-    <span class="f6 db">2015年3月31日</span>
-    <h1 class="f3 near-black">
-        Vi 常用命令汇总
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      VI 是 unix/linux 系统下最常用的一个文本编辑工具，其命令也很多，本文是我以前从网上收藏的一边文章的，具体出处不记得了，贴在这里供自己查阅使用，同时向原作
-    </div>
-  </div>
-  </a>
-</div>
-
-          </div>
-        
-          <div class="relative w-100 ph4">
-            <div class="relative w-100 nested-copy-line-height bb b--black-10">
-  <a href="/post/iptables-notes/" class="db ph3 ph0-l no-underline black dim">
-  <div class="pv4 gray overflow-hidden">
-    <span class="f6 db">2015年3月31日</span>
-    <h1 class="f3 near-black">
-        iptables 使用笔记
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      iptables 是 linux 下的防火墙程序，在所有的 linux 发行版中都能使用。 iptables 从名字上看就是基于 tables的，其层次结构为 iptables -&gt; tables -&gt; chains -&gt; rules。 iptables 中包括4个 table ：F
     </div>
   </div>
   </a>

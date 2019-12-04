@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux中的 Kill 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.59.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux中的 Kill 命令" />
+<meta property="og:description" content="Linux 是一个很棒的高级操作系统，但并不是完美的。有时，某些应用程序可能会开始出现异常行为，并变得无响应或开始消耗大量系统资源。无法响应的应用程序" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/kill-command-in-linux/" />
+<meta property="article:published_time" content="2019-12-04T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-12-04T12:00:00+08:00" />
+<meta itemprop="name" content="Linux中的 Kill 命令">
+<meta itemprop="description" content="Linux 是一个很棒的高级操作系统，但并不是完美的。有时，某些应用程序可能会开始出现异常行为，并变得无响应或开始消耗大量系统资源。无法响应的应用程序">
+
+
+<meta itemprop="datePublished" content="2019-12-04T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-04T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1133">
+
+
+
+<meta itemprop="keywords" content="kill,terminal," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/kill-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux中的 Kill 命令"/>
+<meta name="twitter:description" content="Linux 是一个很棒的高级操作系统，但并不是完美的。有时，某些应用程序可能会开始出现异常行为，并变得无响应或开始消耗大量系统资源。无法响应的应用程序"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux中的 Kill 命令</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-12-04T12:00:00&#43;08:00">2019年12月4日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1200 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          
+
+<p>Linux 是一个很棒的高级操作系统，但并不是完美的。有时，某些应用程序可能会开始出现异常行为，并变得无响应或开始消耗大量系统资源。无法响应的应用程序无法重新启动，因为原始应用程序进程永远不会完全关闭。唯一的解决方案是重新启动系统或终止应用程序进程。</p>
+
+<p>有几种命令可让您终止最常使用的错误进程。</p>
+
+<h2 id="kill-命令"><code>kill</code> 命令</h2>
+
+<p><code>kill</code> 是大多数 Bourne 衍生的 shell( 例如 Bash 和 Zsh) 中内置的 shell 。 Shell 中的 kill 和独立 <code>/bin/kill</code> 可执行文件之间的命令行为略有不同。</p>
+
+<p>使用 <a href="/linux/linux-type-command/"><code>type</code></a> 命令显示系统上的 <code>kill</code> 的所有位置，其中包括：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">type -a kill</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">kill is a shell builtin
+kill is /bin/kill</code></pre></div>
+<p>上面的输出表明，内置的 shell 的 <code>kill</code> 优先于独立的可执行文件。如果要使用二进制文件，请输入文件的完整路径 <code>/bin/kill</code> 。在本文中，我们将使用内置的 Bash 。</p>
+
+<p>该 <code>kill</code> 命令的语法采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">kill</span> <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>PID<span class="o">]</span>..</code></pre></div>
+<p>该 <code>kill</code> 命令将信号发送到指定的进程或进程组，使它们根据该信号进行操作。未指定信号时，默认为 <code>-15</code>(-TERM) 。</p>
+
+<p>最常用的信号是：</p>
+
+<ul>
+<li><code>1</code>(<code>HUP</code>) - 重新加载进程。</li>
+<li><code>9</code>(<code>KILL</code>) - 终止进程。</li>
+<li><code>15</code>(<code>TERM</code>) - 正常停止进程。</li>
+</ul>
+
+<p>要获取所有可用信号的列表，请使用 <code>-l</code> 选项调用命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">kill -l</code></pre></div>
+<figure><img src="kill-a-process-in-linux.jpg" alt=""></figure>
+
+<p>可以用三种不同的方式指定信号：</p>
+
+<ol>
+<li>使用数字(例如 <code>-1</code> 或 <code>-s 1</code>) 。</li>
+<li>使用 “SIG” 前缀(例如 <code>-SIGHUP</code> 或 <code>-s SIGHUP</code>) 。</li>
+<li>没有 “SIG” 前缀(例如 <code>-HUP</code> 或 <code>-s HUP</code>) 。</li>
+</ol>
+
+<p>以下命令的作用是相同的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">kill -1 PID_NUMBER
+kill -SIGHUP PID_NUMBER
+kill -HUP PID_NUMBER</code></pre></div>
+<p>提供给 <code>kill</code> 命令的 PID  可以是以下之一：</p>
+
+<ul>
+<li>如果 <code>PID</code> 大于零，则将信号发送到 ID 等于 <code>PID</code> 的进程。</li>
+<li>如果 <code>PID</code> 等于零，则将信号发送到当前进程组中的所有进程。换句话说，该信号将发送到属于调用 <code>kill</code> 命令的外壳程序的 GID 的所有进程。使用 <code>ps -efj</code> 命令查看进程组 ID(GID) 。</li>
+<li>如果 <code>PID</code> 等于 <code>-1</code> ，则信号以与用户调用命令相同的 UID 发送到所有进程。如果调用用户是 root 用户，则信号将发送到除 init 和 <code>kill</code> 进程本身之外的所有进程。</li>
+<li>如果 <code>PID</code> 小于 <code>-1</code> ，则将信号发送到 GID 等于 <code>PID</code> 的绝对值的进程组中的所有进程。</li>
+</ul>
+
+<p>普通用户可以将信号发送到自己的进程，但不能发送信号给其他用户，而根用户可以将信号发送到其他用户的进程。</p>
+
+<h2 id="使用-kill-命令终止进程">使用 <code>kill</code> 命令终止进程</h2>
+
+<p>要使用 <code>kill</code> 命令终止<a href="/linux/how-to-kill-a-process-in-linux/">进程</a>，首先需要找到进程 ID 号 (PID) 。为此，您可以使用不同的命令，例如 <code>top</code> ， <a href="/linux/ps-command-in-linux/"><code>ps</code></a> ， <code>pidof</code> 和 <code>pgrep</code> 。</p>
+
+<p>假设 Firefox 浏览器已无响应，并且您需要终止 Firefox 进程。要查找浏览器的 PID ，请使用以下 <code>pidof</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">pidof firefox</code></pre></div>
+<p>该命令将打印所有 Firefox 进程的 ID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">6263 6199 6142 6076</code></pre></div>
+<p>一旦知道了进程号，就可以通过发送 <code>TERM</code> 信号来终止所有进程号：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">kill -9 6263 6199 6142 6076</code></pre></div>
+<p>您可以将上述命令组合为一个命令，而不是先搜索 PID 然后终止进程。</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">kill -9 $(pidof firefox)å</code></pre></div>
+<h2 id="使用-kill-命令重新加载进程">使用 <code>kill</code> 命令重新加载进程</h2>
+
+<p>另一个常见用例 <code>kill</code> 是发送 <code>HUP</code> 信号，该信号告诉进程重新加载其设置。</p>
+
+<p>例如，要<a href="/linux/nginx-commands-you-should-know/">重新加载 Nginx</a> ，您需要向主进程发送一个信号。 Nginx 主进程的进程 ID 可以在 <code>nginx.pid</code> 文件中找到，该文件通常位于 <code>/var/run</code> 目录中。</p>
+
+<p>使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> 命令查找主 PID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /var/run/nginx.pid</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">30251</code></pre></div>
+<p>一旦找到主 PID ，请输入以下内容重新加载 Nginx 设置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo kill -1 30251</code></pre></div>
+<p>上面的命令必须以 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户身份运行。</p>
+
+<h2 id="结论">结论</h2>
+
+<p><code>kill</code> 命令用于向进程发送信号。最常用的信号是 <code>SIGKILL</code> 或 <code>-9</code> ，它直接结束给定的进程。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/kill" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">kill</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-kill-a-process-in-linux/">如何在 Linux 中杀死进程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/etc-passwd-file/">深入理解 /etc/passwd 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/diff-command-in-linux/">Linux 中的 diff 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-mount-cifs-windows-share-on-linux/">如何使用 CIFS 在 Linux 上挂载 Windows 共享</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/w-command-in-linux/">Linux 中的 w 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/whoami-command-in-linux/">Linux 中的 whoami 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/fsck-command-in-linux/">在 Linux 中使用 fsck 命令修复文件系统</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/start-stop-restart-apache/">如何启动，停止和重启 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/stat-command-in-linux/">Linux 中的 stat 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-add-user-to-sudoers-in-debian/">如何在 Debian 中将用户添加到 sudoers</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#kill-命令"><code>kill</code> 命令</a></li>
+<li><a href="#使用-kill-命令终止进程">使用 <code>kill</code> 命令终止进程</a></li>
+<li><a href="#使用-kill-命令重新加载进程">使用 <code>kill</code> 命令重新加载进程</a></li>
+<li><a href="#结论">结论</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
