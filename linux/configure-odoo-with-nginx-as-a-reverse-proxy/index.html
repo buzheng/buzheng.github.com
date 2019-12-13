@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="配置 Odoo 使用 Nginx 作为反向代理" />
 <meta property="og:description" content="Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。
-
 Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。
-
 本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/configure-odoo-with-nginx-as-a-reverse-proxy/" />
@@ -40,25 +38,18 @@ Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在�
 <meta property="article:modified_time" content="2019-03-03T08:00:00+08:00" />
 <meta itemprop="name" content="配置 Odoo 使用 Nginx 作为反向代理">
 <meta itemprop="description" content="Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。
-
 Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。
-
 本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。">
-
-
 <meta itemprop="datePublished" content="2019-03-03T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-03T08:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="767">
 
 
 
-<meta itemprop="keywords" content="linux,odoo,nginx,教程," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,odoo,nginx,教程," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="配置 Odoo 使用 Nginx 作为反向代理"/>
 <meta name="twitter:description" content="Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。
-
 Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。
-
 本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。"/>
 
   </head>
@@ -153,39 +144,29 @@ Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在�
           
   
           <p>Odoo 是世界上最受欢迎的商业软件之一，它包含多个有用的模块，如客户关系管理（ CRM ），销售点，项目管理，库存管理，自动发票，会计，电子商务，库存管理和多得多。</p>
-
 <p>Odoo 带有一个内置的 Web 服务器，但在大多数情况下，建议在它前面有一个反向代理，它将作为客户端和 Odoo 服务器之间的中介。</p>
-
 <p>本指南说明如何将 Nginx 用作 SSL Termination 和反向代理到 Odoo 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>你安装了 Odoo ，如果没有，你可以在<a href="/linux/install-odoo-11-on-ubuntu-16-04/">这里</a>找到说明</li>
 <li>您有一个指向您的 Odoo 安装的域名。在本文中我们将使用 <code>odoo.example.com</code> 。</li>
 <li>您已安装 Nginx ，如果没有，请查看: <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">如何在 Ubuntu 16.04 上安装 Nginx</a>。</li>
-<li>您已为您的域安装了 SSL 证书。您可以按照本指南 <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">安装免费的 Let&rsquo;s Encrypt 证书</a>。</li>
+<li>您已为您的域安装了 SSL 证书。您可以按照本指南 <a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">安装免费的 Let's Encrypt 证书</a>。</li>
 </ul>
-
-<h2 id="将-nginx-配置为反向代理">将 Nginx 配置为反向代理</h2>
-
+<h2 id="-nginx-">将 Nginx 配置为反向代理</h2>
 <p>使用反向代理可以带来很多好处，例如负载均衡， SSL Termination ，缓存，压缩，托管静态内容等等。</p>
-
 <p>在此示例中，我们将配置 SSL Termination ，重定向 HTTP 到 HTTPS ，缓存静态文件和启用 GZip 压缩。</p>
-
 <p>下面是一个示例 nginx 配置文件（server 配置段），你可用于把它用在安装 odoo 的过程中。</p>
-
 <p>打开文本编辑器并创建以下文件。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-enabled/odoo.example.com</code></pre></div>
-<p>/etc/nginx/sites-enabled/odoo.example.com</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-enabled/odoo.example.com
+</code></pre></div><p>/etc/nginx/sites-enabled/odoo.example.com</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">upstream odoo <span class="o">{</span>
- server <span class="m">127</span>.0.0.1:8069<span class="p">;</span>
+ server 127.0.0.1:8069<span class="p">;</span>
 <span class="o">}</span>
 
 upstream odoo-chat <span class="o">{</span>
- server <span class="m">127</span>.0.0.1:8072<span class="p">;</span>
+ server 127.0.0.1:8072<span class="p">;</span>
 <span class="o">}</span>
 
 server <span class="o">{</span>
@@ -209,12 +190,12 @@ server <span class="o">{</span>
    ssl_ciphers <span class="s1">&#39;ECDHE-ECDSA-CHACHA20-POLY1305ECDHE-ECDSA-AES128-GCM-SHA256ECDHE-ECDSA-AES256-GCM-SHA384DHE-RSA-AES128-GCM-SHA256ECDHE-ECDSA-AES128-SHA256ECDHE-ECDSA-AES128-SHAECDHE-RSA-AES128-SHAECDHE-ECDSA-AES256-SHADHE-RSA-AES128-SHA256DHE-RSA-AES256-SHA256ECDHE-ECDSA-DES-CBC3-SHAEDH-RSA-DES-CBC3-SHAAES256-GCM-SHA384AES256-SHA256AES256-SHA!DSS&#39;</span><span class="p">;</span>
    ssl_prefer_server_ciphers on<span class="p">;</span>
 
-   add_header Strict-Transport-Security max-age<span class="o">=</span><span class="m">15768000</span><span class="p">;</span>
+   add_header Strict-Transport-Security max-age<span class="o">=</span>15768000<span class="p">;</span>
 
    ssl_stapling on<span class="p">;</span>
    ssl_stapling_verify on<span class="p">;</span>
    ssl_trusted_certificate /path/to/root_CA_cert_plus_intermediates<span class="p">;</span>
-   resolver <span class="m">8</span>.8.8.8 <span class="m">8</span>.8.4.4<span class="p">;</span>
+   resolver 8.8.8.8 8.8.4.4<span class="p">;</span>
 
    access_log /var/log/nginx/odoo.access.log<span class="p">;</span>
    error_log /var/log/nginx/odoo.error.log<span class="p">;</span>
@@ -239,31 +220,26 @@ server <span class="o">{</span>
    location ~* /web/static/ <span class="o">{</span>
        proxy_cache_valid <span class="m">200</span> 90m<span class="p">;</span>
        proxy_buffering    on<span class="p">;</span>
-       expires <span class="m">864000</span><span class="p">;</span>
+       expires 864000<span class="p">;</span>
        proxy_pass http://odoo<span class="p">;</span>
   <span class="o">}</span>
 
   <span class="c1"># gzip</span>
   gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript<span class="p">;</span>
   gzip on<span class="p">;</span>
-<span class="o">}</span></code></pre></div>
-<p>不要忘记将 <code>odoo.example.com</code> 替换为您的 Odoo 域，并为 SSL 证书文件设置正确的路径。</p>
-
+<span class="o">}</span>
+</code></pre></div><p>不要忘记将 <code>odoo.example.com</code> 替换为您的 Odoo 域，并为 SSL 证书文件设置正确的路径。</p>
 <p>完成后保存文件并重新启动 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart nginx</code></pre></div>
-<h2 id="更改绑定网络接口">更改绑定网络接口</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart nginx
+</code></pre></div><h2 id="heading1">更改绑定网络接口</h2>
 <p>此步骤是可选的，但这是一种很好的安全措施。</p>
-
 <p>默认情况下， Odoo 服务器侦听所有网络接口上的 8069 端口。如果要禁用对 Odoo 实例的直接访问，请打开 Odoo 配置文件，并在文件末尾添加以下两行：</p>
-
 <p>/etc/odoo.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">xmlrpc_interface</span> <span class="o">=</span> <span class="m">127</span>.0.0.1
-<span class="nv">netrpc_interface</span> <span class="o">=</span> <span class="m">127</span>.0.0.1</code></pre></div>
-<p>保存配置文件并重新启动 Odoo 服务器以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart odoo</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">xmlrpc_interface</span> <span class="o">=</span> 127.0.0.1
+<span class="nv">netrpc_interface</span> <span class="o">=</span> 127.0.0.1
+</code></pre></div><p>保存配置文件并重新启动 Odoo 服务器以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart odoo
+</code></pre></div><h2 id="heading2">结论</h2>
 <p>在本教程中，您学习了如何将 Nginx 配置为 Odoo 应用程序的代理。您还可以阅读有关如何设置自动 Odoo 备份的信息</p>
       </div><ul class="pa0">
   
@@ -345,15 +321,12 @@ server <span class="o">{</span>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#将-nginx-配置为反向代理">将 Nginx 配置为反向代理</a></li>
-<li><a href="#更改绑定网络接口">更改绑定网络接口</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-nginx-">将 Nginx 配置为反向代理</a></li>
+    <li><a href="#heading1">更改绑定网络接口</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

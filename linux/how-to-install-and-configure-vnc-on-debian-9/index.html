@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在Debian 9上安装和配置VNC" />
 <meta property="og:description" content="本教程介绍如何在Debian 9系统上安装和配置VNC服务器。我们还将向您展示如何创建SSH隧道并安全地连接到VNC服务器。
-
 虚拟网络计算（VNC）是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-vnc-on-debian-9/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Debian 9上安装和配置VNC">
 <meta itemprop="description" content="本教程介绍如何在Debian 9系统上安装和配置VNC服务器。我们还将向您展示如何创建SSH隧道并安全地连接到VNC服务器。
-
 虚拟网络计算（VNC）是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2481">
+<meta itemprop="wordCount" content="2464">
 
 
 
-<meta itemprop="keywords" content="debian,vnc," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="debian,vnc," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在Debian 9上安装和配置VNC"/>
 <meta name="twitter:description" content="本教程介绍如何在Debian 9系统上安装和配置VNC服务器。我们还将向您展示如何创建SSH隧道并安全地连接到VNC服务器。
-
 虚拟网络计算（VNC）是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。"/>
 
   </head>
@@ -147,78 +141,61 @@
           
   
           <p>本教程介绍如何在Debian 9系统上安装和配置VNC服务器。我们还将向您展示如何创建SSH隧道并安全地连接到VNC服务器。</p>
-
 <p>虚拟网络计算（VNC）是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续学习本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录。</p>
-
-<h2 id="安装桌面环境">安装桌面环境</h2>
-
+<h2 id="heading1">安装桌面环境</h2>
 <p>您的Debian服务器可能没有安装桌面环境。我们的第一步是安装轻量级桌面环境。</p>
-
 <p>Debian存储库中有几种桌面环境（DE）。在本教程中，我们将使用<a href="https://xfce.org/">Xfce</a>作为我们选择的桌面环境。它快速，稳定，轻便，非常适合在远程服务器上使用。</p>
-
 <p>使用以下命令更新软件包索引并在Debian服务器上安装Xfce：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils</code></pre></div>
-<p>根据您的系统，下载和安装Xfce软件包可能需要一些时间。</p>
-
-<h2 id="安装vnc服务器">安装VNC服务器</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
+</code></pre><p>根据您的系统，下载和安装Xfce软件包可能需要一些时间。</p>
+<h2 id="vnc">安装VNC服务器</h2>
 <p>Debian存储库中还有几种不同的VNC服务器，如<a href="https://www.tightvnc.com/">TightVNC</a>，<a href="http://tigervnc.org/">TigerVNC</a>和<a href="http://www.karlrunge.com/x11vnc/">x11vnc</a>。每个VNC服务器在速度和安全性方面都有其优缺点。</p>
-
 <p>我们将使用TigerVNC，它是积极维护的高性能VNC服务器。要在Debian服务器上安装TigerVNC，请发出以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install tigervnc-standalone-server tigervnc-common</code></pre></div>
-<p>安装VNC服务器后，运行<code>vncserver</code>命令以创建初始配置并设置密码。运行以下命令时不要使用sudo：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">vncserver</code></pre></div>
-<p>系统将提示您输入并确认密码，以及是否将其设置为仅查看密码。如果您选择设置仅查看密码，则用户将无法使用鼠标和键盘与VNC实例进行交互。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">You will require a password to access your desktops.
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install tigervnc-standalone-server tigervnc-common
+</code></pre><p>安装VNC服务器后，运行<code>vncserver</code>命令以创建初始配置并设置密码。运行以下命令时不要使用sudo：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">vncserver
+</code></pre><p>系统将提示您输入并确认密码，以及是否将其设置为仅查看密码。如果您选择设置仅查看密码，则用户将无法使用鼠标和键盘与VNC实例进行交互。</p>
+<pre><code class="language-output" data-lang="output">You will require a password to access your desktops.
 
 Password:
 Verify:
 Would you like to enter a view-only password (y/n)? n
 /usr/bin/xauth:  file /home/linuxize/.Xauthority does not exist
 
-New &#39;debian9.localdomain:1 (linuxize)&#39; desktop at :1 on machine debian9.localdomain
+New 'debian9.localdomain:1 (linuxize)' desktop at :1 on machine debian9.localdomain
 
 Starting applications specified in /etc/X11/Xvnc-session
 Log file is /home/linuxize/.vnc/debian9.localdomain:1.log
 
-Use xtigervncviewer -SecurityTypes VncAuth -passwd /home/linuxize/.vnc/passwd :1 to connect to the VNC server.</code></pre></div>
-<p>当您<code>vncserver</code>第一次运行该命令时，它将创建密码文件并将其存储在<code>~/.vnc</code>目录中。</p>
-
+Use xtigervncviewer -SecurityTypes VncAuth -passwd /home/linuxize/.vnc/passwd :1 to connect to the VNC server.
+</code></pre><p>当您<code>vncserver</code>第一次运行该命令时，它将创建密码文件并将其存储在<code>~/.vnc</code>目录中。</p>
 <p>注意上面输出中<code>:1</code>的<a href="/linux/how-to-change-hostname-on-debian-9/">主机名</a>之后。这表示运行vnc服务器的显示端口号。在我们的例子中，服务器在TCP端口<code>5901</code>（5900 + 1）上运行。如果您创建第二个实例，<code>vncserver</code>它将在下一个空闲端口上运行，即<code>:2</code>这意味着服务器正在端口<code>5902</code>（5900 + 2）上运行。</p>
-
 <p>需要注意的重要一点是，在使用VNC服务器时，<code>:X</code>是一个引用的显示端口<code>5900+X</code>。</p>
-
 <p>在继续下一步之前，使用<code>vncserver</code>带有<code>-kill</code>选项和服务器编号作为参数的命令停止VNC实例。在我们的例子中，服务器在端口5901（<code>:1</code>）中运行，因此我们将使用以下命令停止它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">vncserver -kill :1</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Killing Xtigervnc process ID 6677... success!</code></pre></div>
-<h2 id="配置vnc服务器">配置VNC服务器</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">vncserver -kill :1
+</code></pre><pre><code class="language-output" data-lang="output">Killing Xtigervnc process ID 6677... success!
+</code></pre><h2 id="vnc1">配置VNC服务器</h2>
 <p>既然Xfce和TigerVNC都安装在服务器上，我们需要配置TigerVNC来使用Xfce。为此，请创建以下文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/.vnc/xstartup</code></pre></div>
-<p>〜/ .vnc / xstartup中</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nano ~/.vnc/xstartup
+</code></pre><p>〜/ .vnc / xstartup中</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/sh
 </span><span class="cp"></span><span class="nb">unset</span> SESSION_MANAGER
 <span class="nb">unset</span> DBUS_SESSION_BUS_ADDRESS
-<span class="nb">exec</span> startxfce4 </code></pre></div>
-<p>完成后，保存并关闭文件。无论何时启动或重新启动TigerVNC服务器，都将自动执行上述脚本。</p>
-
+<span class="nb">exec</span> startxfce4 
+</code></pre></div><p>完成后，保存并关闭文件。无论何时启动或重新启动TigerVNC服务器，都将自动执行上述脚本。</p>
 <p>该<code>~/.vnc/xstartup</code>文件还需要具有执行权限。运行以下命令以确保权限正确：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chmod u+x ~/.vnc/xstartup</code></pre></div>
-<p>如果需要将<a href="http://tigervnc.org/doc/vncserver.html">附加选项</a>传递给VNC服务器，则可以创建一个名为的文件，<code>config</code>并为每行添加一个选项。这是一个例子：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">chmod u+x ~/.vnc/xstartup
+</code></pre><p>如果需要将<a href="http://tigervnc.org/doc/vncserver.html">附加选项</a>传递给VNC服务器，则可以创建一个名为的文件，<code>config</code>并为每行添加一个选项。这是一个例子：</p>
 <p>〜/ .vnc /配置</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">geometry=1920x1084
-dpi=96</code></pre></div>
-<h2 id="创建systemd单元文件">创建Systemd单元文件</h2>
-
+<pre><code class="language-conf" data-lang="conf">geometry=1920x1084
+dpi=96
+</code></pre><h2 id="systemd">创建Systemd单元文件</h2>
 <p>systemd单元文件将允许我们根据需要轻松启动，停止和重新启动VNC服务。</p>
-
 <p>打开文本编辑器，将以下配置复制并粘贴到其中。不要忘记更改第7行中的用户名以匹配您的用户名。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/vncserver@.service</code></pre></div>
-<p>/ etc / systemd / system / vncserver @ .service</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/vncserver@.service
+</code></pre><p>/ etc / systemd / system / vncserver @ .service</p>
 <div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Remote desktop service (VNC)</span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target</span>
@@ -233,72 +210,49 @@ dpi=96</code></pre></div>
 <span class="na">ExecStop</span><span class="o">=</span><span class="s">/usr/bin/vncserver -kill :%i</span>
 
 <span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
-<p>保存并关闭文件。</p>
-
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div><p>保存并关闭文件。</p>
 <p>通过运行以下命令通知systemd <code>vncserver@.service</code> <a href="/linux/bash-check-if-file-exists/">存在</a>新<a href="/linux/bash-check-if-file-exists/">文件</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload</code></pre></div>
-<p>接下来，启用该服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable vncserver@1.service</code></pre></div>
-<p>符号<code>1</code>后面的数字<code>@</code>定义了运行VNC服务的显示端口。正如我们在上一节中讨论的那样，因为我们正在使用<code>1</code>VNC服务器将侦听端口<code>5901</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload
+</code></pre><p>接下来，启用该服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable vncserver@1.service
+</code></pre><p>符号<code>1</code>后面的数字<code>@</code>定义了运行VNC服务的显示端口。正如我们在上一节中讨论的那样，因为我们正在使用<code>1</code>VNC服务器将侦听端口<code>5901</code>。</p>
 <p>执行以下命令启动VNC服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start vncserver@1.service</code></pre></div>
-<p>验证服务是否已成功启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vncserver@1.service</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● vncserver@1.service - Remote desktop service (VNC)
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start vncserver@1.service
+</code></pre><p>验证服务是否已成功启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vncserver@1.service
+</code></pre><pre><code class="language-output" data-lang="output">● vncserver@1.service - Remote desktop service (VNC)
    Loaded: loaded (/etc/systemd/system/vncserver@.service; enabled; vendor preset: enabled)
    Active: active (running) since Wed 2018-10-03 05:23:33 PDT; 51s ago
   Process: 7063 ExecStartPre=/bin/sh -c /usr/bin/vncserver -kill :1 &gt; /dev/null 2&gt;&amp;1 || : (code=exited, status=0/SUCCESS)
  Main PID: 7071 (vncserver)
     Tasks: 0 (limit: 4915)
    CGroup: /system.slice/system-vncserver.slice/vncserver@1.service
-           ‣ 7071 /usr/bin/perl /usr/bin/vncserver :1 -geometry 1440x900 -alwaysshared -fg</code></pre></div>
-<h2 id="连接到vnc服务器">连接到VNC服务器</h2>
-
+           ‣ 7071 /usr/bin/perl /usr/bin/vncserver :1 -geometry 1440x900 -alwaysshared -fg
+</code></pre><h2 id="vnc2">连接到VNC服务器</h2>
 <p>VNC不是加密协议，可以进行数据包嗅探。建议的方法是创建一个SSH隧道，该隧道将安全地将来自本地计算机的端口5901上的流量转发到同一端口上的服务器。</p>
-
-<h3 id="在linux和macos上设置ssh隧道">在Linux和macOS上设置SSH隧道</h3>
-
+<h3 id="linuxmacosssh">在Linux和macOS上设置SSH隧道</h3>
 <p>如果在计算机上运行Linux，macOS或任何其他基于Unix的操作系统，则可以使用以下命令轻松创建SSH隧道：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -L 5901:127.0.0.1:5901 -N -f -l username server_ip_address</code></pre></div>
-<p>系统将提示您输入用户密码。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh -L 5901:127.0.0.1:5901 -N -f -l username server_ip_address
+</code></pre><p>系统将提示您输入用户密码。</p>
 <p>不要忘了更换<code>username</code>，并<code>server_ip_address</code>与您的用户名和服务器的IP地址。</p>
-
-<h3 id="在windows上设置ssh隧道">在Windows上设置SSH隧道</h3>
-
+<h3 id="windowsssh">在Windows上设置SSH隧道</h3>
 <p>如果运行Windows，则可以使用<a href="https://www.putty.org/">PuTTY SSH客户端</a>设置SSH隧道。</p>
-
 <p>打开Putty并在<code>Host name or IP address</code>字段中输入您的服务器IP地址。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-putty.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-putty.jpg" alt=""></p>
 <p>在<code>Connection</code>菜单下，展开<code>SSH</code>并选择<code>Tunnels</code>。输入VNC服务器端口（<code>5901</code>在）<code>Source Port</code>字段，并输入<code>server_ip_address:5901</code>在<code>Destination</code>现场和点击<code>Add</code>如下图所示的图像按钮：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-ssh-tunnel-putty.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-ssh-tunnel-putty.jpg" alt=""></p>
 <p>返回<code>Session</code>页面以保存设置，这样您每次都不需要输入它们。现在，您只需选择已保存的会话并通过单击<code>Open</code>按钮登录到远程服务器。</p>
-
-<h3 id="使用vncviewer连接">使用Vncviewer连接</h3>
-
+<h3 id="vncviewer">使用Vncviewer连接</h3>
 <p>现在您已经设置了SSH隧道，现在可以打开Vncviewer并连接到VNC服务器了<code>localhost:5901</code>。</p>
-
 <p>您可以使用任何VNC查看器，如TigerVNC，TightVNC，RealVNC，UltraVNC Vinagre和VNC Viewer for Google Chrome。</p>
-
 <p>在这个例子中，我们将使用TigerVNC。打开VNC查看器，输入<code>localhost:5901</code>并单击<code>Connect</code>按钮。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-viewer.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-viewer.jpg" alt=""></p>
 <p>出现提示时输入密码，您应该会看到默认的Xfce桌面。它应该看起来像这样：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-xfce-desktop.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-vnc-on-debian-9/vnc-xfce-desktop.jpg" alt=""></p>
 <p>此时，您已通过VNC成功连接到服务器。您现在可以使用键盘和鼠标从本地计算机开始与远程XFCE桌面交互。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>到目前为止，您应该启动并运行VNC服务器，并且可以使用图形界面从本地计算机轻松管理Debian 9服务器。</p>
-
 <p>要配置VNC服务器以启动多个用户的显示，请使用该<code>vncserver</code>命令创建初始配置并设置密码。您还需要使用其他端口创建新的服务文件。</p>
       </div><ul class="pa0">
   
@@ -372,23 +326,21 @@ dpi=96</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装桌面环境">安装桌面环境</a></li>
-<li><a href="#安装vnc服务器">安装VNC服务器</a></li>
-<li><a href="#配置vnc服务器">配置VNC服务器</a></li>
-<li><a href="#创建systemd单元文件">创建Systemd单元文件</a></li>
-<li><a href="#连接到vnc服务器">连接到VNC服务器</a>
-<ul>
-<li><a href="#在linux和macos上设置ssh隧道">在Linux和macOS上设置SSH隧道</a></li>
-<li><a href="#在windows上设置ssh隧道">在Windows上设置SSH隧道</a></li>
-<li><a href="#使用vncviewer连接">使用Vncviewer连接</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">安装桌面环境</a></li>
+    <li><a href="#vnc">安装VNC服务器</a></li>
+    <li><a href="#vnc1">配置VNC服务器</a></li>
+    <li><a href="#systemd">创建Systemd单元文件</a></li>
+    <li><a href="#vnc2">连接到VNC服务器</a>
+      <ul>
+        <li><a href="#linuxmacosssh">在Linux和macOS上设置SSH隧道</a></li>
+        <li><a href="#windowsssh">在Windows上设置SSH隧道</a></li>
+        <li><a href="#vncviewer">使用Vncviewer连接</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

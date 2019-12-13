@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-10-29T00:00:00+00:00" />
 <meta itemprop="name" content="Tomcat 监测脚本">
 <meta itemprop="description" content="通过 Tomcat 监测脚本 按照一定的时间频度来检测Tomcat应用是否正常，如果进程不存在，则启动 Tomcat；如果进程存在而访问不正常，则杀掉进程，再启动 Tomcat。">
-
-
 <meta itemprop="datePublished" content="2015-10-29T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-10-29T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="215">
 
 
 
-<meta itemprop="keywords" content="Tomcat,Java,Shell," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Tomcat,Java,Shell," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Tomcat 监测脚本"/>
 <meta name="twitter:description" content="通过 Tomcat 监测脚本 按照一定的时间频度来检测Tomcat应用是否正常，如果进程不存在，则启动 Tomcat；如果进程存在而访问不正常，则杀掉进程，再启动 Tomcat。"/>
 
@@ -141,8 +138,7 @@
           
   
           <p>通过 Tomcat 监测脚本 按照一定的时间频度来检测Tomcat应用是否正常，如果进程不存在，则启动 Tomcat；如果进程存在而访问不正常，则杀掉进程，再启动 Tomcat。</p>
-
-<h2 id="脚本的主体">脚本的主体</h2>
+<h2 id="heading">脚本的主体</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /home/dev/ctl/tomcat-inspector/image.sh
 
 <span class="c1">#!/bin/bash</span>
@@ -155,8 +151,8 @@ whoami
 <span class="nb">export</span> PATH JAVA_HOME
 
 <span class="nv">port</span><span class="o">=</span><span class="m">8086</span>
-<span class="nv">sn</span><span class="o">=</span><span class="s2">&#34;tomcat-image-</span><span class="nv">$port</span><span class="s2">&#34;</span>
-<span class="nv">th</span><span class="o">=</span><span class="s2">&#34;/home/dev/tomcat/</span><span class="nv">$sn</span><span class="s2">&#34;</span>
+<span class="nv">sn</span><span class="o">=</span><span class="s2">&#34;</span><span class="s2">tomcat-image-</span><span class="nv">$port</span><span class="s2">&#34;</span>
+<span class="nv">th</span><span class="o">=</span><span class="s2">&#34;</span><span class="s2">/home/dev/tomcat/</span><span class="nv">$sn</span><span class="s2">&#34;</span>
 <span class="nv">url</span><span class="o">=</span><span class="s2">&#34;http://you-app-server/&#34;</span>
 
 <span class="nv">tomcat</span><span class="o">=</span><span class="sb">`</span>ps -ef <span class="p">|</span> grep java <span class="p">|</span> grep <span class="nv">$sn</span> <span class="p">|</span> grep <span class="nv">$port</span> <span class="p">|</span> wc -l<span class="sb">`</span>
@@ -173,9 +169,9 @@ whoami
     <span class="nv">tpid</span><span class="o">=</span><span class="sb">`</span>ps -ef <span class="p">|</span> grep java <span class="p">|</span> grep <span class="nv">$sn</span> <span class="p">|</span> grep <span class="nv">$port</span> <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
     <span class="nb">echo</span> <span class="nv">$sn</span> is running, <span class="nv">pid</span> <span class="o">=</span> <span class="nv">$tpid</span>
 
-    <span class="nv">httpStatus</span><span class="o">=</span><span class="sb">`</span>curl -I <span class="nv">$url</span> <span class="m">2</span>&gt;/dev/null <span class="p">|</span> grep HTTP <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
+    <span class="nv">httpStatus</span><span class="o">=</span><span class="sb">`</span>curl -I <span class="nv">$url</span> 2&gt;/dev/null <span class="p">|</span> grep HTTP <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
     <span class="nb">echo</span> <span class="nv">$httpStatus</span>
-    <span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$httpStatus</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="nv">$httpStatus</span> -ge <span class="m">500</span> <span class="o">]]</span>
+    <span class="k">if</span> <span class="o">[</span><span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$httpStatus</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="nv">$httpStatus</span> -ge <span class="m">500</span> <span class="o">]</span><span class="o">]</span>
     <span class="k">then</span>
         <span class="nb">echo</span> killing <span class="nv">$sn</span> ......
         <span class="nb">kill</span> -9 <span class="nv">$tpid</span>
@@ -183,11 +179,11 @@ whoami
         <span class="nb">echo</span> starting <span class="nv">$sn</span> ......
         <span class="nv">$th</span>/bin/startup.sh
     <span class="k">fi</span>
-<span class="k">fi</span></code></pre></div>
-<h2 id="设定执行频度">设定执行频度</h2>
+<span class="k">fi</span>
+</code></pre></div><h2 id="heading1">设定执行频度</h2>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">crontab -e
-*/5 * * * * /home/dev/ctl/tomcat-inspector/image.sh &gt;&gt; /home/dev/ctl/tomcat-inspector/logs/image.log <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span></code></pre></div>
-<p>Done.</p>
+*/5 * * * * /home/dev/ctl/tomcat-inspector/image.sh &gt;&gt; /home/dev/ctl/tomcat-inspector/logs/image.log 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div><p>Done.</p>
       </div><ul class="pa0">
   
    <li class="list di">

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何在 Linux 中清空文件" />
 <meta property="og:description" content="在某些情况下，您可能希望将现有文件清空为零长度。简单来说，清空文件意味着删除文件内容而不删除文件。
-
 与删除文件，重新创建文件以及设置正确的权限和所有权相比，清空文件要快得多，也容易得多。另外，如果文件是由进程打开的，则删除该文件可能会导致使用该文件的程序出现故障。
-
 本教程说明了如何在 Linux 系统中使用 Shell 重定向和 truncate 命令将文件清空为零大小。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/truncate-files-in-linux/" />
+<meta property="og:image" content="/linux/truncate-files-in-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-10-12T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-10-12T12:00:00+08:00" />
 <meta itemprop="name" content="如何在 Linux 中清空文件">
 <meta itemprop="description" content="在某些情况下，您可能希望将现有文件清空为零长度。简单来说，清空文件意味着删除文件内容而不删除文件。
-
 与删除文件，重新创建文件以及设置正确的权限和所有权相比，清空文件要快得多，也容易得多。另外，如果文件是由进程打开的，则删除该文件可能会导致使用该文件的程序出现故障。
-
 本教程说明了如何在 Linux 系统中使用 Shell 重定向和 truncate 命令将文件清空为零大小。">
-
-
 <meta itemprop="datePublished" content="2019-10-12T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-12T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="815">
+<meta itemprop="wordCount" content="816">
+<meta itemprop="image" content="/linux/truncate-files-in-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="truncate,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="truncate,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/truncate-files-in-linux/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Linux 中清空文件"/>
 <meta name="twitter:description" content="在某些情况下，您可能希望将现有文件清空为零长度。简单来说，清空文件意味着删除文件内容而不删除文件。
-
 与删除文件，重新创建文件以及设置正确的权限和所有权相比，清空文件要快得多，也容易得多。另外，如果文件是由进程打开的，则删除该文件可能会导致使用该文件的程序出现故障。
-
 本教程说明了如何在 Linux 系统中使用 Shell 重定向和 truncate 命令将文件清空为零大小。"/>
 
   </head>
@@ -154,61 +147,46 @@
           
   
           <p>在某些情况下，您可能希望将现有文件清空为零长度。简单来说，清空文件意味着删除文件内容而不删除文件。</p>
-
 <p>与<a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">删除文件</a>，<a href="/linux/create-a-file-in-linux/">重新创建</a><a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">文件</a>以及<a href="/linux/linux-chown-command/">设置正确的权限和所有权</a>相比，清空文件要快得多，也容易得多。另外，如果文件是由进程打开的，则删除该文件可能会导致使用该文件的程序出现故障。</p>
-
 <p>本教程说明了如何在 Linux 系统中使用 Shell 重定向和 <code>truncate</code> 命令将文件清空为零大小。</p>
-
-<h2 id="shell-重定向">shell 重定向</h2>
-
+<h2 id="shell-">shell 重定向</h2>
 <p>清空文件最简单，最常用的方法是使用 Shell 重定向运算符 <code>&gt;</code> 。</p>
-
 <p>使用重定向清空文件的一般格式为：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">: &gt; filename</code></pre></div>
-<p>让我们分解一下命令：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">: &gt; filename
+</code></pre></div><p>让我们分解一下命令：</p>
 <ul>
 <li><code>:</code> 冒号意味着 <code>true</code> 和不产生任何输出。</li>
 <li>重定向运算符 <code>&gt;</code> 将先前命令的输出重定向到给定文件。</li>
 <li><code>filename</code>，要清空的文件。</li>
 </ul>
-
 <p>如果该<a href="/linux/bash-check-if-file-exists/">文件存在</a>，它将被清空为零。否则，将创建文件。</p>
-
 <p>代替 <code>:</code> 还可以使用另一个不产生任何输出的命令。</p>
-
 <p>这是使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> 命令输出 <code>/dev/null</code> 设备内容的示例，该设备仅返回文件结尾字符：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cat /dev/null &gt; filename</code></pre></div>
-<p>可以使用的另一个命令是 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo</code></a> 。该 <code>-n</code> 选项告诉 <code>echo</code> 不要添加换行符：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> -n &gt; filename</code></pre></div>
-<p>在大多数现代的 Shell( 例如 Bash 或 Zsh) 上，您可以在重定向符号之前省略该命令，并使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">&gt; filename</code></pre></div>
-<p>为了能够清空文件，您需要对该文件具有写权限。通常，您将使用 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 权限，但是提升的 root 特权不适用于重定向。这是一个例子：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo : &gt; /var/log/syslog</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">bash: /var/log/syslog: Permission denied</code></pre></div>
-<p>有几种解决方案允许 <code>sudo</code> 使用重定向。第一个选项可以使用 sudo 运行新的 shell ，并使用 <code>-c</code> 标志在该 shell 中执行命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo sh -c <span class="s1">&#39;&gt; filename&#39;</span></code></pre></div>
-<p>另一个选择是将输出传递给 <code>tee</code> 命令，使用 <code>sudo</code> 提升 <code>tee</code> 的权限，并将空输出写入给定文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">: <span class="p">|</span> sudo tee filename</code></pre></div>
-<h2 id="truncate-命令"><code>truncate</code> 命令</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cat /dev/null &gt; filename
+</code></pre></div><p>可以使用的另一个命令是 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo</code></a> 。该 <code>-n</code> 选项告诉 <code>echo</code> 不要添加换行符：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> -n &gt; filename
+</code></pre></div><p>在大多数现代的 Shell( 例如 Bash 或 Zsh) 上，您可以在重定向符号之前省略该命令，并使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">&gt; filename
+</code></pre></div><p>为了能够清空文件，您需要对该文件具有写权限。通常，您将使用 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 权限，但是提升的 root 特权不适用于重定向。这是一个例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo : &gt; /var/log/syslog
+</code></pre></div><pre><code class="language-output" data-lang="output">bash: /var/log/syslog: Permission denied
+</code></pre><p>有几种解决方案允许 <code>sudo</code> 使用重定向。第一个选项可以使用 sudo 运行新的 shell ，并使用 <code>-c</code> 标志在该 shell 中执行命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo sh -c <span class="s1">&#39;&gt; filename&#39;</span>
+</code></pre></div><p>另一个选择是将输出传递给 <code>tee</code> 命令，使用 <code>sudo</code> 提升 <code>tee</code> 的权限，并将空输出写入给定文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">: <span class="p">|</span> sudo tee filename
+</code></pre></div><h2 id="truncate"><code>truncate</code> 命令</h2>
 <p><code>truncate</code>  是一个命令行实用程序，可让您将文件的大小缩小或扩展到给定的大小。</p>
-
 <p>使用 <code>truncate</code> 命令将文件清空为零大小的一般语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">truncate -s <span class="m">0</span> filename</code></pre></div>
-<p>该 <code>-s 0</code> 选项将文件大小设置为零。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">truncate -s <span class="m">0</span> filename
+</code></pre></div><p>该 <code>-s 0</code> 选项将文件大小设置为零。</p>
 <p>例如，要清空 Nginx 访问日志，可以使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo truncate -s 0 /var/log/nginx/access.log</code></pre></div>
-<h2 id="清空所有日志文件">清空所有日志文件</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo truncate -s 0 /var/log/nginx/access.log
+</code></pre><h2 id="heading">清空所有日志文件</h2>
 <p>随着时间的流逝，您的磁盘驱动器可能会被<a href="/linux/find-large-files-in-linux/">大量</a>占用大量磁盘空间的<a href="/linux/find-large-files-in-linux/">大型日志文件所</a>困扰。</p>
-
 <p>以下命令将清空 <code>/var/log</code> 目录下以 “ .log” 结尾的文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo truncate -s 0 /var/log/**/*.log</code></pre></div>
-<p>更好的选择是使用该 <a href="https://linux.die.net/man/8/logrotate"><code>logrotate</code></a> 工具压缩和删除日志文件。</p>
-
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo truncate -s 0 /var/log/**/*.log
+</code></pre><p>更好的选择是使用该 <a href="https://linux.die.net/man/8/logrotate"><code>logrotate</code></a> 工具压缩和删除日志文件。</p>
+<h2 id="heading1">结论</h2>
 <p>要在 Linux 中清空文件，请使用重定向操作符， <code>&gt;</code> 后跟文件名。</p>
       </div><ul class="pa0">
   
@@ -282,15 +260,12 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#shell-重定向">shell 重定向</a></li>
-<li><a href="#truncate-命令"><code>truncate</code> 命令</a></li>
-<li><a href="#清空所有日志文件">清空所有日志文件</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#shell-">shell 重定向</a></li>
+    <li><a href="#truncate">truncate 命令</a></li>
+    <li><a href="#heading">清空所有日志文件</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在CentOS 7上安装和配置Redmine" />
 <meta property="og:description" content="Redmine是最受欢迎的开源项目管理和问题跟踪软件工具之一。它是跨平台和跨数据库，构建在Ruby on Rails框架之上。
-
 Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，电子邮件通知等的支持。
-
 在本教程中，我们将介绍在CentOS 7服务器上安装和配置最新版本的Redmine所需的步骤，使用MariaDB作为数据库后端，将Passenger &#43; Nginx作为Ruby应用程序服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-redmine-on-centos-7/" />
@@ -40,25 +38,18 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上安装和配置Redmine">
 <meta itemprop="description" content="Redmine是最受欢迎的开源项目管理和问题跟踪软件工具之一。它是跨平台和跨数据库，构建在Ruby on Rails框架之上。
-
 Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，电子邮件通知等的支持。
-
 在本教程中，我们将介绍在CentOS 7服务器上安装和配置最新版本的Redmine所需的步骤，使用MariaDB作为数据库后端，将Passenger &#43; Nginx作为Ruby应用程序服务器。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2094">
+<meta itemprop="wordCount" content="2088">
 
 
 
-<meta itemprop="keywords" content="centos,redmine,ruby,mysql,mariadb,nginx," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,redmine,ruby,mysql,mariadb,nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在CentOS 7上安装和配置Redmine"/>
 <meta name="twitter:description" content="Redmine是最受欢迎的开源项目管理和问题跟踪软件工具之一。它是跨平台和跨数据库，构建在Ruby on Rails框架之上。
-
 Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，电子邮件通知等的支持。
-
 在本教程中，我们将介绍在CentOS 7服务器上安装和配置最新版本的Redmine所需的步骤，使用MariaDB作为数据库后端，将Passenger &#43; Nginx作为Ruby应用程序服务器。"/>
 
   </head>
@@ -153,90 +144,67 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
           
   
           <p>Redmine是最受欢迎的开源项目管理和问题跟踪软件工具之一。它是跨平台和跨数据库，构建在Ruby on Rails框架之上。</p>
-
 <p><a href="https://www.redmine.org/">Redmine</a>包括对多个项目，维基，问题跟踪系统，论坛，日历，电子邮件通知等的支持。</p>
-
 <p>在本教程中，我们将介绍在CentOS 7服务器上安装和配置最新版本的Redmine所需的步骤，使用MariaDB作为数据库后端，将Passenger + Nginx作为Ruby应用程序服务器。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>指向您的服务器公共IP的域名。在本教程中我们将使用<code>example.com</code>。</li>
 <li>以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</li>
 </ul>
-
 <p>从源代码安装构建Redmine和Ruby所需的包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install curl gpg gcc gcc-c++ make patch autoconf automake bison libffi-devel libtoolsudo yum install readline-devel sqlite-devel zlib-devel openssl-develh readline  glibc-headers glibc-develsudo yum install mariadb-devel zlib libyaml-devel bzip2 iconv-devel ImageMagick ImageMagick-devel</code></pre></div>
-<h2 id="创建mysql数据库">创建MySQL数据库</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install curl gpg gcc gcc-c++ make patch autoconf automake bison libffi-devel libtoolsudo yum install readline-devel sqlite-devel zlib-devel openssl-develh readline  glibc-headers glibc-develsudo yum install mariadb-devel zlib libyaml-devel bzip2 iconv-devel ImageMagick ImageMagick-devel
+</code></pre><h2 id="mysql">创建MySQL数据库</h2>
 <p>Redmine支持MySQL / MariaDB，Microsoft SQL Server，SQLite 3和<a href="/linux/how-to-install-postgresql-on-centos-7/">PostgreSQL</a>。在本教程中，我们将使用MariaDB作为数据库后端。</p>
-
 <p>如果您的CentOS服务器上没有安装MariaDB或MySQL，您可以按照<a href="/linux/install-mariadb-on-centos-7/">这些说明</a>进行安装。</p>
-
 <p>键入以下命令登录MySQL shell：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
-<p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE redmine CHARACTER SET utf8;</code></pre></div>
-<p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON redmine.* TO &#39;redmine&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;</code></pre></div>
-<p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
+</code></pre><p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE redmine CHARACTER SET utf8;
+</code></pre><p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON redmine.* TO 'redmine'@'localhost' IDENTIFIED BY 'change-with-strong-password';
+</code></pre><p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
 <p>完成后，键入以下命令退出mysql shell：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">EXIT;</code></pre></div>
-<h2 id="安装passenger和nginx">安装Passenger和Nginx</h2>
-
+<pre><code class="language-console-mysql" data-lang="console-mysql">EXIT;
+</code></pre><h2 id="passengernginx">安装Passenger和Nginx</h2>
 <p><a href="https://www.phusionpassenger.com/">Passenger</a>是一个快速轻量级的Web应用程序服务器，适用于Ruby，Node.js和Python，可以与<a href="/linux/how-to-install-apache-on-centos-7/">Apache</a>和Nginx 集成。我们将安装Passenger作为Nginx模块。</p>
-
 <p>安装<a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL存储库</a>和所需的包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release yum-utils pygpgmesudo yum-config-manager --enable epel</code></pre></div>
-<p>启用<a href="https://www.phusionpassenger.com/library/install/nginx/install/oss/el7/">Phusionpassenger</a>存储库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --add-repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo</code></pre></div>
-<p>启用存储库后，更新软件包列表并安装Nginx和Passenger：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install nginx passenger passenger-devel</code></pre></div>
-<h2 id="创建新系统用户">创建新系统用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release yum-utils pygpgmesudo yum-config-manager --enable epel
+</code></pre><p>启用<a href="https://www.phusionpassenger.com/library/install/nginx/install/oss/el7/">Phusionpassenger</a>存储库：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --add-repo https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+</code></pre><p>启用存储库后，更新软件包列表并安装Nginx和Passenger：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install nginx passenger passenger-devel
+</code></pre><h2 id="heading1">创建新系统用户</h2>
 <p>创建一个新用户和组，它将运行Redmine实例，为简单起见，我们将为用户命名<code>redmine</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -m -U -r -d /opt/redmine redmine</code></pre></div>
-<p>将<code>nginx</code> <a href="/linux/how-to-add-user-to-group-in-linux/">用户</a>添加<a href="/linux/how-to-add-user-to-group-in-linux/">到新用户组</a>并更改<code>/opt/redmine</code>目录权限，以便Nginx可以访问它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G redmine nginxsudo chmod 750 /opt/redmine</code></pre></div>
-<h2 id="安装ruby">安装Ruby</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -m -U -r -d /opt/redmine redmine
+</code></pre><p>将<code>nginx</code> <a href="/linux/how-to-add-user-to-group-in-linux/">用户</a>添加<a href="/linux/how-to-add-user-to-group-in-linux/">到新用户组</a>并更改<code>/opt/redmine</code>目录权限，以便Nginx可以访问它：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G redmine nginxsudo chmod 750 /opt/redmine
+</code></pre><h2 id="ruby">安装Ruby</h2>
 <p>CentOS存储库中的Ruby版本已经过时，Redmine不支持。我们将使用RVM安装Ruby。</p>
-
 <p><code>redmine</code>键入以下内容切换到用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - redmine</code></pre></div>
-<p>导入GPG密钥并安装RVM：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDBcurl -sSL https://get.rvm.io | bash -s stable</code></pre></div>
-<p>要开始使用RVM运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source /opt/redmine/.rvm/scripts/rvm</code></pre></div>
-<p>现在我们可以通过运行来安装Ruby：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rvm install 2.5rvm --default use 2.5</code></pre></div>
-<p>如果您想通过Rbenv安装Ruby，请查看<a href="/linux/how-to-install-ruby-on-centos-7/">本指南</a>。</p>
-
-<h2 id="在centos上安装redmine">在CentOS上安装Redmine</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo su - redmine
+</code></pre><p>导入GPG密钥并安装RVM：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDBcurl -sSL https://get.rvm.io | bash -s stable
+</code></pre><p>要开始使用RVM运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">source /opt/redmine/.rvm/scripts/rvm
+</code></pre><p>现在我们可以通过运行来安装Ruby：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rvm install 2.5rvm --default use 2.5
+</code></pre><p>如果您想通过Rbenv安装Ruby，请查看<a href="/linux/how-to-install-ruby-on-centos-7/">本指南</a>。</p>
+<h2 id="centosredmine">在CentOS上安装Redmine</h2>
 <p>在撰写本文时，Redmine的最新稳定版本是4.0.1版。</p>
-
 <p>在继续执行后续步骤之前，您应该检查<a href="https://www.redmine.org/projects/redmine/wiki/Download">Redmine下载页面</a>以查看是否有更新的版本。</p>
-
 <p>确保以<code>redmine</code>用户身份运行以下步骤。</p>
-
-<h3 id="1-下载redmine">1.下载Redmine</h3>
-
+<h3 id="1redmine">1.下载Redmine</h3>
 <p>使用以下<a href="/linux/curl-command-examples/">curl命令</a>下载Redmine存档：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -L http://www.redmine.org/releases/redmine-4.0.1.tar.gz -o redmine.tar.gz</code></pre></div>
-<p>下载完成后，提取存档：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">tar -xvf redmine.tar.gz</code></pre></div>
-<h3 id="2-配置redmine数据库">2.配置Redmine数据库</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">curl -L http://www.redmine.org/releases/redmine-4.0.1.tar.gz -o redmine.tar.gz
+</code></pre><p>下载完成后，提取存档：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">tar -xvf redmine.tar.gz
+</code></pre><h3 id="2redmine">2.配置Redmine数据库</h3>
 <p>复制Redmine示例数据库配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cp /opt/redmine/redmine-4.0.1/config/database.yml.example /opt/redmine/redmine-4.0.1/config/database.yml</code></pre></div>
-<p>使用文本编辑器打开文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano /opt/redmine/redmine-4.0.1/config/database.yml</code></pre></div>
-<p>搜索该<code>production</code>部分并输入我们之前创建的MySQL数据库和用户信息：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cp /opt/redmine/redmine-4.0.1/config/database.yml.example /opt/redmine/redmine-4.0.1/config/database.yml
+</code></pre><p>使用文本编辑器打开文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nano /opt/redmine/redmine-4.0.1/config/database.yml
+</code></pre><p>搜索该<code>production</code>部分并输入我们之前创建的MySQL数据库和用户信息：</p>
 <p>/opt/redmine/redmine-4.0.1/config/database.yml</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">production:</span>
   <span class="na">adapter: mysql2</span>
@@ -244,24 +212,20 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
   <span class="na">host: localhost</span>
   <span class="na">username: redmine</span>
   <span class="na">password: &#34;change-with-strong-password&#34;</span>
-  <span class="na">encoding: utf8</span></code></pre></div>
-<p>完成后，保存文件并退出编辑器。</p>
-
-<h3 id="3-安装ruby依赖项">3.安装Ruby依赖项</h3>
-
+  <span class="na">encoding: utf8</span>
+</code></pre></div><p>完成后，保存文件并退出编辑器。</p>
+<h3 id="3ruby">3.安装Ruby依赖项</h3>
 <p>导航到该<code>redmine-4.0.1</code>目录并安装bundler和其他Ruby依赖项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/redmine-4.0.1gem install bundler --no-rdoc --no-ribundle install --without development test postgresql sqlite</code></pre></div>
-<h3 id="4-生成密钥并迁移数据库">4.生成密钥并迁移数据库</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cd ~/redmine-4.0.1gem install bundler --no-rdoc --no-ribundle install --without development test postgresql sqlite
+</code></pre><h3 id="4">4.生成密钥并迁移数据库</h3>
 <p>运行以下命令以生成密钥并迁移数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">bundle exec rake generate_secret_tokenRAILS_ENV=production bundle exec rake db:migrate</code></pre></div>
-<h2 id="配置nginx">配置Nginx</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">bundle exec rake generate_secret_tokenRAILS_ENV=production bundle exec rake db:migrate
+</code></pre><h2 id="nginx">配置Nginx</h2>
 <p>切换回你的sudo用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">exit</code></pre></div>
-<p>打开文本编辑器并创建以下<a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">Nginx服务器块</a>文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf</code></pre></div>
-<p>/etc/nginx/conf.d/example.com.conf</p>
+<pre><code class="language-console-bash" data-lang="console-bash">exit
+</code></pre><p>打开文本编辑器并创建以下<a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">Nginx服务器块</a>文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf
+</code></pre><p>/etc/nginx/conf.d/example.com.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">passenger_root</span> <span class="s">/usr/share/ruby/vendor_ruby/phusion_passenger/locations.ini</span><span class="p">;</span>
 <span class="k">passenger_ruby</span> <span class="s">/opt/redmine/.rvm/gems/default/wrappers/ruby</span><span class="p">;</span>
 <span class="k">passenger_instance_registry_dir</span> <span class="s">/var/run/passenger-instreg</span><span class="p">;</span>
@@ -280,23 +244,20 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
     <span class="kn">passenger_min_instances</span> <span class="mi">1</span><span class="p">;</span>
 
     <span class="kn">client_max_body_size</span> <span class="mi">10m</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-<p>不要忘记将example.com替换为您的Redmine域名。</p>
-
+<span class="p">}</span>
+</code></pre></div><p>不要忘记将example.com替换为您的Redmine域名。</p>
 <p>在重新启动Nginx服务之前，请进行测试以确保没有语法错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nginx -t</code></pre></div>
-<p>如果没有错误，输出应如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre></div>
-<p>最后，键入以下命令重启Nginx服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx</code></pre></div>
-<h3 id="使用ssl配置nginx">使用SSL配置Nginx</h3>
-
-<p>如果您的域没有受信任的SSL证书，则可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">这些说明</a>生成免费的Let&rsquo;s Encrypt SSL证书。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nginx -t
+</code></pre><p>如果没有错误，输出应如下所示：</p>
+<pre><code class="language-output" data-lang="output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+</code></pre><p>最后，键入以下命令重启Nginx服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
+</code></pre><h3 id="sslnginx">使用SSL配置Nginx</h3>
+<p>如果您的域没有受信任的SSL证书，则可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">这些说明</a>生成免费的Let's Encrypt SSL证书。</p>
 <p>生成证书后，编辑域Nginx配置，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf</code></pre></div>
-<p>/etc/nginx/conf.d/example.com</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf
+</code></pre><p>/etc/nginx/conf.d/example.com</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">passenger_root</span> <span class="s">/usr/share/ruby/vendor_ruby/phusion_passenger/locations.ini</span><span class="p">;</span>
 <span class="k">passenger_ruby</span> <span class="s">/opt/redmine/.rvm/gems/default/wrappers/ruby</span><span class="p">;</span>
 <span class="k">passenger_instance_registry_dir</span> <span class="s">/var/run/passenger-instreg</span><span class="p">;</span>
@@ -306,7 +267,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre><
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -318,7 +279,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre><
     <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
 
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
@@ -333,8 +294,8 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre><
 </span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
 
     <span class="c1"># log files
 </span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
@@ -343,30 +304,20 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre><
     <span class="kn">passenger_enabled</span> <span class="no">on</span><span class="p">;</span>
     <span class="kn">passenger_min_instances</span> <span class="mi">1</span><span class="p">;</span>
     <span class="kn">client_max_body_size</span> <span class="mi">10m</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-<p>不要忘记将example.com替换为Redmine域，并设置SSL证书文件的正确路径。</p>
-
-<h2 id="访问redmine">访问Redmine</h2>
-
+<span class="p">}</span>
+</code></pre></div><p>不要忘记将example.com替换为Redmine域，并设置SSL证书文件的正确路径。</p>
+<h2 id="redmine">访问Redmine</h2>
 <p>打开<a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">浏览器</a>，键入您的域并假设安装成功，将出现类似于以下内容的屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-redmine-on-centos-7/redmine-login.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-redmine-on-centos-7/redmine-login.jpg" alt=""></p>
 <p>Redmine的默认登录凭据是：</p>
-
 <ul>
 <li>用户名：admin</li>
 <li>密码：admin</li>
 </ul>
-
 <p>当您第一次登录时，系统将提示您更改密码，如下所示：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-redmine-on-centos-7/redmine-change-password.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-redmine-on-centos-7/redmine-change-password.jpg" alt=""></p>
 <p>更改密码后，您将被重定向到用户帐户页面。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>您已在CentOS系统上成功安装了Redmine。您现在应该查看<a href="https://www.redmine.org/guide">Redmine文档</a>并了解有关如何配置和使用Redmine的更多信息。</p>
       </div><ul class="pa0">
   
@@ -456,29 +407,28 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre><
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#创建mysql数据库">创建MySQL数据库</a></li>
-<li><a href="#安装passenger和nginx">安装Passenger和Nginx</a></li>
-<li><a href="#创建新系统用户">创建新系统用户</a></li>
-<li><a href="#安装ruby">安装Ruby</a></li>
-<li><a href="#在centos上安装redmine">在CentOS上安装Redmine</a>
-<ul>
-<li><a href="#1-下载redmine">1.下载Redmine</a></li>
-<li><a href="#2-配置redmine数据库">2.配置Redmine数据库</a></li>
-<li><a href="#3-安装ruby依赖项">3.安装Ruby依赖项</a></li>
-<li><a href="#4-生成密钥并迁移数据库">4.生成密钥并迁移数据库</a></li>
-</ul></li>
-<li><a href="#配置nginx">配置Nginx</a>
-<ul>
-<li><a href="#使用ssl配置nginx">使用SSL配置Nginx</a></li>
-</ul></li>
-<li><a href="#访问redmine">访问Redmine</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#mysql">创建MySQL数据库</a></li>
+    <li><a href="#passengernginx">安装Passenger和Nginx</a></li>
+    <li><a href="#heading1">创建新系统用户</a></li>
+    <li><a href="#ruby">安装Ruby</a></li>
+    <li><a href="#centosredmine">在CentOS上安装Redmine</a>
+      <ul>
+        <li><a href="#1redmine">1.下载Redmine</a></li>
+        <li><a href="#2redmine">2.配置Redmine数据库</a></li>
+        <li><a href="#3ruby">3.安装Ruby依赖项</a></li>
+        <li><a href="#4">4.生成密钥并迁移数据库</a></li>
+      </ul>
+    </li>
+    <li><a href="#nginx">配置Nginx</a>
+      <ul>
+        <li><a href="#sslnginx">使用SSL配置Nginx</a></li>
+      </ul>
+    </li>
+    <li><a href="#redmine">访问Redmine</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

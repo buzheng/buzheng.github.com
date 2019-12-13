@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="如何在 Debian 10 Linux 上安装 Apache Web Server" />
 <meta property="og:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。
-
 在本教程中，我们将解释如何在 Debian 10 ， Buster 上安装 Apache 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-apache-on-debian-10/" />
+<meta property="og:image" content="/linux/how-to-install-apache-on-debian-10/featured.jpg"/>
 <meta property="article:published_time" content="2019-07-29T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-07-29T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 10 Linux 上安装 Apache Web Server">
 <meta itemprop="description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。
-
 在本教程中，我们将解释如何在 Debian 10 ， Buster 上安装 Apache 。">
-
-
 <meta itemprop="datePublished" content="2019-07-29T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-29T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="841">
+<meta itemprop="wordCount" content="835">
+<meta itemprop="image" content="/linux/how-to-install-apache-on-debian-10/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="apache,debian," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="apache,debian," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-apache-on-debian-10/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Debian 10 Linux 上安装 Apache Web Server"/>
 <meta name="twitter:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。
-
 在本教程中，我们将解释如何在 Debian 10 ， Buster 上安装 Apache 。"/>
 
   </head>
@@ -148,41 +144,30 @@
           
   
           <p>Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。</p>
-
 <p>在本教程中，我们将解释如何在 Debian 10 ， Buster 上安装 Apache 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="安装-apache">安装 Apache</h2>
-
+<h2 id="-apache">安装 Apache</h2>
 <p>Apache 软件包在默认的 Debian 存储库中可用。</p>
-
 <p>安装非常简单。使用以下命令更新程序包索引并安装 Apache Web 服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install apache2</code></pre></div>
-<p>就是这样， Apache 已经安装并自动启动。要检查状态类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status apache2</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● apache2.service - The Apache HTTP Server
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install apache2
+</code></pre><p>就是这样， Apache 已经安装并自动启动。要检查状态类型：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status apache2
+</code></pre><pre><code class="language-output" data-lang="output">● apache2.service - The Apache HTTP Server
    Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: 
    Active: active (running) since Sat 2019-07-27 13:55:49 PDT; 21s ago
-   ...</code></pre></div>
-<h2 id="调整防火墙">调整防火墙</h2>
-
+   ...
+</code></pre><h2 id="heading1">调整防火墙</h2>
 <p>UFW 用户可以通过启用 &lsquo;Apache Full&rsquo; 配置文件来打开 HTTP(<code>80</code>) 和 HTTPS(<code>443</code>) 端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow &#39;Apache Full&#39;</code></pre></div>
-<p>如果使用 <a href="https://wiki.debian.org/nftables">nftables</a> 过滤与系统的连接，请通过发出以下命令打开必要的端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nft add rule inet filter input tcp dport {80, 443} ct state new,established counter accept</code></pre></div>
-<h2 id="验证-apache-安装">验证 Apache 安装</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 'Apache Full'
+</code></pre><p>如果使用 <a href="https://wiki.debian.org/nftables">nftables</a> 过滤与系统的连接，请通过发出以下命令打开必要的端口：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nft add rule inet filter input tcp dport {80, 443} ct state new,established counter accept
+</code></pre><h2 id="-apache-">验证 Apache 安装</h2>
 <p>要验证 Apache 是​​否正常工作，请打开浏览器，键入服务器 IP 地址或域名 <code>http://YOUR_IP_OR_DOMAIN/</code> ，您将看到默认的 Apache 欢迎页面，如下所示：</p>
-
-<figure><img src="apache-welcome-page.jpg" alt=""></figure>
-
+<p><img src="apache-welcome-page.jpg" alt=""></p>
 <p>该页面包含有关 Apache 配置文件，帮助程序脚本和目录位置的基本信息。</p>
-
-<h2 id="apache-配置文件的结构和最佳实践">Apache 配置文件的结构和最佳实践</h2>
-
+<h2 id="apache-">Apache 配置文件的结构和最佳实践</h2>
 <ul>
 <li>在基于 Debian 的系统中， Apache 配置文件位于 <code>/etc/apache2</code> 目录中。</li>
 <li>主要的 Apache 配置文件是 <code>/etc/apache2/apache2.conf</code> 。</li>
@@ -194,17 +179,15 @@ sudo apt install apache2</code></pre></div>
 <li>包含全局配置片段的文件存储在 <code>/etc/apache2/conf-available</code> 目录中。 <code>conf-available</code> 可以通过 <code>/etc/apache2/conf-enabled</code> 使用 <code>a2enconf</code> 命令创建符号链接。当然可以使用 <code>a2disconf</code> 命令禁用目录中的文件。</li>
 <li>Apache 日志文件 (<code>access.log</code> 和 <code>error.log</code>) 位于 <code>/var/log/apache</code> 目录中。建议使用不同 <code>access</code> 和 <code>error</code> 日志文件为每个虚拟主机。</li>
 <li>您可以将域文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
-
 <ul>
 <li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
 <li><code>/var/www/&lt;site_name&gt;</code></li>
 <li><code>/var/www/html/&lt;site_name&gt;</code></li>
 <li><code>/opt/&lt;site_name&gt;</code></li>
-</ul></li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+</li>
+</ul>
+<h2 id="heading2">结论</h2>
 <p>在 Debian 上安装 Apache 是​​运行单个命令的问题。安装后您现在可以开始部署应用程序并将 Apache 用作 Web 或代理服务器。</p>
       </div><ul class="pa0">
   
@@ -278,17 +261,14 @@ sudo apt install apache2</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-apache">安装 Apache</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#验证-apache-安装">验证 Apache 安装</a></li>
-<li><a href="#apache-配置文件的结构和最佳实践">Apache 配置文件的结构和最佳实践</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-apache">安装 Apache</a></li>
+    <li><a href="#heading1">调整防火墙</a></li>
+    <li><a href="#-apache-">验证 Apache 安装</a></li>
+    <li><a href="#apache-">Apache 配置文件的结构和最佳实践</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

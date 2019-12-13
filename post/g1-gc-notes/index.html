@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-10-20T00:00:00+00:00" />
 <meta itemprop="name" content="垃圾优先垃圾回收器(G1 GC)使用笔记">
 <meta itemprop="description" content="G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。">
-
-
 <meta itemprop="datePublished" content="2015-10-20T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-10-20T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="639">
+<meta itemprop="wordCount" content="869">
 
 
 
-<meta itemprop="keywords" content="Java," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Java," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="垃圾优先垃圾回收器(G1 GC)使用笔记"/>
 <meta name="twitter:description" content="G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。"/>
 
@@ -124,7 +121,7 @@
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 700 字</span>
+          <span class="f6 dib tracked">约 900 字</span>
           <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
         
       </div>
@@ -141,54 +138,44 @@
           
   
           <p>G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。</p>
-
 <p>这里不谈 G1 的具体的实现思路，只记录一下如何配置和使用。</p>
-
-<h2 id="启动-g1-gc">启动 G1 GC</h2>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">-XX:+UseG1GC</code></pre></div>
-<h2 id="几个参数及默认值">几个参数及默认值</h2>
-
+<h2 id="-g1-gc">启动 G1 GC</h2>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">-XX:+UseG1GC
+</code></pre></div><h2 id="heading">几个参数及默认值</h2>
 <ul>
-<li><code>-XX:MaxGCPauseMillis=200</code> 最大停顿时间, 这是一个目标值，JVM会尽量向此目标靠近，默认值为 200。</li>
-<li><code>-XX:G1HeapRegionSize=n</code> G1 的区域块大小，1M-32M 之间，必须是2的幂，G1 会根据块大小规划出不大于 2048 个块。</li>
-<li><code>-XX:G1NewSizePercent=5</code> 年轻代在堆中最小百分比，默认值是 5%</li>
-<li><code>-XX:G1MaxNewSizePercent=60</code> 年轻代在堆中的最大百分比，默认值是 60%</li>
-<li><code>-XX:ParallelGCThreads=n</code> 设置 STW 工作线程数的值。将 n 的值设置为逻辑处理器的数量。n 的值与逻辑处理器的数量相同，最多为 8。如果逻辑处理器不止八个，则将 n 的值设置为逻辑处理器数的 <sup>5</sup>&frasl;<sub>8</sub> 左右。这适用于大多数情况，除非是较大的 SPARC 系统，其中 n 的值可以是逻辑处理器数的 <sup>5</sup>&frasl;<sub>16</sub> 左右。</li>
-<li><code>-XX:ConcGCThreads=n</code> 设置并行标记的线程数。将 n 设置为并行垃圾回收线程数 (ParallelGCThreads) 的 <sup>1</sup>&frasl;<sub>4</sub> 左右。</li>
-<li><code>-XX:InitiatingHeapOccupancyPercent=45</code> 标记垃圾阀值， 默认45%</li>
-<li><code>-XX:G1ReservePercent=10</code> 设置作为空闲空间的预留内存百分比，以降低目标空间溢出的风险。默认值是 10%。</li>
+<li><!-- raw HTML omitted -->-XX:MaxGCPauseMillis=200<!-- raw HTML omitted --> 最大停顿时间, 这是一个目标值，JVM会尽量向此目标靠近，默认值为 200。</li>
+<li><!-- raw HTML omitted -->-XX:G1HeapRegionSize=n<!-- raw HTML omitted --> G1 的区域块大小，1M-32M 之间，必须是2的幂，G1 会根据块大小规划出不大于 2048 个块。</li>
+<li><!-- raw HTML omitted -->-XX:G1NewSizePercent=5<!-- raw HTML omitted --> 年轻代在堆中最小百分比，默认值是 5%</li>
+<li><!-- raw HTML omitted -->-XX:G1MaxNewSizePercent=60<!-- raw HTML omitted --> 年轻代在堆中的最大百分比，默认值是 60%</li>
+<li><!-- raw HTML omitted -->-XX:ParallelGCThreads=n<!-- raw HTML omitted --> 设置 STW 工作线程数的值。将 n 的值设置为逻辑处理器的数量。n 的值与逻辑处理器的数量相同，最多为 8。如果逻辑处理器不止八个，则将 n 的值设置为逻辑处理器数的 5/8 左右。这适用于大多数情况，除非是较大的 SPARC 系统，其中 n 的值可以是逻辑处理器数的 5/16 左右。</li>
+<li><!-- raw HTML omitted -->-XX:ConcGCThreads=n<!-- raw HTML omitted --> 设置并行标记的线程数。将 n 设置为并行垃圾回收线程数 (ParallelGCThreads) 的 1/4 左右。</li>
+<li><!-- raw HTML omitted -->-XX:InitiatingHeapOccupancyPercent=45<!-- raw HTML omitted --> 标记垃圾阀值， 默认45%</li>
+<li><!-- raw HTML omitted -->-XX:G1ReservePercent=10<!-- raw HTML omitted --> 设置作为空闲空间的预留内存百分比，以降低目标空间溢出的风险。默认值是 10%。</li>
 </ul>
-
-<h2 id="建议">建议</h2>
-
+<h2 id="heading1">建议</h2>
 <ul>
 <li>避免使用 -Xmn 选项或 -XX:NewRatio 等其他相关选项显式设置年轻代大小。固定年轻代的大小会覆盖暂停时间目标。</li>
 <li>暂停时间目标不要太小，因为暂停时间与吞吐量是一个相互矛盾的指标。</li>
 </ul>
-
-<h2 id="例子">例子</h2>
-
+<h2 id="heading2">例子</h2>
 <p>这是 tomcat 启动的一个简单配置</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xms10g&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xmx10g&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xss512k&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xms10g</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xmx10g</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xss512k</span><span class="s2">&#34;</span>
 
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+DisableExplicitGC&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+HeapDumpOnOutOfMemoryError&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+UnlockExperimentalVMOptions&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+DisableExplicitGC</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+HeapDumpOnOutOfMemoryError</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+UnlockExperimentalVMOptions</span><span class="s2">&#34;</span>
 
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+UseG1GC&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:MaxGCPauseMillis=200&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:G1NewSizePercent=40&#34;</span>
-<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:G1MaxNewSizePercent=80&#34;</span></code></pre></div>
-<blockquote>
-<p><code>G1NewSizePercent</code> 和 <code>G1MaxNewSizePercent</code> 为实验属性，所以请先 通过 <code>-XX:+UnlockExperimentalVMOptions</code> 打开实验选项。</p>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:+UseG1GC</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:MaxGCPauseMillis=200</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:G1NewSizePercent=40</span><span class="s2">&#34;</span>
+<span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -XX:G1MaxNewSizePercent=80</span><span class="s2">&#34;</span>
+</code></pre></div><blockquote>
+<p><!-- raw HTML omitted -->G1NewSizePercent<!-- raw HTML omitted --> 和 <!-- raw HTML omitted -->G1MaxNewSizePercent<!-- raw HTML omitted --> 为实验属性，所以请先 通过 <!-- raw HTML omitted -->-XX:+UnlockExperimentalVMOptions<!-- raw HTML omitted --> 打开实验选项。</p>
 </blockquote>
-
 <p>Done.</p>
-
 <p>参考：</p>
-
 <ul>
 <li><a href="http://www.oracle.com/technetwork/cn/articles/java/g1gc-1984535-zhs.html">http://www.oracle.com/technetwork/cn/articles/java/g1gc-1984535-zhs.html</a></li>
 </ul>

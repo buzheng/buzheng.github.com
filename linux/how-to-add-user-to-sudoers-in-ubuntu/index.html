@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何在 Ubuntu 中将用户添加到 sudoers" />
 <meta property="og:description" content="sudo 是一个命令行程序，允许受信任的用户以 root 用户或其他用户身份执行命令。
-
 我们将向您展示两种向用户授予 sudo 权限的方法。第一个是将用户添加到 sudoers 文件。此文件包含控制哪些用户和组被授予 sudo 权限以及权限级别的信息。
-
 第二个选项是将用户添加到 sudoers 文件中指定的 sudo 组。默认情况下，在基于 Debian 的发行版(如 Ubuntu 和 Linux Mint) 上， “sudo” 组的成员被授予 sudo 访问权限。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-add-user-to-sudoers-in-ubuntu/" />
+<meta property="og:image" content="/linux/how-to-add-user-to-sudoers-in-ubuntu/featured.jpg"/>
 <meta property="article:published_time" content="2019-08-27T07:00:00+08:00" />
 <meta property="article:modified_time" content="2019-08-27T07:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 中将用户添加到 sudoers">
 <meta itemprop="description" content="sudo 是一个命令行程序，允许受信任的用户以 root 用户或其他用户身份执行命令。
-
 我们将向您展示两种向用户授予 sudo 权限的方法。第一个是将用户添加到 sudoers 文件。此文件包含控制哪些用户和组被授予 sudo 权限以及权限级别的信息。
-
 第二个选项是将用户添加到 sudoers 文件中指定的 sudo 组。默认情况下，在基于 Debian 的发行版(如 Ubuntu 和 Linux Mint) 上， “sudo” 组的成员被授予 sudo 访问权限。">
-
-
 <meta itemprop="datePublished" content="2019-08-27T07:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-27T07:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="994">
+<meta itemprop="image" content="/linux/how-to-add-user-to-sudoers-in-ubuntu/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="terminal,sudo,ubuntu," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="terminal,sudo,ubuntu," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-add-user-to-sudoers-in-ubuntu/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Ubuntu 中将用户添加到 sudoers"/>
 <meta name="twitter:description" content="sudo 是一个命令行程序，允许受信任的用户以 root 用户或其他用户身份执行命令。
-
 我们将向您展示两种向用户授予 sudo 权限的方法。第一个是将用户添加到 sudoers 文件。此文件包含控制哪些用户和组被授予 sudo 权限以及权限级别的信息。
-
 第二个选项是将用户添加到 sudoers 文件中指定的 sudo 组。默认情况下，在基于 Debian 的发行版(如 Ubuntu 和 Linux Mint) 上， “sudo” 组的成员被授予 sudo 访问权限。"/>
 
   </head>
@@ -154,51 +147,36 @@
           
   
           <p><code>sudo</code> 是一个命令行程序，允许受信任的用户以 root 用户或其他用户身份执行命令。</p>
-
 <p>我们将向您展示两种向用户授予 sudo 权限的方法。第一个是将用户添加到 <a href="https://www.sudo.ws/man/1.8.15/sudoers.man.html">sudoers 文件</a>。此文件包含控制哪些用户和组被授予 sudo 权限以及权限级别的信息。</p>
-
 <p>第二个选项是将用户添加到 <code>sudoers</code> 文件中指定的 sudo 组。默认情况下，在基于 Debian 的发行版(如 Ubuntu 和 Linux Mint) 上， “sudo” 组的成员被授予 sudo 访问权限。</p>
-
-<h2 id="将用户添加到-sudo-组">将用户添加到 sudo 组</h2>
-
+<h2 id="-sudo-">将用户添加到 sudo 组</h2>
 <p>在 Ubuntu 上，向用户授予 sudo 权限的最简单方法是将用户添加到 “sudo” 组。 <code>sudo</code> 组的成员将能够以 root 身份执行任何命令，并且在使用 <code>sudo</code> 时将提示使用其密码对自己进行身份验证。</p>
-
 <p>我们假设用户已经存在。如果要创建新用户，请查看<a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">本指南</a>。</p>
-
 <p>要将<a href="/linux/how-to-add-user-to-group-in-linux/">用户添加到组</a>，请以 root 或其他 sudo 用户身份运行以下命令。确保使用要授予其权限的用户的名称更改“用户名”。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">usermod -aG sudo username</code></pre></div>
-<p>对于大多数用例，使用此方法授予 sudo 访问权限已足够。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">usermod -aG sudo username
+</code></pre><p>对于大多数用例，使用此方法授予 sudo 访问权限已足够。</p>
 <p>要确保用户具有 sudo 权限，请运行以下 <code>whoami</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo whoami</code></pre></div>
-<p>系统将提示您输入密码。如果用户有 sudo 访问权限，该命令将打印 “root” ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">root</code></pre></div>
-<p>如果您收到错误消息“user is not in the sudoers file”，则表示该用户没有 sudo 权限。</p>
-
-<h2 id="将用户添加到-sudoers-文件">将用户添加到 sudoers 文件</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo whoami
+</code></pre><p>系统将提示您输入密码。如果用户有 sudo 访问权限，该命令将打印 “root” ：</p>
+<pre><code class="language-output" data-lang="output">root
+</code></pre><p>如果您收到错误消息“user is not in the sudoers file”，则表示该用户没有 sudo 权限。</p>
+<h2 id="-sudoers-">将用户添加到 sudoers 文件</h2>
 <p>sudo 用户和组的权限在 <code>/etc/sudoers</code> 文件中定义。将用户添加到此文件允许您授予对命令的自定义访问权限并配置自定义安全策略。</p>
-
 <p>您可以通过修改 sudoers 文件或在 <code>/etc/sudoers.d</code> 目录中创建新配置文件来配置用户 sudo 访问权限。此目录中的文件包含在 sudoers 文件中。</p>
-
 <p>请始终使用 <code>visudo</code> 命令编辑 <code>/etc/sudoers</code> 文件。保存时，此命令将检查文件是否存在语法错误。如果有任何错误，则不会保存文件。如果使用文本编辑器打开文件，语法错误可能会导致丢失 sudo 访问权限。</p>
-
 <p>通常， <code>visudo</code> 使用 vim 打开 <code>/etc/sudoers</code> 。如果您没有使用 vim 的经验，并且想要使用 <a href="/linux/how-to-use-nano-text-editor/">nano</a> 编辑文件，请运行以下命令更改默认编辑器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">EDITOR=nano visudo</code></pre></div>
-<p>假设您希望允许用户在不要求输入密码的情况下运行 sudo 命令。为此，请打开 <code>/etc/sudoers</code> 文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">visudo</code></pre></div>
-<p>向下滚动到 <code>/etc/sudoers</code> 文件末尾并添加以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">username  ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:ALL</span></code></pre></div>
-<p>保存文件并<a href="/linux/how-to-save-file-in-vim-quit-editor/">退出编辑器</a>。不要忘记使用您要授予访问权限的用户名更改上面例子中的 <code>username</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">EDITOR=nano visudo
+</code></pre><p>假设您希望允许用户在不要求输入密码的情况下运行 sudo 命令。为此，请打开 <code>/etc/sudoers</code> 文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">visudo
+</code></pre><p>向下滚动到 <code>/etc/sudoers</code> 文件末尾并添加以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">username  ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:ALL</span>
+</code></pre></div><p>保存文件并<a href="/linux/how-to-save-file-in-vim-quit-editor/">退出编辑器</a>。不要忘记使用您要授予访问权限的用户名更改上面例子中的 <code>username</code>。</p>
 <p>另一个典型示例是仅允许用户通过 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 运行特定的命令。例如，要仅允许使用的 <a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/"><code>mkdir</code></a> 和 <a href="/linux/remove-directory-linux/"><code>rmdir</code></a> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">username ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:/bin/mkdir,/bin/rmdir</span></code></pre></div>
-<p>您可以通过在 <code>/etc/sudoers.d</code> 目录中创建具有授权规则的新文件来完成相同的操作，而不是编辑 sudoers 文件。添加与添加到 sudoers 文件中相同的规则：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;username  ALL=(ALL) NOPASSWD:ALL&#34; | sudo tee /etc/sudoers.d/username</code></pre></div>
-<p>这种方法使得 sudo 权限的管理更易于维护。文件名一般不重要，但是通常的做法是将文件名与用户名相同。</p>
-
-<h2 id="结论">结论</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">username ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:/bin/mkdir,/bin/rmdir</span>
+</code></pre></div><p>您可以通过在 <code>/etc/sudoers.d</code> 目录中创建具有授权规则的新文件来完成相同的操作，而不是编辑 sudoers 文件。添加与添加到 sudoers 文件中相同的规则：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;username  ALL=(ALL) NOPASSWD:ALL&quot; | sudo tee /etc/sudoers.d/username
+</code></pre><p>这种方法使得 sudo 权限的管理更易于维护。文件名一般不重要，但是通常的做法是将文件名与用户名相同。</p>
+<h2 id="heading">结论</h2>
 <p>在 Ubuntu 中授予对用户的 sudo 访问权限是一项简单的任务，您所要做的就是将用户添加到 “sudo” 组。</p>
       </div><ul class="pa0">
   
@@ -276,14 +254,11 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#将用户添加到-sudo-组">将用户添加到 sudo 组</a></li>
-<li><a href="#将用户添加到-sudoers-文件">将用户添加到 sudoers 文件</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-sudo-">将用户添加到 sudo 组</a></li>
+    <li><a href="#-sudoers-">将用户添加到 sudoers 文件</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

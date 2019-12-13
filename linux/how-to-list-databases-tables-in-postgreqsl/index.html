@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="如何使用 psql 列出 PostgreSQL 数据库和表" />
 <meta property="og:description" content="PostgreSQL 附带了一个交互式工具 psql ，允许您连接到服务器并对其运行查询。使用时， psql 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。
-
 管理 PostgreSQL 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 psql 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-list-databases-tables-in-postgreqsl/" />
+<meta property="og:image" content="/linux/how-to-list-databases-tables-in-postgreqsl/featured.jpg"/>
 <meta property="article:published_time" content="2019-07-02T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-07-02T05:00:00+08:00" />
 <meta itemprop="name" content="如何使用 psql 列出 PostgreSQL 数据库和表">
 <meta itemprop="description" content="PostgreSQL 附带了一个交互式工具 psql ，允许您连接到服务器并对其运行查询。使用时， psql 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。
-
 管理 PostgreSQL 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 psql 。">
-
-
 <meta itemprop="datePublished" content="2019-07-02T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-02T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="948">
+<meta itemprop="image" content="/linux/how-to-list-databases-tables-in-postgreqsl/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="postgresql," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="postgresql," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-list-databases-tables-in-postgreqsl/featured.jpg"/>
 <meta name="twitter:title" content="如何使用 psql 列出 PostgreSQL 数据库和表"/>
 <meta name="twitter:description" content="PostgreSQL 附带了一个交互式工具 psql ，允许您连接到服务器并对其运行查询。使用时， psql 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。
-
 管理 PostgreSQL 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 psql 。"/>
 
   </head>
@@ -148,25 +144,19 @@
           
   
           <p>PostgreSQL 附带了一个交互式工具 <code>psql</code> ，允许您连接到服务器并对其运行查询。使用时， <code>psql</code> 您也可以利用 meta-command，这些命令对脚本和命令行管理很有用。所有 meta-command 都以不带引号的反斜杠开头，也称为反斜杠命令。</p>
-
 <p>管理 <a href="https://www.postgresql.org/">PostgreSQL</a> 数据库服务器时，您可能执行的最常见任务之一是列出数据库及其表。本教程介绍如何使用 PostgreSQL 服务器显示数据库和表 <code>psql</code> 。</p>
-
-<h2 id="列出数据库">列出数据库</h2>
-
+<h2 id="heading">列出数据库</h2>
 <p>您可以使用该 <code>psql</code> 命令以任何系统用户身份连接到 PostgreSQL 服务器。根据服务器配置，用户可能需要输入其密码才能连接到 psql 终端。要以您当前登录的用户身份访问 psql 终端，只需键入即可 <code>psql</code> 。</p>
-
 <p>安装 PostgreSQL 软件包后，将创建名为 “postgres” 的管理用户。默认情况下，此用户可以在没有密码的情况下连接到本地 PostgreSQL 服务器。</p>
-
 <p>要以 “postgres” 用户身份访问终端 <code>psql</code> ，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
-<blockquote>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql
+</code></pre><blockquote>
 <p>该 <a href="/linux/sudo-command-in-linux/"><code>sudo</code> 命令</a>允许您以其他用户身份运行命令。</p>
 </blockquote>
-
 <p>从 psql 终端执行 <code>\l</code> 或 <code>\list</code> meta-command 列出所有数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="err">\</span><span class="n">l</span></code></pre></div>
-<p>输出将包括数据库的数量，每个数据库的名称，其所有者，编码和访问权限：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                              List of databases
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="err">\</span><span class="n">l</span>
+</code></pre></div><p>输出将包括数据库的数量，每个数据库的名称，其所有者，编码和访问权限：</p>
+<pre><code class="language-output" data-lang="output">                              List of databases
    Name    |  Owner   | Encoding | Collate |  Ctype  |   Access privileges   
 -----------+----------+----------+---------+---------+-----------------------
  odoo      | odoo     | UTF8     | C       | C.UTF-8 | 
@@ -175,33 +165,28 @@
            |          |          |         |         | postgres=CTc/postgres
  template1 | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
            |          |          |         |         | postgres=CTc/postgres
-(4 rows)</code></pre></div>
-<p>PostgreSQL服务器有三个默认创建的数据库，template0，template1 和 postgres。前两个是创建新数据库时使用的模板。</p>
-
+(4 rows)
+</code></pre><p>PostgreSQL服务器有三个默认创建的数据库，template0，template1 和 postgres。前两个是创建新数据库时使用的模板。</p>
 <p>如果要获取有关数据库大小，默认表空间和描述的信息，请使用 <code>\l+</code> 或 <code>\list+</code> 。仅当当前用户可以连接到数据库时，才会显示数据库大小。</p>
-
 <p>要在不访问 psql shell 的情况下获取所有数据库的列表，请使用 <code>-c</code> 如下所示的开关：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &#34;\l&#34;</code></pre></div>
-<p>列出数据库的另一种方法是使用以下 SQL 语句：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">datname</span> <span class="k">FROM</span> <span class="n">pg_database</span><span class="p">;</span></code></pre></div>
-<p>与<code>\l</code>元命令不同，上面的查询将仅显示数据库的名称：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">  datname  
+<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &quot;\l&quot;
+</code></pre><p>列出数据库的另一种方法是使用以下 SQL 语句：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">datname</span> <span class="k">FROM</span> <span class="n">pg_database</span><span class="p">;</span>
+</code></pre></div><p>与<code>\l</code>元命令不同，上面的查询将仅显示数据库的名称：</p>
+<pre><code class="language-output" data-lang="output">  datname  
 -----------
  postgres
  odoo
  template1
  template0
-(4 rows)</code></pre></div>
-<h2 id="列出表">列出表</h2>
-
+(4 rows)
+</code></pre><h2 id="heading1">列出表</h2>
 <p>要首先列出特定数据库的所有表，您需要使用 <code>\c</code> 或者 <code>\connect</code> meta-command 连接到它。您登录 psql 终端的用户必须能够连接到数据库。</p>
-
 <p>例如，要连接到名为 “odoo” 的数据库，您应键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="err">\</span><span class="k">c</span> <span class="n">odoo</span></code></pre></div>
-<p>切换数据库后，使用 <code>\dt</code> 列出所有数据库表：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="err">\</span><span class="k">c</span> <span class="n">odoo</span>
+</code></pre></div><p>切换数据库后，使用 <code>\dt</code> 列出所有数据库表：</p>
 <p>输出将包括表的数量，每个表的名称及其架构，类型和所有者：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                              List of relations
+<pre><code class="language-output" data-lang="output">                              List of relations
  Schema |                        Name                         | Type  | Owner 
 --------+-----------------------------------------------------+-------+-------
  public | base_import_import                                  | table | odoo
@@ -211,13 +196,11 @@
  public | web_editor_converter_test_sub                       | table | odoo
  public | web_tour_tour                                       | table | odoo
  public | wizard_ir_model_menu_create                         | table | odoo
-(107 rows)</code></pre></div>
-<p>如果数据库为空，则输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">No relations found.</code></pre></div>
-<p>要获取有关表大小的信息，请使用说明 <code>\dt+</code>。</p>
-
-<h2 id="结论">结论</h2>
-
+(107 rows)
+</code></pre><p>如果数据库为空，则输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">No relations found.
+</code></pre><p>要获取有关表大小的信息，请使用说明 <code>\dt+</code>。</p>
+<h2 id="heading2">结论</h2>
 <p>您已经学习了如何使用该 <code>psql</code> 命令列出 PostgreSQL 数据库和表。</p>
       </div><ul class="pa0">
   
@@ -267,14 +250,11 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#列出数据库">列出数据库</a></li>
-<li><a href="#列出表">列出表</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">列出数据库</a></li>
+    <li><a href="#heading1">列出表</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

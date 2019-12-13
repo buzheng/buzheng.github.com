@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="获取 Linux 上的 CPU 信息" />
 <meta property="og:description" content="CPU （中央处理单元）通常简称为处理器，是机器最重要的组件之一。它执行所有类型的数据处理操作，并被视为计算机的大脑。
-
 你有没有想过你的系统中有什么类型的 CPU 以及 CPU 速度是多少？有多种原因可能需要确切了解机器内部的 CPU 。也许您正在加载内核模块或调试与硬件相关的问题。无论是什么原因，在 Linux 上，从命令行确定处理器类型和速度非常容易。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/get-cpu-information-on-linux/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-29T06:00:00+08:00" />
 <meta itemprop="name" content="获取 Linux 上的 CPU 信息">
 <meta itemprop="description" content="CPU （中央处理单元）通常简称为处理器，是机器最重要的组件之一。它执行所有类型的数据处理操作，并被视为计算机的大脑。
-
 你有没有想过你的系统中有什么类型的 CPU 以及 CPU 速度是多少？有多种原因可能需要确切了解机器内部的 CPU 。也许您正在加载内核模块或调试与硬件相关的问题。无论是什么原因，在 Linux 上，从命令行确定处理器类型和速度非常容易。">
-
-
 <meta itemprop="datePublished" content="2019-03-29T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-29T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1180">
+<meta itemprop="wordCount" content="1185">
 
 
 
-<meta itemprop="keywords" content="linux,terminal,cpu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,terminal,cpu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="获取 Linux 上的 CPU 信息"/>
 <meta name="twitter:description" content="CPU （中央处理单元）通常简称为处理器，是机器最重要的组件之一。它执行所有类型的数据处理操作，并被视为计算机的大脑。
-
 你有没有想过你的系统中有什么类型的 CPU 以及 CPU 速度是多少？有多种原因可能需要确切了解机器内部的 CPU 。也许您正在加载内核模块或调试与硬件相关的问题。无论是什么原因，在 Linux 上，从命令行确定处理器类型和速度非常容易。"/>
 
   </head>
@@ -147,17 +141,13 @@
           
   
           <p>CPU （中央处理单元）通常简称为处理器，是机器最重要的组件之一。它执行所有类型的数据处理操作，并被视为计算机的大脑。</p>
-
 <p>你有没有想过你的系统中有什么类型的 CPU 以及 CPU 速度是多少？有多种原因可能需要确切了解机器内部的 CPU 。也许您正在加载内核模块或调试与硬件相关的问题。无论是什么原因，在 Linux 上，从命令行确定处理器类型和速度非常容易。</p>
-
-<h2 id="在-linux-中获取-cpu-信息">在 Linux 中获取 CPU 信息</h2>
-
+<h2 id="-linux--cpu-">在 Linux 中获取 CPU 信息</h2>
 <p>确定您拥有的 CPU 类型的最简单方法是查看 <code>/proc/cpuinfo</code> 虚拟文件的文本内容。使用 <code>proc/cpuinfo</code> 文件识别处理器类型不需要安装任何其他程序。无论您使用什么 Linux 发行版，它都可以正常工作。</p>
-
-<p>打开终端并使用 less 或 <!--link:linux-cat-command-->cat<!--link--> 来显示 <code>/proc/cpuinfo</code> 的内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">less /proc/cpuinfo</code></pre></div>
-<p>该命令将打印每个逻辑 CPU 并带有标识号。例如，如果您有 8 个核心处理器，您将看到从 0 到 7 开始的所有核心的列表。下面是输出的示例：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">processor	: 0
+<p>打开终端并使用 less 或 <!-- raw HTML omitted -->cat<!-- raw HTML omitted --> 来显示 <code>/proc/cpuinfo</code> 的内容：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">less /proc/cpuinfo
+</code></pre><p>该命令将打印每个逻辑 CPU 并带有标识号。例如，如果您有 8 个核心处理器，您将看到从 0 到 7 开始的所有核心的列表。下面是输出的示例：</p>
+<pre><code class="language-output" data-lang="output">processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
 model		: 142
@@ -184,29 +174,28 @@ cache_alignment	: 64
 address sizes	: 39 bits physical, 48 bits virtual
 power management:
 
-...</code></pre></div>
-<p>以下是最有趣的线条的解释：</p>
-
+...
+</code></pre><p>以下是最有趣的线条的解释：</p>
 <ul>
 <li><strong>processor</strong> - 每个处理器的唯一标识号，从 0 开始。</li>
 <li><strong>model name</strong> - 处理器的全名，包括处理器品牌。一旦了解了所具有的 CPU 的确切类型，就可以查看有关处理器规格的产品文档。</li>
 <li><strong>flags</strong> - CPU 功能。您可以<a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/x86/include/asm/cpufeatures.h">在此处</a>找到所有功能的列表。</li>
 </ul>
-
-<p>如果要过滤输出，可以使用 <!--link:how-to-use-grep-command-to-search-files-in-linux-->grep 命令<!--link-->。例如，要仅显示您将使用的处理器名称：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -m 1 &#39;model name&#39; /proc/cpuinfo</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz</code></pre></div>
-<p>要打印 CPU 数量：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep -c &#39;model name&#39; /proc/cpuinfo</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">8</code></pre></div>
-<p>当您需要从源代码编译软件并且想知道可以同时执行多少并行进程时，了解 CPU 的数量可以很方便。查找 CPU 数量的另一种方法是使用以下 <code>nproc</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nproc</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">8</code></pre></div>
-<h2 id="使用-lscpu-检查-cpu-信息">使用 lscpu 检查 CPU 信息</h2>
-
+<p>如果要过滤输出，可以使用 <!-- raw HTML omitted -->grep 命令<!-- raw HTML omitted -->。例如，要仅显示您将使用的处理器名称：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">grep -m 1 'model name' /proc/cpuinfo
+</code></pre><pre><code class="language-output" data-lang="output">model name	: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+</code></pre><p>要打印 CPU 数量：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">grep -c 'model name' /proc/cpuinfo
+</code></pre><pre><code class="language-output" data-lang="output">8
+</code></pre><p>当您需要从源代码编译软件并且想知道可以同时执行多少并行进程时，了解 CPU 的数量可以很方便。查找 CPU 数量的另一种方法是使用以下 <code>nproc</code> 命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nproc
+</code></pre><pre><code class="language-output" data-lang="output">8
+</code></pre><h2 id="-lscpu--cpu-">使用 lscpu 检查 CPU 信息</h2>
 <p>lscpu 是一个命令行实用程序，用于显示有关 CPU 体系结构的信息。 lscpu 是 util-linux 软件包的一部分，它安装在所有 Linux 发行版上。</p>
-
 <p>在 shell 提示符下，键入 <code>lscpu</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">lscpu</code></pre></div>
-<p>输出将如下所示，包括有关 CPU 数量，架构，供应商，系列，型号，速度，缓存，标志等的信息。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Architecture:        x86_64
+<pre><code class="language-console-bash" data-lang="console-bash">lscpu
+</code></pre><p>输出将如下所示，包括有关 CPU 数量，架构，供应商，系列，型号，速度，缓存，标志等的信息。</p>
+<pre><code class="language-output" data-lang="output">Architecture:        x86_64
 CPU op-mode(s):      32-bit, 64-bit
 Byte Order:          Little Endian
 CPU(s):              8
@@ -230,11 +219,9 @@ L1i cache:           32K
 L2 cache:            256K
 L3 cache:            6144K
 NUMA node0 CPU(s):   0-7
-Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d</code></pre></div>
-<p>与 <code>/proc/cpuinfo</code> 文件内容不同， lscpu 的输出不显示所有逻辑 CPU 的列表。</p>
-
-<h2 id="结论">结论</h2>
-
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb invpcid_single pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp flush_l1d
+</code></pre><p>与 <code>/proc/cpuinfo</code> 文件内容不同， lscpu 的输出不显示所有逻辑 CPU 的列表。</p>
+<h2 id="heading">结论</h2>
 <p>在本指南中，我们向您展示了如何查找有关系统 CPU 的信息。您还可以使用其他工具来确定您的 CPU 名称和供应商，例如 <code>dmidecode</code> ， <code>hardinfo</code> 和 <code>lshw</code> ，但是大多数工具默认情况下不会安装在 Linux 系统上。</p>
       </div><ul class="pa0">
   
@@ -312,14 +299,11 @@ Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cm
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在-linux-中获取-cpu-信息">在 Linux 中获取 CPU 信息</a></li>
-<li><a href="#使用-lscpu-检查-cpu-信息">使用 lscpu 检查 CPU 信息</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-linux--cpu-">在 Linux 中获取 CPU 信息</a></li>
+    <li><a href="#-lscpu--cpu-">使用 lscpu 检查 CPU 信息</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

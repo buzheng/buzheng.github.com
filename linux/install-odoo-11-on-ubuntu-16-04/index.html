@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,11 +30,8 @@
 
     <meta property="og:title" content="如何在 Ubuntu 16.04 上安装 Odoo 11" />
 <meta property="og:description" content="Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。
-
 安装 Odoo 最简单快捷的方法是使用他们的官方存储库。
-
 如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。
-
 本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/install-odoo-11-on-ubuntu-16-04/" />
@@ -42,29 +39,20 @@
 <meta property="article:modified_time" content="2019-03-02T08:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 16.04 上安装 Odoo 11">
 <meta itemprop="description" content="Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。
-
 安装 Odoo 最简单快捷的方法是使用他们的官方存储库。
-
 如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。
-
 本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。">
-
-
 <meta itemprop="datePublished" content="2019-03-02T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-02T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1480">
+<meta itemprop="wordCount" content="1481">
 
 
 
-<meta itemprop="keywords" content="linux,ubuntu,odoo,python," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,ubuntu,odoo,python," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 16.04 上安装 Odoo 11"/>
 <meta name="twitter:description" content="Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。
-
 安装 Odoo 最简单快捷的方法是使用他们的官方存储库。
-
 如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。
-
 本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。"/>
 
   </head>
@@ -159,82 +147,68 @@
           
   
           <p>Odoo 是世界上最受欢迎的商业软件之一。根据所需的用例，有几种方法可以安装 Odoo。</p>
-
 <p>安装 Odoo 最简单快捷的方法是使用他们的官方存储库。</p>
-
 <p>如果您想要在版本和更新上有更多地控制，或者如果您想在您的计算机上运行多个 Odoo 版本，那么这种方法将不适合您，因为 Odoo 包不允许在同一台机器上安装多个 Odoo。在这种情况下，您可以使用  docker 和 docker compose 或 在 Python 的虚拟环境中安装 Odoo。</p>
-
 <p>本指南介绍了在 Ubuntu 16.04 上使用 Git 源代码和 Python 虚拟环境安装和配置 Odoo 所需的步骤。</p>
-
-<h2 id="准备工作">准备工作</h2>
-
+<h2 id="heading">准备工作</h2>
 <p>在继续本教程之前，请确保以具有 sudo 权限的用户身份登录。</p>
-
 <p>将包索引和所有已安装的包更新到最新的包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade</code></pre></div>
-<p>安装 Git，Pip，Node.js 以及构建 Odoo 依赖项所需的工具：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install git python3-pip build-essential python3-dev libxslt-dev libzip-dev libldap2-dev libsasl2-dev node-less</code></pre></div>
-<h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade
+</code></pre></div><p>安装 Git，Pip，Node.js 以及构建 Odoo 依赖项所需的工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install git python3-pip build-essential python3-dev libxslt-dev libzip-dev libldap2-dev libsasl2-dev node-less
+</code></pre></div><h2 id="-odoo-">创建 Odoo 用户</h2>
 <p>使用下面的命令创建新的系统用户和组 <code>odoo</code> 来运行  Odoo 服务，用户的主目录为  <code>/opt/odoo</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">useradd -m -d /opt/odoo -U -r -s /bin/bash odoo</code></pre></div>
-<p>您可以根据需要为用户命名，只需确保创建具有相同名称的 PostgreSQL 用户。</p>
-
-<h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">useradd -m -d /opt/odoo -U -r -s /bin/bash odoo
+</code></pre></div><p>您可以根据需要为用户命名，只需确保创建具有相同名称的 PostgreSQL 用户。</p>
+<h2 id="-postgresql">安装和配置 PostgreSQL</h2>
 <p>从 Ubuntu 的默认存储库安装 PostgreSQL 包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install postgresql</code></pre></div>
-<p>安装完成后，创建一个与之前创建的系统用户同名的新 PostgreSQL 用户，在我们的例子中是 odoo：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - postgres -c <span class="s2">&#34;createuser -s odoo&#34;</span></code></pre></div>
-<h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install postgresql
+</code></pre></div><p>安装完成后，创建一个与之前创建的系统用户同名的新 PostgreSQL 用户，在我们的例子中是 odoo：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - postgres -c <span class="s2">&#34;createuser -s odoo&#34;</span>
+</code></pre></div><h2 id="-wkhtmltopdf">安装 Wkhtmltopdf</h2>
 <p>您需要使用 wkhtmltopdf 工具来打印 PDF 报告。推荐的 Wkhtmltopdf 版本 0.12.1 在 Ubuntu 16.04 官方存储库中不可用。我们将从官方 Wkhtmltopdf 网站下载并安装推荐版本。</p>
-
 <p>使用以下wget命令下载程序包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~xenial_amd64.deb</code></pre></div>
-<p>下载完成后，键入以下命令安装包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install ./wkhtmltox_0.12.1.3-1~xenial_amd64.deb</code></pre></div>
-<h2 id="安装和配置-odoo">安装和配置 Odoo</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~xenial_amd64.deb
+</code></pre></div><p>下载完成后，键入以下命令安装包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install ./wkhtmltox_0.12.1.3-1~xenial_amd64.deb
+</code></pre></div><h2 id="-odoo">安装和配置 Odoo</h2>
 <p>我们将在独立的 Python 环境中从 GitHub 存储库安装 Odoo，以便我们可以更好地控制版本和更新。</p>
-
 <p>在开始安装过程之前，请确保切换到 odoo 用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - odoo</code></pre></div>
-<p>要确认您是以用户身份登录 odoo，请使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">whoami</code></pre></div>
-<p>从 GitHub 存储库中克隆 Odoo 源代码，开始安装过程：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://www.github.com/odoo/odoo --depth <span class="m">1</span> --branch <span class="m">11</span>.0 /opt/odoo/odoo11</code></pre></div>
-<blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - odoo
+</code></pre></div><p>要确认您是以用户身份登录 odoo，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">whoami
+</code></pre></div><p>从 GitHub 存储库中克隆 Odoo 源代码，开始安装过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://www.github.com/odoo/odoo --depth <span class="m">1</span> --branch 11.0 /opt/odoo/odoo11
+</code></pre></div><blockquote>
 <ul>
 <li>如果要下载并安装不同的 Odoo 版本，只需在 <code>--branch</code> 切换后更改版本号。</li>
 <li>您可以根据需要下载任何 Odoo 源代码，例如， odoo11 您可以使用您的域名。</li>
 </ul>
 </blockquote>
-
 <p>virtualenv 是一个创建独立的 Python 环境的工具。请使用一下命令安装它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip3 install virtualenv</code></pre></div>
-<p>使用以下命令为 Odoo 安装创建新的 Python 虚拟环境：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip3 install virtualenv
+</code></pre></div><p>使用以下命令为 Odoo 安装创建新的 Python 虚拟环境：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/odoo
-virtualenv odoo11-venv</code></pre></div>
-<p>激活环境：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> odoo11-venv/bin/activate</code></pre></div>
-<p>安装所有必需的 Python 模块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip3 install -r odoo11/requirements.txt</code></pre></div>
-<blockquote>
+virtualenv odoo11-venv
+</code></pre></div><p>激活环境：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">source</span> odoo11-venv/bin/activate
+</code></pre></div><p>安装所有必需的 Python 模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip3 install -r odoo11/requirements.txt
+</code></pre></div><blockquote>
 <p>如果在安装过程中遇到任何编译错误，请确保已安装 <strong>准备工作</strong> 部分中列出的所有必需依赖项。</p>
 </blockquote>
-
 <p>安装完成后，停用环境并使用以下命令切换回sudo用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">deactivate</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">exit</code></pre></div>
-<p>如果您打算安装其他模块，最好将这些模块保存在单独的目录中。要为其他模块创建新目录，请执行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">deactivate
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">exit</span>
+</code></pre></div><p>如果您打算安装其他模块，最好将这些模块保存在单独的目录中。要为其他模块创建新目录，请执行以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /opt/odoo/odoo11-custom-addons
-sudo chown odoo: /opt/odoo/odoo11-custom-addons</code></pre></div>
-<p>我们需要做的下一件事是创建配置文件。我们可以从头开始创建一个新的或复制一个已有的配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/odoo/odoo11/debian/odoo.conf /etc/odoo11.conf</code></pre></div>
-<p>打开文件并按如下所示进行编辑：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/odoo11.conf</code></pre></div>
-<p>/etc/odoo11.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">[options]
+sudo chown odoo: /opt/odoo/odoo11-custom-addons
+</code></pre></div><p>我们需要做的下一件事是创建配置文件。我们可以从头开始创建一个新的或复制一个已有的配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/odoo/odoo11/debian/odoo.conf /etc/odoo11.conf
+</code></pre></div><p>打开文件并按如下所示进行编辑：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/odoo11.conf
+</code></pre></div><p>/etc/odoo11.conf</p>
+<pre><code class="language-config" data-lang="config">[options]
 ; This is the password that allows database operations:
 admin_passwd = my_admin_passwd
 db_host = False
@@ -243,21 +217,17 @@ db_user = odoo
 db_password = False
 addons_path = /opt/odoo/odoo11/addons
 ; If you are using custom modules
-; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons</code></pre></div>
-<p>完成后，关闭并保存文件。</p>
-
+; addons_path = /opt/odoo/odoo11/addons,/opt/odoo/odoo11-custom-addons
+</code></pre><p>完成后，关闭并保存文件。</p>
 <blockquote>
 <p>不要忘记更改 <code>my_admin_passwd</code> 为更安全的密码，并调整 <code>addons_path</code> 您是否使用自定义模块。</p>
 </blockquote>
-
-<h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
-
+<h2 id="-systemd-">创建 systemd 单元文件</h2>
 <p>要将 odoo 作为服务运行，我们需要 <code>odoo11.service</code> 在 <code>/etc/systemd/system/</code> 目录中创建一个单元文件。</p>
-
 <p>打开文本编辑器并粘贴以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/systemd/system/odoo11.service</code></pre></div>
-<p>/etc/systemd/system/odoo11.service</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">[Unit]
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/systemd/system/odoo11.service
+</code></pre></div><p>/etc/systemd/system/odoo11.service</p>
+<pre><code class="language-config" data-lang="config">[Unit]
 Description=Odoo11
 Requires=postgresql.service
 After=network.target postgresql.service
@@ -272,35 +242,29 @@ ExecStart=/opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/od
 StandardOutput=journal+console
 
 [Install]
-WantedBy=multi-user.target</code></pre></div>
-<p>通知 systemd 创建新的单元文件并通过执行以下命令启动 Odoo 服务：</p>
+WantedBy=multi-user.target
+</code></pre><p>通知 systemd 创建新的单元文件并通过执行以下命令启动 Odoo 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
-sudo systemctl start odoo11</code></pre></div>
-<p>使用以下命令检查服务状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status odoo11</code></pre></div>
-<p>输出应如下所示，表示 Odoo 服务处于活动状态并正在运行。</p>
+sudo systemctl start odoo11
+</code></pre></div><p>使用以下命令检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status odoo11
+</code></pre></div><p>输出应如下所示，表示 Odoo 服务处于活动状态并正在运行。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● odoo11.service - Odoo11
    Loaded: loaded <span class="o">(</span>/etc/systemd/system/odoo11.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
-   Active: active <span class="o">(</span>running<span class="o">)</span> since Tue <span class="m">2018</span>-01-23 <span class="m">21</span>:09:25 UTC<span class="p">;</span> 1s ago
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Tue 2018-01-23 21:09:25 UTC<span class="p">;</span> 1s ago
  Main PID: <span class="m">14146</span> <span class="o">(</span>python3<span class="o">)</span>
    CGroup: /system.slice/odoo11.service
-           └─14146 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf</code></pre></div>
-<p>启用 Odoo 服务以在引导时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> odoo11</code></pre></div>
-<p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -u odoo11</code></pre></div>
-<h2 id="测试安装">测试安装</h2>
-
+           └─14146 /opt/odoo/odoo11-venv/bin/python3 /opt/odoo/odoo11/odoo-bin -c /etc/odoo11.conf
+</code></pre></div><p>启用 Odoo 服务以在引导时自动启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> odoo11
+</code></pre></div><p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -u odoo11
+</code></pre></div><h2 id="heading1">测试安装</h2>
 <p>打开浏览器并输入：<code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
-
 <p>假设安装成功，将出现类似于以下内容的屏幕：</p>
-
-<figure><img src="/images/linux/install-odoo-11-on-ubuntu-16-04/odoo-screenshot.jpg" alt=""></figure>
-
+<p><img src="/images/linux/install-odoo-11-on-ubuntu-16-04/odoo-screenshot.jpg" alt=""></p>
 <p>此时，您已经完成了一个可工作的 Odoo 11 安装步骤，您可以通过创建新数据库并开始处理项目来完成继续安装。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>到此为止，本教程向您介绍了在 Python 虚拟环境中在 Ubuntu 16.04 上安装 Odoo 11 的过程。</p>
       </div><ul class="pa0">
   
@@ -378,19 +342,16 @@ sudo systemctl start odoo11</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#准备工作">准备工作</a></li>
-<li><a href="#创建-odoo-用户">创建 Odoo 用户</a></li>
-<li><a href="#安装和配置-postgresql">安装和配置 PostgreSQL</a></li>
-<li><a href="#安装-wkhtmltopdf">安装 Wkhtmltopdf</a></li>
-<li><a href="#安装和配置-odoo">安装和配置 Odoo</a></li>
-<li><a href="#创建-systemd-单元文件">创建 systemd 单元文件</a></li>
-<li><a href="#测试安装">测试安装</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">准备工作</a></li>
+    <li><a href="#-odoo-">创建 Odoo 用户</a></li>
+    <li><a href="#-postgresql">安装和配置 PostgreSQL</a></li>
+    <li><a href="#-wkhtmltopdf">安装 Wkhtmltopdf</a></li>
+    <li><a href="#-odoo">安装和配置 Odoo</a></li>
+    <li><a href="#-systemd-">创建 systemd 单元文件</a></li>
+    <li><a href="#heading1">测试安装</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

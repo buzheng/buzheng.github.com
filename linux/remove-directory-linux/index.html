@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="如何在 Linux 中删除目录" />
 <meta property="og:description" content="有几种不同的方法可以删除 Linux 系统中的目录。如果您使用桌面文件管理器(如 Gnome 的文件或 KDE 的 Dolphin) ，则可以使用管理器的图形用户界面删除文件和目录。但是，如果您正在使用无头服务器或想要一次删除多个目录，最好的选择是从命令行删除目录(文件夹)。
-
 在这篇文章中，我们将介绍如何使用 rmdir ， rm 和 find 命令删除 Linux 中的目录。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/remove-directory-linux/" />
+<meta property="og:image" content="/linux/remove-directory-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-08-07T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-08-07T12:00:00+08:00" />
 <meta itemprop="name" content="如何在 Linux 中删除目录">
 <meta itemprop="description" content="有几种不同的方法可以删除 Linux 系统中的目录。如果您使用桌面文件管理器(如 Gnome 的文件或 KDE 的 Dolphin) ，则可以使用管理器的图形用户界面删除文件和目录。但是，如果您正在使用无头服务器或想要一次删除多个目录，最好的选择是从命令行删除目录(文件夹)。
-
 在这篇文章中，我们将介绍如何使用 rmdir ， rm 和 find 命令删除 Linux 中的目录。">
-
-
 <meta itemprop="datePublished" content="2019-08-07T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-07T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1527">
+<meta itemprop="wordCount" content="1548">
+<meta itemprop="image" content="/linux/remove-directory-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="rm,rmdir,find,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="rm,rmdir,find,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/remove-directory-linux/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Linux 中删除目录"/>
 <meta name="twitter:description" content="有几种不同的方法可以删除 Linux 系统中的目录。如果您使用桌面文件管理器(如 Gnome 的文件或 KDE 的 Dolphin) ，则可以使用管理器的图形用户界面删除文件和目录。但是，如果您正在使用无头服务器或想要一次删除多个目录，最好的选择是从命令行删除目录(文件夹)。
-
 在这篇文章中，我们将介绍如何使用 rmdir ， rm 和 find 命令删除 Linux 中的目录。"/>
 
   </head>
@@ -148,57 +144,40 @@
           
   
           <p>有几种不同的方法可以删除 Linux 系统中的目录。如果您使用桌面文件管理器(如 Gnome 的文件或 KDE 的 Dolphin) ，则可以使用管理器的图形用户界面删除文件和目录。但是，如果您正在使用无头服务器或想要一次删除多个目录，最好的选择是从命令行删除目录(文件夹)。</p>
-
 <p>在这篇文章中，我们将介绍如何使用 <code>rmdir</code> ， <code>rm</code> 和 <code>find</code> 命令删除 Linux 中的目录。</p>
-
-<h2 id="在你开始之前">在你开始之前</h2>
-
+<h2 id="heading">在你开始之前</h2>
 <p>使用桌面文件管理器删除目录时，该目录实际上已移至“废纸篓”，并且可以轻松恢复。</p>
-
 <p>从命令行删除文件或目录时要格外小心，因为一旦使用本文中介绍的命令删除目录，就无法完全恢复。</p>
-
 <p>在大多数 Linux 文件系统上，删除目录需要对目录及其内容具有写权限。否则您将收到“不允许操作”错误。</p>
-
 <p>必须使用反斜杠 (<code>/</code>) 转义其中包含空格的目录名称。</p>
-
-<h2 id="删除目录-rmdir">删除目录  <code>rmdir</code></h2>
-
+<h2 id="-rmdir">删除目录  <code>rmdir</code></h2>
 <p><code>rmdir</code> 是一个用于删除空目录的命令行实用程序。只有当目录为空时才需要删除目录，而不需要检查目录是否为空。</p>
-
 <p>要删除目录 <code>rmdir</code> ，请键入命令，然后键入要删除的目录的名称。例如，要删除名为的目录， <code>dir1</code> 请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rmdir dir1</code></pre></div>
-<p>如果目录不为空，您将收到以下错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">rmdir: failed to remove &#39;dir1&#39;: No such file or directory</code></pre></div>
-<p>在这种情况下，您需要使用该 <code>rm</code> 命令或手动删除目录内容，然后才能删除它。</p>
-
-<h2 id="删除目录-rm">删除目录  <code>rm</code></h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rmdir dir1
+</code></pre><p>如果目录不为空，您将收到以下错误：</p>
+<pre><code class="language-output" data-lang="output">rmdir: failed to remove 'dir1': No such file or directory
+</code></pre><p>在这种情况下，您需要使用该 <code>rm</code> 命令或手动删除目录内容，然后才能删除它。</p>
+<h2 id="-rm">删除目录  <code>rm</code></h2>
 <p><code>rm</code> 是一个用于删除文件和目录的命令行实用程序。与命令不同 <code>rmdir</code>, <code>rm</code> 可以删除空目录和非空目录。</p>
-
-<p>默认情况下，在没有任何选项的情况下使用时 <code>rm</code> 不会删除目录 要删除空目录，请使用 <code>-d</code>(<code>--dir</code>) 选项。 如果要删除非空目录和其中的所有内容，请使用 <code>-r</code>(<code>--recursive</code> 或 <code>-R</code>) 选项。</p>
-
+<p>默认情况下，在没有任何选项的情况下使用时 <code>rm</code> 不会删除目录 要删除空目录，请使用 <code>-d`(</code>&ndash;dir<code>) 选项。 如果要删除非空目录和其中的所有内容，请使用 </code>-r<code>(</code>&ndash;recursive<code>或</code>-R`) 选项。</p>
 <p>例如，要删除一个名为 <code>dir1</code> 及其所有内容的目录，您可以键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rm -r dir1</code></pre></div>
-<p>如果目录中的目录或文件受到写保护，系统将提示您确认删除。要在不提示的情况下删除目录，请使用以下 <code>-f</code> 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rm -r dirname</code></pre></div>
-<p>要一次删除多个目录，请使用 <code>rm</code> 命令，后跟由空格分隔的目录名称。下面的命令将删除每个列出的目录及其内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rm -r dir1 dir2 dir3</code></pre></div>
-<p>该 <code>-i</code> 选项告诉 <code>rm</code> 提示您确认删除每个子目录和文件。如果目录包含大量文件，这可能有点烦人，因此您可以考虑使用 <code>-I</code> 在继续删除之前只提示您一次的选项。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rm -rI dir1</code></pre></div>
-<p>确定要删除目录请输入 <code>y</code> 并点击 <code>Enter</code> 。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">rm: remove 1 argument recursively? y</code></pre></div>
-<p>您还可以使用常规扩展来匹配和删除多个目录。例如，要删除当前目录中以所有 <code>_bak</code> 结尾的所有第一级目录或者文件 ，您将使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rm -r *_bak</code></pre></div>
-<p>删除目录时使用常规扩展可能存在风险。建议首先使用该 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令列出目录，以便在运行 <code>rm</code> 命令之前查看将删除的目录。</p>
-
-<h2 id="删除目录-find">删除目录 <code>find</code></h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rm -r dir1
+</code></pre><p>如果目录中的目录或文件受到写保护，系统将提示您确认删除。要在不提示的情况下删除目录，请使用以下 <code>-f</code> 选项：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rm -r dirname
+</code></pre><p>要一次删除多个目录，请使用 <code>rm</code> 命令，后跟由空格分隔的目录名称。下面的命令将删除每个列出的目录及其内容：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rm -r dir1 dir2 dir3
+</code></pre><p>该 <code>-i</code> 选项告诉 <code>rm</code> 提示您确认删除每个子目录和文件。如果目录包含大量文件，这可能有点烦人，因此您可以考虑使用 <code>-I</code> 在继续删除之前只提示您一次的选项。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rm -rI dir1
+</code></pre><p>确定要删除目录请输入 <code>y</code> 并点击 <code>Enter</code> 。</p>
+<pre><code class="language-output" data-lang="output">rm: remove 1 argument recursively? y
+</code></pre><p>您还可以使用常规扩展来匹配和删除多个目录。例如，要删除当前目录中以所有 <code>_bak</code> 结尾的所有第一级目录或者文件 ，您将使用以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rm -r *_bak
+</code></pre><p>删除目录时使用常规扩展可能存在风险。建议首先使用该 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令列出目录，以便在运行 <code>rm</code> 命令之前查看将删除的目录。</p>
+<h2 id="-find">删除目录 <code>find</code></h2>
 <p><a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a>  是一个命令行实用程序，允许您根据给定的表达式搜索文件和目录，并对每个匹配的文件或目录执行操作。</p>
-
 <p>最常见的情况是使用 <code>find</code> 命令根据模式删除目录。例如，要删除当前工作目录中所有以 <code>_cache</code> 结尾的目录，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find . -type d -name &#39;*_cache&#39; -exec rm -r {} +</code></pre></div>
-<p>让我们分析一下上面的命令：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">find . -type d -name '*_cache' -exec rm -r {} +
+</code></pre><p>让我们分析一下上面的命令：</p>
 <ul>
 <li><code>.</code>- 递归搜索<a href="/linux/current-working-directory/">当前工作目录</a>(<code>.</code>)。</li>
 <li><code>-type d</code> - 将搜索限制为目录。</li>
@@ -206,34 +185,24 @@
 <li><code>-exec</code> - 执行带有可选参数的外部命令，在这种情况下是 <code>rm -r</code> 。</li>
 <li><code>{}  +</code>-  将找到的文件追加到 <code>rm</code> 命令的末尾。</li>
 </ul>
-
-<h3 id="删除所有空目录">删除所有空目录</h3>
-
+<h3 id="heading1">删除所有空目录</h3>
 <p>要删除目录树中的所有空目录，您将使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find /dir -type d -empty -delete</code></pre></div>
-<p>以下是对所用选项的解释：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">find /dir -type d -empty -delete
+</code></pre><p>以下是对所用选项的解释：</p>
 <ul>
 <li><code>/dir</code>- 递归搜索 <code>/dir</code> 目录。</li>
 <li><code>-type d</code> - 将搜索限制为目录。</li>
 <li><code>-empty</code> - 将搜索限制为仅空目录。</li>
 <li><code>-delete</code> - 删除子树中所有找到的空目录。 <code>-delete</code> 只能删除空目录。</li>
 </ul>
-
 <p>请谨慎使用 <code>-delete</code> 选项。 find 命令行被计算为表达式，如果首先添加该 <code>-delete</code> 选项，该命令将删除指定起始点下方的所有内容。<strong>始终使用 <code>-delete</code> 作为最后一个选项</strong>，在删除之前，首先测试该命令而不使用该 <code>-delete</code> 选项。</p>
-
-<h3 id="bin-rm-argument-list-too-long">/bin/rm: Argument list too long</h3>
-
+<h3 id="binrm-argument-list-too-long">/bin/rm: Argument list too long</h3>
 <p>使用该 <code>rm</code> 命令删除包含大量文件的目录时，会出现此错误消息。发生这种情况是因为文件数大于命令行参数大小的系统限制。</p>
-
 <p>这个问题有几种不同的解决方案。例如，您可以 <a href="/linux/linux-cd-command/"><code>cd</code></a> 手动或使用<a href="/linux/bash-for-loop/">循环</a>逐个删除子目录到目录。</p>
-
 <p>最简单的解决方案是首先使用该 <code>find</code> 命令删除目录中的所有文件，然后删除目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find /dir -type f -delete &amp;&amp; rm -r /dir</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">find /dir -type f -delete &amp;&amp; rm -r /dir
+</code></pre><h2 id="heading2">结论</h2>
 <p>使用 <code>rm</code> 和 <code>find</code> 您可以快速有效地删除基于不同标准的目录。</p>
-
 <p>删除目录是一个简单而简单的过程，但您必须小心不要删除重要数据。</p>
       </div><ul class="pa0">
   
@@ -315,20 +284,18 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在你开始之前">在你开始之前</a></li>
-<li><a href="#删除目录-rmdir">删除目录  <code>rmdir</code></a></li>
-<li><a href="#删除目录-rm">删除目录  <code>rm</code></a></li>
-<li><a href="#删除目录-find">删除目录 <code>find</code></a>
-<ul>
-<li><a href="#删除所有空目录">删除所有空目录</a></li>
-<li><a href="#bin-rm-argument-list-too-long">/bin/rm: Argument list too long</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">在你开始之前</a></li>
+    <li><a href="#-rmdir">删除目录  rmdir</a></li>
+    <li><a href="#-rm">删除目录  rm</a></li>
+    <li><a href="#-find">删除目录 find</a>
+      <ul>
+        <li><a href="#heading1">删除所有空目录</a></li>
+        <li><a href="#binrm-argument-list-too-long">/bin/rm: Argument list too long</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

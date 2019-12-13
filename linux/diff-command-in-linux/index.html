@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="diff 是一个命令行实用程序，使您可以逐行比较两个文件。它还可以比较目录的内容。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/diff-command-in-linux/" />
+<meta property="og:image" content="/linux/diff-command-in-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-26T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-26T12:00:00+08:00" />
 <meta itemprop="name" content="Linux 中的 diff 命令">
 <meta itemprop="description" content="diff 是一个命令行实用程序，使您可以逐行比较两个文件。它还可以比较目录的内容。">
-
-
 <meta itemprop="datePublished" content="2019-11-26T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-26T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1612">
+<meta itemprop="wordCount" content="1616">
+<meta itemprop="image" content="/linux/diff-command-in-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="diff,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="diff,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/diff-command-in-linux/featured.jpg"/>
 <meta name="twitter:title" content="Linux 中的 diff 命令"/>
 <meta name="twitter:description" content="diff 是一个命令行实用程序，使您可以逐行比较两个文件。它还可以比较目录的内容。"/>
@@ -142,38 +141,32 @@
           
   
           <p><code>diff</code> 是一个命令行实用程序，使您可以逐行比较两个文件。它还可以比较目录的内容。</p>
-
 <p><code>diff</code> 命令最常用于创建一个补丁，其中包含一个或多个文件之间的差异，这个补丁可用于 <code>patch</code> 命令。</p>
-
-<h2 id="如何使用-diff-命令">如何使用 <code>diff</code> 命令</h2>
-
+<h2 id="-diff-">如何使用 <code>diff</code> 命令</h2>
 <p><code>diff</code> 命令的语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff <span class="o">[</span>OPTION<span class="o">]</span>... FILES</code></pre></div>
-<p><code>diff</code> 命令可以以几种格式显示输出，其中最常用格式包括普通，上下文和统一格式。输出包含有关文件中哪些行必须更改以使它们变得相同的信息。如果文件匹配，则不产生任何输出。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff <span class="o">[</span>OPTION<span class="o">]</span>... FILES
+</code></pre></div><p><code>diff</code> 命令可以以几种格式显示输出，其中最常用格式包括普通，上下文和统一格式。输出包含有关文件中哪些行必须更改以使它们变得相同的信息。如果文件匹配，则不产生任何输出。</p>
 <p>要将命令输出保存到文件，可以使用重定向运算符：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff file1 file2 &gt; patch</code></pre></div>
-<p>在本文中，我们将使用以下两个文件来解释 <code>diff</code> 命令的工作方式：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff file1 file2 &gt; patch
+</code></pre></div><p>在本文中，我们将使用以下两个文件来解释 <code>diff</code> 命令的工作方式：</p>
 <p>文件1</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Ubuntu
 Arch Linux
 Debian
 CentOS
-Fedora</code></pre></div>
-<p>文件2</p>
+Fedora
+</code></pre></div><p>文件2</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Kubuntu
 Ubuntu
 Debian
 Arch Linux
 Centos
-Fedora</code></pre></div>
-<h2 id="普通格式">普通格式</h2>
-
+Fedora
+</code></pre></div><h2 id="heading">普通格式</h2>
 <p>以最简单的形式，当 <code>diff</code> 命令在两个文本文件上运行且没有任何选项时，它将以正常格式生成输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff file1 file2</code></pre></div>
-<p>输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">0a1
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff file1 file2
+</code></pre></div><p>输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">0a1
 &gt; Kubuntu
 2d2
 &lt; Arch Linux
@@ -181,58 +174,50 @@ Fedora</code></pre></div>
 &lt; CentOS
 ---
 &gt; Arch Linux
-&gt; Centos</code></pre></div>
-<p>普通输出格式由一个或多个描述差异的部分组成。每个部分如下所示：</p>
+&gt; Centos
+</code></pre><p>普通输出格式由一个或多个描述差异的部分组成。每个部分如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">change-command
 &lt; from-file-line...
 ---
-&gt; to-file-line...</code></pre></div>
-<p><code>0a1</code> ， <code>2d2</code> 和 <code>4c4,5</code> 是变化的命令。每个更改命令从左到右包含以下内容：</p>
-
+&gt; to-file-line...
+</code></pre></div><p><code>0a1</code> ， <code>2d2</code> 和 <code>4c4,5</code> 是变化的命令。每个更改命令从左到右包含以下内容：</p>
 <ul>
 <li>第一个文件中的行号或行范围。</li>
 <li>一个特殊的更改字符。</li>
 <li>第二个文件中的行号或行范围。</li>
 </ul>
-
 <p>更改字符可以是以下之一：</p>
-
 <ul>
 <li><code>a</code> - 添加行。</li>
 <li><code>c</code> - 换行。</li>
 <li><code>d</code> - 删除行。</li>
 </ul>
-
 <p>更改命令后跟的完整行中，(<code>&lt;</code>) 表示被删除的内容 ，  (<code>&gt;</code>)  表示被添加到文件的内容。</p>
-
 <p>让我们解释一下输出：</p>
-
 <ul>
 <li><code>0a1</code> -  file2 在 file1 的第 <code>0</code> 行之后，添加了 <code>1</code> 行。
-
 <ul>
 <li><code>&gt; Kubuntu</code> - 如上所述，file2 在 file1 的开头增加一行 <code>Kubuntu。</code></li>
-</ul></li>
+</ul>
+</li>
 <li><code>2d2</code> - 删除 file1 中的第 <code>2</code> 行。在  <code>d</code> 符号后的 <code>2</code> 表示，如果该行不删除，将出现在第二个文件第 <code>2</code> 行。
-
 <ul>
 <li><code>&lt; Arch Linux</code> - 删除的行。</li>
-</ul></li>
+</ul>
+</li>
 <li><code>4c4,5</code>- 第二个文件中的 <code>4-5</code> 行是替换(更改)第一个文件中的 <code>4</code> 行 。
-
 <ul>
 <li><code>&lt; CentOS</code> - 第一个文件中要替换的行。</li>
 <li><code>---</code> - 分隔器。</li>
 <li><code>&gt; Arch Linux</code> 和 <code>&gt; Centos</code>- 从所述第二文件中新替换的行。</li>
-</ul></li>
 </ul>
-
-<h2 id="上下文格式">上下文格式</h2>
-
+</li>
+</ul>
+<h2 id="heading1">上下文格式</h2>
 <p>使用上下文输出格式时，该 <code>diff</code> 命令会在文件之间不同的行周围显示几行上下文。</p>
-
 <p>该 <code>-c</code> 选项指示 <code>diff</code> 以上下文格式产生输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -c file1 file2</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** file1	2019-11-25 21:00:26.422426523 +0100
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -c file1 file2
+</code></pre></div><pre><code class="language-output" data-lang="output">*** file1	2019-11-25 21:00:26.422426523 +0100
 --- file2	2019-11-25 21:00:36.342231668 +0100
 ***************
 *** 1,6 ****
@@ -248,27 +233,25 @@ Fedora</code></pre></div>
   Debian
 ! Arch Linux
 ! Centos
-  Fedora</code></pre></div>
-<p>如果比较了文件，则输出以名称和时间戳开始，以及一个或多个描述差异的部分开始。每个部分如下所示：</p>
+  Fedora
+</code></pre><p>如果比较了文件，则输出以名称和时间戳开始，以及一个或多个描述差异的部分开始。每个部分如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">***************
 *** from-file-line-numbers ****
   from-file-line...
 --- to-file-line-numbers ----
-  to-file-line...</code></pre></div>
-<ul>
+  to-file-line...
+</code></pre></div><ul>
 <li><code>from-file-line-numbers</code> 和 <code>to-file-line-numbers</code> - 逗号分隔的行号表示第一个和第二个文件的行范围。</li>
 <li><code>from-file-line</code> 和 <code>to-file-line</code>- 不同的行差异：
-
 <ul>
 <li>以两个空格开头的行是上下文行，这两个文件中的行相同。</li>
 <li>以减号(<code>-</code>)开头的行是第二个文件已经删除了该行</li>
 <li>以加号(<code>+</code>)开头的行是相对于第一个文件，第二个文件增加的行。</li>
 <li>以感叹号(<code>!</code>)开头的行是在两个文件之间更改的行。</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>让我们解释输出中最重要的部分：</p>
-
 <ul>
 <li>在此示例中，我们只有一节描述了差异。</li>
 <li><code>*** 1,6 ****</code>并<code>--- 1,7 ----</code> 告诉我们本节中包含的第一个文件和第二个文件中的行范围。</li>
@@ -277,9 +260,9 @@ Fedora</code></pre></div>
 <li>行 <code>+ Kubuntu</code> 第二个文件增加的行。</li>
 <li>第一个文件的行 <code>! CentOS</code> 和第二个文件中的 <code>! Arch Linux</code>和<code>! CentOS</code> 是不同的。</li>
 </ul>
-
-<p>默认情况下，上下文行的数量默认为三。要指定另一个数字，请使用 <code>-C</code>(<code>--contexts</code>) 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -C <span class="m">1</span> file1 file2</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*** file1	2019-11-25 21:00:26.422426523 +0100
+<p>默认情况下，上下文行的数量默认为三。要指定另一个数字，请使用 <code>-C`(</code>&ndash;contexts`) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -C <span class="m">1</span> file1 file2
+</code></pre></div><pre><code class="language-output" data-lang="output">*** file1	2019-11-25 21:00:26.422426523 +0100
 --- file2	2019-11-25 21:00:36.342231668 +0100
 ***************
 *** 1,5 ****
@@ -294,13 +277,12 @@ Fedora</code></pre></div>
   Debian
 ! Arch Linux
 ! Centos
-  Fedora</code></pre></div>
-<h2 id="统一格式">统一格式</h2>
-
+  Fedora
+</code></pre><h2 id="heading2">统一格式</h2>
 <p>统一输出格式是上下文格式的改进版本，并产生较小的输出。</p>
-
 <p>使用 <code>-u</code> 选项告诉 <code>diff</code> 以统一格式打印输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -u file1 file2</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">--- file1	2019-11-25 21:00:26.422426523 +0100
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -u file1 file2
+</code></pre></div><pre><code class="language-output" data-lang="output">--- file1	2019-11-25 21:00:26.422426523 +0100
 +++ file2	2019-11-25 21:00:36.342231668 +0100
 @@ -1,6 +1,7 @@
 +Kubuntu
@@ -310,28 +292,26 @@ Fedora</code></pre></div>
 -CentOS
 +Arch Linux
 +Centos
- Fedora</code></pre></div>
-<p>输出以文件的名称和时间戳以及描述差异的一个或多个部分开始。每个部分采用以下形式：</p>
+ Fedora
+</code></pre><p>输出以文件的名称和时间戳以及描述差异的一个或多个部分开始。每个部分采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">***************
 @@ from-file-line-numbers to-file-line-numbers @@
- line-from-files...</code></pre></div>
-<ul>
+ line-from-files...
+</code></pre></div><ul>
 <li><code>@@  from-file-line-numbers to-file-line-numbers  @@</code> -本节中包含的第一个和第二个文件的行号或行范围。</li>
 <li><code>line-from-files</code> - 不同的行和上下文的行：
-
 <ul>
 <li>以两个空格开头的行是上下文行，这两个文件中的行相同。</li>
 <li>以减号 (<code>-</code>) 开头的行是从第一个文件中<strong>删除</strong>的行。</li>
 <li>以加号 (<code>+</code>) 开头的行是从第一个文件<strong>添加</strong>的行。</li>
-</ul></li>
 </ul>
-
-<h2 id="忽略大小写">忽略大小写</h2>
-
+</li>
+</ul>
+<h2 id="heading3">忽略大小写</h2>
 <p>您可能在上面的示例中注意到，该 <code>diff</code> 命令默认情况下区分大小写。</p>
-
 <p>使用 <code>-i</code> 选项告诉 <code>diff</code> 忽略大小写：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -ui file1 file2</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">--- file1	2019-11-25 21:00:26.422426523 +0100
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">diff -ui file1 file2
+</code></pre></div><pre><code class="language-output" data-lang="output">--- file1	2019-11-25 21:00:26.422426523 +0100
 +++ file2	2019-11-25 21:00:36.342231668 +0100
 @@ -1,6 +1,7 @@
 +Kubuntu
@@ -340,11 +320,9 @@ Fedora</code></pre></div>
  Debian
 +Arch Linux
  CentOS
- Fedora</code></pre></div>
-<h2 id="结论">结论</h2>
-
+ Fedora
+</code></pre><h2 id="heading4">结论</h2>
 <p>比较文本文件之间的差异是 Linux 系统管理员最常见的任务之一。</p>
-
 <p><code>diff</code> 命令逐行比较文件的差异。有关更多信息，请在您的终端中输入 <code>man diff</code>。</p>
       </div><ul class="pa0">
   
@@ -418,17 +396,14 @@ Fedora</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#如何使用-diff-命令">如何使用 <code>diff</code> 命令</a></li>
-<li><a href="#普通格式">普通格式</a></li>
-<li><a href="#上下文格式">上下文格式</a></li>
-<li><a href="#统一格式">统一格式</a></li>
-<li><a href="#忽略大小写">忽略大小写</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-diff-">如何使用 diff 命令</a></li>
+    <li><a href="#heading">普通格式</a></li>
+    <li><a href="#heading1">上下文格式</a></li>
+    <li><a href="#heading2">统一格式</a></li>
+    <li><a href="#heading3">忽略大小写</a></li>
+    <li><a href="#heading4">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

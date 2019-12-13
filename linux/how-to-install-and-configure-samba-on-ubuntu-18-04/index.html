@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在Ubuntu 18.04上安装和配置Samba" />
 <meta property="og:description" content="Samba是SMB / CIFS网络文件共享协议的免费开源重新实现，允许最终用户访问文件，打印机和其他共享资源。
-
 本教程介绍如何在Ubuntu 18.04上安装Samba并将其配置为独立服务器，以通过网络在不同操作系统之间提供文件共享。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Ubuntu 18.04上安装和配置Samba">
 <meta itemprop="description" content="Samba是SMB / CIFS网络文件共享协议的免费开源重新实现，允许最终用户访问文件，打印机和其他共享资源。
-
 本教程介绍如何在Ubuntu 18.04上安装Samba并将其配置为独立服务器，以通过网络在不同操作系统之间提供文件共享。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="3997">
+<meta itemprop="wordCount" content="3998">
 
 
 
-<meta itemprop="keywords" content="samba,ubuntu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="samba,ubuntu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在Ubuntu 18.04上安装和配置Samba"/>
 <meta name="twitter:description" content="Samba是SMB / CIFS网络文件共享协议的免费开源重新实现，允许最终用户访问文件，打印机和其他共享资源。
-
 本教程介绍如何在Ubuntu 18.04上安装Samba并将其配置为独立服务器，以通过网络在不同操作系统之间提供文件共享。"/>
 
   </head>
@@ -147,159 +141,134 @@
           
   
           <p>Samba是<a href="https://docs.microsoft.com/en-us/windows/desktop/FileIO/microsoft-smb-protocol-and-cifs-protocol-overview">SMB / CIFS网络文件共享协议</a>的免费开源重新实现，允许最终用户访问文件，打印机和其他共享资源。</p>
-
 <p>本教程介绍如何在Ubuntu 18.04上安装Samba并将其配置为独立服务器，以通过网络在不同操作系统之间提供文件共享。</p>
-
 <p>我们将创建以下Samba共享和用户。</p>
-
 <p>用户：</p>
-
 <ul>
 <li><strong>sadmin</strong> - 具有对所有共享的读写访问权限的管理用户。</li>
 <li><strong>josh</strong> - 具有自己的私有文件共享的普通用户。</li>
 </ul>
-
 <p>分享：</p>
-
 <ul>
 <li><strong>用户</strong> - 所有用户都可以使用读/写权限访问此共享。</li>
 <li><strong>josh</strong> - 只有用户josh和sadmin才能使用读/写权限访问此共享。</li>
 </ul>
-
 <p>可以从网络上的所有设备访问文件共享。在本教程的后面部分，我们还将提供有关如何从Linux，Windows和macOS客户端连接Samba服务器的详细说明。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">用户</a>身份登录到Ubuntu 18.04系统。</p>
-
-<h2 id="在ubuntu上安装samba">在Ubuntu上安装Samba</h2>
-
+<h2 id="ubuntusamba">在Ubuntu上安装Samba</h2>
 <p>Samba可从官方Ubuntu存储库获得。要在Ubuntu系统上安装它，请按照以下步骤操作：</p>
-
 <ol>
-<li><p>首先更新apt包索引：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div></li>
-
-<li><p>使用以下命令安装Samba软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install samba</code></pre></div></li>
-
-<li><p>安装完成后，Samba服务将自动启动。要检查Samba服务器是否正在运行，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status nmbd</code></pre></div>
-<p>输出应如下所示，表示Samba服务处于活动状态并正在运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● nmbd.service - Samba NMB Daemon
+<li>
+<p>首先更新apt包索引：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+</code></pre></li>
+<li>
+<p>使用以下命令安装Samba软件包：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install samba
+</code></pre></li>
+<li>
+<p>安装完成后，Samba服务将自动启动。要检查Samba服务器是否正在运行，请键入：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status nmbd
+</code></pre><p>输出应如下所示，表示Samba服务处于活动状态并正在运行：</p>
+<pre><code class="language-output" data-lang="output">● nmbd.service - Samba NMB Daemon
 Loaded: loaded (/lib/systemd/system/nmbd.service; enabled; vendor preset: enabled)
 Active: active (running) since Sun 2019-01-27 02:36:20 PST; 4s ago
     Docs: man:nmbd(8)
         man:samba(7)
         man:smb.conf(5)
 Main PID: 4262 (nmbd)
-Status: &#34;nmbd: ready to serve connections...&#34;
+Status: &quot;nmbd: ready to serve connections...&quot;
     Tasks: 1 (limit: 2319)
 CGroup: /system.slice/nmbd.service
-        `-4262 /usr/sbin/nmbd --foreground --no-process-group</code></pre></div></li>
+        `-4262 /usr/sbin/nmbd --foreground --no-process-group
+</code></pre></li>
 </ol>
-
 <p>此时，已安装Samba并准备配置。</p>
-
-<h2 id="配置防火墙">配置防火墙</h2>
-
+<h2 id="heading1">配置防火墙</h2>
 <p>如果你有你的Ubuntu系统上运行的防火墙，你需要允许在端口传入的UDP连接<code>137</code>，并<code>138</code>和端口上的TCP连接<code>139</code>和<code>445</code>。</p>
-
 <p>假设您正在使用<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"><code>UFW</code></a>管理防火墙，可以通过启用“Samba”配置文件来打开端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow &#39;Samba&#39;</code></pre></div>
-<h2 id="配置全局samba选项">配置全局Samba选项</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 'Samba'
+</code></pre><h2 id="samba">配置全局Samba选项</h2>
 <p>在更改Samba配置文件之前，请创建备份以供将来参考：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp /etc/samba/smb.conf{,.backup}</code></pre></div>
-<p>随Samba软件包一起提供的默认配置文件是为独立Samba服务器配置的。打开文件并确保<code>server role</code>设置为<code>standalone server</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/samba/smb.conf</code></pre></div>
-<p>/etc/samba/smb.conf中</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
-# Most people will want &#34;standalone sever&#34; or &#34;member server&#34;.
-# Running as &#34;active directory domain controller&#34; will require first
-# running &#34;samba-tool domain provision&#34; to wipe databases and create a
+<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /etc/samba/smb.conf{,.backup}
+</code></pre><p>随Samba软件包一起提供的默认配置文件是为独立Samba服务器配置的。打开文件并确保<code>server role</code>设置为<code>standalone server</code></p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/samba/smb.conf
+</code></pre><p>/etc/samba/smb.conf中</p>
+<pre><code class="language-config" data-lang="config">...
+# Most people will want &quot;standalone sever&quot; or &quot;member server&quot;.
+# Running as &quot;active directory domain controller&quot; will require first
+# running &quot;samba-tool domain provision&quot; to wipe databases and create a
 # new domain.
    server role = standalone server
-...</code></pre></div>
-<p>默认情况下，Samba侦听所有接口。如果要仅从内部网络限制对Samba服务器的访问，请取消注释以下两行并指定要绑定到的接口：</p>
-
+...
+</code></pre><p>默认情况下，Samba侦听所有接口。如果要仅从内部网络限制对Samba服务器的访问，请取消注释以下两行并指定要绑定到的接口：</p>
 <p>/etc/samba/smb.conf中</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">...
+<pre><code class="language-config" data-lang="config">...
 # The specific set of interfaces / networks to bind to
 # This can be either the interface name or an IP address/netmask;
 # interface names are normally preferred
 interfaces = 127.0.0.0/8 eth0
 
 # Only bind to the named interfaces and/or networks; you must use the
-# &#39;interfaces&#39; option above to use this.
+# 'interfaces' option above to use this.
 # It is recommended that you enable this feature if your Samba machine is
 # not protected by a firewall or is a firewall itself.  However, this
 # option cannot handle dynamic or non-broadcast interfaces correctly.
 bind interfaces only = yes
-...</code></pre></div>
-<p>完成后，运行该<code>testparm</code>实用程序以检查Samba配置文件是否存在错误。如果没有语法错误，您将看到<code>Loaded services file OK.</code></p>
-
+...
+</code></pre><p>完成后，运行该<code>testparm</code>实用程序以检查Samba配置文件是否存在错误。如果没有语法错误，您将看到<code>Loaded services file OK.</code></p>
 <p>最后，使用以下命令重新启动Samba服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nmbd</code></pre></div>
-<h2 id="创建samba用户和目录结构">创建Samba用户和目录结构</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nmbd
+</code></pre><h2 id="samba1">创建Samba用户和目录结构</h2>
 <p>为了更容易维护和灵活，而不是使用标准的主目录（<code>/home/user</code>），所有Samba目录和数据都将位于<code>/samba</code>目录中。</p>
-
 <p>要创建<code>/samba</code>目录类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /samba</code></pre></div>
-<p>将组所有权设置为<code>sambashare</code>。该组是在Samba安装期间创建的，稍后我们将所有Samba用户添加到该组。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chgrp sambashare /samba</code></pre></div>
-<p>Samba使用Linux用户和组权限系统，但是它具有与标准Linux身份验证分开的自己的身份验证机制。我们将使用标准Linux <code>useradd</code>工具创建用户，然后使用该<code>smbpasswd</code>实用程序设置用户密码。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /samba
+</code></pre><p>将组所有权设置为<code>sambashare</code>。该组是在Samba安装期间创建的，稍后我们将所有Samba用户添加到该组。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chgrp sambashare /samba
+</code></pre><p>Samba使用Linux用户和组权限系统，但是它具有与标准Linux身份验证分开的自己的身份验证机制。我们将使用标准Linux <code>useradd</code>工具创建用户，然后使用该<code>smbpasswd</code>实用程序设置用户密码。</p>
 <p>正如我们在简介中所提到的，我们将<a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/">创建一个</a>可以访问其私有文件共享<a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/">的常规用户</a>和一个具有对Samba服务器上所有共享的读写访问权限的管理帐户。</p>
-
-<h3 id="创建samba用户">创建Samba用户</h3>
-
+<h3 id="samba2">创建Samba用户</h3>
 <p>要创建名为的新用户，请<code>josh</code>使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -M -d /samba/josh -s /usr/sbin/nologin -G sambashare josh</code></pre></div>
-<p>该<code>useradd</code>选项的含义如下：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -M -d /samba/josh -s /usr/sbin/nologin -G sambashare josh
+</code></pre><p>该<code>useradd</code>选项的含义如下：</p>
 <ul>
 <li><code>-M</code> - 不要创建用户的主目录。我们将手动创建此目录。</li>
 <li><code>-d /samba/josh</code>- 将用户的主目录设置为<code>/samba/josh</code>。</li>
 <li><code>-s /usr/sbin/nologin</code> - 禁用此用户的shell访问权限。</li>
 <li><code>-G sambashare</code>- 将用户添加到<code>sambashare</code>组中。</li>
 </ul>
-
 <p><a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建用户的主目录</a>并将目录所有权设置为用户<code>josh</code>和组<code>sambashare</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /samba/joshsudo chown josh:sambashare /samba/josh</code></pre></div>
-<p>以下命令将setgid位添加到<code>/samba/josh</code>目录中，以便此目录中新创建的文件将继承父目录的组。这样，无论哪个用户创建新文件，该文件都将具有组所有者<code>sambashare</code>。例如，如果未将目录的权限设置为<code>2770</code>并且<code>sadmin</code>用户创建新文件，则用户<code>josh</code>将无法读取/写入此文件。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chmod 2770 /samba/josh</code></pre></div>
-<p><code>josh</code>通过设置用户密码将用户帐户添加到Samba数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo smbpasswd -a josh</code></pre></div>
-<p>系统将提示您输入并确认用户密码。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">New SMB password:
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /samba/joshsudo chown josh:sambashare /samba/josh
+</code></pre><p>以下命令将setgid位添加到<code>/samba/josh</code>目录中，以便此目录中新创建的文件将继承父目录的组。这样，无论哪个用户创建新文件，该文件都将具有组所有者<code>sambashare</code>。例如，如果未将目录的权限设置为<code>2770</code>并且<code>sadmin</code>用户创建新文件，则用户<code>josh</code>将无法读取/写入此文件。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chmod 2770 /samba/josh
+</code></pre><p><code>josh</code>通过设置用户密码将用户帐户添加到Samba数据库：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo smbpasswd -a josh
+</code></pre><p>系统将提示您输入并确认用户密码。</p>
+<pre><code class="language-output" data-lang="output">New SMB password:
 Retype new SMB password:
-Added user josh.</code></pre></div>
-<p>设置密码以启用Samba帐户后：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo smbpasswd -e josh</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Enabled user josh.</code></pre></div>
-<p>要创建另一个用户，请重复与创建用户时相同的过程<code>josh</code>。</p>
-
+Added user josh.
+</code></pre><p>设置密码以启用Samba帐户后：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo smbpasswd -e josh
+</code></pre><pre><code class="language-output" data-lang="output">Enabled user josh.
+</code></pre><p>要创建另一个用户，请重复与创建用户时相同的过程<code>josh</code>。</p>
 <p>接下来，让我们创建一个用户和组<code>sadmin</code>。该组的所有成员都具有管理权限。稍后，如果要将管理权限授予其他用户，只需<a href="/linux/how-to-add-user-to-group-in-linux/">将该用户添加到该<code>sadmin</code>组</a>。</p>
-
 <p>键入以下内容创建管理用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -M -d /samba/users -s /usr/sbin/nologin -G sambashare sadmin</code></pre></div>
-<p>上面的命令还将创建一个组<code>sadmin</code>并将用户添加到两个组<code>sadmin</code>和<code>sambashare</code>组。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -M -d /samba/users -s /usr/sbin/nologin -G sambashare sadmin
+</code></pre><p>上面的命令还将创建一个组<code>sadmin</code>并将用户添加到两个组<code>sadmin</code>和<code>sambashare</code>组。</p>
 <p>设置密码并启用用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo smbpasswd -a sadminsudo smbpasswd -e sadmin</code></pre></div>
-<p>接下来，创建<code>Users</code>共享目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /samba/users</code></pre></div>
-<p><a href="/linux/linux-chown-command/">将目录所有权设置</a>为用户<code>sadmin</code>和组<code>sambashare</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown sadmin:sambashare /samba/users</code></pre></div>
-<p>所有经过身份验证的用户都可以访问此目录。以下命令配置<code>sambashare</code>对<code>/samba/users</code>目录中组成员的写/读访问权限：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chmod 2770 /samba/users</code></pre></div>
-<h2 id="配置samba共享">配置Samba共享</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo smbpasswd -a sadminsudo smbpasswd -e sadmin
+</code></pre><p>接下来，创建<code>Users</code>共享目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /samba/users
+</code></pre><p><a href="/linux/linux-chown-command/">将目录所有权设置</a>为用户<code>sadmin</code>和组<code>sambashare</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown sadmin:sambashare /samba/users
+</code></pre><p>所有经过身份验证的用户都可以访问此目录。以下命令配置<code>sambashare</code>对<code>/samba/users</code>目录中组成员的写/读访问权限：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chmod 2770 /samba/users
+</code></pre><h2 id="samba3">配置Samba共享</h2>
 <p>打开Samba配置文件并附加以下部分：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/samba/smb.conf</code></pre></div>
-<p>/etc/samba/smb.conf中</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">[users]
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/samba/smb.conf
+</code></pre><p>/etc/samba/smb.conf中</p>
+<pre><code class="language-config" data-lang="config">[users]
     path = /samba/users
     browseable = yes
     read only = no
@@ -313,9 +282,8 @@ Added user josh.</code></pre></div>
     read only = no
     force create mode = 0660
     force directory mode = 2770
-    valid users = josh @sadmin</code></pre></div>
-<p>选项具有以下含义：</p>
-
+    valid users = josh @sadmin
+</code></pre><p>选项具有以下含义：</p>
 <ul>
 <li><code>[users]</code>和<code>[josh]</code>- 登录时将使用的共享名称。</li>
 <li><code>path</code> - 分享的路径。</li>
@@ -325,120 +293,114 @@ Added user josh.</code></pre></div>
 <li><code>force directory mode</code> - 为此共享中新创建的目录设置权限。</li>
 <li><code>valid users</code> - 允许访问共享的用户和组列表。组以<code>@</code>符号为前缀。</li>
 </ul>
-
 <p>有关可用选项的更多信息，请参阅<a href="https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html">Samba配置文件</a>文档页面。</p>
-
 <p>完成后，使用以下命令重新启动Samba服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nmbd</code></pre></div>
-<p>在以下部分中，我们将向您展示如何从Linux，macOS和Windows客户端连接到Samba共享。</p>
-
-<h2 id="从linux连接到samba共享">从Linux连接到Samba共享</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nmbd
+</code></pre><p>在以下部分中，我们将向您展示如何从Linux，macOS和Windows客户端连接到Samba共享。</p>
+<h2 id="linuxsamba">从Linux连接到Samba共享</h2>
 <p>Linux用户可以使用文件管理器或安装Samba共享从命令行访问samba共享。</p>
-
-<h3 id="使用smbclient客户端">使用smbclient客户端</h3>
-
+<h3 id="smbclient">使用smbclient客户端</h3>
 <p><code>smbclient</code>是一个允许您从命令行访问Samba的工具。<code>smbclient</code>大多数Linux发行版都没有预先安装该软件包，因此您需要将其与您的分发软件包管理器一起安装。</p>
-
 <p>要<code>smbclient</code>在Ubuntu和Debian上安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install smbclient</code></pre></div>
-<p>要<code>smbclient</code>在CentOS和Fedora上安装运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install samba-client</code></pre></div>
-<p>访问Samba共享的语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mbclient //samba_hostname_or_server_ip/share_name -U username</code></pre></div>
-<p>例如，要连接到<code>josh</code>Samba服务器上命名的共享，并使用IP地址<code>192.168.121.118</code>作为用户<code>josh</code>运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">smbclient //192.168.121.118/josh -U josh</code></pre></div>
-<p>系统将提示您输入用户密码。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Enter WORKGROUP\josh&#39;s password: </code></pre></div>
-<p>输入密码后，您将登录Samba命令行界面。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Try &#34;help&#34; to get a list of possible commands.
-smb: \&gt;</code></pre></div>
-<h3 id="挂载samba共享">挂载Samba共享</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install smbclient
+</code></pre><p>要<code>smbclient</code>在CentOS和Fedora上安装运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install samba-client
+</code></pre><p>访问Samba共享的语法如下：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">mbclient //samba_hostname_or_server_ip/share_name -U username
+</code></pre><p>例如，要连接到<code>josh</code>Samba服务器上命名的共享，并使用IP地址<code>192.168.121.118</code>作为用户<code>josh</code>运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">smbclient //192.168.121.118/josh -U josh
+</code></pre><p>系统将提示您输入用户密码。</p>
+<pre><code class="language-output" data-lang="output">Enter WORKGROUP\josh's password: 
+</code></pre><p>输入密码后，您将登录Samba命令行界面。</p>
+<pre><code class="language-output" data-lang="output">Try &quot;help&quot; to get a list of possible commands.
+smb: \&gt;
+</code></pre><h3 id="samba4">挂载Samba共享</h3>
 <p>要首先在Linux上<a href="/linux/how-to-mount-and-unmount-file-systems-in-linux/">安装</a> Samba共享，您需要安装该<code>cifs-utils</code>软件包。</p>
-
 <p>在Ubuntu和Debian上运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install cifs-utils</code></pre></div>
-<p>在CentOS和Fedora上运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install cifs-utils</code></pre></div>
-<p>接下来，创建一个挂载点：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /mnt/smbmount</code></pre></div>
-<p>使用以下命令装入共享：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=username //samba_hostname_or_server_ip/sharename /mnt/smbmount</code></pre></div>
-<p>例如，要将<code>josh</code>具有IP地址<code>192.168.121.118</code>作为用户的Samba服务器上命名的共享安装<code>josh</code>到<code>/mnt/smbmount</code>您将运行的安装点：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=josh //192.168.121.118/josh /mnt/smbmount</code></pre></div>
-<p>系统将提示您输入用户密码。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Password for josh@//192.168.121.118/josh:  ********</code></pre></div>
-<h3 id="使用gui">使用GUI</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install cifs-utils
+</code></pre><p>在CentOS和Fedora上运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install cifs-utils
+</code></pre><p>接下来，创建一个挂载点：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /mnt/smbmount
+</code></pre><p>使用以下命令装入共享：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=username //samba_hostname_or_server_ip/sharename /mnt/smbmount
+</code></pre><p>例如，要将<code>josh</code>具有IP地址<code>192.168.121.118</code>作为用户的Samba服务器上命名的共享安装<code>josh</code>到<code>/mnt/smbmount</code>您将运行的安装点：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=josh //192.168.121.118/josh /mnt/smbmount
+</code></pre><p>系统将提示您输入用户密码。</p>
+<pre><code class="language-output" data-lang="output">Password for josh@//192.168.121.118/josh:  ********
+</code></pre><h3 id="gui">使用GUI</h3>
 <p>文件，Gnome中的默认文件管理器具有访问Samba共享的内置选项。</p>
-
 <ol>
-<li>打开文件，然后单击侧栏中的“其他位置”。</li>
-<li>在“连接到服务器”中，按以下格式输入Samba共享的地址<code>smb://samba_hostname_or_server_ip/sharename</code>。</li>
-
-<li><p>点击“连接”，将出现以下屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/gnome-samba-login.jpg" alt=""></figure></li>
-
-<li><p>选择“注册用户”，输入Samba用户名和密码，然后单击“连接”。</p></li>
-
-<li><p>将显示Samba服务器上的文件。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/gnome-samba-files.jpg" alt=""></figure></li>
+<li>
+<p>打开文件，然后单击侧栏中的“其他位置”。</p>
+</li>
+<li>
+<p>在“连接到服务器”中，按以下格式输入Samba共享的地址<code>smb://samba_hostname_or_server_ip/sharename</code>。</p>
+</li>
+<li>
+<p>点击“连接”，将出现以下屏幕：</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/gnome-samba-login.jpg" alt=""></p>
+</li>
+<li>
+<p>选择“注册用户”，输入Samba用户名和密码，然后单击“连接”。</p>
+</li>
+<li>
+<p>将显示Samba服务器上的文件。</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/gnome-samba-files.jpg" alt=""></p>
+</li>
 </ol>
-
-<h2 id="从macos连接到samba共享">从macOS连接到Samba共享</h2>
-
+<h2 id="macossamba">从macOS连接到Samba共享</h2>
 <p>在macOS中，您可以从命令行或使用默认的macOS文件管理器Finder访问Samba共享。以下步骤说明如何使用Finder访问共享。</p>
-
 <ol>
-<li>打开“Finder”，选择“Go”并单击“Connect To”。</li>
-
-<li><p>在“连接到”中，按以下格式输入Samba共享的地址<code>smb://samba_hostname_or_server_ip/sharename</code>。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/macos-samba-connect.jpg" alt=""></figure></li>
-
-<li><p>点击“连接”，将出现以下屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/macos-samba-login.jpg" alt=""></figure></li>
-
-<li><p>选择“注册用户”，输入Samba用户名和密码，然后单击“连接”。</p></li>
-
-<li><p>将显示Samba服务器上的文件。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/macos-samba-files.jpg" alt=""></figure></li>
+<li>
+<p>打开“Finder”，选择“Go”并单击“Connect To”。</p>
+</li>
+<li>
+<p>在“连接到”中，按以下格式输入Samba共享的地址<code>smb://samba_hostname_or_server_ip/sharename</code>。</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/macos-samba-connect.jpg" alt=""></p>
+</li>
+<li>
+<p>点击“连接”，将出现以下屏幕：</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/macos-samba-login.jpg" alt=""></p>
+</li>
+<li>
+<p>选择“注册用户”，输入Samba用户名和密码，然后单击“连接”。</p>
+</li>
+<li>
+<p>将显示Samba服务器上的文件。</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/macos-samba-files.jpg" alt=""></p>
+</li>
 </ol>
-
-<h2 id="从windows连接到samba共享">从Windows连接到Samba共享</h2>
-
+<h2 id="windowssamba">从Windows连接到Samba共享</h2>
 <p>Windows用户还可以选择从命令行和GUI连接到Samba共享。以下步骤显示如何使用Windows文件资源管理器访问共享。</p>
-
 <ol>
-<li>打开文件资源管理器，在左侧窗格中右键单击“此PC”。</li>
-<li>选择“选择自定义网络位置”，然后单击“下一步”。</li>
-
-<li><p>在“Internet或网络地址”中，按以下格式输入Samba共享的地址<code>\\samba_hostname_or_server_ip\sharename</code>。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-connect.jpg" alt=""></figure></li>
-
-<li><p>单击“下一步”，系统将提示您输入登录凭据，如下所示：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-login.jpg" alt=""></figure></li>
-
-<li><p>在下一个窗口中，您可以键入网络位置的自定义名称。Samba服务器将选择默认值。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-name.jpg" alt=""></figure></li>
-
-<li><p>单击“下一步”以移至连接设置向导的最后一个屏幕。</p></li>
-
-<li><p>单击“完成”，将显示Samba服务器上的文件。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-files.jpg" alt=""></figure></li>
+<li>
+<p>打开文件资源管理器，在左侧窗格中右键单击“此PC”。</p>
+</li>
+<li>
+<p>选择“选择自定义网络位置”，然后单击“下一步”。</p>
+</li>
+<li>
+<p>在“Internet或网络地址”中，按以下格式输入Samba共享的地址<code>\\samba_hostname_or_server_ip\sharename</code>。</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-connect.jpg" alt=""></p>
+</li>
+<li>
+<p>单击“下一步”，系统将提示您输入登录凭据，如下所示：</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-login.jpg" alt=""></p>
+</li>
+<li>
+<p>在下一个窗口中，您可以键入网络位置的自定义名称。Samba服务器将选择默认值。</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-name.jpg" alt=""></p>
+</li>
+<li>
+<p>单击“下一步”以移至连接设置向导的最后一个屏幕。</p>
+</li>
+<li>
+<p>单击“完成”，将显示Samba服务器上的文件。</p>
+<p><img src="/images/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/windows-samba-files.jpg" alt=""></p>
+</li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>在本教程中，您学习了如何在Ubuntu 18.04上安装Samba服务器并创建不同类型的共享和用户。我们还向您展示了如何从Linux，macOS和Windows设备连接到Samba服务器。</p>
       </div><ul class="pa0">
   
@@ -512,29 +474,28 @@ smb: \&gt;</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#在ubuntu上安装samba">在Ubuntu上安装Samba</a></li>
-<li><a href="#配置防火墙">配置防火墙</a></li>
-<li><a href="#配置全局samba选项">配置全局Samba选项</a></li>
-<li><a href="#创建samba用户和目录结构">创建Samba用户和目录结构</a>
-<ul>
-<li><a href="#创建samba用户">创建Samba用户</a></li>
-</ul></li>
-<li><a href="#配置samba共享">配置Samba共享</a></li>
-<li><a href="#从linux连接到samba共享">从Linux连接到Samba共享</a>
-<ul>
-<li><a href="#使用smbclient客户端">使用smbclient客户端</a></li>
-<li><a href="#挂载samba共享">挂载Samba共享</a></li>
-<li><a href="#使用gui">使用GUI</a></li>
-</ul></li>
-<li><a href="#从macos连接到samba共享">从macOS连接到Samba共享</a></li>
-<li><a href="#从windows连接到samba共享">从Windows连接到Samba共享</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#ubuntusamba">在Ubuntu上安装Samba</a></li>
+    <li><a href="#heading1">配置防火墙</a></li>
+    <li><a href="#samba">配置全局Samba选项</a></li>
+    <li><a href="#samba1">创建Samba用户和目录结构</a>
+      <ul>
+        <li><a href="#samba2">创建Samba用户</a></li>
+      </ul>
+    </li>
+    <li><a href="#samba3">配置Samba共享</a></li>
+    <li><a href="#linuxsamba">从Linux连接到Samba共享</a>
+      <ul>
+        <li><a href="#smbclient">使用smbclient客户端</a></li>
+        <li><a href="#samba4">挂载Samba共享</a></li>
+        <li><a href="#gui">使用GUI</a></li>
+      </ul>
+    </li>
+    <li><a href="#macossamba">从macOS连接到Samba共享</a></li>
+    <li><a href="#windowssamba">从Windows连接到Samba共享</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

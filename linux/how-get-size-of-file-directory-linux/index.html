@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Linux 中获取目录的大小" />
 <meta property="og:description" content="使用 ls 命令列出目录的内容时，您可能已经注意到目录的大小几乎总是 4096 字节(4 KB)。这是磁盘上用于存储目录元信息的空间大小，而不是它包含的内容。
-
 du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&rdquo; 的缩写。我们将向您展示如何使用此命令。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-get-size-of-file-directory-linux/" />
@@ -38,21 +37,16 @@ du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&r
 <meta property="article:modified_time" content="2019-04-05T22:00:00+08:00" />
 <meta itemprop="name" content="如何在 Linux 中获取目录的大小">
 <meta itemprop="description" content="使用 ls 命令列出目录的内容时，您可能已经注意到目录的大小几乎总是 4096 字节(4 KB)。这是磁盘上用于存储目录元信息的空间大小，而不是它包含的内容。
-
 du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&rdquo; 的缩写。我们将向您展示如何使用此命令。">
-
-
 <meta itemprop="datePublished" content="2019-04-05T22:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-05T22:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="889">
+<meta itemprop="wordCount" content="895">
 
 
 
-<meta itemprop="keywords" content="du,terminal," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="du,terminal," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Linux 中获取目录的大小"/>
 <meta name="twitter:description" content="使用 ls 命令列出目录的内容时，您可能已经注意到目录的大小几乎总是 4096 字节(4 KB)。这是磁盘上用于存储目录元信息的空间大小，而不是它包含的内容。
-
 du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&rdquo; 的缩写。我们将向您展示如何使用此命令。"/>
 
   </head>
@@ -147,30 +141,24 @@ du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&r
           
   
           <p>使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令列出</a>目录的内容时，您可能已经注意到目录的大小几乎总是 4096 字节(4 KB)。这是磁盘上用于存储目录元信息的空间大小，而不是它包含的内容。</p>
-
 <p><code>du</code> 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&rdquo; 的缩写。我们将向您展示如何使用此命令。</p>
-
-<h2 id="获取目录的大小">获取目录的大小</h2>
-
+<h2 id="heading">获取目录的大小</h2>
 <p>du 命令显示指定文件或目录使用的磁盘空间用量。如果指定的路径是目录，则 du 将汇总该目录中每个文件和子目录的磁盘使用情况。如果未指定路径， du 将报告当前工作目录的磁盘使用情况。</p>
-
 <p>如果在没有任何选项的情况下运行 du ，它将以字节为单位显示指定目录及其每个子目录的磁盘使用情况。</p>
-
 <p>在大多数情况下，您希望以人类可读的格式仅显示目录占用的空间。例如，要获取 <code>/var</code> 目录的总大小，可以运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo du -sh /var</code></pre></div>
-<p>输出看起来像这样。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">85G	/var</code></pre></div>
-<p>让我们解释一下命令及其参数：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo du -sh /var
+</code></pre><p>输出看起来像这样。</p>
+<pre><code class="language-output" data-lang="output">85G	/var
+</code></pre><p>让我们解释一下命令及其参数：</p>
 <ul>
 <li>该命令首先是 <code>sudo</code>， 因为 <code>/var</code> 目录中的大多数文件和目录都由 root 用户拥有，并且常规用户无法读取。如果省略 sudo ， du 命令将打印 &ldquo;du：cannot read directory&rdquo;。</li>
 <li><code>s</code> - 仅显示指定目录的总大小，不显示子目录的文件大小总计。</li>
 <li><code>h</code>- 以人类可读的格式打印尺寸(<code>h</code>)。</li>
 <li><code>/var</code> - 要获取大小的目录的路径。</li>
 </ul>
-
 <p>如果要显示第一级子目录的磁盘使用情况，该怎么办？您有两个方法，第一个是使用星号符号，如下所示，这意味着 &ldquo;所有不以点(<code>.</code>)开头的&rdquo;。该 <code>c</code> 开关告诉 du 打印所有尺寸的总计：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo du -shc /var/*</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">.0G	/var/cache
+<pre><code class="language-console-bash" data-lang="console-bash">sudo du -shc /var/*
+</code></pre><pre><code class="language-output" data-lang="output">.0G	/var/cache
 24K	/var/db
 4.0K	/var/empty
 4.0K	/var/games
@@ -183,9 +171,10 @@ du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&r
 0	/var/run
 196K	/var/spool
 28K	/var/tmp
-85G	total</code></pre></div>
-<p>另一种选择是使用 <code>--max-depth</code> 开关并指定子目录级别：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo du -h --max-depth=1 /var</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">77G	  /var/lib
+85G	total
+</code></pre><p>另一种选择是使用 <code>--max-depth</code> 开关并指定子目录级别：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo du -h --max-depth=1 /var
+</code></pre><pre><code class="language-output" data-lang="output">77G	  /var/lib
 24K	  /var/db
 4.0K	/var/empty
 4.0K	/var/local
@@ -196,21 +185,19 @@ du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&r
 5.0G	/var/cache
 28K	/var/tmp
 85G	/var
-85G	total</code></pre></div>
-<p>默认情况下， du 实用程序显示目录或文件使用的磁盘空间。文件的 &ldquo;apparent size&rdquo; 是文件中实际的数据量。</p>
-
+85G	total
+</code></pre><p>默认情况下， du 实用程序显示目录或文件使用的磁盘空间。文件的 &ldquo;apparent size&rdquo; 是文件中实际的数据量。</p>
 <p>要查找目录的 apparent size，请用 <code>--apparent-size</code> 开关。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo du -sh --apparent-size /var</code></pre></div>
-<p>当您通过 <!--link:how-to-use-scp-command-to-securely-transfer-files-->SCP<!--link-->， <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">RSYNC</a> 或 <!--link:how-to-use-linux-sftp-command-to-transfer-files-->SFTP<!--link--> 传输目录时，将通过网络传输的数据量是文件的明显大小。这就是为什么在使用 du (不带 <code>--apparent-size</code> 选项)显示时在源上使用的磁盘空间大小将与目标上的大小不同。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo du -sh --apparent-size /var
+</code></pre><p>当您通过 <!-- raw HTML omitted -->SCP<!-- raw HTML omitted -->， <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">RSYNC</a> 或 <!-- raw HTML omitted -->SFTP<!-- raw HTML omitted --> 传输目录时，将通过网络传输的数据量是文件的明显大小。这就是为什么在使用 du (不带 <code>--apparent-size</code> 选项)显示时在源上使用的磁盘空间大小将与目标上的大小不同。</p>
 <p>du 命令也可以与管道的其他命令结合使用。例如，要打印目录 <code>/var</code> 中的 5 个<a href="/linux/find-large-files-in-linux/">最大目录</a> 请使用下面的命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo du -h /var/ | sort -rh | head -5</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">85G	/var/
+<pre><code class="language-console-bash" data-lang="console-bash">sudo du -h /var/ | sort -rh | head -5
+</code></pre><pre><code class="language-output" data-lang="output">85G	/var/
 77G	/var/lib
 75G	/var/lib/libvirt/images
 75G	/var/lib/libvirt
-5.0G	/var/cache/pacman/pkg</code></pre></div>
-<h2 id="结论">结论</h2>
-
+5.0G	/var/cache/pacman/pkg
+</code></pre><h2 id="heading1">结论</h2>
 <p>在本教程中，您学习了如何使用 <code>du</code> 命令获取目录的大小。</p>
       </div><ul class="pa0">
   
@@ -268,13 +255,10 @@ du 命令是用来获取目录实际大小的命令，它是 &ldquo;disk usage&r
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#获取目录的大小">获取目录的大小</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">获取目录的大小</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="在 CentOS 8 上安装 Apache" />
 <meta property="og:description" content="Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。
-
 在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-apache-on-centos-8/" />
+<meta property="og:image" content="/linux/how-to-install-apache-on-centos-8/featured.jpg"/>
 <meta property="article:published_time" content="2019-10-23T19:00:00+08:00" />
 <meta property="article:modified_time" content="2019-10-23T19:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 8 上安装 Apache">
 <meta itemprop="description" content="Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。
-
 在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。">
-
-
 <meta itemprop="datePublished" content="2019-10-23T19:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-23T19:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="712">
+<meta itemprop="image" content="/linux/how-to-install-apache-on-centos-8/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="apache,centos," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="apache,centos," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-apache-on-centos-8/featured.jpg"/>
 <meta name="twitter:title" content="在 CentOS 8 上安装 Apache"/>
 <meta name="twitter:description" content="Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。
-
 在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。"/>
 
   </head>
@@ -148,39 +144,30 @@
           
   
           <p>Apache HTTP 服务器是世界上使用最广泛的 Web 服务器。它是一个免费的，开放源代码和跨平台的 HTTP 服务器，具有强大的功能，并且可以通过各种模块进行扩展。</p>
-
 <p>在本文中，我们将解释如何在 CentOS 8 上安装和管理 Apache Web 服务器。</p>
-
-<h2 id="安装-apache">安装 Apache</h2>
-
+<h2 id="-apache">安装 Apache</h2>
 <p>Apache 在默认的 CentOS 存储库中可用，并且安装非常简单。</p>
-
 <p>在基于 RHEL 的发行版中， Apache 包和服务称为 <code>httpd</code> 。要安装 Apache，请以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install httpd</code></pre></div>
-<p>安装完成后，启用并启动 Apache 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable httpd
-sudo systemctl start httpd</code></pre></div>
-<p>要验证服务是否正在运行，请检查其状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status httpd</code></pre></div>
-<p>输出应如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● httpd.service - The Apache HTTP Server
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install httpd
+</code></pre><p>安装完成后，启用并启动 Apache 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable httpd
+sudo systemctl start httpd
+</code></pre><p>要验证服务是否正在运行，请检查其状态：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status httpd
+</code></pre><p>输出应如下所示：</p>
+<pre><code class="language-output" data-lang="output">● httpd.service - The Apache HTTP Server
    Loaded: loaded (/usr/lib/systemd/system/httpd.service; enabled; vendor preset: disabled)
    Active: active (running) since Sat 2019-10-12 15:54:58 UTC; 6s ago
-  ...</code></pre></div>
-<h2 id="调整防火墙">调整防火墙</h2>
-
+  ...
+</code></pre><h2 id="heading">调整防火墙</h2>
 <p>FirewallD 是 Centos 8 上的默认防火墙解决方案。</p>
-
 <p>在安装过程中， Apache 使用预定义的规则创建防火墙服务文件，以允许访问 HTTP(<code>80</code>) 和 HTTPS(<code>443</code>) 端口。</p>
-
 <p>以下命令将永久打开必要的端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=http
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=http
 sudo firewall-cmd --permanent --zone=public --add-service=https
-sudo firewall-cmd --reload</code></pre></div>
-<h2 id="管理-apache">管理 Apache</h2>
-
+sudo firewall-cmd --reload
+</code></pre><h2 id="-apache1">管理 Apache</h2>
 <p>本部分说明 Apache 配置文件的结构以及管理 Apache Web 服务器的最佳实践。</p>
-
 <ul>
 <li>所有 Apache 配置文件都位于该 <code>/etc/httpd</code> 目录中。</li>
 <li>Apache 的主要配置文件是 <code>/etc/httpd/conf/httpd.conf</code> 。</li>
@@ -190,19 +177,16 @@ sudo firewall-cmd --reload</code></pre></div>
 <li>遵循标准的命名约定是一个好习惯。例如，如果域名是 <code>mydomain.com</code>， 则配置文件应命名为 <code>mydomain.com.conf</code></li>
 <li>Apache日志文件(<code>access_log</code> 和 <code>error_log</code>) 位于 <code>/var/log/httpd/</code> 目录中。建议有不同 <code>access</code> 和 <code>error</code> 日志文件为每个虚拟主机。</li>
 <li>您可以将域文档的根目录设置为所需的任何位置。 webroot 的最常见位置包括：
-
 <ul>
 <li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
 <li><code>/var/www/&lt;site_name&gt;</code></li>
 <li><code>/var/www/html/&lt;site_name&gt;</code></li>
 <li><code>/opt/&lt;site_name&gt;</code></li>
-</ul></li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+</li>
+</ul>
+<h2 id="heading1">结论</h2>
 <p>恭喜，您已经在 CentOS 8 服务器上成功安装了 Apache 。现在，您准备开始部署应用程序并将 Apache 用作 Web 或代理服务器。</p>
-
 <p>您可以通过与其他任何 systemd 单元相同的方式来<a href="/linux/apache-commands-you-should-know/">管理 Apache 服务</a>。</p>
       </div><ul class="pa0">
   
@@ -276,15 +260,12 @@ sudo firewall-cmd --reload</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#安装-apache">安装 Apache</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#管理-apache">管理 Apache</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-apache">安装 Apache</a></li>
+    <li><a href="#heading">调整防火墙</a></li>
+    <li><a href="#-apache1">管理 Apache</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

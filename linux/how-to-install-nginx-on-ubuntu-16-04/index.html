@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 Ubuntu 16.04 上安装 Nginx" />
 <meta property="og:description" content="Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。
-
 与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
-
 在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-nginx-on-ubuntu-16-04/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-03-01T08:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 16.04 上安装 Nginx">
 <meta itemprop="description" content="Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。
-
 与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
-
 在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。">
-
-
 <meta itemprop="datePublished" content="2019-03-01T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-01T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1247">
+<meta itemprop="wordCount" content="1248">
 
 
 
-<meta itemprop="keywords" content="linux,ubuntu,nginx,教程," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,ubuntu,nginx,教程," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 16.04 上安装 Nginx"/>
 <meta name="twitter:description" content="Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。
-
 与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
-
 在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。"/>
 
   </head>
@@ -153,90 +144,74 @@
           
   
           <p>Nginx 发音为 “engine x” 是一个免费的，开源的，高性能的 HTTP 和反向代理服务器，它为互联网上一些最大的站点提供支持。</p>
-
 <p>与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。</p>
-
 <p>在本教程中，我们将讨论如何在 Ubuntu 16.04 系统上安装和管理 Nginx 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以具有 sudo 权限的用户身份登录，并且您没有在端口 80 或 443 上运行 Apache 或任何其他服务。</p>
-
-<h2 id="安装-nginx">安装 Nginx</h2>
-
+<h2 id="-nginx">安装 Nginx</h2>
 <p>Nginx 软件包在 Ubuntu 默认软件存储库中提供。安装只需执行以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
-sudo apt install nginx</code></pre></div>
-<p>安装完成后，键入以下命令检查 Nginx 服务的状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status nginx</code></pre></div>
-<p>输出应显示 Nginx 服务处于活动状态并正在运行：</p>
+sudo apt install nginx
+</code></pre></div><p>安装完成后，键入以下命令检查 Nginx 服务的状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status nginx
+</code></pre></div><p>输出应显示 Nginx 服务处于活动状态并正在运行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● nginx.service - A high performance web server and a reverse proxy server
    Loaded: loaded <span class="o">(</span>/lib/systemd/system/nginx.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
-   Active: active <span class="o">(</span>running<span class="o">)</span> since Sun <span class="m">2018</span>-01-05 <span class="m">15</span>:44:04 UTC<span class="p">;</span> 1min 59s ago
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Sun 2018-01-05 15:44:04 UTC<span class="p">;</span> 1min 59s ago
  Main PID: <span class="m">1291</span> <span class="o">(</span>nginx<span class="o">)</span>
    CGroup: /system.slice/nginx.service
            ├─1291 nginx: master process /usr/sbin/nginx -g daemon on<span class="p">;</span> master_process on
-           └─1293 nginx: worker process</code></pre></div>
-<p>要检查 Nginx 版本类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -v</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx version: nginx/1.10.3 <span class="o">(</span>Ubuntu<span class="o">)</span></code></pre></div>
-<h2 id="调整防火墙">调整防火墙</h2>
-
+           └─1293 nginx: worker process
+</code></pre></div><p>要检查 Nginx 版本类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -v
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx version: nginx/1.10.3 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</code></pre></div><h2 id="heading1">调整防火墙</h2>
 <p>假设您正在使用 UFW 管理防火墙，则需要打开 HTTP （ 80 ）和HTTPS（443）端口。</p>
-
 <p>你可以通过启用&rsquo; Nginx Full &lsquo;配置文件来实现这一点，该配置文件包含两个端口的规则：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow <span class="s1">&#39;Nginx Full&#39;</span></code></pre></div>
-<p>要验证防火墙状态类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw status</code></pre></div>
-<p>输出结果如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow <span class="s1">&#39;Nginx Full&#39;</span>
+</code></pre></div><p>要验证防火墙状态类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw status
+</code></pre></div><p>输出结果如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Status: active
 
 To                         Action      From
 --                         ------      ----
-<span class="m">22</span>/tcp                     ALLOW       Anywhere
+22/tcp                     ALLOW       Anywhere
 Nginx Full                 ALLOW       Anywhere
-<span class="m">22</span>/tcp <span class="o">(</span>v6<span class="o">)</span>                ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
-Nginx Full <span class="o">(</span>v6<span class="o">)</span>            ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span></code></pre></div>
-<h2 id="测试安装">测试安装</h2>
-
+22/tcp <span class="o">(</span>v6<span class="o">)</span>                ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
+Nginx Full <span class="o">(</span>v6<span class="o">)</span>            ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
+</code></pre></div><h2 id="heading2">测试安装</h2>
 <p>要验证 Nginx 是否按预期http:// YOUR_IP 在您选择的浏览器中打开，您将看到默认的 Nginx 欢迎页面，如下所示：</p>
-
-<figure><img src="/images/linux/how-to-install-nginx-on-ubuntu-16-04/nginx-screenshot.jpg" alt=""></figure>
-
-<h2 id="从-nginx-ppa-存储库安装-nginx">从 Nginx PPA 存储库安装 Nginx</h2>
-
+<p><img src="/images/linux/how-to-install-nginx-on-ubuntu-16-04/nginx-screenshot.jpg" alt=""></p>
+<h2 id="-nginx-ppa--nginx">从 Nginx PPA 存储库安装 Nginx</h2>
 <p>来自 Ubuntu 存储库的 Nginx 包经常过时。要安装最新的 Nginx 版本，请使用官方的 Nginx PPA 存储库。</p>
-
 <p>按照以下步骤在 Ubuntu 16.04 上安装最新版本的 Nginx ：</p>
-
 <p>首先安装 software-properties-common 包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install software-properties-common</code></pre></div>
-<p>使用以下命令添加 Nginx PPA 存储库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo add-apt-repository ppa:nginx/stable</code></pre></div>
-<p>更新包列表并安装 Nginx ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install software-properties-common
+</code></pre></div><p>使用以下命令添加 Nginx PPA 存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo add-apt-repository ppa:nginx/stable
+</code></pre></div><p>更新包列表并安装 Nginx ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
-sudo apt install nginx</code></pre></div>
-<p>安装完成后，检查 Nginx 版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -v</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx version: nginx/1.12.2</code></pre></div>
-<h2 id="使用-systemctl-管理-nginx-服务">使用 systemctl 管理 Nginx 服务</h2>
-
+sudo apt install nginx
+</code></pre></div><p>安装完成后，检查 Nginx 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -v
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx version: nginx/1.12.2
+</code></pre></div><h2 id="-systemctl--nginx-">使用 systemctl 管理 Nginx 服务</h2>
 <p>您可以像管理任何其他 systemd 单元一样管理 Nginx 服务。</p>
-
 <p>要停止 Nginx 服务，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl stop nginx</code></pre></div>
-<p>要启动 Nginx 服务，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start nginx</code></pre></div>
-<p>重启 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
-<p>完成一些配置更改后重新加载 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
-<p>禁止 Nginx 服务随机启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl disable nginx</code></pre></div>
-<p>重新启用 Nginx 服务以再次启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> nginx</code></pre></div>
-<h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl stop nginx
+</code></pre></div><p>要启动 Nginx 服务，请键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start nginx
+</code></pre></div><p>重启 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx
+</code></pre></div><p>完成一些配置更改后重新加载 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
+</code></pre></div><p>禁止 Nginx 服务随机启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl disable nginx
+</code></pre></div><p>重新启用 Nginx 服务以再次启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> nginx
+</code></pre></div><h2 id="nginx-">Nginx 配置文件的结构和最佳实践</h2>
 <ul>
 <li>所有 Nginx 配置文件都位于 /etc/nginx/ 目录中。</li>
 <li>主要的 Nginx 配置文件是 /etc/nginx/nginx.conf 。</li>
@@ -247,22 +222,18 @@ sudo apt install nginx</code></pre></div>
 <li>该 /etc/nginx/snippets 目录包含可包含在服务器块文件中的配置片段。如果使用可重复的配置段，则可以将这些段重构为片段，并将片段文件包含到服务器块中。</li>
 <li>Nginx 日志文件（access.log 和 error.log）位于 /var/log/nginx/ 目录中。建议有不同 access 和 error 日志文件每个服务器模块。</li>
 <li>您可以将域文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
-
 <ul>
-<li>/home/<user_name>/<site_name></li>
-<li>/var/www/<site_name></li>
-<li>/var/www/html/<site_name></li>
-<li>/opt/<site_name></li>
-</ul></li>
+<li>/home/&lt;user_name&gt;/&lt;site_name&gt;</li>
+<li>/var/www/&lt;site_name&gt;</li>
+<li>/var/www/html/&lt;site_name&gt;</li>
+<li>/opt/&lt;site_name&gt;</li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+</li>
+</ul>
+<h2 id="heading3">结论</h2>
 <p>恭喜，您已在 Ubuntu 16.04 服务器上成功安装了 Nginx 。您现在已准备好开始部署应用程序并将 Nginx 用作 Web 或代理服务器。</p>
-
-<p>安全证书是当今所有网站的“必备”功能，如果要使用免费的 Let&rsquo;s Encrypt SSL 证书保护您的网站，您可以查看以下指南：</p>
-
-<p><a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let&rsquo;s Encrypt 来保护 Nginx</a></p>
+<p>安全证书是当今所有网站的“必备”功能，如果要使用免费的 Let's Encrypt SSL 证书保护您的网站，您可以查看以下指南：</p>
+<p><a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-16-04/">在 Ubuntu 16.04 上使用 Let's Encrypt 来保护 Nginx</a></p>
       </div><ul class="pa0">
   
    <li class="list di">
@@ -331,19 +302,16 @@ sudo apt install nginx</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-nginx">安装 Nginx</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#测试安装">测试安装</a></li>
-<li><a href="#从-nginx-ppa-存储库安装-nginx">从 Nginx PPA 存储库安装 Nginx</a></li>
-<li><a href="#使用-systemctl-管理-nginx-服务">使用 systemctl 管理 Nginx 服务</a></li>
-<li><a href="#nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-nginx">安装 Nginx</a></li>
+    <li><a href="#heading1">调整防火墙</a></li>
+    <li><a href="#heading2">测试安装</a></li>
+    <li><a href="#-nginx-ppa--nginx">从 Nginx PPA 存储库安装 Nginx</a></li>
+    <li><a href="#-systemctl--nginx-">使用 systemctl 管理 Nginx 服务</a></li>
+    <li><a href="#nginx-">Nginx 配置文件的结构和最佳实践</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 CentOS 7 上安装 WildFly(JBoss)" />
 <meta property="og:description" content="WildFly ，以前称为 JBoss，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。
-
 本教程介绍如何在 CentOS 7 上安装 WildFly 应用程序服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-wildfly-on-centos-7/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-04T08:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上安装 WildFly(JBoss)">
 <meta itemprop="description" content="WildFly ，以前称为 JBoss，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。
-
 本教程介绍如何在 CentOS 7 上安装 WildFly 应用程序服务器。">
-
-
 <meta itemprop="datePublished" content="2019-03-04T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-04T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2039">
+<meta itemprop="wordCount" content="2105">
 
 
 
-<meta itemprop="keywords" content="centos,java,wildfly,教程," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,java,wildfly,教程," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上安装 WildFly(JBoss)"/>
 <meta name="twitter:description" content="WildFly ，以前称为 JBoss，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。
-
 本教程介绍如何在 CentOS 7 上安装 WildFly 应用程序服务器。"/>
 
   </head>
@@ -130,7 +124,7 @@
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 2100 字</span>
+          <span class="f6 dib tracked">约 2200 字</span>
           <span class="f6 dib tracked">, 预计阅读时间 7 分钟</span>
         
       </div>
@@ -147,55 +141,40 @@
           
   
           <p>WildFly ，以前称为 JBoss，是一个用 Java 编写的跨平台开源应用程序运行时，可帮助您构建出色的应用程序。 WildFly 具有灵活性，轻量级，并且基于可插拔子系统，可根据需要添加或删除。</p>
-
 <p>本教程介绍如何在 CentOS 7 上安装 WildFly 应用程序服务器。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>您需要以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 访问权限的用户</a>身份登录才能在 CentOS 系统上安装软件包。</p>
-
-<h2 id="第1步-安装-java-openjdk">第1步：安装 Java OpenJDK</h2>
-
+<h2 id="1-java-openjdk">第1步：安装 Java OpenJDK</h2>
 <p>WildFly 9 需要 Java SE 8 或更高版本。在本教程中，我们将安装 OpenJDK，它是 Java 平台的开源实现，它是 CentOS 7 中的默认 Java 开发和运行时。</p>
-
 <p>运行以下命令安装OpenJDK包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install java-1.8.0-openjdk-devel</code></pre></div>
-<blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install java-1.8.0-openjdk-devel
+</code></pre></div><blockquote>
 <p>如果要使用 Oracle Java 而不是 OpenJDK，请<a href="/linux/install-java-on-centos-7/">安装 Oracle Java JDK</a>。</p>
 </blockquote>
-
-<h2 id="第2步-创建用户">第2步：创建用户</h2>
-
+<h2 id="2">第2步：创建用户</h2>
 <p>以 root 用户身份运行 WildFly 存在安全风险，不被视为最佳做法。</p>
-
-<p>先<!--link:how-to-create-users-in-linux-using-the-useradd-command-->创建新系统用户<!--link-->和组命名为 wildfly , 用户的主目录是 <code>/opt/wildfly</code> , 运行下面的命令：</p>
+<p>先<!-- raw HTML omitted -->创建新系统用户<!-- raw HTML omitted -->和组命名为 wildfly , 用户的主目录是 <code>/opt/wildfly</code> , 运行下面的命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo groupadd -r wildfly
-sudo useradd -r -g wildfly -d /opt/wildfly -s /sbin/nologin wildfly</code></pre></div>
-<h2 id="第3步-安装wildfly">第3步：安装WildFly</h2>
-
+sudo useradd -r -g wildfly -d /opt/wildfly -s /sbin/nologin wildfly
+</code></pre></div><h2 id="3wildfly">第3步：安装WildFly</h2>
 <p>在撰写本文时，最新版本的 WildFly 是 16.0.0。在继续下一步之前，您应该从<a href="http://wildfly.org/downloads/">下载页面</a>以获取新版本。如果有新版本 ，请替换下面的命令中的该变量 <code>WILDFLY_VERSION</code> 。</p>
-
 <p>使用 <a href="/linux/wget-command-examples/"><code>wget</code> 命令</a>下载 WildFly 存档 到 /tmp 目录中</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">WILDFLY_VERSION</span><span class="o">=</span><span class="m">16</span>.0.0.Final
-wget https://download.jboss.org/wildfly/<span class="nv">$WILDFLY_VERSION</span>/wildfly-<span class="nv">$WILDFLY_VERSION</span>.tar.gz -P /tmp</code></pre></div>
-<p>下载完成后，<!--link:how-to-extract-unzip-tar-gz-file-->解压缩 <code>tar.gz</code> 文件<!--link-->并将其移动到 <code>/opt</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo tar xf /tmp/wildfly-<span class="nv">$WILDFLY_VERSION</span>.tar.gz -C /opt/</code></pre></div>
-<p>接下来，创建一个指向 WildFly 安装目录的<!--link:how-to-create-symbolic-links-in-linux-using-the-ln-command-->符号链接<!--link--> wildfly ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /opt/wildfly-<span class="nv">$WILDFLY_VERSION</span> /opt/wildfly</code></pre></div>
-<p>WildFly 将在 wildfly 用户下运行， wildfly 用户需要访问 WildFly 安装目录的权限。</p>
-
-<p>使用 <!--link:linux-chown-command-->chown 命令<!--link-->将目录所有权更改为用户和组 <code>wildfly</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -RH wildfly: /opt/wildfly</code></pre></div>
-<h2 id="第4步-配置systemd">第4步：配置Systemd</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">WILDFLY_VERSION</span><span class="o">=</span>16.0.0.Final
+wget https://download.jboss.org/wildfly/<span class="nv">$WILDFLY_VERSION</span>/wildfly-<span class="nv">$WILDFLY_VERSION</span>.tar.gz -P /tmp
+</code></pre></div><p>下载完成后，<!-- raw HTML omitted -->解压缩 <code>tar.gz</code> 文件<!-- raw HTML omitted -->并将其移动到 <code>/opt</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo tar xf /tmp/wildfly-<span class="nv">$WILDFLY_VERSION</span>.tar.gz -C /opt/
+</code></pre></div><p>接下来，创建一个指向 WildFly 安装目录的<!-- raw HTML omitted -->符号链接<!-- raw HTML omitted --> wildfly ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /opt/wildfly-<span class="nv">$WILDFLY_VERSION</span> /opt/wildfly
+</code></pre></div><p>WildFly 将在 wildfly 用户下运行， wildfly 用户需要访问 WildFly 安装目录的权限。</p>
+<p>使用 <!-- raw HTML omitted -->chown 命令<!-- raw HTML omitted -->将目录所有权更改为用户和组 <code>wildfly</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -RH wildfly: /opt/wildfly
+</code></pre></div><h2 id="4systemd">第4步：配置Systemd</h2>
 <p>WildFly 包中包含将 WildFly 作为服务运行所必需的文件。</p>
-
-<p>首先<!--link:how-to-create-directories-in-linux-with-the-mkdir-command-->创建一个目录<!--link--> <code>/etc/wildfly</code>，用来存放 WildFly 的配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /etc/wildfly</code></pre></div>
-<p>将配置文件复制到 <code>/etc/wildfly</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/</code></pre></div>
-<p>此文件允许您指定 WildFly 模式和绑定地址。默认情况下， WildFly 将以独立模式运行，并将侦听所有网络接口。您可以根据需要编辑文件。</p>
-
+<p>首先<!-- raw HTML omitted -->创建一个目录<!-- raw HTML omitted --> <code>/etc/wildfly</code>，用来存放 WildFly 的配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /etc/wildfly
+</code></pre></div><p>将配置文件复制到 <code>/etc/wildfly</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
+</code></pre></div><p>此文件允许您指定 WildFly 模式和绑定地址。默认情况下， WildFly 将以独立模式运行，并将侦听所有网络接口。您可以根据需要编辑文件。</p>
 <p>/etc/wildfly/wildfly.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># The configuration you want to run</span>
 <span class="nv">WILDFLY_CONFIG</span><span class="o">=</span>standalone.xml
@@ -204,46 +183,41 @@ wget https://download.jboss.org/wildfly/<span class="nv">$WILDFLY_VERSION</span>
 <span class="nv">WILDFLY_MODE</span><span class="o">=</span>standalone
 
 <span class="c1"># The address to bind to</span>
-<span class="nv">WILDFLY_BIND</span><span class="o">=</span><span class="m">0</span>.0.0.0</code></pre></div>
-<p>接下来将 WildFly 的 <code>launch.sh</code> 脚本复制到 <code>/opt/wildfly/bin/</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/launch.sh /opt/wildfly/bin/</code></pre></div>
-<p>bin目录中的脚本必须具有可执行标志：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sh -c <span class="s1">&#39;chmod +x /opt/wildfly/bin/*.sh&#39;</span></code></pre></div>
-<p>将名为 <code>systemd</code> 的单元文件复制到 <code>/etc/systemd/system/</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/</code></pre></div>
-<p>通知 <code>systemd</code> 我们创建了一个新的单元文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload</code></pre></div>
-<p>启动 WildFly 服务，并启用随系统自动启动：</p>
+<span class="nv">WILDFLY_BIND</span><span class="o">=</span>0.0.0.0
+</code></pre></div><p>接下来将 WildFly 的 <code>launch.sh</code> 脚本复制到 <code>/opt/wildfly/bin/</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/launch.sh /opt/wildfly/bin/
+</code></pre></div><p>bin目录中的脚本必须具有可执行标志：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sh -c <span class="s1">&#39;chmod +x /opt/wildfly/bin/*.sh&#39;</span>
+</code></pre></div><p>将名为 <code>systemd</code> 的单元文件复制到 <code>/etc/systemd/system/</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /opt/wildfly/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/
+</code></pre></div><p>通知 <code>systemd</code> 我们创建了一个新的单元文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
+</code></pre></div><p>启动 WildFly 服务，并启用随系统自动启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start wildfly
-sudo systemctl <span class="nb">enable</span> wildfly</code></pre></div>
-<p>验证服务是否正在运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status wildfly</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● wildfly.service - The WildFly Application Server
+sudo systemctl <span class="nb">enable</span> wildfly
+</code></pre></div><p>验证服务是否正在运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status wildfly
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● wildfly.service - The WildFly Application Server
    Loaded: loaded <span class="o">(</span>/etc/systemd/system/wildfly.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
-   Active: active <span class="o">(</span>running<span class="o">)</span> since Fri <span class="m">2019</span>-03-01 <span class="m">20</span>:13:39 UTC<span class="p">;</span> 3s ago
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Fri 2019-03-01 20:13:39 UTC<span class="p">;</span> 3s ago
  Main PID: <span class="m">3680</span> <span class="o">(</span>launch.sh<span class="o">)</span>
-   CGroup: /system.slice/wildfly.service</code></pre></div>
-<h2 id="第5步-调整防火墙">第5步：调整防火墙</h2>
-
-<p>如果您的服务器受<!--link:how-to-setup-a-firewall-with-firewalld-on-centos-7-->防火墙<!--link-->保护，并且您想要从本地网络外部访问 WildFly 实例，则还需要打开端口8080。</p>
-
+   CGroup: /system.slice/wildfly.service
+</code></pre></div><h2 id="5">第5步：调整防火墙</h2>
+<p>如果您的服务器受<!-- raw HTML omitted -->防火墙<!-- raw HTML omitted -->保护，并且您想要从本地网络外部访问 WildFly 实例，则还需要打开端口8080。</p>
 <p>使用以下命令打开必要的端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo firewall-cmd --zone<span class="o">=</span>public --permanent --add-port<span class="o">=</span><span class="m">8080</span>/tcp
-sudo firewall-cmd --reload</code></pre></div>
-<p>在生产环境中运行 WildFly 应用程序时，您很可能会拥有负载均衡器或<!--link:nginx-reverse-proxy-->反向代理<!--link-->，并且最佳做法是仅将端口 8080 的访问权限限制到内部网络。</p>
-
-<h2 id="步骤6-配置-wildfly-身份验证">步骤6：配置 WildFly 身份验证</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo firewall-cmd --zone<span class="o">=</span>public --permanent --add-port<span class="o">=</span>8080/tcp
+sudo firewall-cmd --reload
+</code></pre></div><p>在生产环境中运行 WildFly 应用程序时，您很可能会拥有负载均衡器或<!-- raw HTML omitted -->反向代理<!-- raw HTML omitted -->，并且最佳做法是仅将端口 8080 的访问权限限制到内部网络。</p>
+<h2 id="6-wildfly-">步骤6：配置 WildFly 身份验证</h2>
 <p>现在 WildFly 已安装并运行，下一步是创建一个能够使用管理控制台进行连接或使用 CLI 远程连接的用户。</p>
-
 <p>要添加新用户，请使用位于WildFly的 bin 目录中的脚本 <code>add-user.sh</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo /opt/wildfly/bin/add-user.sh</code></pre></div>
-<p>系统会询问您要添加的用户类型：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo /opt/wildfly/bin/add-user.sh
+</code></pre></div><p>系统会询问您要添加的用户类型：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">What <span class="nb">type</span> of user <span class="k">do</span> you wish to add? 
  a<span class="o">)</span> Management User <span class="o">(</span>mgmt-users.properties<span class="o">)</span> 
  b<span class="o">)</span> Application User <span class="o">(</span>application-users.properties<span class="o">)</span>
-<span class="o">(</span>a<span class="o">)</span>:</code></pre></div>
-<p>选择 <code>a</code> 并按下 回车键</p>
-
+<span class="o">(</span>a<span class="o">)</span>:
+</code></pre></div><p>选择 <code>a</code> 并按下 回车键</p>
 <p>接下来，该脚本将提示您输入新用户的详细信息：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter the details of the new user to add.
 Using realm <span class="s1">&#39;ManagementRealm&#39;</span> as discovered from the existing property files.
@@ -254,7 +228,7 @@ Password recommendations are listed below. To modify these restrictions edit the
  - The password should contain at least <span class="m">8</span> characters, <span class="m">1</span> alphabetic character<span class="o">(</span>s<span class="o">)</span>, <span class="m">1</span> digit<span class="o">(</span>s<span class="o">)</span>, <span class="m">1</span> non-alphanumeric symbol<span class="o">(</span>s<span class="o">)</span>
 Password : 
 Re-enter Password : 
-What groups <span class="k">do</span> you want this user to belong to? <span class="o">(</span>Please enter a comma separated list, or leave blank <span class="k">for</span> none<span class="o">)[</span>  <span class="o">]</span>: 
+What groups <span class="k">do</span> you want this user to belong to? <span class="o">(</span>Please enter a comma separated list, or leave blank <span class="k">for</span> none<span class="o">)</span><span class="o">[</span>  <span class="o">]</span>: 
 About to add user <span class="s1">&#39;buzheng&#39;</span> <span class="k">for</span> realm <span class="s1">&#39;ManagementRealm&#39;</span>
 Is this correct yes/no? yes
 Added user <span class="s1">&#39;buzheng&#39;</span> to file <span class="s1">&#39;/opt/wildfly-16.0.0.Final/standalone/configuration/mgmt-users.properties&#39;</span>
@@ -264,44 +238,29 @@ Added user <span class="s1">&#39;buzheng&#39;</span> with groups  to file <span 
 Is this new user going to be used <span class="k">for</span> one AS process to connect to another AS process? 
 e.g. <span class="k">for</span> a slave host controller connecting to the master or <span class="k">for</span> a Remoting connection <span class="k">for</span> server to server EJB calls.
 yes/no? yes
-To represent the user add the following to the server-identities definition &lt;secret <span class="nv">value</span><span class="o">=</span><span class="s2">&#34;UGFuMjNkZWo3NyNA&#34;</span> /&gt;</code></pre></div>
-<p>新用户将添加到用于身份验证的属性文件中。</p>
-
-<h2 id="第6步-测试-wildfly-安装">第6步：测试 WildFly 安装</h2>
-
-<p>要访问默认的WildFly页面，请打开<!--link:how-to-install-google-chrome-web-browser-on-debian-9-->浏览器<!--link-->并键入：http://<your_domain_or_IP_address>:8080</p>
-
+To represent the user add the following to the server-identities definition &lt;secret <span class="nv">value</span><span class="o">=</span><span class="s2">&#34;UGFuMjNkZWo3NyNA&#34;</span> /&gt;
+</code></pre></div><p>新用户将添加到用于身份验证的属性文件中。</p>
+<h2 id="6-wildfly-1">第6步：测试 WildFly 安装</h2>
+<p>要访问默认的WildFly页面，请打开<!-- raw HTML omitted -->浏览器<!-- raw HTML omitted -->并键入：http://&lt;your_domain_or_IP_address&gt;:8080</p>
 <p>假设安装成功，将出现类似于以下内容的屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-wildfly-on-centos-7/wildfly-home.jpg" alt=""></figure>
-
-<h2 id="第7步-访问wildfly管理控制台">第7步：访问WildFly管理控制台</h2>
-
-<h3 id="命令行界面">命令行界面</h3>
-
+<p><img src="/images/linux/how-to-install-wildfly-on-centos-7/wildfly-home.jpg" alt=""></p>
+<h2 id="7wildfly">第7步：访问WildFly管理控制台</h2>
+<h3 id="heading1">命令行界面</h3>
 <p>要从命令行访问 WildFly 管理控制台，您可以使用 <code>jboss-cli.sh</code> 脚本。</p>
-
 <p>导航到 WildFly 的 bin 目录并使用以下 <code>--connect</code> 选项运行脚本：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/wildfly/bin/
-./jboss-cli.sh --connect</code></pre></div>
-<p>系统将要求您输入管理用户名和密码（在步骤6中创建）：</p>
+./jboss-cli.sh --connect
+</code></pre></div><p>系统将要求您输入管理用户名和密码（在步骤6中创建）：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Authenticating against security realm: ManagementRealm
 Username: buzheng
-Password:</code></pre></div>
-<p>登录后，控制台提示符将变为 <code>[standalone@localhost:9990 /]</code>。键入 <code>help</code> 以获取命令和命令语法列表。</p>
-
+Password:
+</code></pre></div><p>登录后，控制台提示符将变为 <code>[standalone@localhost:9990 /]</code>。键入 <code>help</code> 以获取命令和命令语法列表。</p>
 <p>从这里，您可以部署和取消部署应用程序，管理用户和组以及配置和监视 WildFly 服务器。</p>
-
-<h3 id="web界面">Web界面</h3>
-
+<h3 id="web">Web界面</h3>
 <p>如果您更喜欢从GUI管理服务器，WildFly 还提供基于 Web 的控制台。</p>
-
 <p>默认情况下，WildFly 管理控制台仅在 localhost 中可用 <code>http://localhost:9990/console</code>。使用您在步骤6中创建的用户登录。</p>
-
-<figure><img src="/images/linux/how-to-install-wildfly-on-centos-7/wildfly-console.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wildfly-on-centos-7/wildfly-console.jpg" alt=""></p>
 <p>如果你想从远程地点访问控制台，您需要做稍微修改 <code>wildfly.service</code> ，<code>wildfly.conf</code> 和 <code>launch.sh</code> 文件。</p>
-
 <p>打开 <code>/etc/wildfly/wildfly.conf</code> 并附加到 <code>WILDFLY_CONSOLE_BIND=0.0.0.0</code> 文件的末尾。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># The configuration you want to run</span>
 <span class="nv">WILDFLY_CONFIG</span><span class="o">=</span>standalone.xml
@@ -310,25 +269,25 @@ Password:</code></pre></div>
 <span class="nv">WILDFLY_MODE</span><span class="o">=</span>standalone
 
 <span class="c1"># The address to bind to</span>
-<span class="nv">WILDFLY_BIND</span><span class="o">=</span><span class="m">0</span>.0.0.0
+<span class="nv">WILDFLY_BIND</span><span class="o">=</span>0.0.0.0
 
 <span class="c1"># The address console to bind to</span>
-<span class="nv">WILDFLY_CONSOLE_BIND</span><span class="o">=</span><span class="m">0</span>.0.0.0</code></pre></div>
-<p>打开 <code>/opt/wildfly/bin/launch.sh</code> 并编辑突出显示的行：</p>
+<span class="nv">WILDFLY_CONSOLE_BIND</span><span class="o">=</span>0.0.0.0
+</code></pre></div><p>打开 <code>/opt/wildfly/bin/launch.sh</code> 并编辑突出显示的行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
-<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;x</span><span class="nv">$WILDFLY_HOME</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;x&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="s2">x</span><span class="nv">$WILDFLY_HOME</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;x&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nv">WILDFLY_HOME</span><span class="o">=</span><span class="s2">&#34;/opt/wildfly&#34;</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;domain&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span><span class="o">=</span> <span class="s2">&#34;domain&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nv">$WILDFLY_HOME</span>/bin/domain.sh -c <span class="nv">$2</span> -b <span class="nv">$3</span> -bmanagement <span class="nv">$4</span>
 <span class="k">else</span>
     <span class="nv">$WILDFLY_HOME</span>/bin/standalone.sh -c <span class="nv">$2</span> -b <span class="nv">$3</span> -bmanagement <span class="nv">$4</span>
-<span class="k">fi</span></code></pre></div>
-<p>重新启动服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart wildfly</code></pre></div>
-<p>打开 <code>/etc/systemd/system/wildfly.service</code> 并编辑突出显示的行：</p>
+<span class="k">fi</span>
+</code></pre></div><p>重新启动服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart wildfly
+</code></pre></div><p>打开 <code>/etc/systemd/system/wildfly.service</code> 并编辑突出显示的行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit<span class="o">]</span>
 <span class="nv">Description</span><span class="o">=</span>The WildFly Application Server
 <span class="nv">After</span><span class="o">=</span>syslog.target network.target
@@ -344,15 +303,13 @@ Password:</code></pre></div>
 <span class="nv">StandardOutput</span><span class="o">=</span>null
 
 <span class="o">[</span>Install<span class="o">]</span>
-<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</code></pre></div>
-<p>通知 <code>systemd</code> 单元文件已更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload</code></pre></div>
-<p>通过执行以下命令重新启动 WildFly 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart wildfly</code></pre></div>
-<p>假设 <code>9990</code> 防火墙中没有阻止端口，您应该能够访问 WildFly 管理控制台 http://<your_domain_or_IP_address>:9990/console。</p>
-
-<h2 id="结论">结论</h2>
-
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div><p>通知 <code>systemd</code> 单元文件已更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
+</code></pre></div><p>通过执行以下命令重新启动 WildFly 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart wildfly
+</code></pre></div><p>假设 <code>9990</code> 防火墙中没有阻止端口，您应该能够访问 WildFly 管理控制台 http://&lt;your_domain_or_IP_address&gt;:9990/console。</p>
+<h2 id="heading2">结论</h2>
 <p>您已在CentOS 7系统上成功安装了WildFly。您现在可以访问官方 <a href="http://docs.wildfly.org/15/">WildFly 文档</a>并了解有关 WildFly 功能的更多信息。</p>
       </div><ul class="pa0">
   
@@ -434,25 +391,23 @@ Password:</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#第1步-安装-java-openjdk">第1步：安装 Java OpenJDK</a></li>
-<li><a href="#第2步-创建用户">第2步：创建用户</a></li>
-<li><a href="#第3步-安装wildfly">第3步：安装WildFly</a></li>
-<li><a href="#第4步-配置systemd">第4步：配置Systemd</a></li>
-<li><a href="#第5步-调整防火墙">第5步：调整防火墙</a></li>
-<li><a href="#步骤6-配置-wildfly-身份验证">步骤6：配置 WildFly 身份验证</a></li>
-<li><a href="#第6步-测试-wildfly-安装">第6步：测试 WildFly 安装</a></li>
-<li><a href="#第7步-访问wildfly管理控制台">第7步：访问WildFly管理控制台</a>
-<ul>
-<li><a href="#命令行界面">命令行界面</a></li>
-<li><a href="#web界面">Web界面</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#1-java-openjdk">第1步：安装 Java OpenJDK</a></li>
+    <li><a href="#2">第2步：创建用户</a></li>
+    <li><a href="#3wildfly">第3步：安装WildFly</a></li>
+    <li><a href="#4systemd">第4步：配置Systemd</a></li>
+    <li><a href="#5">第5步：调整防火墙</a></li>
+    <li><a href="#6-wildfly-">步骤6：配置 WildFly 身份验证</a></li>
+    <li><a href="#6-wildfly-1">第6步：测试 WildFly 安装</a></li>
+    <li><a href="#7wildfly">第7步：访问WildFly管理控制台</a>
+      <ul>
+        <li><a href="#heading1">命令行界面</a></li>
+        <li><a href="#web">Web界面</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

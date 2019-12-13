@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-11-13T00:00:00+00:00" />
 <meta itemprop="name" content="正则匹配连续数字">
 <meta itemprop="description" content="今天有个网友问了匹配连续数字的正则，刚好无事，就帮忙写了一下，算是当作温习一下吧。">
-
-
 <meta itemprop="datePublished" content="2015-11-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-11-13T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="282">
+<meta itemprop="wordCount" content="278">
 
 
 
-<meta itemprop="keywords" content="正则表达式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="正则表达式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="正则匹配连续数字"/>
 <meta name="twitter:description" content="今天有个网友问了匹配连续数字的正则，刚好无事，就帮忙写了一下，算是当作温习一下吧。"/>
 
@@ -141,13 +138,13 @@
           
   
           <p>今天有个网友问了匹配连续数字的正则，刚好无事，就帮忙写了一下，算是当作温习一下吧。</p>
-
-<p>要求如下：
-- 纯数字
-- 5-7位之间
-- 前三位相同
-- 从第四位开始连续</p>
-
+<p>要求如下：</p>
+<ul>
+<li>纯数字</li>
+<li>5-7位之间</li>
+<li>前三位相同</li>
+<li>从第四位开始连续</li>
+</ul>
 <p>如下面的例子：</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="m">11123</span>       <span class="c1">#正确</span>
 <span class="m">22234</span>       <span class="c1">#正确</span>
@@ -157,22 +154,19 @@
 <span class="m">0001234</span>     <span class="c1">#正确</span>
 <span class="m">00012345</span>    <span class="c1">#错误：此行长度超标</span>
 <span class="m">000234</span>      <span class="c1">#错误：第3位与第4位不连续</span>
-<span class="m">111235</span>      <span class="c1">#错误：第5位和第6位不连续</span></code></pre></div>
-<p><strong>1, 匹配三位相同数字</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-regex" data-lang="regex">(\d)\1{2}</code></pre></div>
-<p><strong>2, 匹配连续数字</strong></p>
-
+<span class="m">111235</span>      <span class="c1">#错误：第5位和第6位不连续</span>
+</code></pre></div><p><strong>1, 匹配三位相同数字</strong></p>
+<pre><code class="language-regex" data-lang="regex">(\d)\1{2}
+</code></pre><p><strong>2, 匹配连续数字</strong></p>
 <p>匹配连续数字可以通过零宽断言来匹配，当然也没什么好办法，只能通过列举，如下两行都可以匹配3位连续数字</p>
-<div class="highlight"><pre class="chroma"><code class="language-regex" data-lang="regex">(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){2}\d
-\d((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2}</code></pre></div>
-<p>说明： 第一行采用正向零宽断言，第二行采用反向零宽断言</p>
-
+<pre><code class="language-regex" data-lang="regex">(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){2}\d
+\d((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2}
+</code></pre><p>说明： 第一行采用正向零宽断言，第二行采用反向零宽断言</p>
 <p><strong>结论</strong></p>
-
 <p>集合本题中的要求，由于要求相同前三，并且后面连续从第三位开始，完成正则如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-regex" data-lang="regex">^(\d)\1{2}((?&lt;=(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)))\d){2,4}$
-^(\d)\1{2}((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2,4}$</code></pre></div>
-<p>Done.</p>
+<pre><code class="language-regex" data-lang="regex">^(\d)\1{2}((?&lt;=(0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)))\d){2,4}$
+^(\d)\1{2}((?&lt;=0)1|(?&lt;=1)2|(?&lt;=2)3|(?&lt;=3)4|(?&lt;=4)5|(?&lt;=5)6|(?&lt;=6)7|(?&lt;=7)8|(?&lt;=8)9){2,4}$
+</code></pre><p>Done.</p>
       </div><ul class="pa0">
   
    <li class="list di">

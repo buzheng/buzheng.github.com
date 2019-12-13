@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 CentOS 7 上安装 Plex Media Server" />
 <meta property="og:description" content="Plex 是一种流媒体服务器，可将您的所有视频，音乐和照片集合在一起，并随时随地将其传输到您的设备。
-
 在本教程中，我们将向您展示如何在 CentOS 7 上安装和配置 Plex Media Server。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-plex-media-server-on-centos-7/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-04-10T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上安装 Plex Media Server">
 <meta itemprop="description" content="Plex 是一种流媒体服务器，可将您的所有视频，音乐和照片集合在一起，并随时随地将其传输到您的设备。
-
 在本教程中，我们将向您展示如何在 CentOS 7 上安装和配置 Plex Media Server。">
-
-
 <meta itemprop="datePublished" content="2019-04-10T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-10T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1227">
+<meta itemprop="wordCount" content="1214">
 
 
 
-<meta itemprop="keywords" content="centos,plex,媒体服务器," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,plex,媒体服务器," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上安装 Plex Media Server"/>
 <meta name="twitter:description" content="Plex 是一种流媒体服务器，可将您的所有视频，音乐和照片集合在一起，并随时随地将其传输到您的设备。
-
 在本教程中，我们将向您展示如何在 CentOS 7 上安装和配置 Plex Media Server。"/>
 
   </head>
@@ -147,63 +141,53 @@
           
   
           <p>Plex 是一种流媒体服务器，可将您的所有视频，音乐和照片集合在一起，并随时随地将其传输到您的设备。</p>
-
 <p>在本教程中，我们将向您展示如何在 CentOS 7 上安装和配置 <a href="https://www.plex.tv/">Plex Media Server</a>。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="安装-plex-media-server">安装 Plex Media Server</h2>
-
+<h2 id="-plex-media-server">安装 Plex Media Server</h2>
 <p>在 CentOS 7 上安装和管理 Plex Media Server 的推荐方法是使用 Plex 官方存储库。它不需要技术知识，安装和配置媒体服务器不应超过 20 分钟。</p>
-
 <p>以下步骤描述了如何在 CentOS 系统上安装 Plex Media Server ：</p>
-
 <ol>
-<li><p>添加 Plex 存储库</p>
-
+<li>
+<p>添加 Plex 存储库</p>
 <p>要启用 Plex 存储库，请打开文本编辑器并在 <code>/etc/yum.repos.d/</code> 目录中创建一个 新的 YUM 存储库配置文件<code>plex.repo</code>：</p>
-
 <p>文件 <code>/etc/yum.repos.d/plex.repo</code> 的内容:</p>
-<div class="highlight"><pre class="chroma"><code class="language-yum" data-lang="yum">[PlexRepo]
+<pre><code class="language-yum" data-lang="yum">[PlexRepo]
 name=PlexRepo
 baseurl=https://downloads.plex.tv/repo/rpm/$basearch/
 enabled=1
 gpgkey=https://downloads.plex.tv/plex-keys/PlexSign.key
-gpgcheck=1</code></pre></div></li>
-
-<li><p>安装 Plex</p>
-
+gpgcheck=1
+</code></pre></li>
+<li>
+<p>安装 Plex</p>
 <p>使用以下命令安装最新版本的 Plex Media Server ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install plexmediaserver</code></pre></div>
-<p>安装完成后，启动 <code>plexmediaserver</code> 服务并使用以下命令使其在系统引导时启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start plexmediaserver.service
-sudo systemctl enable plexmediaserver.service</code></pre></div></li>
-
-<li><p>验证安装</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install plexmediaserver
+</code></pre><p>安装完成后，启动 <code>plexmediaserver</code> 服务并使用以下命令使其在系统引导时启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start plexmediaserver.service
+sudo systemctl enable plexmediaserver.service
+</code></pre></li>
+<li>
+<p>验证安装</p>
 <p>要验证 Plex 服务是否正在运行，请执行以下操作：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status plexmediaserver</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● plexmediaserver.service - Plex Media Server for Linux
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status plexmediaserver
+</code></pre><pre><code class="language-output" data-lang="output">● plexmediaserver.service - Plex Media Server for Linux
    Loaded: loaded (/usr/lib/systemd/system/plexmediaserver.service; enabled; vendor preset: disabled)
    Active: active (running) since Sat 2018-07-21 22:22:22 UTC; 12s ago
  Main PID: 13940 (Plex Media Serv)
-   CGroup: /system.slice/plexmediaserver.service</code></pre></div></li>
+   CGroup: /system.slice/plexmediaserver.service
+</code></pre></li>
 </ol>
-
-<h2 id="调整防火墙规则">调整防火墙规则</h2>
-
-<p>现在 Plex 已安装并正在运行，您需要<!--link:how-to-setup-a-firewall-with-firewalld-on-centos-7-->配置防火墙<!--link-->以允许 Plex Media Server 特定端口上的流量。</p>
-
+<h2 id="heading1">调整防火墙规则</h2>
+<p>现在 Plex 已安装并正在运行，您需要<!-- raw HTML omitted -->配置防火墙<!-- raw HTML omitted -->以允许 Plex Media Server 特定端口上的流量。</p>
 <blockquote>
 <p>如果您的系统未启用防火墙，则可以跳过本节。</p>
 </blockquote>
-
 <p>打开您选择的文本编辑器并创建以下 Firewalld 服务文件 <code>/etc/firewalld/services/plexmediaserver.xml</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
 <span class="nt">&lt;service</span> <span class="na">version=</span><span class="s">&#34;1.0&#34;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;short&gt;</span>plexmediaserver<span class="nt">&lt;/short&gt;</span>
-<span class="nt">&lt;description&gt;</span>Plex TV Media Server<span class="nt">&lt;/description&gt;</span>
+<span class="nt">&lt;short</span><span class="nt">&gt;</span>plexmediaserver<span class="nt">&lt;/short&gt;</span>
+<span class="nt">&lt;description</span><span class="nt">&gt;</span>Plex TV Media Server<span class="nt">&lt;/description&gt;</span>
 <span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">&#34;1900&#34;</span> <span class="na">protocol=</span><span class="s">&#34;udp&#34;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">&#34;5353&#34;</span> <span class="na">protocol=</span><span class="s">&#34;udp&#34;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">&#34;32400&#34;</span> <span class="na">protocol=</span><span class="s">&#34;tcp&#34;</span><span class="nt">/&gt;</span>
@@ -212,12 +196,13 @@ sudo systemctl enable plexmediaserver.service</code></pre></div></li>
 <span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">&#34;32413&#34;</span> <span class="na">protocol=</span><span class="s">&#34;udp&#34;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">&#34;32414&#34;</span> <span class="na">protocol=</span><span class="s">&#34;udp&#34;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;port</span> <span class="na">port=</span><span class="s">&#34;32469&#34;</span> <span class="na">protocol=</span><span class="s">&#34;tcp&#34;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/service&gt;</span></code></pre></div>
-<p>保存文件并键入以下命令应用新的防火墙规则：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --add-service=plexmediaserver --permanent
-sudo firewall-cmd --reload</code></pre></div>
-<p>最后检查新防火墙规则是否成功应用于：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --list-all</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">public (active)
+<span class="nt">&lt;/service&gt;</span>
+</code></pre></div><p>保存文件并键入以下命令应用新的防火墙规则：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --add-service=plexmediaserver --permanent
+sudo firewall-cmd --reload
+</code></pre><p>最后检查新防火墙规则是否成功应用于：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --list-all
+</code></pre><pre><code class="language-output" data-lang="output">public (active)
   target: default
   icmp-block-inversion: no
   interfaces: eth0
@@ -229,61 +214,36 @@ sudo firewall-cmd --reload</code></pre></div>
   forward-ports:
   source-ports:
   icmp-blocks:
-  rich rules:</code></pre></div>
-<h2 id="配置-plex-媒体服务器">配置 Plex 媒体服务器</h2>
-
+  rich rules:
+</code></pre><h2 id="-plex-">配置 Plex 媒体服务器</h2>
 <p>创建用于保存媒体文件的目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /opt/plexmedia/{movies,series}</code></pre></div>
-<p>Plex Media Server 作为用户 <code>plex</code> 运行，该用户需要具有对媒体文件和目录的读取和执行权限。要<!--link:linux-chown-command-->设置正确的所有权<!--link-->，请运行以下命令。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R plex: /opt/plexmedia</code></pre></div>
-<p>您可以选择任何位置存储媒体文件，只需确保设置正确的权限即可。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /opt/plexmedia/{movies,series}
+</code></pre><p>Plex Media Server 作为用户 <code>plex</code> 运行，该用户需要具有对媒体文件和目录的读取和执行权限。要<!-- raw HTML omitted -->设置正确的所有权<!-- raw HTML omitted -->，请运行以下命令。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown -R plex: /opt/plexmedia
+</code></pre><p>您可以选择任何位置存储媒体文件，只需确保设置正确的权限即可。</p>
 <p>打开浏览器，键入 <code>http://YOUR_SERVER_IP:32400/web</code> ，您将看到一个设置向导，它将指导您通过 Plex 配置：</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-sign-in.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-sign-in.jpg" alt=""></p>
 <p>要使用 Plex Media Server ，您需要创建一个帐户。</p>
-
 <p>按下 Google ， Facebook 按钮使用第三方账户或按下电子邮件按钮创建免费的 Plex 帐户。如果您想要访问高级功能，可以购买 <a href="https://www.plex.tv/plex-pass/">Plex Pass</a> 计划。</p>
-
 <p>注册后，您将被重定向到如下页面，其中包含有关 Plex 如何工作的信息，如下所示：</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/how-plex-works.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/how-plex-works.jpg" alt=""></p>
 <p>单击 <code>Got it</code> 按钮。</p>
-
 <p>在下一个屏幕上输入您的 Plex 服务器名称， 选中该复选框 <code>Allow me to access my media outside my home</code>，然后单击 <code>Next</code> 。</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-server-setup-hostname.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-server-setup-hostname.jpg" alt=""></p>
 <p>下一步是添加媒体库。单击 <code>Add Library</code> 按钮。</p>
-
 <p>弹出窗口显示时，选择电影作为库类型并单击 <code>Next</code> 。</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-add-library.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-add-library.jpg" alt=""></p>
 <p>在下一步中，单击 <code>Browse for media folder</code> 并添加包含 Movies 媒体文件的目录的路径，在我们的示例中是 <code>/opt/plexmedia/movies</code> 。</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-movies-folder.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-movies-folder.jpg" alt=""></p>
 <p>单击 <code>Add</code> 按钮，然后单击 <code>Add Library</code> 。</p>
-
 <p>您可以根据需要添加任意数量的库。</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-library.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-library.jpg" alt=""></p>
 <p>单击 <code>Next</code> ，然后 <code>Done</code> 您将被重定向到 Plex Web 仪表板。</p>
-
-<figure><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-dashboard.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-plex-media-server-on-centos-7/plex-media-server-dashboard.jpg" alt=""></p>
 <p>现在您已经完成了设置向导，您可以开始探索 Plex 选项及其可以执行的所有操作。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>您已经学习了如何在 CentOS 7 计算机上安装 Plex Media Server 以及如何创建媒体库。</p>
-
 <p>您现在可以在 Android ， iPhone ，智能电视， Xbox ， Roku 或任何其他受支持的设备上安装 Plex 应用程序。您可以在 <a href="https://www.plex.tv/media-server-downloads/#plex-app">Plex 下载</a>页面上找到支持的应用程序和设备列表，也可以从设备的应用程序商店中安装该应用程序。</p>
-
 <p>您还应该查看官方的 <a href="https://support.plex.tv/articles/200264746-quick-start-step-by-step-guides/">Plex 快速入门</a>指南和 <a href="https://support.plex.tv/articles/categories/plex-media-server/">Plex 文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -361,16 +321,13 @@ sudo firewall-cmd --reload</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-plex-media-server">安装 Plex Media Server</a></li>
-<li><a href="#调整防火墙规则">调整防火墙规则</a></li>
-<li><a href="#配置-plex-媒体服务器">配置 Plex 媒体服务器</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-plex-media-server">安装 Plex Media Server</a></li>
+    <li><a href="#heading1">调整防火墙规则</a></li>
+    <li><a href="#-plex-">配置 Plex 媒体服务器</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

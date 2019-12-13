@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Debian 9 上安装 Apache" />
 <meta property="og:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。
-
 在本教程中，我们将介绍在 Debian 9 服务器上安装 Apache 的步骤。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-apache-on-debian-9/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-06T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 9 上安装 Apache">
 <meta itemprop="description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。
-
 在本教程中，我们将介绍在 Debian 9 服务器上安装 Apache 的步骤。">
-
-
 <meta itemprop="datePublished" content="2019-05-06T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-06T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1043">
+<meta itemprop="wordCount" content="1037">
 
 
 
-<meta itemprop="keywords" content="apache,ubuntu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="apache,ubuntu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Debian 9 上安装 Apache"/>
 <meta name="twitter:description" content="Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。
-
 在本教程中，我们将介绍在 Debian 9 服务器上安装 Apache 的步骤。"/>
 
   </head>
@@ -147,62 +141,48 @@
           
   
           <p>Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。它是一个开源和跨平台的 HTTP 服务器，为大部分互联网网站提供支持。 Apache 提供了许多强大的功能，可以通过其他模块进行扩展。</p>
-
 <p>在本教程中，我们将介绍在 Debian 9 服务器上安装 Apache 的步骤。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="安装-apache">安装 Apache</h2>
-
+<h2 id="-apache">安装 Apache</h2>
 <p>Apache 在默认的 Debian 软件仓库中可用，安装非常简单。</p>
-
 <p>首先更新软件包索引，然后 <code>apache2</code> 使用以下命令安装软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install apache2</code></pre></div>
-<p>就是这样，安装并自动启动 Apache ，您可以使用以下命令检查 Apache 服务的状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status apache2</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● apache2.service - The Apache HTTP Server
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install apache2
+</code></pre><p>就是这样，安装并自动启动 Apache ，您可以使用以下命令检查 Apache 服务的状态：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status apache2
+</code></pre><pre><code class="language-output" data-lang="output">● apache2.service - The Apache HTTP Server
    Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
    Active: active (running) since Thu 2018-08-23 20:04:47 UTC; 13s ago
  Main PID: 11604 (apache2)
    CGroup: /system.slice/apache2.service
            ├─11604 /usr/sbin/apache2 -k start
            ├─11608 /usr/sbin/apache2 -k start
-           └─11609 /usr/sbin/apache2 -k start</code></pre></div>
-<h2 id="调整防火墙">调整防火墙</h2>
-
+           └─11609 /usr/sbin/apache2 -k start
+</code></pre><h2 id="heading1">调整防火墙</h2>
 <p>如果使用 iptables 过滤与系统的连接，则需要打开 HTTP (<code>80</code>) 和 HTTPS (<code>443</code>) 端口。</p>
-
 <p>通过发出以下命令打开必要的端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT</code></pre></div>
-<h2 id="验证-apache-安装">验证 Apache 安装</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+</code></pre><h2 id="-apache-">验证 Apache 安装</h2>
 <p>要验证一切正常，请打开浏览器，键入服务器 IP 地址或 doman 名称 <code>http://YOUR_IP_OR_DOMAIN/</code> ，您将看到默认的 Apache 欢迎页面，如下所示：</p>
-
-<figure><img src="/images/linux/how-to-install-apache-on-debian-9/apache-welcome-page.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-apache-on-debian-9/apache-welcome-page.jpg" alt=""></p>
 <p>该页面包含有关 Apache 配置文件，帮助程序脚本和目录位置的一些基本信息。</p>
-
-<h2 id="使用-systemctl-管理-apache-服务">使用 systemctl 管理 Apache 服务</h2>
-
+<h2 id="-systemctl--apache-">使用 systemctl 管理 Apache 服务</h2>
 <p>现在，在 Debian 系统上安装了 Apache ，您可以花一点时间查看并熟悉基本的 apache 服务管理命令：</p>
-
 <p>要停止 Apache 服务，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop apache2</code></pre></div>
-<p>键入以下内容再次启动它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start apache2</code></pre></div>
-<p>要重新启动 Apache 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2</code></pre></div>
-<p>使用以下新配置重新加载 Apache ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2</code></pre></div>
-<p>如果要禁用 Apache 服务随机自启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl disable apache2</code></pre></div>
-<p>并重新启用随机自启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable apache2</code></pre></div>
-<h2 id="apache-配置文件的结构和最佳实践">Apache 配置文件的结构和最佳实践</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop apache2
+</code></pre><p>键入以下内容再次启动它：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start apache2
+</code></pre><p>要重新启动 Apache 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
+</code></pre><p>使用以下新配置重新加载 Apache ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2
+</code></pre><p>如果要禁用 Apache 服务随机自启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl disable apache2
+</code></pre><p>并重新启用随机自启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable apache2
+</code></pre><h2 id="apache-">Apache 配置文件的结构和最佳实践</h2>
 <ul>
 <li>在基于 Debian 系统中， Apache 配置文件位于 <code>/etc/apache2</code> 目录中。</li>
 <li>主要的 Apache 配置文件是 <code>/etc/apache2/apache2.conf</code> 。</li>
@@ -214,17 +194,15 @@ sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT</code></pre></div>
 <li>包含全局配置片段的文件存储在 <code>/etc/apache2/conf-available</code> 目录中。 <code>conf-available</code> 中的配置片段可以通过 <code>a2enconf</code> 命令来启动，他会在  <code>/etc/apache2/conf-enabled</code> 目录中创建符号链接。同样，禁用则使用命令 <code>a2disconf</code> 。</li>
 <li>Apache 日志文件(<code>access.log</code> 和 <code>error.log</code>)位于 <code>/var/log/apache</code> 目录中。建议为每个虚拟主机使用不同的 <code>access</code> 和 <code>error</code> 日志文件。</li>
 <li>您可以将网站文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
-
 <ul>
 <li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
 <li><code>/var/www/&lt;site_name&gt;</code></li>
 <li><code>/var/www/html/&lt;site_name&gt;</code></li>
 <li><code>/opt/&lt;site_name&gt;</code></li>
-</ul></li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+</li>
+</ul>
+<h2 id="heading2">结论</h2>
 <p>您已在 Debian 9 服务器上成功安装了 Apache 。您现在可以开始部署应用程序并将 Apache 用作 Web 或代理服务器。</p>
       </div><ul class="pa0">
   
@@ -298,18 +276,15 @@ sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-apache">安装 Apache</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#验证-apache-安装">验证 Apache 安装</a></li>
-<li><a href="#使用-systemctl-管理-apache-服务">使用 systemctl 管理 Apache 服务</a></li>
-<li><a href="#apache-配置文件的结构和最佳实践">Apache 配置文件的结构和最佳实践</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-apache">安装 Apache</a></li>
+    <li><a href="#heading1">调整防火墙</a></li>
+    <li><a href="#-apache-">验证 Apache 安装</a></li>
+    <li><a href="#-systemctl--apache-">使用 systemctl 管理 Apache 服务</a></li>
+    <li><a href="#apache-">Apache 配置文件的结构和最佳实践</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

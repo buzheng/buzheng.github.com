@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何使用Rsync排除文件和目录" />
 <meta property="og:description" content="Rsync是一种快速且通用的命令行实用程序，可通过远程shell在两个位置之间同步文件和文件夹。
-
 使用Rsync，您可以在系统之间镜像数据，创建增量备份和复制文件。复制数据时，您可能希望根据其名称或位置排除一个或多个文件或目录。
-
 在本教程中，我们将向您展示如何使用rsync排除文件和目录。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-exclude-files-and-directories-with-rsync/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何使用Rsync排除文件和目录">
 <meta itemprop="description" content="Rsync是一种快速且通用的命令行实用程序，可通过远程shell在两个位置之间同步文件和文件夹。
-
 使用Rsync，您可以在系统之间镜像数据，创建增量备份和复制文件。复制数据时，您可能希望根据其名称或位置排除一个或多个文件或目录。
-
 在本教程中，我们将向您展示如何使用rsync排除文件和目录。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1159">
 
 
 
-<meta itemprop="keywords" content="rsync,terminal," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="rsync,terminal," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何使用Rsync排除文件和目录"/>
 <meta name="twitter:description" content="Rsync是一种快速且通用的命令行实用程序，可通过远程shell在两个位置之间同步文件和文件夹。
-
 使用Rsync，您可以在系统之间镜像数据，创建增量备份和复制文件。复制数据时，您可能希望根据其名称或位置排除一个或多个文件或目录。
-
 在本教程中，我们将向您展示如何使用rsync排除文件和目录。"/>
 
   </head>
@@ -153,79 +144,58 @@
           
   
           <p>Rsync是一种快速且通用的命令行实用程序，可通过远程shell在两个位置之间同步文件和文件夹。</p>
-
 <p>使用Rsync，您可以在系统之间镜像数据，创建增量备份和复制文件。复制数据时，您可能希望根据其名称或位置排除一个或多个文件或目录。</p>
-
 <p>在本教程中，我们将向您展示如何使用rsync排除文件和目录。</p>
-
-<h2 id="在你开始之前">在你开始之前</h2>
-
+<h2 id="heading">在你开始之前</h2>
 <p>您应该具备<a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">rsync如何工作</a>的基本知识。</p>
-
 <p>在下面的示例中，我们将使用带有<code>-a</code>，选项的rsync 。这告诉rsync以递归方式同步目录，传输特殊设备和阻止设备并保留符号链接，修改时间，组，所有权和权限。</p>
-
 <p>排除文件或目录时，需要使用它们到源目录的相对路径。</p>
-
 <p>有两个选项可指定要排除的文件和目录：</p>
-
 <ul>
 <li>从一个<strong>命令行中</strong>使用<code>--exclude</code>选项。</li>
 <li>从<strong>文件中</strong>，使用该<code>--exclude-from</code>选项。</li>
 </ul>
-
-<h2 id="排除特定文件">排除特定文件</h2>
-
+<h2 id="heading1">排除特定文件</h2>
 <p>要排除特定文件，请将文件的相对路径传递给该<code>--exclude</code>选项。</p>
-
 <p>在以下示例中，<code>src_directory/file.txt</code>不会传输文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude &#39;file.txt&#39; src_directory/ dst_directory/</code></pre></div>
-<h2 id="排除特定目录">排除特定目录</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude 'file.txt' src_directory/ dst_directory/
+</code></pre><h2 id="heading2">排除特定目录</h2>
 <p>排除特定目录与排除文件相同，只需将目录的相对路径传递给<code>--exclude</code>选项，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude &#39;dir1&#39; src_directory/ dst_directory/</code></pre></div>
-<p>如果要排除目录内容而不是目录本身，请使用<code>dir1/*</code>而不是<code>dir1</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude &#39;dir1/*&#39; src_directory/ dst_directory/</code></pre></div>
-<h2 id="排除多个文件或目录">排除多个文件或目录</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude 'dir1' src_directory/ dst_directory/
+</code></pre><p>如果要排除目录内容而不是目录本身，请使用<code>dir1/*</code>而不是<code>dir1</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude 'dir1/*' src_directory/ dst_directory/
+</code></pre><h2 id="heading3">排除多个文件或目录</h2>
 <p>要排除多个文件或目录，只需指定多个<code>--exclude</code>选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude &#39;file1.txt&#39; --exclude &#39;dir1/*&#39; --exclude &#39;dir2&#39; src_directory/ dst_directory/</code></pre></div>
-<p>如果您更喜欢使用单个<code>--exclude</code>选项，则可以列出要用<code>{}</code>逗号分隔的花括号中的文件和目录，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude={&#39;file1.txt&#39;,&#39;dir1/*&#39;,&#39;dir2&#39;} src_directory/ dst_directory/</code></pre></div>
-<p>如果要排除的文件和/或目录的数量很大，则<code>--exclude</code>可以指定要在文件中排除的文件和目录，而不是使用多个选项，并将文件传递给<code>--exclude-from</code>选项。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude 'file1.txt' --exclude 'dir1/*' --exclude 'dir2' src_directory/ dst_directory/
+</code></pre><p>如果您更喜欢使用单个<code>--exclude</code>选项，则可以列出要用<code>{}</code>逗号分隔的花括号中的文件和目录，如下所示：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude={'file1.txt','dir1/*','dir2'} src_directory/ dst_directory/
+</code></pre><p>如果要排除的文件和/或目录的数量很大，则<code>--exclude</code>可以指定要在文件中排除的文件和目录，而不是使用多个选项，并将文件传递给<code>--exclude-from</code>选项。</p>
 <p>以下命令与上面的命令完全相同：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude-from=&#39;exclude-file.txt&#39; src_directory/ dst_directory/</code></pre></div>
-<p>排除-file.txt的</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude-from='exclude-file.txt' src_directory/ dst_directory/
+</code></pre><p>排除-file.txt的</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">file1.txt
 dir1/*
-dir2</code></pre></div>
-<h2 id="基于模式排除多个文件或目录">基于模式排除多个文件或目录</h2>
-
+dir2
+</code></pre></div><h2 id="heading4">基于模式排除多个文件或目录</h2>
 <p>使用rsync，您还可以根据与文件或目录名称匹配的模式排除文件和目录。</p>
-
 <p>例如，要排除<code>.jpg</code>您要运行的所有文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude &#39;*.jpg*&#39; src_directory/ dst_directory/</code></pre></div>
-<p>除了那些匹配某种模式的文件和目录之外，排除所有其他文件和目录并不是一件小事。假设您要排除除以<code>.jpg</code>。结尾的文件之外的所有其他文件和目录。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a --exclude '*.jpg*' src_directory/ dst_directory/
+</code></pre><p>除了那些匹配某种模式的文件和目录之外，排除所有其他文件和目录并不是一件小事。假设您要排除除以<code>.jpg</code>。结尾的文件之外的所有其他文件和目录。</p>
 <p>一种选择是使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rsync -a -m --include=&#39;*.jpg&#39; --include=&#39;*/&#39; --exclude=&#39;*&#39; src_directory/ dst_directory/</code></pre></div>
-<p>使用多个包含/排除选项时，将应用第一个匹配规则。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">rsync -a -m --include='*.jpg' --include='*/' --exclude='*' src_directory/ dst_directory/
+</code></pre><p>使用多个包含/排除选项时，将应用第一个匹配规则。</p>
 <ul>
 <li><code>--include='*.jpg'</code>- 首先我们包括所有<code>.jpg</code>文件。</li>
 <li><code>--include='*/'</code>- 然后我们将所有目录都包含在<code>src_directory</code>目录中。没有这个rsync只会复制<code>*.jpg</code>顶级目录中的文件。</li>
 <li><code>-m</code> - 删除空目录。</li>
 </ul>
-
 <p>另一种选择是将<a href="/linux/how-to-find-files-in-linux-using-the-command-line/">find命令</a>的输出传递给rsync：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">find src_directory/ -name &#34;*.jpg&#34; -printf %P\\0\\n | rsync -a --files-from=- src_directory/ dst_directory/</code></pre></div>
-<ul>
+<pre><code class="language-console-bash" data-lang="console-bash">find src_directory/ -name &quot;*.jpg&quot; -printf %P\\0\\n | rsync -a --files-from=- src_directory/ dst_directory/
+</code></pre><ul>
 <li><code>-printf %P\\0\\n</code>- 将从<code>src_directory/</code>文件路径中删除。</li>
 <li><code>--files-from=-</code> - 表示仅包含标准输入中的文件（从find命令传递的文件）。</li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading5">结论</h2>
 <p>在本教程中，您学习了如何在使用Rsync传输数据时排除文件和目录。在<a href="https://download.samba.org/pub/rsync/rsync.html">Rsync用户手册</a>页面上还有很多关于Rsync <a href="https://download.samba.org/pub/rsync/rsync.html">的知识</a>。</p>
       </div><ul class="pa0">
   
@@ -299,17 +269,14 @@ dir2</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在你开始之前">在你开始之前</a></li>
-<li><a href="#排除特定文件">排除特定文件</a></li>
-<li><a href="#排除特定目录">排除特定目录</a></li>
-<li><a href="#排除多个文件或目录">排除多个文件或目录</a></li>
-<li><a href="#基于模式排除多个文件或目录">基于模式排除多个文件或目录</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">在你开始之前</a></li>
+    <li><a href="#heading1">排除特定文件</a></li>
+    <li><a href="#heading2">排除特定目录</a></li>
+    <li><a href="#heading3">排除多个文件或目录</a></li>
+    <li><a href="#heading4">基于模式排除多个文件或目录</a></li>
+    <li><a href="#heading5">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

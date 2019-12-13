@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上安装和配置 Gogs" />
 <meta property="og:description" content="Gogs 是一个用 Go 编写的自托管开源 git 服务器。它包括存储库文件编辑器，项目问题跟踪，并且内置维基。
-
 Gogs 是一个轻量级应用程序，内存占用空间更小，可以安装在低功耗系统上。如果您正在寻找 Gitlab 的替代品，而且您不需要 Gitlab 提供的所有功能，那么您一定要尝试 Gogs 。
-
 本教程介绍了在 Ubuntu 18.04 上安装和配置 Gogs 的步骤。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Ubuntu 的发行版。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/" />
@@ -40,25 +38,18 @@ Gogs 是一个轻量级应用程序，内存占用空间更小，可以安装在
 <meta property="article:modified_time" content="2019-04-26T06:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上安装和配置 Gogs">
 <meta itemprop="description" content="Gogs 是一个用 Go 编写的自托管开源 git 服务器。它包括存储库文件编辑器，项目问题跟踪，并且内置维基。
-
 Gogs 是一个轻量级应用程序，内存占用空间更小，可以安装在低功耗系统上。如果您正在寻找 Gitlab 的替代品，而且您不需要 Gitlab 提供的所有功能，那么您一定要尝试 Gogs 。
-
 本教程介绍了在 Ubuntu 18.04 上安装和配置 Gogs 的步骤。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Ubuntu 的发行版。">
-
-
 <meta itemprop="datePublished" content="2019-04-26T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-26T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1783">
+<meta itemprop="wordCount" content="1787">
 
 
 
-<meta itemprop="keywords" content="ubuntu,git,gogs," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,git,gogs," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装和配置 Gogs"/>
 <meta name="twitter:description" content="Gogs 是一个用 Go 编写的自托管开源 git 服务器。它包括存储库文件编辑器，项目问题跟踪，并且内置维基。
-
 Gogs 是一个轻量级应用程序，内存占用空间更小，可以安装在低功耗系统上。如果您正在寻找 Gitlab 的替代品，而且您不需要 Gitlab 提供的所有功能，那么您一定要尝试 Gogs 。
-
 本教程介绍了在 Ubuntu 18.04 上安装和配置 Gogs 的步骤。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Ubuntu 的发行版。"/>
 
   </head>
@@ -153,83 +144,63 @@ Gogs 是一个轻量级应用程序，内存占用空间更小，可以安装在
           
   
           <p>Gogs 是一个用 Go 编写的自托管开源 git 服务器。它包括存储库文件编辑器，项目问题跟踪，并且内置维基。</p>
-
 <p><a href="https://gogs.io/">Gogs</a> 是一个轻量级应用程序，内存占用空间更小，可以安装在低功耗系统上。如果您正在寻找 Gitlab 的替代品，而且您不需要 <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">Gitlab</a> 提供的所有功能，那么您一定要尝试 Gogs 。</p>
-
 <p>本教程介绍了在 Ubuntu 18.04 上安装和配置 Gogs 的步骤。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Ubuntu 的发行版。</p>
-
-<h2 id="在你开始之前">在你开始之前</h2>
-
+<h2 id="heading">在你开始之前</h2>
 <p>Gogs 可以使用 SQLite ， <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">PostgreSQL</a> 或 <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">MySQL</a> / <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">MariaDB</a> 数据库来存储其所有数据。</p>
-
 <p>在本教程中，我们将使用 SQLite 作为首选数据库。如果系统上未安装 SQLite ，则可以通过键入以下命令来安装它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install sqlite3</code></pre></div>
-<p>为了增加安全层，建议设置基本防火墙。您可以按照指南(<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">在Ubuntu 18.04 如何使用 UFW 设置防火墙中</a>)中的步骤进行操作。</p>
-
-<h2 id="安装-gogs">安装 Gogs</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install sqlite3
+</code></pre><p>为了增加安全层，建议设置基本防火墙。您可以按照指南(<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">在Ubuntu 18.04 如何使用 UFW 设置防火墙中</a>)中的步骤进行操作。</p>
+<h2 id="-gogs">安装 Gogs</h2>
 <p>我们将从二进制文件安装 Gogs 。安装是一个非常简单的过程。</p>
-
-<h3 id="安装-git">安装 Git</h3>
-
+<h3 id="-git">安装 Git</h3>
 <p>第一步是在服务器上<a href="/linux/how-to-install-git-on-ubuntu-18-04/">安装 Git</a> 。为此，请刷新本地程序包索引并通过以 <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo 用户</a>身份运行以下命令来安装 git 程序包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install git</code></pre></div>
-<p>通过显示 Git 版本来验证安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git --version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">git version 2.17.1</code></pre></div>
-<h3 id="创建一个-git-用户">创建一个 Git 用户</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install git
+</code></pre><p>通过显示 Git 版本来验证安装：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git --version
+</code></pre><pre><code class="language-output" data-lang="output">git version 2.17.1
+</code></pre><h3 id="-git-">创建一个 Git 用户</h3>
 <p>通过键入以下内容<a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">创建一个新的系统用户</a>来运行 Gogs 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser --system --group --disabled-password --shell /bin/bash --home /home/git --gecos &#39;Git Version Control&#39; git</code></pre></div>
-<p>该命令将创建用户并将主目录设置为 <code>/home/git</code> 。输出结果如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Adding system user `git&#39; (UID 111) ...
-Adding new group `git&#39; (GID 116) ...
-Adding new user `git&#39; (UID 111) with group `git&#39; ...
-Creating home directory `/home/git&#39; ...</code></pre></div>
-<h3 id="下载-gogs-二进制文件">下载 Gogs 二进制文件</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo adduser --system --group --disabled-password --shell /bin/bash --home /home/git --gecos 'Git Version Control' git
+</code></pre><p>该命令将创建用户并将主目录设置为 <code>/home/git</code> 。输出结果如下所示：</p>
+<pre><code class="language-output" data-lang="output">Adding system user `git' (UID 111) ...
+Adding new group `git' (GID 116) ...
+Adding new user `git' (UID 111) with group `git' ...
+Creating home directory `/home/git' ...
+</code></pre><h3 id="-gogs-">下载 Gogs 二进制文件</h3>
 <p>访问 <a href="https://gogs.io/docs/installation/install_from_binary">Gogs 下载页面</a>并下载适用于您的体系结构的最新二进制文件。在撰写本文时，最新版本为 0.11.86 ，如果有新版本可用，请在下面的命令中更改变量 <code>VERSION</code>。</p>
-
 <p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载 Gogs 存档到 <code>/tmp</code> 目录中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">VERSION=0.11.86wget https://dl.gogs.io/${VERSION}/gogs_${VERSION}_linux_amd64.tar.gz -P /tmp</code></pre></div>
-<p>下载完成后，<!--link:how-to-extract-unzip-tar-gz-file-->解压缩 Gogs 的 tar.gz 文件<!--link-->并将其移动到 <code>/home/git</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar xf /tmp/gogs_*_linux_amd64.tar.gz -C /home/git</code></pre></div>
-<p>运行以下命令<a href="/linux/linux-chown-command/">更改 Gogs 安装目录的所有权</a>为 git 用户和组：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R git: /home/git/gogs</code></pre></div>
-<h3 id="创建一个-systemd-单元文件">创建一个 systemd 单元文件</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">VERSION=0.11.86wget https://dl.gogs.io/${VERSION}/gogs_${VERSION}_linux_amd64.tar.gz -P /tmp
+</code></pre><p>下载完成后，<!-- raw HTML omitted -->解压缩 Gogs 的 tar.gz 文件<!-- raw HTML omitted -->并将其移动到 <code>/home/git</code> 目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo tar xf /tmp/gogs_*_linux_amd64.tar.gz -C /home/git
+</code></pre><p>运行以下命令<a href="/linux/linux-chown-command/">更改 Gogs 安装目录的所有权</a>为 git 用户和组：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown -R git: /home/git/gogs
+</code></pre><h3 id="-systemd-">创建一个 systemd 单元文件</h3>
 <p>Gogs 附带一个 Systemd 单元文件，该文件已配置为与我们的设置相匹配。</p>
-
 <p>键入以下命令将文件复制到目录 <code>/etc/systemd/system/</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp /home/git/gogs/scripts/systemd/gogs.service /etc/systemd/system/</code></pre></div>
-<p>完成后，启动并启用 Gogs 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start gogs
-sudo systemctl enable gogs</code></pre></div>
-<p>验证服务是否已成功启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">* gogs.service - Gogs
+<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /home/git/gogs/scripts/systemd/gogs.service /etc/systemd/system/
+</code></pre><p>完成后，启动并启用 Gogs 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start gogs
+sudo systemctl enable gogs
+</code></pre><p>验证服务是否已成功启动：</p>
+<pre><code class="language-output" data-lang="output">* gogs.service - Gogs
    Loaded: loaded (/etc/systemd/system/gogs.service; enabled; vendor preset: enabled)
    Active: active (running) since Thu 2019-04-25 04:13:44 PDT; 9s ago
  Main PID: 14376 (gogs)
     Tasks: 8 (limit: 2319)
    CGroup: /system.slice/gogs.service
-           `-14376 /home/git/gogs/gogs web</code></pre></div>
-<h3 id="使用-web-安装程序安装-gogs">使用 Web 安装程序安装 Gogs</h3>
-
+           `-14376 /home/git/gogs/gogs web
+</code></pre><h3 id="-web--gogs">使用 Web 安装程序安装 Gogs</h3>
 <p>现在已经下载并运行 Gogs ，现在是时候通过 Web 界面完成安装了。</p>
-
 <p>打开浏览器，键入 <code>http://YOUR_DOMAIN_IR_IP:3000</code> 并出现类似如下的屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/gogs-install.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/gogs-install.jpg" alt=""></p>
 <p>数据库设置：</p>
-
 <ul>
 <li>数据库类型： SQLite3</li>
 <li>路径：使用绝对路径，  <code>/home/git/gogs/gogs.db</code></li>
 </ul>
-
 <p>应用程序常规设置</p>
-
 <ul>
 <li>应用程序名称：输入您的组织名称</li>
 <li>存储库根路径：保留默认值  <code>/home/git/gogs-repositories</code></li>
@@ -240,36 +211,26 @@ sudo systemctl enable gogs</code></pre></div>
 <li>应用程序  URL ：使用 http 和您的域或服务器 IP 地址。</li>
 <li>日志路径：保留默认值  <code>/home/git/gogs/log</code></li>
 </ul>
-
 <p>稍后您可以通过编辑 Gogs 配置文件来更改设置。</p>
-
 <p>完成后点击“安装 Gogs ”按钮。安装是即时的，完成后您将被重定向到登录页面。</p>
-
 <p>点击“立即注册”链接。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/gogs-register.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/gogs-register.jpg" alt=""></p>
 <p>第一个注册用户将自动添加到 Admin 组。</p>
-
 <p>现在， Gogs 已安装在您的 Ubuntu 机器上。</p>
-
-<h2 id="将-nginx-配置为-ssl-终结代理">将 Nginx 配置为 SSL 终结代理</h2>
-
+<h2 id="-nginx--ssl-">将 Nginx 配置为 SSL 终结代理</h2>
 <p>此步骤是可选的，但强烈建议您这样做。要将 <a href="/linux/nginx-reverse-proxy/">Nginx 用作反向代理，</a>，您需要具有指向服务器公共 IP 的域或子域。在本教程中，我们将使用 <code>gogs.example.com</code> 。</p>
-
-<p>首先，按照以下指南安装 Nginx 并生成免费的 Let&rsquo;s Encrypt SSL 证书：</p>
-
+<p>首先，按照以下指南安装 Nginx 并生成免费的 Let's Encrypt SSL 证书：</p>
 <ul>
 <li><a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a></li>
-<li><a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let&rsquo;s Encrypt 来保护 Nginx</a></li>
+<li><a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用 Let's Encrypt 来保护 Nginx</a></li>
 </ul>
-
 <p>完成后，打开文本编辑器并编辑域<a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">服务器块</a>文件 <code>/etc/nginx/sites-enabled/gogs.example.com</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/sites-enabled/gogs.example.com</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/sites-enabled/gogs.example.com
+</code></pre><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">gogs.example.com</span><span class="p">;</span>
 
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://gogs.example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -293,8 +254,8 @@ sudo systemctl enable gogs</code></pre></div>
 </span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/gogs.example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/gogs.example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/gogs.example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
 
     <span class="c1"># log files
 </span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/gogs.example.com.access.log</span><span class="p">;</span>
@@ -305,62 +266,59 @@ sudo systemctl enable gogs</code></pre></div>
        <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
        <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:3000</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>不要忘记将 gogs.example.com 替换为 Gogs 真正的域名，并设置 SSL 证书文件的正确路径。</p>
-
+<span class="p">}</span>
+</code></pre></div><p>不要忘记将 gogs.example.com 替换为 Gogs 真正的域名，并设置 SSL 证书文件的正确路径。</p>
 <p><a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx</code></pre></div>
-<p>接下来，我们需要更改 Gogs 域和根 URL 。为此，请打开配置文件 <code>/home/git/gogs/custom/conf/app.ini</code> 并编辑以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /home/git/gogs/custom/conf/app.ini</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">[server]
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
+</code></pre><p>接下来，我们需要更改 Gogs 域和根 URL 。为此，请打开配置文件 <code>/home/git/gogs/custom/conf/app.ini</code> 并编辑以下行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /home/git/gogs/custom/conf/app.ini
+</code></pre><pre><code class="language-conf" data-lang="conf">[server]
 DOMAIN           = gogs.example.com
-ROOT_URL         = https://gogs.example.com/</code></pre></div>
-<p>输入以下命令重新启动 Gogs 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart gogs</code></pre></div>
-<p>此时，配置了 Gogs ，您可以在以下位置访问它：  <code>https://gogs.example.com</code></p>
-
-<h2 id="配置电子邮件通知">配置电子邮件通知</h2>
-
+ROOT_URL         = https://gogs.example.com/
+</code></pre><p>输入以下命令重新启动 Gogs 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart gogs
+</code></pre><p>此时，配置了 Gogs ，您可以在以下位置访问它：  <code>https://gogs.example.com</code></p>
+<h2 id="heading1">配置电子邮件通知</h2>
 <p>为了让 Gog 能够发送通知电子邮件，您可以安装 Postfix 或使用一些邮件服务，如 SendGrid ， MailChimp ， MailGun 或 SES 。</p>
-
 <p>要启用电子邮件通知，请打开配置文件 <code>/home/git/gogs/custom/conf/app.ini</code> 并编辑以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /home/git/gogs/custom/conf/app.ini</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">[mailer]
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /home/git/gogs/custom/conf/app.ini
+</code></pre><pre><code class="language-conf" data-lang="conf">[mailer]
 ENABLED = true
 HOST    = SMTP_SERVER:SMTP_PORT
 FROM    = SENDER_EMAIL
 USER    = SMTP_USER
-PASSWD  = YOUR_SMTP_PASSWORD</code></pre></div>
-<p>确保您输入正确的 SMTP 服务器信息。</p>
-
+PASSWD  = YOUR_SMTP_PASSWORD
+</code></pre><p>确保您输入正确的 SMTP 服务器信息。</p>
 <p>重新启动 Gogs 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart gogs</code></pre></div>
-<p>Gogs 还允许您通过创建 <a href="https://gogs.io/docs/features/webhook">Web webhook</a> 连接到 Slack  并向 <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">Slack 通道</a>发送通知。</p>
-
-<h2 id="升级-gogs">升级 Gogs</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart gogs
+</code></pre><p>Gogs 还允许您通过创建 <a href="https://gogs.io/docs/features/webhook">Web webhook</a> 连接到 Slack  并向 <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">Slack 通道</a>发送通知。</p>
+<h2 id="-gogs1">升级 Gogs</h2>
 <p>要升级 Gogs ，需要执行几个手动步骤。</p>
-
 <ol>
-<li><p>首先停止 Gogs 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop gogs</code></pre></div></li>
-
-<li><p><a href="/linux/how-to-rename-files-in-linux/">重命名</a> Gogs 安装目录。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mv /home/git/gogs{,_old}</code></pre></div></li>
-
-<li><p>下载最新的 Gogs 版本并将其移至 <code>/home/git</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">VERSION=&lt;THE_LATEST_GOGS_VERSION&gt;wget https://dl.gogs.io/${VERSION}/gogs_${VERSION}_linux_amd64.tar.gz -P /tmpsudo tar xf /tmp/gogs_*_linux_amd64.tar.gz -C /home/git</code></pre></div>
-<p>确保您使用实际的 Gogs 版本来更改 <code>VERSION</code> 。</p></li>
-
-<li><p>使用下面 <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">rsync 命令</a> 复制 <code>custom</code> ， <code>data</code> ， <code>log</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rsync -a /home/git/gogs_old/{custom,data,log} /home/git/gogs/</code></pre></div></li>
-
-<li><p>最后，启动 Gogs 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart gogs</code></pre></div></li>
+<li>
+<p>首先停止 Gogs 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop gogs
+</code></pre></li>
+<li>
+<p><a href="/linux/how-to-rename-files-in-linux/">重命名</a> Gogs 安装目录。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mv /home/git/gogs{,_old}
+</code></pre></li>
+<li>
+<p>下载最新的 Gogs 版本并将其移至 <code>/home/git</code> 目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">VERSION=&lt;THE_LATEST_GOGS_VERSION&gt;wget https://dl.gogs.io/${VERSION}/gogs_${VERSION}_linux_amd64.tar.gz -P /tmpsudo tar xf /tmp/gogs_*_linux_amd64.tar.gz -C /home/git
+</code></pre><p>确保您使用实际的 Gogs 版本来更改 <code>VERSION</code> 。</p>
+</li>
+<li>
+<p>使用下面 <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">rsync 命令</a> 复制 <code>custom</code> ， <code>data</code> ， <code>log</code> 目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo rsync -a /home/git/gogs_old/{custom,data,log} /home/git/gogs/
+</code></pre></li>
+<li>
+<p>最后，启动 Gogs 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart gogs
+</code></pre></li>
 </ol>
-
 <p>完成。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>本教程向您介绍了 Ubuntu 18.04 上 Gogs 的安装和配置。您现在可以创建第一个项目并开始使用新的 Gogs 服务器。</p>
       </div><ul class="pa0">
   
@@ -438,24 +396,22 @@ PASSWD  = YOUR_SMTP_PASSWORD</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在你开始之前">在你开始之前</a></li>
-<li><a href="#安装-gogs">安装 Gogs</a>
-<ul>
-<li><a href="#安装-git">安装 Git</a></li>
-<li><a href="#创建一个-git-用户">创建一个 Git 用户</a></li>
-<li><a href="#下载-gogs-二进制文件">下载 Gogs 二进制文件</a></li>
-<li><a href="#创建一个-systemd-单元文件">创建一个 systemd 单元文件</a></li>
-<li><a href="#使用-web-安装程序安装-gogs">使用 Web 安装程序安装 Gogs</a></li>
-</ul></li>
-<li><a href="#将-nginx-配置为-ssl-终结代理">将 Nginx 配置为 SSL 终结代理</a></li>
-<li><a href="#配置电子邮件通知">配置电子邮件通知</a></li>
-<li><a href="#升级-gogs">升级 Gogs</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">在你开始之前</a></li>
+    <li><a href="#-gogs">安装 Gogs</a>
+      <ul>
+        <li><a href="#-git">安装 Git</a></li>
+        <li><a href="#-git-">创建一个 Git 用户</a></li>
+        <li><a href="#-gogs-">下载 Gogs 二进制文件</a></li>
+        <li><a href="#-systemd-">创建一个 systemd 单元文件</a></li>
+        <li><a href="#-web--gogs">使用 Web 安装程序安装 Gogs</a></li>
+      </ul>
+    </li>
+    <li><a href="#-nginx--ssl-">将 Nginx 配置为 SSL 终结代理</a></li>
+    <li><a href="#heading1">配置电子邮件通知</a></li>
+    <li><a href="#-gogs1">升级 Gogs</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

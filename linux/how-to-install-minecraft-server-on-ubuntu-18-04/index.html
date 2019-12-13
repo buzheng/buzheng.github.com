@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在Ubuntu 18.04上安装Minecraft服务器" />
 <meta property="og:description" content="Minecraft是有史以来最受欢迎的游戏之一。它是一个沙盒视频游戏，允许玩家探索无限的世界，并构建从简单的房屋到大型摩天大楼的一切。
-
 本教程介绍了Ubuntu 18.04上Minecraft服务器的安装和配置。我们将使用Systemd来运行Minecraft服务器和mcrcon用于连接到正在运行的实例的实用程序。我们还将向您展示如何创建执行常规服务器备份的cronjob。
-
 相同的说明适用于Ubuntu 16.04和任何基于Ubuntu的发行版，包括Linux Mint和Elementary OS。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-minecraft-server-on-ubuntu-18-04/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Ubuntu 18.04上安装Minecraft服务器">
 <meta itemprop="description" content="Minecraft是有史以来最受欢迎的游戏之一。它是一个沙盒视频游戏，允许玩家探索无限的世界，并构建从简单的房屋到大型摩天大楼的一切。
-
 本教程介绍了Ubuntu 18.04上Minecraft服务器的安装和配置。我们将使用Systemd来运行Minecraft服务器和mcrcon用于连接到正在运行的实例的实用程序。我们还将向您展示如何创建执行常规服务器备份的cronjob。
-
 相同的说明适用于Ubuntu 16.04和任何基于Ubuntu的发行版，包括Linux Mint和Elementary OS。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2960">
+<meta itemprop="wordCount" content="2963">
 
 
 
-<meta itemprop="keywords" content="java,minecraft,ubuntu," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="java,minecraft,ubuntu," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在Ubuntu 18.04上安装Minecraft服务器"/>
 <meta name="twitter:description" content="Minecraft是有史以来最受欢迎的游戏之一。它是一个沙盒视频游戏，允许玩家探索无限的世界，并构建从简单的房屋到大型摩天大楼的一切。
-
 本教程介绍了Ubuntu 18.04上Minecraft服务器的安装和配置。我们将使用Systemd来运行Minecraft服务器和mcrcon用于连接到正在运行的实例的实用程序。我们还将向您展示如何创建执行常规服务器备份的cronjob。
-
 相同的说明适用于Ubuntu 16.04和任何基于Ubuntu的发行版，包括Linux Mint和Elementary OS。"/>
 
   </head>
@@ -153,68 +144,55 @@
           
   
           <p>Minecraft是有史以来最受欢迎的游戏之一。它是一个沙盒视频游戏，允许玩家探索无限的世界，并构建从简单的房屋到大型摩天大楼的一切。</p>
-
 <p>本教程介绍了Ubuntu 18.04上Minecraft服务器的安装和配置。我们将使用Systemd来运行Minecraft服务器和<code>mcrcon</code>用于连接到正在运行的实例的实用程序。我们还将向您展示如何创建执行常规服务器备份的cronjob。</p>
-
 <p>相同的说明适用于Ubuntu 16.04和任何基于Ubuntu的发行版，包括Linux Mint和Elementary OS。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>您登录的用户必须具有<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo权限</a>才能安装软件包。</p>
-
 <p>安装构建<code>mcrcon</code>工具所需的包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install git build-essential</code></pre></div>
-<h2 id="安装java运行时环境">安装Java运行时环境</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install git build-essential
+</code></pre><h2 id="java">安装Java运行时环境</h2>
 <p>Minecraft需要Java 8或更高版本。由于Minecraft服务器不需要图形用户界面，我们将安装无头版JRE。此版本更适合服务器应用程序，因为它具有较少的依赖性并使用较少的系统资源。</p>
-
 <p>通过运行以下命令安装无头OpenJRE 8软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install openjdk-8-jre-headless</code></pre></div>
-<p>通过打印java版本验证安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">java -version</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">openjdk version &#34;1.8.0_191&#34;
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install openjdk-8-jre-headless
+</code></pre><p>通过打印java版本验证安装：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">java -version
+</code></pre><pre><code class="language-output" data-lang="output">openjdk version &quot;1.8.0_191&quot;
 OpenJDK Runtime Environment (build 1.8.0_191-8u191-b12-0ubuntu0.18.04.1-b12)
-OpenJDK 64-Bit Server VM (build 25.191-b12, mixed mode)</code></pre></div>
-<h2 id="创建minecraft用户">创建Minecraft用户</h2>
-
+OpenJDK 64-Bit Server VM (build 25.191-b12, mixed mode)
+</code></pre><h2 id="minecraft">创建Minecraft用户</h2>
 <p>出于安全考虑，Minecraft不应在root用户下运行。我们将<a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/">创建一个新的系统用户</a>和组，其主目录<code>/opt/minecraft</code>将运行Minecraft服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft</code></pre></div>
-<p>我们不会为此用户设置密码。这是一种很好的安全措施，因为该用户将无法通过SSH登录。要更改为<code>minecraft</code>用户，您需要以root用户或具有sudo权限的用户身份登录服务器。</p>
-
-<h2 id="在ubuntu上安装minecraft">在Ubuntu上安装Minecraft</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
+</code></pre><p>我们不会为此用户设置密码。这是一种很好的安全措施，因为该用户将无法通过SSH登录。要更改为<code>minecraft</code>用户，您需要以root用户或具有sudo权限的用户身份登录服务器。</p>
+<h2 id="ubuntuminecraft">在Ubuntu上安装Minecraft</h2>
 <p>在开始安装过程之前，请确保切换到<code>minecraft</code>用户。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - minecraft</code></pre></div>
-<p>运行以下命令在用户主目录中创建三个新目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/{backups,tools,server}</code></pre></div>
-<ul>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo su - minecraft
+</code></pre><p>运行以下命令在用户主目录中创建三个新目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/{backups,tools,server}
+</code></pre><ul>
 <li>该<code>backups</code>目录将存储您的服务器备份。您可以稍后将此目录同步到远程备份服务器。</li>
 <li>该<code>tools</code>目录将存储<code>mcrcon</code>客户端和备份脚本。</li>
 <li>该<code>server</code>目录将包含实际的Minecraft服务器及其数据。</li>
 </ul>
-
-<h3 id="下载和编译mcrcon">下载和编译mcrcon</h3>
-
+<h3 id="mcrcon">下载和编译mcrcon</h3>
 <p>RCON是一种协议，允许您连接到Minecraft服务器并执行命令。<a href="https://github.com/tiiffi/mcrcon">mcron</a>是用C语言构建的RCON客户端。</p>
-
 <p>我们将从GitHub下载源代码并构建<code>mcrcon</code>二进制文件。</p>
-
 <p>首先导航到<code>~/tools</code>目录并<code>Tiiffi/mcrcon</code>使用以下命令从GitHub 克隆存储库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/tools &amp;&amp; git clone https://github.com/Tiiffi/mcrcon.git</code></pre></div>
-<p>克隆完成后，切换到存储库目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/tools/mcrcon</code></pre></div>
-<p><code>mcrcon</code>键入以下命令开始编译该实用程序：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">gcc -std=gnu11 -pedantic -Wall -Wextra -O2 -s -o mcrcon mcrcon.c</code></pre></div>
-<p>完成后，您可以键入以下内容进行测试：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">./mcrcon -h</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Usage: mcrcon [OPTIONS]... [COMMANDS]...
+<pre><code class="language-console-bash" data-lang="console-bash">cd ~/tools &amp;&amp; git clone https://github.com/Tiiffi/mcrcon.git
+</code></pre><p>克隆完成后，切换到存储库目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">cd ~/tools/mcrcon
+</code></pre><p><code>mcrcon</code>键入以下命令开始编译该实用程序：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">gcc -std=gnu11 -pedantic -Wall -Wextra -O2 -s -o mcrcon mcrcon.c
+</code></pre><p>完成后，您可以键入以下内容进行测试：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">./mcrcon -h
+</code></pre><p>输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">Usage: mcrcon [OPTIONS]... [COMMANDS]...
 Sends rcon commands to minecraft server.
 
 Option:
   -h		Prints usage.
   -s		Silent mode. Do not print data received from rcon.
   -t		Terminal mode. Acts as interactive terminal.
-  -p		Rcon password. Default: &#34;&#34;.
+  -p		Rcon password. Default: &quot;&quot;.
   -H		Host address or ip.
   -P		Port. Default: 25575.
   -c		Do not print colors. Disables bukkit color printing.
@@ -222,26 +200,21 @@ Option:
 Individual commands must be separated with spaces.
 
 Example:
-  mcrcon -c -H 192.168.1.42 -P 9999 -p password cmd1 &#34;cmd2 with spaces&#34;
+  mcrcon -c -H 192.168.1.42 -P 9999 -p password cmd1 &quot;cmd2 with spaces&quot;
 
 minecraft rcon (mcrcon) 0.0.5.
-Report bugs to tiiffi_at_gmail_dot_com.</code></pre></div>
-<h3 id="下载minecraft服务器">下载Minecraft服务器</h3>
-
+Report bugs to tiiffi_at_gmail_dot_com.
+</code></pre><h3 id="minecraft1">下载Minecraft服务器</h3>
 <p>有几个Minecraft服务器模块，如<a href="https://getbukkit.org/download/craftbukkit">Craftbukkit</a>或<a href="https://www.spigotmc.org/">Spigot</a>，允许您在服务器上添加功能（插件），并进一步自定义和调整服务器设置。在本指南中，我们将安装最新的Mojang官方vanilla Minecraft服务器。</p>
-
 <p>最新的Minecraft服务器的Java归档文件（JAR）是可变的，可从<a href="https://minecraft.net/en-us/download/server/">Minecraft下载页面下载</a>。</p>
-
 <p>在撰写本文时，最新版本是<code>1.13.2</code>。在继续下一步之前，您应该检查下载页面以获取新版本。</p>
-
 <p>运行以下<a href="/linux/wget-command-examples/"><code>wget</code></a>命令以下载<code>~/server</code>目录中的Minecraft jar文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar -P ~/server</code></pre></div>
-<h3 id="配置minecraft服务器">配置Minecraft服务器</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">wget https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar -P ~/server
+</code></pre><h3 id="minecraft2">配置Minecraft服务器</h3>
 <p>下载完成后，导航到<code>~/server</code>目录并启动Minecraft服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/serverjava -Xmx1024M -Xms512M -d64 -jar server.jar nogui</code></pre></div>
-<p>当您第一次启动服务器时，它会执行一些操作并创建<code>server.properties</code>和<code>eula.txt</code>文件并停止。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[03:33:56] [main/INFO]: Loaded 0 recipes
+<pre><code class="language-console-bash" data-lang="console-bash">cd ~/serverjava -Xmx1024M -Xms512M -d64 -jar server.jar nogui
+</code></pre><p>当您第一次启动服务器时，它会执行一些操作并创建<code>server.properties</code>和<code>eula.txt</code>文件并停止。</p>
+<pre><code class="language-output" data-lang="output">[03:33:56] [main/INFO]: Loaded 0 recipes
 [03:33:56] [main/INFO]: Loaded 0 advancements
 [03:33:56] [Server thread/INFO]: Starting minecraft server version 1.13.2
 [03:33:56] [Server thread/INFO]: Loading properties
@@ -252,36 +225,29 @@ Report bugs to tiiffi_at_gmail_dot_com.</code></pre></div>
 [03:33:56] [Server thread/INFO]: Stopping server
 [03:33:56] [Server thread/INFO]: Saving worlds
 [03:33:56] [Server Shutdown Thread/INFO]: Stopping server
-[03:33:56] [Server Shutdown Thread/INFO]: Saving worlds</code></pre></div>
-<p>从上面的输出可以看出，我们需要同意Minecraft EULA才能运行服务器。打开<code>eula.txt</code>文件并更改<code>eula=false</code>为<code>eula=true</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/server/eula.txt</code></pre></div>
-<p>〜/服务器/ Eula.txt的</p>
+[03:33:56] [Server Shutdown Thread/INFO]: Saving worlds
+</code></pre><p>从上面的输出可以看出，我们需要同意Minecraft EULA才能运行服务器。打开<code>eula.txt</code>文件并更改<code>eula=false</code>为<code>eula=true</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nano ~/server/eula.txt
+</code></pre><p>〜/服务器/ Eula.txt的</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1">#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).</span>
 <span class="c1">#Thu Dec 27 03:33:56 PST 2018</span>
-<span class="na">eula</span><span class="o">=</span><span class="s">true</span></code></pre></div>
-<p>关闭并保存文件。</p>
-
+<span class="na">eula</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div><p>关闭并保存文件。</p>
 <p>接下来，我们需要编辑该<code>server.properties</code>文件以启用rcon协议并设置rcon密码。您可以使用这些<code>mcrcon</code>工具使用这些详细信息连接到Minecraft服务器。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano ~/server/server.properties</code></pre></div>
-<p>〜/服务器/ server.properties</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nano ~/server/server.properties
+</code></pre><p>〜/服务器/ server.properties</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">rcon.port</span><span class="o">=</span><span class="s">23888</span>
 <span class="na">rcon.password</span><span class="o">=</span><span class="s">strong-password</span>
-<span class="na">enable-rcon</span><span class="o">=</span><span class="s">true</span></code></pre></div>
-<p>不要忘记改变<code>strong-password</code>更安全的东西。或者，您可以指定另一个端口。
+<span class="na">enable-rcon</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div><p>不要忘记改变<code>strong-password</code>更安全的东西。或者，您可以指定另一个端口。
 如果您不想从远程位置连接到Minecraft服务器，请确保防火墙阻止rcon端口。</p>
-
 <p>在此处，您还可以调整服务器的默认属性。有关可能设置的更多信息，请访问<a href="https://minecraft.gamepedia.com/Server.properties">server.properties</a>页面。</p>
-
-<h2 id="创建系统单元文件">创建系统单元文件</h2>
-
+<h2 id="heading1">创建系统单元文件</h2>
 <p>要将Minecraft作为服务运行，我们将创建一个新的Systemd单元文件。</p>
-
 <p>通过键入切换回您的sudo用户<code>exit</code>。</p>
-
 <p>打开文本编辑器，创建一个名为文件<code>minecraft.service</code>中<code>/etc/systemd/system/</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/minecraft.service</code></pre></div>
-<p>粘贴以下配置：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/minecraft.service
+</code></pre><p>粘贴以下配置：</p>
 <p>/etc/systemd/system/minecraft.service</p>
 <div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Minecraft Server</span>
@@ -301,46 +267,40 @@ Report bugs to tiiffi_at_gmail_dot_com.</code></pre></div>
 <span class="na">ExecStop</span><span class="o">=</span><span class="s">/opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P 23888 -p strong-password stop</span>
 
 <span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
-<p>根据您的服务器资源修改<code>Xmx</code>和<code>Xms</code>标记。该<code>Xmx</code>标志定义Java虚拟机（JVM）的最大内存分配池，同时<code>Xms</code>定义初始内存分配池。另外，请确保使用正确的<code>rcon</code>端口和密码。</p>
-
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div><p>根据您的服务器资源修改<code>Xmx</code>和<code>Xms</code>标记。该<code>Xmx</code>标志定义Java虚拟机（JVM）的最大内存分配池，同时<code>Xms</code>定义初始内存分配池。另外，请确保使用正确的<code>rcon</code>端口和密码。</p>
 <p>保存并关闭该文件并重新加载systemd manager配置：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload</code></pre></div>
-<p>现在您可以通过执行以下命令启动Minecraft服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start minecraft</code></pre></div>
-<p>第一次启动服务时，它将生成几个配置文件和目录，包括Minecraft世界。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload
+</code></pre><p>现在您可以通过执行以下命令启动Minecraft服务器：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start minecraft
+</code></pre><p>第一次启动服务时，它将生成几个配置文件和目录，包括Minecraft世界。</p>
 <p>使用以下命令检查服务状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status minecraft</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">* minecraft.service - Minecraft Server
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status minecraft
+</code></pre><pre><code class="language-output" data-lang="output">* minecraft.service - Minecraft Server
    Loaded: loaded (/etc/systemd/system/minecraft.service; disabled; vendor preset: enabled)
    Active: active (running) since Thu 2018-12-27 04:52:51 PST; 3s ago
  Main PID: 15997 (java)
     Tasks: 552 (limit: 2319)
    CGroup: /system.slice/minecraft.service
-           `-15997 /usr/bin/java -Xmx1024M -Xms512M -jar server.jar nogui --noconsole</code></pre></div>
-<p>最后，启用Minecraft服务在启动时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable minecraft</code></pre></div>
-<h2 id="调整防火墙">调整防火墙</h2>
-
+           `-15997 /usr/bin/java -Xmx1024M -Xms512M -jar server.jar nogui --noconsole
+</code></pre><p>最后，启用Minecraft服务在启动时自动启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable minecraft
+</code></pre><h2 id="heading2">调整防火墙</h2>
 <p>如果您的服务器<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">受防火墙保护，</a>并且您想从本地网络外部访问Minecraft服务器，则需要打开端口<code>25565</code>。</p>
-
 <p>要允许默认Minecraft端口上的流量，请<code>25565</code>键入以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 25565/tcp</code></pre></div>
-<h2 id="配置备份">配置备份</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 25565/tcp
+</code></pre><h2 id="heading3">配置备份</h2>
 <p>在本节中，我们将创建一个备份shell脚本和cronjob来自动备份Minecraft服务器。</p>
-
 <p>首先切换到<code>minecraft</code>用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - minecraft</code></pre></div>
-<p>打开文本编辑器并创建以下文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nano /opt/minecraft/tools/backup.sh</code></pre></div>
-<p>粘贴以下配置：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo su - minecraft
+</code></pre><p>打开文本编辑器并创建以下文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nano /opt/minecraft/tools/backup.sh
+</code></pre><p>粘贴以下配置：</p>
 <p>/opt/minecraft/tools/backup.sh</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="k">function</span> rcon <span class="o">{</span>
-  /opt/minecraft/tools/mcrcon/mcrcon -H <span class="m">127</span>.0.0.1 -P <span class="m">23888</span> -p strong-password <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+  /opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P <span class="m">23888</span> -p strong-password <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
 <span class="o">}</span>
 
 rcon <span class="s2">&#34;save-off&#34;</span>
@@ -349,26 +309,22 @@ tar -cvpzf /opt/minecraft/backups/server-<span class="k">$(</span>date +%F_%R<sp
 rcon <span class="s2">&#34;save-on&#34;</span>
 
 <span class="c1">## Delete older backups</span>
-find /opt/minecraft/backups/ -type f -mtime +7 -name <span class="s1">&#39;*.gz&#39;</span> -delete</code></pre></div>
-<p>保存文件并使其可执行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">chmod +x /opt/minecraft/tools/backup.sh</code></pre></div>
-<p>接下来，<a href="/linux/scheduling-cron-jobs-with-crontab/">创建一个cron作业</a>，该<a href="/linux/scheduling-cron-jobs-with-crontab/">作业</a>将在一天中自动在固定时间运行一次。</p>
-
+find /opt/minecraft/backups/ -type f -mtime +7 -name <span class="s1">&#39;*.gz&#39;</span> -delete
+</code></pre></div><p>保存文件并使其可执行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">chmod +x /opt/minecraft/tools/backup.sh
+</code></pre><p>接下来，<a href="/linux/scheduling-cron-jobs-with-crontab/">创建一个cron作业</a>，该<a href="/linux/scheduling-cron-jobs-with-crontab/">作业</a>将在一天中自动在固定时间运行一次。</p>
 <p>键入以下命令打开crontab文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">crontab -e</code></pre></div>
-<p>要在每天23:00运行备份脚本，请粘贴以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-cron" data-lang="cron">0 23 * * * /opt/minecraft/tools/backup.sh</code></pre></div>
-<h2 id="访问minecraft控制台">访问Minecraft控制台</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">crontab -e
+</code></pre><p>要在每天23:00运行备份脚本，请粘贴以下行：</p>
+<pre><code class="language-cron" data-lang="cron">0 23 * * * /opt/minecraft/tools/backup.sh
+</code></pre><h2 id="minecraft3">访问Minecraft控制台</h2>
 <p>要访问Minecraft控制台，您可以使用该<code>mcrcon</code>实用程序。语法如下，您需要指定主机，rcon端口，rcon密码并使用<code>-t</code>启用<code>mcrcon</code>终端模式的开关：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">/opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P 23888 -p strong-password -t</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Logged in. Type &#34;Q&#34; to quit!
-&gt; </code></pre></div>
-<p>要从远程位置访问Minecraft控制台，请确保未阻止rcon端口。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">/opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P 23888 -p strong-password -t
+</code></pre><pre><code class="language-output" data-lang="output">Logged in. Type &quot;Q&quot; to quit!
+&gt; 
+</code></pre><p>要从远程位置访问Minecraft控制台，请确保未阻止rcon端口。</p>
 <p>如果您经常连接到Minecraft控制台，而不是键入这个长命令，您应该创建一个<a href="/linux/how-to-create-bash-aliases/">bash别名</a>。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading4">结论</h2>
 <p>您已在Ubuntu 18.04系统上成功安装了Minecraft服务器并设置了每日备份。</p>
       </div><ul class="pa0">
   
@@ -446,25 +402,23 @@ find /opt/minecraft/backups/ -type f -mtime +7 -name <span class="s1">&#39;*.gz&
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装java运行时环境">安装Java运行时环境</a></li>
-<li><a href="#创建minecraft用户">创建Minecraft用户</a></li>
-<li><a href="#在ubuntu上安装minecraft">在Ubuntu上安装Minecraft</a>
-<ul>
-<li><a href="#下载和编译mcrcon">下载和编译mcrcon</a></li>
-<li><a href="#下载minecraft服务器">下载Minecraft服务器</a></li>
-<li><a href="#配置minecraft服务器">配置Minecraft服务器</a></li>
-</ul></li>
-<li><a href="#创建系统单元文件">创建系统单元文件</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#配置备份">配置备份</a></li>
-<li><a href="#访问minecraft控制台">访问Minecraft控制台</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#java">安装Java运行时环境</a></li>
+    <li><a href="#minecraft">创建Minecraft用户</a></li>
+    <li><a href="#ubuntuminecraft">在Ubuntu上安装Minecraft</a>
+      <ul>
+        <li><a href="#mcrcon">下载和编译mcrcon</a></li>
+        <li><a href="#minecraft1">下载Minecraft服务器</a></li>
+        <li><a href="#minecraft2">配置Minecraft服务器</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading1">创建系统单元文件</a></li>
+    <li><a href="#heading2">调整防火墙</a></li>
+    <li><a href="#heading3">配置备份</a></li>
+    <li><a href="#minecraft3">访问Minecraft控制台</a></li>
+    <li><a href="#heading4">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

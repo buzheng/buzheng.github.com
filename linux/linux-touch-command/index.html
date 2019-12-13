@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="Linux Touch命令" />
 <meta property="og:description" content="touch命令允许我们更新现有文件和目录的时间戳，以及创建新的空文件。
-
 在本指南中，我们将通过实际示例和最常见命令选项的详细说明向您展示如何使用touch命令。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/linux-touch-command/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="Linux Touch命令">
 <meta itemprop="description" content="touch命令允许我们更新现有文件和目录的时间戳，以及创建新的空文件。
-
 在本指南中，我们将通过实际示例和最常见命令选项的详细说明向您展示如何使用touch命令。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1218">
 
 
 
-<meta itemprop="keywords" content="touch,terminal," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="touch,terminal," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux Touch命令"/>
 <meta name="twitter:description" content="touch命令允许我们更新现有文件和目录的时间戳，以及创建新的空文件。
-
 在本指南中，我们将通过实际示例和最常见命令选项的详细说明向您展示如何使用touch命令。"/>
 
   </head>
@@ -147,83 +141,58 @@
           
   
           <p>touch命令允许我们更新现有文件和目录的时间戳，以及创建新的空文件。</p>
-
 <p>在本指南中，我们将通过实际示例和最常见命令选项的详细说明向您展示如何使用touch命令。</p>
-
-<h2 id="linux文件时间戳">Linux文件时间戳</h2>
-
+<h2 id="linux">Linux文件时间戳</h2>
 <p>在讨论如何使用touch命令之前，让我们首先回顾一下Linux中的文件时间戳。</p>
-
 <p>Linux中的文件有三个时间戳：</p>
-
 <ul>
 <li>atime（访问时间） - 某些命令或应用程序（如<a href="/linux/linux-cat-command/">cat</a>，vim或<a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">grep</a>）访问/打开文件的最后时间。</li>
 <li>mtime（修改时间） - 上次修改文件内容的时间。</li>
 <li>ctime（更改时间） - 文件的属性或内容最后一次更改。该属性包括文件权限，文件所有权或文件位置。</li>
 </ul>
-
 <p>要显示包含时间戳的文件状态，可以使用该<code>stat</code>命令。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">stat file_name</code></pre></div>
-<h2 id="如何使用touch命令">如何使用touch命令</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">stat file_name
+</code></pre><h2 id="touch">如何使用touch命令</h2>
 <p>在没有任何选项的情况下使用它是最简单的形式，如果指定为参数的文件名不存在，touch将创建一个新文件。</p>
-
 <p>如果文件已存在，则touch会将文件的上次访问和修改时间更改为当前时间。</p>
-
 <p>例如，如果文件<code>file1</code>不存在，则以下命令将创建它，否则它将更改其时间戳：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch file1</code></pre></div>
-<p>要创建od修改多个文件或立即更改，请将文件名指定为参数：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch file1 file2 file3</code></pre></div>
-<p>如果您不希望touch命令创建新文件，请使用<code>-c</code>（<code>--no-create</code>）选项。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch file1
+</code></pre><p>要创建od修改多个文件或立即更改，请将文件名指定为参数：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">touch file1 file2 file3
+</code></pre><p>如果您不希望touch命令创建新文件，请使用<code>-c</code>（<code>--no-create</code>）选项。</p>
 <p>例如，以下命令将更改文件<code>file1</code>时间戳（如果存在），否则它将不执行任何操作：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -c file1</code></pre></div>
-<h2 id="仅更改访问或修改时间">仅更改访问或修改时间</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -c file1
+</code></pre><h2 id="heading">仅更改访问或修改时间</h2>
 <p>默认情况下，如果未使用任何选项，则会将文件的上次访问和修改时间更新为当前时间。通过使用<code>-a</code>和<code>-m</code>选项，您只能更改其中一个时间戳。</p>
-
-<h3 id="仅更改访问时间">仅更改访问时间</h3>
-
+<h3 id="heading1">仅更改访问时间</h3>
 <p>使用该<code>-a</code>选项仅更改文件的访问时间：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -a file1</code></pre></div>
-<h3 id="仅更改修改时间">仅更改修改时间</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -a file1
+</code></pre><h3 id="heading2">仅更改修改时间</h3>
 <p>使用该<code>-m</code>选项更改文件的修改时间：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -m file1</code></pre></div>
-<p>更改修改时间时，更改时间也将更新。</p>
-
-<h2 id="设置特定时间戳">设置特定时间戳</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -m file1
+</code></pre><p>更改修改时间时，更改时间也将更新。</p>
+<h2 id="heading3">设置特定时间戳</h2>
 <p>touch命令还允许我们更新或创建具有除当前时间之外的特定时间的文件。</p>
-
 <p>使用<code>-d</code>（<code>--date=</code>）选项指定日期字符串并使用它而不是当前时间。</p>
-
 <p>例如，要将最后访问和修改时间更改为<code>file1</code>2018年6月1日11:02，您将使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -d &#39;1 June 2018 11:02&#39; file1</code></pre></div>
-<p>日期字符串需要用单引号括起来。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -d '1 June 2018 11:02' file1
+</code></pre><p>日期字符串需要用单引号括起来。</p>
 <p>您还可以为touch命令提供部分日期时间字符串。例如，仅提供日期，自动将年份更改为当前日期：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -d &#39;12 June&#39; file1</code></pre></div>
-<p>使用该<code>-t</code>选项指定时间戳并使用它而不是当前时间。timestamp参数必须采用以下格式：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">use <span class="o">[[</span>CC<span class="o">]</span>YY<span class="o">]</span>MMDDhhmm<span class="o">[</span>.ss<span class="o">]</span></code></pre></div>
-<p>例如，以下命令将设置<code>file1</code>当前年份的6月1日到2月1日的最后访问和修改时间。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -t 12061102 file1</code></pre></div>
-<h2 id="使用另一个文件的时间戳">使用另一个文件的时间戳</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -d '12 June' file1
+</code></pre><p>使用该<code>-t</code>选项指定时间戳并使用它而不是当前时间。timestamp参数必须采用以下格式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">use <span class="o">[</span><span class="o">[</span>CC<span class="o">]</span>YY<span class="o">]</span>MMDDhhmm<span class="o">[</span>.ss<span class="o">]</span>
+</code></pre></div><p>例如，以下命令将设置<code>file1</code>当前年份的6月1日到2月1日的最后访问和修改时间。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">touch -t 12061102 file1
+</code></pre><h2 id="heading4">使用另一个文件的时间戳</h2>
 <p>在<code>-r</code>（<code>--reference=</code>）选项允许我们指定一个参考文件，并使用的，而不是当前的时间的时间戳。</p>
-
 <p>例如，以下命令将告诉touch使用<code>file1</code>for 的次数<code>file2</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -r file1 file2</code></pre></div>
-<h2 id="更改符号链接时间戳">更改符号链接时间戳</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -r file1 file2
+</code></pre><h2 id="heading5">更改符号链接时间戳</h2>
 <p>默认情况下，如果在<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>上使用touch命令，它将更改其引用文件的时间戳。</p>
-
 <p>使用<code>-h</code>（<code>--no-dereference</code>）修改符号链接的时间戳。</p>
-
 <p>例如，要更改<code>symlink1</code>您将使用的符号链接的时间戳：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">touch -h symlink1</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">touch -h symlink1
+</code></pre><h2 id="heading6">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用Linux touch命令。</p>
       </div><ul class="pa0">
   
@@ -297,22 +266,20 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#linux文件时间戳">Linux文件时间戳</a></li>
-<li><a href="#如何使用touch命令">如何使用touch命令</a></li>
-<li><a href="#仅更改访问或修改时间">仅更改访问或修改时间</a>
-<ul>
-<li><a href="#仅更改访问时间">仅更改访问时间</a></li>
-<li><a href="#仅更改修改时间">仅更改修改时间</a></li>
-</ul></li>
-<li><a href="#设置特定时间戳">设置特定时间戳</a></li>
-<li><a href="#使用另一个文件的时间戳">使用另一个文件的时间戳</a></li>
-<li><a href="#更改符号链接时间戳">更改符号链接时间戳</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#linux">Linux文件时间戳</a></li>
+    <li><a href="#touch">如何使用touch命令</a></li>
+    <li><a href="#heading">仅更改访问或修改时间</a>
+      <ul>
+        <li><a href="#heading1">仅更改访问时间</a></li>
+        <li><a href="#heading2">仅更改修改时间</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading3">设置特定时间戳</a></li>
+    <li><a href="#heading4">使用另一个文件的时间戳</a></li>
+    <li><a href="#heading5">更改符号链接时间戳</a></li>
+    <li><a href="#heading6">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

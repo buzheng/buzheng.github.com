@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="通常，在终端中运行命令时，必须等到命令完成后才能输入另一条命令。这称为在前台或前台进程中运行命令。当进程在前台运行时，它会占用您的 Shell 会话，也允许您使用输入设备与其进行交互。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-run-linux-commands-in-background/" />
+<meta property="og:image" content="/linux/how-to-run-linux-commands-in-background/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-02T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-02T12:00:00+08:00" />
 <meta itemprop="name" content="如何在后台运行 Linux 命令">
 <meta itemprop="description" content="通常，在终端中运行命令时，必须等到命令完成后才能输入另一条命令。这称为在前台或前台进程中运行命令。当进程在前台运行时，它会占用您的 Shell 会话，也允许您使用输入设备与其进行交互。">
-
-
 <meta itemprop="datePublished" content="2019-11-02T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-02T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1126">
+<meta itemprop="image" content="/linux/how-to-run-linux-commands-in-background/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="nohup,fg,bg,jobs,disown,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="nohup,fg,bg,jobs,disown,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-run-linux-commands-in-background/featured.jpg"/>
 <meta name="twitter:title" content="如何在后台运行 Linux 命令"/>
 <meta name="twitter:description" content="通常，在终端中运行命令时，必须等到命令完成后才能输入另一条命令。这称为在前台或前台进程中运行命令。当进程在前台运行时，它会占用您的 Shell 会话，也允许您使用输入设备与其进行交互。"/>
@@ -142,80 +141,58 @@
           
   
           <p>通常，在终端中运行命令时，必须等到命令完成后才能输入另一条命令。这称为在前台或前台进程中运行命令。当进程在前台运行时，它会占用您的 Shell 会话，也允许您使用输入设备与其进行交互。</p>
-
 <p>如果该命令需要很长时间才能完成，并且您希望同时运行其他命令怎么办？您有几种选择可以使用。最明显和直接的选择是启动一个新的 Shell 会话并在其中运行命令。</p>
-
 <p>另一种选择是在后台运行命令。后台进程是从终端启动并在后台运行而无需用户交互的进程/命令。</p>
-
 <p>在本文中，我们将讨论后台进程是 Linux 。我们将向您展示如何在后台启动命令以及如何在关闭 Shell 会话后保持进程运行。</p>
-
-<h2 id="在后台运行-linux-命令">在后台运行 Linux 命令</h2>
-
+<h2 id="-linux-">在后台运行 Linux 命令</h2>
 <p>要在后台运行命令<code>&amp;</code>，请在命令末尾添加“＆”符号 () ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">command</span> <span class="p">&amp;</span></code></pre></div>
-<p>Shell 作业 ID( 用括号括起来)和进程 ID 将打印在终端上：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[1] 25177</code></pre></div>
-<p>您可以在后台同时运行多个进程。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">command</span> <span class="p">&amp;</span>
+</code></pre></div><p>Shell 作业 ID( 用括号括起来)和进程 ID 将打印在终端上：</p>
+<pre><code class="language-output" data-lang="output">[1] 25177
+</code></pre><p>您可以在后台同时运行多个进程。</p>
 <p>后台进程将继续向您从中调用命令的终端写入消息。要禁止 <code>stdout</code> 和 <code>stderr</code> 消息，请使用以下语法：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">command</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span> </code></pre></div>
-<p><code>&gt;/dev/null 2&gt; &amp; 1</code> 装置重定向 <code>stdout</code> 到 <code>/dev/null</code> 和 <code>stderr</code> 到 <code>stdout</code> 。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">command</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span> 
+</code></pre></div><p><code>&gt;/dev/null 2&gt; &amp; 1</code> 装置重定向 <code>stdout</code> 到 <code>/dev/null</code> 和 <code>stderr</code> 到 <code>stdout</code> 。</p>
 <p>使用该 <code>jobs</code> 实用工具显示当前 Shell 会话中所有已停止的作业和后台作业的状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">jobs -l</code></pre></div>
-<p>输出包括作业编号，进程 ID ，作业状态以及启动该作业的命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[1]+ 25177 Running                 ping google.com &amp;</code></pre></div>
-<p>要将后台进程置于前台，请使用以下 <code>fg</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">fg</code></pre></div>
-<p>如果您有多个后台作业，请 <code>%</code> 在命令后包含和作业 ID ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">fg %1</code></pre></div>
-<p>要终止后台进程，请使用 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code></a> 命令，后跟进程 ID ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">kill -9 25177</code></pre></div>
-<h2 id="将前台流程移至后台">将前台流程移至后台</h2>
+<pre><code class="language-bash-console" data-lang="bash-console">jobs -l
+</code></pre><p>输出包括作业编号，进程 ID ，作业状态以及启动该作业的命令：</p>
+<pre><code class="language-output" data-lang="output">[1]+ 25177 Running                 ping google.com &amp;
+</code></pre><p>要将后台进程置于前台，请使用以下 <code>fg</code> 命令：</p>
+<pre><code class="language-bash-console" data-lang="bash-console">fg
+</code></pre><p>如果您有多个后台作业，请 <code>%</code> 在命令后包含和作业 ID ：</p>
+<pre><code class="language-bash-console" data-lang="bash-console">fg %1
+</code></pre><p>要终止后台进程，请使用 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code></a> 命令，后跟进程 ID ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">kill -9 25177
 
+</code></pre><h2 id="heading">将前台流程移至后台</h2>
 <p>在后台移动正在运行的前台进程：</p>
-
 <ol>
 <li>输入来停止该过程 <code>Ctrl+Z</code> 。</li>
 <li>通过键入将停止的进程移至后台 <code>bg</code> 。</li>
 </ol>
-
-<h2 id="shell退出后保持后台进程运行">Shell退出后保持后台进程运行</h2>
-
+<h2 id="shell">Shell退出后保持后台进程运行</h2>
 <p>如果您的连接断开或您退出 Shell 会话，则后台进程将终止。有几种方法可以使进程在交互式 Shell 会话结束后保持运行。</p>
-
 <p>一种方法是使用 <code>disown</code> 内置的 Shell  从 Shell 的作业控件中删除作业：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">disown</code></pre></div>
-<p>如果您有多个后台作业，请 <code>%</code> 在命令后包含和作业 ID ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash-console" data-lang="bash-console">disown %1</code></pre></div>
-<p>使用 <code>jobs -l</code> 命令确认作业已从活动作业表中删除。要列出所有正在运行的进程，包括不使用的进程，请使用 <a href="/linux/ps-command-in-linux/"><code>ps aux</code></a> 命令。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">disown
 
+</code></pre><p>如果您有多个后台作业，请 <code>%</code> 在命令后包含和作业 ID ：</p>
+<pre><code class="language-bash-console" data-lang="bash-console">disown %1
+</code></pre><p>使用 <code>jobs -l</code> 命令确认作业已从活动作业表中删除。要列出所有正在运行的进程，包括不使用的进程，请使用 <a href="/linux/ps-command-in-linux/"><code>ps aux</code></a> 命令。</p>
 <p>使 Shell 退出后保持进程运行的另一种方法是使用 <code>nohup</code> 。</p>
-
 <p>该 <a href="/linux/linux-nohup-command/"><code>nohup</code></a> 命令执行另一个作为其参数指定的程序，并忽略所有 <code>SIGHUP</code>( 挂断)信号。 <code>SIGHUP</code> 是当控制终端关闭时发送到进程的信号。</p>
-
 <p>要使用该 <code>nohup</code> 命令在后台运行命令，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">nohup <span class="nb">command</span> <span class="p">&amp;</span></code></pre></div>
-<p>命令输出将重定向到 <code>nohup.out</code> 文件。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">nohup: ignoring input and appending output to &#39;nohup.out&#39;</code></pre></div>
-<p>如果注销或关闭终端，则该过程不会终止。</p>
-
-<h2 id="备择方案">备择方案</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">nohup <span class="nb">command</span> <span class="p">&amp;</span>
+</code></pre></div><p>命令输出将重定向到 <code>nohup.out</code> 文件。</p>
+<pre><code class="language-output" data-lang="output">nohup: ignoring input and appending output to 'nohup.out'
+</code></pre><p>如果注销或关闭终端，则该过程不会终止。</p>
+<h2 id="heading1">备择方案</h2>
 <p>有许多程序可让您同时进行多个交互式会话。</p>
-
-<h3 id="屏幕">屏幕</h3>
-
+<h3 id="heading2">屏幕</h3>
 <p><a href="/linux/how-to-use-linux-screen/">Screen</a> 或 GNU Screen 是一个终端多路复用器程序，它使您可以启动屏幕会话并在该会话内打开任意数量的窗口(虚拟终端)。当您的窗口不可见时，即使您已断开连接，在 Screen 中运行的进程也将继续运行。</p>
-
 <h3 id="tmux">Tmux</h3>
-
 <p><a href="/linux/getting-started-with-tmux/">Tmux</a> 是 GNU 屏幕的现代替代品。使用 Tmux ，您还可以创建一个会话并在该会话中打开多个窗口。 Tmux 会话是持久性的，这意味着即使您关闭终端，在 Tmux 中运行的程序仍会继续运行。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading3">结论</h2>
 <p>要在后台运行命令<code>&amp;</code>，请在命令末尾添加。</p>
-
 <p>在后台运行命令时，无需等待命令完成即可执行另一条命令。</p>
       </div><ul class="pa0">
   
@@ -305,20 +282,18 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在后台运行-linux-命令">在后台运行 Linux 命令</a></li>
-<li><a href="#将前台流程移至后台">将前台流程移至后台</a></li>
-<li><a href="#shell退出后保持后台进程运行">Shell退出后保持后台进程运行</a></li>
-<li><a href="#备择方案">备择方案</a>
-<ul>
-<li><a href="#屏幕">屏幕</a></li>
-<li><a href="#tmux">Tmux</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-linux-">在后台运行 Linux 命令</a></li>
+    <li><a href="#heading">将前台流程移至后台</a></li>
+    <li><a href="#shell">Shell退出后保持后台进程运行</a></li>
+    <li><a href="#heading1">备择方案</a>
+      <ul>
+        <li><a href="#heading2">屏幕</a></li>
+        <li><a href="#tmux">Tmux</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

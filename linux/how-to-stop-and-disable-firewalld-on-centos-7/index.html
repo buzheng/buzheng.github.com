@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 CentOS 7 上停止和禁用 Firewalld" />
 <meta property="og:description" content="FirewallD 是一个完整的防火墙解决方案，可动态管理网络连接和接口的信任级别。它使您可以完全控制允许或禁止进出系统的流量。
-
 从 CentOS 7 开始， FirewallD 替代了 iptables ，成为默认的防火墙管理工具。生产环境强烈建议启用 FirewallD 服务，但在某些情况下（如测试），您可能需要完全停止或禁用它。
-
 在本教程中，我们将向您展示如何在 CentOS 7 系统上禁用 FirewallD 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-stop-and-disable-firewalld-on-centos-7/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-05-28T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上停止和禁用 Firewalld">
 <meta itemprop="description" content="FirewallD 是一个完整的防火墙解决方案，可动态管理网络连接和接口的信任级别。它使您可以完全控制允许或禁止进出系统的流量。
-
 从 CentOS 7 开始， FirewallD 替代了 iptables ，成为默认的防火墙管理工具。生产环境强烈建议启用 FirewallD 服务，但在某些情况下（如测试），您可能需要完全停止或禁用它。
-
 在本教程中，我们将向您展示如何在 CentOS 7 系统上禁用 FirewallD 。">
-
-
 <meta itemprop="datePublished" content="2019-05-28T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-28T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="529">
 
 
 
-<meta itemprop="keywords" content="firewall,centos," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="firewall,centos," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上停止和禁用 Firewalld"/>
 <meta name="twitter:description" content="FirewallD 是一个完整的防火墙解决方案，可动态管理网络连接和接口的信任级别。它使您可以完全控制允许或禁止进出系统的流量。
-
 从 CentOS 7 开始， FirewallD 替代了 iptables ，成为默认的防火墙管理工具。生产环境强烈建议启用 FirewallD 服务，但在某些情况下（如测试），您可能需要完全停止或禁用它。
-
 在本教程中，我们将向您展示如何在 CentOS 7 系统上禁用 FirewallD 。"/>
 
   </head>
@@ -153,51 +144,42 @@
           
   
           <p><a href="https://firewalld.org/">FirewallD</a> 是一个完整的防火墙解决方案，可动态管理网络连接和接口的信任级别。它使您可以完全控制允许或禁止进出系统的流量。</p>
-
 <p>从 CentOS 7 开始， FirewallD 替代了 iptables ，成为默认的防火墙管理工具。生产环境强烈建议启用 FirewallD 服务，但在某些情况下（如测试），您可能需要完全停止或禁用它。</p>
-
 <p>在本教程中，我们将向您展示如何在 CentOS 7 系统上禁用 FirewallD 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-
 <p>如果您因为遇到连接问题而禁用防火墙，或者配置防火墙时遇到问题，请查看本指南<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">如何在 centos 7 上设置 firewalld 防火墙</a>。</p>
-
-<h2 id="检查防火墙状态">检查防火墙状态</h2>
-
+<h2 id="heading1">检查防火墙状态</h2>
 <p>要查看 FirewallD 服务的当前状态，您可以使用以下 <code>firewall-cmd</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --state</code></pre></div>
-<p>如果您的 CentOS 系统上运行 FirewallD 服务，上面的命令将打印以下消息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">running</code></pre></div>
-<h2 id="禁用防火墙">禁用防火墙</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --state
+</code></pre><p>如果您的 CentOS 系统上运行 FirewallD 服务，上面的命令将打印以下消息：</p>
+<pre><code class="language-output" data-lang="output">running
+</code></pre><h2 id="heading2">禁用防火墙</h2>
 <p>您可以使用以下命令暂时停止 FirewallD 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop firewalld</code></pre></div>
-<p>但是，此更改仅对当前运行时会话有效。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop firewalld
+</code></pre><p>但是，此更改仅对当前运行时会话有效。</p>
 <p>要永久禁用 CentOS 7 系统上的防火墙，请执行以下步骤：</p>
-
 <ol>
-<li><p>首先，使用以下命令停止 FirewallD 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop firewalld</code></pre></div></li>
-
-<li><p>禁用 FirewallD 服务以在系统引导时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl disable firewalld</code></pre></div>
-<p>上面命令的输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Removed symlink /etc/systemd/system/multi-user.target.wants/firewalld.service.
-Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.</code></pre></div></li>
-
-<li><p>覆盖 FirewallD 服务，这将阻止防火墙被其他服务启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl mask --now firewalld</code></pre></div>
-<p>从输出中可以看出， mask 命令只是从 firewalld 服务创建一个符号链接 <code>/dev/null</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Created symlink from /etc/systemd/system/firewalld.service to /dev/null.</code></pre></div></li>
+<li>
+<p>首先，使用以下命令停止 FirewallD 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop firewalld
+</code></pre></li>
+<li>
+<p>禁用 FirewallD 服务以在系统引导时自动启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl disable firewalld
+</code></pre><p>上面命令的输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">Removed symlink /etc/systemd/system/multi-user.target.wants/firewalld.service.
+Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
+</code></pre></li>
+<li>
+<p>覆盖 FirewallD 服务，这将阻止防火墙被其他服务启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl mask --now firewalld
+</code></pre><p>从输出中可以看出， mask 命令只是从 firewalld 服务创建一个符号链接 <code>/dev/null</code> ：</p>
+<pre><code class="language-output" data-lang="output">Created symlink from /etc/systemd/system/firewalld.service to /dev/null.
+</code></pre></li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading3">结论</h2>
 <p>在本教程中，您学习了如何在 CentOS 7 计算机上停止并永久禁用防火墙。</p>
-
 <p>您可能还想查看我们关于<a href="/linux/how-to-install-iptables-on-centos-7/">如何在 CentOS 7 上安装 iptables</a> 的教程</p>
       </div><ul class="pa0">
   
@@ -271,15 +253,12 @@ Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.</
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#检查防火墙状态">检查防火墙状态</a></li>
-<li><a href="#禁用防火墙">禁用防火墙</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">检查防火墙状态</a></li>
+    <li><a href="#heading2">禁用防火墙</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

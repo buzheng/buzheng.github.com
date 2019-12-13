@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上部署 Rocket.Chat" />
 <meta property="og:description" content="Rocket.Chat 是一个开源的团队沟通平台，是一个自托管的 Slack 替代品。它使用 Meteor 框架开发，并提供各种功能，包括帮助台聊天，文件共享，视频会议，语音消息， API 等。
-
 Rocket.Chat 是想要自己搭建聊天系统的公司和社区的完美解决方案。
-
 在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上部署 Rocket.Chat 并将 Nginx 配置为 SSL 反向代理。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/" />
@@ -40,25 +38,18 @@ Rocket.Chat 是想要自己搭建聊天系统的公司和社区的完美解决�
 <meta property="article:modified_time" content="2019-03-21T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上部署 Rocket.Chat">
 <meta itemprop="description" content="Rocket.Chat 是一个开源的团队沟通平台，是一个自托管的 Slack 替代品。它使用 Meteor 框架开发，并提供各种功能，包括帮助台聊天，文件共享，视频会议，语音消息， API 等。
-
 Rocket.Chat 是想要自己搭建聊天系统的公司和社区的完美解决方案。
-
 在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上部署 Rocket.Chat 并将 Nginx 配置为 SSL 反向代理。">
-
-
 <meta itemprop="datePublished" content="2019-03-21T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-21T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1676">
+<meta itemprop="wordCount" content="1684">
 
 
 
-<meta itemprop="keywords" content="ubuntu,rocketchat,nodejs,mongodb," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,rocketchat,nodejs,mongodb," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上部署 Rocket.Chat"/>
 <meta name="twitter:description" content="Rocket.Chat 是一个开源的团队沟通平台，是一个自托管的 Slack 替代品。它使用 Meteor 框架开发，并提供各种功能，包括帮助台聊天，文件共享，视频会议，语音消息， API 等。
-
 Rocket.Chat 是想要自己搭建聊天系统的公司和社区的完美解决方案。
-
 在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上部署 Rocket.Chat 并将 Nginx 配置为 SSL 反向代理。"/>
 
   </head>
@@ -153,85 +144,70 @@ Rocket.Chat 是想要自己搭建聊天系统的公司和社区的完美解决�
           
   
           <p>Rocket.Chat 是一个开源的团队沟通平台，是一个自托管的 Slack 替代品。它使用 Meteor 框架开发，并提供各种功能，包括帮助台聊天，文件共享，视频会议，语音消息， API 等。</p>
-
 <p>Rocket.Chat 是想要自己搭建聊天系统的公司和社区的完美解决方案。</p>
-
 <p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上部署 Rocket.Chat 并将 Nginx 配置为 SSL 反向代理。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您具有以下先决条件。</p>
-
 <ul>
 <li>Ubuntu 18.04 服务器。根据 Rocket.Chat 官方要求，您需要至少 1G 的 RAM 。</li>
 <li>指向您的服务器 IP 地址的域名。我们会用 <code>chat.example.com</code> 。</li>
 <li>已经按照<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">本教程</a>安装 Nginx  。</li>
-<li>您已为您的域安装了 SSL 证书。您可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本教程</a>生成免费的 Let&rsquo;s Encrypt SSL 证书。</li>
+<li>您已为您的域安装了 SSL 证书。您可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本教程</a>生成免费的 Let's Encrypt SSL 证书。</li>
 </ul>
-
-<h2 id="安装-node-js">安装 Node.js.</h2>
-
+<h2 id="-nodejs">安装 Node.js.</h2>
 <p>首先更新系统包列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update</code></pre></div>
-<p><a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">安装 Node.js ，npm</a> 以及构建 npm 包所需的所有其他依赖项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install nodejs npm build-essential curl software-properties-common graphicsmagick</code></pre></div>
-<p>在撰写本文时， Rocket.Chat 推荐的 Node.js 版本是 Node.js v8.11.3 。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
+</code></pre></div><p><a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">安装 Node.js ，npm</a> 以及构建 npm 包所需的所有其他依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install nodejs npm build-essential curl software-properties-common graphicsmagick
+</code></pre></div><p>在撰写本文时， Rocket.Chat 推荐的 Node.js 版本是 Node.js v8.11.3 。</p>
 <p>我们将使用 <code>n</code> , 一个 npm 包，它允许我们以交互方式管理 Node.js 版本。</p>
-
 <p>发出以下命令进行安装 n 和推荐的 Node.js 版本：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo npm install -g inherits n
-sudo n <span class="m">8</span>.11.3</code></pre></div>
-<h2 id="安装-mongodb">安装 MongoDB</h2>
-
+sudo n 8.11.3
+</code></pre></div><h2 id="-mongodb">安装 MongoDB</h2>
 <p>MongoDB 是一个面向 NoSQL 文档的数据库，它被 Rocket.Chat 用作存储数据。</p>
-
-<p>我们将从官方的 MongoDB 软件仓库<!--link:how-to-install-mongodb-on-ubuntu-18-04-->安装 MongoDB<!--link--> 。</p>
-
+<p>我们将从官方的 MongoDB 软件仓库<!-- raw HTML omitted -->安装 MongoDB<!-- raw HTML omitted --> 。</p>
 <p>导入 MongoDB 公钥并使用以下命令启用官方 MongoDB 软件仓库：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
-sudo add-apt-repository <span class="s1">&#39;deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse&#39;</span></code></pre></div>
-<p>启用软件仓库后，通过输入以下内容来更新包列表并安装 MongoDB ：</p>
+sudo add-apt-repository <span class="s1">&#39;deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse&#39;</span>
+</code></pre></div><p>启用软件仓库后，通过输入以下内容来更新包列表并安装 MongoDB ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
-sudo apt install mongodb-org</code></pre></div>
-<p>安装完成后，启动 MongoDB 服务并启用随机启动：</p>
+sudo apt install mongodb-org
+</code></pre></div><p>安装完成后，启动 MongoDB 服务并启用随机启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start mongod
-sudo systemctl <span class="nb">enable</span> mongod</code></pre></div>
-<h2 id="创建新的系统用户">创建新的系统用户</h2>
-
+sudo systemctl <span class="nb">enable</span> mongod
+</code></pre></div><h2 id="heading1">创建新的系统用户</h2>
 <p>要创建一个名为 <code>rocket</code> 的新用户和组，它将运行 Rocket.Chat 实例，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -r -d /opt/rocket rocket</code></pre></div>
-<p>将 <code>www-data</code> <!--link:how-to-add-user-to-group-in-linux-->用户添加到新用户组<!--link-->并更改 <code>/opt/rocket</code> 的目录权限，以便 Nginx 可以访问 Rocket.Chat 安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -r -d /opt/rocket rocket
+</code></pre></div><p>将 <code>www-data</code> <!-- raw HTML omitted -->用户添加到新用户组<!-- raw HTML omitted -->并更改 <code>/opt/rocket</code> 的目录权限，以便 Nginx 可以访问 Rocket.Chat 安装：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo usermod -a -G rocket www-data
-sudo chmod <span class="m">750</span> /opt/rocket</code></pre></div>
-<h2 id="安装-rocket-chat">安装 Rocket.Chat</h2>
-
+sudo chmod <span class="m">750</span> /opt/rocket
+</code></pre></div><h2 id="-rocketchat">安装 Rocket.Chat</h2>
 <p>切换到 rocket 用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - rocket</code></pre></div>
-<p>以下命令假定您当前以用户身份 <code>rocket</code> 运行。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - rocket
+</code></pre></div><p>以下命令假定您当前以用户身份 <code>rocket</code> 运行。</p>
 <p>使用 <a href="/linux/curl-command-examples/">curl</a> 下载最新稳定版的 Rocket.Chat ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -L https://releases.rocket.chat/latest/download -o rocket.chat.tgz</code></pre></div>
-<p>下载完成后，<!--link:how-to-create-and-extract-archives-using-the-tar-command-in-linux-->解压缩文档<!--link-->并将目录重命名为 <code>Rocket.Chat</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -L https://releases.rocket.chat/latest/download -o rocket.chat.tgz
+</code></pre></div><p>下载完成后，<!-- raw HTML omitted -->解压缩文档<!-- raw HTML omitted -->并将目录重命名为 <code>Rocket.Chat</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tar zxf rocket.chat.tgz
-mv bundle Rocket.Chat</code></pre></div>
-<p>切换到 <code>Rocket.Chat/programs/server</code> 目录并安装所有必需的 npm 包：</p>
+mv bundle Rocket.Chat
+</code></pre></div><p>切换到 <code>Rocket.Chat/programs/server</code> 目录并安装所有必需的 npm 包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> Rocket.Chat/programs/server
-npm install</code></pre></div>
-<p>为了在创建 systemd 单元和<!--link:nginx-reverse-proxy-->使用 Nginx 设置反向代理<!--link-->之前测试我们的安装，我们将设置所需的环境变量并启动 Rocket.Chat 服务器</p>
+npm install
+</code></pre></div><p>为了在创建 systemd 单元和<!-- raw HTML omitted -->使用 Nginx 设置反向代理<!-- raw HTML omitted -->之前测试我们的安装，我们将设置所需的环境变量并启动 Rocket.Chat 服务器</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">PORT</span><span class="o">=</span><span class="m">3000</span>
 <span class="nb">export</span> <span class="nv">ROOT_URL</span><span class="o">=</span>http://0.0.0.0:3000/
-<span class="nb">export</span> <span class="nv">MONGO_URL</span><span class="o">=</span>mongodb://localhost:27017/rocketchat</code></pre></div>
-<p>跳转到 <code>Rocket.Chat</code> 目录并通过发出以下命令启动 Rocket.Chat 服务器：</p>
+<span class="nb">export</span> <span class="nv">MONGO_URL</span><span class="o">=</span>mongodb://localhost:27017/rocketchat
+</code></pre></div><p>跳转到 <code>Rocket.Chat</code> 目录并通过发出以下命令启动 Rocket.Chat 服务器：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> ../../
-node main.js</code></pre></div>
-<p>如果没有错误，您应该看到以下输出：</p>
+node main.js
+</code></pre></div><p>如果没有错误，您应该看到以下输出：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">➔ +---------------------------------------------+
 ➔ <span class="p">|</span>                SERVER RUNNING               <span class="p">|</span>
 ➔ +---------------------------------------------+
 ➔ <span class="p">|</span>                                             <span class="p">|</span>
-➔ <span class="p">|</span>  Rocket.Chat Version: <span class="m">0</span>.71.1                <span class="p">|</span>
-➔ <span class="p">|</span>       NodeJS Version: <span class="m">8</span>.11.3 - x64          <span class="p">|</span>
+➔ <span class="p">|</span>  Rocket.Chat Version: 0.71.1                <span class="p">|</span>
+➔ <span class="p">|</span>       NodeJS Version: 8.11.3 - x64          <span class="p">|</span>
 ➔ <span class="p">|</span>             Platform: linux                 <span class="p">|</span>
 ➔ <span class="p">|</span>         Process Port: <span class="m">3000</span>                  <span class="p">|</span>
 ➔ <span class="p">|</span>             Site URL: http://0.0.0.0:3000/  <span class="p">|</span>
@@ -239,16 +215,13 @@ node main.js</code></pre></div>
 ➔ <span class="p">|</span>          Commit Hash: e73dc78ffd            <span class="p">|</span>
 ➔ <span class="p">|</span>        Commit Branch: HEAD                  <span class="p">|</span>
 ➔ <span class="p">|</span>                                             <span class="p">|</span>
-➔ +---------------------------------------------+</code></pre></div>
-<p>使用 <code>CTRL+C</code> 停止 Rocket.Chat 服务器。</p>
-
+➔ +---------------------------------------------+
+</code></pre></div><p>使用 <code>CTRL+C</code> 停止 Rocket.Chat 服务器。</p>
 <p>通过输入 <code>exit</code> 切换回您的 sudo 用户，然后继续执行后续步骤。</p>
-
-<h2 id="创建一个-systemd-单元">创建一个 Systemd 单元</h2>
-
+<h2 id="-systemd-">创建一个 Systemd 单元</h2>
 <p>为了将 Rocket.Chat 作为服务运行，我们要在 /etc/systemd/system/ 目录中创建一个单元文件 <code>rocketchat.service</code> 。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/systemd/system/rocketchat.service</code></pre></div>
-<p>粘贴以下内容到 <code>/etc/systemd/system/rocketchat.service</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/systemd/system/rocketchat.service
+</code></pre></div><p>粘贴以下内容到 <code>/etc/systemd/system/rocketchat.service</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Rocket.Chat server</span>
 <span class="na">After</span><span class="o">=</span><span class="s">network.target nss-lookup.target mongod.target</span>
@@ -262,28 +235,27 @@ node main.js</code></pre></div>
 <span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/node /opt/rocket/Rocket.Chat/main.js</span>
 
 <span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span></code></pre></div>
-<p>通过执行以下命令通知 systemd 我们已经创建了一个新的单元文件，并启动 Rocket.Chat 服务：</p>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div><p>通过执行以下命令通知 systemd 我们已经创建了一个新的单元文件，并启动 Rocket.Chat 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
-sudo systemctl start rocketchat</code></pre></div>
-<p>输入以下内容检查服务状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status rocketchat</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">* rocketchat.service - Rocket.Chat server
+sudo systemctl start rocketchat
+</code></pre></div><p>输入以下内容检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status rocketchat
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">* rocketchat.service - Rocket.Chat server
    Loaded: loaded <span class="o">(</span>/etc/systemd/system/rocketchat.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
-   Active: active <span class="o">(</span>running<span class="o">)</span> since Wed <span class="m">2018</span>-11-07 <span class="m">14</span>:36:24 PST<span class="p">;</span> 5s ago
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Wed 2018-11-07 14:36:24 PST<span class="p">;</span> 5s ago
  Main PID: <span class="m">12693</span> <span class="o">(</span>node<span class="o">)</span>
-    Tasks: <span class="m">10</span> <span class="o">(</span>limit: <span class="m">2319</span><span class="o">)</span>
+    Tasks: <span class="m">10</span> <span class="o">(</span>limit: 2319<span class="o">)</span>
    CGroup: /system.slice/rocketchat.service
-           <span class="sb">`</span>-12693 /usr/local/bin/node /opt/rocket/Rocket.Chat/main.js</code></pre></div>
-<p>最后，使用以下命令启用 Rocket.Chat 服务在引导时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> rocketchat</code></pre></div>
-<h2 id="使用-nginx-设置反向代理">使用 Nginx 设置反向代理</h2>
-
-<p>如果您按照我们指南上的<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a> 以及<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">如何在 Ubuntu 18.04 使用 Let&rsquo;s Encrypt 来保护 Nginx</a> ，您应该已经安装了 Nginx 并配置了 SSL 证书。</p>
-
+           <span class="sb">`</span>-12693 /usr/local/bin/node /opt/rocket/Rocket.Chat/main.js
+</code></pre></div><p>最后，使用以下命令启用 Rocket.Chat 服务在引导时自动启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> rocketchat
+</code></pre></div><h2 id="-nginx-">使用 Nginx 设置反向代理</h2>
+<p>如果您按照我们指南上的<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a> 以及<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">如何在 Ubuntu 18.04 使用 Let's Encrypt 来保护 Nginx</a> ，您应该已经安装了 Nginx 并配置了 SSL 证书。</p>
 <p>现在我们需要为 Rocket.Chat 安装创建一个新的 <a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">Nginx 服务器块</a> 。</p>
-
 <p>打开文本编辑器并创建文件 <code>/etc/nginx/sites-available/chat.example.com.conf</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/chat.example.com.conf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">upstream</span> <span class="s">rocketchat_backend</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/chat.example.com.conf
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">upstream</span> <span class="s">rocketchat_backend</span> <span class="p">{</span>
   <span class="kn">server</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">3000</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -291,7 +263,7 @@ sudo systemctl start rocketchat</code></pre></div>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">chat.example.com</span><span class="p">;</span>
 
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://chat.example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -302,7 +274,7 @@ sudo systemctl start rocketchat</code></pre></div>
     <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/chat.example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/chat.example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/chat.example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
 
     <span class="kn">access_log</span> <span class="s">/var/log/nginx/chat.example.com-access.log</span><span class="p">;</span>
     <span class="kn">error_log</span> <span class="s">/var/log/nginx/chat.example.com-error.log</span><span class="p">;</span>
@@ -321,43 +293,27 @@ sudo systemctl start rocketchat</code></pre></div>
 
         <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>通过创建从文件到 <code>sites-enabled</code> 目录的符号链接来启用新服务器块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/chat.example.com.conf /etc/nginx/sites-enabled/</code></pre></div>
-<p>重新加载 Nginx 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
-<h2 id="配置-rocket-chat">配置 Rocket.Chat</h2>
-
+<span class="p">}</span>
+</code></pre></div><p>通过创建从文件到 <code>sites-enabled</code> 目录的符号链接来启用新服务器块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/chat.example.com.conf /etc/nginx/sites-enabled/
+</code></pre></div><p>重新加载 Nginx 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
+</code></pre></div><h2 id="-rocketchat1">配置 Rocket.Chat</h2>
 <p>打开浏览器并输入： <code>http://chat.example.com</code> 。</p>
-
 <p>假设安装成功，您将看到 Rocket.Chat 安装向导，它将指导您设置第一个管理员用户，配置您的组织并注册您的服务器以接收免费推送通知等。</p>
-
 <p>初始设置向导的第一部分将要求您设置管理员用户：</p>
-
-<figure><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-admin-info.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-admin-info.jpg" alt=""></p>
 <p>完成输入管理员信息后，单击 <code>Continue</code> 按钮，然后在下一步中输入您的组织信息：</p>
-
-<figure><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-organisation-info.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-organisation-info.jpg" alt=""></p>
 <p>初始设置向导的第三部分将提示您输入服务器信息：</p>
-
-<figure><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-server-info.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-server-info.jpg" alt=""></p>
 <p>在下一步中，将询问您是否要使用 Rocket.Chat 的预配置网关和代理。选择此选项将允许您访问 Rocket.Chat Apps 市场，其他功能（如推送通知）将开箱即用。</p>
-
-<figure><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-register-server.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-register-server.jpg" alt=""></p>
 <p>做出选择，单击 <code>Continue</code> 按钮，您将被重定向到以下页面，表明您的工作区已准备就绪：</p>
-
-<figure><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-workspace-ready.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-rocket-chat-on-ubuntu-18-04/rocket-chat-workspace-ready.jpg" alt=""></p>
 <p>单击 <code>Go to your workspace</code> 按钮，您将被重定向到以 admin 用户身份登录的 Rocket.Chat 仪表板。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>在本教程中，您学习了如何在 Ubuntu 18.04 上安装 Rocket.Chat 以及如何将 Nginx 设置为反向代理。</p>
-
 <p>您现在应该访问 <a href="https://rocket.chat/docs/user-guides/">Rocket.Chat 文档页面</a>并了解有关新聊天系统的更多信息。</p>
       </div><ul class="pa0">
   
@@ -439,20 +395,17 @@ sudo systemctl start rocketchat</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-node-js">安装 Node.js.</a></li>
-<li><a href="#安装-mongodb">安装 MongoDB</a></li>
-<li><a href="#创建新的系统用户">创建新的系统用户</a></li>
-<li><a href="#安装-rocket-chat">安装 Rocket.Chat</a></li>
-<li><a href="#创建一个-systemd-单元">创建一个 Systemd 单元</a></li>
-<li><a href="#使用-nginx-设置反向代理">使用 Nginx 设置反向代理</a></li>
-<li><a href="#配置-rocket-chat">配置 Rocket.Chat</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-nodejs">安装 Node.js.</a></li>
+    <li><a href="#-mongodb">安装 MongoDB</a></li>
+    <li><a href="#heading1">创建新的系统用户</a></li>
+    <li><a href="#-rocketchat">安装 Rocket.Chat</a></li>
+    <li><a href="#-systemd-">创建一个 Systemd 单元</a></li>
+    <li><a href="#-nginx-">使用 Nginx 设置反向代理</a></li>
+    <li><a href="#-rocketchat1">配置 Rocket.Chat</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

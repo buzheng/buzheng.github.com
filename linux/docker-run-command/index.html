@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="Docker run 命令用法实例" />
 <meta property="og:description" content="docker run 命令从给定的镜像创建容器，并使用给定命令启动容器。这是开始使用 Docker 时应该账务的第一批命令之一。
-
 在本文中，我们将使用官方的 Nginx 镜像来展示运行 Docker 容器的各种方法。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/docker-run-command/" />
+<meta property="og:image" content="/linux/docker-run-command/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-29T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-29T12:00:00+08:00" />
 <meta itemprop="name" content="Docker run 命令用法实例">
 <meta itemprop="description" content="docker run 命令从给定的镜像创建容器，并使用给定命令启动容器。这是开始使用 Docker 时应该账务的第一批命令之一。
-
 在本文中，我们将使用官方的 Nginx 镜像来展示运行 Docker 容器的各种方法。">
-
-
 <meta itemprop="datePublished" content="2019-11-29T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-29T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1704">
+<meta itemprop="wordCount" content="1708">
+<meta itemprop="image" content="/linux/docker-run-command/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="docker," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/docker-run-command/featured.jpg"/>
 <meta name="twitter:title" content="Docker run 命令用法实例"/>
 <meta name="twitter:description" content="docker run 命令从给定的镜像创建容器，并使用给定命令启动容器。这是开始使用 Docker 时应该账务的第一批命令之一。
-
 在本文中，我们将使用官方的 Nginx 镜像来展示运行 Docker 容器的各种方法。"/>
 
   </head>
@@ -148,131 +144,101 @@
           
   
           <p><code>docker run</code> 命令从给定的镜像创建容器，并使用给定命令启动容器。这是开始使用 Docker 时应该账务的第一批命令之一。</p>
-
 <p>在本文中，我们将使用官方的 Nginx 镜像来展示运行 Docker 容器的各种方法。</p>
-
-<h2 id="docker运行命令">Docker运行命令</h2>
-
+<h2 id="docker">Docker运行命令</h2>
 <p><code>docker run</code> 命令采用以下形式：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</code></pre></div>
-<p><code>docker run</code> 命令唯一需要的参数是从中创建容器的镜像的名称。如果本地系统上不存在该镜像，则将其从镜像仓库中拉出。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+</code></pre><p><code>docker run</code> 命令唯一需要的参数是从中创建容器的镜像的名称。如果本地系统上不存在该镜像，则将其从镜像仓库中拉出。</p>
 <p>如果未指定命令，则在运行容器时将执行 Dockerfile 文件中指定的 <code>CMD</code> 或 <code>ENTRYPOINT</code> 指令。</p>
-
 <p>从版本 1.13 开始， Docker CLI 已经进行了重组，并且所有命令都被分组在与之交互的对象下。</p>
-
 <p>由于该 <code>run</code> 命令与容器交互，因此它是 <code>docker container</code> 的子命令。新命令的语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]</code></pre></div>
-<p>现在仍支持旧的 1.13 之前的语法。但事实上， <code>docker run</code> 命令是 <code>docker container run</code> 命令的别名。鼓励用户使用新的命令语法。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]
+</code></pre><p>现在仍支持旧的 1.13 之前的语法。但事实上， <code>docker run</code> 命令是 <code>docker container run</code> 命令的别名。鼓励用户使用新的命令语法。</p>
 <p>可以在 <a href="https://docs.docker.com/engine/reference/commandline/container_run/">Docker 文档</a>页面上找到 <code>docker container run</code> 的所有选项的列表。</p>
-
-<h2 id="在前台运行容器">在前台运行容器</h2>
-
+<h2 id="heading">在前台运行容器</h2>
 <p>默认情况下，如果没有为 <code>docker run</code> 命令提供任何选项，则根进程将在前台启动。这意味着来自根进程的标准输入，输出和错误将附加到终端会话。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run nginx</code></pre></div>
-<p>Nginx 进程的输出将显示在您的终端上。由于没有与 Web 服务器的连接，因此终端为空。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run nginx
+</code></pre><p>Nginx 进程的输出将显示在您的终端上。由于没有与 Web 服务器的连接，因此终端为空。</p>
 <p>要停止容器，请按终止正在运行的 Nginx 进程 <code>CTRL+C</code> 。</p>
-
-<h2 id="以分离模式运行容器">以分离模式运行容器</h2>
-
+<h2 id="heading1">以分离模式运行容器</h2>
 <p>要在退出终端会话时保持容器运行，请以分离模式启动它。这类似于<a href="/linux/how-to-run-linux-commands-in-background/">在后台运行 Linux 进程</a>。</p>
-
 <p>使用该 <code>-d</code> 选项启动分离的容器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run -d nginx</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">050e72d8567a3ec1e66370350b0069ab5219614f9701f63fcf02e8c8689f04fa</code></pre></div>
-<p>当根进程终止时，分离的容器将停止。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run -d nginx
+</code></pre><pre><code class="language-output" data-lang="output">050e72d8567a3ec1e66370350b0069ab5219614f9701f63fcf02e8c8689f04fa
+</code></pre><p>当根进程终止时，分离的容器将停止。</p>
 <p>您可以使用 <a href="/linux/how-to-list-docker-containers/"><code>docker container ls</code></a> 命令列出正在运行的容器。</p>
-
 <p>要将终端附加到分离的容器根进程，请使用 <a href="/linux/how-to-connect-to-docker-container/"><code>docker container attach</code></a> 命令。</p>
-
-<h2 id="退出后删除容器">退出后删除容器</h2>
-
+<h2 id="heading2">退出后删除容器</h2>
 <p>默认情况下，当容器退出时，其文件系统将保留在主机系统上。</p>
-
 <p><code>--rm</code> 选项告诉 <code>docker run</code> 命令在容器自动退出时将其删除：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run --rm nginx</code></pre></div>
-<p>Nginx 镜像可能不是在容器退出后清理容器的文件系统的最佳示例。此选项通常用于执行短期任务(例如测试或数据库备份)的前台容器。</p>
-
-<h2 id="设置容器名称">设置容器名称</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run --rm nginx
+</code></pre><p>Nginx 镜像可能不是在容器退出后清理容器的文件系统的最佳示例。此选项通常用于执行短期任务(例如测试或数据库备份)的前台容器。</p>
+<h2 id="heading3">设置容器名称</h2>
 <p>在 Docker 中，每个容器均由 <code>UUID</code> 和名称标识。默认情况下，如果未显式设置，则容器名称由 Docker 守护程序自动生成。</p>
-
 <p>使用 <code>--name</code> 选项将自定义名称分配给容器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run -d --name my_nginx nginx</code></pre></div>
-<p>容器名称必须唯一。如果您尝试使用相同的名称启动另一个容器，则会收到类似于以下的错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">docker: Error response from daemon: Conflict. The container name &#34;/my_nginx&#34; is already in use by container &#34;9...c&#34;. You have to remove (or rename) that container to be able to reuse that name.</code></pre></div>
-<p>运行 <code>docker container ls -a</code> 以列出所有容器，并查看其名称：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container ls</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">CONTAINER ID  IMAGE  COMMAND                 CREATED         STATUS         PORTS   NAMES
-9d695c1f5ef4  nginx  &#34;nginx -g &#39;daemon of…&#34;  36 seconds ago  Up 35 seconds  80/tcp  my_nginx</code></pre></div>
-<p>有意义的名称对于在 Docker 网络中或运行 Docker CLI 命令时引用容器很有用。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run -d --name my_nginx nginx
+</code></pre><p>容器名称必须唯一。如果您尝试使用相同的名称启动另一个容器，则会收到类似于以下的错误：</p>
+<pre><code class="language-output" data-lang="output">docker: Error response from daemon: Conflict. The container name &quot;/my_nginx&quot; is already in use by container &quot;9...c&quot;. You have to remove (or rename) that container to be able to reuse that name.
+</code></pre><p>运行 <code>docker container ls -a</code> 以列出所有容器，并查看其名称：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">docker container ls
+</code></pre><pre><code class="language-output" data-lang="output">CONTAINER ID  IMAGE  COMMAND                 CREATED         STATUS         PORTS   NAMES
+9d695c1f5ef4  nginx  &quot;nginx -g 'daemon of…&quot;  36 seconds ago  Up 35 seconds  80/tcp  my_nginx
 
-<h2 id="发布端口">发布端口</h2>
-
+</code></pre><p>有意义的名称对于在 Docker 网络中或运行 Docker CLI 命令时引用容器很有用。</p>
+<h2 id="heading4">发布端口</h2>
 <p>默认情况下，如果未发布任何端口，则只能从容器内部访问容器中运行的进程。</p>
-
 <p>发布端口意味着将容器端口映射到主机端口，以便这些端口可用于 Docker 外部的服务。</p>
-
 <p>要发布端口，请使用以下 <code>-p</code> 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">-p host_ip:host_port:container_port/protocol</code></pre></div>
-<ul>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">-p host_ip:host_port:container_port/protocol
+</code></pre></div><ul>
 <li>如果未 <code>host_ip</code> 指定，则默认为 <code>0.0.0.0</code> 。</li>
 <li>如果未 <code>protocol</code> 指定，则默认为 TCP 。</li>
 <li>要发布多个端口，请使用多个 <code>-p</code> 选项。</li>
 </ul>
-
 <p>比如，要将容器中的 TCP 端口 80(nginx) 映射到主机 localhost 接口上的端口 8080 ，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run --name web_server -d -p 8080:80 nginx</code></pre></div>
-<p>您可以通过 <code>http://localhost:8080</code> 在浏览器中打开或 <a href="/linux/curl-command-examples/"><code>curl</code></a> 在 Docker 主机上运行以下命令来验证端口是否已发布：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -I http://localhost:8080</code></pre></div>
-<p>输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run --name web_server -d -p 8080:80 nginx
+</code></pre><p>您可以通过 <code>http://localhost:8080</code> 在浏览器中打开或 <a href="/linux/curl-command-examples/"><code>curl</code></a> 在 Docker 主机上运行以下命令来验证端口是否已发布：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">curl -I http://localhost:8080
+</code></pre><p>输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
 Server: nginx/1.17.6
 Date: Tue, 26 Nov 2019 22:55:59 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Tue, 19 Nov 2019 12:50:08 GMT
 Connection: keep-alive
-ETag: &#34;5dd3e500-264&#34;
-Accept-Ranges: bytes</code></pre></div>
-<h2 id="共享数据-安装数据卷">共享数据(安装数据卷)</h2>
-
+ETag: &quot;5dd3e500-264&quot;
+Accept-Ranges: bytes
+</code></pre><h2 id="heading5">共享数据(安装数据卷)</h2>
 <p>停止容器时，将删除该容器生成的所有数据。 Docker Volumes 是使数据持久保存并在多个容器之间共享的首选方法。</p>
-
 <p>要创建和管理卷，请使用以下 <code>-p</code> 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">-v host_src:container_dest:options</code></pre></div>
-<ul>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">-v host_src:container_dest:options
+</code></pre></div><ul>
 <li>该 <code>host_src</code> 可以是主机或命名卷上的文件或目录的绝对路径。</li>
 <li>该 <code>container_dest</code> 是到容器上的一个文件或目录的绝对路径。</li>
 <li>选项可以是 <code>rw</code>(读写)和 <code>ro</code>(只读)。如果未指定任何选项，则默认为 <code>rw</code> 。</li>
 </ul>
-
 <p>为了解释它是如何工作的，让我们在主机上<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个目录</a>并 在其中放置一个文件 <code>index.html</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir public_html
-echo &#34;Testing Docker Volumes&#34; &gt; public_html/index.html</code></pre></div>
-<p>接下来，将 <code>public_html</code> 目录挂载到 <code>/usr/share/nginx/html</code> 容器中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker run --name web_server -d -p 8080:80 -v $(pwd)/public_html:/usr/share/nginx/html nginx</code></pre></div>
-<p>我们没有指定 <code>public_html</code> 目录的绝对路径，而是使用 <code>$(pwd)</code> 命令，该命令将打印<a href="/linux/current-working-directory/">当前工作目录</a>。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">mkdir public_html
+echo &quot;Testing Docker Volumes&quot; &gt; public_html/index.html
+</code></pre><p>接下来，将 <code>public_html</code> 目录挂载到 <code>/usr/share/nginx/html</code> 容器中：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">docker run --name web_server -d -p 8080:80 -v $(pwd)/public_html:/usr/share/nginx/html nginx
 
+</code></pre><p>我们没有指定 <code>public_html</code> 目录的绝对路径，而是使用 <code>$(pwd)</code> 命令，该命令将打印<a href="/linux/current-working-directory/">当前工作目录</a>。</p>
 <p>现在，如果您输入 <code>http://localhost:8080</code> 浏览器，您应该会看到 <code>index.html</code> 文件的内容。您也可以使用 <code>curl</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl http://localhost:8080</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Testing Docker Volumes</code></pre></div>
-<h2 id="交互式运行容器">交互式运行容器</h2>
+<pre><code class="language-console-bash" data-lang="console-bash">curl http://localhost:8080
 
+</code></pre><pre><code class="language-output" data-lang="output">Testing Docker Volumes
+</code></pre><h2 id="heading6">交互式运行容器</h2>
 <p>当处理诸如的交互式过程时比如 <code>bash</code> ，请使用 <code>-i</code> 和 <code>-t</code> 选项启动容器。</p>
-
 <p>这些 <code>-it</code> 选项告诉 Docker 将标准输入保留在终端上并分配一个伪 tty ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">docker container run -it nginx /bin/bash</code></pre></div>
-<p>容器的 Bash shell 将附加到终端，命令提示符将更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">root@1da70f1937f5:/#</code></pre></div>
-<p>现在，您可以与容器的外壳进行交互并在其中运行任何命令。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">docker container run -it nginx /bin/bash
+</code></pre><p>容器的 Bash shell 将附加到终端，命令提示符将更改：</p>
+<pre><code class="language-output" data-lang="output">root@1da70f1937f5:/#
+</code></pre><p>现在，您可以与容器的外壳进行交互并在其中运行任何命令。</p>
 <p>在此示例中，我们提供了命令 (<code>/bin/bash</code>) 作为 <code>docker run</code> 已执行命令的参数，而不是 Dockerfile 中指定的命令。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading7">结论</h2>
 <p>Docker 是打包和部署应用程序的标准，并且是 CI/CD ，自动化和 DevOps 的重要组成部分。</p>
-
 <p>该 <code>docker container run</code> 命令用于创建和运行 Docker 容器。</p>
       </div><ul class="pa0">
   
@@ -342,20 +308,17 @@ echo &#34;Testing Docker Volumes&#34; &gt; public_html/index.html</code></pre></
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#docker运行命令">Docker运行命令</a></li>
-<li><a href="#在前台运行容器">在前台运行容器</a></li>
-<li><a href="#以分离模式运行容器">以分离模式运行容器</a></li>
-<li><a href="#退出后删除容器">退出后删除容器</a></li>
-<li><a href="#设置容器名称">设置容器名称</a></li>
-<li><a href="#发布端口">发布端口</a></li>
-<li><a href="#共享数据-安装数据卷">共享数据(安装数据卷)</a></li>
-<li><a href="#交互式运行容器">交互式运行容器</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#docker">Docker运行命令</a></li>
+    <li><a href="#heading">在前台运行容器</a></li>
+    <li><a href="#heading1">以分离模式运行容器</a></li>
+    <li><a href="#heading2">退出后删除容器</a></li>
+    <li><a href="#heading3">设置容器名称</a></li>
+    <li><a href="#heading4">发布端口</a></li>
+    <li><a href="#heading5">共享数据(安装数据卷)</a></li>
+    <li><a href="#heading6">交互式运行容器</a></li>
+    <li><a href="#heading7">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装 Odoo 13 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.60.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装 Odoo 13" />
+<meta property="og:description" content="本教程说明了如何在 CentOS 8 计算机上的 Python 虚拟环境中从源代码安装 Odoo 13 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/linux/how-to-install-odoo-13-on-centos-8/" />
+<meta property="og:image" content="/linux/how-to-install-odoo-13-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2019-12-13T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-12-13T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装 Odoo 13">
+<meta itemprop="description" content="本教程说明了如何在 CentOS 8 计算机上的 Python 虚拟环境中从源代码安装 Odoo 13 。">
+<meta itemprop="datePublished" content="2019-12-13T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-13T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="2480">
+<meta itemprop="image" content="/linux/how-to-install-odoo-13-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="centos,odoo,postgresql,python,pip," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/linux/how-to-install-odoo-13-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装 Odoo 13"/>
+<meta name="twitter:description" content="本教程说明了如何在 CentOS 8 计算机上的 Python 虚拟环境中从源代码安装 Odoo 13 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装 Odoo 13</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-12-13T12:00:00&#43;08:00">2019年12月13日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 2500 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 7 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本教程说明了如何在 CentOS 8 计算机上的 Python 虚拟环境中从源代码安装 <a href="https://www.odoo.com/">Odoo</a> 13 。</p>
+<p>Odoo 是世界上最受欢迎的多合一商务软件。它提供了一系列业务应用程序，包括 CRM ，网站，电子商务，计费，会计，制造，仓库，项目管理，库存等等，所有这些都无缝集成在一起。</p>
+<p>我们将从 Github 下载 Odoo 源码并将 Nginx 配置为反向代理。</p>
+<h2 id="heading">先决条件</h2>
+<p>您需要以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录才能完成安装。</p>
+<h2 id="heading1">安装依赖项</h2>
+<p><a href="/linux/how-to-install-python-on-centos-8/">安装 Python 3</a> ， Git 以及从源代码构建 Odoo 所需的所有库和工具：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install python3 python3-devel git gcc redhat-rpm-config libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel
+</code></pre><h2 id="heading2">创建系统用户</h2>
+<p>使用主目录 <code>/opt/odoo13</code> 创建一个新的系统用户和组 odoo13，以运行 Odoo 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -m -U -r -d /opt/odoo13 -s /bin/bash odoo13
+</code></pre><p>您可以随意命名用户，只需确保创建具有相同名称的 PostgreSQL 用户即可。</p>
+<h2 id="-postgresql">安装和配置 PostgreSQL</h2>
+<p>我们将从标准的 CentOS 8 存储库中<a href="/linux/how-to-install-postgresql-on-centos-8/">安装 PostgreSQL</a> 10 ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install @postgresql:10
+</code></pre><p>安装完成后，创建一个新的 PostgreSQL 数据库集群：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo postgresql-setup initdb
+</code></pre><p>启用并启动 PostgreSQL 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now postgresql
+</code></pre><p>创建一个与先前创建的系统用户同名的 PostgreSQL 用户，在本例中为 “odoo13” ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo su - postgres -c &quot;createuser -s odoo13&quot;
+</code></pre><h2 id="-wkhtmltopdf">安装 Wkhtmltopdf</h2>
+<p>该 <code>wkhtmltox</code> 软件包提供了一组开源命令行工具，可以将 HTML 渲染为 PDF 和各种图像格式。要打印 PDF 报告，您将需要 <code>wkhtmltopdf</code> 工具。 Odoo 的推荐版本是 <code>0.12.5</code> ，它在 CentOS 8 官方存储库中不可用。</p>
+<p>通过输入以下命令从 Github  安装 <a href="/linux/rpm-command-in-linux/"><code>rpm</code> 软件包</a>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox-0.12.5-1.centos8.x86_64.rpm
+</code></pre><h2 id="-odoo-13">安装和配置 Odoo 13</h2>
+<p>在开始安装过程之前，请<a href="/linux/su-command-in-linux/">切换为用户</a>  “odoo13” ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo su - odoo13
+</code></pre><p>首先从 Odoo GitHub 存储库克隆 Odoo 13 源代码：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git clone https://www.github.com/odoo/odoo --depth 1 --branch 13.0 /opt/odoo13/odoo
+</code></pre><p>导航到 <code>/opt/odoo13</code> 目录并为 Odoo 安装创建一个新的 Python 虚拟环境：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">cd /opt/odoo13
+python3 -m venv venv
+</code></pre><p>使用以下 <a href="/linux/bash-source-command/"><code>source</code></a> 命令激活环境：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">source venv/bin/activate
+</code></pre><p>安装所需的 Python 模块：</p>
+<pre><code class="language-console-venv" data-lang="console-venv">pip3 install -r odoo/requirements.txt
+</code></pre><p>如果在安装过程中遇到任何编译错误，请确保安装了上面章节提到的所有必需依赖项。</p>
+<p>安装完成后，请停用环境：</p>
+<pre><code class="language-console-venv" data-lang="console-venv">deactivate
+</code></pre><p>为自定义插件<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个新目录</a>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">mkdir /opt/odoo13/odoo-custom-addons
+</code></pre><p>切换回您的 sudo 用户：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">exit
+</code></pre><p>接下来，打开您的<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>并创建以下配置文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/odoo13.conf
+</code></pre><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[options]</span>
+<span class="c1">; This is the password that allows database operations:</span>
+<span class="na">admin_passwd</span> <span class="o">=</span> <span class="s">superadmin_passwd</span>
+<span class="na">db_host</span> <span class="o">=</span> <span class="s">False</span>
+<span class="na">db_port</span> <span class="o">=</span> <span class="s">False</span>
+<span class="na">db_user</span> <span class="o">=</span> <span class="s">odoo13</span>
+<span class="na">db_password</span> <span class="o">=</span> <span class="s">False</span>
+<span class="na">addons_path</span> <span class="o">=</span> <span class="s">/opt/odoo13/odoo/addons, /opt/odoo13/odoo-custom-addons</span>
+</code></pre></div><p>保存并关闭文件。</p>
+<p>不要忘记将更 <code>superadmin_passwd</code> 改为更安全的内容。</p>
+<h2 id="heading3">创建系统单位文件</h2>
+<p>打开您的文本编辑器，并在 <code>/etc/systemd/system/</code> 目录内创建一个文件 <code>odoo13.service</code> ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/odoo13.service
+</code></pre><p>粘贴以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Odoo13</span>
+<span class="na">Requires</span><span class="o">=</span><span class="s">postgresql.service</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target postgresql.service</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">SyslogIdentifier</span><span class="o">=</span><span class="s">odoo13</span>
+<span class="na">PermissionsStartOnly</span><span class="o">=</span><span class="s">true</span>
+<span class="na">User</span><span class="o">=</span><span class="s">odoo13</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">odoo13</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/opt/odoo13/venv/bin/python3 /opt/odoo13/odoo/odoo-bin -c /etc/odoo13.conf</span>
+<span class="na">StandardOutput</span><span class="o">=</span><span class="s">journal+console</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div><p>保存文件并关闭编辑器。</p>
+<p>通知 Systemd 一个新的单位文件存在：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload
+</code></pre><p>通过执行以下命令来启动并启用 Odoo 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now odoo13
+</code></pre><p>您可以使用以下命令检查服务状态：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status odoo13
+</code></pre><pre><code class="language-output" data-lang="output">● odoo13.service - Odoo13
+   Loaded: loaded (/etc/systemd/system/odoo13.service; enabled; vendor preset: disabled)
+   Active: active (running) since Wed 2019-12-11 20:04:52 UTC; 5s ago
+ Main PID: 28539 (python3)
+    Tasks: 4 (limit: 11524)
+   Memory: 94.6M
+   CGroup: /system.slice/odoo13.service
+           └─28539 /opt/odoo13/venv/bin/python3 /opt/odoo13/odoo/odoo-bin -c /etc/odoo13.conf
+</code></pre><p>要查看 Odoo 服务记录的消息，请使用以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo journalctl -u odoo13
+</code></pre><h2 id="heading4">测试安装</h2>
+<p>打开浏览器并输入：  <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
+<p>假设安装成功，将出现类似以下的屏幕：</p>
+<p><img src="odoo-13.jpg" alt=""></p>
+<p>如果您无法访问该页面，则可能是<a href="/linux/how-to-configure-and-manage-firewall-on-centos-8/">防火墙</a>阻止了 port   <code>8069</code> 。</p>
+<p>使用以下命令打开必要的端口：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-port=8069/tcp
+sudo firewall-cmd --reload
+</code></pre><h2 id="-nginx--ssl-">将 Nginx 配置为 SSL 终止代理</h2>
+<p>默认的 Odoo Web 服务器通过 HTTP 提供流量。为了使 Odoo 部署更加安全，我们将 Nginx 配置为 SSL 终止代理，该代理将通过 HTTPS 提供流量。</p>
+<p>SSL 终止代理是处理 SSL 加密/解密的代理服务器。这意味着终止代理 (Nginx) 将处理并解密传入的 TLS 连接 (HTTPS) ，并将未加密的请求传递给内部服务 (Odoo) 。 Nginx 和 Odoo 之间的流量不会被加密 (HTTP) 。</p>
+<p>使用<a href="/linux/nginx-reverse-proxy/">反向代理可以</a>为您带来许多好处，例如负载平衡， SSL 终止，缓存，压缩，提供静态内容等。</p>
+<p>在继续本节之前，请确保您满足以下先决条件：</p>
+<ul>
+<li>指向您的公共服务器 IP 的域名。我们将使用 <code>example.com</code> 。</li>
+<li><a href="/linux/how-to-install-nginx-on-centos-8/">Nginx已安装</a>。</li>
+<li>您的域的 SSL 证书。您可以<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">安装免费的 Let's Encrypt SSL 证书</a>。</li>
+</ul>
+<p>打开文本编辑器，然后创建/编辑域服务器块：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com
+</code></pre><p>以下配置设置 SSL 终止， <a href="/linux/redirect-http-to-https-in-nginx/">HTTP 到 HTTPS 重定向</a>， WWW 到非 WWW 重定向，缓存静态文件并启用 <a href="/linux/gzip-command-in-linux/">GZip</a> 压缩。</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Odoo servers
+</span><span class="c1"></span><span class="k">upstream</span> <span class="s">odoo</span> <span class="p">{</span>
+ <span class="kn">server</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">8069</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">upstream</span> <span class="s">odoochat</span> <span class="p">{</span>
+ <span class="kn">server</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">8072</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1"># HTTP -&gt; HTTPS
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
+
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1"># WWW -&gt; NON WWW
+</span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.example.com</span><span class="p">;</span>
+
+    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
+
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">example.com</span><span class="p">;</span>
+
+    <span class="kn">proxy_read_timeout</span> <span class="s">720s</span><span class="p">;</span>
+    <span class="kn">proxy_connect_timeout</span> <span class="s">720s</span><span class="p">;</span>
+    <span class="kn">proxy_send_timeout</span> <span class="s">720s</span><span class="p">;</span>
+
+    <span class="c1"># Proxy headers
+</span><span class="c1"></span>    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Host</span> <span class="nv">$host</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+
+    <span class="c1"># SSL parameters
+</span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
+
+    <span class="c1"># log files
+</span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/odoo.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/odoo.error.log</span><span class="p">;</span>
+
+    <span class="c1"># Handle longpoll requests
+</span><span class="c1"></span>    <span class="kn">location</span> <span class="s">/longpolling</span> <span class="p">{</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://odoochat</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Handle/requests
+</span><span class="c1"></span>    <span class="kn">location/{</span>
+       <span class="s">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+       <span class="kn">proxy_pass</span> <span class="s">http://odoo</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Cache static files
+</span><span class="c1"></span>    <span class="k">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">/web/static/</span> <span class="p">{</span>
+        <span class="kn">proxy_cache_valid</span> <span class="mi">200</span> <span class="mi">90m</span><span class="p">;</span>
+        <span class="kn">proxy_buffering</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">expires</span> <span class="mi">864000</span><span class="p">;</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://odoo</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Gzip
+</span><span class="c1"></span>    <span class="k">gzip_types</span> <span class="s">text/css</span> <span class="s">text/less</span> <span class="s">text/plain</span> <span class="s">text/xml</span> <span class="s">application/xml</span> <span class="s">application/json</span> <span class="s">application/javascript</span><span class="p">;</span>
+    <span class="k">gzip</span> <span class="no">on</span><span class="p">;</span>
+<span class="k">}</span>
+
+</code></pre></div><p>不要忘记用 Odoo 的域名替换 example.com 并为 SSL 证书文件设置正确的路径。</p>
+<p>完成后，<a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
+</code></pre><p>接下来，我们需要告诉 Odoo 使用代理。为此，请打开配置文件 <code>/etc/odoo13.conf</code> 并添加以下行：</p>
+<pre><code class="language-conf" data-lang="conf">proxy_mode = True
+</code></pre><p>重新启动 Odoo 服务以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart odoo13
+</code></pre><p>至此，反向代理已配置完毕，您可以在以下位置访问 Odoo 实例：  <code>https://example.com</code></p>
+<h2 id="heading5">更改绑定网络接口</h2>
+<p>此步骤是可选的，但这是一个很好的安全实践。</p>
+<p>默认情况下， Odoo 服务器侦听 <code>8069</code> 所有接口上的端口。要禁用对 Odoo 实例的直接访问，可以阻止 <code>8069</code> 所有公共接口的端口，也可以强制 Odoo 仅在本地接口上侦听。</p>
+<p>我们将 Odoo 配置为仅监听 <code>127.0.0.1</code> 。打开配置 <code>/etc/odoo13.conf</code> ，在文件末尾添加以下两行：</p>
+<pre><code class="language-conf" data-lang="conf">xmlrpc_interface = 127.0.0.1
+netrpc_interface = 127.0.0.1
+</code></pre><p>保存配置文件并重新启动 Odoo 服务器，以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart odoo13
+</code></pre><h2 id="heading6">启用多进程处理</h2>
+<p>默认情况下， Odoo 在多线程模式下工作。对于生产部署，建议更改为多处理服务器，因为它可以提高稳定性并更好地利用系统资源。</p>
+<p>要启用多进程处理，您需要编辑 Odoo 配置并设置非零数量的工作进程。根据系统中 CPU 内核的数量和可用的 RAM 内存来计算工作程序的数量。</p>
+<p>根据 <a href="https://www.odoo.com/documentation/13.0/setup/deploy.html">Odoo 的官方文档</a>来计算工人的数量和所需的 <a href="/linux/free-command-in-linux/">RAM 内存</a>大小，您可以使用以下公式和假设：</p>
+<p><strong>工号计算</strong></p>
+<ul>
+<li>理论上的最大工作者数 = (system_cpus * 2)+ 1</li>
+<li>1个工作进程 可以服务 ~= 6 个并发用户</li>
+<li>Cron 进程也需要 CPU</li>
+</ul>
+<p><strong>RAM内存大小计算</strong></p>
+<ul>
+<li>我们将认为所有请求中有 20 ％是重度请求，而 80 ％是轻度请求。繁重的请求使用大约 1 GB 的 RAM ，而较轻的请求使用大约 150 MB 的 RAM</li>
+<li>需要的 RAM = <code>number_of_workers * ( (light_worker_ratio * light_worker_ram_estimation) + (heavy_worker_ratio * heavy_worker_ram_estimation) )</code></li>
+</ul>
+<p>如果您不知道系统上有多少个 CPU ，请使用以下 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> 命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">grep -c ^processor /proc/cpuinfo
+</code></pre><p>假设您有一个具有 4 个 CPU 内核， 8 GB RAM 内存和 30 个并发 Odoo 用户的系统。</p>
+<ul>
+<li><code>30 users/6 = **5**</code>  (5 是所需的理论工作进程数)</li>
+<li><code>(4 * 2) + 1 = **9**</code>  (9 是理论上的最大工作进程数)</li>
+</ul>
+<p>根据上面的计算，您可以使用5名工作进程 + 1 名工人作为 cron 进程，总共6个进程。</p>
+<p>根据工作线程数计算 RAM 内存消耗：</p>
+<ul>
+<li><code>RAM = 6 * ((0.8*150) + (0.2*1024)) ~= 2 GB of RAM</code></li>
+</ul>
+<p>计算表明， Odoo 安装将需要大约 2GB 的 RAM 。</p>
+<p>要切换到多处理模式，请打开配置文件 <code>/etc/odoo13.conf</code> 并附加计算值：</p>
+<pre><code class="language-conf" data-lang="conf">limit_memory_hard = 2684354560
+limit_memory_soft = 2147483648
+limit_request = 8192
+limit_time_cpu = 600
+limit_time_real = 1200
+max_cron_threads = 1
+workers = 5
+</code></pre><p>重新启动 Odoo 服务以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart odoo13
+</code></pre><p>其余的系统资源将由在此系统上运行的其他服务使用。在本指南中，我们将 Odoo 与 PostgreSQL 和 Nginx 一起安装在同一服务器上。根据您的设置，您可能还会在服务器上运行其他服务。</p>
+<h2 id="heading7">结论</h2>
+<p>本教程引导您完成在 Python 虚拟环境中使用 Nginx 作为反向代理在 CentOS 8 上安装 Odoo 13 的过程。我们还向您展示了如何针对生产环境启用多处理和优化 Odoo 。</p>
+<p>您可能还需要查看有关<a href="/linux/how-to-setup-automatic-odoo-backup/">如何创建 Odoo 数据库每日自动备份的教程</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/odoo" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">odoo</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/postgresql" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">postgresql</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/python" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">python</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/pip" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">pip</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-deploy-odoo-12-on-ubuntu-18-04/">如何在Ubuntu 18.04上部署Odoo 12</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-on-centos-8/">如何在 CentOS 8 上安装 Python</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-centos-7/">如何在 CentOS 7 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-on-centos-7/">如何在 CentOS 7 上安装 Python 3</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-odoo-11-on-centos-7/">在 CentOS 7 上安装 Odoo 11</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-postgresql-on-centos-8/">在 CentOS 8 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-debian-10/">如何在 Debian 10 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">安装依赖项</a></li>
+    <li><a href="#heading2">创建系统用户</a></li>
+    <li><a href="#-postgresql">安装和配置 PostgreSQL</a></li>
+    <li><a href="#-wkhtmltopdf">安装 Wkhtmltopdf</a></li>
+    <li><a href="#-odoo-13">安装和配置 Odoo 13</a></li>
+    <li><a href="#heading3">创建系统单位文件</a></li>
+    <li><a href="#heading4">测试安装</a></li>
+    <li><a href="#-nginx--ssl-">将 Nginx 配置为 SSL 终止代理</a></li>
+    <li><a href="#heading5">更改绑定网络接口</a></li>
+    <li><a href="#heading6">启用多进程处理</a></li>
+    <li><a href="#heading7">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

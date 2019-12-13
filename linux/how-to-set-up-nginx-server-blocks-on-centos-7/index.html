@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 CentOS 7 上设置 Nginx 服务器块" />
 <meta property="og:description" content="Nginx 服务器块允许您在一台计算机上运行多个网站。这非常有用，因为对于每个站点，您可以指定站点文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。
-
 在本教程中，我们将解释如何在 CentOS 7 上设置 Nginx 服务器块。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-06-03T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上设置 Nginx 服务器块">
 <meta itemprop="description" content="Nginx 服务器块允许您在一台计算机上运行多个网站。这非常有用，因为对于每个站点，您可以指定站点文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。
-
 在本教程中，我们将解释如何在 CentOS 7 上设置 Nginx 服务器块。">
-
-
 <meta itemprop="datePublished" content="2019-06-03T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-06-03T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="969">
 
 
 
-<meta itemprop="keywords" content="nginx,centos," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="nginx,centos," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上设置 Nginx 服务器块"/>
 <meta name="twitter:description" content="Nginx 服务器块允许您在一台计算机上运行多个网站。这非常有用，因为对于每个站点，您可以指定站点文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。
-
 在本教程中，我们将解释如何在 CentOS 7 上设置 Nginx 服务器块。"/>
 
   </head>
@@ -147,25 +141,18 @@
           
   
           <p>Nginx 服务器块允许您在一台计算机上运行多个网站。这非常有用，因为对于每个站点，您可以指定站点文档根目录（包含网站文件的目录），创建单独的安全策略，使用不同的 SSL 证书等等。</p>
-
 <p>在本教程中，我们将解释如何在 CentOS 7 上设置 Nginx 服务器块。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
-
 <ul>
 <li>有一个指向您的公共服务器 IP 的域名。在本教程中我们将使用 <code>example.com</code> 。</li>
 <li>已经在<a href="/linux/how-to-install-nginx-on-centos-7/">你的 CentOS 系统上安装了 Nginx</a>。</li>
 <li>以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</li>
 </ul>
-
 <blockquote>
 <p>在某些文档中，您会看到 <code>服务器块</code> 被称为 <code>虚拟主机</code> 。<a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">虚拟主机</a>是 Apache 术语。</p>
 </blockquote>
-
-<h2 id="创建目录结构">创建目录结构</h2>
-
+<h2 id="heading1">创建目录结构</h2>
 <p>文档根目录是存储和提供域名网站的文件以响应请求的目录。我们可以将文档根目录设置在我们想要的任何位置，但在本指南中我们将使用以下目录结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/var/www/
 ├── example.com
@@ -173,38 +160,32 @@
 ├── example2.com
 │   └── public_html
 ├── example3.com
-│   └── public_html</code></pre></div>
-<p>基本上我们正在为我们想要在 <code>/var/www</code> 目录中的服务器上托管的每个域创建一个单独的目录。在此目录中，我们将创建一个 <code>public_html</code> 目录，该目录将是域文档根目录，并将存储域网站文件。</p>
-
+│   └── public_html
+</code></pre></div><p>基本上我们正在为我们想要在 <code>/var/www</code> 目录中的服务器上托管的每个域创建一个单独的目录。在此目录中，我们将创建一个 <code>public_html</code> 目录，该目录将是域文档根目录，并将存储域网站文件。</p>
 <p>让我们首先为我们的域创建根目录 <code>example.com</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.com/public_html</code></pre></div>
-<p>出于测试目的，我们将在域的文档根目录中创建一个文件 <code>index.html</code> 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.com/public_html
+</code></pre><p>出于测试目的，我们将在域的文档根目录中创建一个文件 <code>index.html</code> 。</p>
 <p>打开文本编辑器并创建演示文件 <code>index.html</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /var/www/example.com/public_html/index.html</code></pre></div>
-<p>将以下代码复制并粘贴到文件中 <code>/var/www/example.com/public_html/index.html</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /var/www/example.com/public_html/index.html
+</code></pre><p>将以下代码复制并粘贴到文件中 <code>/var/www/example.com/public_html/index.html</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
-<p>在本指南中，我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
-
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><p>在本指南中，我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
 <p>为避免任何权限问题，我们可以将域文档根目录<a href="/linux/linux-chown-command/">的所有权更改</a>为 Nginx 用户（<code>nginx</code>）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R nginx: /var/www/example.com</code></pre></div>
-<h2 id="创建服务器块">创建服务器块</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown -R nginx: /var/www/example.com
+</code></pre><h2 id="heading2">创建服务器块</h2>
 <p>Nginx 服务器块配置文件必须以 <code>/etc/nginx/conf.d</code> 目录结尾并存储在 <code>/etc/nginx/conf.d</code> 目录中。</p>
-
 <p>打开您选择的编辑器并为 <code>example.com</code> 创建服务器块配置文件。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf</code></pre></div>
-<p>您可以根据需要命名配置文件，但通常最好使用域名。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/conf.d/example.com.conf
+</code></pre><p>您可以根据需要命名配置文件，但通常最好使用域名。</p>
 <p>将以下代码复制并粘贴到文件中 <code>/etc/nginx/conf.d/example.com.conf</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
@@ -222,23 +203,19 @@
     <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>保存文件并测试 Nginx 配置以获取正确的语法：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nginx -t</code></pre></div>
-<p>如果没有错误，输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre></div>
-<p>重新启动 Nginx 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx</code></pre></div>
-<p>最后， 在您选择的浏览器中输入URL: <code>http://example.com</code> 验证服务器块是否按预期工作，您将看到如下内容：</p>
-
-<figure><img src="/images/linux/how-to-set-up-nginx-server-blocks-on-centos-7/nginx-welcome-page.jpg" alt=""></figure>
-
-<h2 id="结论">结论</h2>
-
+<span class="p">}</span>
+</code></pre></div><p>保存文件并测试 Nginx 配置以获取正确的语法：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nginx -t
+</code></pre><p>如果没有错误，输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+</code></pre><p>重新启动 Nginx 服务以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
+</code></pre><p>最后， 在您选择的浏览器中输入URL: <code>http://example.com</code> 验证服务器块是否按预期工作，您将看到如下内容：</p>
+<p><img src="/images/linux/how-to-set-up-nginx-server-blocks-on-centos-7/nginx-welcome-page.jpg" alt=""></p>
+<h2 id="heading3">结论</h2>
 <p>您已经学习了如何创建 Nginx 服务器块配置以在单个 CentOS 服务器上托管多个域。您可以重复上面概述的步骤，并为您的所有域创建其他服务器块。</p>
-
-<p>如果您想使用免费的 Let&rsquo;s Encrypt SSL 证书保护您的网站，可以查看以下指南：<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用的 Let&rsquo;s Encrypt 来保护 Nginx</a></p>
+<p>如果您想使用免费的 Let's Encrypt SSL 证书保护您的网站，可以查看以下指南：<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用的 Let's Encrypt 来保护 Nginx</a></p>
       </div><ul class="pa0">
   
    <li class="list di">
@@ -311,15 +288,12 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful</code></pre><
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#创建目录结构">创建目录结构</a></li>
-<li><a href="#创建服务器块">创建服务器块</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">创建目录结构</a></li>
+    <li><a href="#heading2">创建服务器块</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

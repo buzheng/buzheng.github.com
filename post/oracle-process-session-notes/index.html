@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-10-23T00:00:00+00:00" />
 <meta itemprop="name" content="Oracle 进程、连接相关">
 <meta itemprop="description" content="默认情况下，Oracle 允许的最大进程数为 150，这往往不能满足实际环境的要求，因此我们需要修改进程数和会话数的配置。">
-
-
 <meta itemprop="datePublished" content="2015-10-23T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-10-23T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="342">
 
 
 
-<meta itemprop="keywords" content="Oracle," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Oracle," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Oracle 进程、连接相关"/>
 <meta name="twitter:description" content="默认情况下，Oracle 允许的最大进程数为 150，这往往不能满足实际环境的要求，因此我们需要修改进程数和会话数的配置。"/>
 
@@ -141,25 +138,21 @@
           
   
           <p>默认情况下，Oracle 允许的最大进程数为 150，这往往不能满足实际环境的要求，因此我们需要修改进程数和会话数的配置。</p>
-
 <p><strong>显示进程、会话数相关配置</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">show</span> <span class="k">parameter</span> <span class="n">processes</span><span class="p">;</span>
-<span class="k">show</span> <span class="k">parameter</span> <span class="n">sessions</span><span class="p">;</span></code></pre></div>
-<p><strong>修改会话进程数相关配置</strong></p>
+<span class="k">show</span> <span class="k">parameter</span> <span class="n">sessions</span><span class="p">;</span>
+</code></pre></div><p><strong>修改会话进程数相关配置</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="k">system</span> <span class="k">set</span> <span class="n">processes</span><span class="o">=</span><span class="mi">100</span> <span class="k">scope</span><span class="o">=</span><span class="n">spfile</span><span class="p">;</span>
-<span class="k">alter</span> <span class="k">system</span> <span class="k">set</span> <span class="n">sessions</span><span class="o">=</span><span class="mi">115</span> <span class="k">scope</span><span class="o">=</span><span class="n">spfile</span><span class="p">;</span></code></pre></div>
-<p>需要遵循的公式: sessions = 1.1*process + 5</p>
-
+<span class="k">alter</span> <span class="k">system</span> <span class="k">set</span> <span class="n">sessions</span><span class="o">=</span><span class="mi">115</span> <span class="k">scope</span><span class="o">=</span><span class="n">spfile</span><span class="p">;</span>
+</code></pre></div><p>需要遵循的公式: sessions = 1.1*process + 5</p>
 <p>设置之后必须重启数据库实例才能生效。</p>
-
 <p><strong>Oracle 11g</strong></p>
-
 <p>oracle 11g 后已变的不同, 公式发生了变化为: sessions = (1.5 * PROCESSES) + 22, 并适用以下规则: 若在参数文件中指定sessions的值小于该默认推算值，数据库实例将自动调整至该推算值，设置的值大于该推算值时，oracle将会考虑使用我们所设置的值，简言之，oracle会在我们设置的值和推算值之间取较大者。一般情况下，我们只需要修改 processes 的值就可以了。</p>
-
 <p><strong>查看当前会话、进程的信息</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">from</span> <span class="n">v$process</span><span class="p">;</span>  <span class="c1">--查询进程数
 </span><span class="c1"></span><span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">from</span> <span class="n">v$session</span><span class="p">;</span>  <span class="c1">--查询会话数
-</span><span class="c1"></span><span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">from</span> <span class="n">v$session</span> <span class="k">where</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;ACTIVE&#39;</span><span class="p">;</span>  <span class="c1">--查询激活状态的会话数</span></code></pre></div>
+</span><span class="c1"></span><span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">from</span> <span class="n">v$session</span> <span class="k">where</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;</span><span class="s1">ACTIVE</span><span class="s1">&#39;</span><span class="p">;</span>  <span class="c1">--查询激活状态的会话数
+</span></code></pre></div>
       </div><ul class="pa0">
   
    <li class="list di">

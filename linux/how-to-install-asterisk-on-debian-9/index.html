@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 Debian 9 上安装 Asterisk" />
 <meta property="og:description" content="Asterisk 是最受欢迎和广泛采用的开源框架，用于构建通信应用程序。它被世界各地的个人，小企业，大型企业和政府使用。
-
 Asterisk 功能包括电话会议，语音邮件，待机音乐，呼叫转移，呼叫排队，呼叫记录，数据库存储/检索等等。
-
 在本教程中，我们将向您展示如何在 Debian 9 上安装 Asterisk 15 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-asterisk-on-debian-9/" />
@@ -40,25 +38,18 @@ Asterisk 功能包括电话会议，语音邮件，待机音乐，呼叫转移�
 <meta property="article:modified_time" content="2019-05-21T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 9 上安装 Asterisk">
 <meta itemprop="description" content="Asterisk 是最受欢迎和广泛采用的开源框架，用于构建通信应用程序。它被世界各地的个人，小企业，大型企业和政府使用。
-
 Asterisk 功能包括电话会议，语音邮件，待机音乐，呼叫转移，呼叫排队，呼叫记录，数据库存储/检索等等。
-
 在本教程中，我们将向您展示如何在 Debian 9 上安装 Asterisk 15 。">
-
-
 <meta itemprop="datePublished" content="2019-05-21T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-21T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1236">
 
 
 
-<meta itemprop="keywords" content="debian,asterisk," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="debian,asterisk," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Debian 9 上安装 Asterisk"/>
 <meta name="twitter:description" content="Asterisk 是最受欢迎和广泛采用的开源框架，用于构建通信应用程序。它被世界各地的个人，小企业，大型企业和政府使用。
-
 Asterisk 功能包括电话会议，语音邮件，待机音乐，呼叫转移，呼叫排队，呼叫记录，数据库存储/检索等等。
-
 在本教程中，我们将向您展示如何在 Debian 9 上安装 Asterisk 15 。"/>
 
   </head>
@@ -153,125 +144,93 @@ Asterisk 功能包括电话会议，语音邮件，待机音乐，呼叫转移�
           
   
           <p>Asterisk 是最受欢迎和广泛采用的开源框架，用于构建通信应用程序。它被世界各地的个人，小企业，大型企业和政府使用。</p>
-
 <p>Asterisk 功能包括电话会议，语音邮件，待机音乐，呼叫转移，呼叫排队，呼叫记录，数据库存储/检索等等。</p>
-
 <p>在本教程中，我们将向您展示如何在 Debian 9 上安装 Asterisk 15 。</p>
-
 <p>Debian 软件存储库中提供了旧版本的 Asterisk （版本13），可以随之安装 <code>apt install asterisk</code> 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-
 <p>更新 Debian 服务器并安装下载和构建 Asterisk 所需的软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgradesudo apt install wget build-essential subversion</code></pre></div>
-<h2 id="正在下载-asterisk">正在下载 Asterisk</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgradesudo apt install wget build-essential subversion
+</code></pre><h2 id="-asterisk">正在下载 Asterisk</h2>
 <p>在撰写本文时， Asterisk 的最新稳定版本是 15 版。</p>
-
 <p>切换到 <code>/usr/src</code> 目录并使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载 Asterisk 源代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd /usr/src/sudo 
-wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-15-current.tar.gz</code></pre></div>
-<p>下载完成后，使用 <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">tar 命令</a>解压缩存档：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar zxf asterisk-15-current.tar.gz</code></pre></div>
-<p>在继续执行后续步骤之前，请确保更改为 Asterisk 源目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd asterisk-15.*/</code></pre></div>
-<h2 id="安装-asterisk-依赖项">安装 Asterisk 依赖项</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cd /usr/src/sudo 
+wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-15-current.tar.gz
+</code></pre><p>下载完成后，使用 <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">tar 命令</a>解压缩存档：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo tar zxf asterisk-15-current.tar.gz
+</code></pre><p>在继续执行后续步骤之前，请确保更改为 Asterisk 源目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">cd asterisk-15.*/
+</code></pre><h2 id="-asterisk-">安装 Asterisk 依赖项</h2>
 <p>运行以下脚本以下载构建 MP3 模块和使用 MP3 文件所需的 MP3 源：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo contrib/scripts/get_mp3_source.sh</code></pre></div>
-<p>接下来，运行 <code>install_prereq</code> 脚本来解析 Debian 系统上的所有依赖项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo contrib/scripts/install_prereq install</code></pre></div>
-<p>该脚本将安装所有必需的包，并在成功完成后，将打印以下消息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">#############################################
+<pre><code class="language-console-bash" data-lang="console-bash">sudo contrib/scripts/get_mp3_source.sh
+</code></pre><p>接下来，运行 <code>install_prereq</code> 脚本来解析 Debian 系统上的所有依赖项：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo contrib/scripts/install_prereq install
+</code></pre><p>该脚本将安装所有必需的包，并在成功完成后，将打印以下消息：</p>
+<pre><code class="language-output" data-lang="output">#############################################
 ## install completed successfully
-#############################################</code></pre></div>
-<p>在这里，您将看到默认的 ITU-T 电话代码 61， 我们要根据自己的实际情况进行修改。</p>
-
-<h2 id="安装-asterisk">安装 Asterisk</h2>
-
+#############################################
+</code></pre><p>在这里，您将看到默认的 ITU-T 电话代码 61， 我们要根据自己的实际情况进行修改。</p>
+<h2 id="-asterisk1">安装 Asterisk</h2>
 <p>运行 <code>configure</code> 脚本，准备好编译 Asterisk 代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ./configure</code></pre></div>
-<p>成功完成后，您将看到以下输出：</p>
-
-<figure><img src="/images/linux/how-to-install-asterisk-on-debian-9/configure-asterisk.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ./configure
+</code></pre><p>成功完成后，您将看到以下输出：</p>
+<p><img src="/images/linux/how-to-install-asterisk-on-debian-9/configure-asterisk.jpg" alt=""></p>
 <p>下一步是选择要编译和安装的模块。通过键入以下内容访问 Menuselect 系统：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make menuselect</code></pre></div>
-<p>我们已经下载了 MP3 源文件，现在我们需要通过选择 <code>format_mp3</code> 以下内容告诉 Asterisk 构建 MP3 模块：</p>
-
-<figure><img src="/images/linux/how-to-install-asterisk-on-debian-9/asterisk-mp3.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo make menuselect
+</code></pre><p>我们已经下载了 MP3 源文件，现在我们需要通过选择 <code>format_mp3</code> 以下内容告诉 Asterisk 构建 MP3 模块：</p>
+<p><img src="/images/linux/how-to-install-asterisk-on-debian-9/asterisk-mp3.jpg" alt=""></p>
 <p>完成后，按 <code>F12</code> 保存并退出，或切换到 <code>Save and Exit</code> 按钮并按 <code>Enter</code> 。</p>
-
 <p>使用以下 <code>make</code> 命令启动编译过程：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make -j2</code></pre></div>
-<blockquote>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo make -j2
+</code></pre><blockquote>
 <p>编译可能需要一些时间，具体取决于您的系统。您可以根据处理器的核心数修改 <code>-j</code> 标志。</p>
 </blockquote>
-
 <p>构建过程完成后，您将看到以下消息：</p>
-
-<figure><img src="/images/linux/how-to-install-asterisk-on-debian-9/compile-asterisk.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-asterisk-on-debian-9/compile-asterisk.jpg" alt=""></p>
 <p>键入以下命令安装 Asterisk 及其模块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make install</code></pre></div>
-<p>安装完成后，您将看到以下消息：</p>
-
-<figure><img src="/images/linux/how-to-install-asterisk-on-debian-9/install-asterisk.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo make install
+</code></pre><p>安装完成后，您将看到以下消息：</p>
+<p><img src="/images/linux/how-to-install-asterisk-on-debian-9/install-asterisk.jpg" alt=""></p>
 <p>现在安装了 Asterisk ，下一步是安装示例配置文件。</p>
-
 <p>您可以通过运行以下命令安装带有示例文档的通用配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make samples</code></pre></div>
-<p>或者安装基本的 PBX 配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make basic-pbx</code></pre></div>
-<p>最后一步是键入以下命令安装 Asterisk init 脚本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo make config</code></pre></div>
-<p>您还可以运行 <code>ldconfig</code> 以更新共享库缓存：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ldconfig</code></pre></div>
-<h2 id="创建-asterisk-用户">创建 Asterisk 用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo make samples
+</code></pre><p>或者安装基本的 PBX 配置文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo make basic-pbx
+</code></pre><p>最后一步是键入以下命令安装 Asterisk init 脚本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo make config
+</code></pre><p>您还可以运行 <code>ldconfig</code> 以更新共享库缓存：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ldconfig
+</code></pre><h2 id="-asterisk-1">创建 Asterisk 用户</h2>
 <p>默认情况下， Asterisk 以 root 用户身份运行。出于安全原因，我们将创建一个新的系统用户并将 Asterisk 配置为以新创建的用户身份运行。</p>
-
 <p>通过发出以下命令创建一个新的系统用户 <code>asterisk</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser --system --group --home /var/lib/asterisk --no-create-home --gecos &#34;Asterisk PBX&#34; asterisk</code></pre></div>
-<p>要将 Asterisk 配置为以 <code>asterisk</code> 用户身份运行，请打开该 <code>/etc/default/asterisk</code> 文件</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/default/asterisk</code></pre></div>
-<p>并取消注释以下两行:</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">AST_USER=&#34;asterisk&#34;
-AST_GROUP=&#34;asterisk&#34;</code></pre></div>
-<p>将 <code>asterisk</code> 用户添加到 <code>dialout</code> 和 <code>audio</code> 组：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G dialout,audio asterisk</code></pre></div>
-<p>为所有 Asterisk 文件和目录<a href="/linux/linux-chown-command/">更改所有权</a>，以便用户 Asterisk 可以访问这些文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R asterisk: /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisksudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk</code></pre></div>
-<h2 id="启动-asterisk">启动 Asterisk</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo adduser --system --group --home /var/lib/asterisk --no-create-home --gecos &quot;Asterisk PBX&quot; asterisk
+</code></pre><p>要将 Asterisk 配置为以 <code>asterisk</code> 用户身份运行，请打开该 <code>/etc/default/asterisk</code> 文件</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/default/asterisk
+</code></pre><p>并取消注释以下两行:</p>
+<pre><code class="language-config" data-lang="config">AST_USER=&quot;asterisk&quot;
+AST_GROUP=&quot;asterisk&quot;
+</code></pre><p>将 <code>asterisk</code> 用户添加到 <code>dialout</code> 和 <code>audio</code> 组：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G dialout,audio asterisk
+</code></pre><p>为所有 Asterisk 文件和目录<a href="/linux/linux-chown-command/">更改所有权</a>，以便用户 Asterisk 可以访问这些文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown -R asterisk: /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisksudo chmod -R 750 /var/{lib,log,run,spool}/asterisk /usr/lib/asterisk /etc/asterisk
+</code></pre><h2 id="-asterisk2">启动 Asterisk</h2>
 <p>现在我们都已设置完毕，输入以下命令启动 Asterisk 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start asterisk</code></pre></div>
-<p>要验证 Asterisk 是否正在运行，请键入以下命令连接到 Asterisk 命令行界面（CLI）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo asterisk -vvvr</code></pre></div>
-<p>您将看到默认的 Asterisk CLI 提示符：</p>
-
-<figure><img src="/images/linux/how-to-install-asterisk-on-debian-9/asterisk-cli.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start asterisk
+</code></pre><p>要验证 Asterisk 是否正在运行，请键入以下命令连接到 Asterisk 命令行界面（CLI）：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo asterisk -vvvr
+</code></pre><p>您将看到默认的 Asterisk CLI 提示符：</p>
+<p><img src="/images/linux/how-to-install-asterisk-on-debian-9/asterisk-cli.jpg" alt=""></p>
 <p>键入 <code>exit</code> 或按 <code>CTRL+C</code> 以退出 Asterisk CLI 。</p>
-
 <p>最后一步是启用 Asterisk 服务随机自启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable asterisk</code></pre></div>
-<h2 id="配置防火墙">配置防火墙</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable asterisk
+</code></pre><h2 id="heading1">配置防火墙</h2>
 <p>默认情况下， SIP 使用 UDP 端口 5060 来打开端口运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">iptables -A INPUT -p udp -m udp --dport 5060 -j ACCEPT</code></pre></div>
-<p>如果启用了实时协议（RTP），则还需要打开以下端口范围：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">iptables -A INPUT -p udp -m udp --dport 10000:20000 -j ACCEPT</code></pre></div>
-<p>您可以根据自己的需要调整防火墙。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">iptables -A INPUT -p udp -m udp --dport 5060 -j ACCEPT
+</code></pre><p>如果启用了实时协议（RTP），则还需要打开以下端口范围：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">iptables -A INPUT -p udp -m udp --dport 10000:20000 -j ACCEPT
+</code></pre><p>您可以根据自己的需要调整防火墙。</p>
 <h2 id="conclusion">Conclusion</h2>
-
 <p>在本指南中，我们向您展示了如何在 Debian 系统上从源代码安装最新的 Asterisk 版本。</p>
-
 <p>您现在应该查看 <a href="https://wiki.asterisk.org/wiki/display/AST/Home">Asterisk 文档</a>并了解有关如何配置和使用 Asterisk 的更多信息。</p>
       </div><ul class="pa0">
   
@@ -345,19 +304,16 @@ AST_GROUP=&#34;asterisk&#34;</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#正在下载-asterisk">正在下载 Asterisk</a></li>
-<li><a href="#安装-asterisk-依赖项">安装 Asterisk 依赖项</a></li>
-<li><a href="#安装-asterisk">安装 Asterisk</a></li>
-<li><a href="#创建-asterisk-用户">创建 Asterisk 用户</a></li>
-<li><a href="#启动-asterisk">启动 Asterisk</a></li>
-<li><a href="#配置防火墙">配置防火墙</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-asterisk">正在下载 Asterisk</a></li>
+    <li><a href="#-asterisk-">安装 Asterisk 依赖项</a></li>
+    <li><a href="#-asterisk1">安装 Asterisk</a></li>
+    <li><a href="#-asterisk-1">创建 Asterisk 用户</a></li>
+    <li><a href="#-asterisk2">启动 Asterisk</a></li>
+    <li><a href="#heading1">配置防火墙</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

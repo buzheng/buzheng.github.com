@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2013-01-12T00:00:00+00:00" />
 <meta itemprop="name" content="渐进增强实现首页弹出层登录">
 <meta itemprop="description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那">
-
-
 <meta itemprop="datePublished" content="2013-01-12T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-01-12T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="928">
 
 
 
-<meta itemprop="keywords" content="前端开发," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="前端开发," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="渐进增强实现首页弹出层登录"/>
 <meta name="twitter:description" content="先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那"/>
 
@@ -141,24 +138,19 @@
           
   
           <p>先说一下什么渐进增强。 渐进增强是前端开发的一个理念，对于前端开发，首先强调的是内容，然后在当前内容的基础上对功能进行增强。这并不是首先照顾那些低版本或者功能较差的浏览器（如移动浏览器)，因为在渐进增强的理念中甚至没有浏览器的概念。</p>
-
 <p>与之对应的一个概念是“平稳退化“，这个开发理念主张首先针对高级的、现代的浏览器来开发设计网站，而对老的、落伍的浏览器提供一个仅仅可以工作的版本，却没有那么好的体验。</p>
-
 <p>在我看来，这两种理念的思想本身差不多，出发点不太一样，最终都是要保持网站在不同境况带给用户的完整功能，只是有些体验差点，有些体验好些。</p>
-
 <p>我这里会试着用这种前端开发理念，来实现一个首页弹出层登录的功能，我们可以先来探讨一下为什么要使用弹出层登录？我觉得弹出层会有如下2个好处（可能会有些肤浅）：</p>
-
 <p>对用户来说，不用心打开一个页面，节省下载时间；带给用户更好的体验；
 对网站提供者来说，至少可以减少一次页面请求，降低服务器负载；
 好了，我们来开始来做这个登录的例子。首先我们先按照最原始的思路实现一个登录页面，功能要求就是当用户点击页顶部的登录链接时会跳转到登录页面。我先来完成基本的代码：</p>
-
 <p>html代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;top&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;wrapper&#34;</span><span class="p">&gt;</span>     
-        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;login.html&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;signinlink&#34;</span><span class="p">&gt;</span>Sign In<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span></code></pre></div>
-<p>基本的样式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;top&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;wrapper&#34;</span><span class="p"></span><span class="p">&gt;</span>     
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;login.html&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;signinlink&#34;</span><span class="p"></span><span class="p">&gt;</span>Sign In<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div><p>基本的样式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-css" data-lang="css"><span class="p">#</span><span class="nn">top</span> <span class="p">{</span>
     <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
     <span class="n">border-botton</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="kc">solid</span> <span class="mh">#ccc</span><span class="p">;</span>
@@ -171,38 +163,36 @@
 <span class="p">.</span><span class="nc">wrapper</span> <span class="p">{</span>
     <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span> <span class="kc">auto</span><span class="p">;</span>
     <span class="k">width</span><span class="p">:</span> <span class="mi">960</span><span class="kt">px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-<p>就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;top&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;wrapper&#34;</span><span class="p">&gt;</span>     
-        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;login.html&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;signinlink&#34;</span><span class="p">&gt;</span>Sign In<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;signinpanel&#34;</span><span class="p">&gt;</span>
-            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;username&#34;</span><span class="p">&gt;</span>username<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
-            <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="p">/&gt;</span>
-            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;password&#34;</span><span class="p">&gt;</span>password<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
-            <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="p">/&gt;</span>
-            <span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>Sign In<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span></code></pre></div>
-<p>然后给登录链接添加事件，这里使用了jquery库：</p>
+<span class="p">}</span>
+</code></pre></div><p>就这么简单，我们就完成了跳转到登录页面的功能。这个版本我相信在任何浏览器下都是能工作的，因为任何浏览器都是支持链接的，即使这个浏览器不支持javascript。下面我们要做的就是添加一些辅助代码用以表示登录弹出层的输入框等内容，html代码我修改为如下（其中id为signinpanel就是要弹出的层）：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;top&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;wrapper&#34;</span><span class="p"></span><span class="p">&gt;</span>     
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;login.html&#34;</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;signinlink&#34;</span><span class="p"></span><span class="p">&gt;</span>Sign In<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;signinpanel&#34;</span><span class="p"></span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;username&#34;</span><span class="p"></span><span class="p">&gt;</span>username<span class="p">&lt;</span><span class="p">/</span><span class="nt">label</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;username&#34;</span> <span class="p">/</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;password&#34;</span><span class="p"></span><span class="p">&gt;</span>password<span class="p">&lt;</span><span class="p">/</span><span class="nt">label</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="p">/</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">button</span><span class="p"></span><span class="p">&gt;</span>Sign In<span class="p">&lt;</span><span class="p">/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div><p>然后给登录链接添加事件，这里使用了jquery库：</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
-<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinlink&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-        <span class="nx">$signinpanel</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinpanel&#39;</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">$signinpanel</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:hidden&#39;</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinpanel&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinlink&#39;</span><span class="p">)</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+        <span class="nx">$signinpanel</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinpanel&#39;</span><span class="p">)</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">$signinpanel</span><span class="p">.</span><span class="nx">is</span><span class="p">(</span><span class="s1">&#39;:hidden&#39;</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinpanel&#39;</span><span class="p">)</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinpanel&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#signinpanel&#39;</span><span class="p">)</span><span class="p">.</span><span class="nx">hide</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
         <span class="p">}</span>
  
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">});</span>
-<span class="p">});</span>
-<span class="o">&lt;</span><span class="err">/script&gt;</span>
-</code></pre></div>
-<p>虽然简单几行代码，却也是先了基本的弹出功能，return false；表示链接的原生时间被忽略掉了，点击链接只会处理我指定的时间。而当遇到不支持javascript的浏览器时，并不会影响功能的使用，单击登录链接仍然会跳转到登陆页面。</p>
-
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="err">/</span><span class="err">s</span><span class="err">c</span><span class="err">r</span><span class="err">i</span><span class="err">p</span><span class="err">t</span><span class="err">&gt;</span>
+</code></pre></div><p>虽然简单几行代码，却也是先了基本的弹出功能，return false；表示链接的原生时间被忽略掉了，点击链接只会处理我指定的时间。而当遇到不支持javascript的浏览器时，并不会影响功能的使用，单击登录链接仍然会跳转到登陆页面。</p>
 <p>到此，demo完成。渐进增强的本质是强调内容本身，在内容丰富的基础上，对用户的体验进行优化，并且不会使功能受损。</p>
 
       </div><ul class="pa0">

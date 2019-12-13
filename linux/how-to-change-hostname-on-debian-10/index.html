@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="本教程介绍如何在不重新启动系统的情况下更改 Debian 10 Buster 上的主机名。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-change-hostname-on-debian-10/" />
+<meta property="og:image" content="/linux/how-to-change-hostname-on-debian-10/featured.jpg"/>
 <meta property="article:published_time" content="2019-07-15T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-07-15T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 10 Linux 上更改主机名">
 <meta itemprop="description" content="本教程介绍如何在不重新启动系统的情况下更改 Debian 10 Buster 上的主机名。">
-
-
 <meta itemprop="datePublished" content="2019-07-15T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-15T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="585">
+<meta itemprop="image" content="/linux/how-to-change-hostname-on-debian-10/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="debian,hostname," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="debian,hostname," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-change-hostname-on-debian-10/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Debian 10 Linux 上更改主机名"/>
 <meta name="twitter:description" content="本教程介绍如何在不重新启动系统的情况下更改 Debian 10 Buster 上的主机名。"/>
@@ -142,21 +141,15 @@
           
   
           <p>本教程介绍如何在不重新启动系统的情况下更改 Debian 10 Buster 上的主机名。</p>
-
 <p>主机名是在安装 Debian 操作系统时设置的，或者如果您正在启动虚拟机，则会在启动时将其动态分配给实例。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>为了能够更改系统主机名，您需要以 root  用户或<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="显示当前主机名">显示当前主机名</h2>
-
+<h2 id="heading1">显示当前主机名</h2>
 <p>在 Debian 10 和所有其他 Linux 发行版中，您可以使用 <code>systemd</code> 中的 <code>hostnamectl</code> 工具更改并显示给定系统的主机名。</p>
-
 <p>要查看当前系统主机名，请键入 <code>hostnamectl</code> 不带任何选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">hostnamectl</code></pre></div>
-<p>输出将显示当前系统主机名，在此示例中为 <code>host.buzheng.org</code> 。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">   Static hostname: host.buzheng.org
+<pre><code class="language-console-bash" data-lang="console-bash">hostnamectl
+</code></pre><p>输出将显示当前系统主机名，在此示例中为 <code>host.buzheng.org</code> 。</p>
+<pre><code class="language-output" data-lang="output">   Static hostname: host.buzheng.org
          Icon name: computer-vm
            Chassis: vm
         Machine ID: 70a3f06298014fd9ac42e5dc1de1034a
@@ -164,41 +157,34 @@
     Virtualization: oracle
   Operating System: Debian GNU/Linux 10 (buster)
             Kernel: Linux 4.19.0-5-amd64
-      Architecture: x86-64</code></pre></div>
-<h2 id="更改系统主机名">更改系统主机名</h2>
-
+      Architecture: x86-64
+</code></pre><h2 id="heading2">更改系统主机名</h2>
 <p>主机名是标识网络上的计算机的标签。您不应在同一网络上的两台不同计算机上设置相同的主机名。建议使用完全限定的域名 (<a href="https://kb.iu.edu/d/aiuv"><code>FQDN</code></a>) 作为系统主机名。</p>
-
 <p>在 Debian 10 上更改系统主机名时涉及两个步骤。首先，使用 <code>hostnamectl set-hostname</code> 命令后跟所需的主机名设置新主机名，然后使用新主机名更新文件 <code>/etc/hosts</code> 。</p>
-
 <p>例如，要将系统主机名更改为 <code>arya.example.com</code> ，您将执行以下步骤：</p>
-
 <ol>
-<li><p>首先运行以下命令设置新主机名：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname arya.example.com</code></pre></div>
-
-<p>该 <code>hostnamectl</code> 命令不产生输出。成功时，返回0，否则返回非零故障代码。</p></li>
-
-<li><p>其次，打开 <code>/etc/hosts</code> 文件并用新的主机名替换旧的主机名。</p>
-
+<li>
+<p>首先运行以下命令设置新主机名：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname arya.example.com</code></pre>
+<p>该 <code>hostnamectl</code> 命令不产生输出。成功时，返回0，否则返回非零故障代码。</p>
+</li>
+<li>
+<p>其次，打开 <code>/etc/hosts</code> 文件并用新的主机名替换旧的主机名。</p>
 <p>/etc/hosts 文件</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">127.0.0.1   localhost
 127.0.0.1   arya.example.com arya 
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters</code></pre></div></li>
+ff02::2 ip6-allrouters</code></pre></div>
+</li>
 </ol>
-
-<h2 id="验证更改">验证更改</h2>
-
+<h2 id="heading3">验证更改</h2>
 <p>要验证主机名是否已成功更改，请再次使用以下 <code>hostnamectl</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">hostnamectl</code></pre></div>
-<p>新系统主机名将打印在命令行上。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">   Static hostname: arya.example.com
+<pre><code class="language-console-bash" data-lang="console-bash">hostnamectl
+</code></pre><p>新系统主机名将打印在命令行上。</p>
+<pre><code class="language-output" data-lang="output">   Static hostname: arya.example.com
          Icon name: computer-vm
            Chassis: vm
         Machine ID: 70a3f06298014fd9ac42e5dc1de1034a
@@ -206,9 +192,8 @@ ff02::2 ip6-allrouters</code></pre></div></li>
     Virtualization: oracle
   Operating System: Debian GNU/Linux 10 (buster)
             Kernel: Linux 4.19.0-5-amd64
-      Architecture: x86-64</code></pre></div>
-<h2 id="结论">结论</h2>
-
+      Architecture: x86-64
+</code></pre><h2 id="heading4">结论</h2>
 <p>在 Debian 10 Buster 上更改系统主机名是一项简单的任务，只需要两个简单的步骤。</p>
       </div><ul class="pa0">
   
@@ -282,16 +267,13 @@ ff02::2 ip6-allrouters</code></pre></div></li>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#显示当前主机名">显示当前主机名</a></li>
-<li><a href="#更改系统主机名">更改系统主机名</a></li>
-<li><a href="#验证更改">验证更改</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">显示当前主机名</a></li>
+    <li><a href="#heading2">更改系统主机名</a></li>
+    <li><a href="#heading3">验证更改</a></li>
+    <li><a href="#heading4">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

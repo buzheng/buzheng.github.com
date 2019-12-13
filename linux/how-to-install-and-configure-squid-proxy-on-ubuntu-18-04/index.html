@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上安装和配置 Squid 代理" />
 <meta property="og:description" content="Squid 是一个功能齐全的缓存代理，支持流行的网络协议，如 HTTP ， HTTPS ， FTP 等。 Squid 主要用于通过缓存重复请求，过滤 Web 流量和访问地理限制内容来提高 Web 服务器的性能。
-
 本教程将引导您完成在 Ubuntu 18.04 上设置 Squid 代理并配置 Firefox 和 Google Chrome Web 浏览器以使用它的过程。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-squid-proxy-on-ubuntu-18-04/" />
+<meta property="og:image" content="/linux/how-to-install-and-configure-squid-proxy-on-ubuntu-18-04/featured.jpg"/>
 <meta property="article:published_time" content="2019-06-28T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-06-28T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上安装和配置 Squid 代理">
 <meta itemprop="description" content="Squid 是一个功能齐全的缓存代理，支持流行的网络协议，如 HTTP ， HTTPS ， FTP 等。 Squid 主要用于通过缓存重复请求，过滤 Web 流量和访问地理限制内容来提高 Web 服务器的性能。
-
 本教程将引导您完成在 Ubuntu 18.04 上设置 Squid 代理并配置 Firefox 和 Google Chrome Web 浏览器以使用它的过程。">
-
-
 <meta itemprop="datePublished" content="2019-06-28T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-06-28T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1952">
+<meta itemprop="wordCount" content="1949">
+<meta itemprop="image" content="/linux/how-to-install-and-configure-squid-proxy-on-ubuntu-18-04/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="proxy,ubuntu," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="proxy,ubuntu," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-and-configure-squid-proxy-on-ubuntu-18-04/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装和配置 Squid 代理"/>
 <meta name="twitter:description" content="Squid 是一个功能齐全的缓存代理，支持流行的网络协议，如 HTTP ， HTTPS ， FTP 等。 Squid 主要用于通过缓存重复请求，过滤 Web 流量和访问地理限制内容来提高 Web 服务器的性能。
-
 本教程将引导您完成在 Ubuntu 18.04 上设置 Squid 代理并配置 Firefox 和 Google Chrome Web 浏览器以使用它的过程。"/>
 
   </head>
@@ -148,60 +144,44 @@
           
   
           <p>Squid 是一个功能齐全的缓存代理，支持流行的网络协议，如 HTTP ， HTTPS ， FTP 等。 Squid 主要用于通过缓存重复请求，过滤 Web 流量和访问地理限制内容来提高 Web 服务器的性能。</p>
-
 <p>本教程将引导您完成在 Ubuntu 18.04 上设置 Squid 代理并配置 Firefox 和 Google Chrome Web 浏览器以使用它的过程。</p>
-
-<h2 id="在-ubuntu-上安装-squid">在 Ubuntu 上安装 Squid</h2>
-
+<h2 id="-ubuntu--squid">在 Ubuntu 上安装 Squid</h2>
 <p>Squid 包包含在默认的 Ubuntu 18.04 存储库中。要安装它，请使用 sudo 用户运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install squid</code></pre></div>
-<p>安装完成后， Squid 服务将自动启动。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install squid
+</code></pre><p>安装完成后， Squid 服务将自动启动。</p>
 <p>要验证安装是否成功并且 Squid 服务是否正在运行，请键入以下命令以打印服务状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status squid</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● squid.service - LSB: Squid HTTP Proxy version 3.x
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status squid
+</code></pre><pre><code class="language-output" data-lang="output">● squid.service - LSB: Squid HTTP Proxy version 3.x
    Loaded: loaded (/etc/init.d/squid; generated)
    Active: active (running) since Thu 2019-06-27 11:45:17 UTC
-...</code></pre></div>
-<h2 id="配置-squid">配置 Squid</h2>
-
+...
+</code></pre><h2 id="-squid">配置 Squid</h2>
 <p>可以通过编辑 <code>/etc/squid/squid.conf</code> 文件来配置 Squid  。您还可以使用带有配置选项的分隔文件，可以使用 “include” 指令包含这些选项。</p>
-
 <p>配置文件包含描述每个配置选项的注释。</p>
-
 <p>在进行任何更改之前，最好备份原始配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo cp /etc/squid/squid.conf{,.orginal}</code></pre></div>
-<p>要编辑文件，请在文本编辑器中将其打开：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/squid/squid.conf</code></pre></div>
-<p>默认情况下， Squid 配置为侦听服务器上所有网络接口上的 <code>3128</code> 端口。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /etc/squid/squid.conf{,.orginal}
+</code></pre><p>要编辑文件，请在文本编辑器中将其打开：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/squid/squid.conf
+</code></pre><p>默认情况下， Squid 配置为侦听服务器上所有网络接口上的 <code>3128</code> 端口。</p>
 <p>如果要更改端口并设置侦听接口，请找到以 <code>http_port</code> 开头的行，并指定接口 IP 地址和新端口。如果没有指定网络接口， Squid 将监听所有网络接口。</p>
-
 <p>/etc/squid/squid.conf 中</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># Squid normally listens to port 3128</span>
-<span class="na">http_port IP_ADDR:PORT</span></code></pre></div>
-<p>在所有接口和默认端口上运行 Squid 应该适合大多数用户。</p>
-
+<span class="na">http_port IP_ADDR:PORT</span>
+</code></pre></div><p>在所有接口和默认端口上运行 Squid 应该适合大多数用户。</p>
 <p>另一个有趣的选择是 <code>forwarded_for</code> 。默认情况下，将其设置为 <code>on</code> 表示 out-box Squid 的行为类似于 RFC 兼容代理，并在 <code>X-Forwarded-For</code> 标头中添加客户端的 IP 地址。如果要设置透明代理，请取消注释该指令并将其更改为 <code>transparent</code> 。</p>
-
 <p>将指令设置为 <code>off</code> 将告诉 Squid 不要在 HTTP 请求中转发附加客户端的 IP 地址。</p>
-
 <p>/etc/squid/squid.conf 中</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1">#Default:</span>
-<span class="c1"># forwarded_for on</span></code></pre></div>
-<p>在 Squid 中，您可以使用访问控制列表 (ACL) 控制客户端如何访问 Web 资源。</p>
-
+<span class="c1"># forwarded_for on</span>
+</code></pre></div><p>在 Squid 中，您可以使用访问控制列表 (ACL) 控制客户端如何访问 Web 资源。</p>
 <p>默认情况下， Squid 只允许从 localhost 访问。</p>
-
 <p>如果将使用代理的所有客户端都具有静态 IP 地址，则可以创建包含允许的 IP 的 ACL 。</p>
-
 <p>我们将创建一个新的专用文件来保存 IP ，而不是在主配置文件中添加 IP 地址：</p>
-
 <p>/etc/squid/allowed_ips.txt</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">192.168.33.1
-# All other allowed IPs</code></pre></div>
-<p>完成后，打开主配置文件并创建一个名为 <code>allowed_ips</code> (第一个突出显示的行) 的新 ACL ，并允许使用该 <code>http_access</code> 指令(第二个突出显示的行)访问该 ACL  ：</p>
-
+# All other allowed IPs
+</code></pre></div><p>完成后，打开主配置文件并创建一个名为 <code>allowed_ips</code> (第一个突出显示的行) 的新 ACL ，并允许使用该 <code>http_access</code> 指令(第二个突出显示的行)访问该 ACL  ：</p>
 <p>/etc/squid/squid.conf 中</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># ...</span>
 <span class="na">acl allowed_ips  src &#34;/etc/squid/allowed_ips.txt&#34;</span>
@@ -210,27 +190,21 @@ sudo apt install squid</code></pre></div>
 <span class="na">http_access allow localhost</span>
 <span class="na">http_access allow allowed_ips</span>
 <span class="c1"># And finally deny all other access to this proxy</span>
-<span class="na">http_access deny all</span></code></pre></div>
-<p><code>http_access</code> 规则的顺序很重要。请务必先添加该行 <code>http_access deny all</code> 。</p>
-
+<span class="na">http_access deny all</span>
+</code></pre></div><p><code>http_access</code> 规则的顺序很重要。请务必先添加该行 <code>http_access deny all</code> 。</p>
 <p>该 <code>http_access</code> 指令的工作方式与防火墙规则类似。 Squid 从上到下读取规则，当规则匹配时，不处理下面的规则。</p>
-
 <p>每当您更改配置文件时，都需要重新启动 Squid 服务才能使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart squid</code></pre></div>
-<h2 id="squid身份验证">Squid身份验证</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart squid
+</code></pre><h2 id="squid">Squid身份验证</h2>
 <p>Squid 可以对经过身份验证的用户使用不同的后端，包括 <a href="/linux/how-to-install-and-configure-samba-on-ubuntu-18-04/">Samba</a> ， LDAP 和 HTTP 基本身份验证。</p>
-
 <p>在本教程中，我们将配置 Squid 以使用基本身份验证。它是 HTTP 协议中内置的简单身份验证方法。</p>
-
 <p>我们将使用 <code>openssl</code> 生成密码并使用 <a href="/linux/linux-tee-command/"><code>tee</code></a> 命令将该 <code>username:password</code> 对附加到 <code>/etc/squid/htpasswd</code> 文件，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">printf</span> <span class="s2">&#34;USERNAME:</span><span class="k">$(</span>openssl passwd -crypt PASSWORD<span class="k">)</span><span class="s2">\n&#34;</span> <span class="p">|</span> sudo tee -a /etc/squid/htpasswd</code></pre></div>
-<p>让我们创建一个名为 “john” 的用户，密码为 <code>Sz$Zdg69</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">printf &#34;josh:$(openssl passwd -crypt &#39;Sz$Zdg69&#39;)\n&#34; | sudo tee -a /etc/squid/htpasswd</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">josh:RrvgO7NxY86VM</code></pre></div>
-<p>现在创建了用户，下一步是配置 Squid 以启用 HTTP 基本身份验证并使用该文件。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">printf</span> <span class="s2">&#34;</span><span class="s2">USERNAME:</span><span class="k">$(</span>openssl passwd -crypt PASSWORD<span class="k">)</span><span class="s2">\n</span><span class="s2">&#34;</span> <span class="p">|</span> sudo tee -a /etc/squid/htpasswd
+</code></pre></div><p>让我们创建一个名为 “john” 的用户，密码为 <code>Sz$Zdg69</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">printf &quot;josh:$(openssl passwd -crypt 'Sz$Zdg69')\n&quot; | sudo tee -a /etc/squid/htpasswd
+</code></pre><pre><code class="language-output" data-lang="output">josh:RrvgO7NxY86VM
+</code></pre><p>现在创建了用户，下一步是配置 Squid 以启用 HTTP 基本身份验证并使用该文件。</p>
 <p>打开主配置并添加以下内容：</p>
-
 <p>/etc/squid/squid.conf 中</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># ...</span>
 <span class="na">auth_param basic program /usr/lib/squid3/basic_ncsa_auth /etc/squid/htpasswd</span>
@@ -241,85 +215,72 @@ sudo apt install squid</code></pre></div>
 <span class="na">http_access allow localhost</span>
 <span class="na">http_access allow authenticated</span>
 <span class="c1"># And finally deny all other access to this proxy</span>
-<span class="na">http_access deny all</span></code></pre></div>
-<p>前三个突出显示的行正在创建一个名为 <code>authenticated</code> 的新 ACL  ，倒数第三行行允许访问经过身份验证的用户。</p>
-
+<span class="na">http_access deny all</span>
+</code></pre></div><p>前三个突出显示的行正在创建一个名为 <code>authenticated</code> 的新 ACL  ，倒数第三行行允许访问经过身份验证的用户。</p>
 <p>重启 Squid 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart squid</code></pre></div>
-<h2 id="配置防火墙">配置防火墙</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart squid
+</code></pre><h2 id="heading">配置防火墙</h2>
 <p>假设您正在使用 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"><code>UFW</code></a> 管理防火墙，则需要打开 Squid 端口。为此启用 “Squid” 配置文件，其中包含默认 Squid 端口的规则。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow &#39;Squid&#39;</code></pre></div>
-<p>要验证状态类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw status</code></pre></div>
-<p>输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Status: active
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 'Squid'
+</code></pre><p>要验证状态类型：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw status
+</code></pre><p>输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">Status: active
 
 To                         Action      From
 --                         ------      ----
 22/tcp                     ALLOW       Anywhere
 Squid                      ALLOW       Anywhere            
 22/tcp (v6)                ALLOW       Anywhere (v6)             
-Squid (v6)                 ALLOW       Anywhere (v6)  </code></pre></div>
-<p>例如，如果 Squid 在另一个非默认端口 <code>8888</code> 上运行，则可以使用后面的命令允许该端口上的流量： <code>sudo ufw allow 8888/tcp</code> 。</p>
-
-<h2 id="配置浏览器以使用代理">配置浏览器以使用代理</h2>
-
+Squid (v6)                 ALLOW       Anywhere (v6)  
+</code></pre><p>例如，如果 Squid 在另一个非默认端口 <code>8888</code> 上运行，则可以使用后面的命令允许该端口上的流量： <code>sudo ufw allow 8888/tcp</code> 。</p>
+<h2 id="heading1">配置浏览器以使用代理</h2>
 <p>现在您已经设置了 Squid ，最后一步是配置您首选的浏览器以使用它。</p>
-
-<h3 id="火狐">火狐</h3>
-
+<h3 id="heading2">火狐</h3>
 <p>对于 Windows ， macOS 和 Linux ，以下步骤相同。</p>
-
 <ol>
-<li>在右上角，点击汉堡包图标<code>☰</code>打开 Firefox 的菜单：</li>
-<li>单击<code>⚙ 首选项</code> 链接。</li>
-<li>向下滚动到该 <code>网络设置</code> 部分，然后单击 <code>设置...</code> 按钮。</li>
-
-<li><p>将打开一个新窗口。</p>
-
+<li>
+<p>在右上角，点击汉堡包图标<code>☰</code>打开 Firefox 的菜单：</p>
+</li>
+<li>
+<p>单击<code>⚙ 首选项</code> 链接。</p>
+</li>
+<li>
+<p>向下滚动到该 <code>网络设置</code> 部分，然后单击 <code>设置...</code> 按钮。</p>
+</li>
+<li>
+<p>将打开一个新窗口。</p>
 <ul>
 <li>选择 <code>手动代理配置</code> 单选按钮。</li>
 <li>在 <code>HTTP 代理</code> 字段输入您的 Squid 服务器的 IP 地址， 在 <code>端口</code> 字段输入 <code>3128</code>。</li>
 <li>选中 <code>为所有协议使用相同代理服务器</code> 复选框。</li>
 <li>单击 <code>确定</code> 按钮以保存设置。</li>
 </ul>
-
-<figure><img src="firefox-squid-proxy.png" alt=""></figure></li>
+<p><img src="firefox-squid-proxy.png" alt=""></p>
+</li>
 </ol>
-
 <p>此时，您的 Firefox 已配置，您可以通过 Squid 代理浏览 Internet 。要验证它，打开 <code>google.com</code> ，键入“我的 IP 是什么”，你应该看到你的 Squid 服务器 IP 地址。</p>
-
 <p>要恢复默认设置，请转到 <code>Network Settings</code> ，选择 <code>Use system proxy settings</code> 单选按钮并保存设置。</p>
-
 <p>还有几个插件可以帮助您配置 Firefox 的代理设置，如 <a href="https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/">FoxyProxy</a> 。</p>
-
-<h3 id="谷歌-chrome-浏览器">谷歌 Chrome 浏览器</h3>
-
+<h3 id="-chrome-">谷歌 Chrome 浏览器</h3>
 <p>Google Chrome 使用默认的系统代理设置。您可以使用插件(如 SwitchyOmega) 或从命令行启动 Chrome 网络浏览器，而不是更改操作系统代理设置。</p>
-
 <p>要使用新配置文件启动 Chrome 并连接到 Squid 服务器，请使用以下命令：</p>
-
 <p><strong>Linux：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/usr/bin/google-chrome <span class="se">\
-</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile&#34;</span> <span class="se">\
-</span><span class="se"></span>    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span></code></pre></div>
-<p><strong>苹果系统 ：</strong></p>
+</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span>
+</code></pre></div><p><strong>苹果系统 ：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="s2">&#34;/Applications/Google Chrome.app/Contents/MacOS/Google Chrome&#34;</span> <span class="se">\
-</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile&#34;</span> <span class="se">\
-</span><span class="se"></span>    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span></code></pre></div>
-<p><strong>Windows：</strong></p>
+</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span>
+</code></pre></div><p><strong>Windows：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="s2">&#34;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe&#34;</span> ^
     --user-data-dir<span class="o">=</span><span class="s2">&#34;%USERPROFILE%\proxy-profile&#34;</span> ^
-    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span></code></pre></div>
-<p>如果配置文件不存在，将自动创建配置文件。这样，您可以同时运行多个 Chrome 实例。</p>
-
+    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span>
+</code></pre></div><p>如果配置文件不存在，将自动创建配置文件。这样，您可以同时运行多个 Chrome 实例。</p>
 <p>要确认代理服务器是否正常工作，请打开 <code>google.com</code> ，然后键入 “what is my ip” 。浏览器中显示的 IP 应该是服务器的 IP 地址。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading3">结论</h2>
 <p>您已经学习了如何在 Ubuntu 18.04 上安装 squid 并配置浏览器以使用它。</p>
-
 <p>Squid 是最受欢迎的代理缓存服务器之一。它可以提高 Web 服务器的速度，并可以帮助您限制用户访问 Internet 。</p>
       </div><ul class="pa0">
   
@@ -393,21 +354,19 @@ Squid (v6)                 ALLOW       Anywhere (v6)  </code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在-ubuntu-上安装-squid">在 Ubuntu 上安装 Squid</a></li>
-<li><a href="#配置-squid">配置 Squid</a></li>
-<li><a href="#squid身份验证">Squid身份验证</a></li>
-<li><a href="#配置防火墙">配置防火墙</a></li>
-<li><a href="#配置浏览器以使用代理">配置浏览器以使用代理</a>
-<ul>
-<li><a href="#火狐">火狐</a></li>
-<li><a href="#谷歌-chrome-浏览器">谷歌 Chrome 浏览器</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-ubuntu--squid">在 Ubuntu 上安装 Squid</a></li>
+    <li><a href="#-squid">配置 Squid</a></li>
+    <li><a href="#squid">Squid身份验证</a></li>
+    <li><a href="#heading">配置防火墙</a></li>
+    <li><a href="#heading1">配置浏览器以使用代理</a>
+      <ul>
+        <li><a href="#heading2">火狐</a></li>
+        <li><a href="#-chrome-">谷歌 Chrome 浏览器</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2012-12-20T00:00:00+00:00" />
 <meta itemprop="name" content="I/O概念 &amp; I/O模型 &amp; Java nio 知识整理">
 <meta itemprop="description" content="最近在看java nio相关的资料，最初的看的一头雾水，很对东西模棱两可，于是网上查了些I/O的资料，本文是自己对I/O的一个理解。">
-
-
 <meta itemprop="datePublished" content="2012-12-20T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2012-12-20T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1141">
 
 
 
-<meta itemprop="keywords" content="blocking,io,nio," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="blocking,io,nio," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="I/O概念 &amp; I/O模型 &amp; Java nio 知识整理"/>
 <meta name="twitter:description" content="最近在看java nio相关的资料，最初的看的一头雾水，很对东西模棱两可，于是网上查了些I/O的资料，本文是自己对I/O的一个理解。"/>
 
@@ -141,51 +138,31 @@
           
   
           <p>最近在看java nio相关的资料，最初的看的一头雾水，很对东西模棱两可，于是网上查了些I/O的资料，本文是自己对I/O的一个理解。</p>
-
-<h2 id="i-o概念">I/O概念？</h2>
-
+<h2 id="io">I/O概念？</h2>
 <p>数据从用户空间和内核空间之间的转移就是I/O。一般场景就是用户进程向系统请求硬盘的数据，和用户进程将数据通过系统进程写入到磁盘文件。一个I/O过程（这里以读操作为例）一般包括几个步骤：
 1， 用户进程相系统进程发出请求
 2， 系统进程准备数据
 3， 拷贝数据到用户进程</p>
-
-<h3 id="阻塞和非阻塞">阻塞和非阻塞？</h3>
-
+<h3 id="heading">阻塞和非阻塞？</h3>
 <p>阻塞和非阻塞都是针对单个进程/线程一次I/O操作过程。被阻塞的对象就是当前这个用户进程或者线程。阻塞或非阻塞的阶段都发生在系统准备数据的阶段；用户进程拷贝数据的阶段，用户进程都是被阻塞的。</p>
-
 <p>阻塞：用户进程向系统进程发出请求后，系统进程只有准备好后才返回给用户进程。
 非阻塞：用户进程向系统进程发出数据请求后，系统进程在没有准备好的情况下直接返回出错信息给用户进程。</p>
-
-<h3 id="同步和异步">同步和异步？</h3>
-
+<h3 id="heading1">同步和异步？</h3>
 <p>同步：用户进程请求数据后，用户进程自己负责将自己需要的数据从系统进程拷贝回用户空间，整个过程是阻塞的。
 异步：用户进程向系统进程发出请求后，系统进程立刻返回；系统进程准备好数据，将数据拷贝给用户空间后，再通知用户进程。
 可以这么理解，同步是用户进程主动请求，主动拉取数据。异步是用户进程主动请求，被动等待数据处理好的通知（或者说是用户进程直接将请求和回调函数丢给系统进程，系统进程拷贝完数据后回调用户进程）。</p>
-
-<h2 id="linux-下的i-o模型">Linux 下的I/O模型</h2>
-
-<h3 id="blocking-i-o">Blocking I/O</h3>
-
+<h2 id="linux-io">Linux 下的I/O模型</h2>
+<h3 id="blocking-io">Blocking I/O</h3>
 <p>用户进程向系统进程发出数据请求后，一直等到系统进程准备好数据然后将数据拷贝到用户进程。整个过程用户进程一直是阻塞的。</p>
-
-<h3 id="non-blocking-i-o">Non-Blocking I/O</h3>
-
+<h3 id="nonblocking-io">Non-Blocking I/O</h3>
 <p>用户进程向系统进程发出数据请求后，系统进程如果没有准备好数据，会立刻返回一个错误给用户进程。用户可以不停的请求，知道数据准备好后，再将数据从系统进程拷贝到用户进程。整个过程中，系统进程在准备数据的过程中，用户进程没有被阻塞。</p>
-
-<h3 id="i-o-multiplexing">I/O multiplexing</h3>
-
+<h3 id="io-multiplexing">I/O multiplexing</h3>
 <p>用户进程向系统进程发出状态查询请求select，select会阻塞住查询系统进程状态。当状态满足的时候，通知用户进程，用户进程向系统进程发出获取数据请求，并完成数据从系统进程向用户进程的拷贝。这个过程中，I/O的2个阶段还是被阻塞的，看起来和Blocking I/O没有什么区别；其实不然，由于分了两个步骤，此模型可以处理多个连接。</p>
-
-<h3 id="asynchronous-i-o">Asynchronous I/O</h3>
-
+<h3 id="asynchronous-io">Asynchronous I/O</h3>
 <p>用户进程向系统进程发出异步读取请求，并指定回调函数。系统进程会立刻返回。然后系统进程独自完成数据准备，拷贝数据到用户空间这两个步骤，再通知用户进程。整个过程没有一处阻塞用户进程。</p>
-
 <h2 id="java-nio">Java Nio</h2>
-
 <p>基于上面对I/O的了解，我们可以得出nio绝对不是 Non-Blocking I/O的简称，还是说是 New IO 比较准确。</p>
-
 <p>Nio是基于I/O multiplexing模型的，同时也是 Reactor模式的实现。</p>
-
 <p>现在对nio还不是很了解，就写这么多。</p>
       </div><ul class="pa0">
   

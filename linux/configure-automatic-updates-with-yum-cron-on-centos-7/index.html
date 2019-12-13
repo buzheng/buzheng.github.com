@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="在 CentOS 7 上使用 yum-cron 配置自动更新" />
 <meta property="og:description" content="定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。
-
 如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。
-
 在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/configure-automatic-updates-with-yum-cron-on-centos-7/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-05-07T06:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 7 上使用 yum-cron 配置自动更新">
 <meta itemprop="description" content="定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。
-
 如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。
-
 在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。">
-
-
 <meta itemprop="datePublished" content="2019-05-07T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-07T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1150">
+<meta itemprop="wordCount" content="1155">
 
 
 
-<meta itemprop="keywords" content="centos,yum,security," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,yum,security," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在 CentOS 7 上使用 yum-cron 配置自动更新"/>
 <meta name="twitter:description" content="定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。
-
 如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。
-
 在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。"/>
 
   </head>
@@ -153,90 +144,73 @@
           
   
           <p>定期更新 CentOS 系统是整个系统安全性最重要的方面之一。如果不使用最新的安全修补程序更新操作系统的软件包，则会使计算机容易受到攻击。</p>
-
 <p>如果您管理多台 CentOS 计算机，手动更新系统包可能会非常耗时。即使您管理单个 CentOS 安装，有时您可能会忽略重要更新。这是自动更新的便利之处。</p>
-
 <p>在本教程中，我们将完成在 CentOS 7 上配置自动更新的过程。相同的说明适用于 CentOS 6 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="安装-yum-cron-包">安装 yum-cron 包</h2>
-
-<p>该 <code>yum-cron</code> 程序包允许您自动运行 yum 命令作为 <!--link:scheduling-cron-jobs-with-crontab-->cron job<!--link-->来检查，下载和应用更新。有可能这个软件包已经安装在您的 CentOS 系统上。如果未安装，则可以通过运行以下命令来安装软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install yum-cron</code></pre></div>
-<p>安装完成后，启用并启动服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable yum-cron
-sudo systemctl start yum-cron</code></pre></div>
-<p>要验证服务是否正在运行，请键入以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">systemctl status yum-cron</code></pre></div>
-<p>有关 yum-cron 服务状态的信息将显示在屏幕上：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● yum-cron.service - Run automatic yum updates as a cron job
+<h2 id="-yumcron-">安装 yum-cron 包</h2>
+<p>该 <code>yum-cron</code> 程序包允许您自动运行 yum 命令作为 <!-- raw HTML omitted -->cron job<!-- raw HTML omitted -->来检查，下载和应用更新。有可能这个软件包已经安装在您的 CentOS 系统上。如果未安装，则可以通过运行以下命令来安装软件包：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install yum-cron
+</code></pre><p>安装完成后，启用并启动服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable yum-cron
+sudo systemctl start yum-cron
+</code></pre><p>要验证服务是否正在运行，请键入以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">systemctl status yum-cron
+</code></pre><p>有关 yum-cron 服务状态的信息将显示在屏幕上：</p>
+<pre><code class="language-output" data-lang="output">● yum-cron.service - Run automatic yum updates as a cron job
    Loaded: loaded (/usr/lib/systemd/system/yum-cron.service; enabled; vendor preset: disabled)
    Active: active (exited) since Sat 2019-05-04 21:49:45 UTC; 8min ago
   Process: 2713 ExecStart=/bin/touch /var/lock/subsys/yum-cron (code=exited, status=0/SUCCESS)
  Main PID: 2713 (code=exited, status=0/SUCCESS)
-   CGroup: /system.slice/yum-cron.service</code></pre></div>
-<h2 id="配置-yum-cron">配置 yum-cron</h2>
-
+   CGroup: /system.slice/yum-cron.service
+</code></pre><h2 id="-yumcron">配置 yum-cron</h2>
 <p>yum-cron 附带两个配置文件，存储在 <code>/etc/yum</code> 目录，每小时配置文件 <code>yum-cron-hourly.conf</code> 和每日配置文件中 <code>yum-cron.conf</code> 。</p>
-
 <p>该 <code>yum-cron</code> 服务仅控制 cron 作业是否运行。该 <code>yum-cron</code> 实用程序由 <code>/etc/cron.hourly/0yum-hourly.cron</code> 和 <code>/etc/cron.daily/0yum-daily.cron</code> cron 文件调用。</p>
-
 <p>默认情况下，每小时 cron 配置为不执行任何操作。如果有可用更新，则每日 cron 设置为下载但不安装可用更新并将消息发送到 stdout 。对于要在测试服务器上测试更新后要接收通知并手动执行更新的关键生产系统，默认配置已足够。</p>
-
 <p>配置文件按部分构成，每个部分包含描述每个配置行的功能的注释。</p>
-
 <p>要编辑 yum-cron 配置文件，请在文本编辑器中打开该文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/yum/yum-cron-hourly.conf</code></pre></div>
-<p>在第一部分中， <code>[commands]</code> 您可以定义要更新的包的类型，启用消息和下载，并设置为在可用时自动应用更新。默认情况下，将 <code>update_cmd</code> 设置为 <code>default</code> ，这将更新所有包。如果要设置自动无人值守更新，建议更改为 <code>security</code>，这将告知 yum 更新仅修复安全问题的软件包的值。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/yum/yum-cron-hourly.conf
+</code></pre><p>在第一部分中， <code>[commands]</code> 您可以定义要更新的包的类型，启用消息和下载，并设置为在可用时自动应用更新。默认情况下，将 <code>update_cmd</code> 设置为 <code>default</code> ，这将更新所有包。如果要设置自动无人值守更新，建议更改为 <code>security</code>，这将告知 yum 更新仅修复安全问题的软件包的值。</p>
 <p>在以下示例中，我们通过设置为：更改了 <code>update_cmd</code> 为 <code>security</code> 和启用了无人参与的更新：<code>apply_updates</code> 设置为 <code>yes</code></p>
-
 <p>/etc/yum/yum-cron-hourly.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[commands]</span>
 <span class="na">update_cmd</span> <span class="o">=</span> <span class="s">security</span>
 <span class="na">update_messages</span> <span class="o">=</span> <span class="s">yes</span>
 <span class="na">download_updates</span> <span class="o">=</span> <span class="s">yes</span>
 <span class="na">apply_updates</span> <span class="o">=</span> <span class="s">yes</span>
-<span class="na">random_sleep</span> <span class="o">=</span> <span class="s">360</span></code></pre></div>
-<p>第二部分定义了如何发送消息。要向 stdout 和 email 发送消息，请更改 <code>emit_via</code> 的值为 <code>stdio,email</code> 。</p>
-
+<span class="na">random_sleep</span> <span class="o">=</span> <span class="s">360</span>
+</code></pre></div><p>第二部分定义了如何发送消息。要向 stdout 和 email 发送消息，请更改 <code>emit_via</code> 的值为 <code>stdio,email</code> 。</p>
 <p>文件: <code>/etc/yum/yum-cron-hourly.conf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[emitters]</span>
 <span class="na">system_name</span> <span class="o">=</span> <span class="s">None</span>
 <span class="na">emit_via</span> <span class="o">=</span> <span class="s">stdio,email</span>
-<span class="na">output_width</span> <span class="o">=</span> <span class="s">80</span></code></pre></div>
-<p>在该 <code>[email]</code> 部分中，您可以设置发件人和收件人的电子邮件地址。确保您有一个可以发送系统上安装的电子邮件的工具，例如 mailx 或 postfix 。</p>
-
+<span class="na">output_width</span> <span class="o">=</span> <span class="s">80</span>
+</code></pre></div><p>在该 <code>[email]</code> 部分中，您可以设置发件人和收件人的电子邮件地址。确保您有一个可以发送系统上安装的电子邮件的工具，例如 mailx 或 postfix 。</p>
 <p>文件: <code>/etc/yum/yum-cron-hourly.conf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[email]</span>
 <span class="na">email_from</span> <span class="o">=</span> <span class="s">root@centos.host</span>
 <span class="na">email_to</span> <span class="o">=</span> <span class="s">me@example.com</span>
-<span class="na">email_host</span> <span class="o">=</span> <span class="s">localhost</span></code></pre></div>
-<p>该<code>[base]</code>部分允许您覆盖<code>yum.conf</code>文件中定义的设置。如果要排除更新特定包，可以使用该<code>exclude</code>参数。在以下示例中，我们排除了[ <code>mongodb</code>]包。</p>
-
+<span class="na">email_host</span> <span class="o">=</span> <span class="s">localhost</span>
+</code></pre></div><p>该<code>[base]</code>部分允许您覆盖<code>yum.conf</code>文件中定义的设置。如果要排除更新特定包，可以使用该<code>exclude</code>参数。在以下示例中，我们排除了[ <code>mongodb</code>]包。</p>
 <p>文件: <code>/etc/yum/yum-cron-hourly.conf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[base]</span>
 <span class="na">debuglevel</span> <span class="o">=</span> <span class="s">-2</span>
 <span class="na">mdpolicy</span> <span class="o">=</span> <span class="s">group:main</span>
-<span class="na">exclude</span> <span class="o">=</span> <span class="s">mongodb*</span></code></pre></div>
-<p>您无需重新启动 <code>yum-cron</code> 服务即可使更改生效。</p>
-
-<h3 id="查看日志">查看日志</h3>
-
-<p>使用 <!--link:how-to-use-grep-command-to-search-files-in-linux-->grep<!--link--> 检查是否执行了与 yum 关联的 cron 作业：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo grep yum /var/log/cron</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">May  4 22:01:01 localhost run-parts(/etc/cron.hourly)[5588]: starting 0yum-hourly.cron
+<span class="na">exclude</span> <span class="o">=</span> <span class="s">mongodb*</span>
+</code></pre></div><p>您无需重新启动 <code>yum-cron</code> 服务即可使更改生效。</p>
+<h3 id="heading1">查看日志</h3>
+<p>使用 <!-- raw HTML omitted -->grep<!-- raw HTML omitted --> 检查是否执行了与 yum 关联的 cron 作业：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo grep yum /var/log/cron
+</code></pre><pre><code class="language-output" data-lang="output">May  4 22:01:01 localhost run-parts(/etc/cron.hourly)[5588]: starting 0yum-hourly.cron
 May  4 22:32:01 localhost run-parts(/etc/cron.daily)[5960]: starting 0yum-daily.cron
 May  4 23:01:01 localhost run-parts(/etc/cron.hourly)[2121]: starting 0yum-hourly.cron
-May  4 23:01:01 localhost run-parts(/etc/cron.hourly)[2139]: finished 0yum-hourly.cron</code></pre></div>
-<p>yum 更新的历史记录记录在 <code>/var/log/yum</code> 文件中。您可以使用 <!--link:linux-tail-command-->tail 命令<!--link-->查看最新更新：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tail -f  /var/log/yum.log</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">May 04 23:47:28 Updated: libgomp-4.8.5-36.el7_6.2.x86_64
+May  4 23:01:01 localhost run-parts(/etc/cron.hourly)[2139]: finished 0yum-hourly.cron
+</code></pre><p>yum 更新的历史记录记录在 <code>/var/log/yum</code> 文件中。您可以使用 <!-- raw HTML omitted -->tail 命令<!-- raw HTML omitted -->查看最新更新：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo tail -f  /var/log/yum.log
+</code></pre><pre><code class="language-output" data-lang="output">May 04 23:47:28 Updated: libgomp-4.8.5-36.el7_6.2.x86_64
 May 04 23:47:31 Updated: bpftool-3.10.0-957.12.1.el7.x86_64
-May 04 23:47:31 Updated: htop-2.2.0-3.el7.x86_64</code></pre></div>
-<h2 id="结论">结论</h2>
-
+May 04 23:47:31 Updated: htop-2.2.0-3.el7.x86_64
+</code></pre><h2 id="heading2">结论</h2>
 <p>在本教程中，您学习了如何配置自动更新并使 CentOS 系统保持最新状态。</p>
       </div><ul class="pa0">
   
@@ -314,18 +288,16 @@ May 04 23:47:31 Updated: htop-2.2.0-3.el7.x86_64</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-yum-cron-包">安装 yum-cron 包</a></li>
-<li><a href="#配置-yum-cron">配置 yum-cron</a>
-<ul>
-<li><a href="#查看日志">查看日志</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-yumcron-">安装 yum-cron 包</a></li>
+    <li><a href="#-yumcron">配置 yum-cron</a>
+      <ul>
+        <li><a href="#heading1">查看日志</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

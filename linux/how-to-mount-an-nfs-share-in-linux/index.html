@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何在 Linux 中挂载 NFS 共享" />
 <meta property="og:description" content="网络文件系统 (NFS) 是一种分布式文件系统协议，允许您通过网络共享远程目录。使用 NFS ，您可以在系统上挂载远程目录，并使用远程文件，就像它们是本地文件一样。
-
 在 Linux 和 UNIX 操作系统上，您可以使用该 mount 命令在本地目录树中的特定挂载点上挂载共享 NFS 目录。
-
 在本教程中，我们将向您展示如何在 Linux 机器上手动和自动挂载 NFS 共享。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-mount-an-nfs-share-in-linux/" />
+<meta property="og:image" content="/linux/how-to-mount-an-nfs-share-in-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-08-26T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-08-26T12:00:00+08:00" />
 <meta itemprop="name" content="如何在 Linux 中挂载 NFS 共享">
 <meta itemprop="description" content="网络文件系统 (NFS) 是一种分布式文件系统协议，允许您通过网络共享远程目录。使用 NFS ，您可以在系统上挂载远程目录，并使用远程文件，就像它们是本地文件一样。
-
 在 Linux 和 UNIX 操作系统上，您可以使用该 mount 命令在本地目录树中的特定挂载点上挂载共享 NFS 目录。
-
 在本教程中，我们将向您展示如何在 Linux 机器上手动和自动挂载 NFS 共享。">
-
-
 <meta itemprop="datePublished" content="2019-08-26T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-26T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1179">
+<meta itemprop="image" content="/linux/how-to-mount-an-nfs-share-in-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="mount,nfs,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="mount,nfs,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-mount-an-nfs-share-in-linux/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Linux 中挂载 NFS 共享"/>
 <meta name="twitter:description" content="网络文件系统 (NFS) 是一种分布式文件系统协议，允许您通过网络共享远程目录。使用 NFS ，您可以在系统上挂载远程目录，并使用远程文件，就像它们是本地文件一样。
-
 在 Linux 和 UNIX 操作系统上，您可以使用该 mount 命令在本地目录树中的特定挂载点上挂载共享 NFS 目录。
-
 在本教程中，我们将向您展示如何在 Linux 机器上手动和自动挂载 NFS 共享。"/>
 
   </head>
@@ -154,101 +147,85 @@
           
   
           <p>网络文件系统 (NFS) 是一种分布式文件系统协议，允许您通过网络共享远程目录。使用 NFS ，您可以在系统上挂载远程目录，并使用远程文件，就像它们是本地文件一样。</p>
-
 <p>在 Linux 和 UNIX 操作系统上，您可以使用该 <code>mount</code> 命令在本地目录树中的特定挂载点上挂载共享 NFS 目录。</p>
-
 <p>在本教程中，我们将向您展示如何在 Linux 机器上手动和自动挂载 NFS 共享。</p>
-
-<h2 id="挂载-nfs-客户端软件包">挂载 NFS 客户端软件包</h2>
-
+<h2 id="-nfs-">挂载 NFS 客户端软件包</h2>
 <p>要在 Linux 系统上挂载 NFS 共享，首先需要挂载 NFS 客户端软件包。软件包名称因 Linux 发行版而异。</p>
-
 <ul>
-<li><p>在 Ubuntu 和 Debian 上挂载 NFS 客户端：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install nfs-common</code></pre></div></li>
-
-<li><p>在 CentOS 和 Fedora 上挂载 NFS 客户端：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install nfs-utils</code></pre></div></li>
+<li>
+<p>在 Ubuntu 和 Debian 上挂载 NFS 客户端：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install nfs-common
+</code></pre></li>
+<li>
+<p>在 CentOS 和 Fedora 上挂载 NFS 客户端：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install nfs-utils
+</code></pre></li>
 </ul>
-
-<h2 id="手动挂载-nfs-文件系统">手动挂载 NFS 文件系统</h2>
-
+<h2 id="-nfs-1">手动挂载 NFS 文件系统</h2>
 <p>挂载远程 NFS 共享与挂载常规文件系统相同。</p>
-
 <p>要在给定挂载点上挂载 NFS 文件系统，请使用 <a href="/linux/how-to-mount-and-unmount-file-systems-in-linux/"><code>mount</code></a> 命令，格式如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount <span class="o">[</span>OPTION...<span class="o">]</span> NFS_SERVER:EXPORTED_DIRECTORY MOUNT_POINT</code></pre></div>
-<p>使用以下步骤在 Linux 系统上手动挂载远程 NFS 共享：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount <span class="o">[</span>OPTION...<span class="o">]</span> NFS_SERVER:EXPORTED_DIRECTORY MOUNT_POINT
+</code></pre></div><p>使用以下步骤在 Linux 系统上手动挂载远程 NFS 共享：</p>
 <ol>
-<li><p>首先，<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个目录</a>作为远程 NFS 共享的挂载点：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /var/backups</code></pre></div>
-<p>挂载点是要挂载 NFS 共享的本地计算机上的目录。</p></li>
-
-<li><p>通过 root 身份或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 权限的用户运行以下命令来挂载 NFS 共享：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t nfs 10.10.0.10:/backups /var/backups</code></pre></div>
-<p>NFS服务器的 IP 地址是 <code>10.10.0.10</code>， <code>/backup</code> 是服务器的目录， <code>/var/backups</code> 是本地挂载点。</p>
-
+<li>
+<p>首先，<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个目录</a>作为远程 NFS 共享的挂载点：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /var/backups
+</code></pre><p>挂载点是要挂载 NFS 共享的本地计算机上的目录。</p>
+</li>
+<li>
+<p>通过 root 身份或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 权限的用户运行以下命令来挂载 NFS 共享：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t nfs 10.10.0.10:/backups /var/backups
+</code></pre><p>NFS服务器的 IP 地址是 <code>10.10.0.10</code>， <code>/backup</code> 是服务器的目录， <code>/var/backups</code> 是本地挂载点。</p>
 <p>成功时，不会产生任何输出。</p>
-
-<p>如果要指定其他<a href="http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS"> mount 选项</a>，请使用该 <code>-o</code> 选项。可以提供多个选项作为逗号分隔列表。在你的终端中键入 <code>man mount</code> 获取所有挂载选项的列表。</p></li>
-
-<li><p>要验证是否已成功挂载远程 NFS 卷，请使用 <code>mount</code> 或 <a href="/linux/how-to-check-disk-space-in-linux-using-the-df-command/"><code>df -h</code></a> 命令。</p></li>
+<p>如果要指定其他<a href="http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS"> mount 选项</a>，请使用该 <code>-o</code> 选项。可以提供多个选项作为逗号分隔列表。在你的终端中键入 <code>man mount</code> 获取所有挂载选项的列表。</p>
+</li>
+<li>
+<p>要验证是否已成功挂载远程 NFS 卷，请使用 <code>mount</code> 或 <a href="/linux/how-to-check-disk-space-in-linux-using-the-df-command/"><code>df -h</code></a> 命令。</p>
+</li>
 </ol>
-
 <p>挂载成功后，挂载点将成为已挂载文件系统的根目录。</p>
-
 <p>手动挂载共享时， NFS 共享挂载在重新启动后不会保留。</p>
-
-<h2 id="自动挂载-nfs-文件系统">自动挂载 NFS 文件系统</h2>
-
+<h2 id="-nfs-2">自动挂载 NFS 文件系统</h2>
 <p>通常，您需要在系统引导时自动挂载远程 NFS 目录。</p>
-
 <p><code>/etc/fstab</code> 文件包含一个条目列表，用于定义在系统启动时将如何以及将挂载哪些文件系统。</p>
-
 <p>要在 Linux 系统启动时自动挂载 NFS 共享，请在 <code>/etc/fstab</code> 文件中添加一行。该行必须包括 NFS 服务器的主机名或 IP 地址，被挂载的目录以及本地计算机上的挂载点。</p>
-
 <p>使用以下过程在 Linux 系统上自动挂载 NFS 共享：</p>
-
 <ol>
-<li><p>为远程 NFS 共享设置挂载点：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /var/backups</code></pre></div></li>
-
-<li><p>使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>打开文件 <code>/etc/fstab</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/fstab</code></pre></div>
-<p>将以下行添加到 <code>/etc/fstab</code> 文件中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># &lt;file system&gt;     &lt;dir&gt;       &lt;type&gt;   &lt;options&gt;   &lt;dump&gt;  &lt;pass&gt; </span>
-<span class="na">10.10.0.10:/backups /var/backups  nfs      defaults    0       0</span></code></pre></div>
-<p><code>10.10.0.10</code> 是 NFS 服务器的 IP 地址， <code>/backup</code> 是导出的目录， <code>/var/backups</code> 是本地挂载点。</p></li>
-
-<li><p>运行以下列表中任一 <code>mount</code> 命令挂载 NFS 共享：</p>
+<li>
+<p>为远程 NFS 共享设置挂载点：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /var/backups
+</code></pre></li>
+<li>
+<p>使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>打开文件 <code>/etc/fstab</code> ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/fstab
+</code></pre><p>将以下行添加到 <code>/etc/fstab</code> 文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># &lt;file system&gt;     &lt;dir&gt;       &lt;type&gt;   &lt;options&gt;   &lt;dump&gt;	 &lt;pass&gt; </span>
+<span class="na">10.10.0.10:/backups /var/backups  nfs      defaults    0       0</span>
+</code></pre></div><p><code>10.10.0.10</code> 是 NFS 服务器的 IP 地址， <code>/backup</code> 是导出的目录， <code>/var/backups</code> 是本地挂载点。</p>
+</li>
+<li>
+<p>运行以下列表中任一 <code>mount</code> 命令挂载 NFS 共享：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount /var/backups
-mount <span class="m">10</span>.10.0.10:/backups</code></pre></div>
-<p>该 <code>mount</code> 命令将读取 <code>/etc/fstab</code> 并挂载共享的内容。</p>
-
-<p>下次重新引导系统时，将自动挂载 NFS 共享。</p></li>
+mount 10.10.0.10:/backups
+</code></pre></div><p>该 <code>mount</code> 命令将读取 <code>/etc/fstab</code> 并挂载共享的内容。</p>
+<p>下次重新引导系统时，将自动挂载 NFS 共享。</p>
+</li>
 </ol>
-
-<h2 id="卸载-nfs-文件系统">卸载 NFS 文件系统</h2>
-
+<h2 id="-nfs-3">卸载 NFS 文件系统</h2>
 <p><code>umount</code> 命令从目录树中卸载已挂载的文件系统。</p>
-
 <p>要卸载已挂载的 NFS 共享，请使用 <code>umount</code> 命令，后跟已挂载的目录或远程共享：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umount 10.10.0.10:/backupsumount /var/backups</code></pre></div>
-<p>如果 <code>fstab</code> 文件中有 NFS 挂载的行条目，请将其删除。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">umount 10.10.0.10:/backupsumount /var/backups
+</code></pre><p>如果 <code>fstab</code> 文件中有 NFS 挂载的行条目，请将其删除。</p>
 <p><code>umount</code> 挂载的卷正在使用时，该命令将无法卸载共享。要找出正在访问 NFS 共享的进程，请使用以下 <code>fuser</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">fuser -m MOUNT_POINT</code></pre></div>
-<p>找到进程后，可以使用该 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code></a> 命令停止它们并卸载 NFS 共享。</p>
-
-<p>如果您仍然无法卸载共享，请使用 <code>-l</code>(<code>--lazy</code>) 选项，该选项允许您在繁忙的文件系统不再忙时立即卸载它。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umount -l MOUNT_POINT</code></pre></div>
-<p>如果远程 NFS 系统无法访问，请使用 <code>-f</code>(<code>--force</code>) 选项强制卸载。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">umount -f MOUNT_POINT</code></pre></div>
-<p>使用强制选项通常不是一个好主意，因为它可能会破坏文件系统上的数据。</p>
-
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">fuser -m MOUNT_POINT
+</code></pre><p>找到进程后，可以使用该 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code></a> 命令停止它们并卸载 NFS 共享。</p>
+<p>如果您仍然无法卸载共享，请使用 <code>-l`(</code>&ndash;lazy`) 选项，该选项允许您在繁忙的文件系统不再忙时立即卸载它。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">umount -l MOUNT_POINT
+</code></pre><p>如果远程 NFS 系统无法访问，请使用 <code>-f`(</code>&ndash;force`) 选项强制卸载。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">umount -f MOUNT_POINT
+</code></pre><p>使用强制选项通常不是一个好主意，因为它可能会破坏文件系统上的数据。</p>
+<h2 id="heading">结论</h2>
 <p>我们已经向您展示了如何挂载和卸载远程 NFS 共享。相同的命令适用于任何 Linux 发行版，包括 Ubuntu ， CentOS ， RHEL ， Debian 和 Linux Mint 。</p>
       </div><ul class="pa0">
   
@@ -326,16 +303,13 @@ mount <span class="m">10</span>.10.0.10:/backups</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#挂载-nfs-客户端软件包">挂载 NFS 客户端软件包</a></li>
-<li><a href="#手动挂载-nfs-文件系统">手动挂载 NFS 文件系统</a></li>
-<li><a href="#自动挂载-nfs-文件系统">自动挂载 NFS 文件系统</a></li>
-<li><a href="#卸载-nfs-文件系统">卸载 NFS 文件系统</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-nfs-">挂载 NFS 客户端软件包</a></li>
+    <li><a href="#-nfs-1">手动挂载 NFS 文件系统</a></li>
+    <li><a href="#-nfs-2">自动挂载 NFS 文件系统</a></li>
+    <li><a href="#-nfs-3">卸载 NFS 文件系统</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

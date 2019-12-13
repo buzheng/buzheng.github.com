@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Debian 9 上安装 Ruby" />
 <meta property="og:description" content="本教程将引导您完成在 Debian 9 系统上安装 Ruby 的步骤。 Ruby 是当今最流行的语言之一。它具有优雅的语法，是强大的 Ruby on Rails 框架背后的语言。
-
 在 Debian 上安装 Ruby 有几种不同的方法。在以下部分中，我们将展示如何使用 Rbenv 和 RVM 脚本以及默认的 Debian 存储库来安装 Ruby 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-ruby-on-debian-9/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-06-06T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 9 上安装 Ruby">
 <meta itemprop="description" content="本教程将引导您完成在 Debian 9 系统上安装 Ruby 的步骤。 Ruby 是当今最流行的语言之一。它具有优雅的语法，是强大的 Ruby on Rails 框架背后的语言。
-
 在 Debian 上安装 Ruby 有几种不同的方法。在以下部分中，我们将展示如何使用 Rbenv 和 RVM 脚本以及默认的 Debian 存储库来安装 Ruby 。">
-
-
 <meta itemprop="datePublished" content="2019-06-06T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-06-06T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="949">
+<meta itemprop="wordCount" content="951">
 
 
 
-<meta itemprop="keywords" content="debian,ruby," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="debian,ruby," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Debian 9 上安装 Ruby"/>
 <meta name="twitter:description" content="本教程将引导您完成在 Debian 9 系统上安装 Ruby 的步骤。 Ruby 是当今最流行的语言之一。它具有优雅的语法，是强大的 Ruby on Rails 框架背后的语言。
-
 在 Debian 上安装 Ruby 有几种不同的方法。在以下部分中，我们将展示如何使用 Rbenv 和 RVM 脚本以及默认的 Debian 存储库来安装 Ruby 。"/>
 
   </head>
@@ -147,79 +141,63 @@
           
   
           <p>本教程将引导您完成在 Debian 9 系统上安装 Ruby 的步骤。 Ruby 是当今最流行的语言之一。它具有优雅的语法，是强大的 Ruby on Rails 框架背后的语言。</p>
-
 <p>在 Debian 上安装 Ruby 有几种不同的方法。在以下部分中，我们将展示如何使用 Rbenv 和 RVM 脚本以及默认的 Debian 存储库来安装 Ruby 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="方法1-从-debian-存储库安装-ruby">方法1：从 Debian 存储库安装 Ruby</h2>
-
+<h2 id="1-debian--ruby">方法1：从 Debian 存储库安装 Ruby</h2>
 <p>在 Debian 系统上安装 Ruby 的最简单方法是通过 <code>apt</code> 包管理器。在撰写本文时， Debian 存储库中包含的版本是 2.3.3 。</p>
-
 <p>1、 首先，使用以下命令刷新包列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div>
-<p>2、 通过运行以下命令安装 <code>ruby-full</code> 程序包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install ruby-full</code></pre></div>
-<p>3、 安装完成后，您可以通过打印 Ruby 版本来验证它是否成功：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ruby --version</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ruby 2.3.3p222 (2016-11-21) [x86_64-linux-gnu]</code></pre></div>
-<h2 id="方法2-使用-rbenv-安装-ruby">方法2：使用 Rbenv 安装 Ruby</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+</code></pre><p>2、 通过运行以下命令安装 <code>ruby-full</code> 程序包：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install ruby-full
+</code></pre><p>3、 安装完成后，您可以通过打印 Ruby 版本来验证它是否成功：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ruby --version
+</code></pre><p>输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">ruby 2.3.3p222 (2016-11-21) [x86_64-linux-gnu]
+</code></pre><h2 id="2-rbenv--ruby">方法2：使用 Rbenv 安装 Ruby</h2>
 <p>Rbenv 是一个轻量级的 Ruby 版本管理工具，可以让您轻松切换 Ruby 版本。</p>
-
 <p>默认情况下， Rbenv 不处理安装 Ruby 版本。 ruby-build 是一个工具，可以帮助您安装您可能需要的任何版本的 Ruby 。它作为独立程序使用，也可以做为 rbenv 的插件。</p>
-
 <p>1、 安装 ruby-build 工具所需的依赖项，以便从源代码构建 Ruby ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install git curl libssl-dev libreadline-dev zlib1g-devautoconf bison build-essential libyaml-dev libreadline-dev libncurses5-devlibffi-dev libgdbm-dev</code></pre></div>
-<p>2、 接下来，运行以下 <a href="/linux/curl-command-examples/">curl 命令</a>来安装 rbenv 和 ruby-build 脚本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -sL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer| bash -</code></pre></div>
-<p>成功安装后，脚本将打印如下内容：</p>
-
-<figure><img src="/images/linux/how-to-install-ruby-on-debian-9/debian-install-ruby-rbenv.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install git curl libssl-dev libreadline-dev zlib1g-devautoconf bison build-essential libyaml-dev libreadline-dev libncurses5-devlibffi-dev libgdbm-dev
+</code></pre><p>2、 接下来，运行以下 <a href="/linux/curl-command-examples/">curl 命令</a>来安装 rbenv 和 ruby-build 脚本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">curl -sL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer| bash -
+</code></pre><p>成功安装后，脚本将打印如下内容：</p>
+<p><img src="/images/linux/how-to-install-ruby-on-debian-9/debian-install-ruby-rbenv.jpg" alt=""></p>
 <p>3、 在开始使用 rbenv 之前，我们需要添加 <code>$HOME/.rbenv/bin</code> 到 PATH 中。</p>
-
 <p>如果您使用的是 Bash ，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#39;export PATH=&#34;$HOME/.rbenv/bin:$PATH&#34;&#39; &gt;&gt; ~/.bashrc
-echo &#39;eval &#34;$(rbenv init-)&#34;&#39; &gt;&gt; ~/.bashrc
-source ~/.bashrc</code></pre></div>
-<p>如果您使用的是 Zsh 类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#39;export PATH=&#34;$HOME/.rbenv/bin:$PATH&#34;&#39; &gt;&gt; ~/.zshrc
-echo &#39;eval &#34;$(rbenv init-)&#34;&#39; &gt;&gt; ~/.zshrc
-source ~/.zshrc</code></pre></div>
-<p>4、 现在我们的系统上安装了 rbenv ，我们可以轻松安装最新的稳定版 Ruby ，并将其设置为默认版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rbenv install 2.5.1
-rbenv global 2.5.1</code></pre></div>
-<p>通过打印版本号验证 Ruby 是否已正确安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ruby -v</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]</code></pre></div>
-<h2 id="方法3-使用-rvm-安装-ruby">方法3：使用 RVM 安装 Ruby</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.bashrc
+echo 'eval &quot;$(rbenv init-)&quot;' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre><p>如果您使用的是 Zsh 类型：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.zshrc
+echo 'eval &quot;$(rbenv init-)&quot;' &gt;&gt; ~/.zshrc
+source ~/.zshrc
+</code></pre><p>4、 现在我们的系统上安装了 rbenv ，我们可以轻松安装最新的稳定版 Ruby ，并将其设置为默认版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rbenv install 2.5.1
+rbenv global 2.5.1
+</code></pre><p>通过打印版本号验证 Ruby 是否已正确安装：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ruby -v
+</code></pre><pre><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]
+</code></pre><h2 id="3-rvm--ruby">方法3：使用 RVM 安装 Ruby</h2>
 <p>RVM 是另一种安装，管理和使用多个 Ruby 环境的工具。</p>
-
 <p>1、 首先安装 RVM 实用程序从源代码构建 Ruby 所需的依赖项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install curl g++ gcc autoconf automake bison libc6-dev libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev libreadline-dev libssl-dev</code></pre></div>
-<p>2、 接下来，运行以下命令以添加 GPG 密钥并安装 RVM ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">gpg --keyserver hkp://keys.gnupg.net --recv-keys409B6B1796C275462A1703113804BB82D39DC0E37D2BAF1CF37B13E2069D6956105BD0E739499BDBcurl -sSL https://get.rvm.io | bash -sstable</code></pre></div>
-<p>成功安装后，脚本将打印如下内容：</p>
-
-<figure><img src="/images/linux/how-to-install-ruby-on-debian-9/debian-install-ruby-rvm.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install curl g++ gcc autoconf automake bison libc6-dev libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev libreadline-dev libssl-dev
+</code></pre><p>2、 接下来，运行以下命令以添加 GPG 密钥并安装 RVM ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">gpg --keyserver hkp://keys.gnupg.net --recv-keys409B6B1796C275462A1703113804BB82D39DC0E37D2BAF1CF37B13E2069D6956105BD0E739499BDBcurl -sSL https://get.rvm.io | bash -sstable
+</code></pre><p>成功安装后，脚本将打印如下内容：</p>
+<p><img src="/images/linux/how-to-install-ruby-on-debian-9/debian-install-ruby-rvm.jpg" alt=""></p>
 <p>3、 要开始使用 RVM ，您需要运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source ~/.rvm/scripts/rvm</code></pre></div>
-<p>4、 使用 RVM 安装最新的稳定版 Ruby ，并将其设置为默认版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rvm install 2.5.1
-rvm use 2.5.1 --default</code></pre></div>
-<p>通过打印版本号验证 Ruby 是否已正确安装：</p>
-<div class="highlight"><pre class="chroma">ruby -v</pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]</code></pre></div>
-<p>有关如何管理 Ruby 安装的更多信息，请访问 <a href="https://rvm.io/">RVM 文档页面</a>。</p>
-
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">source ~/.rvm/scripts/rvm
+</code></pre><p>4、 使用 RVM 安装最新的稳定版 Ruby ，并将其设置为默认版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rvm install 2.5.1
+rvm use 2.5.1 --default
+</code></pre><p>通过打印版本号验证 Ruby 是否已正确安装：</p>
+<pre><code>ruby -v
+</code></pre><pre><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]
+</code></pre><p>有关如何管理 Ruby 安装的更多信息，请访问 <a href="https://rvm.io/">RVM 文档页面</a>。</p>
+<h2 id="heading1">结论</h2>
 <p>我们向您展示了在 Debian 9 服务器上安装 Ruby 的三种不同方法。您可以根据您的要求和偏好选择适用于自己的方法。尽管从 Debian 存储库安装打包版本更容易，但 Rbenv 和 RVM 方法为您提供了更大的灵活性，可以在每个用户的基础上添加和删除不同的 Ruby 版本。</p>
       </div><ul class="pa0">
   
@@ -293,16 +271,13 @@ rvm use 2.5.1 --default</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#方法1-从-debian-存储库安装-ruby">方法1：从 Debian 存储库安装 Ruby</a></li>
-<li><a href="#方法2-使用-rbenv-安装-ruby">方法2：使用 Rbenv 安装 Ruby</a></li>
-<li><a href="#方法3-使用-rvm-安装-ruby">方法3：使用 RVM 安装 Ruby</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#1-debian--ruby">方法1：从 Debian 存储库安装 Ruby</a></li>
+    <li><a href="#2-rbenv--ruby">方法2：使用 Rbenv 安装 Ruby</a></li>
+    <li><a href="#3-rvm--ruby">方法3：使用 RVM 安装 Ruby</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2016-03-23T00:00:00+00:00" />
 <meta itemprop="name" content="Virtualbox UEFI 配置问题">
 <meta itemprop="description" content="最近在 Virtualbox 中安装 Ubuntu Server 时，由于在主板中选择了“启用EFI(只针对某些操作系统)”导致 Ubuntu 引导不起来，这里记录一下解决方案。">
-
-
 <meta itemprop="datePublished" content="2016-03-23T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2016-03-23T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="475">
+<meta itemprop="wordCount" content="501">
 
 
 
-<meta itemprop="keywords" content="Linux," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Virtualbox UEFI 配置问题"/>
 <meta name="twitter:description" content="最近在 Virtualbox 中安装 Ubuntu Server 时，由于在主板中选择了“启用EFI(只针对某些操作系统)”导致 Ubuntu 引导不起来，这里记录一下解决方案。"/>
 
@@ -124,7 +121,7 @@
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 500 字</span>
+          <span class="f6 dib tracked">约 600 字</span>
           <span class="f6 dib tracked">, 预计阅读时间 3 分钟</span>
         
       </div>
@@ -141,28 +138,19 @@
           
   
           <p>最近在 Virtualbox 中安装 Ubuntu Server 时，由于在主板中选择了“启用EFI(只针对某些操作系统)”导致 Ubuntu 引导不起来，这里记录一下解决方案。</p>
-
 <p>如何安装这里不再赘述，只是由于安装前配置的时候，选择了 “启用EFI(只针对某些操作系统)”，如下图所示，</p>
-
-<figure><img src="/images/virtualbox-efi.png" alt=""></figure>
-
+<p><img src="/images/virtualbox-efi.png" alt=""></p>
 <p>结果导致安装好 Ubuntu Server 重启后，引导不起来了，引导界面如下：</p>
-
-<figure><img src="/images/virtualbox-efi-boot.png" alt=""></figure>
-
-<p>经过尝试，直接在Shell里运行 <code>FS0:\EFI\ubuntu\grubx64.efi</code> 可以成功引导，但是每次这么引导也很麻烦，可以用如下方式解决。</p>
-
+<p><img src="/images/virtualbox-efi-boot.png" alt=""></p>
+<p>经过尝试，直接在Shell里运行 <!-- raw HTML omitted -->FS0:\EFI\ubuntu\grubx64.efi<!-- raw HTML omitted --> 可以成功引导，但是每次这么引导也很麻烦，可以用如下方式解决。</p>
 <p>按顺序运行如下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Shell&gt; FS0:
 FS0:<span class="se">\&gt;</span> <span class="nb">cd</span> EFI
 FS0:<span class="se">\E</span>FI&gt; mkdir boot
-FS0:<span class="se">\E</span>FI&gt; cp ubuntu<span class="se">\g</span>rubx64.efi boot<span class="se">\b</span>ootx64.efi </code></pre></div>
-<p>然后重启就能自动引导了。</p>
-
+FS0:<span class="se">\E</span>FI&gt; cp ubuntu<span class="se">\g</span>rubx64.efi boot<span class="se">\b</span>ootx64.efi 
+</code></pre></div><p>然后重启就能自动引导了。</p>
 <p>顺便查了下什么是 UEFI，这是来自 <a href="http://windows.microsoft.com/zh-cn/windows-8/what-uefi">http://windows.microsoft.com/zh-cn/windows-8/what-uefi</a> 的一段解释：</p>
-
 <p>UEFI（统一可扩展固件接口）是适用于电脑的标准固件接口，旨在替换 BIOS（基本输入/输出系统）。 此标准由 UEFI 联盟中的 140 多个技术公司共同创建，其中包括 Microsoft。 UEFI 旨在提高软件互操作性和解决 BIOS 的限制。 UEFI 固件的一些优点包括：</p>
-
 <ul>
 <li>通过帮助保护预启动或预引导过程，防御 bootkit 的攻击，从而提高安全性。</li>
 <li>缩短了启动时间和从休眠状态恢复的时间。</li>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2017-02-15T00:00:00+00:00" />
 <meta itemprop="name" content="CentOS 7 编译安装 Nginx 1.11.10">
 <meta itemprop="description" content="以前写过一篇 CentOS 编译安装 nginx 并配置缩略图插件，当时的环境是 CentOS 6.x 和 Nginx 1.9.x 。 本次安装的环境为 CentOS 7.2 和  Nginx 1.11.10, 有些配置以前自启动的方式发生了变化， 这里再记录一下。">
-
-
 <meta itemprop="datePublished" content="2017-02-15T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-02-15T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1132">
 
 
 
-<meta itemprop="keywords" content="CentOS,Nginx," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="CentOS,Nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOS 7 编译安装 Nginx 1.11.10"/>
 <meta name="twitter:description" content="以前写过一篇 CentOS 编译安装 nginx 并配置缩略图插件，当时的环境是 CentOS 6.x 和 Nginx 1.9.x 。 本次安装的环境为 CentOS 7.2 和  Nginx 1.11.10, 有些配置以前自启动的方式发生了变化， 这里再记录一下。"/>
 
@@ -141,17 +138,13 @@
           
   
           <p>以前写过一篇 <a href="//buzheng.org/nginx/centos-nginx-configure-make-install.html">CentOS 编译安装 nginx 并配置缩略图插件</a>，当时的环境是 CentOS 6.x 和 Nginx 1.9.x 。 本次安装的环境为 CentOS 7.2 和  Nginx 1.11.10, 有些配置以前自启动的方式发生了变化， 这里再记录一下。</p>
-
-<h2 id="安装编译安装依赖的类库和包">安装编译安装依赖的类库和包</h2>
-<div class="highlight"><pre class="chroma">yum install gcc gcc-c++ autoconf automake  zlib zlib-devel openssl openssl-devel pcre-devel</pre></div>
-<h2 id="下载和解压-nginx-1-11-10">下载和解压 Nginx 1.11.10</h2>
-
+<h2 id="heading">安装编译安装依赖的类库和包</h2>
+<pre><code>yum install gcc gcc-c++ autoconf automake  zlib zlib-devel openssl openssl-devel pcre-devel
+</code></pre><h2 id="-nginx-11110">下载和解压 Nginx 1.11.10</h2>
 <p>wget <a href="http://nginx.org/download/nginx-1.11.10.tar.gz">http://nginx.org/download/nginx-1.11.10.tar.gz</a>
 tar -xzvf nginx-1.11.10.tar.gz
 cd nginx-1.11.10</p>
-
-<h2 id="配置-nginx-安装选项">配置 Nginx 安装选项</h2>
-
+<h2 id="-nginx-">配置 Nginx 安装选项</h2>
 <p>这里编译了插件 http_image_filter_module, 来实现图片的处理，采用默认的安装路径进行安装。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">./configure<span class="se">\
 </span><span class="se"></span>  --with-http_ssl_module<span class="se">\
@@ -163,8 +156,8 @@ cd nginx-1.11.10</p>
 </span><span class="se"></span>  --with-http_sub_module<span class="se">\
 </span><span class="se"></span>  --with-http_auth_request_module<span class="se">\
 </span><span class="se"></span>  --with-http_stub_status_module<span class="se">\
-</span><span class="se"></span>  --with-http_gzip_static_module </code></pre></div>
-<p>运行结果如下</p>
+</span><span class="se"></span>  --with-http_gzip_static_module 
+</code></pre></div><p>运行结果如下</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@xx nginx-1.11.10<span class="o">]</span><span class="c1"># ./configure\</span>
 &gt;   --with-http_ssl_module<span class="se">\
 </span><span class="se"></span>&gt;   --with-http_v2_module<span class="se">\
@@ -177,10 +170,10 @@ cd nginx-1.11.10</p>
 </span><span class="se"></span>&gt;   --with-http_stub_status_module<span class="se">\
 </span><span class="se"></span>&gt;   --with-http_gzip_static_module
 checking <span class="k">for</span> OS
- + Linux <span class="m">3</span>.10.0-327.22.2.el7.x86_64 x86_64
+ + Linux 3.10.0-327.22.2.el7.x86_64 x86_64
 checking <span class="k">for</span> C compiler ... found
  + using GNU C compiler
- + gcc version: <span class="m">4</span>.8.5 <span class="m">20150623</span> <span class="o">(</span>Red Hat <span class="m">4</span>.8.5-11<span class="o">)</span> <span class="o">(</span>GCC<span class="o">)</span> 
+ + gcc version: 4.8.5 <span class="m">20150623</span> <span class="o">(</span>Red Hat 4.8.5-11<span class="o">)</span> <span class="o">(</span>GCC<span class="o">)</span> 
 checking <span class="k">for</span> gcc -pipe switch ... found
 checking <span class="k">for</span> -Wl,-E switch ... found
 checking <span class="k">for</span> gcc <span class="nb">builtin</span> atomic operations ... found
@@ -200,28 +193,28 @@ checking <span class="k">for</span> epoll ... found
 checking <span class="k">for</span> EPOLLRDHUP ... found
 checking <span class="k">for</span> EPOLLEXCLUSIVE ... not found
 checking <span class="k">for</span> O_PATH ... found
-checking <span class="k">for</span> sendfile<span class="o">()</span> ... found
-checking <span class="k">for</span> sendfile64<span class="o">()</span> ... found
+checking <span class="k">for</span> sendfile<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> sendfile64<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> sys/prctl.h ... found
 checking <span class="k">for</span> prctl<span class="o">(</span>PR_SET_DUMPABLE<span class="o">)</span> ... found
-checking <span class="k">for</span> sched_setaffinity<span class="o">()</span> ... found
-checking <span class="k">for</span> crypt_r<span class="o">()</span> ... found
+checking <span class="k">for</span> sched_setaffinity<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> crypt_r<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> sys/vfs.h ... found
-checking <span class="k">for</span> poll<span class="o">()</span> ... found
+checking <span class="k">for</span> poll<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> /dev/poll ... not found
 checking <span class="k">for</span> kqueue ... not found
-checking <span class="k">for</span> crypt<span class="o">()</span> ... not found
-checking <span class="k">for</span> crypt<span class="o">()</span> in libcrypt ... found
+checking <span class="k">for</span> crypt<span class="o">(</span><span class="o">)</span> ... not found
+checking <span class="k">for</span> crypt<span class="o">(</span><span class="o">)</span> in libcrypt ... found
 checking <span class="k">for</span> F_READAHEAD ... not found
-checking <span class="k">for</span> posix_fadvise<span class="o">()</span> ... found
+checking <span class="k">for</span> posix_fadvise<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> O_DIRECT ... found
 checking <span class="k">for</span> F_NOCACHE ... not found
-checking <span class="k">for</span> directio<span class="o">()</span> ... not found
-checking <span class="k">for</span> statfs<span class="o">()</span> ... found
-checking <span class="k">for</span> statvfs<span class="o">()</span> ... found
-checking <span class="k">for</span> dlopen<span class="o">()</span> ... not found
-checking <span class="k">for</span> dlopen<span class="o">()</span> in libdl ... found
-checking <span class="k">for</span> sched_yield<span class="o">()</span> ... found
+checking <span class="k">for</span> directio<span class="o">(</span><span class="o">)</span> ... not found
+checking <span class="k">for</span> statfs<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> statvfs<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> dlopen<span class="o">(</span><span class="o">)</span> ... not found
+checking <span class="k">for</span> dlopen<span class="o">(</span><span class="o">)</span> in libdl ... found
+checking <span class="k">for</span> sched_yield<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> SO_SETFIB ... not found
 checking <span class="k">for</span> SO_REUSEPORT ... found
 checking <span class="k">for</span> SO_ACCEPTFILTER ... not found
@@ -236,8 +229,8 @@ checking <span class="k">for</span> TCP_DEFER_ACCEPT ... found
 checking <span class="k">for</span> TCP_KEEPIDLE ... found
 checking <span class="k">for</span> TCP_FASTOPEN ... found
 checking <span class="k">for</span> TCP_INFO ... found
-checking <span class="k">for</span> accept4<span class="o">()</span> ... found
-checking <span class="k">for</span> eventfd<span class="o">()</span> ... found
+checking <span class="k">for</span> accept4<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> eventfd<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> int size ... <span class="m">4</span> bytes
 checking <span class="k">for</span> long size ... <span class="m">8</span> bytes
 checking <span class="k">for</span> long long size ... <span class="m">8</span> bytes
@@ -256,14 +249,14 @@ checking <span class="k">for</span> size_t size ... <span class="m">8</span> byt
 checking <span class="k">for</span> off_t size ... <span class="m">8</span> bytes
 checking <span class="k">for</span> time_t size ... <span class="m">8</span> bytes
 checking <span class="k">for</span> AF_INET6 ... found
-checking <span class="k">for</span> setproctitle<span class="o">()</span> ... not found
-checking <span class="k">for</span> pread<span class="o">()</span> ... found
-checking <span class="k">for</span> pwrite<span class="o">()</span> ... found
-checking <span class="k">for</span> pwritev<span class="o">()</span> ... found
+checking <span class="k">for</span> setproctitle<span class="o">(</span><span class="o">)</span> ... not found
+checking <span class="k">for</span> pread<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> pwrite<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> pwritev<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> sys_nerr ... found
-checking <span class="k">for</span> localtime_r<span class="o">()</span> ... found
-checking <span class="k">for</span> posix_memalign<span class="o">()</span> ... found
-checking <span class="k">for</span> memalign<span class="o">()</span> ... found
+checking <span class="k">for</span> localtime_r<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> posix_memalign<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> memalign<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> mmap<span class="o">(</span>MAP_ANON<span class="p">|</span>MAP_SHARED<span class="o">)</span> ... found
 checking <span class="k">for</span> mmap<span class="o">(</span><span class="s2">&#34;/dev/zero&#34;</span>, MAP_SHARED<span class="o">)</span> ... found
 checking <span class="k">for</span> System V shared memory ... found
@@ -275,8 +268,8 @@ checking <span class="k">for</span> struct tm.tm_gmtoff ... found
 checking <span class="k">for</span> struct dirent.d_namlen ... not found
 checking <span class="k">for</span> struct dirent.d_type ... found
 checking <span class="k">for</span> sysconf<span class="o">(</span>_SC_NPROCESSORS_ONLN<span class="o">)</span> ... found
-checking <span class="k">for</span> openat<span class="o">()</span>, fstatat<span class="o">()</span> ... found
-checking <span class="k">for</span> getaddrinfo<span class="o">()</span> ... found
+checking <span class="k">for</span> openat<span class="o">(</span><span class="o">)</span>, fstatat<span class="o">(</span><span class="o">)</span> ... found
+checking <span class="k">for</span> getaddrinfo<span class="o">(</span><span class="o">)</span> ... found
 checking <span class="k">for</span> PCRE library ... found
 checking <span class="k">for</span> PCRE JIT support ... found
 checking <span class="k">for</span> OpenSSL library ... found
@@ -304,19 +297,15 @@ Configuration summary
   nginx http proxy temporary files: <span class="s2">&#34;proxy_temp&#34;</span>
   nginx http fastcgi temporary files: <span class="s2">&#34;fastcgi_temp&#34;</span>
   nginx http uwsgi temporary files: <span class="s2">&#34;uwsgi_temp&#34;</span>
-  nginx http scgi temporary files: <span class="s2">&#34;scgi_temp&#34;</span></code></pre></div>
-<p>最后的几行是配置的结果， 注意这里的 pid file 那一行，后面配置服务的时候，需要用的到。</p>
-
-<h2 id="安装-nginx">安装 Nginx</h2>
-
+  nginx http scgi temporary files: <span class="s2">&#34;scgi_temp&#34;</span>
+</code></pre></div><p>最后的几行是配置的结果， 注意这里的 pid file 那一行，后面配置服务的时候，需要用的到。</p>
+<h2 id="-nginx">安装 Nginx</h2>
 <p>使用如下命令来安装 nginx 。</p>
-<div class="highlight"><pre class="chroma">make &amp;&amp; make install</pre></div>
-<h2 id="配置-systemd-nginx-服务和设置-nginx-自启动">配置 systemd Nginx 服务和设置 Nginx 自启动</h2>
-
+<pre><code>make &amp;&amp; make install
+</code></pre><h2 id="-systemd-nginx--nginx-">配置 systemd Nginx 服务和设置 Nginx 自启动</h2>
 <p>centos 7 中采用 systemd 来管理系统，我们来为 nginx 创建服务文件，来实现通过 systemd 来管理 nginx 。</p>
-
 <p>创建 systemd 服务文件： <code>/lib/systemd/system/nginx.service</code>，内容如下：</p>
-<div class="highlight"><pre class="chroma">[Unit]
+<pre><code>[Unit]
 Description=The NGINX HTTP and reverse proxy server
 After=syslog.target network.target remote-fs.target nss-lookup.target
 
@@ -330,17 +319,16 @@ ExecStop=/bin/kill -s QUIT $MAINPID
 PrivateTmp=true
 
 [Install]
-WantedBy=multi-user.target</pre></div>
-<p><strong>这里的 PIDFile 的配置要和前面的 配置保持一致。</strong></p>
-
+WantedBy=multi-user.target
+</code></pre><p><strong>这里的 PIDFile 的配置要和前面的 配置保持一致。</strong></p>
 <p>设置自启动</p>
-<div class="highlight"><pre class="chroma">systemctl enable nginx</pre></div>
-<p>通过 systemd 管理 nginx</p>
-<div class="highlight"><pre class="chroma">systemctl start nginx
+<pre><code>systemctl enable nginx
+</code></pre><p>通过 systemd 管理 nginx</p>
+<pre><code>systemctl start nginx
 systemctl stop nginx
 systemctl restart nginx
-systemctl reload nginx</pre></div>
-<p>打完收工。</p>
+systemctl reload nginx
+</code></pre><p>打完收工。</p>
       </div><ul class="pa0">
   
    <li class="list di">

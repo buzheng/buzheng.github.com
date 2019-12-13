@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-03-29T00:00:00+00:00" />
 <meta itemprop="name" content="centos 6.5 安装 oracle 11gR2 及配置Oracle自动启动">
 <meta itemprop="description" content="CentOS 下安装 Oracle 是一件比较麻烦的事情，这里记录了在 centos 6.5 下安装 oracle 11gR2的前的配置步骤，以及安装完成后，如何设置为随系统自动启动。配置完成后，启动">
-
-
 <meta itemprop="datePublished" content="2015-03-29T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-03-29T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1847">
+<meta itemprop="wordCount" content="1848">
 
 
 
-<meta itemprop="keywords" content="Linux,Oracle," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux,Oracle," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="centos 6.5 安装 oracle 11gR2 及配置Oracle自动启动"/>
 <meta name="twitter:description" content="CentOS 下安装 Oracle 是一件比较麻烦的事情，这里记录了在 centos 6.5 下安装 oracle 11gR2的前的配置步骤，以及安装完成后，如何设置为随系统自动启动。配置完成后，启动"/>
 
@@ -140,48 +137,37 @@
           
           
   
-          
-
-<p>CentOS 下安装 Oracle 是一件比较麻烦的事情，这里记录了在 centos 6.5 下安装 oracle 11gR2的前的配置步骤，以及安装完成后，如何设置为随系统自动启动。配置完成后，启动图形化安装，没有什么可说的，本文就没有一一截图，掠过了。<!-- more --></p>
-
+          <p>CentOS 下安装 Oracle 是一件比较麻烦的事情，这里记录了在 centos 6.5 下安装 oracle 11gR2的前的配置步骤，以及安装完成后，如何设置为随系统自动启动。配置完成后，启动图形化安装，没有什么可说的，本文就没有一一截图，掠过了。<!-- raw HTML omitted --></p>
 <blockquote>
 <p>以下命令使用 root 用户操作</p>
 </blockquote>
-
-<h2 id="安装依赖包">安装依赖包</h2>
-
+<h2 id="heading">安装依赖包</h2>
 <p>主要思路为配置 oracle yum 仓库，直接使用 yum 命令来安装依赖包，避免手工逐个的安装依赖包。</p>
-
-<h3 id="配置-yum-仓库以下载-orcale-依赖包">配置 yum 仓库以下载 orcale 依赖包</h3>
-
+<h3 id="-yum--orcale-">配置 yum 仓库以下载 orcale 依赖包</h3>
 <p>注意这里是CentOS 6.X 的 oracle 依赖仓库，其他版本不同的。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /etc/yum.repos.d
-wget https://public-yum.oracle.com/public-yum-ol6.repo --no-check-certificate</code></pre></div>
-<h3 id="导入-gpg-keys">导入 GPG Keys</h3>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6 -O /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle --no-check-certificate</code></pre></div>
-<h3 id="安装-oracle-依赖">安装 oracle 依赖</h3>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yum install oracle-rdbms-server-11gR2-preinstall</code></pre></div>
-<h2 id="设置-hostname">设置 hostname</h2>
-
+wget https://public-yum.oracle.com/public-yum-ol6.repo --no-check-certificate
+</code></pre></div><h3 id="-gpg-keys">导入 GPG Keys</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://public-yum.oracle.com/RPM-GPG-KEY-oracle-ol6 -O /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle --no-check-certificate
+</code></pre></div><h3 id="-oracle-">安装 oracle 依赖</h3>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yum install oracle-rdbms-server-11gR2-preinstall
+</code></pre></div><h2 id="-hostname">设置 hostname</h2>
 <p>打开文件 /etc/sysconfig/network，并修改 HOSTNAME。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/sysconfig/network
 <span class="nv">NETWORKING</span><span class="o">=</span>yes
-<span class="nv">HOSTNAME</span><span class="o">=</span>oracle.buzheng.org</code></pre></div>
-<p>打开 /etc/host， 添加服务器本机IP地址 指向到 HOSTNAME</p>
+<span class="nv">HOSTNAME</span><span class="o">=</span>oracle.buzheng.org
+</code></pre></div><p>打开 /etc/host， 添加服务器本机IP地址 指向到 HOSTNAME</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/hosts
-<span class="m">192</span>.168.1.15 oracle.buzheng.org oracle  </code></pre></div>
-<h2 id="oracle-用户设置">oracle 用户设置</h2>
-
+192.168.1.15 oracle.buzheng.org oracle  
+</code></pre></div><h2 id="oracle-">oracle 用户设置</h2>
 <p>当安装好 oracle 依赖之后， oracle 用户已经创建好了，不需要手工创建 oracle 用户和相关的用户组。</p>
-
-<h3 id="修改-oracle-用户密码">修改 oracle 用户密码</h3>
+<h3 id="-oracle-1">修改 oracle 用户密码</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># passwd oracle</span>
 更改用户 oracle 的密码 。
 新的 密码：
 重新输入新的 密码：
-passwd： 所有的身份验证令牌已经成功更新。</code></pre></div>
-<h3 id="修改系统限制">修改系统限制</h3>
-
+passwd： 所有的身份验证令牌已经成功更新。
+</code></pre></div><h3 id="heading1">修改系统限制</h3>
 <p>在文件 /etc/security/limits.d/90-nproc.conf 中添加如下的最后一行</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># vi /etc/security/limits.d/90-nproc.conf</span>
 <span class="c1"># Default limit for number of user&#39;s processes to prevent</span>
@@ -190,9 +176,8 @@ passwd： 所有的身份验证令牌已经成功更新。</code></pre></div>
 
 *          soft    nproc     <span class="m">1024</span>
 root       soft    nproc     unlimited
-*          -       nproc     <span class="m">16384</span></code></pre></div>
-<h3 id="修改-selinux-为-permissive-模式">修改 SELinux 为 permissive 模式</h3>
-
+*          -       nproc     <span class="m">16384</span>
+</code></pre></div><h3 id="-selinux--permissive-">修改 SELinux 为 permissive 模式</h3>
 <p>修改文件 /etc/selinux/config 如下所示</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># vi /etc/selinux/config</span>
 
@@ -205,21 +190,19 @@ root       soft    nproc     unlimited
 <span class="c1"># SELINUXTYPE= can take one of these two values:</span>
 <span class="c1">#     targeted - Targeted processes are protected,</span>
 <span class="c1">#     mls - Multi Level Security protection.</span>
-<span class="nv">SELINUXTYPE</span><span class="o">=</span>targeted</code></pre></div>
-<h2 id="重启机器">重启机器</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># reboot</span></code></pre></div>
-<h2 id="创建-oracle-安装目录-并授权">创建 oracle 安装目录，并授权</h2>
+<span class="nv">SELINUXTYPE</span><span class="o">=</span>targeted
+</code></pre></div><h2 id="heading2">重启机器</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># reboot</span>
+</code></pre></div><h2 id="-oracle-2">创建 oracle 安装目录，并授权</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># mkdir -p /u01/app/oracle/product/11.2.0/dbhome_1</span>
 <span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># chown -R oracle:oinstall /u01</span>
-<span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># chmod -R 775 /u01</span></code></pre></div>
-<p>授权 oracle 用户能够访问 X Server</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># xhost +  # 要在主机上运行，不能是远程 shell</span></code></pre></div>
-<blockquote>
+<span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># chmod -R 775 /u01</span>
+</code></pre></div><p>授权 oracle 用户能够访问 X Server</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># xhost +  # 要在主机上运行，不能是远程 shell</span>
+</code></pre></div><blockquote>
 <p>以下命令使用 oracle 用户操作</p>
 </blockquote>
-
-<h2 id="配置-oracle-安装环境变量">配置 oracle 安装环境变量</h2>
-
+<h2 id="-oracle-3">配置 oracle 安装环境变量</h2>
 <p>切换到 oracle 用户, 编辑 .bash_profile 文件, 如下所示, 添加环境配置。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle<span class="o">]</span><span class="c1"># su oracle</span>
 <span class="o">[</span>oracle@oracle<span class="o">]</span><span class="c1"># vi .bash_profile</span>
@@ -237,25 +220,22 @@ root       soft    nproc     unlimited
 <span class="nv">PATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/bin:<span class="nv">$PATH</span><span class="p">;</span> <span class="nb">export</span> PATH
 
 <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/lib:/lib:/usr/lib<span class="p">;</span> <span class="nb">export</span> LD_LIBRARY_PATH
-<span class="nv">CLASSPATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/jlib:<span class="nv">$ORACLE_HOME</span>/rdbms/jlib<span class="p">;</span> <span class="nb">export</span> CLASSPATH <span class="nb">export</span> PATH</code></pre></div>
-<h2 id="下载-oracle-安装文件-解压缩后安装">下载 oracle 安装文件，解压缩后安装</h2>
-
-<h3 id="下载-oracle">下载 oracle</h3>
-
-<p>打开 oracle 下载页面，<a href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html">http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html</a> , 下载下面两个文件到 /home/oracle</p>
+<span class="nv">CLASSPATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/jlib:<span class="nv">$ORACLE_HOME</span>/rdbms/jlib<span class="p">;</span> <span class="nb">export</span> CLASSPATH <span class="nb">export</span> PATH
+</code></pre></div><h2 id="-oracle-4">下载 oracle 安装文件，解压缩后安装</h2>
+<h3 id="-oracle">下载 oracle</h3>
+<p>打开 oracle 下载页面，http://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html , 下载下面两个文件到 /home/oracle</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">linux.x64_11gR2_database_1of2.zip
-linux.x64_11gR2_database_2of2.zip</code></pre></div>
-<h3 id="解压缩文件并运行">解压缩文件并运行</h3>
+linux.x64_11gR2_database_2of2.zip
+</code></pre></div><h3 id="heading3">解压缩文件并运行</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">unzip linux.x64_11gR2_database_1of2.zip
 unzip linux.x64_11gR2_database_2of2.zip
 
 <span class="nb">cd</span> database
-./runInstaller</code></pre></div>
-<p>若为中文系统，安装界面会出现中文乱码，需要先将环境变为英文，在安装</p>
+./runInstaller
+</code></pre></div><p>若为中文系统，安装界面会出现中文乱码，需要先将环境变为英文，在安装</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>en_US
-./runInstaller</code></pre></div>
-<p>没有截图, 安装步骤大致包括以下几步:</p>
-
+./runInstaller
+</code></pre></div><p>没有截图, 安装步骤大致包括以下几步:</p>
 <ol>
 <li>Create and configure a database</li>
 <li>Server Class</li>
@@ -267,7 +247,6 @@ unzip linux.x64_11gR2_database_2of2.zip
 <li>Memory: Enable Automatic Memory Management</li>
 <li>Character sets: Use Unicode(AL32UTF8)</li>
 </ol>
-
 <p>图性界面安装最后会提示以ROOT 执行下面两个脚本</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># /u01/app/oraInventory/orainstRoot.sh</span> 
 Changing permissions of /u01/app/oraInventory.
@@ -275,7 +254,8 @@ Adding read,write permissions <span class="k">for</span> group.
 Removing read,write,execute permissions <span class="k">for</span> world.
 
 Changing groupname of /u01/app/oraInventory to oinstall.
-The execution of the script is complete.</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># /u01/app/oracle/product/11.2.0/dbhome_1/root.sh</span> 
+The execution of the script is complete.
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># /u01/app/oracle/product/11.2.0/dbhome_1/root.sh</span> 
 Running Oracle 11g root.sh script...
 
 The following environment variables are <span class="nb">set</span> as:
@@ -293,38 +273,32 @@ Entries will be added to the /etc/oratab file as needed by
 Database Configuration Assistant when a database is created
 Finished running generic part of root.sh script.
 Now product-specific root actions will be performed.
-Finished product-specific root actions.</code></pre></div>
-<h3 id="出现的问题">出现的问题</h3>
-
+Finished product-specific root actions.
+</code></pre></div><h3 id="heading4">出现的问题</h3>
 <p>1, 当环境变量中的 ORACLE_SID 与 安装时实际配置不一致时，会导致 startup 出错，出错信息如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ORA-01078: failure in processing system parameters
-LRM-00109: could not open parameter file <span class="s1">&#39;/u01/app/oracle/product/11.2.0/dbhome_1/dbs/initDB11G.ora&#39;</span></code></pre></div>
-<p>2, 如果远程客户端连接是报错：ora-12514 tns 监听程序当前无法识别连接描述符中请求的服务，则需要配置 listener.ora，添加如下节点：</p>
-<div class="highlight"><pre class="chroma">SID_LIST_LISTENER = 
+LRM-00109: could not open parameter file <span class="s1">&#39;/u01/app/oracle/product/11.2.0/dbhome_1/dbs/initDB11G.ora&#39;</span>
+</code></pre></div><p>2, 如果远程客户端连接是报错：ora-12514 tns 监听程序当前无法识别连接描述符中请求的服务，则需要配置 listener.ora，添加如下节点：</p>
+<pre><code>SID_LIST_LISTENER = 
   (SID_LIST=    
     (SID_DESC =
       (SID_NAME = orcl)
       (ORACLE_HOME = /u01/app/oracle/product/11.2.0/dbhome_1)
     )
-  )</pre></div>
-<p>好了，到此已经安装完成，通过访问 web 管理界面可验证。下面步骤也很重要，请继续。</p>
+  )
 
+</code></pre><p>好了，到此已经安装完成，通过访问 web 管理界面可验证。下面步骤也很重要，请继续。</p>
 <blockquote>
 <p>以下命令使用 root 用户操作</p>
 </blockquote>
-
-<h2 id="配置防火墙规则-开放侦听端口">配置防火墙规则，开放侦听端口</h2>
-
+<h2 id="heading5">配置防火墙规则，开放侦听端口</h2>
 <p>将 1521（你配置的 oracle 侦听端口） 端口添加到防火墙规则，以便远程用户能顺利的访问到 oracle 服务。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">iptables -I INPUT <span class="m">4</span> -m state --state NEW -p tcp --dport <span class="m">1521</span> -j ACCEPT
 service iptables save
-service iptables reload</code></pre></div>
-<h2 id="设置-oracle-自动启动">设置 oracle 自动启动</h2>
-
+service iptables reload
+</code></pre></div><h2 id="-oracle-5">设置 oracle 自动启动</h2>
 <p>完成 oracle 安装后，我们可以通过命令启动停止数据库，但是当机器重启时并不能随机器启动，这也给我们带来了一些不便，下面记录了，如何将 oralce 加入服务中，并随机机器启动。</p>
-
-<h3 id="修改配置文件-etc-oratab">修改配置文件 /etc/oratab</h3>
-
+<h3 id="-etcoratab">修改配置文件 /etc/oratab</h3>
 <p>修改 /etc/oratab 的最后一行的最后一个字符，将 N 修改为 Y。此举主要是为了使 oracle 的 dbstart 命令能在系统启动时能运行。如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@oracle ~<span class="o">]</span><span class="c1"># vi /etc/oratab</span>
 #
@@ -349,9 +323,8 @@ service iptables reload</code></pre></div>
 <span class="c1"># Multiple entries with the same $ORACLE_SID are not allowed.</span>
 #
 #
-orcl:/u01/app/oracle/product/11.2.0/dbhome_1:Y</code></pre></div>
-<h3 id="创建-etc-init-d-oracle">创建 /etc/init.d/oracle</h3>
-
+orcl:/u01/app/oracle/product/11.2.0/dbhome_1:Y
+</code></pre></div><h3 id="-etcinitdoracle">创建 /etc/init.d/oracle</h3>
 <p>在 /etc/init.d/下创建文件 oracle，此为 oracle 自启动脚本。内容如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/sh
 </span><span class="cp"></span><span class="c1"># chkconfig: 345 61 61</span>
@@ -366,7 +339,7 @@ orcl:/u01/app/oracle/product/11.2.0/dbhome_1:Y</code></pre></div>
 
 <span class="c1"># if the executables do not exist -- display error</span>
 
-<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="nv">$ORACLE_HOME</span><span class="s2">/bin/dbstart&#34;</span> <span class="o">]</span>
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="nv">$ORACLE_HOME</span><span class="s2">/bin/dbstart</span><span class="s2">&#34;</span> <span class="o">]</span>
 <span class="k">then</span>
 <span class="nb">echo</span> <span class="s2">&#34;Oracle startup: cannot start&#34;</span>
 <span class="nb">exit</span> <span class="m">1</span>
@@ -379,34 +352,33 @@ start<span class="o">)</span>
 <span class="c1"># Oracle listener and instance startup</span>
 su <span class="nv">$ORA_OWNR</span> -s /bin/bash <span class="nv">$ORACLE_HOME</span>/bin/dbstart <span class="nv">$ORACLE_HOME</span>
 <span class="nb">echo</span> <span class="s2">&#34;Oracle Start Succesful!OK.&#34;</span>
-<span class="p">;;</span>
+<span class="p">;</span><span class="p">;</span>
 stop<span class="o">)</span>
 <span class="c1"># Oracle listener and instance shutdown</span>
 su <span class="nv">$ORA_OWNR</span> -s /bin/bash <span class="nv">$ORACLE_HOME</span>/bin/dbshut <span class="nv">$ORACLE_HOME</span>
 <span class="nb">echo</span> <span class="s2">&#34;Oracle Stop Succesful!OK.&#34;</span>
-<span class="p">;;</span>
+<span class="p">;</span><span class="p">;</span>
 restart<span class="o">)</span>
 <span class="nv">$0</span> stop
 <span class="nv">$0</span> start
-<span class="p">;;</span>
+<span class="p">;</span><span class="p">;</span>
 *<span class="o">)</span>
-<span class="nb">echo</span> $<span class="s2">&#34;Usage: `basename </span><span class="nv">$0</span><span class="s2">` {start|stop|restart}&#34;</span>
+<span class="nb">echo</span> $<span class="s2">&#34;</span><span class="s2">Usage: `basename </span><span class="nv">$0</span><span class="s2">` {start|stop|restart}</span><span class="s2">&#34;</span>
 <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">esac</span>
-<span class="nb">exit</span> <span class="m">0</span></code></pre></div>
-<h3 id="赋予启动脚本执行权限并链接好">赋予启动脚本执行权限并链接好：</h3>
+<span class="nb">exit</span> <span class="m">0</span>
+</code></pre></div><h3 id="heading6">赋予启动脚本执行权限并链接好：</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># chmod 750 /etc/init.d/oracle</span>
 <span class="c1"># ln -s /etc/init.d/oracle /etc/rc1.d/K61oracle</span>
-<span class="c1"># ln -s /etc/init.d/oracle /etc/rc3.d/S61oracle</span></code></pre></div>
-<p>启动脚本设置好了之后，可以使用 service 命令来启动停止 oracle 了，这时候 oracle 已经是系统服务了。</p>
+<span class="c1"># ln -s /etc/init.d/oracle /etc/rc3.d/S61oracle</span>
+</code></pre></div><p>启动脚本设置好了之后，可以使用 service 命令来启动停止 oracle 了，这时候 oracle 已经是系统服务了。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">service oracle start
 service oracle stop
-service oracle restart</code></pre></div>
-<h3 id="设置-oracle-服务为自启动">设置 oracle 服务为自启动</h3>
+service oracle restart
+</code></pre></div><h3 id="-oracle-6">设置 oracle 服务为自启动</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># chkconfig --add oracle</span>
-<span class="c1"># chkconfig --level 345 oracle on</span></code></pre></div>
-<p>好了，重启机器试试吧。</p>
-
+<span class="c1"># chkconfig --level 345 oracle on</span>
+</code></pre></div><p>好了，重启机器试试吧。</p>
 <p>Done!</p>
 
       </div><ul class="pa0">

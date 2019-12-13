@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="Nginx 是一个开源的高性能 HTTP 和反向代理服务器，Internet 上一些流量很大的站点都在使用它。在管理 NGINX Web 服务器时，您最常执行的任务之一就是检查日志文件。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/nginx-log-files/" />
+<meta property="og:image" content="/linux/nginx-log-files/featured.jpg"/>
 <meta property="article:published_time" content="2019-10-24T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-10-24T12:00:00+08:00" />
 <meta itemprop="name" content="配置 Nginx 的访问日志和错误日志">
 <meta itemprop="description" content="Nginx 是一个开源的高性能 HTTP 和反向代理服务器，Internet 上一些流量很大的站点都在使用它。在管理 NGINX Web 服务器时，您最常执行的任务之一就是检查日志文件。">
-
-
 <meta itemprop="datePublished" content="2019-10-24T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-24T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1611">
+<meta itemprop="image" content="/linux/nginx-log-files/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="nginx," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/nginx-log-files/featured.jpg"/>
 <meta name="twitter:title" content="配置 Nginx 的访问日志和错误日志"/>
 <meta name="twitter:description" content="Nginx 是一个开源的高性能 HTTP 和反向代理服务器，Internet 上一些流量很大的站点都在使用它。在管理 NGINX Web 服务器时，您最常执行的任务之一就是检查日志文件。"/>
@@ -142,32 +141,23 @@
           
   
           <p>Nginx 是一个开源的高性能 HTTP 和<a href="/linux/nginx-reverse-proxy/">反向代理服务器</a>，Internet 上一些流量很大的站点都在使用它。在管理 NGINX Web 服务器时，您最常执行的任务之一就是检查日志文件。</p>
-
 <p>在对服务器或应用程序问题进行故障排除时，知道如何配置和读取日志非常有用，因为它们提供了详细的调试信息。</p>
-
 <p>Nginx 用两种类型的日志记录其事件记录：访问日志和错误日志。访问日志记录有关客户端请求的信息，错误日志记录有关服务器和应用程序问题的信息。</p>
-
 <p>本文概述了如何配置和读取 Nginx 访问和错误日​​志。</p>
-
-<h2 id="配置访问日志">配置访问日志</h2>
-
+<h2 id="heading">配置访问日志</h2>
 <p>每当处理客户请求时， Nginx 都会在访问日志中生成一个新事件。每个事件记录都包含一个时间戳，并包含有关客户端和所请求资源的各种信息。访问日志可以向您显示访问者的位置，访问者访问的页面，他们在页面上花费的时间等等。</p>
-
 <p>在 <code>log_format</code> 指令中您可以定义记录消息的格式。<code>access_log</code> 指令启用并设置日志文件的位置和使用的格式。</p>
-
 <p><code>access_log</code> 指令的最基本语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span> <span class="s">log_file</span> <span class="s">log_format</span><span class="p">;</span></code></pre></div>
-<p>其中 <code>log_file</code> 是日志文件的完整路径， <code>log_format</code> 是日志文件使用的格式的名称。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span> <span class="s">log_file</span> <span class="s">log_format</span><span class="p">;</span>
+</code></pre></div><p>其中 <code>log_file</code> 是日志文件的完整路径， <code>log_format</code> 是日志文件使用的格式的名称。</p>
 <p>无论是在 <code>http</code> ， <code>server</code> 或 <code>location</code> 指令段中，都可以启用访问日志。</p>
-
 <p>默认情况下，在 Nginx 主配置文件 <code>/etc/nginx/nginx.conf</code> 中的 <code>http</code> 指令段中全局启用访问日志。</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">http</span> <span class="p">{</span>
   <span class="kn">...</span>
   <span class="s">access_log</span>  <span class="s">/var/log/nginx/access.log</span><span class="p">;</span>
   <span class="kn">...</span>
-<span class="err">}</span></code></pre></div>
-<p>为了获得更好的可维护性，建议为每个服务器块设置一个单独的访问日志文件。 <code>server</code> 段中设置的  <code>access_log</code> 指令会覆盖掉更高层的 <code>http</code> 段中设置的指令。如下面 <code>/etc/nginx/conf.d/domain.com.conf</code> 中的配置：</p>
+<span class="err">}</span>
+</code></pre></div><p>为了获得更好的可维护性，建议为每个服务器块设置一个单独的访问日志文件。 <code>server</code> 段中设置的  <code>access_log</code> 指令会覆盖掉更高层的 <code>http</code> 段中设置的指令。如下面 <code>/etc/nginx/conf.d/domain.com.conf</code> 中的配置：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">http</span> <span class="p">{</span>
   <span class="kn">...</span>
   <span class="s">access_log</span>  <span class="s">/var/log/nginx/access.log</span><span class="p">;</span>
@@ -178,27 +168,24 @@
     <span class="s">access_log</span>  <span class="s">/var/log/nginx/domain.access.log</span><span class="p">;</span>
     <span class="kn">...</span>
   <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-<p>如果未指定日志格式， Nginx 将使用如下所示的预定义 <strong>combined</strong> 格式：</p>
+<span class="err">}</span>
+</code></pre></div><p>如果未指定日志格式， Nginx 将使用如下所示的预定义 <strong>combined</strong> 格式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">log_format</span> <span class="s">combined</span> <span class="s">&#39;</span><span class="nv">$remote_addr</span> <span class="s">-</span> <span class="nv">$remote_user</span> <span class="s">[</span><span class="nv">$time_local]</span> <span class="s">&#39;</span>
                     <span class="s">&#39;&#34;</span><span class="nv">$request&#34;</span> <span class="nv">$status</span> <span class="nv">$body_bytes_sent</span> <span class="s">&#39;</span>
-                    <span class="s">&#39;&#34;</span><span class="nv">$http_referer&#34;</span> <span class="s">&#34;</span><span class="nv">$http_user_agent&#34;&#39;</span><span class="p">;</span></code></pre></div>
-<p>要更改日志记录格式，请覆盖默认设置或定义一个新设置。例如，在 <code>http</code> 或者 <code>server</code> 指令中定义一个名为 <strong>custom</strong> 的新日志记录格式，它扩展了 <strong>combined</strong> 格式，用来显示 <code>X-Forwarded-For</code> 请求头， 如下所示：</p>
+                    <span class="s">&#39;&#34;</span><span class="nv">$http_referer&#34;</span> <span class="s">&#34;</span><span class="nv">$http_user_agent&#34;&#39;</span><span class="p">;</span>
+</code></pre></div><p>要更改日志记录格式，请覆盖默认设置或定义一个新设置。例如，在 <code>http</code> 或者 <code>server</code> 指令中定义一个名为 <strong>custom</strong> 的新日志记录格式，它扩展了 <strong>combined</strong> 格式，用来显示 <code>X-Forwarded-For</code> 请求头， 如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">log_format</span>  <span class="s">custom</span>  <span class="s">&#39;</span><span class="nv">$remote_addr</span> <span class="s">-</span> <span class="nv">$remote_user</span> <span class="s">[</span><span class="nv">$time_local]</span> <span class="s">&#34;</span><span class="nv">$request&#34;</span> <span class="s">&#39;</span>
                     <span class="s">&#39;</span><span class="nv">$status</span> <span class="nv">$body_bytes_sent</span> <span class="s">&#34;</span><span class="nv">$http_referer&#34;</span> <span class="s">&#39;</span>
-                    <span class="s">&#39;&#34;</span><span class="nv">$http_user_agent&#34;</span> <span class="s">&#34;</span><span class="nv">$http_x_forwarded_for&#34;&#39;</span><span class="p">;</span></code></pre></div>
-<p>要使用新格式，请在日志文件后指定其名称，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span>  <span class="s">/var/log/nginx/access.log</span> <span class="s">custom</span><span class="p">;</span></code></pre></div>
-<p>而访问日志提供了非常有用的信息。它会占用磁盘空间，并可能影响服务器性能。如果服务器资源不足，并且网站繁忙，则可能要禁用访问日志。为此，请将 <code>access_log</code> 伪指令的值设置为 <code>off</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span>  <span class="no">off</span><span class="p">;</span></code></pre></div>
-<h2 id="配置错误日志">配置错误日志</h2>
-
+                    <span class="s">&#39;&#34;</span><span class="nv">$http_user_agent&#34;</span> <span class="s">&#34;</span><span class="nv">$http_x_forwarded_for&#34;&#39;</span><span class="p">;</span>
+</code></pre></div><p>要使用新格式，请在日志文件后指定其名称，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span>  <span class="s">/var/log/nginx/access.log</span> <span class="s">custom</span><span class="p">;</span>
+</code></pre></div><p>而访问日志提供了非常有用的信息。它会占用磁盘空间，并可能影响服务器性能。如果服务器资源不足，并且网站繁忙，则可能要禁用访问日志。为此，请将 <code>access_log</code> 伪指令的值设置为 <code>off</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span>  <span class="no">off</span><span class="p">;</span>
+</code></pre></div><h2 id="heading1">配置错误日志</h2>
 <p>Nginx 在错误日志文件中记录有关应用程序和常规服务器错误的消息。如果您在 Web 应用程序中遇到错误，则错误日志往往是开始进行故障排除问题的第一选择。</p>
-
 <p><code>error_log</code> 指令用来启用错误日志并设置错误日志的位置和严重性级别。它采用下列形式，并且可以配置在 <code>http</code> ， <code>server</code> 或 <code>location</code> 块中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">error_log</span> <span class="s">log_file</span> <span class="s">log_level</span></code></pre></div>
-<p>该 <code>log_level</code> 参数设置日志记录级别。以下是按严重性(从低到高)列出的级别：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">error_log</span> <span class="s">log_file</span> <span class="s">log_level</span>
+</code></pre></div><p>该 <code>log_level</code> 参数设置日志记录级别。以下是按严重性(从低到高)列出的级别：</p>
 <ul>
 <li><code>debug</code> - 调试消息。</li>
 <li><code>info</code> - 信息性消息。</li>
@@ -209,19 +196,15 @@
 <li><code>alert</code> - 警报。必须立即采取行动。</li>
 <li><code>emerg</code> - 紧急情况。系统处于无法使用状态。</li>
 </ul>
-
 <p>每个日志级别包括更高级别。例如，如果您设置日志级别 <code>warn</code> ， Nginx 的也会记录 <code>error</code> ， <code>crit</code> ， <code>alert</code> ，和 <code>emerg</code> 消息。</p>
-
 <p>当 <code>log_level</code> 不指定参数，则默认为 <code>error</code> 。</p>
-
 <p>默认情况下，该 <code>error_log</code> 指令在主 nginx.conf 文件 <code>/etc/nginx/nginx.conf</code> 内的 <code>http</code> 指令中定义：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">http</span> <span class="p">{</span>
   <span class="kn">...</span>
   <span class="s">error_log</span>  <span class="s">/var/log/nginx/error.log</span><span class="p">;</span>
   <span class="kn">...</span>
-<span class="err">}</span></code></pre></div>
-<p>与访问日志相同，建议为每个服务器块设置一个单独的错误日志文件，该文件将覆盖从更高级别继承的设置。</p>
-
+<span class="err">}</span>
+</code></pre></div><p>与访问日志相同，建议为每个服务器块设置一个单独的错误日志文件，该文件将覆盖从更高级别继承的设置。</p>
 <p>例如，要将 domain.com 的错误日志设置为 <code>warn</code> ，请使用：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">http</span> <span class="p">{</span>
   <span class="kn">...</span>
@@ -233,36 +216,28 @@
     <span class="s">error_log</span>  <span class="s">/var/log/nginx/domain.error.log</span> <span class="s">warn</span><span class="p">;</span>
     <span class="kn">...</span>
   <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-<p>每当您修改配置文件时，都必须<a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>以使更改生效。</p>
-
-<h2 id="日志文件的位置">日志文件的位置</h2>
-
+<span class="err">}</span>
+</code></pre></div><p>每当您修改配置文件时，都必须<a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>以使更改生效。</p>
+<h2 id="heading2">日志文件的位置</h2>
 <p>默认情况下，在大多数 Linux 发行版(如 <a href="/linux/nginx-reverse-proxy/">Ubuntu</a> ， <a href="/linux/how-to-install-nginx-on-centos-8/">CentOS</a> 和 <a href="/linux/how-to-install-nginx-on-debian-10/">Debian) 上</a>，访问和错误日​​志位于 <code>/var/log/nginx</code> 目录中。</p>
-
-<h2 id="查看和分析-nginx-日志文件">查看和分析 Nginx 日志文件</h2>
-
+<h2 id="-nginx-">查看和分析 Nginx 日志文件</h2>
 <p>您可以打开并使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> ， <a href="/linux/less-command-in-linux/"><code>less</code></a> ， <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> ， <a href="/linux/linux-cut-command/"><code>cut</code></a> ， <code>awk</code> 等类似的标准命令解析日志文件。</p>
-
 <p>这是来自访问日志文件的示例记录，该记录使用默认的 Nginx 日志格式：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">192.168.33.1 - - [15/Oct/2019:19:41:46 +0000] &#34;GET/HTTP/1.1&#34; 200 396 &#34;-&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36&#34;</code></pre></div>
-<p>让我们分解一下记录的每个字段的含义：</p>
-
+<pre><code class="language-output" data-lang="output">192.168.33.1 - - [15/Oct/2019:19:41:46 +0000] &quot;GET/HTTP/1.1&quot; 200 396 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36&quot;
+</code></pre><p>让我们分解一下记录的每个字段的含义：</p>
 <ul>
 <li><code>$remote_addr</code> &ndash;  <code>192.168.33.1</code> 发出请求的客户端的 IP 地址。</li>
 <li><code>$remote_user</code> &ndash; <code>-</code> HTTP 验证用户。未设置用户名时，显示 <code>-</code> 。</li>
 <li><code>[$ time_local]</code> &ndash; <code>[15/Oct/2019:19:41:46 +0000]</code> 本地服务器时间。</li>
-<li><code>&quot; $request &quot;</code> &ndash;  <code>&quot; GET/HTTP/1.1 &quot;</code> 请求类型，路径和协议。</li>
+<li><code>&quot; $request &quot; </code> &ndash;  <code>&quot; GET/HTTP/1.1 &quot;</code> 请求类型，路径和协议。</li>
 <li><code>$status</code> &ndash;  <code>200</code> 服务器响应代码。</li>
 <li><code>$body_bytes_sent</code> &ndash;  <code>396</code> 服务器响应的大小(以字节为单位)。</li>
-<li><code>&quot; $http_referer &quot;</code> &ndash;  <code>&quot;-&quot;</code> referer 网址。</li>
-<li><code>&quot; $http_user_agent &quot;</code> &ndash;   <code>Mozilla/5.0 ...</code> 客户端的用户代理 (Web 浏览器)。</li>
+<li><code>&quot; $http_referer &quot; </code> &ndash;  <code>&quot;-&quot;</code> referer 网址。</li>
+<li><code>&quot; $http_user_agent &quot; </code> &ndash;   <code>Mozilla/5.0 ...</code> 客户端的用户代理 (Web 浏览器)。</li>
 </ul>
-
 <p>使用以下 <a href="/linux/linux-tail-command/"><code>tail</code></a> 命令实时查看日志文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">tail -f  access.log</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">tail -f  access.log
+</code></pre><h2 id="heading3">结论</h2>
 <p>日志文件记录了有关服务器问题以及访问者如何与您的网站进行交互的有用信息。您可以根据自己的和实际情况和需要配置访问和错误日​​志。</p>
       </div><ul class="pa0">
   
@@ -332,16 +307,13 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#配置访问日志">配置访问日志</a></li>
-<li><a href="#配置错误日志">配置错误日志</a></li>
-<li><a href="#日志文件的位置">日志文件的位置</a></li>
-<li><a href="#查看和分析-nginx-日志文件">查看和分析 Nginx 日志文件</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">配置访问日志</a></li>
+    <li><a href="#heading1">配置错误日志</a></li>
+    <li><a href="#heading2">日志文件的位置</a></li>
+    <li><a href="#-nginx-">查看和分析 Nginx 日志文件</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

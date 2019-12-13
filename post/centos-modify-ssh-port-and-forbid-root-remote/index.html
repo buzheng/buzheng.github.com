@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-08-12T00:00:00+00:00" />
 <meta itemprop="name" content="centos 6.5 修改 SSH 端口并禁用 root 远程登录">
 <meta itemprop="description" content="我们知道 SSH 的默认端口为 22，但是基于安全的需要，我们需要修改服务器的 SSH 端口，和禁用 root 远程登录。">
-
-
 <meta itemprop="datePublished" content="2015-08-12T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-08-12T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="216">
 
 
 
-<meta itemprop="keywords" content="Linux,Oracle," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux,Oracle," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="centos 6.5 修改 SSH 端口并禁用 root 远程登录"/>
 <meta name="twitter:description" content="我们知道 SSH 的默认端口为 22，但是基于安全的需要，我们需要修改服务器的 SSH 端口，和禁用 root 远程登录。"/>
 
@@ -141,27 +138,24 @@
           
   
           <p>我们知道 SSH 的默认端口为 22，但是基于安全的需要，我们需要修改服务器的 SSH 端口，和禁用 root 远程登录。</p>
-
 <p>通过以下步骤，我们通过编辑 /etc/ssh/sshd_config ，将端口修改为 10089，并禁用 root 远程登录，同时为新端口添加防火墙规则，并删除默认端口的规则。</p>
-
 <blockquote>
 <p>1，使用 root 用户执行以下步骤；2，只在 CentOS 6.5 下验证。</p>
 </blockquote>
-
-<h2 id="修改端口">修改端口</h2>
+<h2 id="heading">修改端口</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/ssh/sshd_config
 
 Port <span class="m">10089</span> <span class="c1">#端口号</span>
-PermitRootLogin no <span class="c1"># 禁止root ssh</span></code></pre></div>
-<h2 id="为新端口开通防火墙规则">为新端口开通防火墙规则</h2>
+PermitRootLogin no <span class="c1"># 禁止root ssh</span>
+</code></pre></div><h2 id="heading1">为新端口开通防火墙规则</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">iptables -I INPUT <span class="m">4</span> -m state --state NEW -p tcp --dport <span class="m">10089</span> -j ACCEPT
 service iptables save
-service iptables reload</code></pre></div>
-<h2 id="删除22端口的规则">删除22端口的规则</h2>
+service iptables reload
+</code></pre></div><h2 id="22">删除22端口的规则</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">iptables -D INPUT <span class="nv">$RULE_LINE_NUMBER</span>
 service iptables save
-service iptables reload</code></pre></div>
-<blockquote>
+service iptables reload
+</code></pre></div><blockquote>
 <p>$RULE_LINE_NUMBER 可以通过 iptables -L -n &ndash;line-number 来查看</p>
 </blockquote>
       </div><ul class="pa0">

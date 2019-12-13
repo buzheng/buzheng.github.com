@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2016-07-16T00:00:00+00:00" />
 <meta itemprop="name" content="ZooKeeper 集群安装笔记">
 <meta itemprop="description" content="本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。">
-
-
 <meta itemprop="datePublished" content="2016-07-16T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2016-07-16T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1351">
+<meta itemprop="wordCount" content="1347">
 
 
 
-<meta itemprop="keywords" content="ZooKeeper,分布式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ZooKeeper,分布式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ZooKeeper 集群安装笔记"/>
 <meta name="twitter:description" content="本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。"/>
 
@@ -141,45 +138,36 @@
           
   
           <p>本文回顾一下以前学习 zookeeper 的笔记，简单记录下 zookeeper 安装和配置步骤，以及简单的操作命令。</p>
-
-<h2 id="安装-java-环境">安装 Java 环境</h2>
-
-<p>zookeeper 需要 Java 环境的支持，所以先要有 java 环境，刚好以前写过一篇如何安装java的笔记，参看：<a href="https://buzheng.org/centos-65-install-oracle-jdk-8.html">https://buzheng.org/centos-65-install-oracle-jdk-8.html</a></p>
-
-<h2 id="创建用户">创建用户</h2>
-
+<h2 id="-java-">安装 Java 环境</h2>
+<p>zookeeper 需要 Java 环境的支持，所以先要有 java 环境，刚好以前写过一篇如何安装java的笔记，参看：https://buzheng.org/centos-65-install-oracle-jdk-8.html</p>
+<h2 id="heading">创建用户</h2>
 <p>为了方便演示，所有的操作都在 zookeeper 用户下进行。</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">useradd zookeeper</code></pre></div>
-<h2 id="下载-安装">下载 &amp; 安装</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz</code></pre></div>
-<p>下载完成后解压到 ~/apps/zookeeper-3.4.8</p>
-
-<h2 id="配置集群">配置集群</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">useradd zookeeper
+</code></pre></div><h2 id="--">下载 &amp; 安装</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz
+</code></pre></div><p>下载完成后解压到 ~/apps/zookeeper-3.4.8</p>
+<h2 id="heading1">配置集群</h2>
 <p>这里安装是 zookeeper 集群， 由于服务器有限，多个节点安装在一台服务器上，每个节点通过端口来区分.</p>
-
-<h3 id="创建节点目录">创建节点目录</h3>
+<h3 id="heading2">创建节点目录</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir /home/zookeeper/nodes/zk1
 mkdir /home/zookeeper/nodes/zk2
-mkdir /home/zookeeper/nodes/zk3</code></pre></div>
-<h3 id="为节点创建-myid-文件">为节点创建 myid 文件</h3>
-
+mkdir /home/zookeeper/nodes/zk3
+</code></pre></div><h3 id="-myid-">为节点创建 myid 文件</h3>
 <p>myid 文件用来存储本节点服务器ID，这个ID与后面配置文件中 server.ID 必须保持一致。</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">echo</span> <span class="s2">&#34;1&#34;</span> &gt; /home/zookeeper/nodes/zk1/myid
 <span class="nb">echo</span> <span class="s2">&#34;2&#34;</span> &gt; /home/zookeeper/nodes/zk2/myid
-<span class="nb">echo</span> <span class="s2">&#34;3&#34;</span> &gt; /home/zookeeper/nodes/zk3/myid</code></pre></div>
-<h3 id="配置文件">配置文件</h3>
-
+<span class="nb">echo</span> <span class="s2">&#34;3&#34;</span> &gt; /home/zookeeper/nodes/zk3/myid
+</code></pre></div><h3 id="heading3">配置文件</h3>
 <p><strong>节点1</strong></p>
-
 <p>节点1的对外服务端口为 2181。</p>
-
-<p>集群的配置格式为：server.ID:NODE_HOST:port1:port2 , 说明如下：
-- ID 与每个节点 myid 中的配置必须保持一致
-- NODE_HOST 每个节点的主机地址
-- port1 为 follower 节点连接到 leader 节点的端口号
-- port2 为 leadership 选举的端口号</p>
-<div class="highlight"><pre class="chroma">vi /home/zookeeper/nodes/zk1/zoo.cfg
+<p>集群的配置格式为：server.ID:NODE_HOST:port1:port2 , 说明如下：</p>
+<ul>
+<li>ID 与每个节点 myid 中的配置必须保持一致</li>
+<li>NODE_HOST 每个节点的主机地址</li>
+<li>port1 为 follower 节点连接到 leader 节点的端口号</li>
+<li>port2 为 leadership 选举的端口号</li>
+</ul>
+<pre><code>vi /home/zookeeper/nodes/zk1/zoo.cfg
 tickTime=2000
 initLimit=10
 syncLimit=5
@@ -188,9 +176,9 @@ clientPort=2181
 
 server.1=192.168.0.211:2888:3888
 server.2=192.168.0.211:2889:3889
-server.3=192.168.0.211:2890:3890</pre></div>
-<p><strong>节点2</strong></p>
-<div class="highlight"><pre class="chroma">vi /home/zookeeper/nodes/zk2/zoo.cfg
+server.3=192.168.0.211:2890:3890
+</code></pre><p><strong>节点2</strong></p>
+<pre><code>vi /home/zookeeper/nodes/zk2/zoo.cfg
 tickTime=2000
 initLimit=10
 syncLimit=5
@@ -199,9 +187,9 @@ clientPort=2182
 
 server.1=192.168.0.211:2888:3888
 server.2=192.168.0.211:2889:3889
-server.3=192.168.0.211:2890:3890</pre></div>
-<p><strong>节点2</strong></p>
-<div class="highlight"><pre class="chroma">vi /home/zookeeper/nodes/zk3/zoo.cfg
+server.3=192.168.0.211:2890:3890
+</code></pre><p><strong>节点2</strong></p>
+<pre><code>vi /home/zookeeper/nodes/zk3/zoo.cfg
 tickTime=2000
 initLimit=10
 syncLimit=5
@@ -210,15 +198,11 @@ clientPort=2183
 
 server.1=192.168.0.211:2888:3888
 server.2=192.168.0.211:2889:3889
-server.3=192.168.0.211:2890:3890</pre></div>
-<h2 id="操作命令">操作命令</h2>
-
+server.3=192.168.0.211:2890:3890
+</code></pre><h2 id="heading4">操作命令</h2>
 <p>操作命令位于 bin目录下： /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh</p>
-
 <p>命令用法： zkServer.sh 操作选项 [配置文件] , 配置文件会默认使用安装目录下 conf 下的 zoo.cfg</p>
-
 <p>关于操作选项，有下面几个选项</p>
-
 <ul>
 <li>start 后台启动服务器</li>
 <li>start-foreground 前台启动服务器，如果服务器不正常的时候，可以前台启用来排错</li>
@@ -227,14 +211,12 @@ server.3=192.168.0.211:2890:3890</pre></div>
 <li>status 查看状态</li>
 <li>upgrade 升级</li>
 </ul>
-
-<h3 id="启动">启动</h3>
-
+<h3 id="heading5">启动</h3>
 <p>以下命令逐个启动每个节点</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk1/zoo.cfg
 /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk2/zoo.cfg
-/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk3/zoo.cfg</code></pre></div>
-<p>输入如下：</p>
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk3/zoo.cfg
+</code></pre></div><p>输入如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zookeeper@localhost ~<span class="o">]</span>$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk1/zoo.cfg
 ZooKeeper JMX enabled by default
 Using config: /home/zookeeper/nodes/zk1/zoo.cfg
@@ -246,14 +228,13 @@ Starting zookeeper ... STARTED
 <span class="o">[</span>zookeeper@localhost ~<span class="o">]</span>$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh start /home/zookeeper/nodes/zk3/zoo.cfg
 ZooKeeper JMX enabled by default
 Using config: /home/zookeeper/nodes/zk3/zoo.cfg
-Starting zookeeper ... STARTED</code></pre></div>
-<p>注意 STARTED 是表示启动成功了，有时候启动成功了，并不表示各个节点之间的集群通信没有问题，如果需要排查错误，请使用 start-foreground 选项，这样就能一目了然的发现问题。</p>
-
-<h3 id="查看状态">查看状态</h3>
+Starting zookeeper ... STARTED
+</code></pre></div><p>注意 STARTED 是表示启动成功了，有时候启动成功了，并不表示各个节点之间的集群通信没有问题，如果需要排查错误，请使用 start-foreground 选项，这样就能一目了然的发现问题。</p>
+<h3 id="heading6">查看状态</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk1/zoo.cfg
 /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk2/zoo.cfg
-/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk3/zoo.cfg</code></pre></div>
-<p>输出如下：</p>
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk3/zoo.cfg
+</code></pre></div><p>输出如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zookeeper@localhost ~<span class="o">]</span>$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk1/zoo.cfg
 okeeper/nodes/zk3/zoo.cfg
 ZooKeeper JMX enabled by default
@@ -266,15 +247,13 @@ Mode: leader
 <span class="o">[</span>zookeeper@localhost ~<span class="o">]</span>$ /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh status /home/zookeeper/nodes/zk3/zoo.cfg
 ZooKeeper JMX enabled by default
 Using config: /home/zookeeper/nodes/zk3/zoo.cfg
-Mode: follower</code></pre></div>
-<p>从这里看出，节点2被选为leader。</p>
-
-<h3 id="停止">停止</h3>
-<div class="highlight"><pre class="chroma">/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk1/zoo.cfg
+Mode: follower
+</code></pre></div><p>从这里看出，节点2被选为leader。</p>
+<h3 id="heading7">停止</h3>
+<pre><code>/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk1/zoo.cfg
 /home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk2/zoo.cfg
-/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk3/zoo.cfg</pre></div>
-<h2 id="开通端口">开通端口</h2>
-
+/home/zookeeper/apps/zookeeper-3.4.8/bin/zkServer.sh stop /home/zookeeper/nodes/zk3/zoo.cfg
+</code></pre><h2 id="heading8">开通端口</h2>
 <p>为了对外提供服务，别忘了把端口好都加入到防火墙中</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">iptables -I INPUT <span class="m">5</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">2181</span> -j ACCEPT
 iptables -I INPUT <span class="m">6</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">2182</span> -j ACCEPT
@@ -284,60 +263,58 @@ iptables -I INPUT <span class="m">9</span> -m state --state NEW,ESTABLISHED -p t
 iptables -I INPUT <span class="m">10</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">2889</span> -j ACCEPT
 iptables -I INPUT <span class="m">11</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">3889</span> -j ACCEPT
 iptables -I INPUT <span class="m">12</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">2890</span> -j ACCEPT
-iptables -I INPUT <span class="m">13</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">3890</span> -j ACCEPT</code></pre></div>
-<h2 id="连接-zookeeper">连接 zookeeper</h2>
-
+iptables -I INPUT <span class="m">13</span> -m state --state NEW,ESTABLISHED -p tcp --dport <span class="m">3890</span> -j ACCEPT
+</code></pre></div><h2 id="-zookeeper">连接 zookeeper</h2>
 <p>zookeeper 带了客户端程序能方便的连接到 zookeeper 服务 ： ~/apps/zookeeper-3.4.8/bin/zkCli.sh</p>
-
 <p>用法为 zkCli.sh -server SERVER_HOST:PORT</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zookeeper@localhost ~<span class="o">]</span>$ zkCli.sh -server <span class="m">127</span>.0.0.1:2181
-Connecting to <span class="m">127</span>.0.0.1:2181
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,255 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:zookeeper.version<span class="o">=</span><span class="m">3</span>.4.8--1, built on <span class="m">02</span>/06/2016 <span class="m">03</span>:18 GMT
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,258 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:host.name<span class="o">=</span>localhost
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,258 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.version<span class="o">=</span><span class="m">1</span>.8.0_92
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.vendor<span class="o">=</span>Oracle Corporation
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.home<span class="o">=</span>/opt/java/jdk1.8.0_92/jre
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.class.path<span class="o">=</span>/home/zookeeper/apps/zookeeper-3.4.8/bin/../build/classes:/home/zookeeper/apps/zookeeper-3.4.8/bin/../build/lib/*.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/slf4j-log4j12-1.6.1.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/slf4j-api-1.6.1.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/netty-3.7.0.Final.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/log4j-1.2.16.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/jline-0.9.94.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../zookeeper-3.4.8.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../src/java/lib/*.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../conf:.
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.library.path<span class="o">=</span>/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.io.tmpdir<span class="o">=</span>/tmp
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.compiler<span class="o">=</span>&lt;NA&gt;
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:os.name<span class="o">=</span>Linux
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:os.arch<span class="o">=</span>amd64
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:os.version<span class="o">=</span><span class="m">3</span>.10.0-327.22.2.el7.x86_64
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:user.name<span class="o">=</span>zookeeper
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:user.home<span class="o">=</span>/home/zookeeper
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:user.dir<span class="o">=</span>/home/zookeeper
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,261 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:ZooKeeper@438<span class="o">]</span> - Initiating client connection, <span class="nv">connectString</span><span class="o">=</span><span class="m">127</span>.0.0.1:2181 <span class="nv">sessionTimeout</span><span class="o">=</span><span class="m">30000</span> <span class="nv">watcher</span><span class="o">=</span>org.apache.zookeeper.ZooKeeperMain<span class="nv">$MyWatcher</span>@506c589e
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zookeeper@localhost ~<span class="o">]</span>$ zkCli.sh -server 127.0.0.1:2181
+Connecting to 127.0.0.1:2181
+2016-07-08 02:17:23,255 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:zookeeper.version<span class="o">=</span>3.4.8--1, built on 02/06/2016 03:18 GMT
+2016-07-08 02:17:23,258 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:host.name<span class="o">=</span>localhost
+2016-07-08 02:17:23,258 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.version<span class="o">=</span>1.8.0_92
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.vendor<span class="o">=</span>Oracle Corporation
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.home<span class="o">=</span>/opt/java/jdk1.8.0_92/jre
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.class.path<span class="o">=</span>/home/zookeeper/apps/zookeeper-3.4.8/bin/../build/classes:/home/zookeeper/apps/zookeeper-3.4.8/bin/../build/lib/*.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/slf4j-log4j12-1.6.1.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/slf4j-api-1.6.1.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/netty-3.7.0.Final.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/log4j-1.2.16.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../lib/jline-0.9.94.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../zookeeper-3.4.8.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../src/java/lib/*.jar:/home/zookeeper/apps/zookeeper-3.4.8/bin/../conf:.
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.library.path<span class="o">=</span>/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.io.tmpdir<span class="o">=</span>/tmp
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:java.compiler<span class="o">=</span>&lt;NA&gt;
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:os.name<span class="o">=</span>Linux
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:os.arch<span class="o">=</span>amd64
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:os.version<span class="o">=</span>3.10.0-327.22.2.el7.x86_64
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:user.name<span class="o">=</span>zookeeper
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:user.home<span class="o">=</span>/home/zookeeper
+2016-07-08 02:17:23,260 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:Environment@100<span class="o">]</span> - Client environment:user.dir<span class="o">=</span>/home/zookeeper
+2016-07-08 02:17:23,261 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main:ZooKeeper@438<span class="o">]</span> - Initiating client connection, <span class="nv">connectString</span><span class="o">=</span>127.0.0.1:2181 <span class="nv">sessionTimeout</span><span class="o">=</span><span class="m">30000</span> <span class="nv">watcher</span><span class="o">=</span>org.apache.zookeeper.ZooKeeperMain<span class="nv">$MyWatcher</span>@506c589e
 Welcome to ZooKeeper!
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,336 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main-SendThread<span class="o">(</span><span class="m">127</span>.0.0.1:2181<span class="o">)</span>:ClientCnxn<span class="nv">$SendThread</span>@1032<span class="o">]</span> - Opening socket connection to server <span class="m">127</span>.0.0.1/127.0.0.1:2181. Will not attempt to authenticate using SASL <span class="o">(</span>unknown error<span class="o">)</span>
+2016-07-08 02:17:23,336 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main-SendThread<span class="o">(</span>127.0.0.1:2181<span class="o">)</span>:ClientCnxn<span class="nv">$SendThread</span>@1032<span class="o">]</span> - Opening socket connection to server 127.0.0.1/127.0.0.1:2181. Will not attempt to authenticate using SASL <span class="o">(</span>unknown error<span class="o">)</span>
 JLine support is enabled
-<span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,390 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main-SendThread<span class="o">(</span><span class="m">127</span>.0.0.1:2181<span class="o">)</span>:ClientCnxn<span class="nv">$SendThread</span>@876<span class="o">]</span> - Socket connection established to <span class="m">127</span>.0.0.1/127.0.0.1:2181, initiating session
-<span class="o">[</span>zk: <span class="m">127</span>.0.0.1:2181<span class="o">(</span>CONNECTING<span class="o">)</span> <span class="m">0</span><span class="o">]</span> <span class="m">2016</span>-07-08 <span class="m">02</span>:17:23,644 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main-SendThread<span class="o">(</span><span class="m">127</span>.0.0.1:2181<span class="o">)</span>:ClientCnxn<span class="nv">$SendThread</span>@1299<span class="o">]</span> - Session establishment <span class="nb">complete</span> on server <span class="m">127</span>.0.0.1/127.0.0.1:2181, <span class="nv">sessionid</span> <span class="o">=</span> 0x155c91f63ed0000, negotiated <span class="nv">timeout</span> <span class="o">=</span> <span class="m">30000</span>
+2016-07-08 02:17:23,390 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main-SendThread<span class="o">(</span>127.0.0.1:2181<span class="o">)</span>:ClientCnxn<span class="nv">$SendThread</span>@876<span class="o">]</span> - Socket connection established to 127.0.0.1/127.0.0.1:2181, initiating session
+<span class="o">[</span>zk: 127.0.0.1:2181<span class="o">(</span>CONNECTING<span class="o">)</span> 0<span class="o">]</span> 2016-07-08 02:17:23,644 <span class="o">[</span>myid:<span class="o">]</span> - INFO  <span class="o">[</span>main-SendThread<span class="o">(</span>127.0.0.1:2181<span class="o">)</span>:ClientCnxn<span class="nv">$SendThread</span>@1299<span class="o">]</span> - Session establishment <span class="nb">complete</span> on server 127.0.0.1/127.0.0.1:2181, <span class="nv">sessionid</span> <span class="o">=</span> 0x155c91f63ed0000, negotiated <span class="nv">timeout</span> <span class="o">=</span> <span class="m">30000</span>
 
 WATCHER::
 
 WatchedEvent state:SyncConnected type:None path:null
  
-<span class="o">[</span>zk: <span class="m">127</span>.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> <span class="m">0</span><span class="o">]</span> </code></pre></div>
-<p>已经连接成功了, 迫不及待拿几个命令试一下</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: <span class="m">127</span>.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> <span class="m">0</span><span class="o">]</span> ls /
+<span class="o">[</span>zk: 127.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 0<span class="o">]</span> 
+</code></pre></div><p>已经连接成功了, 迫不及待拿几个命令试一下</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: 127.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 0<span class="o">]</span> ls /
 <span class="o">[</span>note, conf, sgroup, servers, zookeeper<span class="o">]</span>
-<span class="o">[</span>zk: <span class="m">127</span>.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> <span class="m">4</span><span class="o">]</span> create /test <span class="s2">&#34;this is a test node&#34;</span>
+<span class="o">[</span>zk: 127.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 4<span class="o">]</span> create /test <span class="s2">&#34;this is a test node&#34;</span>
 Created /test
-<span class="o">[</span>zk: <span class="m">127</span>.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> <span class="m">5</span><span class="o">]</span> get /test
+<span class="o">[</span>zk: 127.0.0.1:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 5<span class="o">]</span> get /test
 this is a <span class="nb">test</span> node
 <span class="nv">cZxid</span> <span class="o">=</span> 0x800000002
-<span class="nv">ctime</span> <span class="o">=</span> Fri Jul <span class="m">08</span> <span class="m">02</span>:22:58 EDT <span class="m">2016</span>
+<span class="nv">ctime</span> <span class="o">=</span> Fri Jul <span class="m">08</span> 02:22:58 EDT <span class="m">2016</span>
 <span class="nv">mZxid</span> <span class="o">=</span> 0x800000002
-<span class="nv">mtime</span> <span class="o">=</span> Fri Jul <span class="m">08</span> <span class="m">02</span>:22:58 EDT <span class="m">2016</span>
+<span class="nv">mtime</span> <span class="o">=</span> Fri Jul <span class="m">08</span> 02:22:58 EDT <span class="m">2016</span>
 <span class="nv">pZxid</span> <span class="o">=</span> 0x800000002
 <span class="nv">cversion</span> <span class="o">=</span> <span class="m">0</span>
 <span class="nv">dataVersion</span> <span class="o">=</span> <span class="m">0</span>
 <span class="nv">aclVersion</span> <span class="o">=</span> <span class="m">0</span>
 <span class="nv">ephemeralOwner</span> <span class="o">=</span> 0x0
 <span class="nv">dataLength</span> <span class="o">=</span> <span class="m">19</span>
-<span class="nv">numChildren</span> <span class="o">=</span> <span class="m">0</span></code></pre></div>
-<p>到此, 结束了.</p>
+<span class="nv">numChildren</span> <span class="o">=</span> <span class="m">0</span>
+</code></pre></div><p>到此, 结束了.</p>
       </div><ul class="pa0">
   
    <li class="list di">

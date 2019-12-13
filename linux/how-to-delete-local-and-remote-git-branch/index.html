@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何删除本地和远程Git分支" />
 <meta property="og:description" content="分支是日常开发过程的一部分，也是Git中最强大的功能之一。一旦分支合并，除了历史研究之外，它没有任何意义。成功合并后删除分支是常见的建议做法。
-
 本指南介绍了如何删除本地和远程Git分支。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-delete-local-and-remote-git-branch/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何删除本地和远程Git分支">
 <meta itemprop="description" content="分支是日常开发过程的一部分，也是Git中最强大的功能之一。一旦分支合并，除了历史研究之外，它没有任何意义。成功合并后删除分支是常见的建议做法。
-
 本指南介绍了如何删除本地和远程Git分支。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="784">
+<meta itemprop="wordCount" content="786">
 
 
 
-<meta itemprop="keywords" content="git," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="git," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何删除本地和远程Git分支"/>
 <meta name="twitter:description" content="分支是日常开发过程的一部分，也是Git中最强大的功能之一。一旦分支合并，除了历史研究之外，它没有任何意义。成功合并后删除分支是常见的建议做法。
-
 本指南介绍了如何删除本地和远程Git分支。"/>
 
   </head>
@@ -147,45 +141,38 @@
           
   
           <p>分支是日常开发过程的一部分，也是Git中最强大的功能之一。一旦分支合并，除了历史研究之外，它没有任何意义。成功合并后删除分支是常见的建议做法。</p>
-
 <p>本指南介绍了如何删除本地和远程Git分支。</p>
-
-<h2 id="删除本地git分支">删除本地Git分支</h2>
-
+<h2 id="git">删除本地Git分支</h2>
 <p>要删除本地Git分支，请使用<code>git branch</code>带<code>-d</code>（<code>--delete</code>）标志的命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git branch -d branch_name</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Deleted branch branch_name (was 17d9aa0).</code></pre></div>
-<p>如果您尝试删除包含尚未合并的更改的分支，您将收到以下错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">error: The branch &#39;branch_name&#39; is not fully merged.
-If you are sure you want to delete it, run &#39;git branch -D branch_name&#39;.</code></pre></div>
-<p>如上面的消息所示，您可以使用<code>-D</code>标志强制删除，该标志是以下的快捷方式<code>--delete --force</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git branch -D branch_name</code></pre></div>
-<p>请注意，如果删除未合并的分支，您将丢失该分支上的所有更改。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">git branch -d branch_name
+</code></pre><pre><code class="language-output" data-lang="output">Deleted branch branch_name (was 17d9aa0).
+</code></pre><p>如果您尝试删除包含尚未合并的更改的分支，您将收到以下错误：</p>
+<pre><code class="language-output" data-lang="output">error: The branch 'branch_name' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D branch_name'.
+</code></pre><p>如上面的消息所示，您可以使用<code>-D</code>标志强制删除，该标志是以下的快捷方式<code>--delete --force</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git branch -D branch_name
+</code></pre><p>请注意，如果删除未合并的分支，您将丢失该分支上的所有更改。</p>
 <p>要列出包含未合并更改的所有分支，您可以使用<code>git branch --no-merged</code>。</p>
-
 <p>如果您已检入要删除的分支，则会收到以下消息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">error: Cannot delete branch &#39;branch_name&#39; checked out at &#39;/path/to/repository&#39;</code></pre></div>
-<p>您无法删除活动分支。首先，切换到另一个分支，然后删除<code>branch_name</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git checkout mastergit branch -d branch_name</code></pre></div>
-<h2 id="删除远程git分支">删除远程Git分支</h2>
-
+<pre><code class="language-output" data-lang="output">error: Cannot delete branch 'branch_name' checked out at '/path/to/repository'
+</code></pre><p>您无法删除活动分支。首先，切换到另一个分支，然后删除<code>branch_name</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git checkout mastergit branch -d branch_name
+</code></pre><h2 id="git1">删除远程Git分支</h2>
 <p>在Git中，本地和远程分支是单独的对象。删除本地分支不会删除远程分支。</p>
-
 <p>要删除远程分支，请使用<code>git push</code>带<code>-d</code>（<code>--delete</code>）标志的命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git push remote_name --delete branch_name</code></pre></div>
-<p><code>remote_name</code>通常在哪里<code>origin</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git push origin --delete branch_name</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">...
- - [deleted]         branch_name</code></pre></div>
-<p>还有一个删除远程分支的替代命令，也就是说，至少对我来说难以记住：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git push origin remote_name :branch_name</code></pre></div>
-<p>如果您正在与一组人一起处理项目并尝试删除已被其他人删除的远程分支，您将收到以下错误消息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">error: unable to push to unqualified destination: branch_name The destination refspec neither matches an existing ref on the remote nor begins with refs/, and we are unable to guess a prefix based on the source ref. error: failed to push some refs to &#39;git@example.com:/my_repo&#39;</code></pre></div>
-<p>在这种情况下，您需要将分支列表与以下内容同步：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">git fetch -p</code></pre></div>
-<p><code>-p</code> flag将告诉Git在获取之前删除远程存储库中不再存在的任何远程跟踪引用。</p>
-
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">git push remote_name --delete branch_name
+</code></pre><p><code>remote_name</code>通常在哪里<code>origin</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git push origin --delete branch_name
+</code></pre><pre><code class="language-output" data-lang="output">...
+ - [deleted]         branch_name
+</code></pre><p>还有一个删除远程分支的替代命令，也就是说，至少对我来说难以记住：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git push origin remote_name :branch_name
+</code></pre><p>如果您正在与一组人一起处理项目并尝试删除已被其他人删除的远程分支，您将收到以下错误消息：</p>
+<pre><code class="language-output" data-lang="output">error: unable to push to unqualified destination: branch_name The destination refspec neither matches an existing ref on the remote nor begins with refs/, and we are unable to guess a prefix based on the source ref. error: failed to push some refs to 'git@example.com:/my_repo'
+</code></pre><p>在这种情况下，您需要将分支列表与以下内容同步：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">git fetch -p
+</code></pre><p><code>-p</code> flag将告诉Git在获取之前删除远程存储库中不再存在的任何远程跟踪引用。</p>
+<h2 id="heading">结论</h2>
 <p>在本教程中，您学习了如何删除本地和远程Git分支。分支基本上是对更改快照的引用，生命周期较短。一旦分支合并到主（或另一个主分支），就不再需要它，应该将其删除。</p>
       </div><ul class="pa0">
   
@@ -255,14 +242,11 @@ If you are sure you want to delete it, run &#39;git branch -D branch_name&#39;.<
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#删除本地git分支">删除本地Git分支</a></li>
-<li><a href="#删除远程git分支">删除远程Git分支</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git">删除本地Git分支</a></li>
+    <li><a href="#git1">删除远程Git分支</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

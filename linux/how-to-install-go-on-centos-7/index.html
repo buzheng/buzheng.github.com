@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 CentOS 7 上安装 Go" />
 <meta property="og:description" content="Go ，通常被称为 golang , 是由 Google 创建的现代开源编程语言。许多流行的应用程序，包括 Kubernetes ， Docker ， Hugo 和 Caddy ，都是用 Go 编写的。
-
 在本教程中，我们将向您展示如何在 CentOS 7 系统上下载和安装 Go 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-go-on-centos-7/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-04-01T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上安装 Go">
 <meta itemprop="description" content="Go ，通常被称为 golang , 是由 Google 创建的现代开源编程语言。许多流行的应用程序，包括 Kubernetes ， Docker ， Hugo 和 Caddy ，都是用 Go 编写的。
-
 在本教程中，我们将向您展示如何在 CentOS 7 系统上下载和安装 Go 。">
-
-
 <meta itemprop="datePublished" content="2019-04-01T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-01T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="709">
+<meta itemprop="wordCount" content="711">
 
 
 
-<meta itemprop="keywords" content="centos,go," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,go," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上安装 Go"/>
 <meta name="twitter:description" content="Go ，通常被称为 golang , 是由 Google 创建的现代开源编程语言。许多流行的应用程序，包括 Kubernetes ， Docker ， Hugo 和 Caddy ，都是用 Go 编写的。
-
 在本教程中，我们将向您展示如何在 CentOS 7 系统上下载和安装 Go 。"/>
 
   </head>
@@ -147,86 +141,77 @@
           
   
           <p>Go ，通常被称为 golang , 是由 Google 创建的现代开源编程语言。许多流行的应用程序，包括 Kubernetes ， Docker ， Hugo 和 Caddy ，都是用 Go 编写的。</p>
-
 <p>在本教程中，我们将向您展示如何在 CentOS 7 系统上下载和安装 Go 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="如何安装-go">如何安装 Go</h2>
-
+<h2 id="-go">如何安装 Go</h2>
 <p>在撰写本文时， Go 的最新稳定版本是 1.10.3 版本。在下载 tarball 之前，请访问官方 <a href="https://golang.org/dl/">Go 下载页面</a>检查是否有新版本可用。</p>
-
 <p>按照以下步骤在 CentOS 7 上安装 Go：</p>
-
 <ol>
-<li><p>下载 tarball。</p>
-
+<li>
+<p>下载 tarball。</p>
 <p>要下载 Go 二进制文件，请使用 <a href="/linux/wget-command-examples/"><code>wget</code></a> 或 <a href="/linux/curl-command-examples/"><code>curl</code></a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz</code></pre></div></li>
-
-<li><p>验证 tarball 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">wget https://dl.google.com/go/go1.10.3.linux-amd64.tar.gz
+</code></pre></li>
+<li>
+<p>验证 tarball 。</p>
 <p>下载完成后，使用以下 <code>sha256sum</code> 命令验证 tarball 校验和：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sha256sum go1.10.3.linux-amd64.tar.gz</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">fa1b0e45d3b647c252f51f5e1204aba049cde4af177ef9f2181f43004f901035  go1.10.3.linux-amd64.tar.gz</code></pre></div>
-<p>确保从上面的命令打印的哈希与下载页面中的哈希匹配。</p></li>
-
-<li><p>提取 tarball 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sha256sum go1.10.3.linux-amd64.tar.gz
+</code></pre><pre><code class="language-output" data-lang="output">fa1b0e45d3b647c252f51f5e1204aba049cde4af177ef9f2181f43004f901035  go1.10.3.linux-amd64.tar.gz
+</code></pre><p>确保从上面的命令打印的哈希与下载页面中的哈希匹配。</p>
+</li>
+<li>
+<p>提取 tarball 。</p>
 <p>使用 <code>tar</code> 命令将 tarball 解压缩到 <code>/usr/local</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz</code></pre></div></li>
-
-<li><p>调整环境变量 Path 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo tar -C /usr/local -xzf go1.10.3.linux-amd64.tar.gz
+</code></pre></li>
+<li>
+<p>调整环境变量 Path 。</p>
 <p>现在我们需要通过调整 PATH 环境变量告诉我们的系统在哪里找到 Go 可执行文件二进制文件。</p>
-
 <p>我们可以通过将以下行附加到 <code>/etc/profile</code> 文件（用于系统范围的安装）或 <code>$HOME/.bash_profile</code> 文件（用于当前用户安装）来执行此操作：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/go/bin</code></pre></div>
-<p>保存文件，并使用以下命令将新 PATH 环境变量加载到当前 shell 会话中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source ~/.bash_profile</code></pre></div></li>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/go/bin
+</code></pre></div><p>保存文件，并使用以下命令将新 PATH 环境变量加载到当前 shell 会话中：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">source ~/.bash_profile
+</code></pre></li>
 </ol>
-
-<h2 id="测试安装">测试安装</h2>
-
+<h2 id="heading1">测试安装</h2>
 <p>为了测试 Go 是否正确安装，我们将设置一个工作区并构建一个简单的 &ldquo;Hello world&rdquo; 程序。</p>
-
 <ol>
-<li><p>创建工作区目录</p>
-
+<li>
+<p>创建工作区目录</p>
 <p>默认情况下，工作空间目录设置为 <code>$HOME/go</code> ，输入下面的命令创建工作空间目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir ~/go</code></pre></div></li>
-
-<li><p>创建一个简单的 &ldquo;Hello World&rdquo; Go 文件。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">mkdir ~/go
+</code></pre></li>
+<li>
+<p>创建一个简单的 &ldquo;Hello World&rdquo; Go 文件。</p>
 <p>在工作区内创建一个新目录 <code>src/hello</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/go/src/hello</code></pre></div>
-<p>并在该目录中创建一个名为的文件  <code>hello.go</code>， 文件 <code>~/go/src/hello/hello.go</code> 内容如下：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/go/src/hello
+</code></pre><p>并在该目录中创建一个名为的文件  <code>hello.go</code>， 文件 <code>~/go/src/hello/hello.go</code> 内容如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Hello, World\n&#34;</span><span class="p">)</span>
-<span class="p">}</span></code></pre></div>
-<p>您可以<a href="https://golang.org/doc/code.html#Workspaces">在此处</a>详细了解 Go 工作区目录层次结构</p></li>
-
-<li><p>构建 hello.go 文件：</p>
-
+<span class="p">}</span>
+</code></pre></div><p>您可以<a href="https://golang.org/doc/code.html#Workspaces">在此处</a>详细了解 Go 工作区目录层次结构</p>
+</li>
+<li>
+<p>构建 hello.go 文件：</p>
 <p>要构建文件请先切换到 <code>~/go/src/hello</code> 目录并运行 <code>go build</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cd ~/go/src/hello
-go build</code></pre></div>
-<p>上面的命令将建立一个名为 <code>hello</code> 的可执行文件。</p></li>
-
-<li><p>运行可执行文件：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cd ~/go/src/hello
+go build
+</code></pre><p>上面的命令将建立一个名为 <code>hello</code> 的可执行文件。</p>
+</li>
+<li>
+<p>运行可执行文件：</p>
 <p>通过键入以下命令运行可执</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">./hello</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Hello, World</code></pre></div>
-<p>如果您看到上面的输出，那么您已成功安装 Go 。</p></li>
+<pre><code class="language-console-bash" data-lang="console-bash">./hello
+</code></pre><pre><code class="language-output" data-lang="output">Hello, World
+</code></pre><p>如果您看到上面的输出，那么您已成功安装 Go 。</p>
+</li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>现在您已经下载并安装了 Go CentOS 系统，您可以开始开发 Go 项目了。</p>
       </div><ul class="pa0">
   
@@ -300,15 +285,12 @@ go build</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#如何安装-go">如何安装 Go</a></li>
-<li><a href="#测试安装">测试安装</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-go">如何安装 Go</a></li>
+    <li><a href="#heading1">测试安装</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何使用命令行在 Linux 中查找文件" />
 <meta property="og:description" content="find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。
-
 Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。
-
 您可以使用 find 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 grep 或 sed 对这些文件执行操作。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-find-files-in-linux-using-the-command-line/" />
@@ -40,25 +38,18 @@ Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一�
 <meta property="article:modified_time" content="2019-03-21T05:00:00+08:00" />
 <meta itemprop="name" content="如何使用命令行在 Linux 中查找文件">
 <meta itemprop="description" content="find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。
-
 Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。
-
 您可以使用 find 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 grep 或 sed 对这些文件执行操作。">
-
-
 <meta itemprop="datePublished" content="2019-03-21T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-21T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1891">
+<meta itemprop="wordCount" content="1894">
 
 
 
-<meta itemprop="keywords" content="linux,find," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,find," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何使用命令行在 Linux 中查找文件"/>
 <meta name="twitter:description" content="find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。
-
 Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。
-
 您可以使用 find 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 grep 或 sed 对这些文件执行操作。"/>
 
   </head>
@@ -153,33 +144,23 @@ Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一�
           
   
           <p>find 是一个命令行命令，它允许您根据用户给定的表达式搜索目录层次结构中的文件和目录，并对每个匹配的文件应用用户指定的操作。</p>
-
 <p>Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一。</p>
-
-<p>您可以使用 <code>find</code> 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 <!--link:how-to-use-grep-command-to-search-files-in-linux--><code>grep</code><!--link--> 或 <code>sed</code> 对这些文件执行操作。</p>
-
-<h2 id="linux-find-命令语法">Linux find 命令语法</h2>
-
+<p>您可以使用 <code>find</code> 命令根据文件权限，类型，日期，所有权，大小等搜索文件。它还可以与其他工具结合使用，例如 <!-- raw HTML omitted --><code>grep</code><!-- raw HTML omitted --> 或 <code>sed</code> 对这些文件执行操作。</p>
+<h2 id="linux-find-">Linux find 命令语法</h2>
 <p>在讨论如何使用 <code>find</code> 命令之前，让我们先回顾一下基本语法。</p>
-
 <p>find 命令采用以下形式：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>path...<span class="o">]</span> <span class="o">[</span>expression<span class="o">]</span></code></pre></div>
-<ul>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>path...<span class="o">]</span> <span class="o">[</span>expression<span class="o">]</span>
+</code></pre></div><ul>
 <li>该 <code>options</code> 属性控制符号链接，调试选项和优化方法的处理。</li>
 <li>该 <code>path...</code> 属性定义了 find 将搜索文件的起始目录。</li>
 <li>该 <code>expression</code> 属性由选项，搜索模式和由运算符分隔的操作组成。</li>
 </ul>
-
 <p>我们来看看下面的例子：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find -L /home/projects/ -name <span class="s2">&#34;*.js&#34;</span> -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span></code></pre></div>
-<p>此命令包含一个参数 <code>-L</code> (options)，它允许 find 命令跟随符号链接，搜索 <code>/home/projects/</code> (path &hellip;) 下面的整个目录树，查找以 <code>.js</code> (expression) 结尾的所有文件，并将所有匹配文件的权限设置为 644 。</p>
-
-<h2 id="按类型查找文件">按类型查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find -L /home/projects/ -name <span class="s2">&#34;*.js&#34;</span> -exec chmod <span class="m">644</span> <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
+</code></pre></div><p>此命令包含一个参数 <code>-L</code> (options)，它允许 find 命令跟随符号链接，搜索 <code>/home/projects/</code> (path &hellip;) 下面的整个目录树，查找以 <code>.js</code> (expression) 结尾的所有文件，并将所有匹配文件的权限设置为 644 。</p>
+<h2 id="heading">按类型查找文件</h2>
 <p>要指定要查找的文件类型，请使用 -type 参数。</p>
-
 <p>您可以使用以下描述符指定文件类型：</p>
-
 <ul>
 <li><code>f</code>： 常规文件</li>
 <li><code>d</code>： 目录</li>
@@ -189,36 +170,28 @@ Linux find 命令是 Linux 系统管理员工具库中最强大的工具之一�
 <li><code>p</code>： 命名管道（FIFO）</li>
 <li><code>s</code>： 套接字</li>
 </ul>
-
 <p>例如，如果要查找当前工作目录中的所有目录，可以使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type d</code></pre></div>
-<p>如果要列出系统类型上的所有字符设备：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -type c</code></pre></div>
-<p>要将所有文件权限更改为 644 并将所有目录权限更改为 755 ，请递归运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/my_project -type d -exec chmod <span class="m">0755</span> <span class="o">{}</span> <span class="se">\;</span>
-find /var/www/my_project -type f -exec chmod <span class="m">0644</span> <span class="o">{}</span> <span class="se">\;</span></code></pre></div>
-<h2 id="按名称查找文件">按名称查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type d
+</code></pre></div><p>如果要列出系统类型上的所有字符设备：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -type c
+</code></pre></div><p>要将所有文件权限更改为 644 并将所有目录权限更改为 755 ，请递归运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/my_project -type d -exec chmod <span class="m">0755</span> <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
+find /var/www/my_project -type f -exec chmod <span class="m">0644</span> <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
+</code></pre></div><h2 id="heading1">按名称查找文件</h2>
 <p>按名称查找文件可能是 <code>find</code> 命令最常用的用法。要按名称查找文件，请将该 <code>-name</code> 选项与要搜索的文件的名称一起传递。</p>
-
 <p>要在 <code>/home/buzheng</code> 目录中搜索名为 <code>document.pdf</code> 的文件，请使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo find /home/buzheng -type f -name document.pdf</code></pre></div>
-<p>如果搜索不区分大小写，请使用 <code>-iname</code> 替换  <code>-name</code> 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo find /home/buzheng -type f -iname document.pdf</code></pre></div>
-<p>上面的命令将匹配 Document.pdf ， DOCUMENT.pdf ..etc 。</p>
-
-<h2 id="按扩展名查找文件">按扩展名查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo find /home/buzheng -type f -name document.pdf
+</code></pre></div><p>如果搜索不区分大小写，请使用 <code>-iname</code> 替换  <code>-name</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo find /home/buzheng -type f -iname document.pdf
+</code></pre></div><p>上面的命令将匹配 Document.pdf ， DOCUMENT.pdf ..etc 。</p>
+<h2 id="heading2">按扩展名查找文件</h2>
 <p>按扩展名搜索文件与按名称搜索文件相同。例如，如果要在 /var/log/nginx 目录查找以 <code>.log.gz</code> 结尾的所有文件 ，可以使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/nginx -type f -name <span class="s1">&#39;*.log.gz&#39;</span></code></pre></div>
-<p>值得一提的是，当您使用通配符时，您必须把模式用引号引起来或反斜杠 <code>\</code> 转义星号 <code>*</code>， 以便 shell 不会解释它。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/nginx -type f -name <span class="s1">&#39;*.log.gz&#39;</span>
+</code></pre></div><p>值得一提的是，当您使用通配符时，您必须把模式用引号引起来或反斜杠 <code>\</code> 转义星号 <code>*</code>， 以便 shell 不会解释它。</p>
 <p>如果要查找的所有文件与正则表达式 <code>*.log.gz</code> 不匹配，可以使用 <code>-not</code> 参数。例如，要查找不以 <code>*.log.gz</code> 您结尾的所有文件，请使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/nginx -type f -not -name <span class="s1">&#39;*.log.gz&#39;</span></code></pre></div>
-<h2 id="按大小查找文件">按大小查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/nginx -type f -not -name <span class="s1">&#39;*.log.gz&#39;</span>
+</code></pre></div><h2 id="heading3">按大小查找文件</h2>
 <p>要根据文件大小查找文件，请将 -size 参数与大小条件一起传递。您可以使用以下后缀指定文件大小：</p>
-
 <ul>
 <li><code>b</code>： 512字节块（默认）</li>
 <li><code>c</code>： 字节</li>
@@ -227,71 +200,51 @@ find /var/www/my_project -type f -exec chmod <span class="m">0644</span> <span c
 <li><code>M</code>： 兆字节</li>
 <li><code>G</code>： 千兆字节</li>
 </ul>
-
 <p>例如，要在 <code>/tmp</code> 目录中查找所有的大小正好是 1024 字节文件，您可运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /tmp -type f -size 1024c</code></pre></div>
-<p>find 命令还允许您搜索大于或小于指定大小的文件。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /tmp -type f -size 1024c
+</code></pre></div><p>find 命令还允许您搜索大于或小于指定大小的文件。</p>
 <p>在下面的示例中，我们在当前工作目录中搜索小于 1MB 的所有文件，注意值之前的减号 <code>-</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type f -size -1M</code></pre></div>
-<p>如果要搜索大小超过 1MB 的文件，则需要使用加号 <code>+</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type f -size +1M</code></pre></div>
-<p>您甚至可以搜索大小范围内的文件。例如，以下命令将查找介于 1 和 2 MB 之间的所有文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type f -size +1M -size 2M</code></pre></div>
-<h2 id="按修改日期查找文件">按修改日期查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type f -size -1M
+</code></pre></div><p>如果要搜索大小超过 1MB 的文件，则需要使用加号 <code>+</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type f -size +1M
+</code></pre></div><p>您甚至可以搜索大小范围内的文件。例如，以下命令将查找介于 1 和 2 MB 之间的所有文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -type f -size +1M -size 2M
+</code></pre></div><h2 id="heading4">按修改日期查找文件</h2>
 <p>find 命令还可以根据上次修改，访问或更改时间搜索文件。</p>
-
 <p>与按大小搜索时相同，您可以使用加号和减号来指定大于或小于。</p>
-
 <p>举个例子，几天前你修改了一个 <code>dovecot</code> 配置文件，但你忘了文件名。您可以轻松过滤目录 <code>/etc/dovecot/conf.d/</code> 中的所有文件，这些文件以 <code>.conf</code> 为后缀并在过去 5 天内进行了修改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /etc/dovecot/conf.d -name <span class="s2">&#34;*.conf&#34;</span> -mtime <span class="m">5</span></code></pre></div>
-<p>以下是使用 <code>-daystart</code> 选项根据修改日期过滤文件的另一个示例。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /etc/dovecot/conf.d -name <span class="s2">&#34;*.conf&#34;</span> -mtime <span class="m">5</span>
+</code></pre></div><p>以下是使用 <code>-daystart</code> 选项根据修改日期过滤文件的另一个示例。</p>
 <p>以下命令将列出 <code>/home</code> 目录中 30 天或更久前修改的的所有文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /home -mtime +30 -daystart</code></pre></div>
-<h2 id="按权限查找文件">按权限查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /home -mtime +30 -daystart
+</code></pre></div><h2 id="heading5">按权限查找文件</h2>
 <p>要根据文件权限过滤文件，请使用 <code>-perm</code> 选项。</p>
-
 <p>例如，要在目录中 <code>/var/www/html</code> 查找权限为 775 的所有文件，请使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -perm <span class="m">644</span></code></pre></div>
-<p>您可以使用减号 <code>-</code> 或斜杠 <code>/</code> 为数字模式添加前缀  。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -perm <span class="m">644</span>
+</code></pre></div><p>您可以使用减号 <code>-</code> 或斜杠 <code>/</code> 为数字模式添加前缀  。</p>
 <p>当斜杠 <code>/</code> 用作前缀时，至少一个类别（用户，组或其他类别）必须匹配匹配至少一个权限位。</p>
-
 <p>请考虑以下示例命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -perm /444</code></pre></div>
-<p>上述命令将匹配为用户，组或其他人设置了读权限的所有文件。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -perm /444
+</code></pre></div><p>上述命令将匹配为用户，组或其他人设置了读权限的所有文件。</p>
 <p>如果使用减号 <code>-</code> 作为前缀，则必须符合设置的权限的文件。</p>
-
 <p>以下命令将搜索对所有者和组具有读写权限的文件，并且其他用户可以读取：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -perm -664</code></pre></div>
-<h2 id="按所有者查找文件">按所有者查找文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find . -perm -664
+</code></pre></div><h2 id="heading6">按所有者查找文件</h2>
 <p>要查找特定用户或组拥有的文件，可以使用 <code>-user</code> 和 <code>-group</code> 选项。</p>
-
 <p>例如，要搜索用户 <code>buzheng</code> 拥有的所有文件和目录，您将运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -user buzheng</code></pre></div>
-<p>这是更高级的示例，假设您要查找用户 <code>www-data</code> 拥有的所有文件，并将匹配文件的所有者从 <code>www-data</code> 更改为 <code>nginx</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -user www-data -type f  -exec chown nginx <span class="o">{}</span> <span class="se">\;</span></code></pre></div>
-<h2 id="查找和删除文件">查找和删除文件</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -user buzheng
+</code></pre></div><p>这是更高级的示例，假设您要查找用户 <code>www-data</code> 拥有的所有文件，并将匹配文件的所有者从 <code>www-data</code> 更改为 <code>nginx</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -user www-data -type f  -exec chown nginx <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
+</code></pre></div><h2 id="heading7">查找和删除文件</h2>
 <p>要删除所有匹配的文件，请将参数添加 <code>-delete</code> 到匹配表达式的末尾。</p>
-
 <p>仅当您确定结果与要删除的文件匹配时，才确保使用此选项。在使用该 <code>-delete</code> 选项之前打印匹配的文件总是一个好主意。</p>
-
 <p>例如，要删除 <code>/var/log/</code> 中所有 <code>.temp</code> 结尾的文件，请使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/ -name <span class="sb">`</span>*.temp<span class="sb">`</span> -delete</code></pre></div>
-<blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/ -name <span class="sb">`</span>*.temp<span class="sb">`</span> -delete
+</code></pre></div><blockquote>
 <p>请谨慎使用选项 <code>-delete</code> 。 find 命令行做为表达式被执行，如果首先添加该 <code>-delete</code> 选项，该命令将删除指定起始点下方的所有内容。</p>
 </blockquote>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading8">结论</h2>
 <p>在本教程中，您已经学习了如何根据各种标准使用 Linux find 命令，您现在应该对如何在 Linux 系统上查找文件有基本的了解。</p>
-
 <p>您还可以访问 <a href="https://linux.die.net/man/1/find">find 手册页页面</a>并阅读 find 命令的所有其他强大选项。</p>
       </div><ul class="pa0">
   
@@ -365,21 +318,18 @@ find /var/www/my_project -type f -exec chmod <span class="m">0644</span> <span c
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#linux-find-命令语法">Linux find 命令语法</a></li>
-<li><a href="#按类型查找文件">按类型查找文件</a></li>
-<li><a href="#按名称查找文件">按名称查找文件</a></li>
-<li><a href="#按扩展名查找文件">按扩展名查找文件</a></li>
-<li><a href="#按大小查找文件">按大小查找文件</a></li>
-<li><a href="#按修改日期查找文件">按修改日期查找文件</a></li>
-<li><a href="#按权限查找文件">按权限查找文件</a></li>
-<li><a href="#按所有者查找文件">按所有者查找文件</a></li>
-<li><a href="#查找和删除文件">查找和删除文件</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#linux-find-">Linux find 命令语法</a></li>
+    <li><a href="#heading">按类型查找文件</a></li>
+    <li><a href="#heading1">按名称查找文件</a></li>
+    <li><a href="#heading2">按扩展名查找文件</a></li>
+    <li><a href="#heading3">按大小查找文件</a></li>
+    <li><a href="#heading4">按修改日期查找文件</a></li>
+    <li><a href="#heading5">按权限查找文件</a></li>
+    <li><a href="#heading6">按所有者查找文件</a></li>
+    <li><a href="#heading7">查找和删除文件</a></li>
+    <li><a href="#heading8">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

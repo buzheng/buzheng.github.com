@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -31,7 +31,6 @@
     <meta property="og:title" content="使用github作为maven仓库" />
 <meta property="og:description" content="本文介绍的这种使用 github 作为 maven 仓库的思路主要为：
 
-
 github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库
 部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去
@@ -43,24 +42,19 @@ github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 <meta itemprop="name" content="使用github作为maven仓库">
 <meta itemprop="description" content="本文介绍的这种使用 github 作为 maven 仓库的思路主要为：
 
-
 github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库
 部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去
 ">
-
-
 <meta itemprop="datePublished" content="2014-06-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2014-06-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1028">
+<meta itemprop="wordCount" content="1020">
 
 
 
-<meta itemprop="keywords" content="git,maven," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="git,maven," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用github作为maven仓库"/>
 <meta name="twitter:description" content="本文介绍的这种使用 github 作为 maven 仓库的思路主要为：
-
 
 github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库
@@ -159,68 +153,64 @@ github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
           
   
           <p>本文介绍的这种使用 github 作为 maven 仓库的思路主要为：</p>
-
 <ol>
 <li>github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库</li>
 <li>配 置 pom.xml 使用 target/mvn-repo 作为本地部署的临时maven仓库</li>
 <li>部署时使用 github site-maven-plugin 将本地的maven仓库 push 到 github 的项目的分支 mvn-repo 上去</li>
 </ol>
-
-<p>以我的项目为例：<a href="https://github.com/buzheng/mybatis-pageable">https://github.com/buzheng/mybatis-pageable</a></p>
-
+<p>以我的项目为例：https://github.com/buzheng/mybatis-pageable</p>
 <p>首先通过配置pom.xml告诉maven将artifacts部署到一个target下的一个临时目录中，具体配置如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
-	<span class="nt">&lt;artifactId&gt;</span>maven-deploy-plugin<span class="nt">&lt;/artifactId&gt;</span>
-	<span class="nt">&lt;version&gt;</span>2.8.1<span class="nt">&lt;/version&gt;</span>
-	<span class="nt">&lt;configuration&gt;</span>
-		<span class="nt">&lt;altDeploymentRepository&gt;</span>internal.repo::default::file://${project.build.directory}/mvn-repo<span class="nt">&lt;/altDeploymentRepository&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>maven-deploy-plugin<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version</span><span class="nt">&gt;</span>2.8.1<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;configuration</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;altDeploymentRepository</span><span class="nt">&gt;</span>internal.repo::default::file://${project.build.directory}/mvn-repo<span class="nt">&lt;/altDeploymentRepository&gt;</span>
 	<span class="nt">&lt;/configuration&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span></code></pre></div>
-<p>配置完成后，运行命令 mvn clean deploy 后发现已经部署maven仓库到 target/mvn-repo 目录下。然后我们要做的就是将该目录上传到github中。</p>
-
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div><p>配置完成后，运行命令 mvn clean deploy 后发现已经部署maven仓库到 target/mvn-repo 目录下。然后我们要做的就是将该目录上传到github中。</p>
 <p>在 ~/.m2/settings.xml 中添加github的授权信息，以便 github 的 site-maven-plugin 能够push文件到github，配置信息如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;server&gt;</span>
-    <span class="nt">&lt;id&gt;</span>github<span class="nt">&lt;/id&gt;</span>
-    <span class="nt">&lt;username&gt;</span>你在github的帐号<span class="nt">&lt;/username&gt;</span>
-    <span class="nt">&lt;password&gt;</span>你在github的用户名<span class="nt">&lt;/password&gt;</span>
-<span class="nt">&lt;/server&gt;</span></code></pre></div>
-<p>添加如下配置到 pom.xml 以告诉 github site-maven-plugin 服务器信息</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;properties&gt;</span>
-	<span class="c">&lt;!-- github server corresponds to entry in ~/.m2/settings.xml --&gt;</span>
-	<span class="nt">&lt;github.global.server&gt;</span>github<span class="nt">&lt;/github.global.server&gt;</span>
-<span class="nt">&lt;/properties&gt;</span></code></pre></div>
-<p>最后配置 github site-maven-plugin 插件</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
-	<span class="nt">&lt;groupId&gt;</span>com.github.github<span class="nt">&lt;/groupId&gt;</span>
-	<span class="nt">&lt;artifactId&gt;</span>site-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-	<span class="nt">&lt;version&gt;</span>0.9<span class="nt">&lt;/version&gt;</span>
-	<span class="nt">&lt;configuration&gt;</span>
-		<span class="nt">&lt;message&gt;</span>Maven artifacts for ${project.version}<span class="nt">&lt;/message&gt;</span>  <span class="c">&lt;!-- git commit message --&gt;</span>
-		<span class="nt">&lt;noJekyll&gt;</span>true<span class="nt">&lt;/noJekyll&gt;</span>                                  <span class="c">&lt;!-- disable webpage processing --&gt;</span>
-		<span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}/mvn-repo<span class="nt">&lt;/outputDirectory&gt;</span> <span class="c">&lt;!-- matches distribution management repository url above --&gt;</span>
-		<span class="nt">&lt;branch&gt;</span>refs/heads/mvn-repo<span class="nt">&lt;/branch&gt;</span>                       <span class="c">&lt;!-- remote branch name --&gt;</span>
-		<span class="nt">&lt;includes&gt;</span>
-			<span class="nt">&lt;include&gt;</span>**/*<span class="nt">&lt;/include&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;server</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;id</span><span class="nt">&gt;</span>github<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;username</span><span class="nt">&gt;</span>你在github的帐号<span class="nt">&lt;/username&gt;</span>
+    <span class="nt">&lt;password</span><span class="nt">&gt;</span>你在github的用户名<span class="nt">&lt;/password&gt;</span>
+<span class="nt">&lt;/server&gt;</span>
+</code></pre></div><p>添加如下配置到 pom.xml 以告诉 github site-maven-plugin 服务器信息</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;properties</span><span class="nt">&gt;</span>
+	<span class="c">&lt;!--</span><span class="c"> github server corresponds to entry in ~/.m2/settings.xml </span><span class="c">--&gt;</span>
+	<span class="nt">&lt;github.global.server</span><span class="nt">&gt;</span>github<span class="nt">&lt;/github.global.server&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+</code></pre></div><p>最后配置 github site-maven-plugin 插件</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;groupId</span><span class="nt">&gt;</span>com.github.github<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>site-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version</span><span class="nt">&gt;</span>0.9<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;configuration</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;message</span><span class="nt">&gt;</span>Maven artifacts for ${project.version}<span class="nt">&lt;/message&gt;</span>  <span class="c">&lt;!--</span><span class="c"> git commit message </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;noJekyll</span><span class="nt">&gt;</span>true<span class="nt">&lt;/noJekyll&gt;</span>                                  <span class="c">&lt;!--</span><span class="c"> disable webpage processing </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;outputDirectory</span><span class="nt">&gt;</span>${project.build.directory}/mvn-repo<span class="nt">&lt;/outputDirectory&gt;</span> <span class="c">&lt;!--</span><span class="c"> matches distribution management repository url above </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;branch</span><span class="nt">&gt;</span>refs/heads/mvn-repo<span class="nt">&lt;/branch&gt;</span>                       <span class="c">&lt;!--</span><span class="c"> remote branch name </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;includes</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;include</span><span class="nt">&gt;</span>**/*<span class="nt">&lt;/include&gt;</span>
 		<span class="nt">&lt;/includes&gt;</span>
-		<span class="nt">&lt;repositoryName&gt;</span>mybatis-pageable<span class="nt">&lt;/repositoryName&gt;</span>      <span class="c">&lt;!-- github repo name --&gt;</span>
-		<span class="nt">&lt;repositoryOwner&gt;</span>buzheng<span class="nt">&lt;/repositoryOwner&gt;</span>    <span class="c">&lt;!-- github username --&gt;</span>
+		<span class="nt">&lt;repositoryName</span><span class="nt">&gt;</span>mybatis-pageable<span class="nt">&lt;/repositoryName&gt;</span>      <span class="c">&lt;!--</span><span class="c"> github repo name </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;repositoryOwner</span><span class="nt">&gt;</span>buzheng<span class="nt">&lt;/repositoryOwner&gt;</span>    <span class="c">&lt;!--</span><span class="c"> github username </span><span class="c">--&gt;</span>
 	<span class="nt">&lt;/configuration&gt;</span>
-	<span class="nt">&lt;executions&gt;</span>
-		<span class="c">&lt;!-- run site-maven-plugin&amp;#039;s &amp;#039;site&amp;#039; target as part of the build&amp;#039;s normal 
-</span><span class="c">			&amp;#039;deploy&amp;#039; phase --&gt;</span>
-		<span class="nt">&lt;execution&gt;</span>
-			<span class="nt">&lt;goals&gt;</span>
-				<span class="nt">&lt;goal&gt;</span>site<span class="nt">&lt;/goal&gt;</span>
+	<span class="nt">&lt;executions</span><span class="nt">&gt;</span>
+		<span class="c">&lt;!--</span><span class="c"> run site</span><span class="c">-</span><span class="c">maven</span><span class="c">-</span><span class="c">plugin&amp;#039;s &amp;#039;site&amp;#039; target as part of the build&amp;#039;s normal 
+</span><span class="c">			&amp;#039;deploy&amp;#039; phase </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;execution</span><span class="nt">&gt;</span>
+			<span class="nt">&lt;goals</span><span class="nt">&gt;</span>
+				<span class="nt">&lt;goal</span><span class="nt">&gt;</span>site<span class="nt">&lt;/goal&gt;</span>
 			<span class="nt">&lt;/goals&gt;</span>
-			<span class="nt">&lt;phase&gt;</span>deploy<span class="nt">&lt;/phase&gt;</span>
+			<span class="nt">&lt;phase</span><span class="nt">&gt;</span>deploy<span class="nt">&lt;/phase&gt;</span>
 		<span class="nt">&lt;/execution&gt;</span>
 	<span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span></code></pre></div>
-<p>配置完成，运行命令 mvn clean deploy后，登录github，发现已经创建 mvn-repo 分支，并上传了 本地的 target/mvn-repo 目录。</p>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div><p>配置完成，运行命令 mvn clean deploy后，登录github，发现已经创建 mvn-repo 分支，并上传了 本地的 target/mvn-repo 目录。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>INFO<span class="o">]</span> Scanning <span class="k">for</span> projects...
 <span class="o">[</span>INFO<span class="o">]</span>
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
-<span class="o">[</span>INFO<span class="o">]</span> Building mybatis-pageable <span class="m">0</span>.1
+<span class="o">[</span>INFO<span class="o">]</span> Building mybatis-pageable 0.1
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
 <span class="o">[</span>INFO<span class="o">]</span>
 <span class="o">[</span>INFO<span class="o">]</span> --- maven-clean-plugin:2.5:clean <span class="o">(</span>default-clean<span class="o">)</span> @ mybatis-pageable ---
@@ -253,12 +243,12 @@ github的项目上创建mvn-repo分支，使用mvn-repo分支作为maven仓库
 <span class="o">[</span>INFO<span class="o">]</span> --- maven-deploy-plugin:2.8.1:deploy <span class="o">(</span>default-deploy<span class="o">)</span> @ mybatis-pageable ---
 <span class="o">[</span>INFO<span class="o">]</span> Using alternate deployment repository internal.repo::default::file://E:/workspace/mybatis-pageable/target/mvn-repo
 Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar
-Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar <span class="o">(</span><span class="m">15</span> KB at <span class="m">1020</span>.2 KB/sec<span class="o">)</span>
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.jar <span class="o">(</span><span class="m">15</span> KB at 1020.2 KB/sec<span class="o">)</span>
 Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom
-Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom <span class="o">(</span><span class="m">4</span> KB at <span class="m">907</span>.5 KB/sec<span class="o">)</span>
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/0.1/mybatis-pageable-0.1.pom <span class="o">(</span><span class="m">4</span> KB at 907.5 KB/sec<span class="o">)</span>
 Downloading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml
 Uploading: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml
-Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml <span class="o">(</span><span class="m">303</span> B at <span class="m">147</span>.9 KB/sec<span class="o">)</span>
+Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybatis-pageable/maven-metadata.xml <span class="o">(</span><span class="m">303</span> B at 147.9 KB/sec<span class="o">)</span>
 <span class="o">[</span>INFO<span class="o">]</span>
 <span class="o">[</span>INFO<span class="o">]</span> --- site-maven-plugin:0.9:site <span class="o">(</span>default<span class="o">)</span> @ mybatis-pageable ---
 <span class="o">[</span>INFO<span class="o">]</span> Creating <span class="m">9</span> blobs
@@ -268,22 +258,20 @@ Uploaded: file://E:/workspace/mybatis-pageable/target/mvn-repo/org/buzheng/mybat
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
 <span class="o">[</span>INFO<span class="o">]</span> BUILD SUCCESS
 <span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
-<span class="o">[</span>INFO<span class="o">]</span> Total time: <span class="m">8</span>.124s
-<span class="o">[</span>INFO<span class="o">]</span> Finished at: Mon Jun <span class="m">16</span> <span class="m">15</span>:47:54 CST <span class="m">2014</span>
+<span class="o">[</span>INFO<span class="o">]</span> Total time: 8.124s
+<span class="o">[</span>INFO<span class="o">]</span> Finished at: Mon Jun <span class="m">16</span> 15:47:54 CST <span class="m">2014</span>
 <span class="o">[</span>INFO<span class="o">]</span> Final Memory: 24M/178M
-<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------</code></pre></div>
-<p>到此为止，项目的已经部署到github上。如果其他项目依赖此项目，需要在pom.xml中添加如下配置后，再添加相应的依赖关系即可。</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;repositories&gt;</span>
-	<span class="nt">&lt;repository&gt;</span>
-		<span class="nt">&lt;id&gt;</span>mybatis-pageable-mvn-repo<span class="nt">&lt;/id&gt;</span>
-		<span class="nt">&lt;url&gt;</span>https://raw.github.com/buzheng/mybatis-pageable/mvn-repo/<span class="nt">&lt;/url&gt;</span>
+<span class="o">[</span>INFO<span class="o">]</span> ------------------------------------------------------------------------
+</code></pre></div><p>到此为止，项目的已经部署到github上。如果其他项目依赖此项目，需要在pom.xml中添加如下配置后，再添加相应的依赖关系即可。</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;repositories</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;repository</span><span class="nt">&gt;</span>
+		<span class="nt">&lt;id</span><span class="nt">&gt;</span>mybatis-pageable-mvn-repo<span class="nt">&lt;/id&gt;</span>
+		<span class="nt">&lt;url</span><span class="nt">&gt;</span>https://raw.github.com/buzheng/mybatis-pageable/mvn-repo/<span class="nt">&lt;/url&gt;</span>
 	<span class="nt">&lt;/repository&gt;</span>
-<span class="nt">&lt;/repositories&gt;</span></code></pre></div>
-<p>完成！</p>
-
+<span class="nt">&lt;/repositories&gt;</span>
+</code></pre></div><p>完成！</p>
 <p>这种方法相当方便，只需要几个简单的配置，便能自动将jar包发布到github上。</p>
-
-<p>参考：<a href="http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github">http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github</a></p>
+<p>参考：http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github</p>
       </div><ul class="pa0">
   
    <li class="list di">

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="在 CentOS 7 上安装 PHP 7" />
 <meta property="og:description" content="CentOS 7 默认附带的 PHP 版本是 5.4 ，该版本已经正式结束生命很长一段时间，官方已经不再支持此版本。而通过使用 PHP 7 ，您的应用程序将加载更快，并消耗更少的系统资源。
-
 在本教程中，我们将介绍如何在 CentOS 7 系统上安装或升级到 PHP 7.0 , 7.1 , 7.2 和 7.3 。我们还将向您展示如何将 PHP 与 Nginx 和 Apache 集成。
-
 在安装特定的 PHP 7.x 版本之前，请确保您的应用程序支持它。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/install-php-7-on-centos-7/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-03-07T06:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 7 上安装 PHP 7">
 <meta itemprop="description" content="CentOS 7 默认附带的 PHP 版本是 5.4 ，该版本已经正式结束生命很长一段时间，官方已经不再支持此版本。而通过使用 PHP 7 ，您的应用程序将加载更快，并消耗更少的系统资源。
-
 在本教程中，我们将介绍如何在 CentOS 7 系统上安装或升级到 PHP 7.0 , 7.1 , 7.2 和 7.3 。我们还将向您展示如何将 PHP 与 Nginx 和 Apache 集成。
-
 在安装特定的 PHP 7.x 版本之前，请确保您的应用程序支持它。">
-
-
 <meta itemprop="datePublished" content="2019-03-07T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-07T06:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1236">
 
 
 
-<meta itemprop="keywords" content="linux,centos,php," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,centos,php," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在 CentOS 7 上安装 PHP 7"/>
 <meta name="twitter:description" content="CentOS 7 默认附带的 PHP 版本是 5.4 ，该版本已经正式结束生命很长一段时间，官方已经不再支持此版本。而通过使用 PHP 7 ，您的应用程序将加载更快，并消耗更少的系统资源。
-
 在本教程中，我们将介绍如何在 CentOS 7 系统上安装或升级到 PHP 7.0 , 7.1 , 7.2 和 7.3 。我们还将向您展示如何将 PHP 与 Nginx 和 Apache 集成。
-
 在安装特定的 PHP 7.x 版本之前，请确保您的应用程序支持它。"/>
 
   </head>
@@ -153,113 +144,88 @@
           
   
           <p>CentOS 7 默认附带的 PHP 版本是 5.4 ，该版本已经正式结束生命很长一段时间，官方已经不再支持此版本。而通过使用 PHP 7 ，您的应用程序将加载更快，并消耗更少的系统资源。</p>
-
 <p>在本教程中，我们将介绍如何在 CentOS 7 系统上安装或升级到 PHP 7.0 , 7.1 , 7.2 和 7.3 。我们还将向您展示如何将 PHP 与 Nginx 和 Apache 集成。</p>
-
 <p>在安装特定的 PHP 7.x 版本之前，请确保您的应用程序支持它。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保使用<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>帐户或 root 用户登录服务器。最好使 sudo 用户来运行管理命令而不是 root 用户。如果您的系统上没有 sudo 用户，可以先创建一个用户。</p>
-
-<h2 id="启用-remi-存储库">启用 Remi 存储库</h2>
-
+<h2 id="-remi-">启用 Remi 存储库</h2>
 <p>PHP 7.x 包可以在几个不同的存储库中使用。我们将使用 Remi 存储库，它提供各种软件包的更新版本，包括 PHP 。</p>
-
 <p>Remi 存储库依赖于 EPEL 存储库，因为我们需要首先安装 EPEL 存储库。</p>
-
 <p>运行以下命令来启用 EPEL 和 Remi 存储库：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install epel-release yum-utils
-sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm</code></pre></div>
-<p>Yum 可能会提示您是否导入存储库 GPG 密钥，输入 <code>y</code> 并点击 Enter 。</p>
-
+sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+</code></pre></div><p>Yum 可能会提示您是否导入存储库 GPG 密钥，输入 <code>y</code> 并点击 Enter 。</p>
 <p>在以下部分中，我们将介绍如何通过启用相应的 Remi 存储库来安装 PHP 7.x.  如果您已经在系统上安装了 PHP 5.4 ， <code>yum</code> 则会更新 PHP 包。</p>
-
-<h2 id="在-centos-7-上安装-php-7-3">在 CentOS 7 上安装 PHP 7.3</h2>
-
+<h2 id="-centos-7--php-73">在 CentOS 7 上安装 PHP 7.3</h2>
 <p>PHP 7.3 是 PHP 的最新稳定版本。大多数现代 PHP 框架和应用程序(包括 WordPress ， Drupal ， Joomla 和 Laravel)都完全支持 PHP 7.3 。</p>
-
 <p>执行以下步骤在 CentOS 7 上安装 PHP 7.3 。</p>
-
 <ol>
-<li><p>首先启用 PHP 7.3 Remi 存储库：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --enable remi-php73</code></pre></div></li>
-
-<li><p>安装 PHP 7.3 和一些最常见的 PHP 模块：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysqlnd</code></pre></div></li>
-
-<li><p>通过键入以下将打印 PHP 版本的命令来验证 PHP 安装：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">php -v</code></pre></div>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">PHP 7.3.1 (cli) (built: Jan  8 2019 13:55:51) ( NTS )
+<li>
+<p>首先启用 PHP 7.3 Remi 存储库：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --enable remi-php73</code></pre>
+</li>
+<li>
+<p>安装 PHP 7.3 和一些最常见的 PHP 模块：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysqlnd</code></pre>
+</li>
+<li>
+<p>通过键入以下将打印 PHP 版本的命令来验证 PHP 安装：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">php -v</code></pre>
+<pre><code class="language-console-bash" data-lang="console-bash">PHP 7.3.1 (cli) (built: Jan  8 2019 13:55:51) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
 Zend Engine v3.3.1, Copyright (c) 1998-2018 Zend Technologies
-    with Zend OPcache v7.3.1, Copyright (c) 1999-2018, by Zend Technologies</code></pre></div></li>
+    with Zend OPcache v7.3.1, Copyright (c) 1999-2018, by Zend Technologies</code></pre>
+</li>
 </ol>
-
-<h2 id="在-centos-7-上安装-php-7-2">在 CentOS 7 上安装 PHP 7.2</h2>
-
+<h2 id="-centos-7--php-72">在 CentOS 7 上安装 PHP 7.2</h2>
 <p>仅当您要安装与 PHP 7.3 不兼容的应用程序如 (agento 2 等应用程序)时才使用 PHP 7.2 。</p>
-
 <p>以下步骤描述了如何安装 PHP 7.2 CentOS 7 。</p>
-
 <ol>
-<li><p>首先通过运行以下命令启用 PHP 7.2 Remi 存储库：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --enable remi-php72</code></pre></div></li>
-
-<li><p>启用存储库后，安装 PHP 7.2 和几个最常见的 PHP 模块：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysqlnd</code></pre></div></li>
-
-<li><p>验证 PHP 安装：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">php -v</code></pre></div>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">PHP 7.2.9 (cli) (built: Aug 15 2018 09:19:33) ( NTS )
+<li>
+<p>首先通过运行以下命令启用 PHP 7.2 Remi 存储库：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --enable remi-php72</code></pre>
+</li>
+<li>
+<p>启用存储库后，安装 PHP 7.2 和几个最常见的 PHP 模块：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysqlnd</code></pre>
+</li>
+<li>
+<p>验证 PHP 安装：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">php -v</code></pre>
+<pre><code class="language-console-bash" data-lang="console-bash">PHP 7.2.9 (cli) (built: Aug 15 2018 09:19:33) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
 Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
-    with Zend OPcache v7.2.9, Copyright (c) 1999-2018, by Zend Technologies</code></pre></div></li>
+    with Zend OPcache v7.2.9, Copyright (c) 1999-2018, by Zend Technologies</code></pre>
+</li>
 </ol>
-
-<h2 id="在-centos-7-上安装-php-7-1">在 CentOS 7 上安装 PHP 7.1</h2>
-
+<h2 id="-centos-7--php-71">在 CentOS 7 上安装 PHP 7.1</h2>
 <p>按照以下步骤安装 PHP 7.1 。</p>
-
 <ol>
-<li><p>键入以下命令启用 PHP 7.1 存储库：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --enable remi-php71</code></pre></div></li>
-
-<li><p>安装 PHP 7.1 和几个最常见的 PHP 模块：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysql</code></pre></div></li>
-
-<li><p>要验证安装，请运行以下命令以打印 PHP 版本：</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">php -v</code></pre></div>
-
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">PHP 7.1.21 (cli) (built: Aug 15 2018 17:56:55) ( NTS )
+<li>
+<p>键入以下命令启用 PHP 7.1 存储库：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum-config-manager --enable remi-php71</code></pre>
+</li>
+<li>
+<p>安装 PHP 7.1 和几个最常见的 PHP 模块：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysql</code></pre>
+</li>
+<li>
+<p>要验证安装，请运行以下命令以打印 PHP 版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">php -v</code></pre>
+<pre><code class="language-console-bash" data-lang="console-bash">PHP 7.1.21 (cli) (built: Aug 15 2018 17:56:55) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
 Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
-    with Zend OPcache v7.1.21, Copyright (c) 1999-2018, by Zend Technologies</code></pre></div></li>
+    with Zend OPcache v7.1.21, Copyright (c) 1999-2018, by Zend Technologies</code></pre>
+</li>
 </ol>
-
-<h2 id="配置-php-7-x-以使用-apache">配置 PHP 7.x 以使用 Apache</h2>
-
+<h2 id="-php-7x--apache">配置 PHP 7.x 以使用 Apache</h2>
 <p>如果您使用 Apache 作为 Web 服务器，那么只需使用以下命令重新启动 Apache 服务即可：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart httpd</code></pre></div>
-<h2 id="配置-php-7-x-以使用-nginx">配置 PHP 7.x 以使用 Nginx</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart httpd
+</code></pre></div><h2 id="-php-7x--nginx">配置 PHP 7.x 以使用 Nginx</h2>
 <p>与 Apache 不同， Nginx 默认并不支持处理 PHP 文件，所以我们需要安装一个单独的应用程序，如 PHP FPM ，它将处理 PHP 文件。</p>
-
 <p>要安装 PHP FPM 包，请运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install php-fpm</code></pre></div>
-<p>默认情况下， PHP FPM 将以用户 <code>apache</code> 的身份在端口 9000 上运行。我们将用户更改为 nginx 并从 TCP socket 切换到 Unix socket。为此，请编辑以黄色突出显示的行：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install php-fpm
+</code></pre></div><p>默认情况下， PHP FPM 将以用户 <code>apache</code> 的身份在端口 9000 上运行。我们将用户更改为 nginx 并从 TCP socket 切换到 Unix socket。为此，请编辑以黄色突出显示的行：</p>
 <p>/etc/php-fpm.d/www.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">...
 <span class="nv">user</span> <span class="o">=</span> nginx
@@ -269,29 +235,28 @@ Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
 <span class="nv">listen</span> <span class="o">=</span> /run/php-fpm/www.sock
 ...
 listen.owner <span class="o">=</span> nginx
-listen.group <span class="o">=</span> nginx</code></pre></div>
-<p>确保 <code>/var/lib/php</code> 目录具有正确的所有权：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chown -R root:nginx /var/lib/php</code></pre></div>
-<p>更改完成后，启用随机自启动并启动 PHP FPM 服务：</p>
+listen.group <span class="o">=</span> nginx
+</code></pre></div><p>确保 <code>/var/lib/php</code> 目录具有正确的所有权：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">chown -R root:nginx /var/lib/php
+</code></pre></div><p>更改完成后，启用随机自启动并启动 PHP FPM 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> php-fpm
-sudo systemctl start php-fpm</code></pre></div>
-<p>接下来，编辑 Nginx 虚拟主机指令并添加以下位置，以便 Nginx 可以处理 PHP 文件：</p>
+sudo systemctl start php-fpm
+</code></pre></div><p>接下来，编辑 Nginx 虚拟主机指令并添加以下位置，以便 Nginx 可以处理 PHP 文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">server <span class="o">{</span>
 
     <span class="c1"># . . . other code</span>
 
     location ~ <span class="se">\.</span>php$ <span class="o">{</span>
-        try_files <span class="nv">$uri</span> <span class="o">=</span><span class="m">404</span><span class="p">;</span>
+        try_files <span class="nv">$uri</span> <span class="o">=</span>404<span class="p">;</span>
         fastcgi_pass unix:/run/php-fpm/www.sock<span class="p">;</span>
         fastcgi_index index.php<span class="p">;</span>
-        fastcgi_param SCRIPT_FILENAME <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+        fastcgi_param SCRIPT_FILENAME <span class="nv">$document_root</span><span class="nv">$fastcgi_script_name</span><span class="p">;</span>
         include fastcgi_params<span class="p">;</span>
     <span class="o">}</span>
-<span class="o">}</span></code></pre></div>
-<p>要使新配置生效，请重新启动 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<span class="o">}</span>
+</code></pre></div><p>要使新配置生效，请重新启动 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx
+</code></pre></div><h2 id="heading1">结论</h2>
 <p>您已经学习了如何在 CentOS 服务器上安装 PHP 7 以及如何配置 Web 服务器以便能够处理 PHP 文件。</p>
       </div><ul class="pa0">
   
@@ -369,19 +334,16 @@ sudo systemctl start php-fpm</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#启用-remi-存储库">启用 Remi 存储库</a></li>
-<li><a href="#在-centos-7-上安装-php-7-3">在 CentOS 7 上安装 PHP 7.3</a></li>
-<li><a href="#在-centos-7-上安装-php-7-2">在 CentOS 7 上安装 PHP 7.2</a></li>
-<li><a href="#在-centos-7-上安装-php-7-1">在 CentOS 7 上安装 PHP 7.1</a></li>
-<li><a href="#配置-php-7-x-以使用-apache">配置 PHP 7.x 以使用 Apache</a></li>
-<li><a href="#配置-php-7-x-以使用-nginx">配置 PHP 7.x 以使用 Nginx</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-remi-">启用 Remi 存储库</a></li>
+    <li><a href="#-centos-7--php-73">在 CentOS 7 上安装 PHP 7.3</a></li>
+    <li><a href="#-centos-7--php-72">在 CentOS 7 上安装 PHP 7.2</a></li>
+    <li><a href="#-centos-7--php-71">在 CentOS 7 上安装 PHP 7.1</a></li>
+    <li><a href="#-php-7x--apache">配置 PHP 7.x 以使用 Apache</a></li>
+    <li><a href="#-php-7x--nginx">配置 PHP 7.x 以使用 Nginx</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

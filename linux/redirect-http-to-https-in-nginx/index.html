@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="在本指南中，我们将说明如何在 Nginx 中将 HTTP 通信重定向到 HTTPS 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/redirect-http-to-https-in-nginx/" />
+<meta property="og:image" content="/linux/redirect-http-to-https-in-nginx/featured.jpg"/>
 <meta property="article:published_time" content="2019-10-21T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-10-21T12:00:00+08:00" />
 <meta itemprop="name" content="在 Nginx 中将 HTTP 重定向到 HTTPS">
 <meta itemprop="description" content="在本指南中，我们将说明如何在 Nginx 中将 HTTP 通信重定向到 HTTPS 。">
-
-
 <meta itemprop="datePublished" content="2019-10-21T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-21T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1031">
+<meta itemprop="image" content="/linux/redirect-http-to-https-in-nginx/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="nginx," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/redirect-http-to-https-in-nginx/featured.jpg"/>
 <meta name="twitter:title" content="在 Nginx 中将 HTTP 重定向到 HTTPS"/>
 <meta name="twitter:description" content="在本指南中，我们将说明如何在 Nginx 中将 HTTP 通信重定向到 HTTPS 。"/>
@@ -142,43 +141,32 @@
           
   
           <p>在本指南中，我们将说明如何在 Nginx 中将 HTTP 通信重定向到 HTTPS 。</p>
-
 <p>Nginx 的发音是 “engine x” ，它是一个免费的，开源的，高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。</p>
-
 <p>如果您是开发人员或系统管理员，那么您很有可能会定期与 Nginx 打交道。您可能要执行的最常见任务之一是将 HTTP 流量重定向到网站的安全 (HTTPS) 版本。</p>
-
 <p>与 HTTP 不同， HTTP 以纯文本形式发送和返回请求和响应， HTTPS 使用 TLS/SSL 加密客户端和服务器之间的通信。</p>
-
 <p>使用 HTTPS 有很多好处，例如：</p>
-
 <ul>
 <li>所有数据都是双向加密的。结果，如果拦截了敏感信息，则无法读取。</li>
 <li>Google Chrome 浏览器和所有其他流行的浏览器都会将您的网站标记为安全。</li>
 <li>HTTPS 允许您使用 HTTP/2 协议，这可以显着提高站点性能。</li>
 <li>Google 偏爱 HTTPS 网站。如果通过 HTTPS 提供服务，则您的网站排名将会更高。</li>
 </ul>
-
 <p>在 Nginx 中将 HTTP 重定向到 HTTPS 的首选方法是为站点的每个版本配置一个单独的服务器块。您应该避免使用 <a href="https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/">if 指令</a>重定向流量，因为它可能会导致服务器行为异常。</p>
-
-<h2 id="将单个站点的-http-重定向到-https">将单个站点的 HTTP 重定向到 HTTPS</h2>
-
+<h2 id="-http--https">将单个站点的 HTTP 重定向到 HTTPS</h2>
 <p>要将单个网站重定向到 HTTPS ，请打开域配置文件并进行以下更改：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">bu</span> <span class="s">zheng</span> <span class="s">www.buzheng.org</span><span class="p">;</span>
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://buzheng.org</span><span class="nv">$request_uri</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-<p>让我们逐行分解代码：</p>
-
+<span class="p">}</span>
+</code></pre></div><p>让我们逐行分解代码：</p>
 <ul>
 <li><code>listen 80</code> - 服务器块将侦听指定域在端口 80 上的传入连接。</li>
 <li><code>server_name buzheng.org www.buzheng.org</code> - 指定服务器块的域名。确保将其替换为您自己的域名。</li>
 <li><code>return 301 https://buzheng.org$request_uri</code>- 将流量重定向到网站的 HTTPS 版本。的 <code>$request_uri</code> 变量是包括参数完整的原始请求 URI 。</li>
 </ul>
-
 <p>通常，您还希望将站点的 HTTPS 从 www 版本重定向到非 www 版本，反之亦然。推荐的重定向方式是为 www 和非 www 版本创建一个单独的服务器块。</p>
-
 <p>例如，要将 HTTPS www 请求重定向到非 www ，应使用以下配置：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
@@ -201,34 +189,26 @@
     <span class="kn">server_name</span> <span class="s">buzheng.org</span><span class="p">;</span>
 
     <span class="c1"># . . . other code
-</span><span class="c1"></span><span class="p">}</span></code></pre></div>
-<h2 id="将所有站点重定向到-https">将所有站点重定向到 HTTPS</h2>
-
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><h2 id="-https">将所有站点重定向到 HTTPS</h2>
 <p>如果服务器上托管的所有网站都配置为使用 HTTPS ，并且您不想为每个站点创建单独的 HTTP 服务器块，则可以创建一个通用的 HTTP 服务器块。该块会将所有 HTTP 请求重定向到适当的 HTTPS 块。</p>
-
 <p>要创建一个通用的 HTTP 块，它将访问者重定向到站点的 HTTPS 版本，请打开 Nginx 配置文件并进行以下更改：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
 	<span class="kn">listen</span> <span class="mi">80</span> <span class="s">default_server</span><span class="p">;</span>
 	<span class="kn">listen</span> <span class="s">[::]:80</span> <span class="s">default_server</span><span class="p">;</span>
 	<span class="kn">server_name</span> <span class="s">_</span><span class="p">;</span>
 	<span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-<p>让我们逐行分析代码：</p>
-
+<span class="p">}</span>
+</code></pre></div><p>让我们逐行分析代码：</p>
 <ul>
 <li><code>listen 80 default_server</code> - 将此服务器块设置为所有不匹配域的默认(全部)块。</li>
 <li><code>server_name _</code> -  <code>_</code> 是与任何真实域名都不匹配的无效域名。</li>
 <li><code>return 301 https://$host$request_uri</code> - 使用状态代码 301(永久移动)将流量重定向到相应的 HTTPS 服务器块。该 <code>$host</code> 变量保存请求的域名。</li>
 </ul>
-
 <p>例如，如果访问者 <code>http://example.com/page2</code> 在浏览器中打开，则 Nginx 会将请求重定向到 <code>https://example.com/page2</code> 。</p>
-
 <p>如果可能，最好在每个域的基础上创建重定向，而不是从全局 HTTP 到 HTTPS 重定向。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading">结论</h2>
 <p>在网站上安装 SSL 证书后，应将 HTTP 流量重定向到 HTTPS 。</p>
-
 <p>在 Nginx 中，将 HTTP 重定向到 HTTPS 的首选方法是创建一个单独的服务器块并执行 301 重定向。</p>
       </div><ul class="pa0">
   
@@ -298,14 +278,11 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#将单个站点的-http-重定向到-https">将单个站点的 HTTP 重定向到 HTTPS</a></li>
-<li><a href="#将所有站点重定向到-https">将所有站点重定向到 HTTPS</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-http--https">将单个站点的 HTTP 重定向到 HTTPS</a></li>
+    <li><a href="#-https">将所有站点重定向到 HTTPS</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

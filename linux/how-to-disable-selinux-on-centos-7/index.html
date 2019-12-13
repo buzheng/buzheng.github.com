@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2019-04-28T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上禁用 SELinux">
 <meta itemprop="description" content="SELinux(安全增强型 Linux) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。">
-
-
 <meta itemprop="datePublished" content="2019-04-28T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-28T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="670">
+<meta itemprop="wordCount" content="671">
 
 
 
-<meta itemprop="keywords" content="centos,security," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,security," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上禁用 SELinux"/>
 <meta name="twitter:description" content="SELinux(安全增强型 Linux) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。"/>
 
@@ -141,33 +138,23 @@
           
   
           <p>SELinux(<a href="https://selinuxproject.org/page/Main_Page">安全增强型 Linux</a>) 是一个 Linux 内核安全模块，允许管理员和用户更好地控制访问控制。它允许基于 SELinux 策略规则进行访问。</p>
-
 <p>SELinux 策略规则对顶进程和用户如何相互交互以及进程和用户如何与文件交互。</p>
-
 <p>如果没有专门允许访问的 SELinux 策略规则，例如打开文件的进程，则拒绝访问。</p>
-
 <p>SELinux 有三种模式：</p>
-
 <ul>
 <li>Enforcing： SELinux 允许基于 SELinux 策略规则进行访问。</li>
 <li>Permissive： SELinux 仅记录在强制模式下运行时将被拒绝的操作。</li>
 <li>Disabled：未加载 SELinux 策略。</li>
 </ul>
-
 <p>默认情况下，在 CentOS 7 中， SELinux 已启用并处于强制模式。</p>
-
 <p>建议将 SELinux 保持在强制模式，但在某些情况下，您可能需要将其设置为许可模式或完全禁用它。</p>
-
 <p>在本教程中，我们将向您展示如何在 CentOS 7 系统上禁用 SELinux 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="检查-selinux-状态">检查 SELinux 状态</h2>
-
+<h2 id="-selinux-">检查 SELinux 状态</h2>
 <p>要查看当前 SELinux 状态以及系统上正在使用的 SELinux 策略，可以使用以下 <code>sestatus</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sestatus</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">SELinux status:                 enabled
+<pre><code class="language-console-bash" data-lang="console-bash">sestatus
+</code></pre><pre><code class="language-output" data-lang="output">SELinux status:                 enabled
 SELinuxfs mount:                /sys/fs/selinux
 SELinux root directory:         /etc/selinux
 Loaded policy name:             targeted
@@ -175,20 +162,17 @@ Current mode:                   enforcing
 Mode from config file:          enforcing
 Policy MLS status:              enabled
 Policy deny_unknown status:     allowed
-Max kernel policy version:      31</code></pre></div>
-<p>您可以从上面的输出中看到 SELinux 已启用并设置为强制模式。</p>
-
-<h2 id="禁用-selinux">禁用 SELinux</h2>
-
+Max kernel policy version:      31
+</code></pre><p>您可以从上面的输出中看到 SELinux 已启用并设置为强制模式。</p>
+<h2 id="-selinux">禁用 SELinux</h2>
 <p>你可以暂时 SELinux 的模式从改变 <code>targeted</code> 到 <code>permissive</code> 使用下面的命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo setenforce 0</code></pre></div>
-<p>但是，此更改仅对当前运行时会话有效。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo setenforce 0
+</code></pre><p>但是，此更改仅对当前运行时会话有效。</p>
 <p>要在 CentOS 7 系统上永久禁用 SELinux ，请执行以下步骤：</p>
-
 <ol>
-<li><p>打开 <code>/etc/selinux/config</code> 文件并将 <code>SELINUX</code> 设置为 <code>disabled</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-config" data-lang="config">    # This file controls the state of SELinux on the system.
+<li>
+<p>打开 <code>/etc/selinux/config</code> 文件并将 <code>SELINUX</code> 设置为 <code>disabled</code> ：</p>
+<pre><code class="language-config" data-lang="config">    # This file controls the state of SELinux on the system.
     # SELINUX= can take one of these three values:
     #       enforcing - SELinux security policy is enforced.
     #       permissive - SELinux prints warnings instead of enforcing.
@@ -197,21 +181,22 @@ Max kernel policy version:      31</code></pre></div>
     # SELINUXTYPE= can take one of these two values:
     #       targeted - Targeted processes are protected,
     #       mls - Multi Level Security protection.
-    SELINUXTYPE=targeted</code></pre></div></li>
+    SELINUXTYPE=targeted
 
-<li><p>保存文件并重新启动 CentOS 系统：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo shutdown -r now</code></pre></div></li>
-
-<li><p>系统启动后，使用以下 <code>sestatus</code> 命令验证更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sestatus</code></pre></div>
-<p>输出应如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">SELinux status:                 disabled</code></pre></div></li>
+</code></pre></li>
+<li>
+<p>保存文件并重新启动 CentOS 系统：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo shutdown -r now
+</code></pre></li>
+<li>
+<p>系统启动后，使用以下 <code>sestatus</code> 命令验证更改：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sestatus
+</code></pre><p>输出应如下所示：</p>
+<pre><code class="language-output" data-lang="output">SELinux status:                 disabled
+</code></pre></li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading1">结论</h2>
 <p>在本教程中，您学习了如何在 CentOS 7 计算机上永久禁用 SELinux 。</p>
-
 <p>您可以访问 <a href="https://wiki.centos.org/HowTos/SELinux">CentOS SELinux</a> 指南，了解有关 SELinux 强大功能的更多信息。</p>
       </div><ul class="pa0">
   
@@ -285,15 +270,12 @@ Max kernel policy version:      31</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#检查-selinux-状态">检查 SELinux 状态</a></li>
-<li><a href="#禁用-selinux">禁用 SELinux</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-selinux-">检查 SELinux 状态</a></li>
+    <li><a href="#-selinux">禁用 SELinux</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

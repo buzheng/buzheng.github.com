@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上设置 Nginx 服务器块" />
 <meta property="og:description" content="Nginx 服务器块允许您在一台计算机上运行多个网站。使用服务器块，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。
-
 在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Nginx 服务器块（类似于 Apache 虚拟主机）的分步说明。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-13T06:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上设置 Nginx 服务器块">
 <meta itemprop="description" content="Nginx 服务器块允许您在一台计算机上运行多个网站。使用服务器块，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。
-
 在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Nginx 服务器块（类似于 Apache 虚拟主机）的分步说明。">
-
-
 <meta itemprop="datePublished" content="2019-03-13T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-13T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="988">
+<meta itemprop="wordCount" content="982">
 
 
 
-<meta itemprop="keywords" content="ubuntu,nginx," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上设置 Nginx 服务器块"/>
 <meta name="twitter:description" content="Nginx 服务器块允许您在一台计算机上运行多个网站。使用服务器块，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。
-
 在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Nginx 服务器块（类似于 Apache 虚拟主机）的分步说明。"/>
 
   </head>
@@ -147,25 +141,18 @@
           
   
           <p>Nginx 服务器块允许您在一台计算机上运行多个网站。使用服务器块，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，为每个站点使用不同的 SSL 证书等等。</p>
-
 <p>在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Nginx 服务器块（类似于 Apache 虚拟主机）的分步说明。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>您有一个指向公共服务器 IP 的域名。在本教程中我们将使用 <code>example.com</code> 。</li>
 <li>您按照这个教程<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">安装了 Nginx</a>。</li>
 <li>您以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</li>
 </ul>
-
 <blockquote>
-<p>在某些文档中，您会看到 <code>服务器段</code> 被称为 <code>虚拟主机</code> 。<!--link:how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04--><code>虚拟主机</code><!--link--> 是 Apache 术语。</p>
+<p>在某些文档中，您会看到 <code>服务器段</code> 被称为 <code>虚拟主机</code> 。<!-- raw HTML omitted --><code>虚拟主机</code><!-- raw HTML omitted --> 是 Apache 术语。</p>
 </blockquote>
-
-<h2 id="创建目录结构">创建目录结构</h2>
-
+<h2 id="heading1">创建目录结构</h2>
 <p>文档根目录是存储网站文件的目录，以响应对网站的请求，网站一般有一个域名。我们可以将文档根目录设置为任何位置，但在本指南中我们将使用以下目录结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">/var/www/
 ├── domain1.com
@@ -173,32 +160,27 @@
 ├── domain2.com
 │   └── public_html
 ├── domain3.com
-│   └── public_html</code></pre></div>
-<p>基本上，我们要在 <code>/var/www</code> 目录中为在服务器上托管的每个域创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 目录存储域网站文件。</p>
-
+│   └── public_html
+</code></pre></div><p>基本上，我们要在 <code>/var/www</code> 目录中为在服务器上托管的每个域创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 目录存储域网站文件。</p>
 <p>让我们为我们的网站创建根目录 <code>example.com</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /var/www/example.com/public_html</code></pre></div>
-<p>出于测试目的，我们在网站的文档根目录中创建一个文件 <code>index.html</code> 。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /var/www/example.com/public_html
+</code></pre></div><p>出于测试目的，我们在网站的文档根目录中创建一个文件 <code>index.html</code> 。</p>
 <p>打开编辑器并创建演示文件 <code>/var/www/example.com/public_html/index.html</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
-<p>在本指南中，我们以 <code>sudo</code> 用户身份运行命令，新创建的文件和目录由 <code>root</code> 用户拥有。</p>
-
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><p>在本指南中，我们以 <code>sudo</code> 用户身份运行命令，新创建的文件和目录由 <code>root</code> 用户拥有。</p>
 <p>为避免任何权限问题，我们可以将网站文档根目录的所有权更改为 Nginx 用户 <code>www-data</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/example.com</code></pre></div>
-<h2 id="创建服务器块">创建服务器块</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/example.com
+</code></pre></div><h2 id="heading2">创建服务器块</h2>
 <p>默认情况下，在 Ubuntu 系统上， Nginx 服务器块配置文件存储在 <code>/etc/nginx/sites-available</code> 目录中，通过指向 <code>/etc/nginx/sites-enabled/</code> 目录的软链接启用。</p>
-
 <p>打开您选择的编辑器并创建以下服务器块文件 <code>/etc/nginx/sites-available/example.com</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
@@ -216,27 +198,22 @@
     <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>您可以根据需要命名配置文件，但最好使用域名。</p>
-
+<span class="p">}</span>
+</code></pre></div><p>您可以根据需要命名配置文件，但最好使用域名。</p>
 <p>要启用新的服务器块文件，我们需要创建从文件到 <code>sites-enabled</code> 目录的符号链接，在启动期间由 Nginx 读取：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/</code></pre></div>
-<p>测试 Nginx 配置以获得正确的语法：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -t</code></pre></div>
-<p>如果没有错误，输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+</code></pre></div><p>测试 Nginx 配置以获得正确的语法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -t
+</code></pre></div><p>如果没有错误，输出将如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful</code></pre></div>
-<p>重新启动 Nginx 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
-<p>最后，在浏览器中输入 <code>http://example.com</code> 来验证服务器块是否按预期工作，您将看到如下内容：</p>
-
-<figure><img src="/images/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/nginx-welcome-page.jpg" alt=""></figure>
-
-<h2 id="结论">结论</h2>
-
+nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful
+</code></pre></div><p>重新启动 Nginx 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx
+</code></pre></div><p>最后，在浏览器中输入 <code>http://example.com</code> 来验证服务器块是否按预期工作，您将看到如下内容：</p>
+<p><img src="/images/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/nginx-welcome-page.jpg" alt=""></p>
+<h2 id="heading3">结论</h2>
 <p>您已经学习了如何创建 Nginx 服务器块配置以在单个 Ubuntu 服务器上托管多个域。您可以重复上面概述的步骤，并为您的所有域创建其他服务器块。</p>
-
-<p>如果您想使用免费的 Lets&rsquo;Encrypt SSL 证书保护您的网站，可以查看教程：<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用Lets&rsquo;Encrypt 来保护 Nginx</a></p>
+<p>如果您想使用免费的 Lets'Encrypt SSL 证书保护您的网站，可以查看教程：<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">在 Ubuntu 18.04 上使用Lets'Encrypt 来保护 Nginx</a></p>
       </div><ul class="pa0">
   
    <li class="list di">
@@ -309,15 +286,12 @@ nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is 
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#创建目录结构">创建目录结构</a></li>
-<li><a href="#创建服务器块">创建服务器块</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">创建目录结构</a></li>
+    <li><a href="#heading2">创建服务器块</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

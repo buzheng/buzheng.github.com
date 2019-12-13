@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Ubuntu 上创建 Sudo 用户" />
 <meta property="og:description" content="sudo 命令旨在允许用户使用其他用户（默认情况下为 root 用户）的安全权限运行程序。
-
 在本指南中，我们将向您展示如何在 Ubuntu 计算机上创建新用户并为其提供 sudo 访问权限。然后，您可以使用此用户帐户执行管理命令，而无需以 root 用户身份登录到 Ubuntu 服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-create-a-sudo-user-on-ubuntu/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-14T06:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 上创建 Sudo 用户">
 <meta itemprop="description" content="sudo 命令旨在允许用户使用其他用户（默认情况下为 root 用户）的安全权限运行程序。
-
 在本指南中，我们将向您展示如何在 Ubuntu 计算机上创建新用户并为其提供 sudo 访问权限。然后，您可以使用此用户帐户执行管理命令，而无需以 root 用户身份登录到 Ubuntu 服务器。">
-
-
 <meta itemprop="datePublished" content="2019-03-14T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-14T06:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="633">
 
 
 
-<meta itemprop="keywords" content="ubuntu,sudo," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,sudo," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 上创建 Sudo 用户"/>
 <meta name="twitter:description" content="sudo 命令旨在允许用户使用其他用户（默认情况下为 root 用户）的安全权限运行程序。
-
 在本指南中，我们将向您展示如何在 Ubuntu 计算机上创建新用户并为其提供 sudo 访问权限。然后，您可以使用此用户帐户执行管理命令，而无需以 root 用户身份登录到 Ubuntu 服务器。"/>
 
   </head>
@@ -147,64 +141,57 @@
           
   
           <p>sudo 命令旨在允许用户使用其他用户（默认情况下为 root 用户）的安全权限运行程序。</p>
-
 <p>在本指南中，我们将向您展示如何在 Ubuntu 计算机上创建新用户并为其提供 sudo 访问权限。然后，您可以使用此用户帐户执行管理命令，而无需以 root 用户身份登录到 Ubuntu 服务器。</p>
-
-<h2 id="分步创建-sudo-用户">分步创建 sudo 用户</h2>
-
+<h2 id="-sudo-">分步创建 sudo 用户</h2>
 <p>按照以下步骤创建新的用户帐户并为其提供 sudo 访问权限。如果要为现有用户配置 sudo ，请跳至步骤 3 。</p>
-
 <ol>
-<li><p>登录服务器。</p>
-
+<li>
+<p>登录服务器。</p>
 <p>使用 root 用户登录系统：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh root@server_ip_address</code></pre></div></li>
-
-<li><p>创建一个新的用户</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh root@server_ip_address
+</code></pre></div></li>
+<li>
+<p>创建一个新的用户</p>
 <p>使用 <code>adduser</code> 命令创建新用户帐户。不要忘记使用您要创建的用户名替换以下命令中的 <code>username</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">adduser username</code></pre></div>
-<p>系统将提示您设置并确认新的用户密码。请确保新帐户的密码尽可能的安全。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">adduser username
+</code></pre></div><p>系统将提示您设置并确认新的用户密码。请确保新帐户的密码尽可能的安全。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Adding user <span class="sb">`</span>username<span class="s1">&#39; ...
-</span><span class="s1">Adding new group `username&#39;</span> <span class="o">(</span><span class="m">1001</span><span class="o">)</span> ...
+</span><span class="s1">Adding new group `username&#39;</span> <span class="o">(</span>1001<span class="o">)</span> ...
 Adding new user <span class="sb">`</span>username<span class="s1">&#39; (1001) with group `username&#39;</span> ...
 Creating home directory <span class="sb">`</span>/home/username<span class="s1">&#39; ...
 </span><span class="s1">Copying files from `/etc/skel&#39;</span> ...
 New password:
 Retype new password:
-passwd: password updated successfully</code></pre></div>
-<p>设置密码后，该命令将为用户创建主目录，复制主目录中的多个配置文件，并提示您设置新用户的信息。如果您想将所有这些信息留空，只需按 <code>ENTER</code> 即可接受默认值。</p>
+passwd: password updated successfully
+</code></pre></div><p>设置密码后，该命令将为用户创建主目录，复制主目录中的多个配置文件，并提示您设置新用户的信息。如果您想将所有这些信息留空，只需按 <code>ENTER</code> 即可接受默认值。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Changing the user information <span class="k">for</span> username
 Enter the new value, or press ENTER <span class="k">for</span> the default
-    Full Name <span class="o">[]</span>:
-    Room Number <span class="o">[]</span>:
-    Work Phone <span class="o">[]</span>:
-    Home Phone <span class="o">[]</span>:
-    Other <span class="o">[]</span>:
-Is the information correct? <span class="o">[</span>Y/n<span class="o">]</span></code></pre></div></li>
-
-<li><p>将新用户添加到 sudo 组中</p>
-
+    Full Name <span class="o">[</span><span class="o">]</span>:
+    Room Number <span class="o">[</span><span class="o">]</span>:
+    Work Phone <span class="o">[</span><span class="o">]</span>:
+    Home Phone <span class="o">[</span><span class="o">]</span>:
+    Other <span class="o">[</span><span class="o">]</span>:
+Is the information correct? <span class="o">[</span>Y/n<span class="o">]</span>
+</code></pre></div></li>
+<li>
+<p>将新用户添加到 sudo 组中</p>
 <p>默认情况下，在 Ubuntu 系统上的 <code>sudo</code> 组中的成员被授予 <code>sudo</code> 访问权限。请使用 usermod 命令将您创建的用户添加到 <code>sudo</code> 组 ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">usermod -aG sudo username</code></pre></div></li>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">usermod -aG sudo username
+</code></pre></div></li>
 </ol>
-
-<h2 id="测试-sudo-访问权限">测试 sudo 访问权限</h2>
-
+<h2 id="-sudo-1">测试 sudo 访问权限</h2>
 <p>切换到新创建的用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">su - username</code></pre></div>
-<p>使用 <code>sudo</code> 命令运行 <code>whoami</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo whoami</code></pre></div>
-<p>如果用户具有 sudo 访问权限，那么 <code>whoami</code> 命令的输出将是 <code>root</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">root</code></pre></div>
-<h2 id="如何使用-sudo">如何使用 sudo</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">su - username
+</code></pre></div><p>使用 <code>sudo</code> 命令运行 <code>whoami</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo whoami
+</code></pre></div><p>如果用户具有 sudo 访问权限，那么 <code>whoami</code> 命令的输出将是 <code>root</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">root
+</code></pre></div><h2 id="-sudo">如何使用 sudo</h2>
 <p>要使用 sudo ，只需在命令前加上 sudo 和 一个空格：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ls -l /root</code></pre></div>
-<p>第一次在会话中使用 sudo 时，系统将提示您输入用户密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> username:</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ls -l /root
+</code></pre></div><p>第一次在会话中使用 sudo 时，系统将提示您输入用户密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> username:
+</code></pre></div><h2 id="heading">结论</h2>
 <p>您已经学习如何创建和使用 sudo 权限的用户。您现在可以使用此用户帐户登录到 Ubuntu 服务器，并使用 sudo 运行管理命令。</p>
       </div><ul class="pa0">
   
@@ -278,15 +265,12 @@ Is the information correct? <span class="o">[</span>Y/n<span class="o">]</span><
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#分步创建-sudo-用户">分步创建 sudo 用户</a></li>
-<li><a href="#测试-sudo-访问权限">测试 sudo 访问权限</a></li>
-<li><a href="#如何使用-sudo">如何使用 sudo</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-sudo-">分步创建 sudo 用户</a></li>
+    <li><a href="#-sudo-1">测试 sudo 访问权限</a></li>
+    <li><a href="#-sudo">如何使用 sudo</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

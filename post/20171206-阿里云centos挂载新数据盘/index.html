@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2017-12-06T00:00:00+00:00" />
 <meta itemprop="name" content="阿里云CentOS挂载新数据盘">
 <meta itemprop="description" content="在阿里云 Linux 服务器下挂载新的数据盘和自己本机 Linux 环境挂载新硬盘基本是一样的，基本上步骤包括：查看硬盘标识，分区，格式化，挂载等。本文记录下在阿里云 CentOS 服务器下安装和挂载新的数据盘的详细命令和步骤。">
-
-
 <meta itemprop="datePublished" content="2017-12-06T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-12-06T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1137">
 
 
 
-<meta itemprop="keywords" content="Linux,CentOS," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux,CentOS," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="阿里云CentOS挂载新数据盘"/>
 <meta name="twitter:description" content="在阿里云 Linux 服务器下挂载新的数据盘和自己本机 Linux 环境挂载新硬盘基本是一样的，基本上步骤包括：查看硬盘标识，分区，格式化，挂载等。本文记录下在阿里云 CentOS 服务器下安装和挂载新的数据盘的详细命令和步骤。"/>
 
@@ -141,7 +138,6 @@
           
   
           <p>在阿里云 Linux 服务器下挂载新的数据盘和自己本机 Linux 环境挂载新硬盘基本是一样的，基本上步骤包括：查看硬盘标识，分区，格式化，挂载等。本文记录下在阿里云 CentOS 服务器下安装和挂载新的数据盘的详细命令和步骤。</p>
-
 <p><strong>1, fdisk -l 查看磁盘列表</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@iZwz9i55doz3nfgzzkmvokZ /<span class="o">]</span><span class="c1"># fdisk -l</span>
 
@@ -158,13 +154,12 @@ I/O 大小<span class="o">(</span>最小/最佳<span class="o">)</span>：512 �
 磁盘 /dev/vdb：107.4 GB, <span class="m">107374182400</span> 字节，209715200 个扇区
 <span class="nv">Units</span> <span class="o">=</span> 扇区 of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
 扇区大小<span class="o">(</span>逻辑/物理<span class="o">)</span>：512 字节 / <span class="m">512</span> 字节
-I/O 大小<span class="o">(</span>最小/最佳<span class="o">)</span>：512 字节 / <span class="m">512</span> 字节</code></pre></div>
-<p>发现 /dev/vdb 设备还未使用</p>
+I/O 大小<span class="o">(</span>最小/最佳<span class="o">)</span>：512 字节 / <span class="m">512</span> 字节
 
+</code></pre></div><p>发现 /dev/vdb 设备还未使用</p>
 <p><strong>2, 分区 fdisk /dev/vdb</strong></p>
-
 <p>依次输入 n p 1，然后输入两次回车，再输入 wq，等待完成。</p>
-<div class="highlight"><pre class="chroma">[root@iZwz9i55doz3nfgzzkmvokZ /]# fdisk /dev/vdb
+<pre><code>[root@iZwz9i55doz3nfgzzkmvokZ /]# fdisk /dev/vdb
 欢迎使用 fdisk (util-linux 2.23.2)。
 
 更改将停留在内存中，直到您决定将更改写入磁盘。
@@ -189,9 +184,9 @@ Last 扇区, +扇区 or +size{K,M,G} (2048-209715199，默认为 209715199)：
 The partition table has been altered!
 
 Calling ioctl() to re-read partition table.
-正在同步磁盘。</pre></div>
-<p><strong>3, fdisk -l 重新查看磁盘列表</strong></p>
-<div class="highlight"><pre class="chroma">[root@iZwz9i55doz3nfgzzkmvokZ /]# fdisk -l
+正在同步磁盘。
+</code></pre><p><strong>3, fdisk -l 重新查看磁盘列表</strong></p>
+<pre><code>[root@iZwz9i55doz3nfgzzkmvokZ /]# fdisk -l
 
 磁盘 /dev/vda：42.9 GB, 42949672960 字节，83886080 个扇区
 Units = 扇区 of 1 * 512 = 512 bytes
@@ -211,9 +206,9 @@ I/O 大小(最小/最佳)：512 字节 / 512 字节
 磁盘标识符：0xe9d7e5a8
 
    设备 Boot      Start         End      Blocks   Id  System
-/dev/vdb1            2048   209715199   104856576   83  Linux</pre></div>
-<p><strong>4, 格式化分区   mkfs.ext4 /dev/vdb1</strong></p>
-<div class="highlight"><pre class="chroma">[root@iZwz9i55doz3nfgzzkmvokZ /]# mkfs.ext4 /dev/vdb1
+/dev/vdb1            2048   209715199   104856576   83  Linux
+</code></pre><p><strong>4, 格式化分区   mkfs.ext4 /dev/vdb1</strong></p>
+<pre><code>[root@iZwz9i55doz3nfgzzkmvokZ /]# mkfs.ext4 /dev/vdb1
 mke2fs 1.42.9 (28-Dec-2013)
 文件系统标签=
 OS type: Linux
@@ -234,18 +229,15 @@ Superblock backups stored on blocks:
 Allocating group tables: 完成                            
 正在写入inode表: 完成                            
 Creating journal (32768 blocks): 完成
-Writing superblocks and filesystem accounting information: 完成 </pre></div>
-<p>此数据盘被格式化成 ext4 文件格式。</p>
-
+Writing superblocks and filesystem accounting information: 完成 
+</code></pre><p>此数据盘被格式化成 ext4 文件格式。</p>
 <p><strong>5, 将设备挂载到指定的目录下</strong></p>
-<div class="highlight"><pre class="chroma">mount /dev/vdb1 /home</pre></div>
-<p>这里以挂载到 /home 目录为例。</p>
-
+<pre><code>mount /dev/vdb1 /home
+</code></pre><p>这里以挂载到 /home 目录为例。</p>
 <p><strong>6, 保存到文件系统表 /etc/fstab</strong></p>
-
 <p>当系统重新启动的时候，系统会自动地从这个文件读取信息，并且会自动将此文件中指定的文件系统挂载到指定的目录。</p>
-<div class="highlight"><pre class="chroma">echo /dev/vdb1 /home ext4 defaults 0 0 &gt;&gt; /etc/fstab</pre></div>
-<p>至此，全部设置完毕。</p>
+<pre><code>echo /dev/vdb1 /home ext4 defaults 0 0 &gt;&gt; /etc/fstab
+</code></pre><p>至此，全部设置完毕。</p>
       </div><ul class="pa0">
   
    <li class="list di">

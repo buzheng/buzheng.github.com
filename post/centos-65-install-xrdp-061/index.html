@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-03-26T00:00:00+00:00" />
 <meta itemprop="name" content="CentOS 6.5 安装远程桌面工具 xrdp 0.6.1">
 <meta itemprop="description" content="linux 远程桌面工具中，除了 vnc ，xrdp也是很不错的，连接速度很快，直接使用微软的远程桌面工具mstsc即可链接。下面整理一下安装配置步骤。 使用r">
-
-
 <meta itemprop="datePublished" content="2015-03-26T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-03-26T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="393">
 
 
 
-<meta itemprop="keywords" content="Linux,CentOS," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux,CentOS," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOS 6.5 安装远程桌面工具 xrdp 0.6.1"/>
 <meta name="twitter:description" content="linux 远程桌面工具中，除了 vnc ，xrdp也是很不错的，连接速度很快，直接使用微软的远程桌面工具mstsc即可链接。下面整理一下安装配置步骤。 使用r"/>
 
@@ -140,29 +137,24 @@
           
           
   
-          
-
-<p>linux 远程桌面工具中，除了 vnc ，xrdp也是很不错的，连接速度很快，直接使用微软的远程桌面工具mstsc即可链接。下面整理一下安装配置步骤。<!-- more --></p>
-
+          <p>linux 远程桌面工具中，除了 vnc ，xrdp也是很不错的，连接速度很快，直接使用微软的远程桌面工具mstsc即可链接。下面整理一下安装配置步骤。<!-- raw HTML omitted --></p>
 <blockquote>
 <p>使用root用户进行以下操作</p>
 </blockquote>
-
-<h2 id="安装依赖包">安装依赖包</h2>
+<h2 id="heading">安装依赖包</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yum upgrade
 yum install gcc pam-devel openssl-devel libXfont pixman libX11-devel libXfixes-devel autoconf automake libtool
 yum install tigervnc-server
-yum groupinstall Desktop</code></pre></div>
-<p>这里包含了 vnc-server ，这是必须的，否则最后都安装成功后，登录后会出错，错误信息大致如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">connecting to sesman ip <span class="m">127</span>.0.0.1 port <span class="m">3350</span>
+yum groupinstall Desktop
+</code></pre></div><p>这里包含了 vnc-server ，这是必须的，否则最后都安装成功后，登录后会出错，错误信息大致如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">connecting to sesman ip 127.0.0.1 port <span class="m">3350</span>
 sesman connect ok
 sending login info to session manager, please wait...
 xrdp_mm_process_login_response: login successful <span class="k">for</span> display
 started connecting
-connecting to <span class="m">127</span>.0.0.1 <span class="m">5910</span>
-error - problem connecting</code></pre></div>
-<h2 id="安装-xrdp">安装 xrdp</h2>
-
+connecting to 127.0.0.1 <span class="m">5910</span>
+error - problem connecting
+</code></pre></div><h2 id="-xrdp">安装 xrdp</h2>
 <p>下载文件、解压缩、编译、安装。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget http://sourceforge.net/projects/xrdp/files/xrdp/0.6.1/xrdp-v0.6.1.tar.gz
 tar xzvf xrdp-v0.6.1.tar.gz
@@ -170,26 +162,22 @@ tar xzvf xrdp-v0.6.1.tar.gz
 ./bootstrap
 ./configure
 make
-make install clean</code></pre></div>
-<h2 id="启动-xrdp">启动 xrdp</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">/etc/xrdp/xrdp.sh start</code></pre></div>
-<p>命令可用选项：start|stop|restart|force-reload</p>
-
-<h2 id="加入开机启动">加入开机启动</h2>
-
+make install clean
+</code></pre></div><h2 id="-xrdp1">启动 xrdp</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">/etc/xrdp/xrdp.sh start
+</code></pre></div><p>命令可用选项：start|stop|restart|force-reload</p>
+<h2 id="heading1">加入开机启动</h2>
 <p>将 xrdp 设置为随机器启动，避免每次手工启动。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/rc.d/rc.local
 <span class="c1"># 文件尾部添加下面的行</span>
-/etc/xrdp/xrdp.sh start</code></pre></div>
-<h2 id="添加防火墙规则">添加防火墙规则</h2>
+/etc/xrdp/xrdp.sh start
+</code></pre></div><h2 id="heading2">添加防火墙规则</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">iptables -I INPUT <span class="m">4</span> -m state --state NEW -p tcp --dport <span class="m">3389</span> -j ACCEPT
 
 service iptables save
-service iptables reload</code></pre></div>
-<h2 id="远程桌面链接">远程桌面链接</h2>
-
+service iptables reload
+</code></pre></div><h2 id="heading3">远程桌面链接</h2>
 <p>windows 中启动远程桌面程序 mstsc，输入 ip 地址，在打开的对话框中 Module 选择sesman-Xvnc (默认值)，输入 username 和 password ，就可以了。</p>
-
 <p>Done！</p>
 
       </div><ul class="pa0">

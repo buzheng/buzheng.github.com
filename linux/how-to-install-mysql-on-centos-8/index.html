@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="MySQL 是最流行的开源关系数据库管理系统。在 CentOS 8 中，您可从默认的存储库中安装最新版本的 MySQL 数据库服务器 8.0 版。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-mysql-on-centos-8/" />
+<meta property="og:image" content="/linux/how-to-install-mysql-on-centos-8/featured.jpg"/>
 <meta property="article:published_time" content="2019-10-24T13:00:00+08:00" />
 <meta property="article:modified_time" content="2019-10-24T13:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 8 上安装 MySQL">
 <meta itemprop="description" content="MySQL 是最流行的开源关系数据库管理系统。在 CentOS 8 中，您可从默认的存储库中安装最新版本的 MySQL 数据库服务器 8.0 版。">
-
-
 <meta itemprop="datePublished" content="2019-10-24T13:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-24T13:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="909">
+<meta itemprop="wordCount" content="904">
+<meta itemprop="image" content="/linux/how-to-install-mysql-on-centos-8/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="mysql,centos," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="mysql,centos," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-mysql-on-centos-8/featured.jpg"/>
 <meta name="twitter:title" content="在 CentOS 8 上安装 MySQL"/>
 <meta name="twitter:description" content="MySQL 是最流行的开源关系数据库管理系统。在 CentOS 8 中，您可从默认的存储库中安装最新版本的 MySQL 数据库服务器 8.0 版。"/>
@@ -142,57 +141,44 @@
           
   
           <p><a href="https://www.mysql.com/">MySQL</a> 是最流行的开源关系数据库管理系统。在 CentOS 8 中，您可从默认的存储库中安装最新版本的 MySQL 数据库服务器 8.0 版。</p>
-
 <p>MySQL 8.0 引入了许多新功能和更改，使某些应用程序与此版本不兼容。在选择要安装的 MySQL 版本之前，请查阅要在 CentOS 服务器上部署的应用程序的文档。</p>
-
 <p>CentOS 8 还提供了 MariaDB 10.3 ，它是 MySQL 5.7 的“直接替代品”，但有一些限制。如果您的应用程序与 MySQL 8.0 不兼容，请安装 MariaDB 10.3 。</p>
-
 <p>在本教程中，我们将向您展示如何在 CentOS 8 系统上安装和保护 MySQL 8.0 。</p>
-
-<h2 id="在-centos-8-上安装-mysql-8-0">在 CentOS 8 上安装 MySQL 8.0</h2>
-
+<h2 id="-centos-8--mysql-80">在 CentOS 8 上安装 MySQL 8.0</h2>
 <p>以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份，通过使用 CentOS 软件包管理器安装 MySQL 8.0 服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install @mysql</code></pre></div>
-<p><code>@mysql</code> 模块将安装 MySQL 及其所有依赖项。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install @mysql
+</code></pre><p><code>@mysql</code> 模块将安装 MySQL 及其所有依赖项。</p>
 <p>安装完成后，通过运行以下命令来启动 MySQL 服务并使它在启动时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now mysqld</code></pre></div>
-<p>要检查 MySQL 服务器是否正在运行，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status mysqld</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● mysqld.service - MySQL 8.0 database server
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now mysqld
+</code></pre><p>要检查 MySQL 服务器是否正在运行，请输入：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status mysqld
+</code></pre><pre><code class="language-output" data-lang="output">● mysqld.service - MySQL 8.0 database server
    Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
    Active: active (running) since Thu 2019-10-17 22:09:39 UTC; 15s ago
-   ...</code></pre></div>
-<h2 id="增强-mysql-安全性">增强 MySQL 安全性</h2>
-
+   ...
+</code></pre><h2 id="-mysql-">增强 MySQL 安全性</h2>
 <p>运行 <code>mysql_secure_installation</code> 执行一些与安全性相关的操作的脚本，并设置 MySQL root 密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql_secure_installation</code></pre></div>
-<p>系统将要求您配置 <a href="https://dev.mysql.com/doc/refman/8.0/en/validate-password.html"><code>VALIDATE PASSWORD PLUGIN</code></a> ，用于测试 MySQL 用户密码的强度并提高安全性。密码验证策略分为三个级别：低，中和强。如果你不想来设置验证密码插件就直接按下 <code>ENTER</code> 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql_secure_installation
+</code></pre><p>系统将要求您配置 <a href="https://dev.mysql.com/doc/refman/8.0/en/validate-password.html"><code>VALIDATE PASSWORD PLUGIN</code></a> ，用于测试 MySQL 用户密码的强度并提高安全性。密码验证策略分为三个级别：低，中和强。如果你不想来设置验证密码插件就直接按下 <code>ENTER</code> 。</p>
 <p>在下一个提示符下，将要求您设置 MySQL root 用户的密码。完成此操作后，脚本还将要求您删除匿名用户，限制 root 用户对本地计算机的访问，并删除测试数据库。您应该对所有问题回答 <code>yes</code>。</p>
-
 <p>要从命令行与 MySQL 服务器进行交互，请使用 MySQL 客户端实用程序，它作为依赖项安装。输入以下内容测试 root 访问权限：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u root -p</code></pre></div>
-<p>在出现提示时输入 <a href="/linux/how-to-reset-a-mysql-root-password/">root 密码</a>，然后将显示 MySQL 外壳，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Welcome to the MySQL monitor.  Commands end with ; or \g.
+<pre><code class="language-console-bash" data-lang="console-bash">mysql -u root -p
+</code></pre><p>在出现提示时输入 <a href="/linux/how-to-reset-a-mysql-root-password/">root 密码</a>，然后将显示 MySQL 外壳，如下所示：</p>
+<pre><code class="language-output" data-lang="output">Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 12
-Server version: 8.0.17 Source distribution</code></pre></div>
-<p>而已！您已经在 CentOS 服务器上安装并保护了 MySQL 8.0 ，并准备使用它。</p>
-
-<h2 id="身份验证方法">身份验证方法</h2>
-
+Server version: 8.0.17 Source distribution
+</code></pre><p>而已！您已经在 CentOS 服务器上安装并保护了 MySQL 8.0 ，并准备使用它。</p>
+<h2 id="heading">身份验证方法</h2>
 <p>从 CentOS 8 存储库中安装的 MySQL 8.0 服务器被默认被设置为使用旧的身份验证插件 <code>mysql_native_password</code> ，因为某些客户端工具和库与新的身份验证插件 <code>caching_sha2_password</code> 方法不兼容。</p>
-
 <p><code>mysql_native_password</code> 该方法对于大多数设置都应该适用。但是，如果要将默认身份验证插件更改 <code>caching_sha2_password</code> 为更快并提供更好的安全性，请打开以下配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo vim /etc/my.cnf.d/mysql-default-authentication-plugin.cnf</code></pre></div>
-<p>将 <code>default_authentication_plugin</code> 的值更改为 <code>caching_sha2_password</code> ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo vim /etc/my.cnf.d/mysql-default-authentication-plugin.cnf
+</code></pre><p>将 <code>default_authentication_plugin</code> 的值更改为 <code>caching_sha2_password</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[mysqld]</span>
-<span class="na">default_authentication_plugin</span><span class="o">=</span><span class="s">caching_sha2_password</span></code></pre></div>
-<p><a href="/linux/how-to-save-file-in-vim-quit-editor/">关闭并保存文件</a>，然后重新启动 MySQL 服务器以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysqld</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<span class="na">default_authentication_plugin</span><span class="o">=</span><span class="s">caching_sha2_password</span>
+</code></pre></div><p><a href="/linux/how-to-save-file-in-vim-quit-editor/">关闭并保存文件</a>，然后重新启动 MySQL 服务器以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysqld
+</code></pre><h2 id="heading1">结论</h2>
 <p>CentOS 8 默认仓库中已经包含了 MySQL 8.0，安装只需输入 <code>dnf install  @mysql</code>，就这么简单。</p>
-
 <p>现在您的 MySQL 服务器已经启动并正在运行，您可以连接到 MySQL Shell ，并开始<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">创建新的数据库和用户</a>。</p>
       </div><ul class="pa0">
   
@@ -266,15 +252,12 @@ Server version: 8.0.17 Source distribution</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在-centos-8-上安装-mysql-8-0">在 CentOS 8 上安装 MySQL 8.0</a></li>
-<li><a href="#增强-mysql-安全性">增强 MySQL 安全性</a></li>
-<li><a href="#身份验证方法">身份验证方法</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-centos-8--mysql-80">在 CentOS 8 上安装 MySQL 8.0</a></li>
+    <li><a href="#-mysql-">增强 MySQL 安全性</a></li>
+    <li><a href="#heading">身份验证方法</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

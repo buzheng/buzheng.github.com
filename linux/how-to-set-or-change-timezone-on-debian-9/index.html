@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Debian 9 上设置或更改时区" />
 <meta property="og:description" content="对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如， cron 守护程序使用系统的时区执行 cron 作业，日志文件中的时间戳基于同一系统的时区。
-
 系统的时区在安装期间设置，但可以在以后轻松更改。本教程介绍如何在 Debian 9 上设置或更改时区。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-set-or-change-timezone-on-debian-9/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-12T10:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 9 上设置或更改时区">
 <meta itemprop="description" content="对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如， cron 守护程序使用系统的时区执行 cron 作业，日志文件中的时间戳基于同一系统的时区。
-
 系统的时区在安装期间设置，但可以在以后轻松更改。本教程介绍如何在 Debian 9 上设置或更改时区。">
-
-
 <meta itemprop="datePublished" content="2019-03-12T10:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-12T10:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="700">
+<meta itemprop="wordCount" content="702">
 
 
 
-<meta itemprop="keywords" content="debian," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="debian," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Debian 9 上设置或更改时区"/>
 <meta name="twitter:description" content="对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如， cron 守护程序使用系统的时区执行 cron 作业，日志文件中的时间戳基于同一系统的时区。
-
 系统的时区在安装期间设置，但可以在以后轻松更改。本教程介绍如何在 Debian 9 上设置或更改时区。"/>
 
   </head>
@@ -147,71 +141,68 @@
           
   
           <p>对于许多与系统相关的任务和流程，使用正确的时区非常重要。例如， <code>cron</code> 守护程序使用系统的时区执行 <code>cron</code> 作业，日志文件中的时间戳基于同一系统的时区。</p>
-
 <p>系统的时区在安装期间设置，但可以在以后轻松更改。本教程介绍如何在 Debian 9 上设置或更改时区。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>您登录的用户必须具有 <a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo 权限</a>才能更改系统的时区。</p>
-
-<h2 id="检查当前时区">检查当前时区</h2>
-
+<h2 id="heading1">检查当前时区</h2>
 <p>在 Debian 和其他现代 Linux 发行版中，您可以使用 <code>timedatectl</code> 命令显示和设置当前系统的时间和时区。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">timedatectl</code></pre></div>
-<p>如下面的输出所示，系统的时区设置为 &ldquo;America/Chicago&rdquo;：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">      Local time: Mon <span class="m">2019</span>-03-11 <span class="m">16</span>:46:45 CDT
-  Universal time: Mon <span class="m">2019</span>-03-11 <span class="m">21</span>:46:45 UTC
-        RTC time: Mon <span class="m">2019</span>-03-11 <span class="m">21</span>:46:45
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">timedatectl
+</code></pre></div><p>如下面的输出所示，系统的时区设置为 &ldquo;America/Chicago&rdquo;：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">      Local time: Mon 2019-03-11 16:46:45 CDT
+  Universal time: Mon 2019-03-11 21:46:45 UTC
+        RTC time: Mon 2019-03-11 21:46:45
        Time zone: America/Chicago <span class="o">(</span>CDT, -0500<span class="o">)</span>
  Network <span class="nb">time</span> on: yes
 NTP synchronized: no
- RTC in <span class="nb">local</span> TZ: no</code></pre></div>
-<p>通过 <code>/etc/localtime</code> 到 <code>/usr/share/zoneinfo</code> 目录中的二进制时区标识符的文件链接来配置系统时区。另外一个检查时区的方法是使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令</a>来显示符号链接指向的路径：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls -l /etc/localtime</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">lrwxrwxrwx <span class="m">1</span> root root <span class="m">37</span> Jan <span class="m">23</span> <span class="m">03</span>:19 /etc/localtime -&gt; ../usr/share/zoneinfo/America/Chicago</code></pre></div>
-<h2 id="在-debian-中更改时区">在 Debian 中更改时区</h2>
-
-<p>在更改时区之前，您需要找到要使用的时区的长名称。时区命名约定通常使用&rdquo;区域/城市&rdquo;格式。
+ RTC in <span class="nb">local</span> TZ: no
+</code></pre></div><p>通过 <code>/etc/localtime</code> 到 <code>/usr/share/zoneinfo</code> 目录中的二进制时区标识符的文件链接来配置系统时区。另外一个检查时区的方法是使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令</a>来显示符号链接指向的路径：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls -l /etc/localtime
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">lrwxrwxrwx <span class="m">1</span> root root <span class="m">37</span> Jan <span class="m">23</span> 03:19 /etc/localtime -&gt; ../usr/share/zoneinfo/America/Chicago
+</code></pre></div><h2 id="-debian-">在 Debian 中更改时区</h2>
+<p>在更改时区之前，您需要找到要使用的时区的长名称。时区命名约定通常使用&quot;区域/城市&quot;格式。
 要列出所有可用时区，您可以列出目录 <code>/usr/share/zoneinfo</code>中的文件来查看或使用 <code>timedatectl</code> 命令。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">timedatectl list-timezones</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">...
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">timedatectl list-timezones
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">...
 Europe/Lisbon
 Europe/Ljubljana
 Europe/London
 Europe/Luxembourg
 Europe/Madrid
 Europe/Malta
-...</code></pre></div>
-<p>一旦您根据您的位置确定哪个时区后，请以 sudo 用户身份运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo timedatectl set-timezone your_time_zone</code></pre></div>
-<p>例如，要将系统的时区更改为 <code>Europe/Ljubljana</code> 请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo timedatectl set-timezone Europe/Ljubljana</code></pre></div>
-<p>通过发出 <code>timedatectl</code> 命令验证更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">timedatectl</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">      Local time: Mon <span class="m">2019</span>-03-11 <span class="m">22</span>:51:27 CET
-  Universal time: Mon <span class="m">2019</span>-03-11 <span class="m">21</span>:51:27 UTC
-        RTC time: Mon <span class="m">2019</span>-03-11 <span class="m">21</span>:51:26
+...
+</code></pre></div><p>一旦您根据您的位置确定哪个时区后，请以 sudo 用户身份运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo timedatectl set-timezone your_time_zone
+</code></pre></div><p>例如，要将系统的时区更改为 <code>Europe/Ljubljana</code> 请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo timedatectl set-timezone Europe/Ljubljana
+</code></pre></div><p>通过发出 <code>timedatectl</code> 命令验证更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">timedatectl
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">      Local time: Mon 2019-03-11 22:51:27 CET
+  Universal time: Mon 2019-03-11 21:51:27 UTC
+        RTC time: Mon 2019-03-11 21:51:26
        Time zone: Europe/Ljubljana <span class="o">(</span>CET, +0100<span class="o">)</span>
  Network <span class="nb">time</span> on: yes
 NTP synchronized: yes
- RTC in <span class="nb">local</span> TZ: no</code></pre></div>
-<h2 id="通过创建符号链接更改时区">通过创建符号链接更改时区</h2>
-
+ RTC in <span class="nb">local</span> TZ: no
+</code></pre></div><h2 id="heading2">通过创建符号链接更改时区</h2>
 <p>如果您运行的是较旧版本的 Debian ，并且系统上 <code>timedatectl</code> 没有该命令，则可以通过 <code>/etc/localtime</code> 链接到 <code>/usr/share/zoneinfo</code> 目录中的时区文件来更改时区 。</p>
-
 <ol>
-<li><p>删除 <code>/etc/localtime</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm -f /etc/localtime</code></pre></div></li>
-
-<li><p>确定要配置的时区并创建符号链接：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime</code></pre></div></li>
-
-<li><p>通过列出 <code>/etc/localtime</code> 文件或使用 <code>date</code> 命令来确认更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">date</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Mon Mar <span class="m">11</span> <span class="m">22</span>:55:04 CET <span class="m">2019</span></code></pre></div></li>
+<li>
+<p>删除 <code>/etc/localtime</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm -f /etc/localtime
+</code></pre></div></li>
+<li>
+<p>确定要配置的时区并创建符号链接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /usr/share/zoneinfo/Europe/Ljubljana /etc/localtime
+</code></pre></div></li>
+<li>
+<p>通过列出 <code>/etc/localtime</code> 文件或使用 <code>date</code> 命令来确认更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">date
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Mon Mar <span class="m">11</span> 22:55:04 CET <span class="m">2019</span>
+</code></pre></div></li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading3">结论</h2>
 <p>在本指南中，您学习了如何更改 Debian 系统的时区。</p>
-
-<!-- how-to-set-or-change-timezone-on-debian-9 -->
+<!-- raw HTML omitted -->
       </div><ul class="pa0">
   
    <li class="list di">
@@ -260,16 +251,13 @@ NTP synchronized: yes
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#检查当前时区">检查当前时区</a></li>
-<li><a href="#在-debian-中更改时区">在 Debian 中更改时区</a></li>
-<li><a href="#通过创建符号链接更改时区">通过创建符号链接更改时区</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">检查当前时区</a></li>
+    <li><a href="#-debian-">在 Debian 中更改时区</a></li>
+    <li><a href="#heading2">通过创建符号链接更改时区</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

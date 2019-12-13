@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2019-02-26T11:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 7 中添加和删除用户">
 <meta itemprop="description" content="和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。">
-
-
 <meta itemprop="datePublished" content="2019-02-26T11:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-02-26T11:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="669">
 
 
 
-<meta itemprop="keywords" content="linux,centos,教程," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,centos,教程," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在 CentOS 7 中添加和删除用户"/>
 <meta name="twitter:description" content="和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。"/>
 
@@ -141,49 +138,35 @@
           
   
           <p>和所有其他Linux发行版的一样，CentOS是一个多用户操作系统。每个独立用户都可以具有不同的权限级别和各种命令行和GUI应用程序的特定设置。了解如何添加和删除用户是每个Linux用户应该了解的最重要的技能之一。在本教程中，我们将解释如何在CentOS 7系统上添加和删除用户。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>您需要以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>才能创建和删除用户。</p>
-
-<h2 id="在-centos-中添加用户">在 CentOS 中添加用户</h2>
-
+<h2 id="-centos-">在 CentOS 中添加用户</h2>
 <p>在 CentOS 中，您可以使用 <code>useradd</code> 命令行实用程序创建新的用户帐户。</p>
-
 <p>要创建一个名为的新用户帐户，username您将运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo adduser username</code></pre></div>
-<p>上面的命令不显示输出。它将创建新用户的主目录 <code>/home/username</code>，并将文件从 <code>/etc/skel</code> 目录复制到用户的主目录。在主目录中，用户可以编写，编辑和删除文件和目录。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo adduser username
+</code></pre></div><p>上面的命令不显示输出。它将创建新用户的主目录 <code>/home/username</code>，并将文件从 <code>/etc/skel</code> 目录复制到用户的主目录。在主目录中，用户可以编写，编辑和删除文件和目录。</p>
 <p>接下来，您需要为新用户设置密码，以便用户可以登录。为此，请使用以下passwd命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo passwd username</code></pre></div>
-<p>系统将提示您输入并确认密码。确保使用强密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo passwd username
+</code></pre></div><p>系统将提示您输入并确认密码。确保使用强密码。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Changing password <span class="k">for</span> user username.
 New password: 
 Retype new password: 
-passwd: all authentication tokens updated successfully.</code></pre></div>
-<p>默认情况下，在CentOS上，组 <code>wheel</code> 的成员被授予 <code>sudo</code> 访问权限。</p>
-
+passwd: all authentication tokens updated successfully.
+</code></pre></div><p>默认情况下，在CentOS上，组 <code>wheel</code> 的成员被授予 <code>sudo</code> 访问权限。</p>
 <p>如果您希望新创建的用户具有管理权限，请将用户添加到 <code>wheel</code> 组：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo usermod -aG wheel username</code></pre></div>
-<p>如果您以 <code>root</code> 身份登录，则不必使用 <code>sudo</code> 预先添加每个命令。</p>
-
-<h2 id="在-centos-中删除用户">在 CentOS 中删除用户</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo usermod -aG wheel username
+</code></pre></div><p>如果您以 <code>root</code> 身份登录，则不必使用 <code>sudo</code> 预先添加每个命令。</p>
+<h2 id="-centos-1">在 CentOS 中删除用户</h2>
 <p>如果不再需要用户帐户，则可以使用 <code>deluser</code> 命令行工具将其删除。</p>
-
 <p>如果要删除用户而不删除用户文件，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo userdel username</code></pre></div>
-<p>如果要删除并且用户的主目录和邮件假脱机使用该-r标志：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo userdel -r username</code></pre></div>
-<p>成功时，<code>userdel</code> 命令不会产生任何输出。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo userdel username
+</code></pre></div><p>如果要删除并且用户的主目录和邮件假脱机使用该-r标志：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo userdel -r username
+</code></pre></div><p>成功时，<code>userdel</code> 命令不会产生任何输出。</p>
 <p>如果用户被授予 <code>sudo</code> 权限，则将删除 <code>wheel</code> 组，以及用户所属的任何其他组。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading1">结论</h2>
 <p>在本教程中，您学习了如何在 CentOS 中添加和删除用户。同样的，相同的命令也适用于任何其他 Linux 发行版。</p>
-
-<!-- how-to-add-and-delete-users-on-centos-7 -->
+<!-- raw HTML omitted -->
       </div><ul class="pa0">
   
    <li class="list di">
@@ -213,15 +196,12 @@ passwd: all authentication tokens updated successfully.</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#在-centos-中添加用户">在 CentOS 中添加用户</a></li>
-<li><a href="#在-centos-中删除用户">在 CentOS 中删除用户</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-centos-">在 CentOS 中添加用户</a></li>
+    <li><a href="#-centos-1">在 CentOS 中删除用户</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

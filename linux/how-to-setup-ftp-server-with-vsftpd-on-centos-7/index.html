@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,11 +30,8 @@
 
     <meta property="og:title" content="如何在CentOS 7上使用VSFTPD设置FTP服务器" />
 <meta property="og:description" content="FTP（文件传输协议）是一种标准的客户端 - 服务器网络协议，允许用户与远程网络之间传输文件。
-
 有几种可用于Linux的开源FTP服务器。最流行和最广泛使用的是PureFTPd，ProFTPD和vsftpd。
-
 在本教程中，我们将在CentOS 7上安装vsftpd（非常安全的Ftp守护进程）。它是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。
-
 要获得更安全和更快速的数据传输，请使用SCP或SFTP。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-setup-ftp-server-with-vsftpd-on-centos-7/" />
@@ -42,29 +39,20 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上使用VSFTPD设置FTP服务器">
 <meta itemprop="description" content="FTP（文件传输协议）是一种标准的客户端 - 服务器网络协议，允许用户与远程网络之间传输文件。
-
 有几种可用于Linux的开源FTP服务器。最流行和最广泛使用的是PureFTPd，ProFTPD和vsftpd。
-
 在本教程中，我们将在CentOS 7上安装vsftpd（非常安全的Ftp守护进程）。它是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。
-
 要获得更安全和更快速的数据传输，请使用SCP或SFTP。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2385">
+<meta itemprop="wordCount" content="2379">
 
 
 
-<meta itemprop="keywords" content="ftp,centos," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ftp,centos," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在CentOS 7上使用VSFTPD设置FTP服务器"/>
 <meta name="twitter:description" content="FTP（文件传输协议）是一种标准的客户端 - 服务器网络协议，允许用户与远程网络之间传输文件。
-
 有几种可用于Linux的开源FTP服务器。最流行和最广泛使用的是PureFTPd，ProFTPD和vsftpd。
-
 在本教程中，我们将在CentOS 7上安装vsftpd（非常安全的Ftp守护进程）。它是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。
-
 要获得更安全和更快速的数据传输，请使用SCP或SFTP。"/>
 
   </head>
@@ -159,120 +147,87 @@
           
   
           <p>FTP（文件传输协议）是一种标准的客户端 - 服务器网络协议，允许用户与远程网络之间传输文件。</p>
-
 <p>有几种可用于Linux的开源FTP服务器。最流行和最广泛使用的是<a href="https://www.pureftpd.org/project/pure-ftpd">PureFTPd</a>，<a href="http://www.proftpd.org/">ProFTPD</a>和<a href="https://security.appspot.com/vsftpd.html">vsftpd</a>。</p>
-
 <p>在本教程中，我们将在CentOS 7上安装vsftpd（非常安全的Ftp守护进程）。它是一个稳定，安全和快速的FTP服务器。我们还将向您展示如何配置vsftpd以将用户限制到其主目录，并使用SSL / TLS加密整个传输。</p>
-
 <p>要获得更安全和更快速的数据传输，请使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/">SCP</a>或<a href="/linux/how-to-use-linux-sftp-command-to-transfer-files/">SFTP</a>。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</p>
-
-<h2 id="在centos-7上安装vsftpd">在CentOS 7上安装vsftpd</h2>
-
+<h2 id="centos-7vsftpd">在CentOS 7上安装vsftpd</h2>
 <p>vsftpd软件包在默认的CentOS存储库中可用。要安装它，请发出以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install vsftpd</code></pre></div>
-<p>安装软件包后，启动vsftpd守护程序并使其在引导时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start vsftpdsudo systemctl enable vsftpd</code></pre></div>
-<p>您可以通过打印其状态来验证vsftpd服务是否正在运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vsftpd</code></pre></div>
-<p>输出将如下所示，表明vsftpd服务处于活动状态并正在运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● vsftpd.service - Vsftpd ftp daemon
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install vsftpd
+</code></pre><p>安装软件包后，启动vsftpd守护程序并使其在引导时自动启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start vsftpdsudo systemctl enable vsftpd
+</code></pre><p>您可以通过打印其状态来验证vsftpd服务是否正在运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vsftpd
+</code></pre><p>输出将如下所示，表明vsftpd服务处于活动状态并正在运行：</p>
+<pre><code class="language-output" data-lang="output">● vsftpd.service - Vsftpd ftp daemon
    Loaded: loaded (/usr/lib/systemd/system/vsftpd.service; enabled; vendor preset: disabled)
    Active: active (running) since Thu 2018-11-22 09:42:37 UTC; 6s ago
  Main PID: 29612 (vsftpd)
    CGroup: /system.slice/vsftpd.service
-           └─29612 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf</code></pre></div>
-<h2 id="配置vsftpd">配置vsftpd</h2>
-
+           └─29612 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+</code></pre><h2 id="vsftpd">配置vsftpd</h2>
 <p>配置vsftpd服务涉及编辑<code>/etc/vsftpd/vsftpd.conf</code>配置文件。大多数设置都在配置文件中有详细记录。有关所有可用选项，请访问<a href="http://vsftpd.beasts.org/vsftpd_conf.html">官方vsftpd</a>页面。</p>
-
 <p>在以下部分中，我们将介绍配置安全vsftpd安装所需的一些重要设置。</p>
-
 <p>首先打开vsftpd配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/vsftpd/vsftpd.conf</code></pre></div>
-<h3 id="1-ftp访问">1. FTP访问</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/vsftpd/vsftpd.conf
+</code></pre><h3 id="1-ftp">1. FTP访问</h3>
 <p>我们将仅允许本地用户访问FTP服务器，查找<code>anonymous_enable</code>和<code>local_enable</code>指令并验证您的配置是否符合以下行：</p>
-
 <p>/etc/vsftpd/vsftpd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">anonymous_enable</span><span class="o">=</span><span class="s">NO</span>
-<span class="na">local_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
-<h3 id="2-启用上传">2.启用上传</h3>
-
+<span class="na">local_enable</span><span class="o">=</span><span class="s">YES</span>
+</code></pre></div><h3 id="2">2.启用上传</h3>
 <p>取消注释<code>write_enable</code>设置以允许更改文件系统，例如上载和删除文件。</p>
-
 <p>/etc/vsftpd/vsftpd.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">write_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
-<h3 id="3-chroot-jail">3. Chroot Jail</h3>
-
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">write_enable</span><span class="o">=</span><span class="s">YES</span>
+</code></pre></div><h3 id="3-chroot-jail">3. Chroot Jail</h3>
 <p>通过取消注释该<code>chroot</code>指令，防止FTP用户访问其主目录之外的任何文件。</p>
-
 <p>/etc/vsftpd/vsftpd.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">chroot_local_user</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
-<p>默认情况下，当启用chroot时，如果锁定用户的目录是可写的，vsftpd将拒绝上载文件。这是为了防止出现安全漏洞。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">chroot_local_user</span><span class="o">=</span><span class="s">YES</span>
+</code></pre></div><p>默认情况下，当启用chroot时，如果锁定用户的目录是可写的，vsftpd将拒绝上载文件。这是为了防止出现安全漏洞。</p>
 <p>使用以下方法之一允许在启用chroot时上载。</p>
-
 <ul>
-<li><p><strong>方法1.</strong> - 允许上载的推荐方法是保持chroot启用并配置FTP目录。在本教程中，我们将<code>ftp</code>在用户主目录中创建一个目录，该目录将用作chroot和<code>uploads</code>用于上载文件的可写目录。</p>
-
+<li>
+<p><strong>方法1.</strong> - 允许上载的推荐方法是保持chroot启用并配置FTP目录。在本教程中，我们将<code>ftp</code>在用户主目录中创建一个目录，该目录将用作chroot和<code>uploads</code>用于上载文件的可写目录。</p>
 <p>/etc/vsftpd/vsftpd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">user_sub_token</span><span class="o">=</span><span class="s">$USER</span>
-<span class="na">local_root</span><span class="o">=</span><span class="s">/home/$USER/ftp</span></code></pre></div></li>
-
-<li><p><strong>方法2.</strong> - 另一个选项是在vsftpd配置文件中添加以下指令。如果必须将用户的可写访问权限授予其主目录，请使用此选项。</p>
-
+<span class="na">local_root</span><span class="o">=</span><span class="s">/home/$USER/ftp</span>
+</code></pre></div></li>
+<li>
+<p><strong>方法2.</strong> - 另一个选项是在vsftpd配置文件中添加以下指令。如果必须将用户的可写访问权限授予其主目录，请使用此选项。</p>
 <p>/etc/vsftpd/vsftpd.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">allow_writeable_chroot</span><span class="o">=</span><span class="s">YES</span></code></pre></div></li>
+<div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">allow_writeable_chroot</span><span class="o">=</span><span class="s">YES</span>
+</code></pre></div></li>
 </ul>
-
-<h3 id="4-被动ftp连接">4.被动FTP连接</h3>
-
+<h3 id="4ftp">4.被动FTP连接</h3>
 <p>vsftpd可以使用任何端口进行被动FTP连接。我们将指定端口的最小和最大范围，然后在防火墙中打开范围。</p>
-
 <p>将以下行添加到配置文件中：</p>
-
 <p>/etc/vsftpd/vsftpd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">pasv_min_port</span><span class="o">=</span><span class="s">30000</span>
-<span class="na">pasv_max_port</span><span class="o">=</span><span class="s">31000</span></code></pre></div>
-<h3 id="5-限制用户登录">5.限制用户登录</h3>
-
+<span class="na">pasv_max_port</span><span class="o">=</span><span class="s">31000</span>
+</code></pre></div><h3 id="5">5.限制用户登录</h3>
 <p>要仅允许某些用户登录到FTP服务器，请在该行之后添加以下<code>userlist_enable=YES</code>行：</p>
-
 <p>/etc/vsftpd/vsftpd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">userlist_file</span><span class="o">=</span><span class="s">/etc/vsftpd/user_list</span>
-<span class="na">userlist_deny</span><span class="o">=</span><span class="s">NO</span></code></pre></div>
-<p>启用此选项后，您需要通过向<code>/etc/vsftpd/user_list</code>文件添加用户名（每行一个用户）明确指定哪些用户能够登录。</p>
-
-<h3 id="6-使用ssl-tls保护传输">6.使用SSL / TLS保护传输</h3>
-
+<span class="na">userlist_deny</span><span class="o">=</span><span class="s">NO</span>
+</code></pre></div><p>启用此选项后，您需要通过向<code>/etc/vsftpd/user_list</code>文件添加用户名（每行一个用户）明确指定哪些用户能够登录。</p>
+<h3 id="6ssl--tls">6.使用SSL / TLS保护传输</h3>
 <p>为了使用SSL / TLS加密FTP传输，您需要拥有SSL证书并配置FTP服务器才能使用它。</p>
-
 <p>您可以使用由受信任的证书颁发机构签名的现有SSL证书，也可以创建自签名证书。</p>
-
-<p>如果您有指向FTP服务器IP地址的域或子域，则可以轻松生成免费的<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">Let&rsquo;s Encrypt</a> SSL证书。</p>
-
+<p>如果您有指向FTP服务器IP地址的域或子域，则可以轻松生成免费的<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">Let's Encrypt</a> SSL证书。</p>
 <p>在本教程中，我们将使用该命令生成<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名SSL证书</a><code>openssl</code>。</p>
-
 <p>以下命令将创建一个2048位私钥和自签名证书，有效期为10年。私钥和证书都将保存在同一个文件中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/vsftpd/vsftpd.pem -out /etc/vsftpd/vsftpd.pem</code></pre></div>
-<p>创建SSL证书后，打开vsftpd配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/vsftpd/vsftpd.conf</code></pre></div>
-<p>找到<code>rsa_cert_file</code>和<code>rsa_private_key_file</code>指令，将它们的值更改为<code>pam</code>文件路径并将<code>ssl_enable</code>指令设置为<code>YES</code>：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/vsftpd/vsftpd.pem -out /etc/vsftpd/vsftpd.pem
+</code></pre><p>创建SSL证书后，打开vsftpd配置文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/vsftpd/vsftpd.conf
+</code></pre><p>找到<code>rsa_cert_file</code>和<code>rsa_private_key_file</code>指令，将它们的值更改为<code>pam</code>文件路径并将<code>ssl_enable</code>指令设置为<code>YES</code>：</p>
 <p>/etc/vsftpd/vsftpd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">rsa_cert_file</span><span class="o">=</span><span class="s">/etc/vsftpd/vsftpd.pem</span>
 <span class="na">rsa_private_key_file</span><span class="o">=</span><span class="s">/etc/vsftpd/vsftpd.pem</span>
-<span class="na">ssl_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
-<p>如果没有另外指定，FTP服务器将仅使用TLS进行安全连接。</p>
-
-<h3 id="重新启动vsftpd服务">重新启动vsftpd服务</h3>
-
+<span class="na">ssl_enable</span><span class="o">=</span><span class="s">YES</span>
+</code></pre></div><p>如果没有另外指定，FTP服务器将仅使用TLS进行安全连接。</p>
+<h3 id="vsftpd1">重新启动vsftpd服务</h3>
 <p>完成编辑后，vsftpd配置文件（不包括注释）应如下所示：</p>
-
 <p>/etc/vsftpd/vsftpd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="na">anonymous_enable</span><span class="o">=</span><span class="s">NO</span>
 <span class="na">local_enable</span><span class="o">=</span><span class="s">YES</span>
@@ -296,58 +251,50 @@
 <span class="na">pasv_max_port</span><span class="o">=</span><span class="s">31000</span>
 <span class="na">rsa_cert_file</span><span class="o">=</span><span class="s">/etc/vsftpd/vsftpd.pem</span>
 <span class="na">rsa_private_key_file</span><span class="o">=</span><span class="s">/etc/vsftpd/vsftpd.pem</span>
-<span class="na">ssl_enable</span><span class="o">=</span><span class="s">YES</span></code></pre></div>
-<p>保存文件并重新启动vsftpd服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart vsftpd</code></pre></div>
-<h2 id="打开防火墙">打开防火墙</h2>
-
+<span class="na">ssl_enable</span><span class="o">=</span><span class="s">YES</span>
+</code></pre></div><p>保存文件并重新启动vsftpd服务以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart vsftpd
+</code></pre><h2 id="heading1">打开防火墙</h2>
 <p>如果您正在运行<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙</a>，则需要允许FTP通信。</p>
-
 <p>要打开端口<code>21</code>（FTP命令端口），端口<code>20</code>（FTP数据端口）和<code>30000-31000</code>（被动端口范围），请发出以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --add-port=20-21/tcpsudo firewall-cmd --permanent --add-port=30000-31000/tcp</code></pre></div>
-<p>键入以下内容重新加载防火墙规则：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">firewall-cmd --reload</code></pre></div>
-<h2 id="创建ftp用户">创建FTP用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --add-port=20-21/tcpsudo firewall-cmd --permanent --add-port=30000-31000/tcp
+</code></pre><p>键入以下内容重新加载防火墙规则：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">firewall-cmd --reload
+</code></pre><h2 id="ftp">创建FTP用户</h2>
 <p>为了测试我们的FTP服务器，我们将创建一个新用户。</p>
-
 <ul>
 <li>如果您已经拥有要授予FTP访问权限的用户，请跳过第1步。</li>
 <li>如果<code>allow_writeable_chroot=YES</code>在配置文件中设置，请跳过第3步。</li>
 </ul>
-
 <ol>
-<li><p>创建一个名为的新用户<code>newftpuser</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo adduser newftpuser</code></pre></div>
-<p>接下来，您需要设置用户密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo passwd newftpuser</code></pre></div></li>
-
-<li><p>将用户添加到允许的FTP用户列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;newftpuser&#34; | sudo tee -a /etc/vsftpd/user_list</code></pre></div></li>
-
-<li><p>创建FTP目录树并设置正确的权限：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /home/newftpuser/ftp/uploadsudo chmod 550 /home/newftpuser/ftpsudo chmod 750 /home/newftpuser/ftp/uploadsudo chown -R newftpuser: /home/newftpuser/ftp</code></pre></div>
-<p>如上一节所述，用户可以将其文件上传到<code>ftp/upload</code>目录。</p></li>
+<li>
+<p>创建一个名为的新用户<code>newftpuser</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo adduser newftpuser
+</code></pre><p>接下来，您需要设置用户密码：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo passwd newftpuser
+</code></pre></li>
+<li>
+<p>将用户添加到允许的FTP用户列表：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;newftpuser&quot; | sudo tee -a /etc/vsftpd/user_list
+</code></pre></li>
+<li>
+<p>创建FTP目录树并设置正确的权限：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /home/newftpuser/ftp/uploadsudo chmod 550 /home/newftpuser/ftpsudo chmod 750 /home/newftpuser/ftp/uploadsudo chown -R newftpuser: /home/newftpuser/ftp
+</code></pre><p>如上一节所述，用户可以将其文件上传到<code>ftp/upload</code>目录。</p>
+</li>
 </ol>
-
 <p>此时，您的FTP服务器功能齐全，您应该可以使用任何可配置为使用TLS加密的FTP客户端（如<a href="https://filezilla-project.org/">FileZilla）</a>连接到您的服务器。</p>
-
-<h2 id="禁用shell访问">禁用Shell访问</h2>
-
+<h2 id="shell">禁用Shell访问</h2>
 <p>默认情况下，在创建用户时，如果未明确指定，则用户将具有对服务器的SSH访问权限。</p>
-
 <p>要禁用shell访问，我们将创建一个新的shell，它只会打印一条消息，告诉用户他们的帐户仅限于FTP访问。</p>
-
 <p>运行以下命令以创建<code>/bin/ftponly</code>shell并使其可执行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo -e &#39;#!/bin/sh\necho &#34;This account is limited to FTP access only.&#34;&#39; | sudo tee -a  /bin/ftponlysudo chmod a+x /bin/ftponly</code></pre></div>
-<p>将新shell附加到<code>/etc/shells</code>文件中的有效shell列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#34;/bin/ftponly&#34; | sudo tee -a /etc/shells</code></pre></div>
-<p>将用户shell更改为<code>/bin/ftponly</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo usermod newftpuser -s /bin/ftponly</code></pre></div>
-<p>使用相同的命令更改要仅​​提供FTP访问权限的其他用户的shell。</p>
-
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">echo -e '#!/bin/sh\necho &quot;This account is limited to FTP access only.&quot;' | sudo tee -a  /bin/ftponlysudo chmod a+x /bin/ftponly
+</code></pre><p>将新shell附加到<code>/etc/shells</code>文件中的有效shell列表：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;/bin/ftponly&quot; | sudo tee -a /etc/shells
+</code></pre><p>将用户shell更改为<code>/bin/ftponly</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod newftpuser -s /bin/ftponly
+</code></pre><p>使用相同的命令更改要仅​​提供FTP访问权限的其他用户的shell。</p>
+<h2 id="heading2">结论</h2>
 <p>在本教程中，您学习了如何在CentOS 7系统上安装和配置安全，快速的FTP服务器。</p>
       </div><ul class="pa0">
   
@@ -421,27 +368,25 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#在centos-7上安装vsftpd">在CentOS 7上安装vsftpd</a></li>
-<li><a href="#配置vsftpd">配置vsftpd</a>
-<ul>
-<li><a href="#1-ftp访问">1. FTP访问</a></li>
-<li><a href="#2-启用上传">2.启用上传</a></li>
-<li><a href="#3-chroot-jail">3. Chroot Jail</a></li>
-<li><a href="#4-被动ftp连接">4.被动FTP连接</a></li>
-<li><a href="#5-限制用户登录">5.限制用户登录</a></li>
-<li><a href="#6-使用ssl-tls保护传输">6.使用SSL / TLS保护传输</a></li>
-<li><a href="#重新启动vsftpd服务">重新启动vsftpd服务</a></li>
-</ul></li>
-<li><a href="#打开防火墙">打开防火墙</a></li>
-<li><a href="#创建ftp用户">创建FTP用户</a></li>
-<li><a href="#禁用shell访问">禁用Shell访问</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#centos-7vsftpd">在CentOS 7上安装vsftpd</a></li>
+    <li><a href="#vsftpd">配置vsftpd</a>
+      <ul>
+        <li><a href="#1-ftp">1\. FTP访问</a></li>
+        <li><a href="#2">2.启用上传</a></li>
+        <li><a href="#3-chroot-jail">3\. Chroot Jail</a></li>
+        <li><a href="#4ftp">4.被动FTP连接</a></li>
+        <li><a href="#5">5.限制用户登录</a></li>
+        <li><a href="#6ssl--tls">6.使用SSL / TLS保护传输</a></li>
+        <li><a href="#vsftpd1">重新启动vsftpd服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading1">打开防火墙</a></li>
+    <li><a href="#ftp">创建FTP用户</a></li>
+    <li><a href="#shell">禁用Shell访问</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

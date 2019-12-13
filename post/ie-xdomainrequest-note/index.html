@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2013-07-13T00:00:00+00:00" />
 <meta itemprop="name" content="IE XDomainRequest 学习笔记">
 <meta itemprop="description" content="W3C CORS（跨域资源共享）是对于跨域请求的一个规范，目前各个主流浏览器都实现了这个规范，IE8开始，增加了XDomainRequest作为跨域请求的对象，而Firefox与Chrom则CORS直接实现在XMLHttpRequest对象中，更方便使用。不过IE10中，XMLHttpRequest对象也实现了CORS。本文主要总结 XDomainRequest 对象一些使用方法。">
-
-
 <meta itemprop="datePublished" content="2013-07-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-07-13T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="750">
 
 
 
-<meta itemprop="keywords" content="Web Front," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Web Front," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="IE XDomainRequest 学习笔记"/>
 <meta name="twitter:description" content="W3C CORS（跨域资源共享）是对于跨域请求的一个规范，目前各个主流浏览器都实现了这个规范，IE8开始，增加了XDomainRequest作为跨域请求的对象，而Firefox与Chrom则CORS直接实现在XMLHttpRequest对象中，更方便使用。不过IE10中，XMLHttpRequest对象也实现了CORS。本文主要总结 XDomainRequest 对象一些使用方法。"/>
 
@@ -141,54 +138,46 @@
           
   
           <p>W3C CORS（跨域资源共享）是对于跨域请求的一个规范，目前各个主流浏览器都实现了这个规范，IE8开始，增加了XDomainRequest作为跨域请求的对象，而Firefox与Chrom则CORS直接实现在XMLHttpRequest对象中，更方便使用。不过IE10中，XMLHttpRequest对象也实现了CORS。本文主要总结 XDomainRequest 对象一些使用方法。</p>
-
 <p>XDomainRequest 是个简单的实现，他仅有有限的几个方法供我们来调用，支持少数事件但足够。</p>
-
 <ul>
 <li>仅只是 GET 和 POST 两个方法。</li>
 <li>支持的事件有：onerror，onload，onprogress，ontimeout</li>
 <li>提供的方法：abort，open，send</li>
 <li>提供的属性：contentType， responseText，timeout</li>
 </ul>
-
 <p>以下是个一个典型的代码片段</p>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&#34;http://localhost:8084/Server/HandlerServlet&#34;</span><span class="p">;</span>
 
-<span class="kd">var</span> <span class="nx">xdr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XDomainRequest</span><span class="p">();</span>
-<span class="nx">xdr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>			
-	<span class="nx">alert</span><span class="p">(</span><span class="nx">xdr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
-<span class="p">};</span>
-<span class="nx">xdr</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;error&#34;</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">xdr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XDomainRequest</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>			
+	<span class="nx">alert</span><span class="p">(</span><span class="nx">xdr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">;</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;error&#34;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">;</span>
 
 <span class="nx">xdr</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
-<span class="nx">xdr</span><span class="p">.</span><span class="nx">ontimeout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;timeout&#34;</span><span class="p">);</span>
-<span class="p">};</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">ontimeout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;timeout&#34;</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">;</span>
 
-<span class="nx">xdr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;get&#34;</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
-<span class="nx">xdr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
-</code></pre></div>
-<p>注意，使用跨域的时候，如果需要使用跨域请求返回的内容，则需添加响应头 Access-Control-Allow-Origin:* ，* 代表了允许任何域使用响应的内容。在Java中的做法如下:</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">response</span><span class="p">.</span><span class="na">addHeader</span><span class="p">(</span><span class="s">&#34;Access-Control-Allow-Origin&#34;</span><span class="p">,</span> <span class="s">&#34;*&#34;</span><span class="p">);</span></code></pre></div>
-<p>上面是使用 GET 请求，然后再说一下使用 POST 请求的方式，这里有需要注意的地方，使用 POST 请求的代码片段如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">xdr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;post&#34;</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">postData</span> <span class="o">=</span> <span class="nb">encodeURI</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
-<span class="nx">xdr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&#34;num=1000&#34;</span><span class="p">);</span>
-</code></pre></div>
-<p>这里并没有什么需要注意的地方，需要注意的地方在服务端，在服务端你并不能从参数中获取到 POST 的数据，在java中你并不能通过 request.getParameter来获得num的内容，你只能从流里面读取出来，然后在自行解析，代码片段如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">BufferedReader</span> <span class="nf">br</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="na">getReader</span><span class="p">();</span>
-<span class="n">String</span> <span class="nf">s</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-<span class="k">while</span> <span class="p">((</span><span class="n">s</span> <span class="o">=</span> <span class="n">br</span><span class="p">.</span><span class="na">readLine</span><span class="p">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-	<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-<p>这可能是 XDomainRequest 的一个bug，也可能是故意这么实现的，这我们就不深究了，知道如何获取数据就可以了。</p>
-
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;get&#34;</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span><span class="p">;</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><p>注意，使用跨域的时候，如果需要使用跨域请求返回的内容，则需添加响应头 Access-Control-Allow-Origin:* ，* 代表了允许任何域使用响应的内容。在Java中的做法如下:</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">response</span><span class="o">.</span><span class="na">addHeader</span><span class="o">(</span><span class="s">&#34;Access-Control-Allow-Origin&#34;</span><span class="o">,</span> <span class="s">&#34;*&#34;</span><span class="o">)</span><span class="o">;</span>
+</code></pre></div><p>上面是使用 GET 请求，然后再说一下使用 POST 请求的方式，这里有需要注意的地方，使用 POST 请求的代码片段如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">xdr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&#34;post&#34;</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">postData</span> <span class="o">=</span> <span class="nb">encodeURI</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+<span class="nx">xdr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&#34;num=1000&#34;</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><p>这里并没有什么需要注意的地方，需要注意的地方在服务端，在服务端你并不能从参数中获取到 POST 的数据，在java中你并不能通过 request.getParameter来获得num的内容，你只能从流里面读取出来，然后在自行解析，代码片段如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getReader</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="k">while</span> <span class="o">(</span><span class="o">(</span><span class="n">s</span> <span class="o">=</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">(</span><span class="o">)</span><span class="o">)</span> <span class="o">!</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>这可能是 XDomainRequest 的一个bug，也可能是故意这么实现的，这我们就不深究了，知道如何获取数据就可以了。</p>
 <p>不管如何，XDomainRequest毕竟给我提供了一个跨域请求的方式，在Ajax开发中，如果有跨域请求，且浏览器版本在IE10以下， XDomainRequest 给了我们一个捷径。</p>
-
 <p>参考：</p>
-
 <p><a href="http://msdn.microsoft.com/en-us/library/ie/cc288060(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/ie/cc288060(v=vs.85).aspx</a></p>
       </div><ul class="pa0">
   

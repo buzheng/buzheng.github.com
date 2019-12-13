@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2013-03-11T00:00:00+00:00" />
 <meta itemprop="name" content="利用javascript事件的特性高效的为子元素绑定操作">
 <meta itemprop="description" content="有这样一道javascript题目：在如下dom结构中，如何高效的给li元素绑定click事件，在用户单击li元素时能够提示li中的内容？ &lt;ul&gt;">
-
-
 <meta itemprop="datePublished" content="2013-03-11T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-03-11T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="444">
+<meta itemprop="wordCount" content="450">
 
 
 
-<meta itemprop="keywords" content="Web Front," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Web Front," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="利用javascript事件的特性高效的为子元素绑定操作"/>
 <meta name="twitter:description" content="有这样一道javascript题目：在如下dom结构中，如何高效的给li元素绑定click事件，在用户单击li元素时能够提示li中的内容？ &lt;ul&gt;"/>
 
@@ -141,36 +138,34 @@
           
   
           <p>有这样一道javascript题目：在如下dom结构中，如何高效的给li元素绑定click事件，在用户单击li元素时能够提示li中的内容？</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span> 
-    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>xxx<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span> 
-    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>xxx<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span> 
-    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>xxx<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span> 
-    <span class="c">&lt;!-- 后续还有大量li元素 --&gt;</span> 
-<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span></code></pre></div>
-<p>最初想法就是遍历每个li元素，循环给li绑定onclick事件，如同下面的代码一样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">ul</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">);</span> 
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span> 
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span>xxx<span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span> 
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span>xxx<span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span> 
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span>xxx<span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span> 
+    <span class="c">&lt;!--</span><span class="c"> 后续还有大量li元素 </span><span class="c">--&gt;</span> 
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</code></pre></div><p>最初想法就是遍历每个li元素，循环给li绑定onclick事件，如同下面的代码一样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">ul</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">)</span><span class="p">;</span> 
  
-    <span class="kd">var</span> <span class="nx">lis</span> <span class="o">=</span> <span class="nx">ul</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">lis</span> <span class="o">=</span> <span class="nx">ul</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">)</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">lis</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">lis</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">);</span>
+        <span class="nx">lis</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">)</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">};</span>
-</code></pre></div>
-<p>这种想法当然是最简单最直观也是正确的，但是存在一点问题，当dom中的li元素特别多的时候，这样循环遍历的绑定操作势必会站用大量的资源，这时候我们可以使用事件的一些特性，将操作绑定到li的父元素ul上面，当事件触发的时候，从event对象的属性中获取当前操作的对象，然后再完成其他的操作。如下面代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">ul</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">);</span>
+<span class="p">}</span><span class="p">;</span>
+</code></pre></div><p>这种想法当然是最简单最直观也是正确的，但是存在一点问题，当dom中的li元素特别多的时候，这样循环遍历的绑定操作势必会站用大量的资源，这时候我们可以使用事件的一些特性，将操作绑定到li的父元素ul上面，当事件触发的时候，从event对象的属性中获取当前操作的对象，然后再完成其他的操作。如下面代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">ul</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">)</span><span class="p">;</span>
  
     <span class="nx">ul</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">e</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span> <span class="o">?</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span> <span class="o">:</span> <span class="nx">e</span><span class="p">;</span>
         <span class="kd">var</span> <span class="nx">who</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span> <span class="o">?</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span> <span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">srcElement</span><span class="p">;</span>
-        <span class="nx">alert</span><span class="p">(</span><span class="nx">who</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">);</span>
-    <span class="p">};</span>
-<span class="p">};</span>
-</code></pre></div>
-<p>这里我们用到了Event对象的target属性，该属性能够获取事件发生所在的元素。当然在IE下，该功能被srcElement代替。这种方式无疑是简练和高效的，除了照顾浏览器兼容多带来的几行代码外，这段代码多美妙啊。</p>
+        <span class="nx">alert</span><span class="p">(</span><span class="nx">who</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">;</span>
+<span class="p">}</span><span class="p">;</span>
+</code></pre></div><p>这里我们用到了Event对象的target属性，该属性能够获取事件发生所在的元素。当然在IE下，该功能被srcElement代替。这种方式无疑是简练和高效的，除了照顾浏览器兼容多带来的几行代码外，这段代码多美妙啊。</p>
 
       </div><ul class="pa0">
   

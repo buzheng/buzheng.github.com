@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 Drupal" />
 <meta property="og:description" content="Drupal 是全球最受欢迎的开源 CMS 平台之一。在本教程中，我们将向您展示如何在 Ubuntu 18.04 系统上安装 Drupal 8.5 。
-
 有多种方法可以安装 Drupal 。本教程介绍了安装 Drupal 8.5 所需的步骤，安装过程使用了 composer template for Drupal projects (被称作 drupal-project) 。
-
 我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-drupal-on-ubuntu-18-04/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-03-16T06:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 Drupal">
 <meta itemprop="description" content="Drupal 是全球最受欢迎的开源 CMS 平台之一。在本教程中，我们将向您展示如何在 Ubuntu 18.04 系统上安装 Drupal 8.5 。
-
 有多种方法可以安装 Drupal 。本教程介绍了安装 Drupal 8.5 所需的步骤，安装过程使用了 composer template for Drupal projects (被称作 drupal-project) 。
-
 我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。">
-
-
 <meta itemprop="datePublished" content="2019-03-16T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-16T06:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2290">
+<meta itemprop="wordCount" content="2312">
 
 
 
-<meta itemprop="keywords" content="ubuntu,drupal,mysql,php," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,drupal,mysql,php," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 Drupal"/>
 <meta name="twitter:description" content="Drupal 是全球最受欢迎的开源 CMS 平台之一。在本教程中，我们将向您展示如何在 Ubuntu 18.04 系统上安装 Drupal 8.5 。
-
 有多种方法可以安装 Drupal 。本教程介绍了安装 Drupal 8.5 所需的步骤，安装过程使用了 composer template for Drupal projects (被称作 drupal-project) 。
-
 我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。"/>
 
   </head>
@@ -136,7 +127,7 @@
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 2300 字</span>
+          <span class="f6 dib tracked">约 2400 字</span>
           <span class="f6 dib tracked">, 预计阅读时间 7 分钟</span>
         
       </div>
@@ -153,102 +144,84 @@
           
   
           <p>Drupal 是全球最受欢迎的开源 CMS 平台之一。在本教程中，我们将向您展示如何在 Ubuntu 18.04 系统上安装 Drupal 8.5 。</p>
-
 <p>有多种方法可以安装 Drupal 。本教程介绍了安装 Drupal 8.5 所需的步骤，安装过程使用了 composer template for Drupal projects (被称作 drupal-project) 。</p>
-
 <p>我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2 和 MySQL / MariaDB 作为数据库服务器。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>您有一个指向公共服务器 IP 的域名。在本教程中我们将使用 <code>example.com</code> 。</li>
 <li>您已经按照这些<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">说明</a>安装了 Nginx  。</li>
-<li>您已为您的域名安装了 SSL 证书。您可以按照这些说明<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">安装免费的 Let&rsquo;s Encrypt SSL 证书</a>。</li>
+<li>您已为您的域名安装了 SSL 证书。您可以按照这些说明<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">安装免费的 Let's Encrypt SSL 证书</a>。</li>
 </ul>
-
-<h2 id="开始之前">开始之前</h2>
-
+<h2 id="heading1">开始之前</h2>
 <p>将软件包索引和系统软件包更新到最新版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade</code></pre></div>
-<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
-
-<p>如果您的服务器上安装了 <!--link:how-to-install-mysql-on-ubuntu-18-04-->MySQL<!--link--> 或 <!--link:how-to-install-mariadb-on-ubuntu-18-04-->MariaDB<!--link--> ，则可以跳过此步骤，否则可以通过输入以下命令从 Ubuntu 的自有软件仓库安装 MySQL 5.7 服务器包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install mysql-server</code></pre></div>
-<blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade
+</code></pre></div><h2 id="-mysql-">创建 MySQL 数据库</h2>
+<p>如果您的服务器上安装了 <!-- raw HTML omitted -->MySQL<!-- raw HTML omitted --> 或 <!-- raw HTML omitted -->MariaDB<!-- raw HTML omitted --> ，则可以跳过此步骤，否则可以通过输入以下命令从 Ubuntu 的自有软件仓库安装 MySQL 5.7 服务器包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install mysql-server
+</code></pre></div><blockquote>
 <p>对于全新的 MySQL 安装，建议运行 <code>mysql_secure_installation</code> 命令以提高 MySQL 服务器的安全性。</p>
 </blockquote>
-
 <p>现在我们需要登录 MySQL shell 并创建一个新的数据库和用户帐户，并为用户提供适当的授权权限。</p>
-
 <p>要登录 MySQL shell ，请输入以下命令，并在出现提示时输入密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p</code></pre></div>
-<p>通过运行以下命令来<!--link:how-to-create-a-mysql-database-->创建数据库<!--link-->(数据库名为 <code>drupal</code>)，创建用户(用户名为 <code>drupaluser</code>)， 并为<!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->用户授予必要的权限<!--link--></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p
+</code></pre></div><p>通过运行以下命令来<!-- raw HTML omitted -->创建数据库<!-- raw HTML omitted -->(数据库名为 <code>drupal</code>)，创建用户(用户名为 <code>drupaluser</code>)， 并为<!-- raw HTML omitted -->用户授予必要的权限<!-- raw HTML omitted --></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE drupal CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci<span class="p">;</span>
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON drupal.* TO <span class="s1">&#39;drupaluser&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;change-with-strong-password&#39;</span><span class="p">;</span></code></pre></div>
-<h2 id="安装-php">安装 PHP</h2>
-
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES ON drupal.* TO <span class="s1">&#39;drupaluser&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;change-with-strong-password&#39;</span><span class="p">;</span>
+</code></pre></div><h2 id="-php">安装 PHP</h2>
 <p><a href="/linux/how-to-install-php-on-ubuntu-18-04/">PHP 7.2 </a> 是 Ubuntu 18.04 中的默认 PHP 版本，是 Drupal 8.5 完全支持并推荐使用的版本。由于我们将使用 Nginx 作为 Web 服务器，我们也将安装 PHP-FPM 。</p>
-
 <p>请运行以下命令安装所有必需的 PHP 模块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install php7.2-cli php7.2-fpm php7.2-mysql php7.2-json php7.2-opcache php7.2-mbstring php7.2-xml php7.2-gd php7.2-curl</code></pre></div>
-<p>安装过程完成后， PHP-FPM 服务将自动启动，您可以通过打印服务状态来验证它：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">systemctl status php7.2-fpm</code></pre></div>
-<p>输出应显示 fpm 服务处于活动状态并正在运行。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● php7.2-fpm.service - The PHP <span class="m">7</span>.2 FastCGI Process Manager
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install php7.2-cli php7.2-fpm php7.2-mysql php7.2-json php7.2-opcache php7.2-mbstring php7.2-xml php7.2-gd php7.2-curl
+</code></pre></div><p>安装过程完成后， PHP-FPM 服务将自动启动，您可以通过打印服务状态来验证它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">systemctl status php7.2-fpm
+</code></pre></div><p>输出应显示 fpm 服务处于活动状态并正在运行。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● php7.2-fpm.service - The PHP 7.2 FastCGI Process Manager
    Loaded: loaded <span class="o">(</span>/lib/systemd/system/php7.2-fpm.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
-   Active: active <span class="o">(</span>running<span class="o">)</span> since Sat <span class="m">2018</span>-05-19 <span class="m">19</span>:54:13 UTC<span class="p">;</span> 9h ago
-     Docs: man:php-fpm7.2<span class="o">(</span><span class="m">8</span><span class="o">)</span>
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Sat 2018-05-19 19:54:13 UTC<span class="p">;</span> 9h ago
+     Docs: man:php-fpm7.2<span class="o">(</span>8<span class="o">)</span>
  Main PID: <span class="m">17781</span> <span class="o">(</span>php-fpm7.2<span class="o">)</span>
    Status: <span class="s2">&#34;Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0req/sec&#34;</span>
-    Tasks: <span class="m">3</span> <span class="o">(</span>limit: <span class="m">507</span><span class="o">)</span>
+    Tasks: <span class="m">3</span> <span class="o">(</span>limit: 507<span class="o">)</span>
    CGroup: /system.slice/php7.2-fpm.service
            ├─17781 php-fpm: master process <span class="o">(</span>/etc/php/7.2/fpm/php-fpm.conf<span class="o">)</span>
            ├─17796 php-fpm: pool www
-           └─17797 php-fpm: pool www</code></pre></div>
-<h2 id="安装-composer">安装 Composer</h2>
-
+           └─17797 php-fpm: pool www
+</code></pre></div><h2 id="-composer">安装 Composer</h2>
 <p>Composer 是 PHP 的依赖管理器，我们将使用它来下载 Drupal 模板并安装所有必需的 Drupal 组件。</p>
-
-<p>要全局<!--link:how-to-install-and-use-composer-on-ubuntu-18-04-->安装 composer<!--link--> ，请使用 <a href="/linux/curl-command-examples/">curl</a> 下载 Composer 安装程序并将文件移动到 <code>/usr/local/bin</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -sS https://getcomposer.org/installer <span class="p">|</span> sudo php -- --install-dir<span class="o">=</span>/usr/local/bin --filename<span class="o">=</span>composer</code></pre></div>
-<p>通过打印 composer 版本验证安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">composer --version</code></pre></div>
-<p>输出应该如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Composer version <span class="m">1</span>.6.5 <span class="m">2018</span>-05-04 <span class="m">11</span>:44:59</code></pre></div>
-<h2 id="安装-drupal">安装 Drupal</h2>
-
+<p>要全局<!-- raw HTML omitted -->安装 composer<!-- raw HTML omitted --> ，请使用 <a href="/linux/curl-command-examples/">curl</a> 下载 Composer 安装程序并将文件移动到 <code>/usr/local/bin</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -sS https://getcomposer.org/installer <span class="p">|</span> sudo php -- --install-dir<span class="o">=</span>/usr/local/bin --filename<span class="o">=</span>composer
+</code></pre></div><p>通过打印 composer 版本验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">composer --version
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Composer version 1.6.5 2018-05-04 11:44:59
+</code></pre></div><h2 id="-drupal">安装 Drupal</h2>
 <p>现在，我们已经安装了 composer，我们可以继续使用的 composer <a href="https://github.com/drupal-composer/drupal-project">模板</a>在 <code>/var/www/my_drupal</code> 目录里面创建一个新的 Drupal 项目：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo composer create-project drupal-composer/drupal-project:8.x-dev /var/www/my_drupal --stability dev --no-interaction</code></pre></div>
-<p>上面的命令将下载模板，获取所有必需的 php 包并运行一些脚本来准备我们的项目进行安装。该过程可能需要几分钟，如果成功，输出结束应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo composer create-project drupal-composer/drupal-project:8.x-dev /var/www/my_drupal --stability dev --no-interaction
+</code></pre></div><p>上面的命令将下载模板，获取所有必需的 php 包并运行一些脚本来准备我们的项目进行安装。该过程可能需要几分钟，如果成功，输出结束应如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Create a sites/default/settings.php file with chmod <span class="m">0666</span>
-Create a sites/default/files directory with chmod <span class="m">0777</span></code></pre></div>
-<p>下一步是使用 Drush 安装 Drupal 。在下面的命令中，我们传递刚刚创建的 MySQL 数据库和用户信息：</p>
+Create a sites/default/files directory with chmod <span class="m">0777</span>
+</code></pre></div><p>下一步是使用 Drush 安装 Drupal 。在下面的命令中，我们传递刚刚创建的 MySQL 数据库和用户信息：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/www/my_drupal
-sudo vendor/bin/drush site-install --db-url<span class="o">=</span>mysql://drupaluser:change-with-strong-password@localhost/drupal</code></pre></div>
-<p>安装程序将提示您以下消息，只需按 <code>Enter</code> 键继续。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">You are about to DROP all tables in your <span class="s1">&#39;drupal&#39;</span> database. Do you want to <span class="k">continue</span>? <span class="o">(</span>yes/no<span class="o">)</span> <span class="o">[</span>yes<span class="o">]</span>:</code></pre></div>
-<p>安装完成后，脚本将打印管理员用户名和密码。输出应如下所示：</p>
+sudo vendor/bin/drush site-install --db-url<span class="o">=</span>mysql://drupaluser:change-with-strong-password@localhost/drupal
+</code></pre></div><p>安装程序将提示您以下消息，只需按 <code>Enter</code> 键继续。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">You are about to DROP all tables in your <span class="s1">&#39;drupal&#39;</span> database. Do you want to <span class="k">continue</span>? <span class="o">(</span>yes/no<span class="o">)</span> <span class="o">[</span>yes<span class="o">]</span>:
+</code></pre></div><p>安装完成后，脚本将打印管理员用户名和密码。输出应如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>notice<span class="o">]</span> Starting Drupal installation. This takes a <span class="k">while</span>. Consider using the --notify global option.
-<span class="o">[</span>success<span class="o">]</span> Installation complete.  User name: admin  User password: XRkC9Q5WN9</code></pre></div>
-<p>最后，我们需要设置正确的权限，以便 Web 服务器可以完全访问站点的文件和目录。 Nginx 和 PHP 都以 www-data 用户和 www-data 组的形式运行，因此我们需要发出以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/my_drupal</code></pre></div>
-<h2 id="配置-nginx">配置 Nginx</h2>
-
+<span class="o">[</span>success<span class="o">]</span> Installation complete.  User name: admin  User password: XRkC9Q5WN9
+</code></pre></div><p>最后，我们需要设置正确的权限，以便 Web 服务器可以完全访问站点的文件和目录。 Nginx 和 PHP 都以 www-data 用户和 www-data 组的形式运行，因此我们需要发出以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/my_drupal
+</code></pre></div><h2 id="-nginx">配置 Nginx</h2>
 <p>到目前为止，您应该已经在系统上安装了 Nginx 和 SSL 证书，如果没有，请查看本教程的先决条件。</p>
-
 <p>要为我们的新 Drupal 项目创建一个新的服务器块，我们将使用官方 Nginx 站点的 <a href="https://www.nginx.com/resources/wiki/start/topics/recipes/drupal/">Nginx recipe</a>。</p>
-
 <p>打开文本编辑器并创建以下文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/example.com</code></pre></div>
-<p><code>/etc/nginx/sites-available/example.com</code> 的内容</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/sites-available/example.com
+</code></pre></div><p><code>/etc/nginx/sites-available/example.com</code> 的内容</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Redirect HTTP -&gt; HTTPS
 </span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -260,7 +233,7 @@ sudo vendor/bin/drush site-install --db-url<span class="o">=</span>mysql://drupa
     <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
 
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
@@ -275,7 +248,7 @@ sudo vendor/bin/drush site-install --db-url<span class="o">=</span>mysql://drupa
 </span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
 
     <span class="c1"># log files
 </span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
@@ -357,36 +330,29 @@ sudo vendor/bin/drush site-install --db-url<span class="o">=</span>mysql://drupa
         <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
     <span class="p">}</span>
 
-<span class="p">}</span></code></pre></div>
-<blockquote>
+<span class="p">}</span>
+</code></pre></div><blockquote>
 <p>不要忘记将 example.com 替换为 Drupal 域，并设置 SSL 证书文件的正确路径。此配置中使用的片段在<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本指南</a>中创建。</p>
 </blockquote>
-
 <p>通过创建指向 <code>sites-enabled</code> 目录的符号链接来启用服务器块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/</code></pre></div>
-<p>在重新启动 Nginx 服务之前，请进行测试以确保没有语法错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -t</code></pre></div>
-<p>如果没有错误，输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+</code></pre></div><p>在重新启动 Nginx 服务之前，请进行测试以确保没有语法错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nginx -t
+</code></pre></div><p>如果没有错误，输出应如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful</code></pre></div>
-<p>最后，输入以下命令重启 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx</code></pre></div>
-<h2 id="测试安装">测试安装</h2>
-
+nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful
+</code></pre></div><p>最后，输入以下命令重启 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx
+</code></pre></div><h2 id="heading2">测试安装</h2>
 <p>打开浏览器，输入您的域名，如果安装成功将出现类似于以下内容的屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-drupal-on-ubuntu-18-04/drupal.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-drupal-on-ubuntu-18-04/drupal.jpg" alt=""></p>
 <p>您可以以管理员身份登录并开始自定义新的 Drupal 安装。</p>
-
-<h2 id="安装-drupal-模块和主题">安装 Drupal 模块和主题</h2>
-
+<h2 id="-drupal-">安装 Drupal 模块和主题</h2>
 <p>现在您已经安装了 Drupal 项目，您将需要安装一些模块和主题。 Drupal 模块和主题托管在自定义 composer 存储库上，其中的 drupal-project 让我们开箱即用。</p>
-
 <p>要安装模块或主题，您只需要进入 <code>cd</code> 项目目录并输入 <code>composer require drupal/module_or_theme_name</code> 。例如，如果我们要安装 <a href="https://www.drupal.org/project/pathauto">Pathauto</a> 模块，我们需要运行以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/www/my_drupal
-sudo -u www-data composer require drupal/pathauto</code></pre></div>
-<blockquote>
+sudo -u www-data composer require drupal/pathauto
+</code></pre></div><blockquote>
 <p>通过前置 <code>sudo -u www-data</code> , 我们以用户 <code>www-data</code> 身份运行命令</p>
 </blockquote>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Using version ^1.2 <span class="k">for</span> drupal/pathauto
@@ -395,29 +361,25 @@ sudo -u www-data composer require drupal/pathauto</code></pre></div>
 Loading composer repositories with package information
 Updating dependencies <span class="o">(</span>including require-dev<span class="o">)</span>
 Package operations: <span class="m">3</span> installs, <span class="m">0</span> updates, <span class="m">0</span> removals
-  - Installing drupal/token <span class="o">(</span><span class="m">1</span>.1.0<span class="o">)</span>: Downloading <span class="o">(</span><span class="m">100</span>%<span class="o">)</span>
-  - Installing drupal/ctools <span class="o">(</span><span class="m">3</span>.0.0<span class="o">)</span>: Downloading <span class="o">(</span><span class="m">100</span>%<span class="o">)</span>
-  - Installing drupal/pathauto <span class="o">(</span><span class="m">1</span>.2.0<span class="o">)</span>: Downloading <span class="o">(</span><span class="m">100</span>%<span class="o">)</span>
+  - Installing drupal/token <span class="o">(</span>1.1.0<span class="o">)</span>: Downloading <span class="o">(</span>100%<span class="o">)</span>
+  - Installing drupal/ctools <span class="o">(</span>3.0.0<span class="o">)</span>: Downloading <span class="o">(</span>100%<span class="o">)</span>
+  - Installing drupal/pathauto <span class="o">(</span>1.2.0<span class="o">)</span>: Downloading <span class="o">(</span>100%<span class="o">)</span>
 Writing lock file
 Generating autoload files
-&gt; DrupalProject<span class="se">\c</span>omposer<span class="se">\S</span>criptHandler::createRequiredFiles</code></pre></div>
-<p>从上面的输出中可以看出， composer 还为我们安装了所有的包依赖项。</p>
-
-<h2 id="更新-drupal-核心">更新 Drupal 核心</h2>
-
+&gt; DrupalProject<span class="se">\c</span>omposer<span class="se">\S</span>criptHandler::createRequiredFiles
+</code></pre></div><p>从上面的输出中可以看出， composer 还为我们安装了所有的包依赖项。</p>
+<h2 id="-drupal-1">更新 Drupal 核心</h2>
 <p>在升级之前，最好备份文件和数据库。 您可以使用 <a href="https://www.drupal.org/project/backup_migrate">备份和迁移</a> 模块，也可以手动备份数据库和文件。</p>
-
 <p>要备份安装文件，可以使用以下的 <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">rsync 命令</a>，当然您需要使用安装目录的正确路径：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rsync -a /var/www/my_drupal/  /var/www/my_drupal_<span class="k">$(</span>date +%F<span class="k">)</span></code></pre></div>
-<p>要备份数据库，我们可以使用标准的 <a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">mysqldump 命令</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p &gt; /var/www/my_drupal_database_<span class="k">$(</span>date +%F<span class="k">)</span>.sql</code></pre></div>
-<p>或者使用 <code>drush sql-dump</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rsync -a /var/www/my_drupal/  /var/www/my_drupal_<span class="k">$(</span>date +%F<span class="k">)</span>
+</code></pre></div><p>要备份数据库，我们可以使用标准的 <a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">mysqldump 命令</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysqldump -u root -p &gt; /var/www/my_drupal_database_<span class="k">$(</span>date +%F<span class="k">)</span>.sql
+</code></pre></div><p>或者使用 <code>drush sql-dump</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/www/my_drupal
-vendor/bin/drush sql-dump &gt; /var/www/my_drupal_database_<span class="k">$(</span>date +%F<span class="k">)</span>.sql</code></pre></div>
-<p>现在我们创建了一个备份，我们可以通过运行以下命令继续并更新所有 Drupal 核心文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo -u www-data composer update drupal/core webflo/drupal-core-require-dev symfony/* --with-dependencies</code></pre></div>
-<h2 id="结论">结论</h2>
-
+vendor/bin/drush sql-dump &gt; /var/www/my_drupal_database_<span class="k">$(</span>date +%F<span class="k">)</span>.sql
+</code></pre></div><p>现在我们创建了一个备份，我们可以通过运行以下命令继续并更新所有 Drupal 核心文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo -u www-data composer update drupal/core webflo/drupal-core-require-dev symfony/* --with-dependencies
+</code></pre></div><h2 id="heading3">结论</h2>
 <p>恭喜，您已使用 composer 成功安装了 Drupal 8 ，并学习了如何安装模块和主题。您现在可以开始自定义您的网站了。 <a href="https://www.drupal.org/docs/user_guide/en/index.html">Drupal 8 用户指南</a>是一个很好的站点，可以了解更多有关如何管理您的 Drupal 安装。另外不要忘记访问 Github 上的 <a href="https://github.com/drupal-composer/drupal-project">Drupal Composer 模板</a>项目。</p>
       </div><ul class="pa0">
   
@@ -499,22 +461,19 @@ vendor/bin/drush sql-dump &gt; /var/www/my_drupal_database_<span class="k">$(</s
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#开始之前">开始之前</a></li>
-<li><a href="#创建-mysql-数据库">创建 MySQL 数据库</a></li>
-<li><a href="#安装-php">安装 PHP</a></li>
-<li><a href="#安装-composer">安装 Composer</a></li>
-<li><a href="#安装-drupal">安装 Drupal</a></li>
-<li><a href="#配置-nginx">配置 Nginx</a></li>
-<li><a href="#测试安装">测试安装</a></li>
-<li><a href="#安装-drupal-模块和主题">安装 Drupal 模块和主题</a></li>
-<li><a href="#更新-drupal-核心">更新 Drupal 核心</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">开始之前</a></li>
+    <li><a href="#-mysql-">创建 MySQL 数据库</a></li>
+    <li><a href="#-php">安装 PHP</a></li>
+    <li><a href="#-composer">安装 Composer</a></li>
+    <li><a href="#-drupal">安装 Drupal</a></li>
+    <li><a href="#-nginx">配置 Nginx</a></li>
+    <li><a href="#heading2">测试安装</a></li>
+    <li><a href="#-drupal-">安装 Drupal 模块和主题</a></li>
+    <li><a href="#-drupal-1">更新 Drupal 核心</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

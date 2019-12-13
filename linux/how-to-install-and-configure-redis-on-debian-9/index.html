@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在Debian 9上安装和配置Redis" />
 <meta property="og:description" content="Redis是一个开源的内存中键值数据存储。它可以用作数据库，缓存和消息代理，并支持各种数据结构，如字符串，散列，列表，集等.Redis通过Redis Sentinel提供高可用性，包括监控，通知自动故障转移。它还提供了使用Redis Cluster跨多个Redis节点的自动分区。
-
 本教程介绍如何在Debian 9服务器上安装和配置Redis。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-redis-on-debian-9/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Debian 9上安装和配置Redis">
 <meta itemprop="description" content="Redis是一个开源的内存中键值数据存储。它可以用作数据库，缓存和消息代理，并支持各种数据结构，如字符串，散列，列表，集等.Redis通过Redis Sentinel提供高可用性，包括监控，通知自动故障转移。它还提供了使用Redis Cluster跨多个Redis节点的自动分区。
-
 本教程介绍如何在Debian 9服务器上安装和配置Redis。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1081">
 
 
 
-<meta itemprop="keywords" content="redis,debian," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="redis,debian," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在Debian 9上安装和配置Redis"/>
 <meta name="twitter:description" content="Redis是一个开源的内存中键值数据存储。它可以用作数据库，缓存和消息代理，并支持各种数据结构，如字符串，散列，列表，集等.Redis通过Redis Sentinel提供高可用性，包括监控，通知自动故障转移。它还提供了使用Redis Cluster跨多个Redis节点的自动分区。
-
 本教程介绍如何在Debian 9服务器上安装和配置Redis。"/>
 
   </head>
@@ -147,76 +141,63 @@
           
   
           <p>Redis是一个开源的内存中键值数据存储。它可以用作数据库，缓存和消息代理，并支持各种数据结构，如字符串，散列，列表，集等.Redis通过Redis Sentinel提供高可用性，包括监控，通知自动故障转移。它还提供了使用Redis Cluster跨多个Redis节点的自动分区。</p>
-
 <p>本教程介绍如何在Debian 9服务器上安装和配置Redis。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录。</p>
-
-<h2 id="在debian上安装redis">在Debian上安装Redis</h2>
-
+<h2 id="debianredis">在Debian上安装Redis</h2>
 <p>Redis软件包包含在默认的Debian 9存储库中。安装非常简单，只需按照以下步骤操作：</p>
-
 <ol>
-<li><p>首先，通过发出以下命令来更新apt软件包列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre></div></li>
-
-<li><p>键入以下命令安装Redis：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install redis-server</code></pre></div></li>
-
-<li><p>安装完成后，Redis服务将自动启动。您可以通过键入以下内容来检查服务的状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl status redis-server</code></pre></div>
-<p>你应该看到这样的东西：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● redis-server.service - Advanced key-value store
+<li>
+<p>首先，通过发出以下命令来更新apt软件包列表：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+</code></pre></li>
+<li>
+<p>键入以下命令安装Redis：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install redis-server
+</code></pre></li>
+<li>
+<p>安装完成后，Redis服务将自动启动。您可以通过键入以下内容来检查服务的状态：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status redis-server
+</code></pre><p>你应该看到这样的东西：</p>
+<pre><code class="language-output" data-lang="output">● redis-server.service - Advanced key-value store
 Loaded: loaded (/lib/systemd/system/redis-server.service; enabled; vendor preset: enabled)
 Active: active (running) since Wed 2018-12-05 08:54:49 PST; 4min 52s ago
     Docs: http://redis.io/documentation,
         man:redis-server(1)
 Main PID: 1569 (redis-server)
 CGroup: /system.slice/redis-server.service
-        └─1569 /usr/bin/redis-server 127.0.0.1:6379</code></pre></div></li>
+        └─1569 /usr/bin/redis-server 127.0.0.1:6379
+</code></pre></li>
 </ol>
-
 <p>如果在服务器上禁用IPv6，Redis服务将无法启动。</p>
-
 <p>此时Redis已在Debian 9服务器上安装并运行，您可以开始使用它。</p>
-
-<h2 id="配置redis远程访问">配置Redis远程访问</h2>
-
+<h2 id="redis">配置Redis远程访问</h2>
 <p>默认情况下，无法从远程位置访问Redis。您只能从运行Redis的127.0.0.1（localhost）连接到Redis服务器。</p>
-
 <p>仅当您要从远程主机连接到Redis服务器时，请完成以下步骤。如果您使用单个服务器设置，应用程序和Redis在同一台计算机上运行，​​则不应启用远程访问。</p>
-
 <p>要将Redis配置为接受远程连接，请使用文本编辑器打开Redis配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/redis/redis.conf</code></pre></div>
-<p>搜索与开头的行<code>bind 127.0.0.1</code>和替换<code>127.0.0.1</code>用<code>0.0.0.0</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/redis/redis.conf
+</code></pre><p>搜索与开头的行<code>bind 127.0.0.1</code>和替换<code>127.0.0.1</code>用<code>0.0.0.0</code>。</p>
 <p>/etc/redis/redis.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"># IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
+<pre><code class="language-output" data-lang="output"># IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
 # JUST COMMENT THE FOLLOWING LINE.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-bind 0.0.0.0</code></pre></div>
-<p>保存文件并关闭编辑器。</p>
-
+bind 0.0.0.0
+</code></pre><p>保存文件并关闭编辑器。</p>
 <p>重新启动Redis服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart redis-server</code></pre></div>
-<p>使用以下命令验证Redis是否正在侦听端口上的所有接口<code>6379</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ss -an | grep 6379</code></pre></div>
-<p>您应该看到如下所示的内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">tcp    LISTEN     0      128       *:6379                  *:*</code></pre></div>
-<p>接下来，您需要添加防火墙规则，以便在TCP端口上启用来自远程计算机的流量<code>6379</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart redis-server
+</code></pre><p>使用以下命令验证Redis是否正在侦听端口上的所有接口<code>6379</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ss -an | grep 6379
+</code></pre><p>您应该看到如下所示的内容：</p>
+<pre><code class="language-output" data-lang="output">tcp    LISTEN     0      128       *:6379                  *:*
+</code></pre><p>接下来，您需要添加防火墙规则，以便在TCP端口上启用来自远程计算机的流量<code>6379</code>。</p>
 <p>假设您正在使用<a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/"><code>UFW</code></a>管理防火墙并且希望允许从<code>192.168.121.0/24</code>子网进行访问，则可以运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow proto tcp from 192.168.121.0/24 to any port 6379</code></pre></div>
-<p>确保您的防火墙配置为仅接受来自可信IP范围的连接。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow proto tcp from 192.168.121.0/24 to any port 6379
+</code></pre><p>确保您的防火墙配置为仅接受来自可信IP范围的连接。</p>
 <p>要验证是否已正确设置所有内容，您可以尝试使用该<code>redis-cli</code>实用程序从远程计算机ping Redis服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">redis-cli -h &lt;REDIS_IP_ADDRESS&gt; ping</code></pre></div>
-<p>该命令应返回以下响应<code>PONG</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">PONG</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">redis-cli -h &lt;REDIS_IP_ADDRESS&gt; ping
+</code></pre><p>该命令应返回以下响应<code>PONG</code>：</p>
+<pre><code class="language-output" data-lang="output">PONG
+</code></pre><h2 id="heading1">结论</h2>
 <p>恭喜，您已在Debian 9服务器上成功安装了Redis。要查找有关如何管理Redis安装的更多信息，请访问<a href="https://redis.io/documentation">Redis文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -290,15 +271,12 @@ bind 0.0.0.0</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#在debian上安装redis">在Debian上安装Redis</a></li>
-<li><a href="#配置redis远程访问">配置Redis远程访问</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#debianredis">在Debian上安装Redis</a></li>
+    <li><a href="#redis">配置Redis远程访问</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

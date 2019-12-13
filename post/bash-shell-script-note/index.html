@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2013-05-07T00:00:00+00:00" />
 <meta itemprop="name" content="bash shell 编程学习注记">
 <meta itemprop="description" content="常用shell有很多：bourne shell(/usr/bin/sh或者/bin/sh), Bourne Again Shell(/bin/bash), C Shell(/usr/bin/csh), K Shell(/usr/bin/ksh), Shell for Root(/sbin/sh)。每种shell都有自己的用法和语法。今天我主要学习的是 bash，因为bash比较广泛，是很多linux的默认shell。">
-
-
 <meta itemprop="datePublished" content="2013-05-07T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-05-07T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1128">
 
 
 
-<meta itemprop="keywords" content="Linux," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="bash shell 编程学习注记"/>
 <meta name="twitter:description" content="常用shell有很多：bourne shell(/usr/bin/sh或者/bin/sh), Bourne Again Shell(/bin/bash), C Shell(/usr/bin/csh), K Shell(/usr/bin/ksh), Shell for Root(/sbin/sh)。每种shell都有自己的用法和语法。今天我主要学习的是 bash，因为bash比较广泛，是很多linux的默认shell。"/>
 
@@ -141,23 +138,14 @@
           
   
           <p>常用shell有很多：bourne shell(/usr/bin/sh或者/bin/sh), Bourne Again Shell(/bin/bash), C Shell(/usr/bin/csh), K Shell(/usr/bin/ksh), Shell for Root(/sbin/sh)。每种shell都有自己的用法和语法。今天我主要学习的是 bash，因为bash比较广泛，是很多linux的默认shell。</p>
-
-<h2 id="首行">首行</h2>
-
+<h2 id="heading">首行</h2>
 <p>首行指定解释执行的主程序，#!/bin/sh, 其中#!是固定开头格式， /bin/sh 是执行的主程序，当然也可以选择其他的，例如 /bin/bash, /usr/bin/csh 等。</p>
-
-<h2 id="注释">注释</h2>
-
-<h1 id="标识此行为注释行-例如-pring-message-here">标识此行为注释行，例如 # pring message here。</h1>
-
-<h2 id="变量">变量</h2>
-
+<h2 id="heading1">注释</h2>
+<h1 id="--pring-message-here">标识此行为注释行，例如 # pring message here。</h1>
+<h2 id="heading2">变量</h2>
 <p>格式：var_name=var_value，需要注意的是，=两边没有任何空格，例如 name=“zhjiun”。</p>
-
 <p>双引号的字符串支持变量替换，例如 “Hello $name” 将被替换成 ”hello zhjiun“；单引号并不能完成变量替换。当变量与其他字符紧挨着时，应使用花括号将变量区别去来，例如 “Hello ${name}s”。</p>
-
-<h2 id="字符串">字符串</h2>
-
+<h2 id="heading3">字符串</h2>
 <p>字符串要用双引号或者单引号包裹起来。不同的地方在于双引号支持变量替换，单引号则不支持。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
@@ -169,12 +157,10 @@
 <span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##*is</span><span class="si">}</span>
 
 <span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">%is*</span><span class="si">}</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">%%is*</span><span class="si">}</span></code></pre></div>
-<p>${str:start_index:length}是截图字符串的子串。 后面几个包含#和%是从原串中干掉匹配的子串，返回留下的子串。#*is 标识从开头开始找，直到最近的is；##*is 表示从头开始找，直到最远is；%*is 表示从尾部开始找直到最近的is；%%*is 表示从尾部开始找直到最远的is。</p>
-
+<span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">%%is*</span><span class="si">}</span>
+</code></pre></div><p>${str:start_index:length}是截图字符串的子串。 后面几个包含#和%是从原串中干掉匹配的子串，返回留下的子串。#*is 标识从开头开始找，直到最近的is；##*is 表示从头开始找，直到最远is；%*is 表示从尾部开始找直到最近的is；%%*is 表示从尾部开始找直到最远的is。</p>
 <p>字符串比较直接使用等号（=），比较时最好将变量使用双引号包裹起来，否则，当字符串中含有空格时，则会报错：参数过多。例如 [ &ldquo;$str&rdquo; = &ldquo;my name is tim&rdquo; ]。</p>
-
-<h2 id="逻辑判断">逻辑判断</h2>
+<h2 id="heading4">逻辑判断</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">if</span> <span class="o">[</span> condition <span class="o">]</span>
 <span class="k">then</span>
     <span class="nb">echo</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -199,27 +185,23 @@
 <span class="k">case</span> <span class="si">${</span><span class="nv">filename</span><span class="p">##*.</span><span class="si">}</span> in
     gz<span class="o">)</span> 
         action
-        <span class="p">;;</span>
+        <span class="p">;</span><span class="p">;</span>
     tar<span class="o">)</span>
         action
-        <span class="p">;;</span>
+        <span class="p">;</span><span class="p">;</span>
     *<span class="o">)</span>
         action
-        <span class="p">;;</span>
-<span class="k">esac</span></code></pre></div>
-<p>可以看出逻辑以 if 开始 fi 结束。 条件判断放在[]中，注意[]内部首位要各空一个空格。条件判断后面要紧跟一个分号，then才能放在同一行，如果没有分号，则then需要换行。</p>
-
-<h3 id="字符串比较运算符">字符串比较运算符</h3>
-
+        <span class="p">;</span><span class="p">;</span>
+<span class="k">esac</span>
+</code></pre></div><p>可以看出逻辑以 if 开始 fi 结束。 条件判断放在[]中，注意[]内部首位要各空一个空格。条件判断后面要紧跟一个分号，then才能放在同一行，如果没有分号，则then需要换行。</p>
+<h3 id="heading5">字符串比较运算符</h3>
 <ul>
 <li>-z string 判断字符串长度是否为0</li>
 <li>-n string 判断字符串长度是否大于0</li>
 <li>str1 = str2 判断两个字符串内容是否相同</li>
 <li>str1 != str2 判断两个字符串是否不同</li>
 </ul>
-
-<h3 id="算术比较运算符">算术比较运算符</h3>
-
+<h3 id="heading6">算术比较运算符</h3>
 <ul>
 <li>-eq 等于</li>
 <li>-ne 不等于</li>
@@ -228,11 +210,8 @@
 <li>-le 小于等于</li>
 <li>-ge 大于等于</li>
 </ul>
-
 <p>算术比较运算符只适用于比较数字类型的变量。</p>
-
-<h3 id="文件比较运算符">文件比较运算符</h3>
-
+<h3 id="heading7">文件比较运算符</h3>
 <ul>
 <li>-e filename 检查文件是否存在，存在则为真</li>
 <li>-d filename 检查是否为目录</li>
@@ -244,25 +223,22 @@
 <li>filename1 -nt filename2 检查filename1是否比filename2新</li>
 <li>filename1 -ot filename2 检查filename1是否比filename2旧</li>
 </ul>
+<h2 id="heading8">循环</h2>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">do</span>
+    <span class="nb">echo</span> number <span class="nv">$x</span>
+<span class="k">done</span>
 
-<h2 id="循环">循环</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash for x in one two three four" data-lang="bash for x in one two three four">do
-    echo number $x
-done
+<span class="k">for</span> myfile in ./*
+<span class="k">do</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$myfile</span><span class="s2">&#34;</span>
+<span class="k">done</span>
 
-for myfile in ./*
-do
-    echo &#34;$myfile&#34;
-done
-
-while [ condition ]
-do
+<span class="k">while</span> <span class="o">[</span> condition <span class="o">]</span>
+<span class="k">do</span>
     statements
-done</code></pre></div>
-<p>现在基本上对bash shell变成有了入门的认识，想要提高，还得在实践中多写多练。</p>
-
+<span class="k">done</span>
+</code></pre></div><p>现在基本上对bash shell变成有了入门的认识，想要提高，还得在实践中多写多练。</p>
 <p>参考：</p>
-
 <ul>
 <li><a href="http://www.cnblogs.com/suyang/archive/2008/05/18/1201990.html">http://www.cnblogs.com/suyang/archive/2008/05/18/1201990.html</a></li>
 <li><a href="http://www.ibm.com/developerworks/cn/linux/shell/bash/bash-1/index.html">http://www.ibm.com/developerworks/cn/linux/shell/bash/bash-1/index.html</a></li>

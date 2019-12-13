@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在CentOS上列出已安装的软件包" />
 <meta property="og:description" content="在本教程中，我们将向您展示如何在CentOS上列出和过滤已安装的软件包。了解如何在CentOS系统上列出已安装的软件包对于需要在另一台计算机上安装相同软件包或者要重新安装系统的情况非常有用。
-
 我们还将向您展示如何检查是否安装了特定软件包，计算已安装的软件包以及查找已安装软件包的版本。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-list-installed-packages-on-centos/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS上列出已安装的软件包">
 <meta itemprop="description" content="在本教程中，我们将向您展示如何在CentOS上列出和过滤已安装的软件包。了解如何在CentOS系统上列出已安装的软件包对于需要在另一台计算机上安装相同软件包或者要重新安装系统的情况非常有用。
-
 我们还将向您展示如何检查是否安装了特定软件包，计算已安装的软件包以及查找已安装软件包的版本。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="929">
+<meta itemprop="wordCount" content="931">
 
 
 
-<meta itemprop="keywords" content="centos,yum,rpm," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,yum,rpm," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在CentOS上列出已安装的软件包"/>
 <meta name="twitter:description" content="在本教程中，我们将向您展示如何在CentOS上列出和过滤已安装的软件包。了解如何在CentOS系统上列出已安装的软件包对于需要在另一台计算机上安装相同软件包或者要重新安装系统的情况非常有用。
-
 我们还将向您展示如何检查是否安装了特定软件包，计算已安装的软件包以及查找已安装软件包的版本。"/>
 
   </head>
@@ -147,53 +141,41 @@
           
   
           <p>在本教程中，我们将向您展示如何在CentOS上列出和过滤已安装的软件包。了解如何在CentOS系统上列出已安装的软件包对于需要在另一台计算机上安装相同软件包或者要重新安装系统的情况非常有用。</p>
-
 <p>我们还将向您展示如何检查是否安装了特定软件包，计算已安装的软件包以及查找已安装软件包的版本。</p>
-
-<h2 id="列出已安装的包与yum">列出已安装的包与Yum</h2>
-
+<h2 id="yum">列出已安装的包与Yum</h2>
 <p><a href="https://wiki.centos.org/PackageManagement/Yum">YUM</a>（Yellow dog Updater）是默认的CentOS包管理器。它可用于从官方和第三方CentOS存储库下载，安装，删除，查询和管理CentOS RPM软件包。</p>
-
 <p>要使用yum列出CentOS系统上已安装的软件包，可以使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum list installed</code></pre></div>
-<p>它将打印所有已安装软件包的列表，包括有关软件包版本和存储库的信息。</p>
-
-<figure><img src="/images/linux/how-to-list-installed-packages-on-centos/centos-list-installed-packages-with-yum.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum list installed
+</code></pre><p>它将打印所有已安装软件包的列表，包括有关软件包版本和存储库的信息。</p>
+<p><img src="/images/linux/how-to-list-installed-packages-on-centos/centos-list-installed-packages-with-yum.jpg" alt=""></p>
 <p>包列表很长，为了更好的可读性，最好将输出传递给<code>less</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum list installed | less</code></pre></div>
-<p>要确定是否安装了特定软件包，可以使用<a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">grep命令</a>过滤输出。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum list installed | less
+</code></pre><p>要确定是否安装了特定软件包，可以使用<a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">grep命令</a>过滤输出。</p>
 <p>例如，要查明我们的系统上是否安装了解<a href="/linux/how-to-unzip-files-in-linux/">压缩</a>包，我们将运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum list installed | grep unzip</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">unzip.x86_64    6.0-19.el7    @anaconda</code></pre></div>
-<p>上面的输出显示我们已经在我们的机器上安装了解压缩版本6.0-19。</p>
-
-<h2 id="列出已安装的包含rpm">列出已安装的包含Rpm</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum list installed | grep unzip
+</code></pre><pre><code class="language-output" data-lang="output">unzip.x86_64    6.0-19.el7    @anaconda
+</code></pre><p>上面的输出显示我们已经在我们的机器上安装了解压缩版本6.0-19。</p>
+<h2 id="rpm">列出已安装的包含Rpm</h2>
 <p>在CentOS中，您可以使用<code>rpm</code>带有<code>-q</code>查询包的选项的命令。以下命令将列出所有已安装的软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm -qa</code></pre></div>
-<p>不同的是<code>yum</code>，<code>rpm</code>只会显示包名称。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo rpm -qa
+</code></pre><p>不同的是<code>yum</code>，<code>rpm</code>只会显示包名称。</p>
 <p>查询（搜索）是否安装了某个软件包会将软件包名称传递给该<code>rpm -q</code>命令。以下命令将显示系统上是否安装了<a href="/linux/getting-started-with-tmux/">tmux</a>软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm -q tmux</code></pre></div>
-<p>如果软件包已安装，您将看到如下内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">tmux-1.8-4.el7.x86_64</code></pre></div>
-<p>否则，该命令将打印：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"><span class="kn">package</span> <span class="nx">tmux2is</span> <span class="nx">not</span> <span class="nx">installed</span></code></pre></div>
-<h2 id="创建所有已安装软件包的列表">创建所有已安装软件包的列表</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo rpm -q tmux
+</code></pre><p>如果软件包已安装，您将看到如下内容：</p>
+<pre><code class="language-output" data-lang="output">tmux-1.8-4.el7.x86_64
+</code></pre><p>否则，该命令将打印：</p>
+<pre><code class="language-output" data-lang="output">package tmux2is not installed
+</code></pre><h2 id="heading">创建所有已安装软件包的列表</h2>
 <p>要在CentOS系统上创建所有已安装软件包的名称列表并将其保存在名为的文件中<code>packages_list.txt</code>，请运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm -qa &gt; packages_list.txt</code></pre></div>
-<p>要在另一台服务器上安装相同的软件包，可以使用<a href="/linux/linux-cat-command/">cat命令</a>将所有软件包传递到<code>yum</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum -y install $(cat packages_list.txt)</code></pre></div>
-<h2 id="计算已安装软件包的数量">计算已安装软件包的数量</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo rpm -qa &gt; packages_list.txt
+</code></pre><p>要在另一台服务器上安装相同的软件包，可以使用<a href="/linux/linux-cat-command/">cat命令</a>将所有软件包传递到<code>yum</code>：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum -y install $(cat packages_list.txt)
+</code></pre><h2 id="heading1">计算已安装软件包的数量</h2>
 <p>要了解系统上安装了多少软件包，您可以使用与以前相同的命令，但不是将输出重定向到文件，而是可以将其传送到<code>wc</code>实用程序并计算行数：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm -qa | wc -l</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">603</code></pre></div>
-<p>上面的输出显示系统中安装了603个软件包。</p>
-
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo rpm -qa | wc -l
+</code></pre><pre><code class="language-output" data-lang="output">603
+</code></pre><p>上面的输出显示系统中安装了603个软件包。</p>
+<h2 id="heading2">结论</h2>
 <p>到目前为止，您应该知道如何列出和过滤CentOS系统上已安装的软件包。还有一个名为的工具<code>repoquery</code>包含在<code>yum-utils</code>包中，您可以使用它来获取已安装包的列表。</p>
       </div><ul class="pa0">
   
@@ -271,16 +253,13 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#列出已安装的包与yum">列出已安装的包与Yum</a></li>
-<li><a href="#列出已安装的包含rpm">列出已安装的包含Rpm</a></li>
-<li><a href="#创建所有已安装软件包的列表">创建所有已安装软件包的列表</a></li>
-<li><a href="#计算已安装软件包的数量">计算已安装软件包的数量</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#yum">列出已安装的包与Yum</a></li>
+    <li><a href="#rpm">列出已安装的包含Rpm</a></li>
+    <li><a href="#heading">创建所有已安装软件包的列表</a></li>
+    <li><a href="#heading1">计算已安装软件包的数量</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

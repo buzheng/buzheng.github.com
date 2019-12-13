@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2019-03-24T07:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上配置静态 IP 地址">
 <meta itemprop="description" content="在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。">
-
-
 <meta itemprop="datePublished" content="2019-03-24T07:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-24T07:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1338">
+<meta itemprop="wordCount" content="1341">
 
 
 
-<meta itemprop="keywords" content="ubuntu,ip," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,ip," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上配置静态 IP 地址"/>
 <meta name="twitter:description" content="在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。"/>
 
@@ -141,56 +138,41 @@
           
   
           <p>在本教程中，我们将解释如何在 Ubuntu 18.04 上设置静态 IP 地址。</p>
-
-<p>在大多数情况下， IP 地址由路由器 DHCP 服务器动态分配。在某些情况下可能需要在 Ubuntu 计算机上设置静态 IP 地址，例如配置端口转发或在网络上运行<!--link:how-to-install-plex-media-server-on-ubuntu-18-04-->媒体服务器<!--link-->。</p>
-
-<h2 id="使用-dhcp-配置静态-ip-地址">使用 DHCP 配置静态 IP 地址</h2>
-
+<p>在大多数情况下， IP 地址由路由器 DHCP 服务器动态分配。在某些情况下可能需要在 Ubuntu 计算机上设置静态 IP 地址，例如配置端口转发或在网络上运行<!-- raw HTML omitted -->媒体服务器<!-- raw HTML omitted -->。</p>
+<h2 id="-dhcp--ip-">使用 DHCP 配置静态 IP 地址</h2>
 <p>为 LAN 上的设备分配静态 IP 地址的最简单和推荐的方法是在路由器上设置静态 DHCP 。静态 DHCP 或 DHCP 预留是大多数路由器上的一项功能，它使 DHCP 服务器在每次设备从 DHCP 服务器请求地址时自动为同一网络设备分配相同的 IP 地址。这通过为设备唯一 MAC 地址分配静态 IP 来实现。配置 DHCP 保留的步骤因路由器而异，建议查阅供应商的文档。</p>
-
 <h2 id="netplan">Netplan</h2>
-
 <p>从 17.10 版本开始， <a href="https://netplan.io/">Netplan</a> 是 Ubuntu 上的默认网络管理工具，取代了之前用于在 Ubuntu 上配置网络的配置文件 <code>/etc/network/interfaces</code> 。</p>
-
 <p>Netplan 使用 <a href="https://yaml.org/">YAML</a> 语法的配置文件。要使用 Netplan 配置网络接口，只需为该接口创建 YAML 描述， Netplan 就会为您选择的渲染器工具生成所需的配置文件。</p>
-
 <p>Netplan 目前支持两个渲染器 NetworkManager 和 Systemd-networkingd 。 NetworkManager 主要用于台式机，而 Systemd-networkd 用于没有 GUI 的服务器。</p>
-
-<h2 id="在-ubuntu-server-上配置静态-ip-地址">在 Ubuntu Server 上配置静态 IP 地址</h2>
-
+<h2 id="-ubuntu-server--ip-">在 Ubuntu Server 上配置静态 IP 地址</h2>
 <p>较新版本的 Ubuntu 使用“可预测的网络接口名称”开头 <code>en[letter][number]</code> 。默认情况下。第一步是确定要配置的以太网接口的名称。您可以使用 <code>ip link</code> 如下所示的命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip link</code></pre></div>
-<p>该命令将打印所有可用网络接口的列表。在本例中，接口的名称是 <code>ens3</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">1</span>: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="m">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="m">1000</span>
-    link/loopback <span class="m">00</span>:00:00:00:00:00 brd <span class="m">00</span>:00:00:00:00:00
-<span class="m">3</span>: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc mq state UP mode DEFAULT group default qlen <span class="m">1000</span>
-    link/ether <span class="m">56</span>:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff</code></pre></div>
-<p>Netplan 配置文件存储在 <code>/etc/netplan</code> 目录中并且文件后缀名是 <code>.yaml</code> 。您可能会在此目录中找到一个或两个 YAML 文件。该文件可能因设置而异。通常，文件被命名为 <code>01-netcfg.yaml</code> ， <code>50-cloud-init.yaml</code> 或者 <code>NN_interfaceName.yaml</code> ，但在您的系统中它可能是不同的。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip link
+</code></pre></div><p>该命令将打印所有可用网络接口的列表。在本例中，接口的名称是 <code>ens3</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span class="m">65536</span> qdisc noqueue state UNKNOWN mode DEFAULT group default qlen <span class="m">1000</span>
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+3: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc mq state UP mode DEFAULT group default qlen <span class="m">1000</span>
+    link/ether 56:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
+</code></pre></div><p>Netplan 配置文件存储在 <code>/etc/netplan</code> 目录中并且文件后缀名是 <code>.yaml</code> 。您可能会在此目录中找到一个或两个 YAML 文件。该文件可能因设置而异。通常，文件被命名为 <code>01-netcfg.yaml</code> ， <code>50-cloud-init.yaml</code> 或者 <code>NN_interfaceName.yaml</code> ，但在您的系统中它可能是不同的。</p>
 <p>使用文本编辑器打开 YAML 配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/netplan/01-netcfg.yaml</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">network:
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/netplan/01-netcfg.yaml
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">network:
   version: <span class="m">2</span>
   renderer: networkd
   ethernets:
     ens3:
-      dhcp4: yes</code></pre></div>
-<p>在更改配置之前，让我们简要解释一下代码。</p>
-
+      dhcp4: yes
+</code></pre></div><p>在更改配置之前，让我们简要解释一下代码。</p>
 <p>每个 Netplan Yaml 文件都以 <code>network</code> 键开头，并且具有至少两个必需元素的。第一个必需元素是网络配置格式的版本，第二个是设备类型。设备类型值可以是 <code>ethernets</code> ， <code>bonds</code> ， <code>bridges</code> ，和 <code>vlans</code> 。</p>
-
 <p>上面的配置还包括 <code>renderer</code> 类型。开箱即用，如果您的 Ubuntu 安装在服务器模式下 ，则渲染器将配置为 <code>networkd</code> 用作后端。</p>
-
 <p>在设备的类型下（在本例中是 <code>ethernets</code> ），我们可以指定一个或多个网络接口。在此示例中，我们只有一个接口 <code>ens3</code> 配置为从 DHCP 服务器获取 IP 地址 dhcp4: yes 。</p>
-
 <p>要为 ens3 接口分配静态 IP 地址，请按如下方式编辑文件：</p>
-
 <ul>
 <li>将 DHCP 设置为 <code>no dhcp4: yes</code></li>
 <li>指定静态 IP 地址 <code>192.168.121.199/24</code> 。在 <code>addresses:</code> 下你可以添加一个或多 IPv4 或 IPv6 的 IP 地址将被分配给网络接口。</li>
 <li>指定网关  <code>gateway4: 192.168.121.1</code></li>
 <li>在 <code>nameservers</code> 下 ，指定域名服务器 <code>addresses:  [8.8.8.8, 1.1.1.1]</code></li>
 </ul>
-
 <p>文件 <code>/etc/netplan/01-netcfg.yaml</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">network:
   version: <span class="m">2</span>
@@ -199,51 +181,48 @@
     ens3:
       dhcp4: no
       addresses:
-        - <span class="m">192</span>.168.121.199/24
-      gateway4: <span class="m">192</span>.168.121.1
+        - 192.168.121.199/24
+      gateway4: 192.168.121.1
       nameservers:
-          addresses: <span class="o">[</span><span class="m">8</span>.8.8.8, <span class="m">1</span>.1.1.1<span class="o">]</span></code></pre></div>
-<p>编辑 Yaml 文件时，请确保遵循 YAML 代码缩进标准，因为如果配置中存在语法错误，则可能无效。</p>
-
+          addresses: <span class="o">[</span>8.8.8.8, 1.1.1.1<span class="o">]</span>
+</code></pre></div><p>编辑 Yaml 文件时，请确保遵循 YAML 代码缩进标准，因为如果配置中存在语法错误，则可能无效。</p>
 <p>完成后保存并关闭文件并应用更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo netplan apply</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip addr show dev ens3</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">3</span>: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc mq state UP group default qlen <span class="m">1000</span>
-    link/ether <span class="m">56</span>:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
-    inet <span class="m">192</span>.168.121.199/24 brd <span class="m">192</span>.168.121.255 scope global dynamic ens3
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo netplan apply
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip addr show dev ens3
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">3: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc mq state UP group default qlen <span class="m">1000</span>
+    link/ether 56:00:00:60:20:0a brd ff:ff:ff:ff:ff:ff
+    inet 192.168.121.199/24 brd 192.168.121.255 scope global dynamic ens3
        valid_lft 3575sec preferred_lft 3575sec
     inet6 fe80::5054:ff:feb0:f500/64 scope link 
-       valid_lft forever preferred_lft forever</code></pre></div>
-<p>而已！您已为 Ubuntu 服务器分配了静态 IP 。</p>
-
-<h2 id="在-ubuntu-桌面上配置静态-ip-地址">在 Ubuntu 桌面上配置静态 IP 地址</h2>
-
+       valid_lft forever preferred_lft forever
+</code></pre></div><p>而已！您已为 Ubuntu 服务器分配了静态 IP 。</p>
+<h2 id="-ubuntu--ip-">在 Ubuntu 桌面上配置静态 IP 地址</h2>
 <p>在 Ubuntu 台式计算机上设置静态 IP 地址不需要任何技术知识。</p>
-
 <ol>
-<li><p>在“活动”屏幕中，搜索“网络”，然后单击“网络”图标。这将打开 GNOME 网络配置设置。单击 cog 图标。</p>
-
-<figure><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-network-settings.jpg" alt=""></figure></li>
-
-<li><p>这将打开“网络接口设置”对话框。</p>
-
-<figure><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-interface-settings.jpg" alt=""></figure></li>
-
-<li><p>在“ IPV4 ”方法“部分中选择”手动“，然后输入您的静态 IP 地址，网络掩码和网关。完成后，单击“应用”按钮。</p>
-
-<figure><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-set-static-ip.jpg" alt=""></figure></li>
+<li>
+<p>在“活动”屏幕中，搜索“网络”，然后单击“网络”图标。这将打开 GNOME 网络配置设置。单击 cog 图标。</p>
+<p><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-network-settings.jpg" alt=""></p>
+</li>
+<li>
+<p>这将打开“网络接口设置”对话框。</p>
+<p><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-interface-settings.jpg" alt=""></p>
+</li>
+<li>
+<p>在“ IPV4 ”方法“部分中选择”手动“，然后输入您的静态 IP 地址，网络掩码和网关。完成后，单击“应用”按钮。</p>
+<p><img src="/images/linux/how-to-configure-static-ip-address-on-ubuntu-18-04/ubuntu-set-static-ip.jpg" alt=""></p>
+</li>
 </ol>
-
 <p>现在您已经设置了静态 IP 地址，请使用 <code>Ctrl+Alt+T</code> 键盘快捷键或单击终端图标打开终端，然后键入以下命令来验证更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip addr</code></pre></div>
-<p>输出将显示接口 IP 地址：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ip addr
+</code></pre></div><p>输出将显示接口 IP 地址：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">...
-<span class="m">2</span>: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc fq_codel state UP group default qlen <span class="m">1000</span>
-    link/ether <span class="m">52</span>:54:00:e9:40:f2 brd ff:ff:ff:ff:ff:ff
-    inet <span class="m">192</span>.168.121.106/24 brd <span class="m">192</span>.168.121.255 scope global dynamic noprefixroute eth0
+2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> qdisc fq_codel state UP group default qlen <span class="m">1000</span>
+    link/ether 52:54:00:e9:40:f2 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.121.106/24 brd 192.168.121.255 scope global dynamic noprefixroute eth0
        valid_lft 3523sec preferred_lft 3523sec
     inet6 fe80::5054:ff:fee9:40f2/64 scope link 
-       valid_lft forever preferred_lft forever</code></pre></div>
-<h2 id="结论">结论</h2>
-
+       valid_lft forever preferred_lft forever
+</code></pre></div><h2 id="heading">结论</h2>
 <p>您已经学习了如何在 Ubuntu 18.04 计算机上分配静态 IP 地址。</p>
       </div><ul class="pa0">
   
@@ -317,16 +296,13 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用-dhcp-配置静态-ip-地址">使用 DHCP 配置静态 IP 地址</a></li>
-<li><a href="#netplan">Netplan</a></li>
-<li><a href="#在-ubuntu-server-上配置静态-ip-地址">在 Ubuntu Server 上配置静态 IP 地址</a></li>
-<li><a href="#在-ubuntu-桌面上配置静态-ip-地址">在 Ubuntu 桌面上配置静态 IP 地址</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-dhcp--ip-">使用 DHCP 配置静态 IP 地址</a></li>
+    <li><a href="#netplan">Netplan</a></li>
+    <li><a href="#-ubuntu-server--ip-">在 Ubuntu Server 上配置静态 IP 地址</a></li>
+    <li><a href="#-ubuntu--ip-">在 Ubuntu 桌面上配置静态 IP 地址</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

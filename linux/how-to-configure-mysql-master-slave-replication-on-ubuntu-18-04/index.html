@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,11 +30,8 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上配置 MySQL 主从复制" />
 <meta property="og:description" content="MySQL 复制允许来自一个数据库服务器的数据自动复制到另外一个或多个其他服务器。
-
 MySQL 支持许多复制拓扑，其中主从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在双方都准备好时请求事件。
-
 本教程介绍了在 Ubuntu 18.04 上使用一个主服务器和一个从服务器进行 MySQL 主从复制的基本示例。同样的步骤适用于 MariaDB 。
-
 此类复制拓扑最适合部署用于读取扩展的只读副本，用于灾难恢复和分析作业的实时数据库备份。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-configure-mysql-master-slave-replication-on-ubuntu-18-04/" />
@@ -42,29 +39,20 @@ MySQL 支持许多复制拓扑，其中主从拓扑是一个最着名的拓扑�
 <meta property="article:modified_time" content="2019-03-31T08:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上配置 MySQL 主从复制">
 <meta itemprop="description" content="MySQL 复制允许来自一个数据库服务器的数据自动复制到另外一个或多个其他服务器。
-
 MySQL 支持许多复制拓扑，其中主从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在双方都准备好时请求事件。
-
 本教程介绍了在 Ubuntu 18.04 上使用一个主服务器和一个从服务器进行 MySQL 主从复制的基本示例。同样的步骤适用于 MariaDB 。
-
 此类复制拓扑最适合部署用于读取扩展的只读副本，用于灾难恢复和分析作业的实时数据库备份。">
-
-
 <meta itemprop="datePublished" content="2019-03-31T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-31T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1229">
+<meta itemprop="wordCount" content="1232">
 
 
 
-<meta itemprop="keywords" content="ubuntu,mysql," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,mysql," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上配置 MySQL 主从复制"/>
 <meta name="twitter:description" content="MySQL 复制允许来自一个数据库服务器的数据自动复制到另外一个或多个其他服务器。
-
 MySQL 支持许多复制拓扑，其中主从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在双方都准备好时请求事件。
-
 本教程介绍了在 Ubuntu 18.04 上使用一个主服务器和一个从服务器进行 MySQL 主从复制的基本示例。同样的步骤适用于 MariaDB 。
-
 此类复制拓扑最适合部署用于读取扩展的只读副本，用于灾难恢复和分析作业的实时数据库备份。"/>
 
   </head>
@@ -159,109 +147,93 @@ MySQL 支持许多复制拓扑，其中主从拓扑是一个最着名的拓扑�
           
   
           <p>MySQL 复制允许来自一个数据库服务器的数据自动复制到另外一个或多个其他服务器。</p>
-
 <p>MySQL 支持许多复制拓扑，其中主从拓扑是一个最着名的拓扑之一，其中一个数据库服务器充当主服务器，而一个或多个服务器充当从服务器。默认情况下，复制是异步的，其中主服务器将描述数据库修改的事件发送到其二进制日志，并且从服务器在双方都准备好时请求事件。</p>
-
 <p>本教程介绍了在 Ubuntu 18.04 上使用一个主服务器和一个从服务器进行 MySQL 主从复制的基本示例。同样的步骤适用于 MariaDB 。</p>
-
 <p>此类复制拓扑最适合部署用于读取扩展的只读副本，用于灾难恢复和分析作业的实时数据库备份。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>此示例假设您有两台运行 Ubuntu 18.04 的服务器，它们可以通过专用网络相互通信。如果您的托管服务提供商不提供私有 IP 地址，您可以使用公共 IP 地址并配置防火墙，以允许端口 3306 上的流量仅来自可信来源。</p>
-
 <p>此示例中的服务器具有以下 IP ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Master IP: 192.168.121.190
-Slave IP:  192.168.121.236</code></pre></div>
-<h2 id="安装-mysql">安装 MySQL</h2>
-
+Slave IP:  192.168.121.236
+</code></pre></div><h2 id="-mysql">安装 MySQL</h2>
 <p>默认的 Ubuntu 18.04 存储库包含 MySQL 5.7 版。为避免出现任何问题，最好在两台服务器上安装相同的MySQL版本。</p>
-
 <p>在主服务器上安装 MySQL ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt-get updatesudo apt-get install mysql-server</code></pre></div>
-<p>使用相同的命令在 Slave 服务器上安装 MySQL ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo apt-get updatesudo apt-get install mysql-server</code></pre></div>
-<h2 id="配置主服务器">配置主服务器</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt-get updatesudo apt-get install mysql-server
+</code></pre><p>使用相同的命令在 Slave 服务器上安装 MySQL ：</p>
+<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo apt-get updatesudo apt-get install mysql-server
+</code></pre><h2 id="heading1">配置主服务器</h2>
 <p>第一步是配置主 MySQL 服务器。我们将进行以下更改：</p>
-
 <ul>
 <li>设置 MySQL 服务器绑定 IP 地址</li>
 <li>设置唯一的服务器 ID</li>
 <li>启用二进制日志记录</li>
 </ul>
-
 <p>为此，请打开 MySQL 配置文件并取消注释或设置以下内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf</code></pre></div>
-<p>主服务器：<code>/etc/mysql/mysql.conf.d/mysqld.cnf</code></p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+</code></pre><p>主服务器：<code>/etc/mysql/mysql.conf.d/mysqld.cnf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">192.168.121.190</span>
 <span class="na">server-id</span>              <span class="o">=</span> <span class="s">1</span>
-<span class="na">log_bin</span>                <span class="o">=</span> <span class="s">/var/log/mysql/mysql-bin.log</span></code></pre></div>
-<p>完成后，重新启动 MySQL 服务以使更改生效</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysql</code></pre></div>
-<p>下一步是创建一个新的复制用户。键入以下内容以 root 用户身份登录 MySQL 服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
-<p>在 MySQL shell 内，运行以下将创建 <code>replica</code> 用户的 SQL 查询并将 <code>REPLICATION SLAVE</code> 权限授予用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE USER &#39;replica&#39;@&#39;192.168.121.236&#39; IDENTIFIED BY &#39;replica_password&#39;;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">GRANT REPLICATION SLAVE ON *.* TO &#39;replica&#39;@&#39;192.168.121.236&#39;;</code></pre></div>
-<blockquote>
+<span class="na">log_bin</span>                <span class="o">=</span> <span class="s">/var/log/mysql/mysql-bin.log</span>
+</code></pre></div><p>完成后，重新启动 MySQL 服务以使更改生效</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysql
+</code></pre><p>下一步是创建一个新的复制用户。键入以下内容以 root 用户身份登录 MySQL 服务器：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
+</code></pre><p>在 MySQL shell 内，运行以下将创建 <code>replica</code> 用户的 SQL 查询并将 <code>REPLICATION SLAVE</code> 权限授予用户：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE USER 'replica'@'192.168.121.236' IDENTIFIED BY 'replica_password';
+</code></pre><pre><code class="language-console-mysql" data-lang="console-mysql">GRANT REPLICATION SLAVE ON *.* TO 'replica'@'192.168.121.236';
+</code></pre><blockquote>
 <p>确保使用您自己的从服务器 IP 地址更改上面命令中的 IP 。您可以根据需要使用不同的用户名。</p>
 </blockquote>
-
 <p>仍然在 MySQL shell 内，执行以下命令将打印二进制文件名和位置。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW MASTER STATUS\G</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">*************************** 1\. row ***************************
+<pre><code class="language-console-mysql" data-lang="console-mysql">SHOW MASTER STATUS\G
+</code></pre><pre><code class="language-output" data-lang="output">*************************** 1\. row ***************************
              File: mysql-bin.000001
          Position: 629
      Binlog_Do_DB: 
  Binlog_Ignore_DB: 
 Executed_Gtid_Set: 
-1 row in set (0.00 sec)</code></pre></div>
-<p>记下文件名 <strong>&lsquo;mysql-bin.000001&rsquo;</strong> 和位置 <strong>&lsquo;629&rsquo;</strong> 。配置从属服务器时，您将需要这些值。您的服务器上的这些值可能会有所不同。</p>
-
-<h2 id="配置从属服务器">配置从属服务器</h2>
-
+1 row in set (0.00 sec)
+</code></pre><p>记下文件名 <strong>&lsquo;mysql-bin.000001&rsquo;</strong> 和位置 <strong>&lsquo;629&rsquo;</strong> 。配置从属服务器时，您将需要这些值。您的服务器上的这些值可能会有所不同。</p>
+<h2 id="heading2">配置从属服务器</h2>
 <p>与上面的主服务器一样，我们将对从服务器进行以下更改：</p>
-
 <ul>
 <li>设置 MySQL 服务器绑定 IP 地址</li>
 <li>设置唯一的服务器 ID</li>
 <li>启用二进制日志记录</li>
 </ul>
-
 <p>打开 MySQL 配置文件并编辑以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf</code></pre></div>
-<p>从服务器：/etc/mysql/mysql.conf.d/mysqld.cnf</p>
+<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+</code></pre><p>从服务器：/etc/mysql/mysql.conf.d/mysqld.cnf</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">192.168.121.236</span>
 <span class="na">server-id</span>              <span class="o">=</span> <span class="s">2</span>
-<span class="na">log_bin</span>                <span class="o">=</span> <span class="s">/var/log/mysql/mysql-bin.log</span></code></pre></div>
-<p>重启 MySQL 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo systemctl restart mysql</code></pre></div>
-<p>下一步是配置从服务器用于连接主服务器的参数。登录 MySQL shell ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo mysql</code></pre></div>
-<p>首先，停止从属线程：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">STOP SLAVE;</code></pre></div>
-<p>运行以下查询以设置从属服务器以复制主服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CHANGE MASTER TO
-MASTER_HOST=&#39;192.168.121.190&#39;,
-MASTER_USER=&#39;replica&#39;,
-MASTER_PASSWORD=&#39;replica_password&#39;,
-MASTER_LOG_FILE=&#39;mysql-bin.000001&#39;,
-MASTER_LOG_POS=629;</code></pre></div>
-<p>确保使用正确的 IP 地址，用户名。和密码。日志文件名称和位置必须与从主服务器获取的值相同。</p>
-
+<span class="na">log_bin</span>                <span class="o">=</span> <span class="s">/var/log/mysql/mysql-bin.log</span>
+</code></pre></div><p>重启 MySQL 服务：</p>
+<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo systemctl restart mysql
+</code></pre><p>下一步是配置从服务器用于连接主服务器的参数。登录 MySQL shell ：</p>
+<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo mysql
+</code></pre><p>首先，停止从属线程：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">STOP SLAVE;
+</code></pre><p>运行以下查询以设置从属服务器以复制主服务器：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">CHANGE MASTER TO
+MASTER_HOST='192.168.121.190',
+MASTER_USER='replica',
+MASTER_PASSWORD='replica_password',
+MASTER_LOG_FILE='mysql-bin.000001',
+MASTER_LOG_POS=629;
+</code></pre><p>确保使用正确的 IP 地址，用户名。和密码。日志文件名称和位置必须与从主服务器获取的值相同。</p>
 <p>完成后，启动 slave 线程。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">START SLAVE;</code></pre></div>
-<h2 id="测试配置">测试配置</h2>
-
+<pre><code class="language-console-mysql" data-lang="console-mysql">START SLAVE;
+</code></pre><h2 id="heading3">测试配置</h2>
 <p>此时，您应该有一个正常工作的主从复制设置。</p>
-
 <p>要验证一切是否按预期工作，我们将在主服务器上创建一个新数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE replicatest;</code></pre></div>
-<p>登录到从属 MySQL shell ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash-2" data-lang="console-bash-2">sudo mysql</code></pre></div>
-<p>列出数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">SHOW DATABASES;</code></pre></div>
-<p>您会注意到在主服务器上创建的数据库已经复制到从服务器上了：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">+--------------------+
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
+</code></pre><pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE replicatest;
+</code></pre><p>登录到从属 MySQL shell ：</p>
+<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo mysql
+</code></pre><p>列出数据库：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">SHOW DATABASES;
+</code></pre><p>您会注意到在主服务器上创建的数据库已经复制到从服务器上了：</p>
+<pre><code class="language-output" data-lang="output">+--------------------+
 | Database           |
 +--------------------+
 | information_schema |
@@ -270,9 +242,8 @@ MASTER_LOG_POS=629;</code></pre></div>
 | replicatest        |
 | sys                |
 +--------------------+
-5 rows in set (0.00 sec)</code></pre></div>
-<h2 id="结论">结论</h2>
-
+5 rows in set (0.00 sec)
+</code></pre><h2 id="heading4">结论</h2>
 <p>在本教程中，我们展示了您创建 MySQL 主从复制。</p>
       </div><ul class="pa0">
   
@@ -346,17 +317,14 @@ MASTER_LOG_POS=629;</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-mysql">安装 MySQL</a></li>
-<li><a href="#配置主服务器">配置主服务器</a></li>
-<li><a href="#配置从属服务器">配置从属服务器</a></li>
-<li><a href="#测试配置">测试配置</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-mysql">安装 MySQL</a></li>
+    <li><a href="#heading1">配置主服务器</a></li>
+    <li><a href="#heading2">配置从属服务器</a></li>
+    <li><a href="#heading3">测试配置</a></li>
+    <li><a href="#heading4">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

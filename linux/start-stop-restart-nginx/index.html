@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="Nginx 的发音为 “ engine x” ，是一个免费的，开源的，高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可以用作独立的 Web 服务器，也可以用作 Apache 和其他 Web 服务器的反向代理。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/start-stop-restart-nginx/" />
+<meta property="og:image" content="/linux/start-stop-restart-nginx/featured.jpg"/>
 <meta property="article:published_time" content="2019-12-05T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-12-05T12:00:00+08:00" />
 <meta itemprop="name" content="如何启动，停止或重新启动 Nginx">
 <meta itemprop="description" content="Nginx 的发音为 “ engine x” ，是一个免费的，开源的，高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可以用作独立的 Web 服务器，也可以用作 Apache 和其他 Web 服务器的反向代理。">
-
-
 <meta itemprop="datePublished" content="2019-12-05T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-05T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="802">
+<meta itemprop="image" content="/linux/start-stop-restart-nginx/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="nginx,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="nginx,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/start-stop-restart-nginx/featured.jpg"/>
 <meta name="twitter:title" content="如何启动，停止或重新启动 Nginx"/>
 <meta name="twitter:description" content="Nginx 的发音为 “ engine x” ，是一个免费的，开源的，高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可以用作独立的 Web 服务器，也可以用作 Apache 和其他 Web 服务器的反向代理。"/>
@@ -142,19 +141,12 @@
           
   
           <p>Nginx 的发音为 “ engine x” ，是一个免费的，开源的，高性能 HTTP 和反向代理服务器，负责处理 Internet 上一些最大站点的负载。它可以用作独立的 Web 服务器，也可以用作 Apache 和其他 Web 服务器的<a href="/linux/nginx-reverse-proxy/">反向代理</a>。</p>
-
 <p>如果您是开发人员或系统管理员，则很可能会定期与 Nginx 打交道。使用 Nginx Web 服务器时，启动，停止以及重新启动/重新加载是最常见的任务。</p>
-
 <p>在本指南中，我们将说明如何在 Linux 服务器上启动，停止和重新启动 Nginx 。</p>
-
-<h2 id="在你开始之前">在你开始之前</h2>
-
+<h2 id="heading">在你开始之前</h2>
 <p>这些说明假定您以 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户身份登录。</p>
-
 <p>目前大多数 Linux 发行版都使用 SystemD 作为默认的初始系统和服务经理。旧的发行是基于 SysVinit 的使用 init 脚本来管理服务。</p>
-
 <p>SystemD 服务单元和 SysVinit 脚本都采用以下参数来管理 Nginx 服务：</p>
-
 <ul>
 <li><code>start</code>：启动 Nginx 服务。</li>
 <li><code>stop</code>：停止 Nginx 服务。</li>
@@ -162,37 +154,29 @@
 <li><code>reload</code>：正常重启 Nginx 服务。重新加载时，主 Nginx 进程关闭子进程，加载新配置，并启动新的子进程。</li>
 <li><code>status</code>：显示服务状态。</li>
 </ul>
-
 <p>在所有 Linux 发行版中，用于<a href="/linux/nginx-commands-you-should-know/">管理 Nginx 服务</a>的命令都是相同的。</p>
-
-<h2 id="启动-停止和重新启动-nginx-的使用-systemctl">启动，停止和重新启动 Nginx 的使用  <code>systemctl</code></h2>
-
+<h2 id="-nginx--systemctl">启动，停止和重新启动 Nginx 的使用  <code>systemctl</code></h2>
 <p>SystemD 是最新的 Ubuntu <a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">18.04</a>/[16.04](/linux/how-to-install-nginx-on-ubuntu-16-04/ ， CentOS 的 <a href="https://linuxize.com/post/how-to-install-nginx-on-centos-7/">7</a>/<a href="/linux/how-to-install-nginx-on-centos-8/">8</a> ，和的 Debian(<a href="/linux/how-to-install-nginx-on-debian-10/">10</a>/<a href="/linux/how-to-install-nginx-on-debian-9/">9</a>) 版本的的系统和服务管理者。</p>
-
 <p>每当您对 Nginx 配置进行更改时，都需要重新启动或重新加载 Web 服务器进程。执行以下命令重新启动 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx</code></pre></div>
-<p>添加或编辑服务器块时，与重新启动相比，更喜欢重新加载。仅当进行重大修改(例如更改端口或接口)时，才重新启动服务。在重新加载时， Nginx 加载新配置，使用新配置启动新的工作进程，并正常关闭旧的工作进程。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
+</code></pre><p>添加或编辑服务器块时，与重新启动相比，更喜欢重新加载。仅当进行重大修改(例如更改端口或接口)时，才重新启动服务。在重新加载时， Nginx 加载新配置，使用新配置启动新的工作进程，并正常关闭旧的工作进程。</p>
 <p>运行以下命令以重新加载 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload nginx</code></pre></div>
-<p>Nginx 也可以通过<a href="/linux/kill-command-in-linux/">信号</a>直接控制。例如，要重新加载服务，可以使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo /usr/sbin/nginx -s reload</code></pre></div>
-<p>要启动 Nginx 服务，请执行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start nginx</code></pre></div>
-<p>执行以下命令以停止 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop nginx</code></pre></div>
-<h2 id="使用-sysvinit-启动-停止和重新启动-nginx">使用 <code>SysVinit</code> 启动，停止和重新启动 Nginx</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload nginx
+</code></pre><p>Nginx 也可以通过<a href="/linux/kill-command-in-linux/">信号</a>直接控制。例如，要重新加载服务，可以使用以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo /usr/sbin/nginx -s reload
+</code></pre><p>要启动 Nginx 服务，请执行以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start nginx
+</code></pre><p>执行以下命令以停止 Nginx 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop nginx
+</code></pre><h2 id="-sysvinit--nginx">使用 <code>SysVinit</code> 启动，停止和重新启动 Nginx</h2>
 <p>Ubuntu ， CentOS ，和 Debian 的旧版本使用的 init.d 脚本来启动，停止和重新启动 Nginx 的守护进程。</p>
-
 <p>重新启动 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo service nginx restart</code></pre></div>
-<p>启动 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo service nginx start</code></pre></div>
-<p>停止 Nginx 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo service nginx stop</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo service nginx restart
+</code></pre><p>启动 Nginx 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo service nginx start
+</code></pre><p>停止 Nginx 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo service nginx stop
+</code></pre><h2 id="heading1">结论</h2>
 <p>在本指南中，我们向您展示了如何在 Linux 系统上启动，停止和重新启动 Nginx Web 服务器。</p>
       </div><ul class="pa0">
   
@@ -266,15 +250,12 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#在你开始之前">在你开始之前</a></li>
-<li><a href="#启动-停止和重新启动-nginx-的使用-systemctl">启动，停止和重新启动 Nginx 的使用  <code>systemctl</code></a></li>
-<li><a href="#使用-sysvinit-启动-停止和重新启动-nginx">使用 <code>SysVinit</code> 启动，停止和重新启动 Nginx</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">在你开始之前</a></li>
+    <li><a href="#-nginx--systemctl">启动，停止和重新启动 Nginx 的使用  systemctl</a></li>
+    <li><a href="#-sysvinit--nginx">使用 SysVinit 启动，停止和重新启动 Nginx</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

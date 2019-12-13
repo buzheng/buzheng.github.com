@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何设置 SSH 免密登录" />
 <meta property="og:description" content="Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。
-
 在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-setup-passwordless-ssh-login/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-22T05:00:00+08:00" />
 <meta itemprop="name" content="如何设置 SSH 免密登录">
 <meta itemprop="description" content="Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。
-
 在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。">
-
-
 <meta itemprop="datePublished" content="2019-03-22T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-22T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1230">
+<meta itemprop="wordCount" content="1231">
 
 
 
-<meta itemprop="keywords" content="linux,ssh,安全," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,ssh,安全," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何设置 SSH 免密登录"/>
 <meta name="twitter:description" content="Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。
-
 在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。"/>
 
   </head>
@@ -147,97 +141,80 @@
           
   
           <p>Secure Shell （ SSH ）是一种加密网络协议，用于客户端和服务器之间的安全连接，并支持各种身份验证机制。基于密码的身份验证和基于公钥的身份验证是目前两种最流行的身份验证机制。</p>
-
 <p>在本教程中，我们将向您展示如何设置基于 SSH 密钥的身份验证以及如何在不输入密码的情况下连接到 Linux 服务器。</p>
-
-<h2 id="设置-ssh-无密码登录">设置 SSH 无密码登录</h2>
-
+<h2 id="-ssh-">设置 SSH 无密码登录</h2>
 <p>要在 Linux 中设置 SSH 免密登录，您只需生成公共身份验证密钥并将其附加到远程主机 <code>~/.ssh/authorized_keys</code> 文件即可。</p>
-
 <p>以下步骤将介绍配置 SSH 免密登录的过程：</p>
-
 <ol>
-<li><p>检查现有的 SSH 密钥对。</p>
-
+<li>
+<p>检查现有的 SSH 密钥对。</p>
 <p>在生成新的 SSH 密钥对之前，首先检查您的客户端计算机上是否已有 SSH 密钥，因为您不想覆盖现有密钥。</p>
-
 <p>运行以下 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令</a>以查看是否存在现有 SSH 密钥：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls -al ~/.ssh/id_*.pub</code></pre></div>
-<p>如果存在现有密钥，您可以使用这些密钥并跳过下一步或备份旧密钥并生成新密钥。</p>
-
-<p>如果您看到 <code>No such file or directory</code> 或 <code>no matches found</code> 意味着您没有 SSH 密钥，则可以继续执行下一步并生成新密钥。</p></li>
-
-<li><p>生成新的 SSH 密钥对。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls -al ~/.ssh/id_*.pub
+</code></pre></div><p>如果存在现有密钥，您可以使用这些密钥并跳过下一步或备份旧密钥并生成新密钥。</p>
+<p>如果您看到 <code>No such file or directory</code> 或 <code>no matches found</code> 意味着您没有 SSH 密钥，则可以继续执行下一步并生成新密钥。</p>
+</li>
+<li>
+<p>生成新的 SSH 密钥对。</p>
 <p>以下命令将生成一个新的 4096 位 SSH 密钥对，并将您的电子邮件地址作为注释：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">&#34;your_email@domain.com&#34;</span></code></pre></div>
-<p>按 <code>Enter</code> 接受则默认文件位置和文件名：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter file in which to save the key <span class="o">(</span>/home/yourusername/.ssh/id_rsa<span class="o">)</span>:</code></pre></div>
-<p>接下来，<code>ssh-keygen</code> 工具将要求您键入安全密码。无论您是否想要使用密码短语都取决于您，如果您选择使用密码短语，您将获得额外的安全保护。在大多数情况下，开发人员和系统管理员使用 SSH 而不使用密码，因为它们对完全自动化的流程很有用。如果您不想使用密码短语，请按 Enter</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter passphrase <span class="o">(</span>empty <span class="k">for</span> no passphrase<span class="o">)</span>:</code></pre></div>
-<p>整个交互看起来像这样：</p>
-
-<figure><img src="/images/linux/how-to-setup-passwordless-ssh-login/generate-a-new-ssh-key-pair.jpg" alt=""></figure>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh-keygen -t rsa -b <span class="m">4096</span> -C <span class="s2">&#34;your_email@domain.com&#34;</span>
+</code></pre></div><p>按 <code>Enter</code> 接受则默认文件位置和文件名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter file in which to save the key <span class="o">(</span>/home/yourusername/.ssh/id_rsa<span class="o">)</span>:
+</code></pre></div><p>接下来，<code>ssh-keygen</code> 工具将要求您键入安全密码。无论您是否想要使用密码短语都取决于您，如果您选择使用密码短语，您将获得额外的安全保护。在大多数情况下，开发人员和系统管理员使用 SSH 而不使用密码，因为它们对完全自动化的流程很有用。如果您不想使用密码短语，请按 Enter</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Enter passphrase <span class="o">(</span>empty <span class="k">for</span> no passphrase<span class="o">)</span>:
+</code></pre></div><p>整个交互看起来像这样：</p>
+<p><img src="/images/linux/how-to-setup-passwordless-ssh-login/generate-a-new-ssh-key-pair.jpg" alt=""></p>
 <p>要确认是否已经生成 SSH 密钥，您可以使用以下命令列出新的私钥和公钥：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls ~/.ssh/id_*</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">/home/yourusername/.ssh/id_rsa /home/yourusername/.ssh/id_rsa.pub</code></pre></div></li>
-
-<li><p>复制公钥</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ls ~/.ssh/id_*
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">/home/yourusername/.ssh/id_rsa /home/yourusername/.ssh/id_rsa.pub
+</code></pre></div></li>
+<li>
+<p>复制公钥</p>
 <p>现在您已经生成了 SSH 密钥对，为了能够在没有密码的情况下登录到您的服务器，您需要将公钥复制到您要管理的服务器。</p>
-
 <p>将公钥复制到服务器的最简单方法是使用名为的命令 <code>ssh-copy-id</code> 。在您的本地机器终端类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh-copy-id remote_username@server_ip_address</code></pre></div>
-<p>系统将提示您输入 <code>remote_username</code> 的密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">remote_username@server_ip_address<span class="err">&#39;</span>s password:</code></pre></div>
-<p>用户通过身份验证后，公钥将附加到远程用户 <code>authorized_keys</code> 文件，并且将关闭连接。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh-copy-id remote_username@server_ip_address
+</code></pre></div><p>系统将提示您输入 <code>remote_username</code> 的密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">remote_username@server_ip_address<span class="err">&#39;</span>s password:
+</code></pre></div><p>用户通过身份验证后，公钥将附加到远程用户 <code>authorized_keys</code> 文件，并且将关闭连接。</p>
 <p>如果由于某种原因， ssh-copy-id 本地计算机上没有该实用程序，则可以使用以下命令复制公钥：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat ~/.ssh/id_rsa.pub <span class="p">|</span> ssh remote_username@server_ip_address <span class="s2">&#34;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&#34;</span></code></pre></div></li>
-
-<li><p>使用 SSH 密钥登录服务器</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat ~/.ssh/id_rsa.pub <span class="p">|</span> ssh remote_username@server_ip_address <span class="s2">&#34;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&#34;</span>
+</code></pre></div></li>
+<li>
+<p>使用 SSH 密钥登录服务器</p>
 <p>完成上述步骤后，您应该能够登录到远程服务器而不会被提示输入密码。</p>
-
 <p>要测试它只是尝试通过 SSH 登录到您的服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh remote_username@server_ip_address</code></pre></div>
-<p>如果一切顺利，您将立即登录。</p></li>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh remote_username@server_ip_address
+</code></pre></div><p>如果一切顺利，您将立即登录。</p>
+</li>
 </ol>
-
-<h2 id="禁用-ssh-密码验证">禁用 SSH 密码验证</h2>
-
+<h2 id="-ssh-1">禁用 SSH 密码验证</h2>
 <p>要为服务器添加额外的安全层，可以禁用 SSH 的密码身份验证。</p>
-
 <p>在禁用 SSH 密码身份验证之前，请确保您可以在没有密码的情况下登录到服务器，并且您登录的用户具有 sudo 权限。</p>
-
 <p>以下教程描述了如何配置 sudo 访问：</p>
-
 <ul>
 <li><a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">如何在 Ubuntu 上创建 sudo 用户</a></li>
 <li><a href="/linux/create-a-sudo-user-on-centos/">如何在 CentOS 上创建 sudo 用户</a></li>
 <li><a href="/linux/how-to-create-a-sudo-user-on-debian/">如何在 Debian 上创建 sudo 用户</a></li>
 </ul>
-
 <ol>
-<li><p>使用具有 sudo 权限的用户或 root 用户，通过 SSH 密钥登录到远程服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh sudo_user@server_ip_address</code></pre></div></li>
-
-<li><p>打开 SSH 配置文件 <code>/etc/ssh/sshd_config</code> ，搜索以下指令并按如下方式进行修改：</p>
+<li>
+<p>使用具有 sudo 权限的用户或 root 用户，通过 SSH 密钥登录到远程服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh sudo_user@server_ip_address
+</code></pre></div></li>
+<li>
+<p>打开 SSH 配置文件 <code>/etc/ssh/sshd_config</code> ，搜索以下指令并按如下方式进行修改：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">PasswordAuthentication no
 ChallengeResponseAuthentication no
-UsePAM no</code></pre></div>
-<p>完成后保存文件并重新启动 SSH 服务。</p>
-
+UsePAM no
+</code></pre></div><p>完成后保存文件并重新启动 SSH 服务。</p>
 <p>在 Ubuntu 或 Debian 服务器上，运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart ssh</code></pre></div>
-<p>在 CentOS 或 Fedora 服务器上，运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart sshd</code></pre></div></li>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart ssh
+</code></pre></div><p>在 CentOS 或 Fedora 服务器上，运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart sshd
+</code></pre></div></li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading">结论</h2>
 <p>在本教程中，您学习了如何设置基于 SSH 密钥的身份验证，允许您在不提供用户密码的情况下登录到远程服务器。您可以将相同的密钥添加到多个远程服务。</p>
-
 <p>我们还向您展示了如何禁用 SSH 密码身份验证并为您的服务器添加额外的安全层。</p>
       </div><ul class="pa0">
   
@@ -315,14 +292,11 @@ UsePAM no</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#设置-ssh-无密码登录">设置 SSH 无密码登录</a></li>
-<li><a href="#禁用-ssh-密码验证">禁用 SSH 密码验证</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-ssh-">设置 SSH 无密码登录</a></li>
+    <li><a href="#-ssh-1">禁用 SSH 密码验证</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

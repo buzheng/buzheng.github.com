@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2013-05-17T00:00:00+00:00" />
 <meta itemprop="name" content="设计模式学习 – State Pattern">
 <meta itemprop="description" content="模式解决问题的思路都是相同的，找到变化的部分封装起来，用来解决某一类特定的问题。状态模式同样是用来出来多路分支的情况，不过在岔口要根据对象的状态来进行选择，对象的不同状态决定了选择不同的分支。既然状态是变化的，我们就考虑将状态封装，由上下文保存当前的状态，由状态对象决定下一步的操作。">
-
-
 <meta itemprop="datePublished" content="2013-05-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-05-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="526">
+<meta itemprop="wordCount" content="531">
 
 
 
-<meta itemprop="keywords" content="设计模式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="设计模式学习 – State Pattern"/>
 <meta name="twitter:description" content="模式解决问题的思路都是相同的，找到变化的部分封装起来，用来解决某一类特定的问题。状态模式同样是用来出来多路分支的情况，不过在岔口要根据对象的状态来进行选择，对象的不同状态决定了选择不同的分支。既然状态是变化的，我们就考虑将状态封装，由上下文保存当前的状态，由状态对象决定下一步的操作。"/>
 
@@ -141,127 +138,128 @@
           
   
           <p>模式解决问题的思路都是相同的，找到变化的部分封装起来，用来解决某一类特定的问题。状态模式同样是用来出来多路分支的情况，不过在岔口要根据对象的状态来进行选择，对象的不同状态决定了选择不同的分支。既然状态是变化的，我们就考虑将状态封装，由上下文保存当前的状态，由状态对象决定下一步的操作。</p>
-
-<figure><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/State_Design_Pattern_UML_Class_Diagram.svg/400px-State_Design_Pattern_UML_Class_Diagram.svg.png" alt=""></figure>
-
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/State_Design_Pattern_UML_Class_Diagram.svg/400px-State_Design_Pattern_UML_Class_Diagram.svg.png" alt=""></p>
 <p>我们考虑现实中的一个列子，就是那个煤气灶上的开关，开关控制着开和关以及火力的大小。FireSwitch就是这个开关，他保存着当前的状态，相当于状态的上下文。State 则抽象了不同的状态，具体的状态则有关闭（OffState），小火（SmallState），中火（MediumState），大火（LargeState）。</p>
-
 <p>这是一个类图：</p>
-
-<figure><img src="/images/state.jpg" alt=""></figure>
-
+<p><img src="/images/state.jpg" alt=""></p>
 <p>贴一下具体的代码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="nf">class</span> <span class="n">FireSwitch</span> <span class="p">{</span>
-	<span class="kd">private</span> <span class="nf">State</span> <span class="n">state</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FireSwitch</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="n">State</span> <span class="n">state</span><span class="o">;</span>
 
-	<span class="kd">public</span> <span class="nf">FireSwitch</span><span class="p">()</span> <span class="p">{</span>
-		<span class="n">state</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OffState</span><span class="p">();</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="nf">FireSwitch</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">state</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OffState</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">setState</span><span class="p">(</span><span class="n">State</span> <span class="nf">state</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setState</span><span class="o">(</span><span class="n">State</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchClockwise</span><span class="p">()</span> <span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="na">state</span><span class="p">.</span><span class="na">switchClockwise</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">(</span><span class="k">this</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchCounterClockwise</span><span class="p">()</span> <span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="na">state</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">state</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="k">this</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="nf">interface</span> <span class="n">State</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">State</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">);</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span><span class="o">;</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchCounterClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="nf">class</span> <span class="n">OffState</span> <span class="nf">implements</span> <span class="n">State</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OffState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">SmallState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;off -&gt; small&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">SmallState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;off -&gt; small&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchCounterClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">LargeState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;off -&gt; large&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">LargeState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;off -&gt; large&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="nf">class</span> <span class="n">SmallState</span> <span class="nf">implements</span> <span class="n">State</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SmallState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">MediumState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;small -&gt; medium&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">MediumState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;small -&gt; medium&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchCounterClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">OffState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;small -&gt; off&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">OffState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;small -&gt; off&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="nf">class</span> <span class="n">MediumState</span> <span class="nf">implements</span> <span class="n">State</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MediumState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">LargeState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;medium -&gt; large&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">LargeState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;medium -&gt; large&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchCounterClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">SmallState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;medium -&gt; small&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">SmallState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;medium -&gt; small&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="nf">class</span> <span class="n">LargeState</span> <span class="nf">implements</span> <span class="n">State</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LargeState</span> <span class="kd">implements</span> <span class="n">State</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">OffState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;large -&gt; off&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">OffState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;large -&gt; off&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">void</span> <span class="n">switchCounterClockwise</span><span class="p">(</span><span class="n">FireSwitch</span> <span class="nf">fs</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">setState</span><span class="p">(</span><span class="k">new</span> <span class="n">MediumState</span><span class="p">());</span>
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;large -&gt; medium&#34;</span><span class="p">);</span>
-	<span class="p">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">switchCounterClockwise</span><span class="o">(</span><span class="n">FireSwitch</span> <span class="n">fs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="n">MediumState</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;large -&gt; medium&#34;</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nf">org</span><span class="p">.</span><span class="na">buzheng</span><span class="p">.</span><span class="na">study</span><span class="p">.</span><span class="na">pattern</span><span class="p">.</span><span class="na">state</span><span class="p">;</span>
+<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.state</span><span class="o">;</span>
 
 <span class="cm">/**
 </span><span class="cm"> * 
 </span><span class="cm"> *
 </span><span class="cm"> */</span>
-<span class="kd">public</span> <span class="nf">class</span> <span class="n">Main</span> <span class="p">{</span>
-	<span class="kd">public</span> <span class="nf">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="nf">args</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">FireSwitch</span> <span class="nf">fs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FireSwitch</span><span class="p">();</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">FireSwitch</span> <span class="n">fs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FireSwitch</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
 
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchClockwise</span><span class="p">();</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
 
-		<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;-----------------------&#34;</span><span class="p">);</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;-----------------------&#34;</span><span class="o">)</span><span class="o">;</span>
 
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-		<span class="n">fs</span><span class="p">.</span><span class="na">switchCounterClockwise</span><span class="p">();</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>&nbsp;</p>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">fs</span><span class="o">.</span><span class="na">switchCounterClockwise</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p> </p>
       </div><ul class="pa0">
   
    <li class="list di">

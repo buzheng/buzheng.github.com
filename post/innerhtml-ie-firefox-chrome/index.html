@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2013-01-13T00:00:00+00:00" />
 <meta itemprop="name" content="innerHTML在ie,firefox,chrome的区别">
 <meta itemprop="description" content="最近在用javascript 写一个代码语法高亮工具，由于取代码部分的时候需要用到innerHTML属性，发现了IE6, IE7, IE8与IE9, firefox, c">
-
-
 <meta itemprop="datePublished" content="2013-01-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-01-13T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="400">
 
 
 
-<meta itemprop="keywords" content="前端开发," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="前端开发," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="innerHTML在ie,firefox,chrome的区别"/>
 <meta name="twitter:description" content="最近在用javascript 写一个代码语法高亮工具，由于取代码部分的时候需要用到innerHTML属性，发现了IE6, IE7, IE8与IE9, firefox, c"/>
 
@@ -141,27 +138,24 @@
           
   
           <p>最近在用javascript 写一个代码语法高亮工具，由于取代码部分的时候需要用到innerHTML属性，发现了IE6, IE7, IE8与IE9, firefox, chrome对innerHTML实现的不同。现在IE9已经属于现代浏览器了，实现方式已经和firefox, chrome一致。下面说说区别：</p>
-
-<p>IE6,IE7,IE8会将标签转为大写，对没有关闭的html标签（注意是html标签，比如<p>）进行关闭，并不在意其他的自定义标签(比如<xxxx>)是否关闭，并且会将属性值的引号也给丢掉了。</p>
-
+<p>IE6,IE7,IE8会将标签转为大写，对没有关闭的html标签（注意是html标签，比如<!-- raw HTML omitted -->）进行关闭，并不在意其他的自定义标签(比如<!-- raw HTML omitted -->)是否关闭，并且会将属性值的引号也给丢掉了。</p>
 <p>IE9,firefox,chrome会将标签专为小写，并关闭所有没有关闭的标签。</p>
-
 <p>例如下面一段html代码，要求取div#test的innerHTML值：</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;test&#34;</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>you are here<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">XXXX</span><span class="p">&gt;</span>xxxx
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>aaa
-<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span></code></pre></div>
-<p>在IE9,firefox,chrome下取出的内容为：</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>you are here<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">xxxx</span><span class="p">&gt;</span>xxxx
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>aaa
-<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;&lt;/</span><span class="nt">xxxx</span><span class="p">&gt;</span></code></pre></div>
-<p>IE6,IE7,IE8下取出的内容为：</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">SPAN</span> <span class="na">class</span><span class="o">=</span><span class="s">a</span><span class="p">&gt;</span>you are here<span class="p">&lt;/</span><span class="nt">SPAN</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">XXXX</span><span class="p">&gt;</span>xxxx
-<span class="p">&lt;</span><span class="nt">P</span><span class="p">&gt;</span>aaa <span class="p">&lt;/</span><span class="nt">P</span><span class="p">&gt;</span></code></pre></div>
-<p>有时候仅仅是想取出里面的原始内容进行处理的话，还真是个麻烦事。</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;test&#34;</span><span class="p"></span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">span</span><span class="p"></span><span class="p">&gt;</span>you are here<span class="p">&lt;</span><span class="p">/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">XXXX</span><span class="p"></span><span class="p">&gt;</span>xxxx
+<span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>aaa
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div><p>在IE9,firefox,chrome下取出的内容为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">span</span><span class="p"></span><span class="p">&gt;</span>you are here<span class="p">&lt;</span><span class="p">/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">xxxx</span><span class="p"></span><span class="p">&gt;</span>xxxx
+<span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>aaa
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">xxxx</span><span class="p">&gt;</span>
+</code></pre></div><p>IE6,IE7,IE8下取出的内容为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">SPAN</span> <span class="na">class</span><span class="o">=</span><span class="s">a</span><span class="p"></span><span class="p">&gt;</span>you are here<span class="p">&lt;</span><span class="p">/</span><span class="nt">SPAN</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">XXXX</span><span class="p"></span><span class="p">&gt;</span>xxxx
+<span class="p">&lt;</span><span class="nt">P</span><span class="p"></span><span class="p">&gt;</span>aaa <span class="p">&lt;</span><span class="p">/</span><span class="nt">P</span><span class="p">&gt;</span>
+</code></pre></div><p>有时候仅仅是想取出里面的原始内容进行处理的话，还真是个麻烦事。</p>
 
       </div><ul class="pa0">
   

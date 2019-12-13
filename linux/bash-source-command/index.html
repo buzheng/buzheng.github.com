@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="Bash Source 命令" />
 <meta property="og:description" content="source 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。
-
 source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/bash-source-command/" />
+<meta property="og:image" content="/linux/bash-source-command/featured.jpg"/>
 <meta property="article:published_time" content="2019-06-18T06:00:00+08:00" />
 <meta property="article:modified_time" content="2019-06-18T06:00:00+08:00" />
 <meta itemprop="name" content="Bash Source 命令">
 <meta itemprop="description" content="source 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。
-
 source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。">
-
-
 <meta itemprop="datePublished" content="2019-06-18T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-06-18T06:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="668">
+<meta itemprop="image" content="/linux/bash-source-command/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="bash,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="bash,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/bash-source-command/featured.jpg"/>
 <meta name="twitter:title" content="Bash Source 命令"/>
 <meta name="twitter:description" content="source 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。
-
 source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。"/>
 
   </head>
@@ -148,70 +144,55 @@ source 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使
           
   
           <p><code>source</code> 命令从当前 shell 环境中指定为其参数的文件中读取和执行命令。将函数，变量和配置文件加载到 shell 脚本中非常有用。</p>
-
 <p><code>source</code> 命令已经内置在 Bash shell 中和 Linux 和 UNIX 操作系统中使用的其他流行的 shell 中。</p>
-
-<h2 id="source-命令语法">Source 命令语法</h2>
-
+<h2 id="source-">Source 命令语法</h2>
 <p>该 <code>source</code> 命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">source</span> FILENAME <span class="o">[</span>ARGUMENTS<span class="o">]</span>
-. FILENAME <span class="o">[</span>ARGUMENTS<span class="o">]</span></code></pre></div>
-<ul>
+. FILENAME <span class="o">[</span>ARGUMENTS<span class="o">]</span>
+</code></pre></div><ul>
 <li><code>source</code>和 <code>.</code>(一个点)是同一个命令。</li>
 <li>如果该 <code>FILENAME</code> 文件不是文件的完整路径，则该命令将在 <code>$PATH</code>  <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量中</a>指定的目录中搜索该文件。如果在该 <code>$PATH</code> 命令中找不到该文件，则将在当前目录中查找该文件。</li>
 <li>如果给出了任意的 <code>ARGUMENTS</code>，它们将成为 <code>FILENAME</code> 的位置参数。</li>
 <li>如果 <code>FILENAME</code> 存在 <code>source</code> 命令返回代码 <code>0</code> ，否则如果找不到该文件则返回 <code>1</code> 。</li>
 </ul>
-
-<h2 id="source-命令示例">Source 命令示例</h2>
-
+<h2 id="source-1">Source 命令示例</h2>
 <p>在本节中，我们将介绍 <code>source</code> 命令的一些基本示例。</p>
-
-<h2 id="采购职能">采购职能</h2>
-
+<h2 id="heading">采购职能</h2>
 <p>如果你有使用相同功能的 shell 脚本，你可以在一个单独的文件中提取它们，然后在你的程序中找到该文件。</p>
-
 <p>在此示例中，我们将创建一个包含 <a href="/linux/bash-functions/">bash 函数</a>的文件，该<a href="/linux/bash-functions/">函数</a>检查运行脚本的用户是否为 root ，如果不是，则显示消息并退出脚本。</p>
-
 <p>functions.sh</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">check_root <span class="o">()</span> <span class="o">{</span>
-  <span class="k">if</span> <span class="o">[[</span> <span class="nv">$EUID</span> -ne <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">check_root <span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$EUID</span> -ne <span class="m">0</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&#34;This script must be run as root&#34;</span> 
     <span class="nb">exit</span> <span class="m">1</span>
   <span class="k">fi</span>
-<span class="o">}</span></code></pre></div>
-<p>如果你的其他脚本需要仅仅由 root 用户运行，只需 source 一下 <code>functions.sh</code> 文件并调用该函数：</p>
+<span class="o">}</span>
+</code></pre></div><p>如果你的其他脚本需要仅仅由 root 用户运行，只需 source 一下 <code>functions.sh</code> 文件并调用该函数：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/usr/bin/env bash
 </span><span class="cp"></span>
 <span class="nb">source</span> functions.sh
 check_root
 
-<span class="nb">echo</span> <span class="s2">&#34;I am root&#34;</span></code></pre></div>
-<p>如果以非 root 用户身份运行上述脚本，脚本将打印 &ldquo;This script must be run as root&rdquo; 并退出。</p>
-
+<span class="nb">echo</span> <span class="s2">&#34;I am root&#34;</span>
+</code></pre></div><p>如果以非 root 用户身份运行上述脚本，脚本将打印 &ldquo;This script must be run as root&rdquo; 并退出。</p>
 <p>这种方法的优点是您的脚本更小，更易读，您可以在需要时重用相同的函数文件，如果您需要修改函数，您只需编辑一个文件。</p>
-
-<h3 id="bash-配置文件">Bash 配置文件</h3>
-
+<h3 id="bash-">Bash 配置文件</h3>
 <p>使用 <code>source</code> 命令，您还可以从文件中读取变量。必须使用 Bash 语法设置变量 <code>VARIABLE=VALUE</code> 。</p>
-
 <p>让我们创建一个测试配置文件：</p>
-
 <p>config.sh</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">VAR1</span><span class="o">=</span><span class="s2">&#34;foo&#34;</span>
-<span class="nv">VAR2</span><span class="o">=</span><span class="s2">&#34;bar&#34;</span></code></pre></div>
-<p>在 bash 脚本中使用该 <code>source</code> 命令读取配置文件：</p>
+<span class="nv">VAR2</span><span class="o">=</span><span class="s2">&#34;bar&#34;</span>
+</code></pre></div><p>在 bash 脚本中使用该 <code>source</code> 命令读取配置文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/usr/bin/env bash
 </span><span class="cp"></span>
 <span class="nb">source</span> config.sh
 
-<span class="nb">echo</span> <span class="s2">&#34;VAR1 is </span><span class="nv">$VAR1</span><span class="s2">&#34;</span>
-<span class="nb">echo</span> <span class="s2">&#34;VAR2 is </span><span class="nv">$VAR2</span><span class="s2">&#34;</span></code></pre></div>
-<p>如果您运行脚本，输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">VAR1 is foo
-VAR2 is bar</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">VAR1 is </span><span class="nv">$VAR1</span><span class="s2">&#34;</span>
+<span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">VAR2 is </span><span class="nv">$VAR2</span><span class="s2">&#34;</span>
+</code></pre></div><p>如果您运行脚本，输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">VAR1 is foo
+VAR2 is bar
+</code></pre><h2 id="heading1">结论</h2>
 <p>在本指南中，您学习了如何 <code>source</code> 在 shell 脚本中使用 builtin 命令。</p>
       </div><ul class="pa0">
   
@@ -285,18 +266,16 @@ VAR2 is bar</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#source-命令语法">Source 命令语法</a></li>
-<li><a href="#source-命令示例">Source 命令示例</a></li>
-<li><a href="#采购职能">采购职能</a>
-<ul>
-<li><a href="#bash-配置文件">Bash 配置文件</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#source-">Source 命令语法</a></li>
+    <li><a href="#source-1">Source 命令示例</a></li>
+    <li><a href="#heading">采购职能</a>
+      <ul>
+        <li><a href="#bash-">Bash 配置文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="如何设置 SSH 隧道(端口转发)" />
 <meta property="og:description" content="SSH 隧道或 SSH 端口转发是一种在客户端和服务器机器之间创建加密 SSH 连接的方法。
-
 SSH 转发对于传输使用未加密协议(如 VNC 或 FTP)，访问地理限制内容或绕过中间防火墙的服务的网络数据非常有用。基本上，您可以转发任何 TCP 端口并通过安全的 SSH 连接隧道传输流量。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-setup-ssh-tunneling/" />
+<meta property="og:image" content="/linux/how-to-setup-ssh-tunneling/featured.jpg"/>
 <meta property="article:published_time" content="2019-08-09T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-08-09T12:00:00+08:00" />
 <meta itemprop="name" content="如何设置 SSH 隧道(端口转发)">
 <meta itemprop="description" content="SSH 隧道或 SSH 端口转发是一种在客户端和服务器机器之间创建加密 SSH 连接的方法。
-
 SSH 转发对于传输使用未加密协议(如 VNC 或 FTP)，访问地理限制内容或绕过中间防火墙的服务的网络数据非常有用。基本上，您可以转发任何 TCP 端口并通过安全的 SSH 连接隧道传输流量。">
-
-
 <meta itemprop="datePublished" content="2019-08-09T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-09T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="2418">
+<meta itemprop="image" content="/linux/how-to-setup-ssh-tunneling/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="ssh,security," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="ssh,security," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-setup-ssh-tunneling/featured.jpg"/>
 <meta name="twitter:title" content="如何设置 SSH 隧道(端口转发)"/>
 <meta name="twitter:description" content="SSH 隧道或 SSH 端口转发是一种在客户端和服务器机器之间创建加密 SSH 连接的方法。
-
 SSH 转发对于传输使用未加密协议(如 VNC 或 FTP)，访问地理限制内容或绕过中间防火墙的服务的网络数据非常有用。基本上，您可以转发任何 TCP 端口并通过安全的 SSH 连接隧道传输流量。"/>
 
   </head>
@@ -148,148 +144,105 @@ SSH 转发对于传输使用未加密协议(如 VNC 或 FTP)，访问地理限�
           
   
           <p>SSH 隧道或 SSH 端口转发是一种在客户端和服务器机器之间创建加密 SSH 连接的方法。</p>
-
 <p>SSH 转发对于传输使用未加密协议(如 VNC 或 <a href="/linux/how-to-use-linux-ftp-command-to-transfer-files/">FTP</a>)，访问地理限制内容或绕过中间防火墙的服务的网络数据非常有用。基本上，您可以转发任何 TCP 端口并通过安全的 SSH 连接隧道传输流量。</p>
-
 <p>SSH 端口转发有三种类型：</p>
-
 <ul>
 <li>本地端口转发。 - 将连接从客户端主机转发到 SSH 服务器主机，然后转发到目标主机端口。</li>
 <li>远程端口转发。 - 将端口从服务器主机转发到客户端主机，然后转发到目标主机端口。</li>
 <li>动态端口转发。 - 创建 SOCKS 代理服务器，允许跨一系列端口进行通信。</li>
 </ul>
-
 <p>在本文中，我们将讨论如何设置本地，远程和动态加密的 SSH 隧道。</p>
-
-<h2 id="本地端口转发">本地端口转发</h2>
-
+<h2 id="heading">本地端口转发</h2>
 <p>本地端口转发允许您将本地 (ssh 客户端)计算机上的端口转发到远程 (ssh 服务器)计算机上的端口，然后将其转发到目标计算机上的端口。</p>
-
 <p>在这种类型的转发中， SSH 客户端侦听给定端口，并将与该端口的任何连接隧道连接到远程 SSH 服务器上的指定端口，然后该端口连接到目标计算机上的端口。目标计算机可以是远程 SSH 服务器或任何其他计算机。</p>
-
 <p>本地端口转发主要用于连接内部网络(如数据库或 VNC 服务器)上的远程服务。</p>
-
 <p>在 Linux ， macOS 和其他 Unix 系统中创建本地端口转发将 <code>-L</code> 选项传递给 <code>ssh</code> 客户端：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -L [LOCAL_IP:]LOCAL_PORT:DESTINATION:DESTINATION_PORT [USER@]SSH_SERVER</code></pre></div>
-<p>使用的选项如下：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh -L [LOCAL_IP:]LOCAL_PORT:DESTINATION:DESTINATION_PORT [USER@]SSH_SERVER
+</code></pre><p>使用的选项如下：</p>
 <ul>
 <li><code>[LOCAL_IP:]LOCAL_PORT</code> - 本地机器的 ip 和端口号。当 <code>LOCAL_IP</code> 省略 SSH 客户端会连接本地主机。</li>
 <li><code>DESTINATION:DESTINATION_PORT</code> - 目标计算机的 IP 或主机名和端口。</li>
 <li><code>[USER@]SERVER_IP</code> - 远程 SSH 用户和服务器 IP 地址。</li>
 </ul>
-
 <p><code>LOCAL_PORT</code> 可以使用任何大于 <code>1024</code> 的端口号。端口号小于 <code>1024</code> 特权端口，只能由 root 用户使用。如果您的 SSH 服务器正在侦听 <a href="/linux/how-to-change-ssh-port-in-linux/">22 以外的端口</a>(默认值)，请使用该 <code>-p [PORT_NUMBER]</code> 选项。</p>
-
 <p>目标主机名必须可从 SSH 服务器解析。</p>
-
 <p>假设您在内部(专用)网络上的计算机 <code>db001.host</code> 上运行 MySQL 数据库服务器，在端口 3306 上可以从计算机访问，并且您希望使用本地计算机 <code>pub001.host</code> 上的 <code>mysql</code> 客户端连接到数据库服务器。为此，您可以转发连接，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -L 3336:db001.host:3306 user@pub001.host</code></pre></div>
-<p>运行该命令后，系统将提示您输入远程 SSH 用户密码。输入后，您将登录远程服务器并建立 SSH 隧道。<a href="/linux/how-to-setup-passwordless-ssh-login/">建立基于 SSH 密钥的身份验证</a>连接到服务器而不输入密码是更好的选择。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh -L 3336:db001.host:3306 user@pub001.host
+</code></pre><p>运行该命令后，系统将提示您输入远程 SSH 用户密码。输入后，您将登录远程服务器并建立 SSH 隧道。<a href="/linux/how-to-setup-passwordless-ssh-login/">建立基于 SSH 密钥的身份验证</a>连接到服务器而不输入密码是更好的选择。</p>
 <p>现在，如果您将本地计算机数据库客户端指向 <code>127.0.0.1:3336</code> ，则连接将 <code>db001.host:3306</code> 通过 <code>pub001.host</code> 将充当中间服务器的计算机转发到 MySQL  服务器。</p>
-
 <p>您可以在单个 ssh 命令中将多个端口转发到多个目标。例如，您在计算机上运行另一个 MySQL 数据库服务器， <code>db002.host</code> 并且您希望从您将运行的本地客户端连接到两个服务器：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -L <span class="m">3336</span>:db001.host:3306 <span class="m">3337</span>:db002.host:3306 user@pub001.host</code></pre></div>
-<p>要连接到您将使用的第二台服务器 <code>127.0.0.1:3337</code> 。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -L 3336:db001.host:3306 3337:db002.host:3306 user@pub001.host
+</code></pre></div><p>要连接到您将使用的第二台服务器 <code>127.0.0.1:3337</code> 。</p>
 <p>目标主机与 SSH 服务器相同时，而不是指定可以使用的目标主机 IP 或主机名 <code>localhost</code> 。</p>
-
 <p>假设您需要通过在同一服务器上运行的 VNC 连接到远程计算机，并且无法从外部访问它。您将使用的命令是：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -L 5901:127.0.0.1:5901 -N -f user@remote.host</code></pre></div>
-<p>该 <code>-f</code> 选项告诉 <code>ssh</code> 命令在后台运行而 <code>-N</code> 不是执行远程命令。我们正在使用， <code>localhost</code> 因为 VNC 和 SSH 服务器在同一主机上运行。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh -L 5901:127.0.0.1:5901 -N -f user@remote.host
+</code></pre><p>该 <code>-f</code> 选项告诉 <code>ssh</code> 命令在后台运行而 <code>-N</code> 不是执行远程命令。我们正在使用， <code>localhost</code> 因为 VNC 和 SSH 服务器在同一主机上运行。</p>
 <p>如果您在设置隧道时遇到问题，请检查远程 SSH 服务器配置并确保 <code>AllowTcpForwarding</code> 未设置为 <code>no</code> 。默认情况下，允许转发。</p>
-
-<h2 id="远程端口转发">远程端口转发</h2>
-
+<h2 id="heading1">远程端口转发</h2>
 <p>远程端口转发与本地端口转发相反。它允许您将远程 (ssh 服务器)计算机上的端口转发到本地 (ssh 客户端)计算机上的端口，然后将其转发到目标计算机上的端口。</p>
-
 <p>在这种类型的转发中， SSH 服务器侦听给定端口，并将与该端口的任何连接隧道连接到本地 SSH 客户端上的指定端口，然后该端口连接到目标计算机上的端口。目标计算机可以是本地计算机或任何其他计算机。</p>
-
 <p>在 Linux ， macOS 和其他 Unix 系统中创建远程端口转发将 <code>-R</code> 选项传递给 <code>ssh</code> 客户端：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -R <span class="o">[</span>REMOTE:<span class="o">]</span>REMOTE_PORT:DESTINATION:DESTINATION_PORT <span class="o">[</span>USER@<span class="o">]</span>SSH_SERVER</code></pre></div>
-<p>使用的选项如下：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -R <span class="o">[</span>REMOTE:<span class="o">]</span>REMOTE_PORT:DESTINATION:DESTINATION_PORT <span class="o">[</span>USER@<span class="o">]</span>SSH_SERVER
+</code></pre></div><p>使用的选项如下：</p>
 <ul>
 <li><code>[REMOTE:]REMOTE_PORT</code> - 远程 SSH 服务器上的 IP 和端口号。空 <code>REMOTE</code> 表示远程 SSH 服务器将在所有接口上绑定。</li>
 <li><code>DESTINATION:DESTINATION_PORT</code> - 目标计算机的 IP 或主机名和端口。</li>
 <li><code>[USER@]SERVER_IP</code> - 远程 SSH 用户和服务器 IP 地址。</li>
 </ul>
-
 <p>本地端口转发主要用于从外部向某人提供对内部服务的访问。</p>
-
 <p>假设您正在本地计算机上开发 Web 应用程序，并且希望向其他开发人员显示预览。您没有公共 IP ，因此其他开发人员无法通过 Internet 访问该应用程序。</p>
-
 <p>如果您可以访问远程 SSH 服务器，则可以按如下方式设置远程端口转发：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -L 8080:127.0.0.1:3000 -N -f user@remote.host</code></pre></div>
-<p>上面的命令将使 ssh 服务器侦听端口 <code>8080</code> 并将从该端口到端口的本地计算机的所有流量隧道传输 <code>3000</code> 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh -L 8080:127.0.0.1:3000 -N -f user@remote.host
+</code></pre><p>上面的命令将使 ssh 服务器侦听端口 <code>8080</code> 并将从该端口到端口的本地计算机的所有流量隧道传输 <code>3000</code> 。</p>
 <p>现在您的开发人员可以输入 <code>the_ssh_server_ip:8080</code> 他/她的浏览器并预览您的应用程序。</p>
-
 <p>如果您有麻烦设置远程端口转发，确保 <code>GatewayPorts</code> 被设置为 <code>yes</code> 在远程 SSH 服务器配置。</p>
-
-<h2 id="动态端口转发">动态端口转发</h2>
-
+<h2 id="heading2">动态端口转发</h2>
 <p>动态端口转发允许您在充当 SOCKS 代理服务器的本地 (ssh 客户端)计算机上创建套接字。当客户端连接到此端口时，连接将转发到远程 (ssh 服务器)计算机，然后将其转发到目标计算机上的动态端口。</p>
-
 <p>这样，使用 SOCKS 代理的所有应用程序将连接到 SSH 服务器，服务器将所有流量转发到其实际目的地。</p>
-
 <p>在 Linux ， macOS 和其他 Unix 系统中创建动态端口转发 (SOCKS) 将 <code>-D</code> 选项传递给 <code>ssh</code> 客户端：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -R <span class="o">[</span>LOCAL_IP:<span class="o">]</span>LOCAL_PORT <span class="o">[</span>USER@<span class="o">]</span>SSH_SERVER</code></pre></div>
-<p>使用的选项如下：</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -R <span class="o">[</span>LOCAL_IP:<span class="o">]</span>LOCAL_PORT <span class="o">[</span>USER@<span class="o">]</span>SSH_SERVER
+</code></pre></div><p>使用的选项如下：</p>
 <ul>
 <li><code>[LOCAL_IP:]LOCAL_PORT</code> - 本地机器的 ip 和端口号。当 <code>LOCAL_IP</code> 省略 SSH 客户端结合在本地主机。</li>
 <li><code>[USER@]SERVER_IP</code> - 远程 SSH 用户和服务器 IP 地址。</li>
 </ul>
-
 <p>动态端口转发的典型示例是通过 SSH 服务器隧道传输 Web 浏览器流量。</p>
-
 <p>以下命令将在端口上创建 SOCKS 隧道 <code>9090</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh -D 9090 -N -f user@remote.host</code></pre></div>
-<p>建立隧道后，您可以配置应用程序以使用它。<a href="/linux/how-to-setup-ssh-socks-tunnel-for-private-browsing/">本文</a>介绍如何配置 Firefox 和 Google Chrome 浏览器以使用 SOCKS 代理。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh -D 9090 -N -f user@remote.host
+</code></pre><p>建立隧道后，您可以配置应用程序以使用它。<a href="/linux/how-to-setup-ssh-socks-tunnel-for-private-browsing/">本文</a>介绍如何配置 Firefox 和 Google Chrome 浏览器以使用 SOCKS 代理。</p>
 <p>必须为要对其进行隧道传输的每个应用程序单独配置端口转发。</p>
-
-<h2 id="在-windows-中设置-ssh-隧道">在 Windows 中设置 SSH 隧道</h2>
-
+<h2 id="-windows--ssh-">在 Windows 中设置 SSH 隧道</h2>
 <p>Windows 用户可以使用 PuTTY SSH 客户端创建 SSH 隧道。你可以<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">在这里</a>下载 PuTTY  。</p>
-
 <ol>
-<li><p>启动 Putty 并在 <code>Host name (or IP address)</code> 字段中输入 SSH 服务器 IP 地址。</p>
-
-<figure><img src="launch-putty.jpg" alt=""></figure></li>
-
-<li><p>在 <code>Connection</code> 菜单下，展开 <code>SSH</code> 并选择 <code>Tunnels</code> 。检查 <code>Local</code> 单选按钮以设置本地， <code>Remote</code> 远程和 <code>Dynamic</code> 动态端口转发。</p>
-
+<li>
+<p>启动 Putty 并在 <code>Host name (or IP address)</code> 字段中输入 SSH 服务器 IP 地址。</p>
+<p><img src="launch-putty.jpg" alt=""></p>
+</li>
+<li>
+<p>在 <code>Connection</code> 菜单下，展开 <code>SSH</code> 并选择 <code>Tunnels</code> 。检查 <code>Local</code> 单选按钮以设置本地， <code>Remote</code> 远程和 <code>Dynamic</code> 动态端口转发。</p>
 <ul>
 <li>如果设置本地转发，请在该 <code>Source Port</code> 字段中 <code>Destination</code> 输入本地转发端口，然后输入目标主机和 IP ，例如 <code>localhost:5901</code> 。</li>
 <li>对于远程端口转发，请在该 <code>Source Port</code> 字段中 <code>Destination</code> 输入远程 SSH 服务器转发端口，然后输入目标主机和 IP ，例如 <code>localhost:3000</code> 。</li>
 <li>如果设置动态转发，则仅输入 <code>Source Port</code> 字段中的本地 SOCKS 端口。</li>
 </ul>
-
-<figure><img src="configure-tunnel-putty.jpg" alt=""></figure></li>
-
-<li><p>单击 <code>Add</code> 按钮，如下图所示。</p>
-
-<figure><img src="add-tunnel-putty.jpg" alt=""></figure></li>
-
-<li><p>返回 <code>Session</code> 页面以保存设置，这样您每次都不需要输入它们。在 <code>Saved Session</code> 字段中输入会话名称，然后单击 <code>Save</code> 按钮。</p>
-
-<figure><img src="save-session-putty.jpg" alt=""></figure></li>
-
-<li><p>选择已保存的会话，然后单击 <code>Open</code> 按钮登录远程服务器。</p>
-
-<figure><img src="open-session-putty.jpg" alt=""></figure>
-
+<p><img src="configure-tunnel-putty.jpg" alt=""></p>
+</li>
+<li>
+<p>单击 <code>Add</code> 按钮，如下图所示。</p>
+<p><img src="add-tunnel-putty.jpg" alt=""></p>
+</li>
+<li>
+<p>返回 <code>Session</code> 页面以保存设置，这样您每次都不需要输入它们。在 <code>Saved Session</code> 字段中输入会话名称，然后单击 <code>Save</code> 按钮。</p>
+<p><img src="save-session-putty.jpg" alt=""></p>
+</li>
+<li>
+<p>选择已保存的会话，然后单击 <code>Open</code> 按钮登录远程服务器。</p>
+<p><img src="open-session-putty.jpg" alt=""></p>
 <p>将显示一个询问您的用户名和密码的新窗口。输入用户名和密码后，您将登录到服务器并启动 SSH 隧道。</p>
-
-<p>设置<a href="/linux/generate-ssh-keys-on-windows-with-puttygen/">公钥验证</a>将允许您在不输入密码的情况下连接到服务器。</p></li>
+<p>设置<a href="/linux/generate-ssh-keys-on-windows-with-puttygen/">公钥验证</a>将允许您在不输入密码的情况下连接到服务器。</p>
+</li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading3">结论</h2>
 <p>我们已经向您展示了如何设置 SSH 隧道并通过安全的 SSH 连接转发流量。为了便于使用，您可以在 <a href="/linux/using-the-ssh-config-file/">SSH 配置文件中</a>定义 SSH 隧道，或创建将设置 SSH 隧道的 <a href="/linux/how-to-create-bash-aliases/">Bash 别名</a>。</p>
       </div><ul class="pa0">
   
@@ -363,16 +316,13 @@ SSH 转发对于传输使用未加密协议(如 VNC 或 FTP)，访问地理限�
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#本地端口转发">本地端口转发</a></li>
-<li><a href="#远程端口转发">远程端口转发</a></li>
-<li><a href="#动态端口转发">动态端口转发</a></li>
-<li><a href="#在-windows-中设置-ssh-隧道">在 Windows 中设置 SSH 隧道</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">本地端口转发</a></li>
+    <li><a href="#heading1">远程端口转发</a></li>
+    <li><a href="#heading2">动态端口转发</a></li>
+    <li><a href="#-windows--ssh-">在 Windows 中设置 SSH 隧道</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

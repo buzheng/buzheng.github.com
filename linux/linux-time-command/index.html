@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="Linux时间命令" />
 <meta property="og:description" content="time命令用于确定给定命令运行的时间。它对于测试脚本和命令的性能很有用。
-
 例如，如果您有两个不同的脚本执行相同的工作，并且您想知道哪个脚本执行得更好，则可以使用Linux time命令来确定每个脚本的执行持续时间。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/linux-time-command/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="Linux时间命令">
 <meta itemprop="description" content="time命令用于确定给定命令运行的时间。它对于测试脚本和命令的性能很有用。
-
 例如，如果您有两个不同的脚本执行相同的工作，并且您想知道哪个脚本执行得更好，则可以使用Linux time命令来确定每个脚本的执行持续时间。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="640">
+<meta itemprop="wordCount" content="645">
 
 
 
-<meta itemprop="keywords" content="time,terminal," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="time,terminal," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux时间命令"/>
 <meta name="twitter:description" content="time命令用于确定给定命令运行的时间。它对于测试脚本和命令的性能很有用。
-
 例如，如果您有两个不同的脚本执行相同的工作，并且您想知道哪个脚本执行得更好，则可以使用Linux time命令来确定每个脚本的执行持续时间。"/>
 
   </head>
@@ -147,32 +141,26 @@
           
   
           <p>time命令用于确定给定命令运行的时间。它对于测试脚本和命令的性能很有用。</p>
-
 <p>例如，如果您有两个不同的脚本执行相同的工作，并且您想知道哪个脚本执行得更好，则可以使用Linux time命令来确定每个脚本的执行持续时间。</p>
-
-<h2 id="时间命令版本">时间命令版本</h2>
-
+<h2 id="heading">时间命令版本</h2>
 <p>Bash和Zsh，使用最广泛的Linux shell都有自己的time命令内置版本，它优先于Gnu time命令。</p>
-
 <p>您可以使用该<code>type</code>命令确定时间是二进制还是内置关键字。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">type time</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"># Bash
+<pre><code class="language-console-bash" data-lang="console-bash">type time
+</code></pre><pre><code class="language-output" data-lang="output"># Bash
 time is a shell keyword
 
 # Zsh
 time is a reserved word
 
 # GNU time (sh)
-time is /usr/bin/time</code></pre></div>
-<p>要使用Gnu time命令，您需要指定时间二进制文件的完整路径，通常<code>/usr/bin/time</code>使用<code>env</code>命令或使用前导反斜杠<code>\time</code>，以防止使用内置和内置命令。</p>
-
+time is /usr/bin/time
+</code></pre><p>要使用Gnu time命令，您需要指定时间二进制文件的完整路径，通常<code>/usr/bin/time</code>使用<code>env</code>命令或使用前导反斜杠<code>\time</code>，以防止使用内置和内置命令。</p>
 <p>Gnu时间允许您格式化输出并提供其他有用的信息，如内存I / O和IPC调用。</p>
-
-<h2 id="使用linux时间命令">使用Linux时间命令</h2>
-
+<h2 id="linux">使用Linux时间命令</h2>
 <p>在下面的示例中，我们将使用<a href="/linux/wget-command-examples/">wget工具</a>测量下载<a href="https://www.kernel.org/">Linux内核</a>所需的时间：[](/linux/wget-command-examples/)</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">time wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.9.tar.xz</code></pre></div>
-<p>将作为输出打印的内容取决于您正在使用的时间命令的版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"># Bash
+<pre><code class="language-console-bash" data-lang="console-bash">time wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.9.tar.xz
+</code></pre><p>将作为输出打印的内容取决于您正在使用的时间命令的版本：</p>
+<pre><code class="language-output" data-lang="output"># Bash
 real	0m33.961s
 user	0m0.340s
 sys	0m0.940s
@@ -182,15 +170,13 @@ sys	0m0.940s
 
 # GNU time (sh)
 0.34user 0.94system 0:33.96elapsed 4%CPU (0avgtext+0avgdata 6060maxresident)k
-0inputs+201456outputs (0major+315minor)pagefaults 0swaps</code></pre></div>
-<ul>
-<li><strong>实际</strong>或<strong>总</strong><strong>时间</strong>或<strong>已用时间</strong>（挂钟时间）是从通话开始到结束的时间。这是从您<code>Enter</code>按键的那一刻到<code>wget</code>命令完成的那一刻的时间。</li>
+0inputs+201456outputs (0major+315minor)pagefaults 0swaps
+</code></pre><ul>
+<li><strong>实际</strong>或<strong>总****时间</strong>或<strong>已用时间</strong>（挂钟时间）是从通话开始到结束的时间。这是从您<code>Enter</code>按键的那一刻到<code>wget</code>命令完成的那一刻的时间。</li>
 <li><strong>user</strong> - 在用户模式下花费的CPU时间量。</li>
 <li><strong>system</strong>或<strong>sys</strong> - 在内核模式下花费的CPU时间。</li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading1">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用time命令。如果您想了解有关Gnu time命令的更多信息，请访问<a href="http://man7.org/linux/man-pages/man1/time.1.html">时间手册</a>页。</p>
       </div><ul class="pa0">
   
@@ -264,14 +250,11 @@ sys	0m0.940s
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#时间命令版本">时间命令版本</a></li>
-<li><a href="#使用linux时间命令">使用Linux时间命令</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">时间命令版本</a></li>
+    <li><a href="#linux">使用Linux时间命令</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

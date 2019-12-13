@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 /etc/passwd 和 /etc/shadow 文件执行身份验证。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/etc-passwd-file/" />
+<meta property="og:image" content="/linux/etc-passwd-file/featured.jpg"/>
 <meta property="article:published_time" content="2019-12-02T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-12-02T12:00:00+08:00" />
 <meta itemprop="name" content="深入理解 /etc/passwd 文件">
 <meta itemprop="description" content="在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 /etc/passwd 和 /etc/shadow 文件执行身份验证。">
-
-
 <meta itemprop="datePublished" content="2019-12-02T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-12-02T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="793">
+<meta itemprop="wordCount" content="798">
+<meta itemprop="image" content="/linux/etc-passwd-file/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/etc-passwd-file/featured.jpg"/>
 <meta name="twitter:title" content="深入理解 /etc/passwd 文件"/>
 <meta name="twitter:description" content="在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 /etc/passwd 和 /etc/shadow 文件执行身份验证。"/>
@@ -142,19 +141,14 @@
           
   
           <p>在 Linux 系统上可以使用几种不同的身份验证方案。最常用和标准的方案是对 <code>/etc/passwd</code> 和 <code>/etc/shadow</code> 文件执行身份验证。</p>
-
 <p><code>/etc/passwd</code> 是基于纯文本的数据库，其中包含系统上所有用户帐户的信息。它由 root 用户拥有，并具有 644 权限。该文件只能由 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户修改，并且所有系统用户都可以读取。</p>
-
 <p>除非您知道自己在做什么，否则请不要手工直接修改 <code>/etc/passwd</code> 文件，请始终使用专门的命令进行操作。例如，要修改用户帐户，请使用 <code>usermod</code> 命令，要添加新的用户帐户，请使用 <a href="/linux/how-to-create-users-in-linux-using-the-useradd-command/"><code>useradd</code></a> 命令。</p>
-
-<h2 id="etc-passwd-格式"><code>/etc/passwd</code> 格式</h2>
-
+<h2 id="etcpasswd"><code>/etc/passwd</code> 格式</h2>
 <p>该 <code>/etc/passwd</code> 文件是一个文本文件，每行一个条目，代表一个用户帐户。要查看文件的内容，请使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>或如下的命令 <a href="/linux/linux-cat-command/"><code>cat</code></a> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /etc/passwd</code></pre></div>
-<p>通常，第一行描述根用户，然后是系统帐户和普通用户帐户。新条目将附加在文件末尾。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cat /etc/passwd
+</code></pre><p>通常，第一行描述根用户，然后是系统帐户和普通用户帐户。新条目将附加在文件末尾。</p>
 <p><code>/etc/passwd</code> 文件的每一行都包含七个逗号分隔的字段：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">mark:x:1001:1001:mark,,,:/home/mark:/bin/bash
+<pre><code class="language-output" data-lang="output">mark:x:1001:1001:mark,,,:/home/mark:/bin/bash
 [--] - [--] [--] [-----] [--------] [--------]
 |    |   |    |     |         |        |
 |    |   |    |     |         |        +-&gt; 7\. 登录 shell
@@ -163,27 +157,23 @@
 |    |   |    +--------------------------&gt; 4\. GID
 |    |   +-------------------------------&gt; 3\. UID
 |    +-----------------------------------&gt; 2\. 密码
-+----------------------------------------&gt; 1\. 用户名</code></pre></div>
-<ol>
-<li>用户名。登录系统时输入的字符串。每个用户名在计算机上必须是唯一的字符串。用户名的最大长度限制为 32 个字符。</li>
-<li>密码。在较旧的 Linux 系统中，用户的加密密码存储在 <code>/etc/passwd</code> 文件中。而在大多数的现代系统上，此字段设置为 <code>x</code> ，<a href="/linux/how-to-change-user-password-in-linux/">用户密码</a>存储在 <code>/etc/shadow</code> 文件中。
++----------------------------------------&gt; 1\. 用户名
 
-<ol>
+</code></pre><ol>
+<li>用户名。登录系统时输入的字符串。每个用户名在计算机上必须是唯一的字符串。用户名的最大长度限制为 32 个字符。</li>
+<li>密码。在较旧的 Linux 系统中，用户的加密密码存储在 <code>/etc/passwd</code> 文件中。而在大多数的现代系统上，此字段设置为 <code>x</code> ，<a href="/linux/how-to-change-user-password-in-linux/">用户密码</a>存储在 <code>/etc/shadow</code> 文件中。</li>
 <li>UID 。用户标识符是分配给每个用户的号码。操作系统使用它来引用用户。</li>
 <li>GID 。用户的组标识号，是指用户的主要组。用户<a href="/linux/create-a-file-in-linux/">创建文件时</a>，文件的所属组将设置为此组。通常，组的名称与用户的名称相同。用户的<a href="/linux/how-to-add-user-to-group-in-linux/">辅助组</a>在 <code>/etc/groups</code> 文件中列出。</li>
-<li>GECOS 或用户的全名。该字段包含逗号分隔值的列表，并包含以下信息：</li>
-<li>用户的全名或应用程序名称。</li>
-<li>房间号。</li>
-<li>工作电话号码。</li>
-<li>家庭电话号码。</li>
-<li>其他联系信息。</li>
-</ol></li>
+<li>GECOS 或用户的全名。该字段包含逗号分隔值的列表，并包含以下信息：
+*   用户的全名或应用程序名称。
+*   房间号。
+*   工作电话号码。
+*   家庭电话号码。
+*   其他联系信息。</li>
 <li>主目录。用户主目录的绝对路径。它包含用户的文件和配置。默认情况下，用户主目录以用户名命名，并在该 <code>/home</code> 目录下创建。</li>
 <li>登录 Shell。用户登录外壳程序的绝对路径。这是用户登录系统时启动的外壳程序。在大多数 Linux 发行版中，默认的登录 shell 是 Bash 。</li>
 </ol>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading">结论</h2>
 <p><code>/etc/passwd</code> 文件中存储着系统上的所有用户。</p>
       </div><ul class="pa0">
   
@@ -253,13 +243,10 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#etc-passwd-格式"><code>/etc/passwd</code> 格式</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#etcpasswd">/etc/passwd 格式</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

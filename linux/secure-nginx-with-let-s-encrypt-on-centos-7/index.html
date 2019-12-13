@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -29,31 +29,25 @@
     
 
     <meta property="og:title" content="在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx" />
-<meta property="og:description" content="Let&rsquo;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&rsquo;s Encrypt 颁发的证书。
-
-在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&rsquo;s Encrypt 来保护您的 Nginx。" />
+<meta property="og:description" content="Let&#39;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&#39;s Encrypt 颁发的证书。
+在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&#39;s Encrypt 来保护您的 Nginx。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/" />
 <meta property="article:published_time" content="2019-03-06T08:00:00+08:00" />
 <meta property="article:modified_time" content="2019-03-06T08:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx">
-<meta itemprop="description" content="Let&rsquo;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&rsquo;s Encrypt 颁发的证书。
-
-在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&rsquo;s Encrypt 来保护您的 Nginx。">
-
-
+<meta itemprop="description" content="Let&#39;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&#39;s Encrypt 颁发的证书。
+在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&#39;s Encrypt 来保护您的 Nginx。">
 <meta itemprop="datePublished" content="2019-03-06T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-06T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1316">
+<meta itemprop="wordCount" content="1310">
 
 
 
-<meta itemprop="keywords" content="linux,centos,nginx,Let&#39;s Encrypt,https," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="linux,centos,nginx,Let&#39;s Encrypt,https," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx"/>
-<meta name="twitter:description" content="Let&rsquo;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&rsquo;s Encrypt 颁发的证书。
-
-在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&rsquo;s Encrypt 来保护您的 Nginx。"/>
+<meta name="twitter:description" content="Let&#39;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&#39;s Encrypt 颁发的证书。
+在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&#39;s Encrypt 来保护您的 Nginx。"/>
 
   </head>
 
@@ -146,63 +140,50 @@
           
           
   
-          <p>Let&rsquo;s Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let&rsquo;s Encrypt 颁发的证书。</p>
-
-<p>在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let&rsquo;s Encrypt 来保护您的 Nginx。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+          <p>Let's Encrypt 是由 Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。截止到今天，几乎所有浏览器都信任 Let's Encrypt 颁发的证书。</p>
+<p>在本教程中，我们将分步说明如何在 CentOS 7 上用 certbot 工具使用 Let's Encrypt 来保护您的 Nginx。</p>
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>您有一个指向公共服务器IP的域名。在本教程中我们将使用 <code>example.com</code>。</li>
 <li>您已经启用了 EPEL 存储库并通过<a href="how-to-install-nginx-on-centos-7">在 CentOS 7 上安装了 Nginx</a>。</li>
 </ul>
-
-<h2 id="安装certbot">安装Certbot</h2>
-
-<p>Certbot 是一个易于使用的工具，可以自动完成获取和更新 Let&rsquo;s Encrypt SSL 证书和配置 Web 服务器的任务。</p>
-
+<h2 id="certbot">安装Certbot</h2>
+<p>Certbot 是一个易于使用的工具，可以自动完成获取和更新 Let's Encrypt SSL 证书和配置 Web 服务器的任务。</p>
 <p>要从 EPEL 存储库运行安装 certbot 包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install certbot</code></pre></div>
-<h2 id="生成强-dh-diffie-hellman-组">生成强 Dh(Diffie-Hellman) 组</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install certbot
+</code></pre></div><h2 id="-dhdiffiehellman-">生成强 Dh(Diffie-Hellman) 组</h2>
 <p>Diffie-Hellman 密钥交换（DH）是一种在不安全的通信信道上安全地交换密码密钥的方法。</p>
-
 <p>通过键入以下命令生成一组新的2048位DH参数：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem <span class="m">2048</span></code></pre></div>
-<blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem <span class="m">2048</span>
+</code></pre></div><blockquote>
 <p>如果您愿意，可以将大小更改为 4096 位，但在这种情况下，生成可能需要超过 30 分钟，具体和系统有关。</p>
 </blockquote>
-
-<h2 id="获取-let-s-encrypt-ssl-证书">获取 Let&rsquo;s Encrypt SSL 证书</h2>
-
-<p>要获取我们域的 SSL 证书，我们将使用 webroot 插件，该插件为待验证请求的域创建临时文件 <code>${webroot-path}/.well-known/acme-challenge</code> 。Let&rsquo;s Encrypt 服务器向临时文件发出 HTTP 请求，以验证请求的域是否解析为运行 certbot 的服务器。</p>
-
+<h2 id="-lets-encrypt-ssl-">获取 Let's Encrypt SSL 证书</h2>
+<p>要获取我们域的 SSL 证书，我们将使用 webroot 插件，该插件为待验证请求的域创建临时文件 <code>${webroot-path}/.well-known/acme-challenge</code> 。Let's Encrypt 服务器向临时文件发出 HTTP 请求，以验证请求的域是否解析为运行 certbot 的服务器。</p>
 <p>为了使它更简单，我们将把所有HTTP请求 <code>well-known/acme-challenge</code> 映射到单个目录 <code>/var/lib/letsencrypt</code> 。</p>
-
 <p>以下命令将创建目录并使 Nginx 服务器可写 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
 sudo chgrp nginx /var/lib/letsencrypt
-sudo chmod g+s /var/lib/letsencrypt</code></pre></div>
-<p>为避免重复代码，请创建以下两个片段，我们将在所有 Nginx 服务器块文件中包含这些片段：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /etc/nginx/snippets</code></pre></div>
-<p>/etc/nginx/snippets/letsencrypt.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">location ^~ /.well-known/acme-challenge/ {
+sudo chmod g+s /var/lib/letsencrypt
+</code></pre></div><p>为避免重复代码，请创建以下两个片段，我们将在所有 Nginx 服务器块文件中包含这些片段：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /etc/nginx/snippets
+</code></pre></div><p>/etc/nginx/snippets/letsencrypt.conf</p>
+<pre><code class="language-conf" data-lang="conf">location ^~ /.well-known/acme-challenge/ {
   allow all;
   root /var/lib/letsencrypt/;
-  default_type &#34;text/plain&#34;;
+  default_type &quot;text/plain&quot;;
   try_files $uri =404;
-}</code></pre></div>
-<p>/etc/nginx/snippets/ssl.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">ssl_dhparam /etc/ssl/certs/dhparam.pem;
+}
+</code></pre><p>/etc/nginx/snippets/ssl.conf</p>
+<pre><code class="language-conf" data-lang="conf">ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
 ssl_session_timeout 1d;
 ssl_session_cache shared:SSL:50m;
 ssl_session_tickets off;
 
 ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-ssl_ciphers &#39;ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS&#39;;
+ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
 ssl_prefer_server_ciphers on;
 
 ssl_stapling on;
@@ -210,42 +191,39 @@ ssl_stapling_verify on;
 resolver 8.8.8.8 8.8.4.4 valid=300s;
 resolver_timeout 30s;
 
-add_header Strict-Transport-Security &#34;max-age=15768000; includeSubdomains; preload&#34;;
+add_header Strict-Transport-Security &quot;max-age=15768000; includeSubdomains; preload&quot;;
 add_header X-Frame-Options SAMEORIGIN;
-add_header X-Content-Type-Options nosniff;</code></pre></div>
-<p>上面的代码段包括 <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">Mozilla</a> 推荐的配置， 支持 OCSP Stapling ， HTTP Strict Transport Security（HSTS）并强制执行少数以安全为中心的 HTTP 请求头。</p>
-
+add_header X-Content-Type-Options nosniff;
+</code></pre><p>上面的代码段包括 <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">Mozilla</a> 推荐的配置， 支持 OCSP Stapling ， HTTP Strict Transport Security（HSTS）并强制执行少数以安全为中心的 HTTP 请求头。</p>
 <p>创建片段后，打开域服务器块并包含 <code>letsencrypt.conf</code> 如下所示的片段：</p>
-
 <p>/etc/nginx/conf.d/example.com.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">server {
+<pre><code class="language-conf" data-lang="conf">server {
   listen 80;
   server_name example.com www.example.com;
 
   include snippets/letsencrypt.conf;
-}</code></pre></div>
-<p>重新加载 Nginx 配置以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
-<p>您现在可以使用 webroot 插件运行 Certbot，并通过发出以下内容获取域的 SSL 证书文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com</code></pre></div>
-<p>如果成功获得SSL证书，certbot将打印以下消息：</p>
+}
+</code></pre><p>重新加载 Nginx 配置以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
+</code></pre></div><p>您现在可以使用 webroot 插件运行 Certbot，并通过发出以下内容获取域的 SSL 证书文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
+</code></pre></div><p>如果成功获得SSL证书，certbot将打印以下消息：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/example.com/fullchain.pem
    Your key file has been saved at:
    /etc/letsencrypt/live/example.com/privkey.pem
-   Your cert will expire on <span class="m">2018</span>-06-11. To obtain a new or tweaked
+   Your cert will expire on 2018-06-11. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot
    again. To non-interactively renew *all* of your certificates, run
    <span class="s2">&#34;certbot renew&#34;</span>
  - If you like Certbot, please consider supporting our work by:
 
    Donating to ISRG / Let<span class="err">&#39;</span>s Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le</code></pre></div>
-<p>现在您已拥有证书文件，您可以按如下方式编辑域服务器块：</p>
-
+   Donating to EFF:                    https://eff.org/donate-le
+</code></pre></div><p>现在您已拥有证书文件，您可以按如下方式编辑域服务器块：</p>
 <p>/etc/nginx/conf.d/example.com.conf</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">server {
+<pre><code class="language-conf" data-lang="conf">server {
     listen 80;
     server_name www.example.com example.com;
 
@@ -277,29 +255,22 @@ server {
     include snippets/letsencrypt.conf;
 
     # . . . other code
-}</code></pre></div>
-<p>通过上面的配置，我们强制使用 HTTPS 并将 www 重定向到非 www 版本。</p>
-
+}
+</code></pre><p>通过上面的配置，我们强制使用 HTTPS 并将 www 重定向到非 www 版本。</p>
 <p>最后，重新加载 Nginx 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
-<h2 id="自动续订让-let-s-encrypt-ssl-证书">自动续订让 Let&rsquo;s Encrypt SSL 证书</h2>
-
-<p>Let&rsquo;s Encrypt 的加密证书有效期为90天。要在证书过期之前自动续订证书，我们将创建一个每天运行两次的 cronjob，并在证书到期前30天自动续订。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
+</code></pre></div><h2 id="-lets-encrypt-ssl-1">自动续订让 Let's Encrypt SSL 证书</h2>
+<p>Let's Encrypt 的加密证书有效期为90天。要在证书过期之前自动续订证书，我们将创建一个每天运行两次的 cronjob，并在证书到期前30天自动续订。</p>
 <p>运行 crontab 命令以创建新的 cronjob：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo crontab -e</code></pre></div>
-<p>粘贴以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload nginx&#34;</span></code></pre></div>
-<p>保存并关闭文件。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo crontab -e
+</code></pre></div><p>粘贴以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload nginx&#34;</span>
+</code></pre></div><p>保存并关闭文件。</p>
 <p>要测试续订过程，可以使用 certbot 命令，后跟 <code>--dry-run</code> 交换机：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo certbot renew --dry-run</code></pre></div>
-<p>如果没有错误，则表示测试续订过程成功。</p>
-
-<h2 id="结论">结论</h2>
-
-<p>在本教程中，您使用了 Let&rsquo;s Encrypt 客户端 certbot 来下载域的 SSL 证书。您还创建了 Nginx 代码段以避免重复代码并配置 Nginx 以使用证书。在本教程结束时，您已设置了一个用于自动证书续订的 cronjob。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo certbot renew --dry-run
+</code></pre></div><p>如果没有错误，则表示测试续订过程成功。</p>
+<h2 id="heading1">结论</h2>
+<p>在本教程中，您使用了 Let's Encrypt 客户端 certbot 来下载域的 SSL 证书。您还创建了 Nginx 代码段以避免重复代码并配置 Nginx 以使用证书。在本教程结束时，您已设置了一个用于自动证书续订的 cronjob。</p>
 <p>如果您想了解有关如何使用 Certbot 的更多信息，<a href="https://certbot.eff.org/docs/">他们的文档</a>是一个很好的起点。</p>
       </div><ul class="pa0">
   
@@ -385,17 +356,14 @@ server {
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装certbot">安装Certbot</a></li>
-<li><a href="#生成强-dh-diffie-hellman-组">生成强 Dh(Diffie-Hellman) 组</a></li>
-<li><a href="#获取-let-s-encrypt-ssl-证书">获取 Let&rsquo;s Encrypt SSL 证书</a></li>
-<li><a href="#自动续订让-let-s-encrypt-ssl-证书">自动续订让 Let&rsquo;s Encrypt SSL 证书</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#certbot">安装Certbot</a></li>
+    <li><a href="#-dhdiffiehellman-">生成强 Dh(Diffie-Hellman) 组</a></li>
+    <li><a href="#-lets-encrypt-ssl-">获取 Let's Encrypt SSL 证书</a></li>
+    <li><a href="#-lets-encrypt-ssl-1">自动续订让 Let's Encrypt SSL 证书</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

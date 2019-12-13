@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何使用useradd命令在Linux中创建用户" />
 <meta property="og:description" content="Linux是一个多用户系统，这意味着不止一个人可以同时与同一系统进行交互。作为系统管理员，您有责任通过创建和删除用户来管理系统的用户和组，并将其分配给不同的组。
-
 在Linux中，您可以使用useradd命令创建用户帐户并将用户分配到不同的组。useradd是一个低级实用程序，Debian和Ubuntu用户更可能使用更友好的adduser实用程序。
-
 本教程介绍了useradd命令及其选项。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-create-users-in-linux-using-the-useradd-command/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何使用useradd命令在Linux中创建用户">
 <meta itemprop="description" content="Linux是一个多用户系统，这意味着不止一个人可以同时与同一系统进行交互。作为系统管理员，您有责任通过创建和删除用户来管理系统的用户和组，并将其分配给不同的组。
-
 在Linux中，您可以使用useradd命令创建用户帐户并将用户分配到不同的组。useradd是一个低级实用程序，Debian和Ubuntu用户更可能使用更友好的adduser实用程序。
-
 本教程介绍了useradd命令及其选项。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2948">
+<meta itemprop="wordCount" content="2955">
 
 
 
-<meta itemprop="keywords" content="terminal,user,group," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="terminal,user,group," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何使用useradd命令在Linux中创建用户"/>
 <meta name="twitter:description" content="Linux是一个多用户系统，这意味着不止一个人可以同时与同一系统进行交互。作为系统管理员，您有责任通过创建和删除用户来管理系统的用户和组，并将其分配给不同的组。
-
 在Linux中，您可以使用useradd命令创建用户帐户并将用户分配到不同的组。useradd是一个低级实用程序，Debian和Ubuntu用户更可能使用更友好的adduser实用程序。
-
 本教程介绍了useradd命令及其选项。"/>
 
   </head>
@@ -153,162 +144,125 @@
           
   
           <p>Linux是一个多用户系统，这意味着不止一个人可以同时与同一系统进行交互。作为系统管理员，您有责任通过创建和<a href="/linux/how-to-delete-users-in-linux-using-the-userdel-command/">删除用户</a>来管理系统的用户和组，并将其分配给不同的<a href="/linux/how-to-add-user-to-group-in-linux/">组</a>。</p>
-
 <p>在Linux中，您可以使用useradd命令创建用户帐户并将用户分配到不同的组。useradd是一个低级实用程序，Debian和Ubuntu用户更可能使用更友好的<a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">adduser</a>实用程序。</p>
-
 <p>本教程介绍了useradd命令及其选项。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>为了能够使用useradd命令创建新用户，您需要以root用户或具有sudo访问权限的用户身份登录。</p>
-
-<h2 id="useradd命令">useradd命令</h2>
-
+<h2 id="useradd">useradd命令</h2>
 <p>在讨论如何使用useradd命令之前，让我们先回顾一下基本语法。</p>
-
 <p>useradd命令表达式采用以下形式：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">useradd <span class="o">[</span>OPTIONS<span class="o">]</span> USERNAME</code></pre></div>
-<p>调用时，useradd命令使用命令行中指定的选项以及<code>/etc/default/useradd</code>文件中指定的默认值创建新用户帐户。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">useradd <span class="o">[</span>OPTIONS<span class="o">]</span> USERNAME
+</code></pre></div><p>调用时，useradd命令使用命令行中指定的选项以及<code>/etc/default/useradd</code>文件中指定的默认值创建新用户帐户。</p>
 <p>此文件中定义的变量与分发不同。如果在没有任何选项的情况下使用useradd命令，则可能会在不同的分发上生成不同的结果。</p>
-
 <p>useradd命令还读取<a href="http://man7.org/linux/man-pages/man5/login.defs.5.html"><code>/etc/login.defs</code></a>文件的内容。此文件包含影子密码套件的配置，例如密码过期策略，创建系统和常规用户时使用的用户ID范围等。</p>
-
-<h2 id="如何在linux中创建新用户">如何在Linux中创建新用户</h2>
-
+<h2 id="linux">如何在Linux中创建新用户</h2>
 <p>要创建<code>username</code>使用<code>useradd</code>您将运行的命令命名的新用户帐户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd username</code></pre></div>
-<p>在没有任何选项的情况下使用最简单的形式时，useradd将使用<code>/etc/default/useradd</code>文件中指定的默认设置创建一个新的用户帐户。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd username
+</code></pre><p>在没有任何选项的情况下使用最简单的形式时，useradd将使用<code>/etc/default/useradd</code>文件中指定的默认设置创建一个新的用户帐户。</p>
 <p>该命令增加了一个入口<code>/etc/passwd</code>，<code>/etc/shadow,</code> <code>/etc/group</code>和<code>/etc/gshadow</code>文件。</p>
-
 <p>要能够以新创建的用户身份登录，您需要设置用户密码。为此，请运行<code>passwd</code>命令后跟用户名：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">passwd username</code></pre></div>
-<p>系统将提示您输入并确认密码。确保使用强密码。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Changing password for user username.
+<pre><code class="language-console-bash" data-lang="console-bash">passwd username
+</code></pre><p>系统将提示您输入并确认密码。确保使用强密码。</p>
+<pre><code class="language-output" data-lang="output">Changing password for user username.
 New password:
 Retype new password:
-passwd: all authentication tokens updated successfully.</code></pre></div>
-<h2 id="如何添加新用户和创建主目录">如何添加新用户和创建主目录</h2>
-
+passwd: all authentication tokens updated successfully.
+</code></pre><h2 id="heading1">如何添加新用户和创建主目录</h2>
 <p>在大多数Linux发行版中，使用该<code>useradd</code>命令创建新用户帐户时，不会创建用户主目录。</p>
-
 <p>使用<code>-m</code>（<code>--create-home</code>）选项创建用户主目录<code>/home/username</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -m username</code></pre></div>
-<p>上面的命令创建新用户的主目录，并将文件从<code>/etc/skel</code>目录复制到用户的主目录。如果您<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">列出文件</a>的<code>/home/username</code>目录，你会看到初始化文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ls -la /home/username/</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">drwxr-xr-x 2 username username 4096 Dec 11 11:23 .
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -m username
+</code></pre><p>上面的命令创建新用户的主目录，并将文件从<code>/etc/skel</code>目录复制到用户的主目录。如果您<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">列出文件</a>的<code>/home/username</code>目录，你会看到初始化文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ls -la /home/username/
+</code></pre><pre><code class="language-output" data-lang="output">drwxr-xr-x 2 username username 4096 Dec 11 11:23 .
 drwxr-xr-x 4 root     root     4096 Dec 11 11:23 ..
 -rw-r--r-- 1 username username  220 Apr  4  2018 .bash_logout
 -rw-r--r-- 1 username username 3771 Apr  4  2018 .bashrc
--rw-r--r-- 1 username username  807 Apr  4  2018 .profile</code></pre></div>
-<p>在主目录中，用户可以编写，编辑和删除文件和目录。</p>
-
-<h2 id="使用特定主目录创建用户">使用特定主目录创建用户</h2>
-
+-rw-r--r-- 1 username username  807 Apr  4  2018 .profile
+</code></pre><p>在主目录中，用户可以编写，编辑和删除文件和目录。</p>
+<h2 id="heading2">使用特定主目录创建用户</h2>
 <p>如果要在其他位置创建用户的主目录，则默认<code>/home</code>目录使用<code>d</code>（<code>--home</code>）选项。</p>
-
 <p>例如，要创建一个以<code>username</code>主目录命名的新用户，<code>/opt/username</code>您需要运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -m -d /opt/username username</code></pre></div>
-<h2 id="创建具有特定用户id的用户">创建具有特定用户ID的用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -m -d /opt/username username
+</code></pre><h2 id="id">创建具有特定用户ID的用户</h2>
 <p>在类Unix操作系统中，用户由唯一的UID和用户名标识。</p>
-
 <p>用户标识符（UID）是Linux系统为每个用户分配的唯一正整数。UID以及其他访问控制策略用于确定用户可以对系统资源执行的操作类型。</p>
-
 <p>默认情况下，在创建新用户时，系统会从<code>login.defs</code>文件中指定的用户ID范围中分配下一个可用的UID 。</p>
-
 <p>使用<code>-u</code>（<code>--uid</code>）选项创建具有特定UID的用户。例如，要创建一个名为<code>username</code>UID的新用户，<code>1500</code>请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -u 1500 username</code></pre></div>
-<p>您可以使用以下<code>id</code>命令验证用户的UID ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">id -u username</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">1500</code></pre></div>
-<h2 id="创建具有特定组id的用户">创建具有特定组ID的用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -u 1500 username
+</code></pre><p>您可以使用以下<code>id</code>命令验证用户的UID ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">id -u username
+</code></pre><pre><code class="language-output" data-lang="output">1500
+</code></pre><h2 id="id1">创建具有特定组ID的用户</h2>
 <p>Linux组是组织单位，用于在Linux中组织和管理用户帐户。组的主要目的是定义一组权限，例如读取，写入或执行可以在组内用户之间共享的给定资源的权限。</p>
-
 <p>创建新用户时，该<code>useradd</code>命令的默认行为是创建一个与用户名同名的组，以及与UID相同的GID。</p>
-
 <p>使用<code>-g</code>（<code>--gid</code>）选项创建具有特定初始登录组的用户。您可以指定组名称或GID号码。组名称或GID必须已存在。</p>
-
 <p>例如，要创建一个名为的新用户并将<code>username</code>登录组设置为<code>users</code>键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -g users username</code></pre></div>
-<p>要验证用户的GID，请使用以下<code>id</code>命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">id -gn username</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">users</code></pre></div>
-<h2 id="创建用户并分配多个组">创建用户并分配多个组</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -g users username
+</code></pre><p>要验证用户的GID，请使用以下<code>id</code>命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">id -gn username
+</code></pre><pre><code class="language-output" data-lang="output">users
+</code></pre><h2 id="heading3">创建用户并分配多个组</h2>
 <p>Linux操作系统中有两种类型的组主要组和辅助组或补充组。每个用户可以属于一个主要组和零个或多个次要组。</p>
-
 <p>在<code>-G</code>（<code>--groups</code>）选项允许你指定的补充组，其用户将成为其成员的名单。</p>
-
 <p>下面的命令将创建一个名为一个新用户<code>username</code>与主组<code>users</code>和辅助组<code>wheel</code>和<code>docker</code>。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -g users -G wheel,developers username</code></pre></div>
-<p>您可以通过键入来检查用户组</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">id username</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">uid=1002(username) gid=100(users) groups=100(users),10(wheel),993(docker)</code></pre></div>
-<h2 id="使用特定登录shell创建用户">使用特定登录Shell创建用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -g users -G wheel,developers username
+</code></pre><p>您可以通过键入来检查用户组</p>
+<pre><code class="language-console-bash" data-lang="console-bash">id username
+</code></pre><pre><code class="language-output" data-lang="output">uid=1002(username) gid=100(users) groups=100(users),10(wheel),993(docker)
+</code></pre><h2 id="shell">使用特定登录Shell创建用户</h2>
 <p>默认情况下，新用户的登录shell设置为<code>/etc/default/useradd</code>文件中指定的登录shell 。在某些Linux发行版（如Ubuntu 18.04）中，默认shell设置为，<code>/bin/sh</code>而在其他版本中则设置为<code>/bin/bash</code>。</p>
-
 <p>在<code>-s</code>（<code>--shell</code>）选项允许你指定新用户的登录shell。</p>
-
 <p>例如，要创建一个名为<code>username</code>with <code>/usr/bin/zsh</code>login shell type 的新用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -s /usr/bin/zsh username</code></pre></div>
-<p>检查<code>/etc/passwd</code>文件中的用户条目以验证用户的登录shell：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep username /etc/passwd</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">username:x :1001:1001::/home/username:/usr/bin/zsh</code></pre></div>
-<h2 id="使用自定义注释创建用户">使用自定义注释创建用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -s /usr/bin/zsh username
+</code></pre><p>检查<code>/etc/passwd</code>文件中的用户条目以验证用户的登录shell：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">grep username /etc/passwd
+</code></pre><pre><code class="language-output" data-lang="output">username:x :1001:1001::/home/username:/usr/bin/zsh
+</code></pre><h2 id="heading4">使用自定义注释创建用户</h2>
 <p>在<code>-c</code>（<code>--comment</code>）选项允许你添加一个简短的说明为新用户。通常，用户的全名或联系信息将添加为注释。</p>
-
 <p>在以下示例中，我们将创建一个<code>username</code>以文本字符串命名的新用户<code>Test User Account</code>作为注释：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -c &#34;Test User Account&#34; username</code></pre></div>
-<p>评论保存在<code>/etc/passwd</code>文件中：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">grep username /etc/passwd</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">username:x :1001:1001:Test User Account:/home/username:/bin/sh</code></pre></div>
-<p>评论字段也称为GECOS。</p>
-
-<h2 id="创建具有到期日期的用户">创建具有到期日期的用户</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -c &quot;Test User Account&quot; username
+</code></pre><p>评论保存在<code>/etc/passwd</code>文件中：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">grep username /etc/passwd
+</code></pre><pre><code class="language-output" data-lang="output">username:x :1001:1001:Test User Account:/home/username:/bin/sh
+</code></pre><p>评论字段也称为GECOS。</p>
+<h2 id="heading5">创建具有到期日期的用户</h2>
 <p>在<code>-e</code>（<code>--expiredate</code>）选项允许你定义一个时间，新的用户帐户将到期。此选项对于创建临时帐户很有用。必须使用<code>YYYY-MM-DD</code>格式指定日期。</p>
-
 <p>例如，要创建一个名为<code>username</code>到期时间设置为2019年1月22日的新用户帐户，您将运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -e 2019-01-22 username</code></pre></div>
-<p>您可以使用该<code>chage</code>命令验证用户帐户的到期日期：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chage -l username</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Last password change					: Dec 11, 2018
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -e 2019-01-22 username
+</code></pre><p>您可以使用该<code>chage</code>命令验证用户帐户的到期日期：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chage -l username
+</code></pre><p>输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">Last password change					: Dec 11, 2018
 Password expires					: never
 Password inactive					: never
 Account expires						: Jan 22, 2019
 Minimum number of days between password change		: 0
 Maximum number of days between password change		: 99999
-Number of days of warning before password expires	: 7</code></pre></div>
-<h2 id="创建系统用户">创建系统用户</h2>
-
+Number of days of warning before password expires	: 7
+</code></pre><h2 id="heading6">创建系统用户</h2>
 <p>系统与常规（普通）用户之间没有真正的技术差异。通常，在安装操作系统和新软件包时会创建系统用户。</p>
-
 <p>在某些情况下，您可能需要创建一些将由某些应用程序使用的系统用户。</p>
-
 <p>使用<code>-r</code>（<code>--system</code>）选项创建系统用户帐户。例如，要创建一个名为的新系统用户，<code>username</code>您将运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -r username</code></pre></div>
-<p>系统用户创建时没有到期日期。它们的UID是从<code>login.defs</code>文件中指定的系统用户ID范围中选择的，该范围不同于普通用户使用的范围。</p>
-
-<h2 id="更改默认的useradd值">更改默认的useradd值</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -r username
+</code></pre><p>系统用户创建时没有到期日期。它们的UID是从<code>login.defs</code>文件中指定的系统用户ID范围中选择的，该范围不同于普通用户使用的范围。</p>
+<h2 id="useradd1">更改默认的useradd值</h2>
 <p>可以使用<code>-D</code>，<code>--defaults</code>选项或手动编辑<code>/etc/default/useradd</code>文件中的值来查看和更改默认的useradd选项。</p>
-
 <p>要查看当前的默认选项类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -D</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">GROUP=100
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -D
+</code></pre><p>输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">GROUP=100
 HOME=/home
 INACTIVE=-1
 EXPIRE=
 SHELL=/bin/sh
 SKEL=/etc/skel
-CREATE_MAIL_SPOOL=no</code></pre></div>
-<p>假设您要将默认登录shell更改<code>/bin/sh</code>为<code>/bin/bash</code>。为此，请指定新shell，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">useradd -D -s /bin/bash</code></pre></div>
-<p>您可以通过运行以下命令来验证是否更改了默认shell值：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo useradd -D | grep -i shell</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">SHELL=/bin/bash</code></pre></div>
-<h2 id="结论">结论</h2>
-
+CREATE_MAIL_SPOOL=no
+</code></pre><p>假设您要将默认登录shell更改<code>/bin/sh</code>为<code>/bin/bash</code>。为此，请指定新shell，如下所示：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">useradd -D -s /bin/bash
+</code></pre><p>您可以通过运行以下命令来验证是否更改了默认shell值：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -D | grep -i shell
+</code></pre><pre><code class="language-output" data-lang="output">SHELL=/bin/bash
+</code></pre><h2 id="heading7">结论</h2>
 <p>在本教程中，您学习了如何使用useradd命令添加新用户帐户。相同的命令适用于任何Linux发行版，包括Ubuntu，CentOS，RHEL，Debian，Fedora和Arch Linux。</p>
       </div><ul class="pa0">
   
@@ -386,25 +340,22 @@ CREATE_MAIL_SPOOL=no</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#useradd命令">useradd命令</a></li>
-<li><a href="#如何在linux中创建新用户">如何在Linux中创建新用户</a></li>
-<li><a href="#如何添加新用户和创建主目录">如何添加新用户和创建主目录</a></li>
-<li><a href="#使用特定主目录创建用户">使用特定主目录创建用户</a></li>
-<li><a href="#创建具有特定用户id的用户">创建具有特定用户ID的用户</a></li>
-<li><a href="#创建具有特定组id的用户">创建具有特定组ID的用户</a></li>
-<li><a href="#创建用户并分配多个组">创建用户并分配多个组</a></li>
-<li><a href="#使用特定登录shell创建用户">使用特定登录Shell创建用户</a></li>
-<li><a href="#使用自定义注释创建用户">使用自定义注释创建用户</a></li>
-<li><a href="#创建具有到期日期的用户">创建具有到期日期的用户</a></li>
-<li><a href="#创建系统用户">创建系统用户</a></li>
-<li><a href="#更改默认的useradd值">更改默认的useradd值</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#useradd">useradd命令</a></li>
+    <li><a href="#linux">如何在Linux中创建新用户</a></li>
+    <li><a href="#heading1">如何添加新用户和创建主目录</a></li>
+    <li><a href="#heading2">使用特定主目录创建用户</a></li>
+    <li><a href="#id">创建具有特定用户ID的用户</a></li>
+    <li><a href="#id1">创建具有特定组ID的用户</a></li>
+    <li><a href="#heading3">创建用户并分配多个组</a></li>
+    <li><a href="#shell">使用特定登录Shell创建用户</a></li>
+    <li><a href="#heading4">使用自定义注释创建用户</a></li>
+    <li><a href="#heading5">创建具有到期日期的用户</a></li>
+    <li><a href="#heading6">创建系统用户</a></li>
+    <li><a href="#useradd1">更改默认的useradd值</a></li>
+    <li><a href="#heading7">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

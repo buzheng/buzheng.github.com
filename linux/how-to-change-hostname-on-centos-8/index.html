@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="如何在 CentOS 8 上更改主机名" />
 <meta property="og:description" content="通常，主机名是在操作系统安装期间设置的，或者在创建虚拟机时动态分配给虚拟机的。但是有多种原因可能导致您需要更改主机名。最常见的是在创建实例后自动设置主机名的情况。
-
 本指南解释了如何在 CentOS 8 上设置或更改主机名而无需重新启动系统。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-change-hostname-on-centos-8/" />
+<meta property="og:image" content="/linux/how-to-change-hostname-on-centos-8/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-11T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-11T12:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 8 上更改主机名">
 <meta itemprop="description" content="通常，主机名是在操作系统安装期间设置的，或者在创建虚拟机时动态分配给虚拟机的。但是有多种原因可能导致您需要更改主机名。最常见的是在创建实例后自动设置主机名的情况。
-
 本指南解释了如何在 CentOS 8 上设置或更改主机名而无需重新启动系统。">
-
-
 <meta itemprop="datePublished" content="2019-11-11T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-11T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="791">
+<meta itemprop="image" content="/linux/how-to-change-hostname-on-centos-8/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-change-hostname-on-centos-8/featured.jpg"/>
 <meta name="twitter:title" content="如何在 CentOS 8 上更改主机名"/>
 <meta name="twitter:description" content="通常，主机名是在操作系统安装期间设置的，或者在创建虚拟机时动态分配给虚拟机的。但是有多种原因可能导致您需要更改主机名。最常见的是在创建实例后自动设置主机名的情况。
-
 本指南解释了如何在 CentOS 8 上设置或更改主机名而无需重新启动系统。"/>
 
   </head>
@@ -148,82 +144,57 @@
           
   
           <p>通常，主机名是在操作系统安装期间设置的，或者在创建虚拟机时动态分配给虚拟机的。但是有多种原因可能导致您需要更改主机名。最常见的是在创建实例后自动设置主机名的情况。</p>
-
 <p>本指南解释了如何在 CentOS 8 上设置或更改主机名而无需重新启动系统。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录。</p>
-
-<h2 id="了解主机名">了解主机名</h2>
-
+<h2 id="heading1">了解主机名</h2>
 <p>主机名是用于标识网络上设备的标签。在同一网络上，您不应有两台或更多具有相同主机名的计算机。</p>
-
 <p>有三类 <code>hostname</code> ： <code>static</code> ， <code>pretty</code> ，和 <code>transient</code> 。</p>
-
 <ul>
 <li><code>static</code> - 传统主机名。它存储在 <code>/etc/hostname</code> 文件中，可以由用户设置。</li>
 <li><code>pretty</code> - 用于向用户展示的自由格式 UTF8 主机名。例如， <code>Your desktop</code> 。</li>
 <li><code>transient</code> - 由内核维护的动态主机名。 DHCP 或 mDNS 服务器可以在运行时更改临时主机名。默认情况下，它与 <code>static</code> 主机名相同。</li>
 </ul>
-
-<h2 id="显示当前主机名">显示当前主机名</h2>
-
+<h2 id="heading2">显示当前主机名</h2>
 <p>要查看当前主机名，请执行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">hostnamectl</code></pre></div>
-<figure><img src="centos-8-hostnamectl.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">hostnamectl
+</code></pre><p><img src="centos-8-hostnamectl.jpg" alt=""></p>
 <p>在此示例中，当前主机名设置为 <code>centos8.localdomain</code> 。</p>
-
-<h2 id="更改主机名">更改主机名</h2>
-
-<h3 id="方法1-使用-hostnamectl-命令">方法1：使用 <code>hostnamectl</code> 命令</h3>
-
+<h2 id="heading3">更改主机名</h2>
+<h3 id="1-hostnamectl-">方法1：使用 <code>hostnamectl</code> 命令</h3>
 <p>在 CentOS 8 和所有其他使用 systemd 的 Linux 发行版中，您可以使用以下 <code>hostnamectl</code> 命令更改系统主机名和相关设置。语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname host.example.com
-sudo hostnamectl set-hostname &#34;Your Pretty HostName&#34; --pretty
+<pre><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname host.example.com
+sudo hostnamectl set-hostname &quot;Your Pretty HostName&quot; --pretty
 sudo hostnamectl set-hostname host.example.com --static
-sudo hostnamectl set-hostname host.example.com --transient</code></pre></div>
-<p>例如，要将系统静态主机名更改为 <code>host.buzheng.org</code> ，可以使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname host.buzheng.org</code></pre></div>
-<p>要将 <code>pretty</code> 主机名设置为 <code>Your desktop</code> ，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname &#34;Your desktop&#34; --pretty</code></pre></div>
-<p>该 <code>hostnamectl</code> 命令不产生输出。成功时，返回 0，否则返回非零失败代码。</p>
-
+sudo hostnamectl set-hostname host.example.com --transient
+</code></pre><p>例如，要将系统静态主机名更改为 <code>host.buzheng.org</code> ，可以使用以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname host.buzheng.org
+</code></pre><p>要将 <code>pretty</code> 主机名设置为 <code>Your desktop</code> ，请输入：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo hostnamectl set-hostname &quot;Your desktop&quot; --pretty
+</code></pre><p>该 <code>hostnamectl</code> 命令不产生输出。成功时，返回 0，否则返回非零失败代码。</p>
 <p>要验证主机名是否已成功更改，请使用 <code>hostnamectl</code> 命令。</p>
-
-<h3 id="方法2-使用-nmtui-命令">方法2：使用 <code>nmtui</code> 命令</h3>
-
+<h3 id="2-nmtui-">方法2：使用 <code>nmtui</code> 命令</h3>
 <p><code>nmtui</code> 基于 curses, 是用于与 NetworkManager 进行交互的工具。它也可以用来设置或更改主机名。</p>
-
 <p>通过在终端中键入其名称来启动该工具：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nmtui</code></pre></div>
-<p>使用方向键浏览选项，选择 <code>Set system hostname</code> 并按 <code>Enter</code> ：</p>
-
-<figure><img src="centos-nmtui-change-hostname.jpg" alt=""></figure>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nmtui
+</code></pre><p>使用方向键浏览选项，选择 <code>Set system hostname</code> 并按 <code>Enter</code> ：</p>
+<p><img src="centos-nmtui-change-hostname.jpg" alt=""></p>
 <p>输入新的主机名：</p>
-
-<figure><img src="centos-nmtui-change-hostname.jpg" alt=""></figure>
-
+<p><img src="centos-nmtui-change-hostname.jpg" alt=""></p>
 <p>按下 <code>Enter</code> 以确认新的主机名：</p>
-
-<figure><img src="centos-nmtui-set-hostname.jpg" alt=""></figure>
-
+<p><img src="centos-nmtui-set-hostname.jpg" alt=""></p>
 <p>最后，重新启动 <code>systemd-hostnamed</code> 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart systemd-hostnamed</code></pre></div>
-<h3 id="方法3-使用-nmcli-命令">方法3：使用 <code>nmcli</code> 命令</h3>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart systemd-hostnamed
 
+</code></pre><h3 id="3-nmcli-">方法3：使用 <code>nmcli</code> 命令</h3>
 <p><code>nmcli</code>  是用于控制 NetworkManager 的命令行工具，也可用于更改系统的主机名。</p>
-
 <p>要查看当前主机名，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nmcli g hostname</code></pre></div>
-<p>要更改主机名为 <code>host.buzheng.org</code>，使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nmcli g hostname host.buzheng.org</code></pre></div>
-<p>为了使更改生效，请重新启动 <code>systemd-hostnamed</code> 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart systemd-hostnamed</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nmcli g hostname
+</code></pre><p>要更改主机名为 <code>host.buzheng.org</code>，使用以下命令：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nmcli g hostname host.buzheng.org
+</code></pre><p>为了使更改生效，请重新启动 <code>systemd-hostnamed</code> 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart systemd-hostnamed
+</code></pre><h2 id="heading4">结论</h2>
 <p>要在 CentOS 系统上设置或更改主机名，请使用 <code>hostnamectl set-hostname</code> 命令，后跟新的主机名。</p>
       </div><ul class="pa0">
   
@@ -242,21 +213,19 @@ sudo hostnamectl set-hostname host.example.com --transient</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#了解主机名">了解主机名</a></li>
-<li><a href="#显示当前主机名">显示当前主机名</a></li>
-<li><a href="#更改主机名">更改主机名</a>
-<ul>
-<li><a href="#方法1-使用-hostnamectl-命令">方法1：使用 <code>hostnamectl</code> 命令</a></li>
-<li><a href="#方法2-使用-nmtui-命令">方法2：使用 <code>nmtui</code> 命令</a></li>
-<li><a href="#方法3-使用-nmcli-命令">方法3：使用 <code>nmcli</code> 命令</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">了解主机名</a></li>
+    <li><a href="#heading2">显示当前主机名</a></li>
+    <li><a href="#heading3">更改主机名</a>
+      <ul>
+        <li><a href="#1-hostnamectl-">方法1：使用 hostnamectl 命令</a></li>
+        <li><a href="#2-nmtui-">方法2：使用 nmtui 命令</a></li>
+        <li><a href="#3-nmcli-">方法3：使用 nmcli 命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading4">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

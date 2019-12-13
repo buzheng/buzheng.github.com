@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,20 +32,19 @@
 <meta property="og:description" content="在本教程中，我们将说明如何在 Linux 系统上手动和自动挂载 Windows 共享。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-mount-cifs-windows-share-on-linux/" />
+<meta property="og:image" content="/linux/how-to-mount-cifs-windows-share-on-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-25T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-25T12:00:00+08:00" />
 <meta itemprop="name" content="如何使用 CIFS 在 Linux 上挂载 Windows 共享">
 <meta itemprop="description" content="在本教程中，我们将说明如何在 Linux 系统上手动和自动挂载 Windows 共享。">
-
-
 <meta itemprop="datePublished" content="2019-11-25T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-25T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1144">
+<meta itemprop="image" content="/linux/how-to-mount-cifs-windows-share-on-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="mount,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="mount,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-mount-cifs-windows-share-on-linux/featured.jpg"/>
 <meta name="twitter:title" content="如何使用 CIFS 在 Linux 上挂载 Windows 共享"/>
 <meta name="twitter:description" content="在本教程中，我们将说明如何在 Linux 系统上手动和自动挂载 Windows 共享。"/>
@@ -142,106 +141,82 @@
           
   
           <p>在本教程中，我们将说明如何在 Linux 系统上手动和自动挂载 Windows 共享。</p>
-
 <p>在 Linux 和 UNIX 操作系统上，可以使用 <a href="/linux/how-to-mount-and-unmount-file-systems-in-linux/"><code>mount</code></a> 命令的 <code>cifs</code> 选项将 Windows 共享挂载在本地目录树中的特定挂载点上 。</p>
-
 <p>通用 Internet 文件系统 (CIFS) 是一种网络文件共享协议。 CIFS 是 SMB 的一种形式。</p>
-
-<h2 id="安装-cifs-实用程序包">安装 CIFS 实用程序包</h2>
-
+<h2 id="-cifs-">安装 CIFS 实用程序包</h2>
 <p>要在 Linux 系统上挂载 Windows 共享，首先需要安装 CIFS 实用程序包。</p>
-
 <ul>
-<li><p>在 Ubuntu 和 Debian 上安装 CIFS 实用程序：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install cifs-utils</code></pre></div></li>
-
-<li><p>在 CentOS 和 Fedora 上安装 CIFS 实用程序：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install cifs-utils</code></pre></div></li>
+<li>
+<p>在 Ubuntu 和 Debian 上安装 CIFS 实用程序：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install cifs-utils
+</code></pre></li>
+<li>
+<p>在 CentOS 和 Fedora 上安装 CIFS 实用程序：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install cifs-utils
+</code></pre></li>
 </ul>
-
 <blockquote>
 <p>软件包名称在 Linux 发行版之间可能有所不同。</p>
 </blockquote>
-
-<h2 id="挂载-cifs-windows-共享">挂载 CIFS Windows 共享</h2>
-
+<h2 id="-cifs-windows-">挂载 CIFS Windows 共享</h2>
 <p>挂载远程 Windows 共享类似于挂载常规文件系统。</p>
-
 <p>首先，<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个目录</a>作为远程 Windows 共享的挂载点：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir /mnt/win_share</code></pre></div>
-<p>以超级用户或具有 <a href="/linux/sudo-command-in-linux/">sudo 特权的用户</a>身份运行以下命令来挂载共享：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=&lt;win_share_user&gt; //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share</code></pre></div>
-<p>系统将提示您输入密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Password:</code></pre></div>
-<p>成功时，不会产生任何输出。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /mnt/win_share
+</code></pre><p>以超级用户或具有 <a href="/linux/sudo-command-in-linux/">sudo 特权的用户</a>身份运行以下命令来挂载共享：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=&lt;win_share_user&gt; //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share
+</code></pre><p>系统将提示您输入密码：</p>
+<pre><code class="language-output" data-lang="output">Password:
+</code></pre><p>成功时，不会产生任何输出。</p>
 <p>要验证远程 Windows 共享是否已成功挂载，请使用 <code>mount</code> 或 <a href="/linux/how-to-check-disk-space-in-linux-using-the-df-command/"><code>df -h</code></a> 命令查看。</p>
-
 <p>挂载共享后，挂载点将成为挂载文件系统的根目录。您可以像处理本地文件一样使用远程文件。</p>
-
 <p>密码也可以在命令行中提供：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=&lt;win_share_user&gt;,password=&lt;win_share_password&gt; //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share</code></pre></div>
-<p>如果用户位于 Windows 工作组或域中，则可以如下设置：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=&lt;win_share_user&gt;,domain=&lt;win_domain&gt; //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share</code></pre></div>
-<p>为了提高安全性，建议使用凭据文件，其中包含共享用户名，密码和域。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=&lt;win_share_user&gt;,password=&lt;win_share_password&gt; //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share
+</code></pre><p>如果用户位于 Windows 工作组或域中，则可以如下设置：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o username=&lt;win_share_user&gt;,domain=&lt;win_domain&gt; //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share
+</code></pre><p>为了提高安全性，建议使用凭据文件，其中包含共享用户名，密码和域。</p>
 <p>凭证文件具有以下格式：</p>
-
 <p>文件 <code>/etc/win-credentials</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">username</span> <span class="o">=</span> <span class="s">user</span>
 <span class="na">password</span> <span class="o">=</span> <span class="s">password</span>
-<span class="na">domain</span> <span class="o">=</span> <span class="s">domain</span></code></pre></div>
-<p>用户不能读取该文件。要<a href="/linux/linux-chown-command/">设置正确的权限和所有权</a>，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown root: /etc/win-credentials
-sudo chmod 600 /etc/win-credentials</code></pre></div>
-<p>要使用凭证文件，请按如下所示对其进行定义：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o credentials=/etc/win-credentials //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share</code></pre></div>
-<p>默认情况下，已挂载的共享由 root 拥有，并且权限设置为 777 。</p>
-
+<span class="na">domain</span> <span class="o">=</span> <span class="s">domain</span>
+</code></pre></div><p>用户不能读取该文件。要<a href="/linux/linux-chown-command/">设置正确的权限和所有权</a>，请运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown root: /etc/win-credentials
+sudo chmod 600 /etc/win-credentials
+</code></pre><p>要使用凭证文件，请按如下所示对其进行定义：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o credentials=/etc/win-credentials //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share
+</code></pre><p>默认情况下，已挂载的共享由 root 拥有，并且权限设置为 777 。</p>
 <p>使用该 <code>dir_mode</code> 选项来设置目录权限和 <code>file_mode</code> 文件权限：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o credentials=/etc/win-credentials,dir_mode=0755,file_mode=0755 //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share</code></pre></div>
-<p>可以使用 <code>uid</code> 和 <code>gid</code> 选项更改默认的用户和组所有权：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o credentials=/etc/win-credentials,uid=1000,gid=1000,dir_mode=0755,file_mode=0755 //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share</code></pre></div>
-<p>要设置其他<a href="http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS">选项</a>，请在选项 <code>-o</code> 之后将它们添加为以逗号分隔的列表。要获取所有挂载选项的列表，请在终端中输入 <code>man mount</code> 。</p>
-
-<h2 id="自动挂载">自动挂载</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o credentials=/etc/win-credentials,dir_mode=0755,file_mode=0755 //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share
+</code></pre><p>可以使用 <code>uid</code> 和 <code>gid</code> 选项更改默认的用户和组所有权：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount -t cifs -o credentials=/etc/win-credentials,uid=1000,gid=1000,dir_mode=0755,file_mode=0755 //WIN_SHARE_IP/&lt;share_name&gt; /mnt/win_share
+</code></pre><p>要设置其他<a href="http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS">选项</a>，请在选项 <code>-o</code> 之后将它们添加为以逗号分隔的列表。要获取所有挂载选项的列表，请在终端中输入 <code>man mount</code> 。</p>
+<h2 id="heading">自动挂载</h2>
 <p>当使用 <code>mount</code> 命令手动挂载共享时，重新启动机器后该共享将不会持久。</p>
-
 <p>该 <code>/etc/fstab</code> 文件包含一个条目列表，这些条目定义了在系统启动时将在何处以及如何挂载文件系统。</p>
-
 <p>要在 Linux 系统启动时自动挂载 Windows 共享，请在 <code>/etc/fstab</code> 文件中定义挂载。该行必须包含 Windows PC 的主机名或 IP 地址，共享名以及本地计算机上的挂载点。</p>
-
 <p>使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>打开 <code>/etc/fstab</code> 文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/fstab</code></pre></div>
-<p>将以下行添加到文件中：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/fstab
+</code></pre><p>将以下行添加到文件中：</p>
 <p>/ etc/fstab</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># &lt;file system&gt;             &lt;dir&gt;          &lt;type&gt; &lt;options&gt;                                                   &lt;dump&gt;  &lt;pass&gt;</span>
-<span class="na">//WIN_SHARE_IP/share_name  /mnt/win_share  cifs  credentials</span><span class="o">=</span><span class="s">/etc/win-credentials,file_mode=0755,dir_mode=0755 0       0</span></code></pre></div>
-<p>运行以下命令来挂载共享：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mount /mnt/win_share</code></pre></div>
-<p>该 <code>mount</code> 命令将读取 <code>/etc/fstab</code> 的内容并挂载共享。</p>
-
+<span class="na">//WIN_SHARE_IP/share_name  /mnt/win_share  cifs  credentials</span><span class="o">=</span><span class="s">/etc/win-credentials,file_mode=0755,dir_mode=0755 0       0</span>
+</code></pre></div><p>运行以下命令来挂载共享：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mount /mnt/win_share
+</code></pre><p>该 <code>mount</code> 命令将读取 <code>/etc/fstab</code> 的内容并挂载共享。</p>
 <p>下次重新启动系统时，将自动挂载 Windows 共享。</p>
-
-<h2 id="卸载-windows-共享">卸载 Windows 共享</h2>
-
+<h2 id="-windows-">卸载 Windows 共享</h2>
 <p>该 <code>umount</code> 命令从目录树中分离(卸载)已挂载的文件系统。</p>
-
 <p>要分离已挂载的 Windows 共享，请使用以下 <code>umount</code> 命令，后跟已挂载 Windows 共享的目录或远程共享：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo umount /mnt/win_share</code></pre></div>
-<p>如果 CIFS 挂载在 <code>fstab</code> 文件中包含一个条目，则将其删除。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo umount /mnt/win_share
 
+</code></pre><p>如果 CIFS 挂载在 <code>fstab</code> 文件中包含一个条目，则将其删除。</p>
 <p>使用 <code>umount</code> 共享时，如果该命令将无法卸载共享，要找出哪些进程正在访问 Windows 共享，请使用以下 <code>fuser</code> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">fuser -m MOUNT_POINT</code></pre></div>
-<p>找到进程后，可以使用 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code></a> 命令停止它们并卸载共享。</p>
-
-<p>如果仍然无法卸载共享，请使用 <code>-l</code>(<code>--lazy</code>) 选项，该选项可让您在不再繁忙的文件系统不再繁忙时立即对其进行卸载。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo umount -l MOUNT_POINT</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">fuser -m MOUNT_POINT
+</code></pre><p>找到进程后，可以使用 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code></a> 命令停止它们并卸载共享。</p>
+<p>如果仍然无法卸载共享，请使用 <code>-l`(</code>&ndash;lazy`) 选项，该选项可让您在不再繁忙的文件系统不再繁忙时立即对其进行卸载。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo umount -l MOUNT_POINT
+</code></pre><h2 id="heading1">结论</h2>
 <p>在 Linux 中，您可以使用 <code>mount</code> 带 <code>cifs</code> 选项的命令挂载 Windows 共享。</p>
       </div><ul class="pa0">
   
@@ -315,16 +290,13 @@ sudo chmod 600 /etc/win-credentials</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#安装-cifs-实用程序包">安装 CIFS 实用程序包</a></li>
-<li><a href="#挂载-cifs-windows-共享">挂载 CIFS Windows 共享</a></li>
-<li><a href="#自动挂载">自动挂载</a></li>
-<li><a href="#卸载-windows-共享">卸载 Windows 共享</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-cifs-">安装 CIFS 实用程序包</a></li>
+    <li><a href="#-cifs-windows-">挂载 CIFS Windows 共享</a></li>
+    <li><a href="#heading">自动挂载</a></li>
+    <li><a href="#-windows-">卸载 Windows 共享</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

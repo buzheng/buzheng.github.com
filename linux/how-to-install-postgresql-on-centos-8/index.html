@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="在 CentOS 8 上安装 PostgreSQL" />
 <meta property="og:description" content="PostgreSQL 或 Postgres 是一个开放源代码的通用对象关系数据库管理系统，具有许多高级功能，使您可以构建容错环境或复杂的应用程序。
-
 在本指南中，我们将讨论如何在 CentOS 8 上安装 PostgreSQL 数据库服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-postgresql-on-centos-8/" />
+<meta property="og:image" content="/linux/how-to-install-postgresql-on-centos-8/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-19T08:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-19T08:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 8 上安装 PostgreSQL">
 <meta itemprop="description" content="PostgreSQL 或 Postgres 是一个开放源代码的通用对象关系数据库管理系统，具有许多高级功能，使您可以构建容错环境或复杂的应用程序。
-
 在本指南中，我们将讨论如何在 CentOS 8 上安装 PostgreSQL 数据库服务器。">
-
-
 <meta itemprop="datePublished" content="2019-11-19T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-19T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1358">
+<meta itemprop="wordCount" content="1361">
+<meta itemprop="image" content="/linux/how-to-install-postgresql-on-centos-8/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="centos,postgresql,database," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="centos,postgresql,database," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-postgresql-on-centos-8/featured.jpg"/>
 <meta name="twitter:title" content="在 CentOS 8 上安装 PostgreSQL"/>
 <meta name="twitter:description" content="PostgreSQL 或 Postgres 是一个开放源代码的通用对象关系数据库管理系统，具有许多高级功能，使您可以构建容错环境或复杂的应用程序。
-
 在本指南中，我们将讨论如何在 CentOS 8 上安装 PostgreSQL 数据库服务器。"/>
 
   </head>
@@ -148,111 +144,99 @@
           
   
           <p>PostgreSQL 或 Postgres 是一个开放源代码的通用对象关系数据库管理系统，具有许多高级功能，使您可以构建容错环境或复杂的应用程序。</p>
-
 <p>在本指南中，我们将讨论如何在 CentOS 8 上安装 PostgreSQL 数据库服务器。</p>
-
 <p>在选择要安装的版本之前，请确保您的应用程序支持它。我们还将探讨 PostgreSQL 数据库管理的基础。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>为了能够安装软件包，您需要以 root 用户或具有 <a href="/linux/create-a-sudo-user-on-centos/">sudo 特权的用户</a>身份登录。</p>
-
-<h2 id="在-centos-8-上安装-postgresql">在 CentOS 8 上安装 PostgreSQL</h2>
-
+<h2 id="-centos-8--postgresql">在 CentOS 8 上安装 PostgreSQL</h2>
 <p>在撰写本文时，有两个版本的 PostgreSQL 服务器可从标准 CentOS 存储库中安装：版本 9.6 和 10.0 。</p>
-
 <p>要列出可用的 PostgreSQL 模块，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dnf module list postgresql</code></pre></div>
-<p>输出显示 postgresql 有两个可用的模块。每个模块都有两个配置文件：服务器和客户端。带有配置文件服务器的 10 是默认设置：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">CentOS-8 - AppStream
+<pre><code class="language-console-bash" data-lang="console-bash">dnf module list postgresql
+</code></pre><p>输出显示 postgresql 有两个可用的模块。每个模块都有两个配置文件：服务器和客户端。带有配置文件服务器的 10 是默认设置：</p>
+<pre><code class="language-output" data-lang="output">CentOS-8 - AppStream
 Name          Stream    Profiles              Summary                                                 
 postgresql    10 [d]    client, server [d]    PostgreSQL server and client module                     
-postgresql    9.6       client, server [d]    PostgreSQL server and client module </code></pre></div>
-<ol>
-<li><p>要安装默认版本， PostgreSQL 服务器版本 10.0 键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install @ postgresql:10 </code></pre></div></li>
-
-<li><p>要安装 PostgreSQL 服务器 9.6 版，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install @ postgresql:9.6 </code></pre></div></li>
+postgresql    9.6       client, server [d]    PostgreSQL server and client module 
+</code></pre><ol>
+<li>
+<p>要安装默认版本， PostgreSQL 服务器版本 10.0 键入：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install @ postgresql:10 
+</code></pre></li>
+<li>
+<p>要安装 PostgreSQL 服务器 9.6 版，请输入：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install @ postgresql:9.6 
+</code></pre></li>
 </ol>
-
 <p>您可能还需要安装 contrib 软件包，该软件包为 PostgreSQL 数据库提供了一些附加功能：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install postgresql-contrib</code></pre></div>
-<p>安装完成后，使用以下命令初始化 PostgreSQL 数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo postgresql-setup initdb</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Initializing database ... OK</code></pre></div>
-<p>启动 PostgreSQL 服务，并使其能够在启动时启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now postgresql</code></pre></div>
-<p>使用 <code>psql</code> 工具连接到 PostgreSQL 数据库服务器来验证安装并打印其版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &#34;SELECT version();&#34;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">PostgreSQL 10.6 on x86_64-redhat-linux-gnu, compiled by gcc (GCC) 8.2.1 20180905 (Red Hat 8.2.1-3), 64-bit</code></pre></div>
-<h2 id="postgresql-角色和验证方法">PostgreSQL 角色和验证方法</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install postgresql-contrib
+</code></pre><p>安装完成后，使用以下命令初始化 PostgreSQL 数据库：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo postgresql-setup initdb
+</code></pre><pre><code class="language-output" data-lang="output">Initializing database ... OK
+</code></pre><p>启动 PostgreSQL 服务，并使其能够在启动时启动：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now postgresql
+</code></pre><p>使用 <code>psql</code> 工具连接到 PostgreSQL 数据库服务器来验证安装并打印其版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &quot;SELECT version();&quot;
+</code></pre><pre><code class="language-output" data-lang="output">PostgreSQL 10.6 on x86_64-redhat-linux-gnu, compiled by gcc (GCC) 8.2.1 20180905 (Red Hat 8.2.1-3), 64-bit
+</code></pre><h2 id="postgresql-">PostgreSQL 角色和验证方法</h2>
 <p>PostgreSQL 使用角色的概念来处理数据库访问权限。角色可以代表一个数据库用户或一组数据库用户。</p>
-
 <p>PostgreSQL 支持多种<a href="https://www.postgresql.org/docs/10.0/static/auth-methods.html">身份验证方法</a>。最常用的方法是：</p>
-
 <ul>
 <li>Trust - 使用此方法，只要符合在 <code>pg_hba.conf</code> 中定义的条件，角色就可以在没有密码的情况下进行连接。</li>
 <li>Password - 角色可以通过提供密码进行连接。密码可以存储为 <code>scram-sha-256</code>, <code>md5</code> 和 <code>password</code> （明文）</li>
 <li>Ident - 此方法仅在 TCP/IP 连接上受支持。通过获取客户端的操作系统用户名，使用可选的用户名映射来工作。</li>
 <li>Peer - 与 Ident 相同，但仅在本地连接上支持。</li>
 </ul>
-
 <p>PostgreSQL 客户端身份验证在名为 <code>pg_hba.conf</code> 的配置文件中定义。默认情况下，对于本地连接， PostgreSQL 设置为使用 Peer 身份验证方法。</p>
-
 <p>当您安装 PostgreSQL 服务器会自动创建用户 <code>postgres</code> 。该用户是 PostgreSQL 实例的超级用户。它等效于 MySQL root 用户。</p>
-
 <p>要以 <code>postgres</code> 用户身份登录到 PostgreSQL 服务器，请首先<a href="/linux/su-command-in-linux/">切换到该用户</a>，然后使用该 <code>psql</code> 实用程序访问 PostgreSQL 提示符：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo su - postgres
-psql</code></pre></div>
-<p>从这里，您可以与 PostgreSQL 实例进行交互。要退出 PostgreSQL shell ，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-psql" data-lang="psql">\q</code></pre></div>
-<p>您还可以访问 PostgreSQL 提示符，而无需使用以下 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 命令切换用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
-<p>通常， <code>postgres</code> 仅从本地主机使用该用户。</p>
-
-<h2 id="创建-postgresql-角色和数据库">创建 PostgreSQL 角色和数据库</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo su - postgres
+psql
+</code></pre><p>从这里，您可以与 PostgreSQL 实例进行交互。要退出 PostgreSQL shell ，请输入：</p>
+<pre><code class="language-psql" data-lang="psql">\q
+</code></pre><p>您还可以访问 PostgreSQL 提示符，而无需使用以下 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 命令切换用户：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql
+</code></pre><p>通常， <code>postgres</code> 仅从本地主机使用该用户。</p>
+<h2 id="-postgresql-">创建 PostgreSQL 角色和数据库</h2>
 <p>只有超级用户和具有 <code>CREATEROLE</code> 特权的角色才能创建新角色。</p>
-
 <p>在以下示例中，我们将创建一个名为的新角色 <code>john</code> ，一个名为的数据库 <code>johndb</code> ，并授予该数据库的特权。</p>
-
 <ol>
-<li><p>首先，连接到 PostgreSQL shell ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div></li>
-
-<li><p>使用以下命令创建一个新的 PostgreSQL 角色：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">role</span> <span class="n">john</span><span class="p">;</span></code></pre></div></li>
-
-<li><p>创建一个新的数据库：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">johndb</span><span class="p">;</span></code></pre></div></li>
-
-<li><p>通过运行以下语句，向数据库上的用户授予特权：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="k">database</span> <span class="n">johndb</span> <span class="k">to</span> <span class="n">john</span><span class="p">;</span></code></pre></div></li>
+<li>
+<p>首先，连接到 PostgreSQL shell ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql
+</code></pre></li>
+<li>
+<p>使用以下命令创建一个新的 PostgreSQL 角色：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">role</span> <span class="n">john</span><span class="p">;</span>
+</code></pre></div></li>
+<li>
+<p>创建一个新的数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">johndb</span><span class="p">;</span>
+</code></pre></div></li>
+<li>
+<p>通过运行以下语句，向数据库上的用户授予特权：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="k">database</span> <span class="n">johndb</span> <span class="k">to</span> <span class="n">john</span><span class="p">;</span>
+</code></pre></div></li>
 </ol>
-
-<h2 id="启用对-postgresql-服务器的远程访问">启用对 PostgreSQL 服务器的远程访问</h2>
-
+<h2 id="-postgresql-1">启用对 PostgreSQL 服务器的远程访问</h2>
 <p>默认情况下， PostgreSQL 服务器仅在本地 <code>127.0.0.1</code> 接口上侦听。</p>
-
 <p>要启用对 PostgreSQL 服务器的远程访问，请打开配置文件 <code>/var/lib/pgsql/data/postgresql.conf</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /var/lib/pgsql/data/postgresql.conf</code></pre></div>
-<p>向下滚动到 <code>CONNECTIONS AND AUTHENTICATION</code> 部分，然后添加/编辑以下行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /var/lib/pgsql/data/postgresql.conf
+</code></pre><p>向下滚动到 <code>CONNECTIONS AND AUTHENTICATION</code> 部分，然后添加/编辑以下行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="c1">#------------------------------------------------------------------------------</span>
 <span class="c1"># CONNECTIONS AND AUTHENTICATION</span>
 <span class="c1">#------------------------------------------------------------------------------</span>
 
 <span class="c1"># - Connection Settings -</span>
 
-<span class="na">listen_addresses</span> <span class="o">=</span> <span class="s">&#39;*&#39;     # what IP address(es) to listen on;</span></code></pre></div>
-<p>保存文件，并使用以下命令重新启动 PostgreSQL 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart postgresql</code></pre></div>
-<p>使用 <code>ss</code> 实用程序验证更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ss -nlt | grep 5432</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">LISTEN   0    128    0.0.0.0:5432    0.0.0.0:*       
-LISTEN   0    128    [::]:5432      [::]:*  </code></pre></div>
-<p>上面的输出显示 PostgreSQL 服务器正在所有接口 (0.0.0.0) 的默认端口上<a href="/linux/check-listening-ports-linux/">侦听</a>。</p>
-
+<span class="na">listen_addresses</span> <span class="o">=</span> <span class="s">&#39;*&#39;     # what IP address(es) to listen on;</span>
+</code></pre></div><p>保存文件，并使用以下命令重新启动 PostgreSQL 服务：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart postgresql
+</code></pre><p>使用 <code>ss</code> 实用程序验证更改：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ss -nlt | grep 5432
+</code></pre><pre><code class="language-output" data-lang="output">LISTEN   0    128    0.0.0.0:5432    0.0.0.0:*       
+LISTEN   0    128    [::]:5432      [::]:*  
+</code></pre><p>上面的输出显示 PostgreSQL 服务器正在所有接口 (0.0.0.0) 的默认端口上<a href="/linux/check-listening-ports-linux/">侦听</a>。</p>
 <p>最后一步是通过编辑 <code>/var/lib/pgsql/data/pg_hba.conf</code> 配置文件将服务器配置为接受远程连接。</p>
-
 <p>以下是显示不同用例的一些示例：</p>
 <div class="highlight"><pre class="chroma"><code class="language-cfg" data-lang="cfg"><span class="c1"># TYPE  DATABASE        USER            ADDRESS                 METHOD</span>
 
@@ -263,11 +247,9 @@ LISTEN   0    128    [::]:5432      [::]:*  </code></pre></div>
 <span class="na">host    janedb          jane            0.0.0.0/0                md5</span>
 
 <span class="c1"># The user jane can access all databases from a trusted location (192.168.1.134) without a password</span>
-<span class="na">host    all             jane            192.168.1.134            trust</span></code></pre></div>
-<h2 id="结论">结论</h2>
-
+<span class="na">host    all             jane            192.168.1.134            trust</span>
+</code></pre></div><h2 id="heading1">结论</h2>
 <p>CentOS 8 提供了两个 PostgreSQL 版本： 9.6 和 10.0 。</p>
-
 <p>有关此主题的更多信息，请访问 <a href="https://www.postgresql.org/docs/10.0/static/index.html">PostgreSQL 文档。</a></p>
       </div><ul class="pa0">
   
@@ -345,17 +327,14 @@ LISTEN   0    128    [::]:5432      [::]:*  </code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#在-centos-8-上安装-postgresql">在 CentOS 8 上安装 PostgreSQL</a></li>
-<li><a href="#postgresql-角色和验证方法">PostgreSQL 角色和验证方法</a></li>
-<li><a href="#创建-postgresql-角色和数据库">创建 PostgreSQL 角色和数据库</a></li>
-<li><a href="#启用对-postgresql-服务器的远程访问">启用对 PostgreSQL 服务器的远程访问</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-centos-8--postgresql">在 CentOS 8 上安装 PostgreSQL</a></li>
+    <li><a href="#postgresql-">PostgreSQL 角色和验证方法</a></li>
+    <li><a href="#-postgresql-">创建 PostgreSQL 角色和数据库</a></li>
+    <li><a href="#-postgresql-1">启用对 PostgreSQL 服务器的远程访问</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

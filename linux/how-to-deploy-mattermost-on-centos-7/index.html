@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2019-03-11T08:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上部署 Mattermost">
 <meta itemprop="description" content="Mattermost 是一个开源的即时通讯平台，是一个自托管的 Slack 替代品。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。在本教程中，我们将向您展示如何在 CentOS 7 服务器上部署 Mattermost 并将 Nginx 配置为 SSL 反向代理。">
-
-
 <meta itemprop="datePublished" content="2019-03-11T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-11T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1542">
+<meta itemprop="wordCount" content="1521">
 
 
 
-<meta itemprop="keywords" content="centos,mattermost,nodejs," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,mattermost,nodejs," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上部署 Mattermost"/>
 <meta name="twitter:description" content="Mattermost 是一个开源的即时通讯平台，是一个自托管的 Slack 替代品。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。在本教程中，我们将向您展示如何在 CentOS 7 服务器上部署 Mattermost 并将 Nginx 配置为 SSL 反向代理。"/>
 
@@ -141,76 +138,61 @@
           
   
           <p>Mattermost 是一个开源的即时通讯平台，是一个自托管的 Slack 替代品。它是用 Golang 和 React 编写的，可以使用 MySQL 或 PostgreSQL 作为数据库后端。 Mattermost 将您的所有团队沟通集中到一个地方，并提供各种功能，包括文件共享，一对一和群发消息，自定义表情符号，视频通话等。在本教程中，我们将向您展示如何在 CentOS 7 服务器上部署 Mattermost 并将 Nginx 配置为 SSL 反向代理。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>您以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</li>
 <li>您有一个指向您的服务器 IP 地址的域名，本例中我们会用 <code>example.com</code> 。</li>
 <li>您已安装 Nginx ，如果没有，请查看<a href="/linux/how-to-install-nginx-on-centos-7/">本指南</a>。</li>
 <li>您已为您的域安装了 SSL 证书。您可以按照本指南<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">安装免费的 Let’s Encrypt SSL 证书</a>。</li>
 </ul>
-
-<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
-
+<h2 id="-mysql-">创建 MySQL 数据库</h2>
 <p>我们会使用 MariaDB 10.3 作为数据库后端。 Mattermost 不支持用 MariaDB 5.5 版。</p>
-
 <p>如果您的服务器上未安装 MariaDB 10.3 ，则可以查看此处<a href="/linux/install-mariadb-on-centos-7/">安装</a>。</p>
-
 <p>登录 MySQL shell ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p</code></pre></div>
-<p>并运行以下命令为 Mattermost 安装创建新数据库和用户：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p
+</code></pre></div><p>并运行以下命令为 Mattermost 安装创建新数据库和用户：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">mattermost</span><span class="p">;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">mattermost</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">mattermost</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;P4ssvv0rD&#39;</span><span class="p">;</span></code></pre></div>
-<p>通过上面的命令我们创了一个数据库 <code>mattermost</code>, 并为这个数据库创建了一个用户 <code>mattermost</code> ， 这个用户的密码是 <code>P4ssvv0rD</code> 。</p>
-
-<h2 id="创建系统用户">创建系统用户</h2>
-
+<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">mattermost</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">mattermost</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;</span><span class="s1">P4ssvv0rD</span><span class="s1">&#39;</span><span class="p">;</span>
+</code></pre></div><p>通过上面的命令我们创了一个数据库 <code>mattermost</code>, 并为这个数据库创建了一个用户 <code>mattermost</code> ， 这个用户的密码是 <code>P4ssvv0rD</code> 。</p>
+<h2 id="heading1">创建系统用户</h2>
 <p>运行以下命令创建运行 Mattermost 的用户和组 <code>mattermost</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -U -M -d /opt/mattermost mattermost</code></pre></div>
-<h2 id="安装-mattermost-服务器">安装 Mattermost 服务器</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -U -M -d /opt/mattermost mattermost
+</code></pre></div><h2 id="-mattermost-">安装 Mattermost 服务器</h2>
 <p>在撰写本文时， Mattermost 的最新稳定版本是 5.4.0 版。在继续下一步之前，您应该到 <a href="https://mattermost.com/download/">Mattermost 下载页面</a>检查是否有更新的版本。</p>
-
 <p>使用 <a href="/linux/curl-command-examples/">curl 命令</a>下载：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo curl -L https://releases.mattermost.com/5.4.0/mattermost-5.4.0-linux-amd64.tar.gz -o /tmp/mattermost.tar.gz</code></pre></div>
-<p>下载完成后，提取存档到 <code>opt</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo tar zxf /tmp/mattermost.tar.gz -C /opt</code></pre></div>
-<p>创建文件的存储目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /opt/mattermost/data</code></pre></div>
-<p><!--link:linux-chown-command-->更改目录所有权<!--link-->为 <code>mattermost</code> 用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R mattermost: /opt/mattermost</code></pre></div>
-<p>使用您喜欢的文本编辑器打开文件 <code>config.json</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /opt/mattermost/config/config.json</code></pre></div>
-<p>将数据库驱动程序设置为 <code>mysql</code> ，输入数据库名称和数据库用户密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">...</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo curl -L https://releases.mattermost.com/5.4.0/mattermost-5.4.0-linux-amd64.tar.gz -o /tmp/mattermost.tar.gz
+</code></pre></div><p>下载完成后，提取存档到 <code>opt</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo tar zxf /tmp/mattermost.tar.gz -C /opt
+</code></pre></div><p>创建文件的存储目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir /opt/mattermost/data
+</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R mattermost: /opt/mattermost
+</code></pre></div><p>使用您喜欢的文本编辑器打开文件 <code>config.json</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /opt/mattermost/config/config.json
+</code></pre></div><p>将数据库驱动程序设置为 <code>mysql</code> ，输入数据库名称和数据库用户密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">.</span><span class="err">.</span><span class="err">.</span>
 <span class="s2">&#34;SqlSettings&#34;</span><span class="err">:</span> <span class="p">{</span>
     <span class="nt">&#34;DriverName&#34;</span><span class="p">:</span> <span class="s2">&#34;mysql&#34;</span><span class="p">,</span>
     <span class="nt">&#34;DataSource&#34;</span><span class="p">:</span> <span class="s2">&#34;mattermost:P4ssvv0rD@tcp(localhost:3306)/mattermost?charset=utf8mb4,utf8&amp;readTimeout=30s&amp;writeTimeout=30s&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;DataSourceReplicas&#34;</span><span class="p">:</span> <span class="p">[],</span>
-<span class="err">...</span></code></pre></div>
-<p>在创建 systemd 单元和设置 Nginx 反向代理之前，为了确保我们的安装一切正常，我们将启动 Mattermost 服务器。</p>
-
+    <span class="nt">&#34;DataSourceReplicas&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
+<span class="err">.</span><span class="err">.</span><span class="err">.</span>
+</code></pre></div><p>在创建 systemd 单元和设置 Nginx 反向代理之前，为了确保我们的安装一切正常，我们将启动 Mattermost 服务器。</p>
 <p>切换到 <code>/opt/mattermost</code> 目录并启动服务器：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/mattermost
-sudo -u mattermost bin/mattermost</code></pre></div>
-<p>输出应显示 Mattermost 服务器正在侦听端口 8065 ：</p>
+sudo -u mattermost bin/mattermost
+</code></pre></div><p>输出应显示 Mattermost 服务器正在侦听端口 8065 ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921243.6797202</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;app/plugin.go:100&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Starting up plugins&#34;</span><span class="p">}</span>
 <span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921244.3483207</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;app/server.go:88&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Starting Server...&#34;</span><span class="p">}</span>
 <span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921244.3488805</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;app/server.go:148&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Server is listening on [::]:8065&#34;</span><span class="p">}</span>
 <span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921244.3620636</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;app/web_hub.go:75&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Starting 2 websocket hubs&#34;</span><span class="p">}</span>
 <span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921244.451155</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;jobs/workers.go:63&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Starting workers&#34;</span><span class="p">}</span>
-<span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921244.456804</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;jobs/schedulers.go:68&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Starting schedulers.&#34;</span><span class="p">}</span></code></pre></div>
-<p>您现在可以使用 <code>CTRL+C</code> 停止 Mattermost 服务器并继续执行后续步骤。</p>
-
-<h2 id="创建一个-systemd-单元">创建一个 systemd 单元</h2>
-
+<span class="p">{</span><span class="nt">&#34;level&#34;</span><span class="p">:</span><span class="s2">&#34;info&#34;</span><span class="p">,</span><span class="nt">&#34;ts&#34;</span><span class="p">:</span><span class="mf">1540921244.456804</span><span class="p">,</span><span class="nt">&#34;caller&#34;</span><span class="p">:</span><span class="s2">&#34;jobs/schedulers.go:68&#34;</span><span class="p">,</span><span class="nt">&#34;msg&#34;</span><span class="p">:</span><span class="s2">&#34;Starting schedulers.&#34;</span><span class="p">}</span>
+</code></pre></div><p>您现在可以使用 <code>CTRL+C</code> 停止 Mattermost 服务器并继续执行后续步骤。</p>
+<h2 id="-systemd-">创建一个 systemd 单元</h2>
 <p>为了将我们的 Mattermost 实例作为系统服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件 <code>mattermost.service</code> ：</p>
-
 <p>/etc/systemd/system/mattermost.service</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">[Unit]
+<pre><code class="language-conf" data-lang="conf">[Unit]
 Description=Mattermost
 After=network.target nss-lookup.target mariadb.service
 
@@ -224,25 +206,24 @@ TimeoutStartSec=3600
 LimitNOFILE=49152
 
 [Install]
-WantedBy=multi-user.target</code></pre></div>
-<p>通过执行以下命令通知 systemd 我们创建了一个新的单元文件并启动 Mattermost 服务：</p>
+WantedBy=multi-user.target
+</code></pre><p>通过执行以下命令通知 systemd 我们创建了一个新的单元文件并启动 Mattermost 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
-sudo systemctl start mattermost</code></pre></div>
-<p>使用以下命令检查服务状态：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status mattermost</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● mattermost.service - Mattermost
+sudo systemctl start mattermost
+</code></pre></div><p>使用以下命令检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl status mattermost
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">● mattermost.service - Mattermost
    Loaded: loaded <span class="o">(</span>/etc/systemd/system/mattermost.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
-   Active: active <span class="o">(</span>running<span class="o">)</span> since Tue <span class="m">2018</span>-10-30 <span class="m">17</span>:44:46 UTC<span class="p">;</span> 3s ago
+   Active: active <span class="o">(</span>running<span class="o">)</span> since Tue 2018-10-30 17:44:46 UTC<span class="p">;</span> 3s ago
  Main PID: <span class="m">25959</span> <span class="o">(</span>mattermost<span class="o">)</span>
    CGroup: /system.slice/mattermost.service
-           └─25959 /opt/mattermost/bin/mattermost</code></pre></div>
-<p>最后，启用 Mattermost 服务在系统启动时自动启动：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> mattermost</code></pre></div>
-<h2 id="使用-nginx-设置反向代理">使用 Nginx 设置反向代理</h2>
-
-<p>如果您跟进了我们的教程<a href="/linux/how-to-install-nginx-on-centos-7/">在 CentOS 7 上安装 Nginx</a> 以及<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">如何在 CentOS 7 上使用 Let&rsquo;s Encrypt 保护 Nginx</a>，您应该已经安装了 Nginx 并配置了 SSL 证书。现在我们只需要为 Mattermost 安装创建一个新的服务器块。</p>
-
+           └─25959 /opt/mattermost/bin/mattermost
+</code></pre></div><p>最后，启用 Mattermost 服务在系统启动时自动启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> mattermost
+</code></pre></div><h2 id="-nginx-">使用 Nginx 设置反向代理</h2>
+<p>如果您跟进了我们的教程<a href="/linux/how-to-install-nginx-on-centos-7/">在 CentOS 7 上安装 Nginx</a> 以及<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">如何在 CentOS 7 上使用 Let's Encrypt 保护 Nginx</a>，您应该已经安装了 Nginx 并配置了 SSL 证书。现在我们只需要为 Mattermost 安装创建一个新的服务器块。</p>
 <p>新建文件 <code>/etc/nginx/conf.d/example.com.conf</code>，并编辑如下内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mattermost_cache:10m max_size=3g inactive=120m use_temp_path=off;
+<pre><code class="language-conf" data-lang="conf">proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=mattermost_cache:10m max_size=3g inactive=120m use_temp_path=off;
 
 upstream mattermost_backend {
   server 127.0.0.1:8065;
@@ -282,7 +263,7 @@ server {
 
    location ~ /api/v[0-9]+/(users/)?websocket$ {
        proxy_set_header Upgrade $http_upgrade;
-       proxy_set_header Connection &#34;upgrade&#34;;
+       proxy_set_header Connection &quot;upgrade&quot;;
        client_max_body_size 50M;
        proxy_set_header Host $http_host;
        proxy_set_header X-Real-IP $remote_addr;
@@ -298,7 +279,7 @@ server {
    location / {
        proxy_http_version 1.1;
        client_max_body_size 50M;
-       proxy_set_header Connection &#34;&#34;;
+       proxy_set_header Connection &quot;&quot;;
        proxy_set_header Host $http_host;
        proxy_set_header X-Real-IP $remote_addr;
        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -314,45 +295,29 @@ server {
        proxy_cache_lock on;
        proxy_pass http://mattermost_backend;
    }
-}</code></pre></div>
-<p>重新加载 Nginx 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
-<h2 id="配置-mattermost">配置 Mattermost</h2>
-
+}
+</code></pre><p>重新加载 Nginx 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
+</code></pre></div><h2 id="-mattermost">配置 Mattermost</h2>
 <p>打开浏览器，输入您的域名并创建您的第一个用户：</p>
-
-<figure><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/1.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/1.jpg" alt=""></p>
 <p>第一个在系统中创建的用户具有管理员权限。</p>
-
-<figure><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/2.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/2.jpg" alt=""></p>
 <p>点击 <code>Create a new team</code> 链接，创建您的第一个团队，然后设置团队网址：</p>
-
-<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/3.jpg" alt="" />
-<img src="/images/linux/how-to-deploy-mattermost-on-centos-7/4.jpg" alt="" /></p>
-
+<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/3.jpg" alt="">
+<img src="/images/linux/how-to-deploy-mattermost-on-centos-7/4.jpg" alt=""></p>
 <p>创建第一个管理员帐户和第一个团队后，您将被重定向到 Mattermost 仪表板，以管理员身份登录。通过单击导航面板顶部的用户名打开系统控制台，然后在打开的页面的左侧菜单中单击 <code>System Console</code> 链接：</p>
-
-<figure><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/5.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/5.jpg" alt=""></p>
 <p>通过页面 <code>Settings</code> → <code>General</code> → <code>Configuration</code> 来设置站点 URL 。</p>
-
-<figure><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/6.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/6.jpg" alt=""></p>
 <p>通过页面 <code>Notifications</code> → <code>Email</code> 启用电子邮件通知</p>
-
-<figure><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/7.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-deploy-mattermost-on-centos-7/7.jpg" alt=""></p>
 <p>并输入您的 SMTP 参数。您可以使用任何流行的交易电子邮件服务，如 SendinBlue ， SendGrid ， Amazon SES ， Mandrill ， Mailgun ， Mailjet 和 Postmark ，或者您可以<a href="/tutorials/setting-up-and-configuring-a-mail-server.html">设置自己的邮件服务器</a>。</p>
-
 <p>最后，我们需要重新启动 Mattermost 服务才能使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart mattermost</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart mattermost
+</code></pre></div><h2 id="heading2">结论</h2>
 <p>您已在 CentOS 7 服务器上成功安装了 Mattermost ，并将 Nginx 设置为反向代理。您现在可以开始使用 Mattermost 与您的团队协作。</p>
-
-<!-- how-to-deploy-mattermost-on-centos-7/ -->
+<!-- raw HTML omitted -->
       </div><ul class="pa0">
   
    <li class="list di">
@@ -429,19 +394,16 @@ server {
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#创建-mysql-数据库">创建 MySQL 数据库</a></li>
-<li><a href="#创建系统用户">创建系统用户</a></li>
-<li><a href="#安装-mattermost-服务器">安装 Mattermost 服务器</a></li>
-<li><a href="#创建一个-systemd-单元">创建一个 systemd 单元</a></li>
-<li><a href="#使用-nginx-设置反向代理">使用 Nginx 设置反向代理</a></li>
-<li><a href="#配置-mattermost">配置 Mattermost</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-mysql-">创建 MySQL 数据库</a></li>
+    <li><a href="#heading1">创建系统用户</a></li>
+    <li><a href="#-mattermost-">安装 Mattermost 服务器</a></li>
+    <li><a href="#-systemd-">创建一个 systemd 单元</a></li>
+    <li><a href="#-nginx-">使用 Nginx 设置反向代理</a></li>
+    <li><a href="#-mattermost">配置 Mattermost</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

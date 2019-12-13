@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="Oracle 自动备份脚本" />
 <meta property="og:description" content="本脚本的主要思路是通过 oracle 字典的 exp 命令将数据库导出为 dmp 文件，然后将 dmp 文件打包压缩成 tar.gz 文件，最后将文件 ftp 到远程服务器上。
-
 建立脚本文件" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/oracle-auto-backup-shell-script/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2015-06-18T00:00:00+00:00" />
 <meta itemprop="name" content="Oracle 自动备份脚本">
 <meta itemprop="description" content="本脚本的主要思路是通过 oracle 字典的 exp 命令将数据库导出为 dmp 文件，然后将 dmp 文件打包压缩成 tar.gz 文件，最后将文件 ftp 到远程服务器上。
-
 建立脚本文件">
-
-
 <meta itemprop="datePublished" content="2015-06-18T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-06-18T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="149">
 
 
 
-<meta itemprop="keywords" content="Linux,Oracle," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Linux,Oracle," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Oracle 自动备份脚本"/>
 <meta name="twitter:description" content="本脚本的主要思路是通过 oracle 字典的 exp 命令将数据库导出为 dmp 文件，然后将 dmp 文件打包压缩成 tar.gz 文件，最后将文件 ftp 到远程服务器上。
-
 建立脚本文件"/>
 
   </head>
@@ -147,9 +141,7 @@
           
   
           <p>本脚本的主要思路是通过 oracle 字典的 exp 命令将数据库导出为 dmp 文件，然后将 dmp 文件打包压缩成 tar.gz 文件，最后将文件 ftp 到远程服务器上。</p>
-
-<h2 id="建立脚本文件">建立脚本文件</h2>
-
+<h2 id="heading">建立脚本文件</h2>
 <blockquote>
 <p>使用 oracle 用户</p>
 </blockquote>
@@ -170,23 +162,23 @@ tar -zcf xxx-<span class="si">${</span><span class="nv">today</span><span class=
 exp yyy/yyy123 <span class="nv">file</span><span class="o">=</span>yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.dmp <span class="nv">log</span><span class="o">=</span>yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.log
 tar -zcf yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.tar.gz yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.dmp yyy-<span class="si">${</span><span class="nv">today</span><span class="si">}</span>.log --remove-files
 
-ftp -i -v -n <span class="m">192</span>.168.1.10 <span class="s">&lt;&lt;END
+ftp -i -v -n 192.168.1.10 <span class="s">&lt;&lt;END
 </span><span class="s">user oracle oracle
 </span><span class="s">binary
 </span><span class="s">mput xxx-${today}.tar.gz yyy-${today}.tar.gz
 </span><span class="s">bye
-</span><span class="s">END</span></code></pre></div>
-<h2 id="设置每天自动备份">设置每天自动备份</h2>
-
+</span><span class="s">END</span>
+</code></pre></div><h2 id="heading1">设置每天自动备份</h2>
 <blockquote>
 <p>使用 oracle 用户</p>
 </blockquote>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">crontab -e
-<span class="m">0</span> <span class="m">3</span> * * * /home/oracle/backup/backup.sh &gt;&gt; /home/oracle/backup/backup.log <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span></code></pre></div>
-<blockquote>
+<span class="m">0</span> <span class="m">3</span> * * * /home/oracle/backup/backup.sh &gt;&gt; /home/oracle/backup/backup.log 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></div><blockquote>
 <p>使用 root 用户</p>
 </blockquote>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">service crontab restart</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">service crontab restart
+</code></pre></div>
       </div><ul class="pa0">
   
    <li class="list di">

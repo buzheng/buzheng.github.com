@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="在 CentOS 7 上配置 Magento 2 使用 Varnish" />
 <meta property="og:description" content="页面速度或加载时间对于您的在线商店的成功至关重要。加载时间是加载特定页面上的内容所花费的总时间。加载时间越长，转换率越低。这也是 Google 考虑确定搜索引擎排名的最重要因素之一。
-
 在第一篇文章中，我们在 CentOS 7 机器上安装了 Magento 2 。在本系列的第二篇文章中，我们将介绍如何安装和配置 Varnish 以使我们的 Magento 商店超级快速。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/configure-magento-2-to-use-varnish-on-centos-7/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-08T06:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 7 上配置 Magento 2 使用 Varnish">
 <meta itemprop="description" content="页面速度或加载时间对于您的在线商店的成功至关重要。加载时间是加载特定页面上的内容所花费的总时间。加载时间越长，转换率越低。这也是 Google 考虑确定搜索引擎排名的最重要因素之一。
-
 在第一篇文章中，我们在 CentOS 7 机器上安装了 Magento 2 。在本系列的第二篇文章中，我们将介绍如何安装和配置 Varnish 以使我们的 Magento 商店超级快速。">
-
-
 <meta itemprop="datePublished" content="2019-03-08T06:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-08T06:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1035">
 
 
 
-<meta itemprop="keywords" content="centos,magento,varnish," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,magento,varnish," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在 CentOS 7 上配置 Magento 2 使用 Varnish"/>
 <meta name="twitter:description" content="页面速度或加载时间对于您的在线商店的成功至关重要。加载时间是加载特定页面上的内容所花费的总时间。加载时间越长，转换率越低。这也是 Google 考虑确定搜索引擎排名的最重要因素之一。
-
 在第一篇文章中，我们在 CentOS 7 机器上安装了 Magento 2 。在本系列的第二篇文章中，我们将介绍如何安装和配置 Varnish 以使我们的 Magento 商店超级快速。"/>
 
   </head>
@@ -147,27 +141,17 @@
           
   
           <p>页面速度或加载时间对于您的在线商店的成功至关重要。加载时间是加载特定页面上的内容所花费的总时间。加载时间越长，转换率越低。这也是 Google 考虑确定搜索引擎排名的最重要因素之一。</p>
-
 <p>在第一篇文章中，我们在 CentOS 7 机器上安装了 Magento 2 。在本系列的第二篇文章中，我们将介绍如何安装和配置 Varnish 以使我们的 Magento 商店超级快速。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>确保您已按照第一篇文章中的说明进行操作并启用了 EPEL 存储库。</p>
-
-<h2 id="工作原理">工作原理</h2>
-
+<h2 id="heading1">工作原理</h2>
 <p>Varnish 不支持 SSL ，因此我们需要使用其他服务作为 SSL 终端代理，在这个例子中，我们用的是 <a href="/linux/how-to-install-nginx-on-centos-7/">Nginx</a> 。</p>
-
 <p>当访问者 HTTPS 在端口 443 上打开您的网站时，请求将由作为代理的 Nginx 处理，并将请求传递给 Varnish （在端口 80 上）。Varnish 检查请求是否被缓存。如果它被缓存， Varnish 将把缓存的数据返回给 Nginx 而不向 Magento 应用程序发出请求。如果请求没有被缓存， Varnish 会将请求传递给端口 8080 上的 Nginx, Nginx 将从 Magento 中提取数据，并且 Varnish 将缓存响应。</p>
-
 <p>如果访问者在没有 SSL 端口的情况下使用 80 端口打开您的网站， 那么他将被 Varnish  重定向到 HTTPS 443 端口 。</p>
-
-<h2 id="配置-nginx">配置 Nginx</h2>
-
+<h2 id="-nginx">配置 Nginx</h2>
 <p>我们需要编辑我们在第一篇文章中创建的 Nginx 服务器块来处理 SSL/TLS termination，并作为 Varnish 的后端。</p>
-
 <p><code>/etc/nginx/conf.d/example.com.conf</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">upstream fastcgi_backend {
+<pre><code class="language-conf" data-lang="conf">upstream fastcgi_backend {
   server   unix:/run/php-fpm/magento.sock;
 }
 
@@ -215,11 +199,10 @@ server {
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Forwarded-Port 443;
     }
-}</code></pre></div>
-<p>我们还需要从 <code>nginx.conf</code> 文件中删除默认的 Nginx 服务器块。注释掉或删除以下行：</p>
-
+}
+</code></pre><p>我们还需要从 <code>nginx.conf</code> 文件中删除默认的 Nginx 服务器块。注释掉或删除以下行：</p>
 <p><code>/etc/nginx/nginx.conf</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">...
+<pre><code class="language-conf" data-lang="conf">...
 # server {
 #     listen       80 default_server;
 #     listen       [::]:80 default_server;
@@ -240,46 +223,39 @@ server {
 #         location = /50x.html {
 #     }
 # }
-...</code></pre></div>
-<p>重新加载 Nginx 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx</code></pre></div>
-<h2 id="安装和配置-varnish">安装和配置 Varnish</h2>
-
+...
+</code></pre><p>重新加载 Nginx 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
+</code></pre></div><h2 id="-varnish">安装和配置 Varnish</h2>
 <p>Varnish 是一个快速的反向代理 HTTP 加速器，它将位于我们的 Web 服务器前面，它将为我们 Magento 提供全页面缓存的解决方案。</p>
-
 <p>使用以下命令通过 yum 安装 Varnish ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install varnish</code></pre></div>
-<p>配置 Magento 使用 Varnish ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">php /opt/magento/public_html/bin/magento config:set --scope<span class="o">=</span>default --scope-code<span class="o">=</span><span class="m">0</span> system/full_page_cache/caching_application <span class="m">2</span></code></pre></div>
-<p>接下来，我们需要生成一个 Varnish 配置文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo php /opt/magento/public_html/bin/magento varnish:vcl:generate &gt; /etc/varnish/default.vcl</code></pre></div>
-<p>上述命令需要以 root 用户或者具有 sudo 权限的用户身份运行，并且将使用默认值创建文件 <code>/etc/varnish/default.vcl</code> ，默认值 <code>localhost</code> 为后端主机， <code>8080</code> 为后端端口。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install varnish
+</code></pre></div><p>配置 Magento 使用 Varnish ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">php /opt/magento/public_html/bin/magento config:set --scope<span class="o">=</span>default --scope-code<span class="o">=</span><span class="m">0</span> system/full_page_cache/caching_application <span class="m">2</span>
+</code></pre></div><p>接下来，我们需要生成一个 Varnish 配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo php /opt/magento/public_html/bin/magento varnish:vcl:generate &gt; /etc/varnish/default.vcl
+</code></pre></div><p>上述命令需要以 root 用户或者具有 sudo 权限的用户身份运行，并且将使用默认值创建文件 <code>/etc/varnish/default.vcl</code> ，默认值 <code>localhost</code> 为后端主机， <code>8080</code> 为后端端口。</p>
 <p>默认配置的健康检查文件的 url 是错误的。打开 <code>default.vcl</code> 文件并从黄色突出显示的行中删除 <code>/pub</code> ：</p>
-
 <p><code>/etc/varnish/default.vcl</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">...
+<pre><code class="language-conf" data-lang="conf">...
 .probe = {
-     # .url = &#34;/pub/health_check.php&#34;;
-     .url = &#34;/health_check.php&#34;;
+     # .url = &quot;/pub/health_check.php&quot;;
+     .url = &quot;/health_check.php&quot;;
      .timeout = 2s;
      .interval = 5s;
      .window = 10;
      .threshold = 5;
 }
-...</code></pre></div>
-<p>默认情况下， Varnish 侦听端口 6081 ，我们需要将其更改为 80 , 修改文件 <code>/etc/varnish/varnish.params</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-conf" data-lang="conf">VARNISH_LISTEN_PORT=80</code></pre></div>
-<p>完成修改后，启用 Varnish 服务随机启动并启动服务：</p>
+...
+</code></pre><p>默认情况下， Varnish 侦听端口 6081 ，我们需要将其更改为 80 , 修改文件 <code>/etc/varnish/varnish.params</code>：</p>
+<pre><code class="language-conf" data-lang="conf">VARNISH_LISTEN_PORT=80
+</code></pre><p>完成修改后，启用 Varnish 服务随机启动并启动服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> varnish
-sudo systemctl start varnish</code></pre></div>
-<p>您可以使用该 <code>varnishlog</code> 工具查看实时 Web 请求来调试 Varnish 。</p>
-
-<h2 id="结论">结论</h2>
-
+sudo systemctl start varnish
+</code></pre></div><p>您可以使用该 <code>varnishlog</code> 工具查看实时 Web 请求来调试 Varnish 。</p>
+<h2 id="heading2">结论</h2>
 <p>在本教程中，我们向您展示了如何通过将 Varnish 实现为整页缓存来加速 Magento 实例。</p>
-
-<!-- configure-magento-2-to-use-varnish-on-centos-7/ -->
+<!-- raw HTML omitted -->
       </div><ul class="pa0">
   
    <li class="list di">
@@ -356,16 +332,13 @@ sudo systemctl start varnish</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#工作原理">工作原理</a></li>
-<li><a href="#配置-nginx">配置 Nginx</a></li>
-<li><a href="#安装和配置-varnish">安装和配置 Varnish</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">工作原理</a></li>
+    <li><a href="#-nginx">配置 Nginx</a></li>
+    <li><a href="#-varnish">安装和配置 Varnish</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

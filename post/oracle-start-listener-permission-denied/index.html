@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2015-04-02T09:00:00+00:00" />
 <meta itemprop="name" content="Linux 下 ORACLE 启动侦听报错 TNS:permission denied">
 <meta itemprop="description" content="今天开发环境 oracle 启动侦听的时候，出现了 TNS:permission denied 的问题，并最终找到了解决方案，现在共享出来。 错误描述 [oracle@oracle ~]$ lsnrctl start LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-MAR-2015 15:37:59 Copyright (c) 1991, 2009, Oracle. All rights reserved. Starting /u01/app/oracle/product/11.2.0/dbhome_1/bin/tnslsnr:">
-
-
 <meta itemprop="datePublished" content="2015-04-02T09:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-04-02T09:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="265">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux 下 ORACLE 启动侦听报错 TNS:permission denied"/>
 <meta name="twitter:description" content="今天开发环境 oracle 启动侦听的时候，出现了 TNS:permission denied 的问题，并最终找到了解决方案，现在共享出来。 错误描述 [oracle@oracle ~]$ lsnrctl start LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-MAR-2015 15:37:59 Copyright (c) 1991, 2009, Oracle. All rights reserved. Starting /u01/app/oracle/product/11.2.0/dbhome_1/bin/tnslsnr:"/>
 
@@ -140,42 +137,36 @@
           
           
   
-          
-
-<p>今天开发环境 oracle 启动侦听的时候，出现了 TNS:permission denied 的问题，并最终找到了解决方案，现在共享出来。</p>
-
-<!-- more -->
-
-<h2 id="错误描述">错误描述</h2>
+          <p>今天开发环境 oracle 启动侦听的时候，出现了 TNS:permission denied 的问题，并最终找到了解决方案，现在共享出来。</p>
+<!-- raw HTML omitted -->
+<h2 id="heading">错误描述</h2>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>oracle@oracle ~<span class="o">]</span>$ lsnrctl start     
 
-LSNRCTL <span class="k">for</span> Linux: Version <span class="m">11</span>.2.0.1.0 - Production on <span class="m">27</span>-MAR-2015 <span class="m">15</span>:37:59
+LSNRCTL <span class="k">for</span> Linux: Version 11.2.0.1.0 - Production on 27-MAR-2015 15:37:59
 
-Copyright <span class="o">(</span>c<span class="o">)</span> <span class="m">1991</span>, <span class="m">2009</span>, Oracle.  All rights reserved.
+Copyright <span class="o">(</span>c<span class="o">)</span> 1991, 2009, Oracle.  All rights reserved.
 
 Starting /u01/app/oracle/product/11.2.0/dbhome_1/bin/tnslsnr: please wait...
 
-TNSLSNR <span class="k">for</span> Linux: Version <span class="m">11</span>.2.0.1.0 - Production
+TNSLSNR <span class="k">for</span> Linux: Version 11.2.0.1.0 - Production
 System parameter file is /u01/app/oracle/product/11.2.0/dbhome_1/network/admin/listener.ora
 Log messages written to /u01/app/oracle/diag/tnslsnr/oracle/listener/alert/log.xml
-Error listening on: <span class="o">(</span><span class="nv">DESCRIPTION</span><span class="o">=(</span><span class="nv">ADDRESS</span><span class="o">=(</span><span class="nv">PROTOCOL</span><span class="o">=</span>IPC<span class="o">)(</span><span class="nv">KEY</span><span class="o">=</span>EXTPROC1521<span class="o">)))</span>
+Error listening on: <span class="o">(</span><span class="nv">DESCRIPTION</span><span class="o">=</span><span class="o">(</span><span class="nv">ADDRESS</span><span class="o">=</span><span class="o">(</span><span class="nv">PROTOCOL</span><span class="o">=</span>IPC<span class="o">)</span><span class="o">(</span><span class="nv">KEY</span><span class="o">=</span>EXTPROC1521<span class="o">)</span><span class="o">)</span><span class="o">)</span>
 TNS-12555: TNS:permission denied
  TNS-12560: TNS:protocol adapter error
   TNS-00525: Insufficient privilege <span class="k">for</span> operation
-   Linux Error: <span class="m">1</span>: Operation not permitted
+   Linux Error: 1: Operation not permitted
 
-Listener failed to start. See the error message<span class="o">(</span>s<span class="o">)</span> above...</code></pre></div>
-<h2 id="解决方案">解决方案</h2>
-
+Listener failed to start. See the error message<span class="o">(</span>s<span class="o">)</span> above...
+</code></pre></div><h2 id="heading1">解决方案</h2>
 <p>出现这个错误是由于没有 /var/tmp/.oracle 的读写权限引起的。由于开发环境没有严格管理，不知道哪位同学把此目录的所有者改成了root，导致 oracle 用户没有权限操作此目录。使用下面方式修正过来即可。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/tmp
 chown oracle .oracle
 chgrp oinstall .oracle
-chmod <span class="m">777</span> .oracle</code></pre></div>
-<blockquote>
+chmod <span class="m">777</span> .oracle
+</code></pre></div><blockquote>
 <p>看到网上有资料说 直接干掉 /var/tmp/.oracle 这个目录也是可以的，我没有尝试，不知道效果如何，这里仅作笔记。</p>
 </blockquote>
-
 <p>Done!</p>
 
       </div><ul class="pa0">

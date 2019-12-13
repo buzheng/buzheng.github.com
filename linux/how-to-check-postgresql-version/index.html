@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何查看 PostgreSQL 版本" />
 <meta property="og:description" content="PostgreSQL ，通常简称为 Postgres ，是一种开放源代码的通用对象关系数据库管理系统。
-
 在某些情况下，了解系统上已安装和运行 PostgreSQL 服务器的版本可能很重要。例如，如果要安装需要特定 PostgreSQL 版本的应用程序，则需要找出 PostgreSQL 服务器的版本。
-
 在本文中，我们将说明如何查找系统上正在运行的 PostgreSQL 服务器的版本。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-check-postgresql-version/" />
+<meta property="og:image" content="/linux/how-to-check-postgresql-version/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-20T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-20T12:00:00+08:00" />
 <meta itemprop="name" content="如何查看 PostgreSQL 版本">
 <meta itemprop="description" content="PostgreSQL ，通常简称为 Postgres ，是一种开放源代码的通用对象关系数据库管理系统。
-
 在某些情况下，了解系统上已安装和运行 PostgreSQL 服务器的版本可能很重要。例如，如果要安装需要特定 PostgreSQL 版本的应用程序，则需要找出 PostgreSQL 服务器的版本。
-
 在本文中，我们将说明如何查找系统上正在运行的 PostgreSQL 服务器的版本。">
-
-
 <meta itemprop="datePublished" content="2019-11-20T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-20T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="743">
+<meta itemprop="wordCount" content="746">
+<meta itemprop="image" content="/linux/how-to-check-postgresql-version/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="postgresql," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="postgresql," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-check-postgresql-version/featured.jpg"/>
 <meta name="twitter:title" content="如何查看 PostgreSQL 版本"/>
 <meta name="twitter:description" content="PostgreSQL ，通常简称为 Postgres ，是一种开放源代码的通用对象关系数据库管理系统。
-
 在某些情况下，了解系统上已安装和运行 PostgreSQL 服务器的版本可能很重要。例如，如果要安装需要特定 PostgreSQL 版本的应用程序，则需要找出 PostgreSQL 服务器的版本。
-
 在本文中，我们将说明如何查找系统上正在运行的 PostgreSQL 服务器的版本。"/>
 
   </head>
@@ -154,68 +147,60 @@
           
   
           <p>PostgreSQL ，通常简称为 Postgres ，是一种开放源代码的通用对象关系数据库管理系统。</p>
-
 <p>在某些情况下，了解系统上已安装和运行 PostgreSQL 服务器的版本可能很重要。例如，如果要安装需要特定 PostgreSQL 版本的应用程序，则需要找出 PostgreSQL 服务器的版本。</p>
-
 <p>在本文中，我们将说明如何查找系统上正在运行的 PostgreSQL 服务器的版本。</p>
-
-<h2 id="postgresql版本控制">PostgreSQL版本控制</h2>
-
+<h2 id="postgresql">PostgreSQL版本控制</h2>
 <p>PostgreSQL 版本使用以下方案：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">MAJOR.MINOR</code></pre></div>
-<p>例如，在 PostgreSQL 12.1 中， <code>12</code> 它是主要版本， <code>1</code> 而是次要版本。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">MAJOR.MINOR
+</code></pre></div><p>例如，在 PostgreSQL 12.1 中， <code>12</code> 它是主要版本， <code>1</code> 而是次要版本。</p>
 <ul>
-<li><p><code>MAJOR</code> - 从 PostgreSQL 10 开始，每个新的主要版本 <code>MAJOR</code> 都将版本的一部分增加一个，例如 10 、 11 或 12 。</p></li>
-
-<li><p><code>MINOR</code> - 次要版本号是版本号的最后一部分。例如， <code>11.4</code> 和 <code>11.6</code> 是 PostgreSQL 版本 11 的一部分的次要版本， <code>9.6.15</code> 和 <code>9.6.16</code> 是 PostgreSQL 版本 9.6 的一部分。</p></li>
+<li>
+<p><code>MAJOR</code> - 从 PostgreSQL 10 开始，每个新的主要版本 <code>MAJOR</code> 都将版本的一部分增加一个，例如 10 、 11 或 12 。</p>
+</li>
+<li>
+<p><code>MINOR</code> - 次要版本号是版本号的最后一部分。例如， <code>11.4</code> 和 <code>11.6</code> 是 PostgreSQL 版本 11 的一部分的次要版本， <code>9.6.15</code> 和 <code>9.6.16</code> 是 PostgreSQL 版本 9.6 的一部分。</p>
+</li>
 </ul>
-
 <p>具有新功能的 PostgreSQL 主要版本通常每年交付一次。每个主要版本的支持期限均为5年。</p>
-
-<h2 id="使用命令行">使用命令行</h2>
-
+<h2 id="heading">使用命令行</h2>
 <p>要了解系统上正在运行的 PostgreSQL 版本，请使用 <code>postgres</code> 命令的 <code>--version</code> 或 <code>-V</code> 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">postgres --version</code></pre></div>
-<p>该命令将打印 PostgreSQL 版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">postgres (PostgreSQL) 10.6</code></pre></div>
-<p>在此示例中， PostgreSQL 服务器的版本为 <code>10.6</code> 。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">postgres --version
+</code></pre><p>该命令将打印 PostgreSQL 版本：</p>
+<pre><code class="language-output" data-lang="output">postgres (PostgreSQL) 10.6
+</code></pre><p>在此示例中， PostgreSQL 服务器的版本为 <code>10.6</code> 。</p>
 <p>如果 <code>postgres</code> 二进制文件不在系统的 <a href="/linux/how-to-add-directory-to-path-in-linux/">PATH 中</a>，则将显示一条错误消息 “ postgres ：找不到命令”。当未从发行版的标准存储库安装 PostgreSQL 软件包时，通常会发生这种情况。</p>
-
 <p>您可以使用 <a href="/linux/locate-command-in-linux/"><code>locate</code></a> 或 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a> 命令找到二进制文件的路径：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo find /usr -wholename &#39;*/bin/postgres&#39;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo updatedb
-locate bin/postgres</code></pre></div>
-<p>输出应如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">/usr/lib/postgresql/9.6/bin/postgres</code></pre></div>
-<p>找到二进制文件的路径后，就可以使用它来获取 PostgreSQL 服务器的版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">/usr/lib/postgresql/9.6/bin/postgres -V</code></pre></div>
-<p>可以使用 <code>psql</code> 命令找到 PostgreSQL 客户端实用程序的版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">psql --version</code></pre></div>
-<p>输出将如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">postgres (PostgreSQL) 10.6</code></pre></div>
-<blockquote>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo find /usr -wholename '*/bin/postgres'
+</code></pre><pre><code class="language-console-bash" data-lang="console-bash">sudo updatedb
+locate bin/postgres
+</code></pre><p>输出应如下所示：</p>
+<pre><code class="language-output" data-lang="output">/usr/lib/postgresql/9.6/bin/postgres
+</code></pre><p>找到二进制文件的路径后，就可以使用它来获取 PostgreSQL 服务器的版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">/usr/lib/postgresql/9.6/bin/postgres -V
+</code></pre><p>可以使用 <code>psql</code> 命令找到 PostgreSQL 客户端实用程序的版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">psql --version
+</code></pre><p>输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">postgres (PostgreSQL) 10.6
+</code></pre><blockquote>
 <p><code>psql</code> 是一个交互式命令行实用程序，可让您与 PostgreSQL 服务器进行交互。</p>
 </blockquote>
-
-<h2 id="使用-sql-shell">使用 SQL Shell</h2>
-
+<h2 id="-sql-shell">使用 SQL Shell</h2>
 <p>确定 PostgreSQL 服务器版本的另一种方法是登录服务器提示符并使用 SQL 语句打印出版本。</p>
-
 <p>您可以使用 pgAdmin 之类的 GUI 客户端或通过 <code>psql</code> 以下命令访问 PostgreSQL shell  ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql</code></pre></div>
-<p>以下语句显示 PostgreSQL 服务器版本以及构建信息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">version</span><span class="p">();</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">                                                  version                                                   
+<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql
+</code></pre><p>以下语句显示 PostgreSQL 服务器版本以及构建信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">version</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><pre><code class="language-output" data-lang="output">                                                  version                                                   
 ------------------------------------------------------------------------------------------------------------
  PostgreSQL 10.6 on x86_64-redhat-linux-gnu, compiled by gcc (GCC) 8.2.1 20180905 (Red Hat 8.2.1-3), 64-bit
-(1 row)</code></pre></div>
-<p>如果只想获取PostgreSQL服务器版本号，请使用以下查询：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SHOW</span> <span class="n">server_version</span><span class="p">;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output"> server_version 
+(1 row)
+</code></pre><p>如果只想获取PostgreSQL服务器版本号，请使用以下查询：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SHOW</span> <span class="n">server_version</span><span class="p">;</span>
+</code></pre></div><pre><code class="language-output" data-lang="output"> server_version 
 ----------------
  10.6
-(1 row)</code></pre></div>
-<h2 id="结论">结论</h2>
-
+(1 row)
+</code></pre><h2 id="heading1">结论</h2>
 <p>在本文中，我们展示了几个有关如何查找系统上运行的 PostgreSQL 服务器版本的选项。</p>
       </div><ul class="pa0">
   
@@ -281,15 +266,12 @@ locate bin/postgres</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#postgresql版本控制">PostgreSQL版本控制</a></li>
-<li><a href="#使用命令行">使用命令行</a></li>
-<li><a href="#使用-sql-shell">使用 SQL Shell</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#postgresql">PostgreSQL版本控制</a></li>
+    <li><a href="#heading">使用命令行</a></li>
+    <li><a href="#-sql-shell">使用 SQL Shell</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

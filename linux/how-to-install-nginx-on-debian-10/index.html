@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何在 Debian 10 Linux 上安装 Nginx" />
 <meta property="og:description" content="Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
-
 Nginx 可以用作独立的 Web 服务器，也可以用作 HTTP 和非 HTTP 服务器的反向代理。
-
 在本教程中，我们将解释如何在 Debian 10 Buster 上安装和管理 Nginx 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-nginx-on-debian-10/" />
+<meta property="og:image" content="/linux/how-to-install-nginx-on-debian-10/featured.jpg"/>
 <meta property="article:published_time" content="2019-07-17T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-07-17T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Debian 10 Linux 上安装 Nginx">
 <meta itemprop="description" content="Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
-
 Nginx 可以用作独立的 Web 服务器，也可以用作 HTTP 和非 HTTP 服务器的反向代理。
-
 在本教程中，我们将解释如何在 Debian 10 Buster 上安装和管理 Nginx 。">
-
-
 <meta itemprop="datePublished" content="2019-07-17T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-17T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="711">
+<meta itemprop="image" content="/linux/how-to-install-nginx-on-debian-10/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="debian,nginx," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="debian,nginx," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-nginx-on-debian-10/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Debian 10 Linux 上安装 Nginx"/>
 <meta name="twitter:description" content="Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。
-
 Nginx 可以用作独立的 Web 服务器，也可以用作 HTTP 和非 HTTP 服务器的反向代理。
-
 在本教程中，我们将解释如何在 Debian 10 Buster 上安装和管理 Nginx 。"/>
 
   </head>
@@ -154,38 +147,31 @@ Nginx 可以用作独立的 Web 服务器，也可以用作 HTTP 和非 HTTP 服
           
   
           <p>Nginx 是一个开源，高性能的 HTTP 和反向代理服务器，为 Internet 上的一些最大的站点提供支持。与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。</p>
-
 <p>Nginx 可以用作独立的 Web 服务器，也可以用作 HTTP 和非 HTTP 服务器的<a href="/linux/nginx-reverse-proxy/">反向代理</a>。</p>
-
 <p>在本教程中，我们将解释如何在 Debian 10 Buster 上安装和管理 Nginx 。</p>
-
-<h2 id="安装-nginx">安装 Nginx</h2>
-
+<h2 id="-nginx">安装 Nginx</h2>
 <p>Nginx 包包含在默认的 Debian Buster 存储库中。安装非常简单，只需以 root 用户或<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户使用 sudo 权限</a>运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install nginx</code></pre></div>
-<p>安装过程完成后， Nginx 服务将自动启动。您可以使用 <a href="/linux/curl-command-examples/">curl</a> 验证它，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -I 127.0.0.1</code></pre></div>
-<p>输出看起来类似于：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install nginx
+</code></pre><p>安装过程完成后， Nginx 服务将自动启动。您可以使用 <a href="/linux/curl-command-examples/">curl</a> 验证它，如下所示：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">curl -I 127.0.0.1
+</code></pre><p>输出看起来类似于：</p>
+<pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
 Server: nginx/1.14.2
 Date: Tue, 16 Jul 2019 16:50:46 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Tue, 16 Jul 2019 16:50:26 GMT
 Connection: keep-alive
-ETag: &#34;5d2e0052-264&#34;
-Accept-Ranges: bytes</code></pre></div>
-<p>您可以使用该 <code>systemctl</code> 命令来<a href="/linux/nginx-commands-you-should-know/">管理 Nginx 服务</a>，与任何其他 systemd 单元一样。</p>
-
-<h2 id="调整防火墙">调整防火墙</h2>
-
+ETag: &quot;5d2e0052-264&quot;
+Accept-Ranges: bytes
+</code></pre><p>您可以使用该 <code>systemctl</code> 命令来<a href="/linux/nginx-commands-you-should-know/">管理 Nginx 服务</a>，与任何其他 systemd 单元一样。</p>
+<h2 id="heading">调整防火墙</h2>
 <p>UFW 用户可以通过启用 &lsquo;Nginx Full&rsquo; 配置文件来打开 HTTP(<code>80</code>) 和 HTTPS(<code>443</code>) 端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow &#39;Nginx Full&#39;</code></pre></div>
-<p>如果使用 <a href="https://wiki.debian.org/nftables">nftables</a> 过滤与系统的连接，请通过发出以下命令打开必要的端口：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">nft add rule inet filter input tcp dport {80, 443} ct state new,established counter accept</code></pre></div>
-<h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 'Nginx Full'
+</code></pre><p>如果使用 <a href="https://wiki.debian.org/nftables">nftables</a> 过滤与系统的连接，请通过发出以下命令打开必要的端口：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">nft add rule inet filter input tcp dport {80, 443} ct state new,established counter accept
+</code></pre><h2 id="nginx-">Nginx 配置文件的结构和最佳实践</h2>
 <ul>
 <li>Nginx 配置文件存储在 <code>/etc/nginx</code> 目录中。</li>
 <li>主要的 Nginx 配置文件是 <code>/etc/nginx/nginx.conf</code> 。</li>
@@ -195,19 +181,16 @@ Accept-Ranges: bytes</code></pre></div>
 <li>该 <code>/etc/nginx/snippets</code> 目录包含可包含在服务器块文件中的配置片段。如果使用可重复的配置段，则可以将这些段重构为片段，并将片段文件包含到服务器块中。</li>
 <li>Nginx 日志文件 (<code>access.log</code> 和 <code>error.log</code>) 位于 <code>/var/log/nginx/</code> 目录中。建议有不同 <code>access</code> 和 <code>error</code> 日志文件每个服务器模块。</li>
 <li>您可以将域文档根目录设置为所需的任何位置。 webroot 最常见的位置包括：
-
 <ul>
 <li><code>/home/&lt;user_name&gt;/&lt;site_name&gt;</code></li>
 <li><code>/var/www/&lt;site_name&gt;</code></li>
 <li><code>/var/www/html/&lt;site_name&gt;</code></li>
 <li><code>/opt/&lt;site_name&gt;</code></li>
-</ul></li>
 </ul>
-
-<h2 id="结论">结论</h2>
-
+</li>
+</ul>
+<h2 id="heading1">结论</h2>
 <p>在 Debian 10 上安装 Nginx 是运行单个命令的问题。</p>
-
 <p>现在您已经在 Debian 10 Linux 上安装了 Nginx ，您可以开始部署应用程序并将 Nginx 用作 Web 或代理服务器。</p>
       </div><ul class="pa0">
   
@@ -281,15 +264,12 @@ Accept-Ranges: bytes</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#安装-nginx">安装 Nginx</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-nginx">安装 Nginx</a></li>
+    <li><a href="#heading">调整防火墙</a></li>
+    <li><a href="#nginx-">Nginx 配置文件的结构和最佳实践</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

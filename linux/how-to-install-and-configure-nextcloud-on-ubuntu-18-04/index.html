@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上使用 Apache 安装和配置 Nextcloud" />
 <meta property="og:description" content="Nextcloud 是一个开源的，自托管的文件共享和协作平台，类似于 Dropbox 。它捆绑了媒体播放器，日历和联系人管理。Nextcloud 可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。
-
 在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上使用 Apache 安装和配置 Nextcloud 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-27T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上使用 Apache 安装和配置 Nextcloud">
 <meta itemprop="description" content="Nextcloud 是一个开源的，自托管的文件共享和协作平台，类似于 Dropbox 。它捆绑了媒体播放器，日历和联系人管理。Nextcloud 可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。
-
 在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上使用 Apache 安装和配置 Nextcloud 。">
-
-
 <meta itemprop="datePublished" content="2019-05-27T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-27T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="952">
+<meta itemprop="wordCount" content="953">
 
 
 
-<meta itemprop="keywords" content="nextcloud,ubuntu,apache," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="nextcloud,ubuntu,apache," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上使用 Apache 安装和配置 Nextcloud"/>
 <meta name="twitter:description" content="Nextcloud 是一个开源的，自托管的文件共享和协作平台，类似于 Dropbox 。它捆绑了媒体播放器，日历和联系人管理。Nextcloud 可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。
-
 在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上使用 Apache 安装和配置 Nextcloud 。"/>
 
   </head>
@@ -147,52 +141,39 @@
           
   
           <p><a href="https://nextcloud.com/">Nextcloud</a> 是一个开源的，自托管的文件共享和协作平台，类似于 Dropbox 。它捆绑了媒体播放器，日历和联系人管理。Nextcloud 可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。</p>
-
 <p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上使用 Apache 安装和配置 Nextcloud 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="第-1-步-创建-mysql-数据库">第 1 步：创建 MySQL 数据库</h2>
-
+<h2 id="-1--mysql-">第 1 步：创建 MySQL 数据库</h2>
 <p>NextCloud 可以使用 SQLite ， <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">PostgreSQL</a> 或 MySQL 数据库来存储其所有数据。在本教程中，我们将使用 MySQL 作为首选数据库。</p>
-
 <p>如果您的 Ubuntu 服务器上没有安装 MySQL 或 MariaDB ，您可以按照以下说明之一进行安装：</p>
-
 <ul>
 <li><a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 MySQL</a></li>
 <li><a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 MariaDB</a></li>
 </ul>
-
 <p>要<a href="/linux/how-to-create-a-mysql-database/">创建数据库</a>和用户，请首先通过键入以下命令登录 MySQL shell ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
-<p>运行以下 SQL 语句以创建名为 <code>nextcloud</code> 的数据库和名为 <code>nextclouduser</code> 的数据库用户并向用户<!--link:how-to-create-mysql-user-accounts-and-grant-privileges-->授予所有必要的权限<!--link-->：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;GRANT ALL ON nextcloud.* TO &#39;nextclouduser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;FLUSH PRIVILEGES;EXIT;</code></pre></div>
-<h2 id="第-2-步-安装-php-和-apache">第 2 步：安装 PHP 和 Apache</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
+</code></pre><p>运行以下 SQL 语句以创建名为 <code>nextcloud</code> 的数据库和名为 <code>nextclouduser</code> 的数据库用户并向用户<!-- raw HTML omitted -->授予所有必要的权限<!-- raw HTML omitted -->：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;GRANT ALL ON nextcloud.* TO 'nextclouduser'@'localhost' IDENTIFIED BY 'change-with-strong-password';FLUSH PRIVILEGES;EXIT;
+</code></pre><h2 id="-2--php--apache">第 2 步：安装 PHP 和 Apache</h2>
 <p>Nextcloud 是一个 PHP 应用程序。 PHP 7.2 是 Ubuntu 18.04 中的默认 PHP 版本，完全支持并推荐用于 Nextcloud 。</p>
-
 <p>运行以下命令以安装 <a href="/linux/how-to-install-apache-on-ubuntu-18-04/">Apache</a> ， <a href="/linux/how-to-install-php-on-ubuntu-18-04/">PHP</a> 和所有必需的 PHP 扩展，并且：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install apache2 php7.2 php7.2-gd php7.2-json php7.2-mysql php7.2-curl php7.2-mbstring php7.2-intl php7.2-imagick php7.2-xml php7.2-zip libapache2-mod-php7.2</code></pre></div>
-<h2 id="第-3-步-配置防火墙">第 3 步：配置防火墙</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install apache2 php7.2 php7.2-gd php7.2-json php7.2-mysql php7.2-curl php7.2-mbstring php7.2-intl php7.2-imagick php7.2-xml php7.2-zip libapache2-mod-php7.2
+</code></pre><h2 id="-3-">第 3 步：配置防火墙</h2>
 <p>假设您正在使用 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"><code>UFW</code></a> 管理防火墙，则需要打开 HTTP(<code>80</code>) 和 HTTPS(<code>443</code>) 端口。您可以通过启用包含两个端口规则的 <code>Apache Full</code> 配置文件来实现此目的：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow &#39;Apache Full&#39;</code></pre></div>
-<h2 id="第-4-步-下载-nextcloud">第 4 步：下载 Nextcloud</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 'Apache Full'
+</code></pre><h2 id="-4--nextcloud">第 4 步：下载 Nextcloud</h2>
 <p>在撰写本文时， Nextcloud 的最新稳定版本是 15.0.0 版。在继续下一步之前，请访问 <a href="https://nextcloud.com/install/#instructions-server">Nextcloud 下载页面</a>，检查是否有新版本的 Nextcloud 可用。</p>
-
 <p>首先使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载最新版本的 Nextcloud  ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://download.nextcloud.com/server/releases/nextcloud-15.0.0.zip -P /tmp</code></pre></div>
-<p>下载完成后，<a href="/linux/how-to-unzip-files-in-linux/">将存档解压缩</a>到 <code>/var/www</code> 目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo unzip /tmp/nextcloud-15.0.0.zip  -d /var/www</code></pre></div>
-<p><a href="/linux/linux-chown-command/">设置正确的所有权</a>，以便 Apache Web 服务器可以完全访问 Nextcloud 的文件和目录。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sudo chown -R www-data: /var/www/nextcloud</code></pre></div>
-<h2 id="第-5-步-配置-apache">第 5 步：配置 Apache</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">wget https://download.nextcloud.com/server/releases/nextcloud-15.0.0.zip -P /tmp
+</code></pre><p>下载完成后，<a href="/linux/how-to-unzip-files-in-linux/">将存档解压缩</a>到 <code>/var/www</code> 目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo unzip /tmp/nextcloud-15.0.0.zip  -d /var/www
+</code></pre><p><a href="/linux/linux-chown-command/">设置正确的所有权</a>，以便 Apache Web 服务器可以完全访问 Nextcloud 的文件和目录。</p>
+<pre><code class="language-output" data-lang="output">sudo chown -R www-data: /var/www/nextcloud
+</code></pre><h2 id="-5--apache">第 5 步：配置 Apache</h2>
 <p>打开文本编辑器并创建 Apache 配置文件 <code>/etc/apache2/conf-available/nextcloud.conf</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apache2/conf-available/nextcloud.conf</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> <span class="sx">/nextcloud</span> <span class="s2">&#34;/var/www/nextcloud/&#34;</span>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apache2/conf-available/nextcloud.conf
+</code></pre><div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> <span class="sx">/nextcloud</span> <span class="s2">&#34;/var/www/nextcloud/&#34;</span>
 
 <span class="nt">&lt;Directory</span> <span class="s">/var/www/nextcloud/</span><span class="nt">&gt;</span>
   <span class="nb">Options</span> +FollowSymlinks
@@ -200,34 +181,26 @@
 
  <span class="nt">&lt;IfModule</span> <span class="s">mod_dav.c</span><span class="nt">&gt;</span>
   <span class="nb">Dav</span> <span class="k">off</span>
- <span class="nt">&lt;/IfModule&gt;</span>
+ <span class="nt">&lt;/IfModule</span><span class="s"></span><span class="nt">&gt;</span>
 
  <span class="nb">SetEnv</span> HOME <span class="sx">/var/www/nextcloud</span>
  <span class="nb">SetEnv</span> HTTP_HOME <span class="sx">/var/www/nextcloud</span>
 
-<span class="nt">&lt;/Directory&gt;</span></code></pre></div>
-<p>使用以下命令启用新添加的配置和所有必需的 Apache 模块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo a2enconf nextcloudsudo a2enmod rewritesudo a2enmod headerssudo a2enmod envsudo a2enmod dirsudo a2enmod mime</code></pre></div>
-<p>通过重新启动 Apache 服务应用更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2</code></pre></div>
-<h2 id="第-6-步-安装-nextcloud">第 6 步：安装 Nextcloud</h2>
-
+<span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
+</code></pre></div><p>使用以下命令启用新添加的配置和所有必需的 Apache 模块：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo a2enconf nextcloudsudo a2enmod rewritesudo a2enmod headerssudo a2enmod envsudo a2enmod dirsudo a2enmod mime
+</code></pre><p>通过重新启动 Apache 服务应用更改：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2
+</code></pre><h2 id="-6--nextcloud">第 6 步：安装 Nextcloud</h2>
 <p>现在下载了 Nextcloud 并配置了所有必要的服务，打开浏览器并通过访问服务器的域名或 IP 地址启动 Nextcloud 安装 ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">http://domain_name_or_ip_address/nextcloud</code></pre></div>
-<p>您将看到 Nextcloud 设置页面。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/install-nextcloud-ubuntu.jpg" alt=""></figure>
-
+<pre><code class="language-url" data-lang="url">http://domain_name_or_ip_address/nextcloud
+</code></pre><p>您将看到 Nextcloud 设置页面。</p>
+<p><img src="/images/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/install-nextcloud-ubuntu.jpg" alt=""></p>
 <p>输入您想要的管理员用户名和密码以及您之前创建的 MySQL 用户和数据库详细信息。</p>
-
 <p>单击 <code>Finish setup</code> 按钮，安装过程完成后，您将被重定向到以 admin 用户身份登录的 Nextcloud 仪表板。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/nextcloud-dashboard.jpg" alt=""></figure>
-
-<h2 id="结论">结论</h2>
-
-<p>您已经学习了如何在 Ubuntu 18.04 计算机上安装和配置 Nextcloud 。如果您有域名要关联到 Nextcloud 服务器，并想使用 https，则可以参考本指南<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">使用 Let&rsquo;s Encrypt保护 Apache</a> 。</p>
-
+<p><img src="/images/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/nextcloud-dashboard.jpg" alt=""></p>
+<h2 id="heading1">结论</h2>
+<p>您已经学习了如何在 Ubuntu 18.04 计算机上安装和配置 Nextcloud 。如果您有域名要关联到 Nextcloud 服务器，并想使用 https，则可以参考本指南<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">使用 Let's Encrypt保护 Apache</a> 。</p>
 <p>要查找有关如何管理 Nextcloud 实例的更多信息，请访问 <a href="https://docs.nextcloud.com/">Nextcloud 文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -305,19 +278,16 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#第-1-步-创建-mysql-数据库">第 1 步：创建 MySQL 数据库</a></li>
-<li><a href="#第-2-步-安装-php-和-apache">第 2 步：安装 PHP 和 Apache</a></li>
-<li><a href="#第-3-步-配置防火墙">第 3 步：配置防火墙</a></li>
-<li><a href="#第-4-步-下载-nextcloud">第 4 步：下载 Nextcloud</a></li>
-<li><a href="#第-5-步-配置-apache">第 5 步：配置 Apache</a></li>
-<li><a href="#第-6-步-安装-nextcloud">第 6 步：安装 Nextcloud</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-1--mysql-">第 1 步：创建 MySQL 数据库</a></li>
+    <li><a href="#-2--php--apache">第 2 步：安装 PHP 和 Apache</a></li>
+    <li><a href="#-3-">第 3 步：配置防火墙</a></li>
+    <li><a href="#-4--nextcloud">第 4 步：下载 Nextcloud</a></li>
+    <li><a href="#-5--apache">第 5 步：配置 Apache</a></li>
+    <li><a href="#-6--nextcloud">第 6 步：安装 Nextcloud</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

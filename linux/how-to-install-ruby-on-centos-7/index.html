@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 CentOS 7 上安装 Ruby" />
 <meta property="og:description" content="在本教程中，我们将向您展示在 CentOS 上安装 Ruby 的三种不同方法。每个都有自己的好处，您可以选择一种最适合您的安装方法。
-
 Ruby 是当今最流行的语言之一。它具有优雅的语法，它是 Ruby on Rails 框架背后的语言。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-ruby-on-centos-7/" />
@@ -38,21 +37,16 @@ Ruby 是当今最流行的语言之一。它具有优雅的语法，它是 Ruby 
 <meta property="article:modified_time" content="2019-04-22T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 7 上安装 Ruby">
 <meta itemprop="description" content="在本教程中，我们将向您展示在 CentOS 上安装 Ruby 的三种不同方法。每个都有自己的好处，您可以选择一种最适合您的安装方法。
-
 Ruby 是当今最流行的语言之一。它具有优雅的语法，它是 Ruby on Rails 框架背后的语言。">
-
-
 <meta itemprop="datePublished" content="2019-04-22T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-22T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="983">
+<meta itemprop="wordCount" content="985">
 
 
 
-<meta itemprop="keywords" content="centos,ruby," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,ruby," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 7 上安装 Ruby"/>
 <meta name="twitter:description" content="在本教程中，我们将向您展示在 CentOS 上安装 Ruby 的三种不同方法。每个都有自己的好处，您可以选择一种最适合您的安装方法。
-
 Ruby 是当今最流行的语言之一。它具有优雅的语法，它是 Ruby on Rails 框架背后的语言。"/>
 
   </head>
@@ -147,94 +141,84 @@ Ruby 是当今最流行的语言之一。它具有优雅的语法，它是 Ruby 
           
   
           <p>在本教程中，我们将向您展示在 CentOS 上安装 Ruby 的三种不同方法。每个都有自己的好处，您可以选择一种最适合您的安装方法。</p>
-
 <p>Ruby 是当今最流行的语言之一。它具有优雅的语法，它是 Ruby on Rails 框架背后的语言。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-
-<h2 id="安装-ruby">安装 Ruby</h2>
-
+<h2 id="-ruby">安装 Ruby</h2>
 <p>在 CentOS 系统上安装 Ruby 的最简单方法是通过 <code>yum</code> 包管理器。在撰写本文时， CentOS 存储库中的版本是 2.0.0 ，这已经过时了。</p>
-
 <ol>
-<li><p><code>ruby</code> 使用以下命令安装软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install ruby</code></pre></div></li>
-
-<li><p>安装完成后，您可以通过打印 Ruby 版本来验证它是否成功：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ruby --version</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ruby 2.0.0p648 (2015-12-16) [x86_64-linux]</code></pre></div></li>
+<li>
+<p><code>ruby</code> 使用以下命令安装软件包：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install ruby
+</code></pre></li>
+<li>
+<p>安装完成后，您可以通过打印 Ruby 版本来验证它是否成功：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ruby --version
+</code></pre><p>输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">ruby 2.0.0p648 (2015-12-16) [x86_64-linux]
+</code></pre></li>
 </ol>
-
-<h2 id="使用-rbenv-安装-ruby">使用 Rbenv 安装 Ruby</h2>
-
+<h2 id="-rbenv--ruby">使用 Rbenv 安装 Ruby</h2>
 <p>Rbenv 是一个轻量级的 Ruby 版本管理实用程序，它允许您轻松切换 Ruby 版本。</p>
-
 <p>我们还将安装 <code>ruby-build</code> 插件来扩展 Rbenv 核心功能，允许我们从源代码轻松安装任何 Ruby 版本。</p>
-
 <p>要使用 Rbenv 安装 Ruby ，请按照以下步骤操作：</p>
-
 <ol>
-<li><p>首先，安装 ruby-build 工具所需的依赖项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install git-core zlib zlib-devel gcc-c++ patch readline readline-devel libyaml-devel libffi-devel openssl-devel make bzip2 autoconf automake libtool bison curl sqlite-devel</code></pre></div></li>
-
-<li><p>接下来，运行以下 <a href="/linux/curl-command-examples/">curl 命令</a>来安装 rbenv 和 ruby-build：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl -sL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash -</code></pre></div>
-<p>该脚本将从 GitHub 克隆 <a href="https://github.com/rbenv/rbenv">rbenv</a> 和 <a href="https://github.com/rbenv/ruby-build">ruby-build</a> 代码仓库到 <code>~/.rbenv</code> 目录。安装程序脚本还调用另一个脚本，该脚本将尝试验证安装。脚本的输出如下所示：</p>
-
-<figure><img src="/images/linux/how-to-install-ruby-on-centos-7/centos-install-ruby-rbenv.jpg" alt=""></figure>
-
+<li>
+<p>首先，安装 ruby-build 工具所需的依赖项：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install git-core zlib zlib-devel gcc-c++ patch readline readline-devel libyaml-devel libffi-devel openssl-devel make bzip2 autoconf automake libtool bison curl sqlite-devel
+</code></pre></li>
+<li>
+<p>接下来，运行以下 <a href="/linux/curl-command-examples/">curl 命令</a>来安装 rbenv 和 ruby-build：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">curl -sL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash -
+</code></pre><p>该脚本将从 GitHub 克隆 <a href="https://github.com/rbenv/rbenv">rbenv</a> 和 <a href="https://github.com/rbenv/ruby-build">ruby-build</a> 代码仓库到 <code>~/.rbenv</code> 目录。安装程序脚本还调用另一个脚本，该脚本将尝试验证安装。脚本的输出如下所示：</p>
+<p><img src="/images/linux/how-to-install-ruby-on-centos-7/centos-install-ruby-rbenv.jpg" alt=""></p>
 <p>正如您在上面的输出中所看到的，在开始使用 rbenv 之前，我们需要添加 <code>$HOME/.rbenv/bin</code> 到 PATH 中。</p>
-
 <p>如果您使用的是 Bash ，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#39;export PATH=&#34;$HOME/.rbenv/bin:$PATH&#34;&#39; &gt;&gt; ~/.bashrc
-echo &#39;eval &#34;$(rbenv init -)&#34;&#39; &gt;&gt; ~/.bashrc
-source ~/.bashrc</code></pre></div>
-<p>如果您使用的是 Zsh 类型：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">echo &#39;export PATH=&#34;$HOME/.rbenv/bin:$PATH&#34;&#39; &gt;&gt; ~/.zshrc
-echo &#39;eval &#34;$(rbenv init -)&#34;&#39; &gt;&gt; ~/.zshrc
-source ~/.zshrc</code></pre></div></li>
-
-<li><p>现在我们在我们的系统上安装了 rbenv ，我们可以轻松安装最新的稳定版本的 Ruby ，并将其设置为我们的默认版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rbenv install 2.5.1
-rbenv global 2.5.1</code></pre></div>
-<p>要列出所有可用的 Ruby 版本： <code>rbenv install -l</code></p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.bashrc
+echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+</code></pre><p>如果您使用的是 Zsh 类型：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">echo 'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;' &gt;&gt; ~/.zshrc
+echo 'eval &quot;$(rbenv init -)&quot;' &gt;&gt; ~/.zshrc
+source ~/.zshrc
+</code></pre></li>
+<li>
+<p>现在我们在我们的系统上安装了 rbenv ，我们可以轻松安装最新的稳定版本的 Ruby ，并将其设置为我们的默认版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rbenv install 2.5.1
+rbenv global 2.5.1
+</code></pre><p>要列出所有可用的 Ruby 版本： <code>rbenv install -l</code></p>
 <p>通过打印版本号验证 Ruby 是否已正确安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ruby -v</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]</code></pre></div></li>
+<pre><code class="language-console-bash" data-lang="console-bash">ruby -v
+</code></pre><pre><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]
+</code></pre></li>
 </ol>
-
-<h2 id="使用-rvm-安装-ruby">使用 RVM 安装 Ruby</h2>
-
+<h2 id="-rvm--ruby">使用 RVM 安装 Ruby</h2>
 <p>RVM（Ruby Version Manager）是一个命令行工具，允许您轻松安装、管理和使用多个 Ruby 环境。</p>
-
 <p>要使用 RVM 安装 Ruby ，请按照以下步骤操作：</p>
-
 <ol>
-<li><p>首先，我们需要安装 RVM 实用程序所需的依赖项，以便能够从源代码构建 Ruby ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install curl gpg gcc gcc-c++ make patch autoconf automake bison libffi-devel libtool patch readline-devel sqlite-devel zlib-devel openssl-devel</code></pre></div></li>
-
-<li><p>接下来，运行以下命令在系统上安装 RVM ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-curl -sSL https://get.rvm.io | bash -s stable</code></pre></div>
-<figure><img src="/images/linux/how-to-install-ruby-on-centos-7/centos-install-ruby-rvm.jpg" alt=""></figure>
-
+<li>
+<p>首先，我们需要安装 RVM 实用程序所需的依赖项，以便能够从源代码构建 Ruby ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install curl gpg gcc gcc-c++ make patch autoconf automake bison libffi-devel libtool patch readline-devel sqlite-devel zlib-devel openssl-devel
+</code></pre></li>
+<li>
+<p>接下来，运行以下命令在系统上安装 RVM ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+curl -sSL https://get.rvm.io | bash -s stable
+</code></pre><p><img src="/images/linux/how-to-install-ruby-on-centos-7/centos-install-ruby-rvm.jpg" alt=""></p>
 <p>要开始使用 RVM ，您需要运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">source ~/.rvm/scripts/rvm</code></pre></div></li>
-
-<li><p>使用 RVM 安装最新的稳定版 Ruby ，并将其设置为默认版本：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">rvm install 2.5.1
-rvm use 2.5.1 --default</code></pre></div>
-<p>通过打印版本号验证 Ruby 是否已正确安装：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ruby -v</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]</code></pre></div></li>
+<pre><code class="language-console-bash" data-lang="console-bash">source ~/.rvm/scripts/rvm
+</code></pre></li>
+<li>
+<p>使用 RVM 安装最新的稳定版 Ruby ，并将其设置为默认版本：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">rvm install 2.5.1
+rvm use 2.5.1 --default
+</code></pre><p>通过打印版本号验证 Ruby 是否已正确安装：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">ruby -v
+</code></pre><pre><code class="language-output" data-lang="output">ruby 2.5.1p57 (2018-03-29 revision 63029) [x86_64-linux]
+</code></pre></li>
 </ol>
-
 <p>其他的有关如何使用 RVM 管理 Ruby 安装的更多信息，请访问 <a href="https://rvm.io/">RVM 文档页面</a>。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading1">结论</h2>
 <p>我们向您展示了在 CentOS 7 服务器上安装 Ruby 的三种不同方法。您选择的方法取决于您的要求和偏好。虽然从 CentOS 存储库安装打包版本更容易， Rbenv 和 RVM 方法也为您提供了更大的灵活性，可以在每个用户的范围内添加和删除不同的 Ruby 版本。</p>
       </div><ul class="pa0">
   
@@ -308,16 +292,13 @@ rvm use 2.5.1 --default</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装-ruby">安装 Ruby</a></li>
-<li><a href="#使用-rbenv-安装-ruby">使用 Rbenv 安装 Ruby</a></li>
-<li><a href="#使用-rvm-安装-ruby">使用 RVM 安装 Ruby</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-ruby">安装 Ruby</a></li>
+    <li><a href="#-rbenv--ruby">使用 Rbenv 安装 Ruby</a></li>
+    <li><a href="#-rvm--ruby">使用 RVM 安装 Ruby</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

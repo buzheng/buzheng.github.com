@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何在 Bash 中对变量递增或者递减" />
 <meta property="og:description" content="编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。
-
 递增和递减意味着分别从数值变量的值中添加或减去值(通常为 1 )。可以使用双括号 ((...)) 和 $((...)) 或使用内置的 let 命令执行算术扩展。
-
 在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/bash-increment-decrement-variable/" />
+<meta property="og:image" content="/linux/bash-increment-decrement-variable/featured.jpg"/>
 <meta property="article:published_time" content="2019-08-12T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-08-12T12:00:00+08:00" />
 <meta itemprop="name" content="如何在 Bash 中对变量递增或者递减">
 <meta itemprop="description" content="编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。
-
 递增和递减意味着分别从数值变量的值中添加或减去值(通常为 1 )。可以使用双括号 ((...)) 和 $((...)) 或使用内置的 let 命令执行算术扩展。
-
 在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。">
-
-
 <meta itemprop="datePublished" content="2019-08-12T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-12T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="708">
+<meta itemprop="wordCount" content="715">
+<meta itemprop="image" content="/linux/bash-increment-decrement-variable/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="bash,loop,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="bash,loop,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/bash-increment-decrement-variable/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Bash 中对变量递增或者递减"/>
 <meta name="twitter:description" content="编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。
-
 递增和递减意味着分别从数值变量的值中添加或减去值(通常为 1 )。可以使用双括号 ((...)) 和 $((...)) 或使用内置的 let 命令执行算术扩展。
-
 在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。"/>
 
   </head>
@@ -154,96 +147,91 @@
           
   
           <p>编写 Bash 脚本时最常见的算术运算之一是递增和递减变量。这通常在循环中用作计数器，但它也可以在脚本的其他地方出现。</p>
-
 <p>递增和递减意味着分别从数值变量的值中添加或减去值(通常为 <code>1</code> )。可以使用双括号 <code>((...))</code> 和 <code>$((...))</code> 或使用内置的 <code>let</code> 命令执行算术扩展。</p>
-
 <p>在 Bash 中，有多种方法可以加/减变量。本文解释了其中的一些内容。</p>
-
-<h2 id="使用-和-操作员">使用 <code>+</code> 和 <code>-</code> 操作员</h2>
-
+<h2 id="----">使用 <code>+</code> 和 <code>-</code> 操作员</h2>
 <p>加/减变量的最简单方法是使用 <code>+</code> 和 <code>-</code> 运算符。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
-<span class="o">((</span><span class="nv">i</span><span class="o">=</span>i+1<span class="o">))</span>
-<span class="nb">let</span> <span class="s2">&#34;i=i+1&#34;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i-1<span class="k">))</span>
-<span class="o">((</span><span class="nv">i</span><span class="o">=</span>i-1<span class="o">))</span>
-<span class="nb">let</span> <span class="s2">&#34;i=i-1&#34;</span></code></pre></div>
-<p>此方法允许您将变量递增/递减所需的任何值。</p>
-
+<span class="o">(</span><span class="o">(</span><span class="nv">i</span><span class="o">=</span>i+1<span class="o">)</span><span class="o">)</span>
+<span class="nb">let</span> <span class="s2">&#34;i=i+1&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i-1<span class="k">))</span>
+<span class="o">(</span><span class="o">(</span><span class="nv">i</span><span class="o">=</span>i-1<span class="o">)</span><span class="o">)</span>
+<span class="nb">let</span> <span class="s2">&#34;i=i-1&#34;</span>
+</code></pre></div><p>此方法允许您将变量递增/递减所需的任何值。</p>
 <p>以下是在 <a href="/linux/bash-until-loop/"><code>until</code></a> 循环中递增变量的示例：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
 
 <span class="k">until</span> <span class="o">[</span> <span class="nv">$i</span> -gt <span class="m">3</span> <span class="o">]</span>
 <span class="k">do</span>
   <span class="nb">echo</span> i: <span class="nv">$i</span>
-  <span class="o">((</span><span class="nv">i</span><span class="o">=</span>i+1<span class="o">))</span>
-<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">i: 0
+  <span class="o">(</span><span class="o">(</span><span class="nv">i</span><span class="o">=</span>i+1<span class="o">)</span><span class="o">)</span>
+<span class="k">done</span>
+</code></pre></div><pre><code class="language-output" data-lang="output">i: 0
 i: 1
 i: 2
-i: 3</code></pre></div>
-<h2 id="使用-与-运算符">使用 <code>+=</code> 与 <code>-=</code> 运算符</h2>
-
+i: 3
+</code></pre><h2 id="----1">使用 <code>+=</code> 与 <code>-=</code> 运算符</h2>
 <p>除了上面解释的基本运算符之外， bash 还提供赋值运算符 <code>+=</code> 和 <code>-=</code> 。这些运算符用于使用运算符后指定的值递增/递减左操作数的值。</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span><span class="nv">i</span><span class="o">+=</span><span class="m">1</span><span class="o">))</span>
-<span class="nb">let</span> <span class="s2">&#34;i+=1&#34;</span> </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span>i-<span class="o">=</span><span class="m">1</span><span class="o">))</span>
-<span class="nb">let</span> <span class="s2">&#34;i-=1&#34;</span> </code></pre></div>
-<p>在接下来的 <a href="/linux/bash-until-loop/"><code>while</code></a> 循环中，我们将 <code>i</code> 变量的值递减 <code>5</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">(</span><span class="o">(</span><span class="nv">i</span><span class="o">+=</span>1<span class="o">)</span><span class="o">)</span>
+<span class="nb">let</span> <span class="s2">&#34;i+=1&#34;</span> 
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">(</span><span class="o">(</span>i-<span class="o">=</span>1<span class="o">)</span><span class="o">)</span>
+<span class="nb">let</span> <span class="s2">&#34;i-=1&#34;</span> 
+</code></pre></div><p>在接下来的 <a href="/linux/bash-until-loop/"><code>while</code></a> 循环中，我们将 <code>i</code> 变量的值递减 <code>5</code> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">20</span>
 
 <span class="k">while</span> <span class="o">[</span> <span class="nv">$i</span> -ge <span class="m">5</span> <span class="o">]</span>
 <span class="k">do</span>
   <span class="nb">echo</span> Number: <span class="nv">$i</span>
   <span class="nb">let</span> <span class="s2">&#34;i-=5&#34;</span> 
-<span class="k">done</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Number: 20
+<span class="k">done</span>
+</code></pre></div><pre><code class="language-output" data-lang="output">Number: 20
 Number: 15
 Number: 10
-Number: 5</code></pre></div>
-<h2 id="使用-和-运算符">使用 <code>++</code> 和 <code>--</code> 运算符</h2>
-
+Number: 5
+</code></pre><h2 id="----2">使用 <code>++</code> 和 <code>--</code> 运算符</h2>
 <p>在 <code>++</code> 和 <code>--</code> 分别运营商增量和减量，其操作 <code>1</code> 和返回值。</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span>i++<span class="o">))</span>
-<span class="o">((</span>++i<span class="o">))</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">(</span><span class="o">(</span>i++<span class="o">)</span><span class="o">)</span>
+<span class="o">(</span><span class="o">(</span>++i<span class="o">)</span><span class="o">)</span>
 <span class="nb">let</span> <span class="s2">&#34;i++&#34;</span>
-<span class="nb">let</span> <span class="s2">&#34;++i&#34;</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">((</span>i--<span class="o">))</span>
-<span class="o">((</span>--i<span class="o">))</span>
+<span class="nb">let</span> <span class="s2">&#34;++i&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">(</span><span class="o">(</span>i--<span class="o">)</span><span class="o">)</span>
+<span class="o">(</span><span class="o">(</span>--i<span class="o">)</span><span class="o">)</span>
 <span class="nb">let</span> <span class="s2">&#34;i--&#34;</span>
-<span class="nb">let</span> <span class="s2">&#34;--i&#34;</span></code></pre></div>
-<p>可以在操作数之前或之后使用运算符。它们也被称为：</p>
-
+<span class="nb">let</span> <span class="s2">&#34;--i&#34;</span>
+</code></pre></div><p>可以在操作数之前或之后使用运算符。它们也被称为：</p>
 <ul>
 <li>前缀增量：  <code>++i</code></li>
 <li>前缀减量：  <code>--i</code></li>
 <li>后缀增量：  <code>i++</code></li>
 <li>后缀减量：  <code>i--</code></li>
 </ul>
-
 <p>前缀运算符首先让变量加/减 <code>1</code> ，然后返回变量的新值。后缀运算符在变量加/减之前返回运算符的值。</p>
-
 <p>如果您只想增加/减少变量，那么如果您使用前缀或后缀运算符则没有区别。只有在某些其他操作中使用运算符的结果或将其分配给另一个变量时，它才会有所不同。</p>
-
 <p>以下示例演示了 <code>++</code> 操作符在其操作符之前和之后使用时的工作方式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">x</span><span class="o">=</span><span class="m">5</span>
 <span class="nv">y</span><span class="o">=</span><span class="k">$((</span>x++<span class="k">))</span>
 <span class="nb">echo</span> x: <span class="nv">$x</span>
-<span class="nb">echo</span> y: <span class="nv">$y</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">x: 6
-y: 5</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">x</span><span class="o">=</span><span class="m">5</span>
-<span class="nv">y</span><span class="o">=</span><span class="k">$((</span><span class="o">++</span>x<span class="k">))</span>
+<span class="nb">echo</span> y: <span class="nv">$y</span>
+</code></pre></div><pre><code class="language-output" data-lang="output">x: 6
+y: 5
+</code></pre><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">x</span><span class="o">=</span><span class="m">5</span>
+<span class="nv">y</span><span class="o">=</span><span class="k">$((</span><span class="o">+</span><span class="o">+</span>x<span class="k">))</span>
 <span class="nb">echo</span> x: <span class="nv">$x</span>
-<span class="nb">echo</span> y: <span class="nv">$y</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">x: 6
-y: 6</code></pre></div>
-<p>下面是在 bash 脚本中使用的示例：</p>
+<span class="nb">echo</span> y: <span class="nv">$y</span>
+</code></pre></div><pre><code class="language-output" data-lang="output">x: 6
+y: 6
+</code></pre><p>下面是在 bash 脚本中使用的示例：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
 <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> -gt <span class="m">3</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> -gt <span class="m">3</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
        <span class="nb">exit</span> <span class="m">1</span>
   <span class="k">fi</span>
   <span class="nb">echo</span> i: <span class="nv">$i</span>
-  <span class="o">((</span>i++<span class="o">))</span>
-<span class="k">done</span></code></pre></div>
-<p>使用这些运算符的缺点是变量只能递增或递减 <code>1</code> 。</p>
-
-<h2 id="结论">结论</h2>
-
+  <span class="o">(</span><span class="o">(</span>i++<span class="o">)</span><span class="o">)</span>
+<span class="k">done</span>
+</code></pre></div><p>使用这些运算符的缺点是变量只能递增或递减 <code>1</code> 。</p>
+<h2 id="heading">结论</h2>
 <p>Bash 中的变量的递增和递减可以以许多不同的方式执行。无论使用何种方法，结果都是一样的。</p>
       </div><ul class="pa0">
   
@@ -321,15 +309,12 @@ y: 6</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用-和-操作员">使用 <code>+</code> 和 <code>-</code> 操作员</a></li>
-<li><a href="#使用-与-运算符">使用 <code>+=</code> 与 <code>-=</code> 运算符</a></li>
-<li><a href="#使用-和-运算符">使用 <code>++</code> 和 <code>--</code> 运算符</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#----">使用 + 和 - 操作员</a></li>
+    <li><a href="#----1">使用 += 与 -= 运算符</a></li>
+    <li><a href="#----2">使用 ++ 和 -- 运算符</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

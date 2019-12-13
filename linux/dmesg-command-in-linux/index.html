@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,42 +30,32 @@
 
     <meta property="og:title" content="Linux 中的 dmesg 命令" />
 <meta property="og:description" content="Linux 内核是操作系统的核心，它控制对系统资源(例如 CPU ， I/O 设备，物理内存和文件系统)的访问。在引导过程中以及系统运行时，内核会将各种消息写入内核环形缓冲区。这些消息包括有关系统操作的各种信息。
-
 内核环形缓冲区是物理内存的一部分，用于保存内核的日志消息。它具有固定的大小，这意味着一旦缓冲区已满，较旧的日志记录将被覆盖。
-
 命令行实用程序 dmesg 是用来打印，并控制在 Linux 和其它类 Unix 操作系统内核环缓冲区。这对于检查内核启动消息和调试与硬件相关的问题很有用。
-
 在本教程中，我们将介绍该 dmesg 命令的基础知识。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/dmesg-command-in-linux/" />
+<meta property="og:image" content="/linux/dmesg-command-in-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-10-24T08:00:00+08:00" />
 <meta property="article:modified_time" content="2019-10-24T08:00:00+08:00" />
 <meta itemprop="name" content="Linux 中的 dmesg 命令">
 <meta itemprop="description" content="Linux 内核是操作系统的核心，它控制对系统资源(例如 CPU ， I/O 设备，物理内存和文件系统)的访问。在引导过程中以及系统运行时，内核会将各种消息写入内核环形缓冲区。这些消息包括有关系统操作的各种信息。
-
 内核环形缓冲区是物理内存的一部分，用于保存内核的日志消息。它具有固定的大小，这意味着一旦缓冲区已满，较旧的日志记录将被覆盖。
-
 命令行实用程序 dmesg 是用来打印，并控制在 Linux 和其它类 Unix 操作系统内核环缓冲区。这对于检查内核启动消息和调试与硬件相关的问题很有用。
-
 在本教程中，我们将介绍该 dmesg 命令的基础知识。">
-
-
 <meta itemprop="datePublished" content="2019-10-24T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-24T08:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1313">
+<meta itemprop="wordCount" content="1314">
+<meta itemprop="image" content="/linux/dmesg-command-in-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="dmesg,kernel,terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="dmesg,kernel,terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/dmesg-command-in-linux/featured.jpg"/>
 <meta name="twitter:title" content="Linux 中的 dmesg 命令"/>
 <meta name="twitter:description" content="Linux 内核是操作系统的核心，它控制对系统资源(例如 CPU ， I/O 设备，物理内存和文件系统)的访问。在引导过程中以及系统运行时，内核会将各种消息写入内核环形缓冲区。这些消息包括有关系统操作的各种信息。
-
 内核环形缓冲区是物理内存的一部分，用于保存内核的日志消息。它具有固定的大小，这意味着一旦缓冲区已满，较旧的日志记录将被覆盖。
-
 命令行实用程序 dmesg 是用来打印，并控制在 Linux 和其它类 Unix 操作系统内核环缓冲区。这对于检查内核启动消息和调试与硬件相关的问题很有用。
-
 在本教程中，我们将介绍该 dmesg 命令的基础知识。"/>
 
   </head>
@@ -160,51 +150,41 @@
           
   
           <p>Linux 内核是操作系统的核心，它控制对系统资源(例如 CPU ， I/O 设备，物理内存和文件系统)的访问。在引导过程中以及系统运行时，内核会将各种消息写入内核环形缓冲区。这些消息包括有关系统操作的各种信息。</p>
-
 <p>内核环形缓冲区是物理内存的一部分，用于保存内核的日志消息。它具有固定的大小，这意味着一旦缓冲区已满，较旧的日志记录将被覆盖。</p>
-
 <p>命令行实用程序 <code>dmesg</code> 是用来打印，并控制在 Linux 和其它类 Unix 操作系统内核环缓冲区。这对于检查内核启动消息和调试与硬件相关的问题很有用。</p>
-
 <p>在本教程中，我们将介绍该 <code>dmesg</code> 命令的基础知识。</p>
-
-<h2 id="使用-dmesg-命令">使用 <code>dmesg</code> 命令</h2>
-
+<h2 id="-dmesg-">使用 <code>dmesg</code> 命令</h2>
 <p><code>dmesg</code> 命令的语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">dmesg <span class="o">[</span>OPTIONS<span class="o">]</span></code></pre></div>
-<p>在不带任何选项的情况下调用时， <code>dmesg</code> 会将所有消息从内核环形缓冲区写入标准输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg</code></pre></div>
-<p>默认情况下，所有用户都可以运行该 <code>dmesg</code> 命令。但是，在某些系统上， <code>dmesg</code> 对非 root 用户的访问可能受到限制。在这种情况下，调用 <code>dmesg</code> 时会收到如下错误消息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">dmesg: read kernel buffer failed: Operation not permitted</code></pre></div>
-<p>kernel 参数 <code>kernel.dmesg_restrict</code> 指定非特权用户是否可以用 <code>dmesg</code> 查看来自内核日志缓冲区的消息。要删除限制，请将其设置为零：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo sysctl -w kernel.dmesg_restrict=0</code></pre></div>
-<p>通常，输出包含很多信息行，因此仅输出的最后一部分是可见的。要一次查看一页，请将输出通过管道传递到寻呼机实用程序，例如 <a href="/linux/less-command-in-linux/"><code>less</code></a> 或 <code>more</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg --color=always | less</code></pre></div>
-<p>选项 <code>--color=always</code> 是用来彩色输出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">dmesg <span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div><p>在不带任何选项的情况下调用时， <code>dmesg</code> 会将所有消息从内核环形缓冲区写入标准输出：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg
+</code></pre><p>默认情况下，所有用户都可以运行该 <code>dmesg</code> 命令。但是，在某些系统上， <code>dmesg</code> 对非 root 用户的访问可能受到限制。在这种情况下，调用 <code>dmesg</code> 时会收到如下错误消息：</p>
+<pre><code class="language-output" data-lang="output">dmesg: read kernel buffer failed: Operation not permitted
+</code></pre><p>kernel 参数 <code>kernel.dmesg_restrict</code> 指定非特权用户是否可以用 <code>dmesg</code> 查看来自内核日志缓冲区的消息。要删除限制，请将其设置为零：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo sysctl -w kernel.dmesg_restrict=0
 
+</code></pre><p>通常，输出包含很多信息行，因此仅输出的最后一部分是可见的。要一次查看一页，请将输出通过管道传递到寻呼机实用程序，例如 <a href="/linux/less-command-in-linux/"><code>less</code></a> 或 <code>more</code> ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg --color=always | less
+</code></pre><p>选项 <code>--color=always</code> 是用来彩色输出。</p>
 <p>如果要过滤缓冲区消息，请使用 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> 。例如，要仅查看与 USB 相关的消息，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg | grep -i usb</code></pre></div>
-<p><code>dmesg</code> 从 <code>/proc/kmsg</code> 虚拟文件中读取内核生成的消息。该文件提供了到内核环形缓冲区的接口，并且只能由一个进程打开。如果系统上正在运行 <code>syslog</code> 进程，并且您尝试使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> 或读取文件 <code>less</code> ，则该命令将挂起。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg | grep -i usb
+</code></pre><p><code>dmesg</code> 从 <code>/proc/kmsg</code> 虚拟文件中读取内核生成的消息。该文件提供了到内核环形缓冲区的接口，并且只能由一个进程打开。如果系统上正在运行 <code>syslog</code> 进程，并且您尝试使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> 或读取文件 <code>less</code> ，则该命令将挂起。</p>
 <p><code>syslog</code> 守护进程转储内核消息，所以你也可以使用该日志文件 <code>/var/log/dmesg</code> ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat /var/log/dmesg</code></pre></div>
-<h2 id="格式化-dmesg-输出">格式化 <code>dmesg</code> 输出</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cat /var/log/dmesg
+</code></pre><h2 id="-dmesg-1">格式化 <code>dmesg</code> 输出</h2>
 <p>该 <code>dmesg</code> 命令提供了许多选项，可帮助您格式化和过滤输出。</p>
-
-<p><code>-H</code><code>--human</code> 是 <code>dmesg</code> 最常用的选项之一，它使人类可读的输出成为可能。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg -H</code></pre></div>
-<p>要打印人类可读的时间戳，请使用 <code>-T</code>(<code>--ctime</code>) 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg -T</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">[Mon Oct 14 14:38:04 2019] IPv6: ADDRCONF(NETDEV_CHANGE): wlp1s0: link becomes ready</code></pre></div>
-<p>也可以使用 <code>--time-format &lt;format&gt;</code> 选项设置时间戳格式，该选项可以是 ctime ， reltime ， delta ， notime 或 iso 。例如，要使用增量格式，请输入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg --time-format=delta</code></pre></div>
-<p>要实时查看 <code>dmesg</code> 命令的输出，请使用 <code>-w</code>(<code>--follow</code>) 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg --follow</code></pre></div>
-<h2 id="过滤-dmesg-输出">过滤 <code>dmesg</code> 输出</h2>
-
+<p><code>-H``--human</code> 是 <code>dmesg</code> 最常用的选项之一，它使人类可读的输出成为可能。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg -H
+</code></pre><p>要打印人类可读的时间戳，请使用 <code>-T`(</code>&ndash;ctime`) 选项：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg -T
+</code></pre><pre><code class="language-output" data-lang="output">[Mon Oct 14 14:38:04 2019] IPv6: ADDRCONF(NETDEV_CHANGE): wlp1s0: link becomes ready
+</code></pre><p>也可以使用 <code>--time-format &lt;format&gt;</code> 选项设置时间戳格式，该选项可以是 ctime ， reltime ， delta ， notime 或 iso 。例如，要使用增量格式，请输入：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg --time-format=delta
+</code></pre><p>要实时查看 <code>dmesg</code> 命令的输出，请使用 <code>-w`(</code>&ndash;follow`) 选项：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg --follow
+</code></pre><h2 id="-dmesg-2">过滤 <code>dmesg</code> 输出</h2>
 <p>您可以将 <code>dmesg</code> 输出限制为给定的设施和级别。</p>
-
 <p>该功能代表创建消息的过程。 <code>dmesg</code> 支持以下日志功能：</p>
-
 <ul>
 <li><code>kern</code> - 内核消息</li>
 <li><code>user</code> - 用户级消息</li>
@@ -215,13 +195,10 @@
 <li><code>lpr</code> - 行式打印机子系统</li>
 <li><code>news</code> - 网络新闻子系统</li>
 </ul>
-
-<p>使用 <code>-f</code>(<code>--facility &lt;list&gt;</code>) 选项，您可以限制输出到特定的设备。该选项接受一个或多个逗号分隔的功能。</p>
-
+<p>使用 <code>-f`(</code>&ndash;facility <!-- raw HTML omitted -->`) 选项，您可以限制输出到特定的设备。该选项接受一个或多个逗号分隔的功能。</p>
 <p>例如，要仅显示内核和系统守护程序消息，可以使用：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg -f kern,daemon</code></pre></div>
-<p>每个日志消息都与一个显示消息重要性的日志级别相关联。 <code>dmesg</code> 支持以下日志级别：</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg -f kern,daemon
+</code></pre><p>每个日志消息都与一个显示消息重要性的日志级别相关联。 <code>dmesg</code> 支持以下日志级别：</p>
 <ul>
 <li><code>emerg</code> -系统无法使用</li>
 <li><code>alert</code> -必须立即采取行动</li>
@@ -232,25 +209,20 @@
 <li><code>info</code> -信息性的</li>
 <li><code>debug</code> -调试级别的消息</li>
 </ul>
-
-<p>使用 <code>-l</code>(<code>--level &lt;list&gt;</code>) 选项将输出限制到所定义的级别。该选项接受一个或多个逗号分隔的级别。</p>
-
+<p>使用 <code>-l`(</code>&ndash;level <!-- raw HTML omitted -->`) 选项将输出限制到所定义的级别。该选项接受一个或多个逗号分隔的级别。</p>
 <p>以下命令仅显示错误和严重消息：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg -l err,crit</code></pre></div>
-<h2 id="清除环形缓冲区">清除环形缓冲区</h2>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg -l err,crit
+</code></pre><h2 id="heading">清除环形缓冲区</h2>
+<p>在 <code>-C`(</code>&ndash;clear`) 选项允许你清除环形缓冲区：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dmesg -C
+</code></pre><p>只有 root 或具有 sudo 特权的用户才能清除缓冲区。</p>
+<p>要在清除之前打印缓冲区内容，请使用 <code>-c`(</code>&ndash;read-clear`) 选项：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dmesg -c
+</code></pre><p>如果要在清除之前将当前日志保存到文件中，请将输出重定向到文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">dmesg &gt; dmesg_messages
 
-<p>在 <code>-C</code>(<code>--clear</code>) 选项允许你清除环形缓冲区：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dmesg -C</code></pre></div>
-<p>只有 root 或具有 sudo 特权的用户才能清除缓冲区。</p>
-
-<p>要在清除之前打印缓冲区内容，请使用 <code>-c</code>(<code>--read-clear</code>) 选项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dmesg -c</code></pre></div>
-<p>如果要在清除之前将当前日志保存到文件中，请将输出重定向到文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">dmesg &gt; dmesg_messages</code></pre></div>
-<h2 id="结论">结论</h2>
-
+</code></pre><h2 id="heading1">结论</h2>
 <p>该 <code>dmesg</code> 命令允许您查看和控制内核环形缓冲区。对内核或硬件问题进行故障排除时，此功能非常有用。</p>
-
 <p>如果想查看更多的信息，请在终端键入 <code>man dmesg</code> 查看更多的 <code>dmesg</code> 选项和用法。</p>
       </div><ul class="pa0">
   
@@ -328,16 +300,13 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用-dmesg-命令">使用 <code>dmesg</code> 命令</a></li>
-<li><a href="#格式化-dmesg-输出">格式化 <code>dmesg</code> 输出</a></li>
-<li><a href="#过滤-dmesg-输出">过滤 <code>dmesg</code> 输出</a></li>
-<li><a href="#清除环形缓冲区">清除环形缓冲区</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-dmesg-">使用 dmesg 命令</a></li>
+    <li><a href="#-dmesg-1">格式化 dmesg 输出</a></li>
+    <li><a href="#-dmesg-2">过滤 dmesg 输出</a></li>
+    <li><a href="#heading">清除环形缓冲区</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

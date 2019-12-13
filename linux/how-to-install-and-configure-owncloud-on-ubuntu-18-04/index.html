@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在Ubuntu 18.04上使用Apache安装和配置ownCloud" />
 <meta property="og:description" content="ownCloud是一个开源的，自托管的文件同步和文件共享平台，类似于Dropbox，Microsoft OneDrive和Google Drive。ownCloud可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。
-
 在本教程中，我们将向您展示如何在Ubuntu 18.04计算机上使用Apache安装和配置ownCloud。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在Ubuntu 18.04上使用Apache安装和配置ownCloud">
 <meta itemprop="description" content="ownCloud是一个开源的，自托管的文件同步和文件共享平台，类似于Dropbox，Microsoft OneDrive和Google Drive。ownCloud可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。
-
 在本教程中，我们将向您展示如何在Ubuntu 18.04计算机上使用Apache安装和配置ownCloud。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1395">
+<meta itemprop="wordCount" content="1389">
 
 
 
-<meta itemprop="keywords" content="owncloud,ubuntu,apache," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="owncloud,ubuntu,apache," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在Ubuntu 18.04上使用Apache安装和配置ownCloud"/>
 <meta name="twitter:description" content="ownCloud是一个开源的，自托管的文件同步和文件共享平台，类似于Dropbox，Microsoft OneDrive和Google Drive。ownCloud可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。
-
 在本教程中，我们将向您展示如何在Ubuntu 18.04计算机上使用Apache安装和配置ownCloud。"/>
 
   </head>
@@ -147,57 +141,43 @@
           
   
           <p><a href="https://owncloud.org/">ownCloud</a>是一个开源的，自托管的文件同步和文件共享平台，类似于Dropbox，Microsoft OneDrive和Google Drive。ownCloud可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。</p>
-
 <p>在本教程中，我们将向您展示如何在Ubuntu 18.04计算机上使用Apache安装和配置ownCloud。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有sudo访问权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">用户</a>身份登录才能安装软件包并配置系统服务。</p>
-
-<h2 id="第1步-创建mysql数据库">第1步：创建MySQL数据库</h2>
-
+<h2 id="1mysql">第1步：创建MySQL数据库</h2>
 <p>ownCloud可以使用SQLite，Oracle 11g，<a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">PostgreSQL</a>或MySQL数据库来存储其所有数据。在本教程中，我们将使用MySQL作为数据库后端。</p>
-
 <p>如果您的Ubuntu服务器上没有安装MySQL或MariaDB，您可以按照以下指南安装：</p>
-
 <ul>
 <li><a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">在Ubuntu 18.04上安装MySQL</a></li>
 <li><a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">在Ubuntu 18.04上安装MariaDB</a></li>
 </ul>
-
 <p>首先登录以下命令登录MySQL shell：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mysql</code></pre></div>
-<p>在MySQL shell中，运行以下SQL语句来<a href="/linux/how-to-create-a-mysql-database/">创建数据库</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE owncloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</code></pre></div>
-<p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予</a>对数据库的<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">访问权限</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON owncloud.* TO &#39;owncloudsuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;</code></pre></div>
-<p>最后，输入以下命令退出mysql控制台：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">EXIT;</code></pre></div>
-<h2 id="第2步-安装php和apache">第2步：安装PHP和Apache</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
+</code></pre><p>在MySQL shell中，运行以下SQL语句来<a href="/linux/how-to-create-a-mysql-database/">创建数据库</a>：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE owncloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</code></pre><p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予</a>对数据库的<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">访问权限</a>：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON owncloud.* TO 'owncloudsuser'@'localhost' IDENTIFIED BY 'change-with-strong-password';
+</code></pre><p>最后，输入以下命令退出mysql控制台：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">EXIT;
+</code></pre><h2 id="2phpapache">第2步：安装PHP和Apache</h2>
 <p>ownCloud是一个PHP应用程序。PHP 7.2是<a href="/linux/how-to-install-php-on-ubuntu-18-04/">Ubuntu 18.04中</a>的默认<a href="/linux/how-to-install-php-on-ubuntu-18-04/">PHP，</a>完全支持并推荐用于ownCloud。</p>
-
 <p>使用以下命令安装Apache和所有必需的PHP扩展：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install apache2 libapache2-mod-php7.2 openssl php-imagick php7.2-common php7.2-curl php7.2-gd php7.2-imap php7.2-intl php7.2-json php7.2-ldap php7.2-mbstring php7.2-mysql php7.2-pgsql php-smbclient php-ssh2 php7.2-sqlite3 php7.2-xml php7.2-zip</code></pre></div>
-<h2 id="第3步-配置防火墙">第3步：配置防火墙</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install apache2 libapache2-mod-php7.2 openssl php-imagick php7.2-common php7.2-curl php7.2-gd php7.2-imap php7.2-intl php7.2-json php7.2-ldap php7.2-mbstring php7.2-mysql php7.2-pgsql php-smbclient php-ssh2 php7.2-sqlite3 php7.2-xml php7.2-zip
+</code></pre><h2 id="3">第3步：配置防火墙</h2>
 <p>假设您正在使用<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"><code>UFW</code></a>管理防火墙，则需要打开HTTP（<code>80</code>）和HTTPS（<code>443</code>）端口。您可以通过启用包含两个端口规则的“Apache Full”配置文件来实现此目的：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow &#39;Apache Full&#39;</code></pre></div>
-<h2 id="第4步-下载owncloud">第4步：下载ownCloud</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 'Apache Full'
+</code></pre><h2 id="4owncloud">第4步：下载ownCloud</h2>
 <p>在撰写本文时，ownCloud的最新稳定版本是10.0.10版。在继续下一步之前，请访问<a href="https://owncloud.org/download/">ownCloud下载页面</a>，检查是否有新版本的ownCloud可用。</p>
-
 <p>使用以下<a href="/linux/wget-command-examples/">wget命令</a>下载ownCloud zip存档：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget https://download.owncloud.org/community/owncloud-10.0.10.zip -P /tmp</code></pre></div>
-<p>下载完成后，<a href="/linux/how-to-unzip-files-in-linux/">将存档解压缩</a>到<code>/var/www</code>目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo unzip /tmp/owncloud-10.0.10.zip  -d /var/www</code></pre></div>
-<p><a href="/linux/linux-chown-command/">设置正确的所有权，</a>以便Apache Web服务器可以完全访问ownCloud的文件和目录。</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sudo chown -R www-data: /var/www/owncloud</code></pre></div>
-<h2 id="第5步-配置apache">第5步：配置Apache</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">wget https://download.owncloud.org/community/owncloud-10.0.10.zip -P /tmp
+</code></pre><p>下载完成后，<a href="/linux/how-to-unzip-files-in-linux/">将存档解压缩</a>到<code>/var/www</code>目录：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo unzip /tmp/owncloud-10.0.10.zip  -d /var/www
+</code></pre><p><a href="/linux/linux-chown-command/">设置正确的所有权，</a>以便Apache Web服务器可以完全访问ownCloud的文件和目录。</p>
+<pre><code class="language-output" data-lang="output">sudo chown -R www-data: /var/www/owncloud
+</code></pre><h2 id="5apache">第5步：配置Apache</h2>
 <p>打开文本编辑器并创建以下Apache配置文件。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apache2/conf-available/owncloud.conf</code></pre></div>
-<p>/etc/apache2/conf-available/owncloud.conf</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apache2/conf-available/owncloud.conf
+</code></pre><p>/etc/apache2/conf-available/owncloud.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> <span class="sx">/owncloud</span> <span class="s2">&#34;/var/www/owncloud/&#34;</span>
 
 <span class="nt">&lt;Directory</span> <span class="s">/var/www/owncloud/</span><span class="nt">&gt;</span>
@@ -206,34 +186,26 @@
 
  <span class="nt">&lt;IfModule</span> <span class="s">mod_dav.c</span><span class="nt">&gt;</span>
   <span class="nb">Dav</span> <span class="k">off</span>
- <span class="nt">&lt;/IfModule&gt;</span>
+ <span class="nt">&lt;/IfModule</span><span class="s"></span><span class="nt">&gt;</span>
 
  <span class="nb">SetEnv</span> HOME <span class="sx">/var/www/owncloud</span>
  <span class="nb">SetEnv</span> HTTP_HOME <span class="sx">/var/www/owncloud</span>
 
-<span class="nt">&lt;/Directory&gt;</span></code></pre></div>
-<p>使用以下命令启用新添加的配置和所有必需的Apache模块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo a2enconf owncloudsudo a2enmod rewritesudo a2enmod headerssudo a2enmod envsudo a2enmod dirsudo a2enmod mime</code></pre></div>
-<p>通过重新启动Apache服务激活更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2</code></pre></div>
-<h2 id="第6步-安装owncloud">第6步：安装ownCloud</h2>
-
+<span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
+</code></pre></div><p>使用以下命令启用新添加的配置和所有必需的Apache模块：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo a2enconf owncloudsudo a2enmod rewritesudo a2enmod headerssudo a2enmod envsudo a2enmod dirsudo a2enmod mime
+</code></pre><p>通过重新启动Apache服务激活更改：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload apache2
+</code></pre><h2 id="6owncloud">第6步：安装ownCloud</h2>
 <p>现在下载了ownCloud并配置了所有必要的服务，打开浏览器并通过访问服务器的域名或IP地址启动ownCloud安装，然后执行以下操作<code>/owncloud</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">http://domain_name_or_ip_address/owncloud</code></pre></div>
-<p>您将看到自己的云设置页面。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/install-owncloud-ubuntu.jpg" alt=""></figure>
-
+<pre><code class="language-url" data-lang="url">http://domain_name_or_ip_address/owncloud
+</code></pre><p>您将看到自己的云设置页面。</p>
+<p><img src="/images/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/install-owncloud-ubuntu.jpg" alt=""></p>
 <p>输入您想要的管理员用户名和密码以及您之前创建的MySQL用户和数据库详细信息。</p>
-
 <p>单击<code>Finish setup</code>按钮，安装过程完成后，您将被重定向到以admin用户身份登录的ownCloud仪表板。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/owncloud-dashboard.jpg" alt=""></figure>
-
-<h2 id="结论">结论</h2>
-
-<p>您已经学习了如何在Ubuntu 18.04计算机上安装和配置ownCloud。如果您的域名与您自己的Cloud服务器相关联，则可以按照本指南<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">使用Let&rsquo;s Encrypt</a>保护您的<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">Apache</a>。</p>
-
+<p><img src="/images/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/owncloud-dashboard.jpg" alt=""></p>
+<h2 id="heading1">结论</h2>
+<p>您已经学习了如何在Ubuntu 18.04计算机上安装和配置ownCloud。如果您的域名与您自己的Cloud服务器相关联，则可以按照本指南<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">使用Let's Encrypt</a>保护您的<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">Apache</a>。</p>
 <p>要查找有关如何管理ownCloud实例的更多信息，请访问<a href="https://doc.owncloud.com/server/index.html">ownCloud文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -311,19 +283,16 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#第1步-创建mysql数据库">第1步：创建MySQL数据库</a></li>
-<li><a href="#第2步-安装php和apache">第2步：安装PHP和Apache</a></li>
-<li><a href="#第3步-配置防火墙">第3步：配置防火墙</a></li>
-<li><a href="#第4步-下载owncloud">第4步：下载ownCloud</a></li>
-<li><a href="#第5步-配置apache">第5步：配置Apache</a></li>
-<li><a href="#第6步-安装owncloud">第6步：安装ownCloud</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#1mysql">第1步：创建MySQL数据库</a></li>
+    <li><a href="#2phpapache">第2步：安装PHP和Apache</a></li>
+    <li><a href="#3">第3步：配置防火墙</a></li>
+    <li><a href="#4owncloud">第4步：下载ownCloud</a></li>
+    <li><a href="#5apache">第5步：配置Apache</a></li>
+    <li><a href="#6owncloud">第6步：安装ownCloud</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

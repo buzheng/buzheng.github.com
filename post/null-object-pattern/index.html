@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="设计模式学习 - Null Object Pattern" />
 <meta property="og:description" content="Null Object Pattern （空对象模式）是在某些场景下，使用一个 Null Object 来代替返回的 null, 通过这个 NullObject，使用者能够像使用普通对象一样，而不需要 null 判断，让逻辑更顺畅，让代码看起来很干净，很清爽。
-
 那什么是 Null Object？Null Object 就是一个普通对象的特例，他一般继承于普通对象，然后对一些操作进行了重写，让这些操作符合无意义 或 空操作。对这个对象的一切操作，就像没有进行过操作一样。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/null-object-pattern/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2013-01-31T00:00:00+00:00" />
 <meta itemprop="name" content="设计模式学习 - Null Object Pattern">
 <meta itemprop="description" content="Null Object Pattern （空对象模式）是在某些场景下，使用一个 Null Object 来代替返回的 null, 通过这个 NullObject，使用者能够像使用普通对象一样，而不需要 null 判断，让逻辑更顺畅，让代码看起来很干净，很清爽。
-
 那什么是 Null Object？Null Object 就是一个普通对象的特例，他一般继承于普通对象，然后对一些操作进行了重写，让这些操作符合无意义 或 空操作。对这个对象的一切操作，就像没有进行过操作一样。">
-
-
 <meta itemprop="datePublished" content="2013-01-31T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-01-31T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="848">
 
 
 
-<meta itemprop="keywords" content="设计模式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="设计模式学习 - Null Object Pattern"/>
 <meta name="twitter:description" content="Null Object Pattern （空对象模式）是在某些场景下，使用一个 Null Object 来代替返回的 null, 通过这个 NullObject，使用者能够像使用普通对象一样，而不需要 null 判断，让逻辑更顺畅，让代码看起来很干净，很清爽。
-
 那什么是 Null Object？Null Object 就是一个普通对象的特例，他一般继承于普通对象，然后对一些操作进行了重写，让这些操作符合无意义 或 空操作。对这个对象的一切操作，就像没有进行过操作一样。"/>
 
   </head>
@@ -147,103 +141,97 @@
           
   
           <p>Null Object Pattern （空对象模式）是在某些场景下，使用一个 Null Object 来代替返回的 null, 通过这个 NullObject，使用者能够像使用普通对象一样，而不需要 null 判断，让逻辑更顺畅，让代码看起来很干净，很清爽。</p>
-
 <p>那什么是 Null Object？Null Object 就是一个普通对象的特例，他一般继承于普通对象，然后对一些操作进行了重写，让这些操作符合无意义 或 空操作。对这个对象的一切操作，就像没有进行过操作一样。</p>
-
 <p>一般 Null Object Pattern 比较适合于返回空集合的场景，而 JDK 中还对此进行支持。在 Collections 工具类中定义了3个方法，分别返回空的 List，Set，Map：</p>
-
 <ul>
-<li><code>java.util.Collections#emptyList()</code></li>
-<li><code>java.util.Collections#emptyMap()</code></li>
-<li><code>java.util.Collections#emptySet()</code></li>
+<li><!-- raw HTML omitted -->java.util.Collections#emptyList()<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->java.util.Collections#emptyMap()<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->java.util.Collections#emptySet()<!-- raw HTML omitted --></li>
 </ul>
-
 <p>需要注意的是，返回的3个对象分别重新实现了List,Map,Set接口， 而且这3个集合/Map都是只读的。</p>
-
 <p>另外一个Null Object 使用的场景就是提供一个默认的操作。这里举例是一个字符处理的例子，要求是这样的：给定一个字符，将字母用()包围，数字用[]包围， 其他字符不处理。且看以下实现。</p>
-
 <p>CharacterHandler 接口定了字符处理操作</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">interface</span> <span class="n">CharacterHandler</span> <span class="p">{</span>
-	<span class="kd">public</span> <span class="nf">String</span> <span class="n">handle</span><span class="p">(</span><span class="kt">char</span> <span class="nf">c</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-<p>DigitHandler 类处理数字字符的算法</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">class</span> <span class="n">DigitHandler</span> <span class="nf">implements</span> <span class="n">CharacterHandler</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">interface</span> <span class="nc">CharacterHandler</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">handle</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">)</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div><p>DigitHandler 类处理数字字符的算法</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">class</span> <span class="nc">DigitHandler</span> <span class="kd">implements</span> <span class="n">CharacterHandler</span> <span class="o">{</span>
 	<span class="nd">@Override</span>
-	<span class="kd">public</span> <span class="nf">String</span> <span class="n">handle</span><span class="p">(</span><span class="kt">char</span> <span class="nf">c</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s">&#34;[&#34;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>LetterHandler 类处理字母字符的算法</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">class</span> <span class="n">LetterHandler</span> <span class="nf">implements</span> <span class="n">CharacterHandler</span> <span class="p">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">handle</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">&#34;[&#34;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#34;]&#34;</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>LetterHandler 类处理字母字符的算法</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">class</span> <span class="nc">LetterHandler</span> <span class="kd">implements</span> <span class="n">CharacterHandler</span> <span class="o">{</span>
 	<span class="nd">@Override</span>
-	<span class="kd">public</span> <span class="nf">String</span> <span class="n">handle</span><span class="p">(</span><span class="kt">char</span> <span class="nf">c</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s">&#34;(&#34;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#34;)&#34;</span><span class="p">;</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>NullHandler: 定义了默认操作，DefaultHandler可能更适合，但这里主要是为了和 Null Object 模式的名称呼应</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">class</span> <span class="n">NullHandler</span> <span class="nf">implements</span> <span class="n">CharacterHandler</span> <span class="p">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">handle</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">&#34;(&#34;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#34;)&#34;</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>NullHandler: 定义了默认操作，DefaultHandler可能更适合，但这里主要是为了和 Null Object 模式的名称呼应</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">class</span> <span class="nc">NullHandler</span> <span class="kd">implements</span> <span class="n">CharacterHandler</span> <span class="o">{</span>
 	<span class="nd">@Override</span>
-	<span class="kd">public</span> <span class="nf">String</span> <span class="n">handle</span><span class="p">(</span><span class="kt">char</span> <span class="nf">c</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>HandlerFactory: 算法工厂，没有合适算法时返回null</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">class</span> <span class="n">HandlerFactory</span> <span class="p">{</span> 
-	<span class="kd">public</span> <span class="nf">static</span> <span class="n">CharacterHandler</span> <span class="nf">getHandler</span><span class="p">(</span><span class="kt">char</span> <span class="nf">ch</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="na">isLetter</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="k">new</span> <span class="n">LetterHandler</span><span class="p">();</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="na">isDigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="k">new</span> <span class="n">DigitHandler</span><span class="p">();</span>
-		<span class="p">}</span> 
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">handle</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">c</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>HandlerFactory: 算法工厂，没有合适算法时返回null</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">class</span> <span class="nc">HandlerFactory</span> <span class="o">{</span> 
+	<span class="kd">public</span> <span class="kd">static</span> <span class="n">CharacterHandler</span> <span class="nf">getHandler</span><span class="o">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">Character</span><span class="o">.</span><span class="na">isLetter</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="n">LetterHandler</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">Character</span><span class="o">.</span><span class="na">isDigit</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="n">DigitHandler</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span> 
 
-		<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="p">}</span> 
-<span class="p">}</span></code></pre></div>
-<p>HandlerFactoryWithNullHandler: 算法工厂，没有合适算法时返回空对象</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">class</span> <span class="n">HandlerFactoryWithNullHandler</span> <span class="p">{</span> 
-	<span class="kd">public</span> <span class="nf">static</span> <span class="n">CharacterHandler</span> <span class="nf">getHandler</span><span class="p">(</span><span class="kt">char</span> <span class="nf">ch</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="na">isLetter</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="k">new</span> <span class="n">LetterHandler</span><span class="p">();</span>
-		<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="na">isDigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="k">new</span> <span class="n">DigitHandler</span><span class="p">();</span>
-		<span class="p">}</span> 
+		<span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="o">}</span> 
+<span class="o">}</span>
+</code></pre></div><p>HandlerFactoryWithNullHandler: 算法工厂，没有合适算法时返回空对象</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">class</span> <span class="nc">HandlerFactoryWithNullHandler</span> <span class="o">{</span> 
+	<span class="kd">public</span> <span class="kd">static</span> <span class="n">CharacterHandler</span> <span class="nf">getHandler</span><span class="o">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">Character</span><span class="o">.</span><span class="na">isLetter</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="n">LetterHandler</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">Character</span><span class="o">.</span><span class="na">isDigit</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="n">DigitHandler</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span> 
 
-		<span class="k">return</span> <span class="k">new</span> <span class="n">NullHandler</span><span class="p">();</span>
-	<span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-<p>Main: 测试类</p>
-<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="nf">class</span> <span class="n">Main</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="n">NullHandler</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>Main: 测试类</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">javapublic</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
 
 	<span class="c1">// 这里采用没有默认操作的算法工厂
-</span><span class="c1"></span>	<span class="kd">public</span> <span class="nf">static</span> <span class="n">String</span> <span class="nf">handleCharacter</span><span class="p">(</span><span class="kt">char</span> <span class="nf">ch</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">CharacterHandler</span> <span class="nf">handler</span> <span class="o">=</span> <span class="n">HandlerFactory</span><span class="p">.</span><span class="na">getHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="n">handler</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="n">handler</span><span class="p">.</span><span class="na">handle</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
-		<span class="p">}</span>
+</span><span class="c1"></span>	<span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">handleCharacter</span><span class="o">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">CharacterHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">HandlerFactory</span><span class="o">.</span><span class="na">getHandler</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">;</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">handler</span> <span class="o">!</span><span class="o">=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span>
 
-		<span class="k">return</span> <span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
-	<span class="p">}</span>
+		<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
 	<span class="c1">// 这里采用有默认操作的算法工厂
-</span><span class="c1"></span>	<span class="kd">public</span> <span class="nf">static</span> <span class="n">String</span> <span class="nf">handleCharacter2</span><span class="p">(</span><span class="kt">char</span> <span class="nf">ch</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">CharacterHandler</span> <span class="nf">handler</span> <span class="o">=</span> <span class="n">HandlerFactoryWithNullHandler</span><span class="p">.</span><span class="na">getHandler</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
-		<span class="k">return</span> <span class="n">handler</span><span class="p">.</span><span class="na">handle</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
-	<span class="p">}</span>
+</span><span class="c1"></span>	<span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">handleCharacter2</span><span class="o">(</span><span class="kt">char</span> <span class="n">ch</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">CharacterHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">HandlerFactoryWithNullHandler</span><span class="o">.</span><span class="na">getHandler</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">;</span>
+		<span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="na">handle</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">;</span>
+	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="nf">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="nf">args</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">String</span> <span class="nf">str</span> <span class="o">=</span> <span class="s">&#34;1a@b#2c$d&#34;</span><span class="p">;</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">&#34;1a@b#2c$d&#34;</span><span class="o">;</span>
 
-		<span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nf">ch</span> <span class="o">:</span> <span class="n">str</span><span class="p">.</span><span class="na">toCharArray</span><span class="p">())</span> <span class="p">{</span>
-			<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">handleCharacter</span><span class="p">(</span><span class="n">ch</span><span class="p">));</span>
-		<span class="p">}</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">char</span> <span class="n">ch</span> <span class="o">:</span> <span class="n">str</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">handleCharacter</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span>
 
-		<span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nf">ch</span> <span class="o">:</span> <span class="n">str</span><span class="p">.</span><span class="na">toCharArray</span><span class="p">())</span> <span class="p">{</span>
-			<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">handleCharacter2</span><span class="p">(</span><span class="n">ch</span><span class="p">));</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">char</span> <span class="n">ch</span> <span class="o">:</span> <span class="n">str</span><span class="o">.</span><span class="na">toCharArray</span><span class="o">(</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">handleCharacter2</span><span class="o">(</span><span class="n">ch</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
 
-<span class="p">}</span></code></pre></div>
-<p>更详细代码请单击这里：<a href="https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/nullobject">https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/nullobject</a></p>
+<span class="o">}</span>
+</code></pre></div><p>更详细代码请单击这里：https://github.com/buzheng/buzheng-study-java/tree/master/src/main/java/org/buzheng/study/pattern/nullobject</p>
       </div><ul class="pa0">
   
    <li class="list di">

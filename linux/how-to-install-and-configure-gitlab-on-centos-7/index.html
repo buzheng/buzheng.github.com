@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,11 +30,8 @@
 
     <meta property="og:title" content="如何在CentOS 7上安装和配置GitLab" />
 <meta property="og:description" content="GitLab是一个基于Web的开源Git存储库管理器，用Ruby编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。
-
 有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。
-
 如果你想将项目从GitHub移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。
-
 根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-and-configure-gitlab-on-centos-7/" />
@@ -42,29 +39,20 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上安装和配置GitLab">
 <meta itemprop="description" content="GitLab是一个基于Web的开源Git存储库管理器，用Ruby编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。
-
 有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。
-
 如果你想将项目从GitHub移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。
-
 根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2547">
+<meta itemprop="wordCount" content="2535">
 
 
 
-<meta itemprop="keywords" content="centos,git,gitlab," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,git,gitlab," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在CentOS 7上安装和配置GitLab"/>
 <meta name="twitter:description" content="GitLab是一个基于Web的开源Git存储库管理器，用Ruby编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。
-
 有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。
-
 如果你想将项目从GitHub移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。
-
 根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。"/>
 
   </head>
@@ -159,156 +147,101 @@
           
   
           <p>GitLab是一个基于Web的开源<a href="/linux/how-to-install-git-on-centos-7/">Git</a>存储库管理器，用<a href="/linux/how-to-install-ruby-on-centos-7/">Ruby</a>编写，包括维基，问题管理，代码审查，监控以及持续集成和部署。它使开发人员能够构建，部署和运行他们的应用程序。</p>
-
 <p>有三种不同版本的GitLab可用，社区版（CE），企业版（EE）和GitLab托管版本。</p>
-
 <p>如果你想将项目从<a href="https://github.com/">GitHub</a>移开，那么你一定要试试GitLab。它可以从不同的来源导入项目和问题，包括GitHub，这使得迁移过程无忧无虑。GitLab界面设计精良，干净，直观，并且在用户体验和功能方面与GitHub相近。</p>
-
 <p>根据您的要求和偏好，有几种方法可以安装GitLab。本教程介绍了使用Omnibus软件包在CentOS 7系统上安装和配置GitLab（CE）所需的步骤。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>本教程假设您安装了全新的CentOS 7。</p>
-
 <p>根据<a href="https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements">GitLab要求页面</a>，建议使用服务器：</p>
-
 <ul>
 <li>至少4GB的RAM内存</li>
 <li>2核心</li>
 <li>至少2GB的<a href="/linux/create-a-linux-swap-file/">交换空间</a>。</li>
 <li>（可选）指向服务器IP地址的域或子域。</li>
 </ul>
-
 <p>为了增加安全层，建议设置基本防火墙。您可以按照我们的<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">HHow中</a>的步骤在<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">CentOS 7</a>指南中<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">使用FirewallD设置防火墙</a>。</p>
-
 <p>您登录的用户必须具有<a href="/linux/create-a-sudo-user-on-centos/">sudo权限</a>才能安装软件包。</p>
-
-<h2 id="安装所需的依赖项">安装所需的依赖项</h2>
-
+<h2 id="heading1">安装所需的依赖项</h2>
 <p>刷新本地程序包索引并使用以下命令安装依赖项：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install curl policycoreutils-python openssh-server</code></pre></div>
-<p>为了使GitLab能够发送通知电子邮件，您可以安装和使用Postfix或使用一些事务性邮件服务，如SendGrid，MailChimp，MailGun或SES，在这种情况下，您可以跳过此后续步骤并配置<a href="https://docs.gitlab.com/omnibus/settings/smtp.html">GitLab的SMTP设置</a>。安装完成。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install curl policycoreutils-python openssh-server
+</code></pre><p>为了使GitLab能够发送通知电子邮件，您可以安装和使用Postfix或使用一些事务性邮件服务，如SendGrid，MailChimp，MailGun或SES，在这种情况下，您可以跳过此后续步骤并配置<a href="https://docs.gitlab.com/omnibus/settings/smtp.html">GitLab的SMTP设置</a>。安装完成。</p>
 <p>运行以下命令在CentOS服务器上安装Postfix：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install postfix</code></pre></div>
-<p>在安装过程中，系统将要求您选择邮件服务器配置类型。默认选项是<code>Internet Site</code>。这是推荐的选项，只需按<code>TAB</code>，然后<code>ENTER</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install postfix
+</code></pre><p>在安装过程中，系统将要求您选择邮件服务器配置类型。默认选项是<code>Internet Site</code>。这是推荐的选项，只需按<code>TAB</code>，然后<code>ENTER</code>。</p>
 <p>接下来，系统将提示您输入与<code>System mail name</code>服务器<a href="/linux/how-to-change-hostname-on-centos-7/">主机名</a>相同的内容。</p>
-
 <p>安装完成后，通过运行以下命令启动并启用后缀服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl start postfixsudo systemctl enable postfix</code></pre></div>
-<h2 id="安装gitlab">安装GitLab</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start postfixsudo systemctl enable postfix
+</code></pre><h2 id="gitlab">安装GitLab</h2>
 <p>GitLab安装是一个非常简单的过程。我们将使用<code>yum</code>包管理器安装GitLab CE包。</p>
-
 <p>首先使用以下<a href="/linux/curl-command-examples/">curl命令</a>将GitLab存储库添加到系统源列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash</code></pre></div>
-<p>该脚本将启用存储库并安装必要的依赖项。完成后，运行以下命令安装GitLab软件包：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo yum install gitlab-ce</code></pre></div>
-<p>系统将提示您接受GitLab存储库GPG密钥。输入<code>y</code>并按<code>Enter</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+</code></pre><p>该脚本将启用存储库并安装必要的依赖项。完成后，运行以下命令安装GitLab软件包：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install gitlab-ce
+</code></pre><p>系统将提示您接受GitLab存储库GPG密钥。输入<code>y</code>并按<code>Enter</code>。</p>
 <p>安装过程可能需要一段时间，安装成功后，您将看到以下输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Thank you for installing GitLab!
+<pre><code class="language-output" data-lang="output">Thank you for installing GitLab!
 ...
-Complete!</code></pre></div>
-<h2 id="调整防火墙规则">调整防火墙规则</h2>
-
+Complete!
+</code></pre><h2 id="heading2">调整防火墙规则</h2>
 <p>有关设置基本防火墙的指南在先决条件部分中进行了链接。为了能够访问GitLab接口，您需要打开端口<code>80</code>和<code>443</code>。为此，请运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=httpsudo firewall-cmd --permanent --zone=public --add-service=httpssudo firewall-cmd --reload</code></pre></div>
-<h2 id="设置gitlab-url">设置GitLab URL</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=httpsudo firewall-cmd --permanent --zone=public --add-service=httpssudo firewall-cmd --reload
+</code></pre><h2 id="gitlab-url">设置GitLab URL</h2>
 <p>在访问GitLab Web界面之前，我们需要设置可以访问GitLab的URL。打开Gitlab的配置文件并进行以下更改：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/gitlab/gitlab.rb</code></pre></div>
-<p>在配置文件的顶部附近，您将看到以<code>external_url</code>。开头的行。更改值以匹配您的域/子域或IP地址。如果您有域使用，<code>https</code>并且如果要通过服务器IP地址使用来访问GitLab接口<code>http</code>。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/gitlab/gitlab.rb
+</code></pre><p>在配置文件的顶部附近，您将看到以<code>external_url</code>。开头的行。更改值以匹配您的域/子域或IP地址。如果您有域使用，<code>https</code>并且如果要通过服务器IP地址使用来访问GitLab接口<code>http</code>。</p>
 <p>/etc/gitlab/gitlab.rb</p>
-<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">external_url</span> <span class="s1">&#39;https://gitlab.example.com&#39;</span></code></pre></div>
-<p>接下来搜索“Let&rsquo;s Encrypt integration”，取消注释以＃开头的行<code>letsencrypt['enable']</code>并将其设置为true。（可选）如果您希望从Let&rsquo;s Encrypt收到有关您的域的电子邮件，请取消注释以该行开头的行<code>letsencrypt['contact_emails']</code>并添加您的电子邮件地址。</p>
-
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">external_url</span> <span class="s1">&#39;https://gitlab.example.com&#39;</span>
+</code></pre></div><p>接下来搜索“Let's Encrypt integration”，取消注释以＃开头的行<code>letsencrypt['enable']</code>并将其设置为true。（可选）如果您希望从Let's Encrypt收到有关您的域的电子邮件，请取消注释以该行开头的行<code>letsencrypt['contact_emails']</code>并添加您的电子邮件地址。</p>
 <p>如果您设置<code>external_url</code>为IP地址，则不应启用Let的加密集成。</p>
-
 <p>/etc/gitlab/gitlab.rb</p>
 <div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">letsencrypt</span><span class="o">[</span><span class="s1">&#39;enable&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="kp">true</span>
-<span class="n">letsencrypt</span><span class="o">[</span><span class="s1">&#39;contact_emails&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;admin@example.com&#39;</span><span class="o">]</span> <span class="c1"># This should be an array of email addresses to add as contacts</span></code></pre></div>
-<p>最后保存并关闭文件并运行以下命令重新配置Gitlab：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo gitlab-ctl reconfigure</code></pre></div>
-<p>该命令将重新配置GitLab设置并生成一个免费的Let的加密SSL证书。</p>
-
-<h2 id="通过web-interface配置gitlab">通过Web Interface配置GitLab</h2>
-
+<span class="n">letsencrypt</span><span class="o">[</span><span class="s1">&#39;contact_emails&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;admin@example.com&#39;</span><span class="o">]</span> <span class="c1"># This should be an array of email addresses to add as contacts</span>
+</code></pre></div><p>最后保存并关闭文件并运行以下命令重新配置Gitlab：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo gitlab-ctl reconfigure
+</code></pre><p>该命令将重新配置GitLab设置并生成一个免费的Let的加密SSL证书。</p>
+<h2 id="web-interfacegitlab">通过Web Interface配置GitLab</h2>
 <p>现在您已经配置了GitLab URL，您可以通过GitLab Web界面从初始配置开始。</p>
-
 <p>启动<a href="/linux/how-to-install-google-chrome-web-browser-on-centos-7/">Web浏览器</a>并导航至：</p>
-<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">https://your_gitlab_domain_or_server_IP.com</code></pre></div>
-<h3 id="1-设置管理帐户密码">1.设置管理帐户密码</h3>
-
+<pre><code class="language-url" data-lang="url">https://your_gitlab_domain_or_server_IP.com
+</code></pre><h3 id="1">1.设置管理帐户密码</h3>
 <p>首次访问Web界面时，系统会提示您设置管理帐户的密码。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-initial-page.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-initial-page.jpg" alt=""></p>
 <p>输入安全密码，完成后单击<code>Change your password</code>按钮。</p>
-
 <p>您将被重定向到登录页面：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-login-page.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-login-page.jpg" alt=""></p>
 <p>默认管理帐户用户名是<code>root</code>。在本教程的后面部分，我们将向您展示如何更改用户名。</p>
-
 <ul>
 <li>用户名：root</li>
 <li>密码：[您设置的密码]</li>
 </ul>
-
 <p>输入登录凭据，单击<code>Sign in</code>按钮，您将被重定向到GitLab欢迎页面。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-welcome-page.jpg" alt=""></figure>
-
-<h3 id="2-编辑用户配置文件">2.编辑用户配置文件</h3>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-welcome-page.jpg" alt=""></p>
+<h3 id="2">2.编辑用户配置文件</h3>
 <p>您要做的第一件事是编辑您的用户个人资料。单击用户头像（右上角），然后从下拉菜单中选择<code>Settings</code>：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-access-user-profile.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-access-user-profile.jpg" alt=""></p>
 <p>您可以在此处更改姓名，电子邮件和其他个人资料信息和设置。根据自己的喜好进行更改。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-profile-page.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-profile-page.jpg" alt=""></p>
 <p>完成后，单击<code>Update Profile settings</code>按钮，很快您将收到一封确认电子邮件，其中包含您提供的地址。要确认您的帐户，请按照电子邮件中提供的说明操作。</p>
-
-<h3 id="3-更改用户名">3.更改用户名</h3>
-
+<h3 id="3">3.更改用户名</h3>
 <p>要访问“配置文件”页面，请单击<code>Account</code>左侧垂直导航菜单中的链接。</p>
-
 <p>您已经知道第一个管理帐户的默认用户名是<code>root</code>。要更改它，只需键入新用户名并单击<code>Update username</code>按钮即可。</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-change-user-name.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-change-user-name.jpg" alt=""></p>
 <p>在此屏幕上，您还可以启用双因素身份验证。</p>
-
 <p>下次登录GitLab仪表板时，您需要输入新的用户名。</p>
-
-<h3 id="4-添加ssh密钥">4.添加SSH密钥</h3>
-
+<h3 id="4ssh">4.添加SSH密钥</h3>
 <p>为了能够将您的本地git更改推送到GitLab服务器，您需要将SSH公钥添加到GitLab帐户。</p>
-
 <p>如果您已在本地系统上创建了SSH密钥对，则可以通过键入以下内容来显示公钥：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">cat ~/.ssh/id_rsa.pub</code></pre></div>
-<p>输出应如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDd/mnMzHwjUzK8g3ldfsfRpJuC16mhWamaXRk8ySQrD/dzpbRLfDnZsLxCzRoq+ZzFHGwcQlJergtergdHGRrO8FE5jl3IWRRp+mP12qYw== admin@linuxize.com</code></pre></div>
-<p>如果上面的命令打印，<code>No such file or directory</code>则意味着您没有在计算机上生成SSH密钥对。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">cat ~/.ssh/id_rsa.pub
+</code></pre><p>输出应如下所示：</p>
+<pre><code class="language-output" data-lang="output">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDd/mnMzHwjUzK8g3ldfsfRpJuC16mhWamaXRk8ySQrD/dzpbRLfDnZsLxCzRoq+ZzFHGwcQlJergtergdHGRrO8FE5jl3IWRRp+mP12qYw== admin@linuxize.com
+</code></pre><p>如果上面的命令打印，<code>No such file or directory</code>则意味着您没有在计算机上生成SSH密钥对。</p>
 <p>要<a href="/linux/how-to-set-up-ssh-keys-on-centos-7/">生成新的SSH密钥对，请</a>使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">ssh-keygen -t rsa -b 4096 -C &#34;your_email@domain.com&#34;</code></pre></div>
-<p>复制<a href="/linux/linux-cat-command/">cat命令</a>的输出并返回GitLab的Web界面。单击<code>SSH Keys</code>左侧垂直导航菜单以访问SSH Keys配置页面。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">ssh-keygen -t rsa -b 4096 -C &quot;your_email@domain.com&quot;
+</code></pre><p>复制<a href="/linux/linux-cat-command/">cat命令</a>的输出并返回GitLab的Web界面。单击<code>SSH Keys</code>左侧垂直导航菜单以访问SSH Keys配置页面。</p>
 <p>在<code>Key</code>textarea粘贴您之前从本地计算机复制的公钥，设置描述性标题并单击<code>Add key</code>按钮：</p>
-
-<figure><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-add-ssh-key.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-and-configure-gitlab-on-centos-7/gitlab-add-ssh-key.jpg" alt=""></p>
 <p>现在，您应该能够从本地计算机推送和提取项目更改，而无需提供GitLab帐户凭据。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading3">结论</h2>
 <p>本教程向您介绍了在CentOS 7上安装和配置GitLab的过程。您还学习了如何编辑配置文件设置，如何更改用户名以及添加SSH密钥。您现在可以创建第一个项目并开始使用GitLab。</p>
       </div><ul class="pa0">
   
@@ -386,24 +319,22 @@ Complete!</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#安装所需的依赖项">安装所需的依赖项</a></li>
-<li><a href="#安装gitlab">安装GitLab</a></li>
-<li><a href="#调整防火墙规则">调整防火墙规则</a></li>
-<li><a href="#设置gitlab-url">设置GitLab URL</a></li>
-<li><a href="#通过web-interface配置gitlab">通过Web Interface配置GitLab</a>
-<ul>
-<li><a href="#1-设置管理帐户密码">1.设置管理帐户密码</a></li>
-<li><a href="#2-编辑用户配置文件">2.编辑用户配置文件</a></li>
-<li><a href="#3-更改用户名">3.更改用户名</a></li>
-<li><a href="#4-添加ssh密钥">4.添加SSH密钥</a></li>
-</ul></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">安装所需的依赖项</a></li>
+    <li><a href="#gitlab">安装GitLab</a></li>
+    <li><a href="#heading2">调整防火墙规则</a></li>
+    <li><a href="#gitlab-url">设置GitLab URL</a></li>
+    <li><a href="#web-interfacegitlab">通过Web Interface配置GitLab</a>
+      <ul>
+        <li><a href="#1">1.设置管理帐户密码</a></li>
+        <li><a href="#2">2.编辑用户配置文件</a></li>
+        <li><a href="#3">3.更改用户名</a></li>
+        <li><a href="#4ssh">4.添加SSH密钥</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

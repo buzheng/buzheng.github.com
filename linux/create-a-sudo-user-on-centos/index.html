@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,7 +30,6 @@
 
     <meta property="og:title" content="如何在 CentOS 上创建 sudo 用户" />
 <meta property="og:description" content="sudo 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。
-
 在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/create-a-sudo-user-on-centos/" />
@@ -38,21 +37,16 @@
 <meta property="article:modified_time" content="2019-03-10T08:00:00+08:00" />
 <meta itemprop="name" content="如何在 CentOS 上创建 sudo 用户">
 <meta itemprop="description" content="sudo 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。
-
 在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。">
-
-
 <meta itemprop="datePublished" content="2019-03-10T08:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-10T08:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="492">
 
 
 
-<meta itemprop="keywords" content="centos,sudo," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,sudo," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 CentOS 上创建 sudo 用户"/>
 <meta name="twitter:description" content="sudo 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。
-
 在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。"/>
 
   </head>
@@ -147,44 +141,42 @@
           
   
           <p><code>sudo</code> 命令被设计用来允许用户使用其他用户的安全权限运行程序，默认情况下为 root 用户。</p>
-
 <p>在本指南中，我们将向您展示如何在 CentOS 上创建具有 sudo 权限的新用户，您可以使用 sudo 用户在 CentOS 计算机上执行管理任务，而无需以 root 用户身份登录。</p>
-
-<h2 id="创建-sudo-用户">创建 sudo 用户</h2>
-
+<h2 id="-sudo-">创建 sudo 用户</h2>
 <p>在 CentOS 上，默认情况下 <code>wheel</code> 组中的用户被授予 sudo 访问权限。如果要为现有用户配置 sudo ，就像下面步骤 4 的做法一样，只需将用户添加到 <code>wheel</code> 组中。</p>
-
 <p>按照以下步骤在 CentOS 服务器上创建一个 sudo 用户。</p>
-
 <ol>
-<li><p>·首先以 <code>root</code> 用户身份登录 CentOS 服务器。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh root@server_ip_address</code></pre></div></li>
-
-<li><p>使用 <code>useradd</code> 命令创建新用户帐户。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">useradd username</code></pre></div>
-<p>替换 <code>username</code> 为您要创建的用户名。</p></li>
-
-<li><p>使用此 <code>passwd</code> 命令为新用户设置密码。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">passwd username</code></pre></div>
-<p>系统将提示您确认密码。确保使用强密码。</p>
+<li>
+<p>·首先以 <code>root</code> 用户身份登录 CentOS 服务器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh root@server_ip_address
+</code></pre></div></li>
+<li>
+<p>使用 <code>useradd</code> 命令创建新用户帐户。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">useradd username
+</code></pre></div><p>替换 <code>username</code> 为您要创建的用户名。</p>
+</li>
+<li>
+<p>使用此 <code>passwd</code> 命令为新用户设置密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">passwd username
+</code></pre></div><p>系统将提示您确认密码。确保使用强密码。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Changing password <span class="k">for</span> user username.
 New password:
 Retype new password:
-passwd: all authentication tokens updated successfully.</code></pre></div></li>
-
-<li><p>将新用户添加到 <code>wheel</code> 组。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">usermod -aG wheel username</code></pre></div></li>
+passwd: all authentication tokens updated successfully.
+</code></pre></div></li>
+<li>
+<p>将新用户添加到 <code>wheel</code> 组。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">usermod -aG wheel username
+</code></pre></div></li>
 </ol>
-
-<h2 id="如何使用-sudo">如何使用 sudo</h2>
-
+<h2 id="-sudo">如何使用 sudo</h2>
 <p>切换到新创建的用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">su - username</code></pre></div>
-<p>要使用 <code>sudo</code> ，只需在命令前加上前缀 <code>sudo</code> 和空格即可。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo <span class="o">[</span>COMMAND<span class="o">]</span></code></pre></div>
-<p>例如，要列出 <code>/root</code> 您将使用的目录的内容：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ls -l /root</code></pre></div>
-<p>首次在此帐户中使用 sudo 时，您将看到以下横幅消息，系统将提示您输入用户帐户的密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">su - username
+</code></pre></div><p>要使用 <code>sudo</code> ，只需在命令前加上前缀 <code>sudo</code> 和空格即可。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo <span class="o">[</span>COMMAND<span class="o">]</span>
+</code></pre></div><p>例如，要列出 <code>/root</code> 您将使用的目录的内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ls -l /root
+</code></pre></div><p>首次在此帐户中使用 sudo 时，您将看到以下横幅消息，系统将提示您输入用户帐户的密码。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">We trust you have received the usual lecture from the <span class="nb">local</span> System
 Administrator. It usually boils down to these three things:
 
@@ -192,12 +184,10 @@ Administrator. It usually boils down to these three things:
     <span class="c1">#2) Think before you type.</span>
     <span class="c1">#3) With great power comes great responsibility.</span>
 
-<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> username:</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> username:
+</code></pre></div><h2 id="heading">结论</h2>
 <p>打完收工。您已在 CentOS 系统上成功创建了一个 sudo 用户。您现在可以使用此用户在服务器上执行管理任务。</p>
-
-<!--create-a-sudo-user-on-centos/ -->
+<!-- raw HTML omitted -->
       </div><ul class="pa0">
   
    <li class="list di">
@@ -270,14 +260,11 @@ Administrator. It usually boils down to these three things:
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#创建-sudo-用户">创建 sudo 用户</a></li>
-<li><a href="#如何使用-sudo">如何使用 sudo</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#-sudo-">创建 sudo 用户</a></li>
+    <li><a href="#-sudo">如何使用 sudo</a></li>
+    <li><a href="#heading">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

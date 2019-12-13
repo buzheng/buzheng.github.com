@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -36,16 +36,13 @@
 <meta property="article:modified_time" content="2016-01-15T00:00:00+00:00" />
 <meta itemprop="name" content="CentOS 7 安装 mysql 5.7.10">
 <meta itemprop="description" content="本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。">
-
-
 <meta itemprop="datePublished" content="2016-01-15T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2016-01-15T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="185">
 
 
 
-<meta itemprop="keywords" content="Mysql,Linux,CentOS," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="Mysql,Linux,CentOS," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOS 7 安装 mysql 5.7.10"/>
 <meta name="twitter:description" content="本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。"/>
 
@@ -141,35 +138,30 @@
           
   
           <p>本文记录 CentOS 7 下安装 mysql 5.7.10 及简单的配置步骤。</p>
-
-<h2 id="通过-yum-安装-mysql-社区版">通过 yum 安装 mysql 社区版</h2>
-<div class="highlight"><pre class="chroma">wget http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
+<h2 id="-yum--mysql-">通过 yum 安装 mysql 社区版</h2>
+<pre><code>wget http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
 yum -y localinstall mysql57-community-release-el7-7.noarch.rpm 
-yum -y install mysql-community-server</pre></div>
-<h2 id="设置服务并启动">设置服务并启动</h2>
-<div class="highlight"><pre class="chroma">systemctl enable mysqld
-systemctl start mysqld</pre></div>
-<h2 id="修改数据库编码为-utf8">修改数据库编码为 utf8</h2>
-
+yum -y install mysql-community-server
+</code></pre><h2 id="heading">设置服务并启动</h2>
+<pre><code>systemctl enable mysqld
+systemctl start mysqld
+</code></pre><h2 id="-utf8">修改数据库编码为 utf8</h2>
 <p>修改 /etc/my.cnf, [mysqld] 分组下添加如下两行</p>
-<div class="highlight"><pre class="chroma">character-set-server=utf8
-collation_server=utf8_unicode_ci</pre></div>
-<h2 id="修改表名字段不区分大小写">修改表名字段不区分大小写</h2>
-
+<pre><code>character-set-server=utf8
+collation_server=utf8_unicode_ci
+</code></pre><h2 id="heading1">修改表名字段不区分大小写</h2>
 <p>修改 /etc/my.cnf, [mysqld] 分组下添加如下行</p>
-<div class="highlight"><pre class="chroma">lower_case_table_names=1</pre></div>
-<h2 id="重启">重启</h2>
-<div class="highlight"><pre class="chroma">systemctl restart mysqld</pre></div>
-<h2 id="修改-root-密码">修改 root 密码</h2>
-
+<pre><code>lower_case_table_names=1
+</code></pre><h2 id="heading2">重启</h2>
+<pre><code>systemctl restart mysqld
+</code></pre><h2 id="-root-">修改 root 密码</h2>
 <p>1、查看安装时的临时密码</p>
-<div class="highlight"><pre class="chroma">grep &#39;temporary password&#39; /var/log/mysqld.log</pre></div>
-<p>2、利用密码登录进去</p>
-<div class="highlight"><pre class="chroma">mysql -u root -p</pre></div>
-<p>3、修改root密码（至少8位，大小写混合，含有数字和特殊字符）</p>
-<div class="highlight"><pre class="chroma">alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;MyNewPass4!&#39;;</pre></div>
-<p>参考文档：</p>
-
+<pre><code>grep 'temporary password' /var/log/mysqld.log
+</code></pre><p>2、利用密码登录进去</p>
+<pre><code>mysql -u root -p
+</code></pre><p>3、修改root密码（至少8位，大小写混合，含有数字和特殊字符）</p>
+<pre><code>alter user 'root'@'localhost' identified by 'MyNewPass4!';
+</code></pre><p>参考文档：</p>
 <ul>
 <li><a href="http://dev.mysql.com/doc/refman/5.7/en/linux-installation-yum-repo.html">http://dev.mysql.com/doc/refman/5.7/en/linux-installation-yum-repo.html</a></li>
 </ul>

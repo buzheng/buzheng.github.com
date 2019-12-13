@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="在 CentOS 8 上安装 Webmin" />
 <meta property="og:description" content="Webmin 是一个开放源代码控制面板，允许您通过易于使用的 Web 界面管理 Linux 服务器，您可以管理用户，组，磁盘配额，创建文件和目录以及配置最受欢迎的服务，包括 Web ， FTP ，电子邮件和数据库服务器。
-
 本教程说明了如何在 CentOS 8 上安装 Webmin 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-webmin-on-centos-8/" />
+<meta property="og:image" content="/linux/how-to-install-webmin-on-centos-8/featured.jpg"/>
 <meta property="article:published_time" content="2019-11-16T12:00:00+08:00" />
 <meta property="article:modified_time" content="2019-11-16T12:00:00+08:00" />
 <meta itemprop="name" content="在 CentOS 8 上安装 Webmin">
 <meta itemprop="description" content="Webmin 是一个开放源代码控制面板，允许您通过易于使用的 Web 界面管理 Linux 服务器，您可以管理用户，组，磁盘配额，创建文件和目录以及配置最受欢迎的服务，包括 Web ， FTP ，电子邮件和数据库服务器。
-
 本教程说明了如何在 CentOS 8 上安装 Webmin 。">
-
-
 <meta itemprop="datePublished" content="2019-11-16T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-16T12:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="678">
+<meta itemprop="image" content="/linux/how-to-install-webmin-on-centos-8/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="webmin,centos," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="webmin,centos," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-webmin-on-centos-8/featured.jpg"/>
 <meta name="twitter:title" content="在 CentOS 8 上安装 Webmin"/>
 <meta name="twitter:description" content="Webmin 是一个开放源代码控制面板，允许您通过易于使用的 Web 界面管理 Linux 服务器，您可以管理用户，组，磁盘配额，创建文件和目录以及配置最受欢迎的服务，包括 Web ， FTP ，电子邮件和数据库服务器。
-
 本教程说明了如何在 CentOS 8 上安装 Webmin 。"/>
 
   </head>
@@ -148,72 +144,55 @@
           
   
           <p><a href="http://www.webmin.com/">Webmin</a> 是一个开放源代码控制面板，允许您通过易于使用的 Web 界面管理 Linux 服务器，您可以管理用户，组，磁盘配额，创建文件和目录以及配置最受欢迎的服务，包括 Web ， FTP ，电子邮件和数据库服务器。</p>
-
 <p>本教程说明了如何在 CentOS 8 上安装 Webmin 。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>为了能够安装软件包，您需要以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录。</p>
-
-<h2 id="在-centos-上安装-webmin">在 CentOS 上安装 Webmin</h2>
-
+<h2 id="-centos--webmin">在 CentOS 上安装 Webmin</h2>
 <p>在 CentOS 8 上安装 Webmin 的推荐方法是启用 Webmin 存储库并使用软件包管理器 <code>dnf</code> 安装 Webmin 软件包。</p>
-
 <p>执行以下步骤在 CentOS 上安装 Webmin ：</p>
-
 <ol>
-<li><p>打开您喜欢的<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>并创建存储库文件：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/yum.repos.d/webmin.repo</code></pre></div>
-<p>将以下内容粘贴到文件 <code>/etc/yum.repos.d/webmin.repo</code> 中：</p>
+<li>
+<p>打开您喜欢的<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>并创建存储库文件：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/yum.repos.d/webmin.repo
+</code></pre><p>将以下内容粘贴到文件 <code>/etc/yum.repos.d/webmin.repo</code> 中：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[Webmin]</span>
 <span class="na">name</span><span class="o">=</span><span class="s">Webmin Distribution Neutral</span>
 <span class="c1">#baseurl=https://download.webmin.com/download/yum</span>
 <span class="na">mirrorlist</span><span class="o">=</span><span class="s">https://download.webmin.com/download/yum/mirrorlist</span>
-<span class="na">enabled</span><span class="o">=</span><span class="s">1</span></code></pre></div>
-<p>保存文件并关闭编辑器。</p></li>
-
-<li><p>使用以下 <a href="/linux/rpm-command-in-linux/"><code>rpm</code></a> 命令导入 Webmin GPG 密钥：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo rpm --import http://www.webmin.com/jcameron-key.asc</code></pre></div></li>
-
-<li><p>通过键入以下命令安装最新版本的 Webmin ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo dnf install webmin</code></pre></div>
-<p>该命令自动解决所有依赖关系。安装完成后，将显示以下输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Webmin install complete. You can now login to https://your_server_ip_or_hostname:10000/
-as root with your root password.</code></pre></div>
-<p>Webmin服务将自动启动。</p></li>
+<span class="na">enabled</span><span class="o">=</span><span class="s">1</span>
+</code></pre></div><p>保存文件并关闭编辑器。</p>
+</li>
+<li>
+<p>使用以下 <a href="/linux/rpm-command-in-linux/"><code>rpm</code></a> 命令导入 Webmin GPG 密钥：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo rpm --import http://www.webmin.com/jcameron-key.asc
+</code></pre></li>
+<li>
+<p>通过键入以下命令安装最新版本的 Webmin ：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install webmin
+</code></pre><p>该命令自动解决所有依赖关系。安装完成后，将显示以下输出：</p>
+<pre><code class="language-output" data-lang="output">Webmin install complete. You can now login to https://your_server_ip_or_hostname:10000/
+as root with your root password.
+</code></pre><p>Webmin服务将自动启动。</p>
+</li>
 </ol>
-
 <p>至此，您已经在 CentOS 8 服务器上成功安装了 Webmin 。</p>
-
-<h2 id="调整防火墙">调整防火墙</h2>
-
+<h2 id="heading1">调整防火墙</h2>
 <p>默认情况下， Webmin 在所有网络接口上的 <code>10000</code> 端口上侦听连接。</p>
-
 <p>为了能够从 Web 浏览器访问 Webmin 界面，您需要在服务器的<a href="/linux/how-to-configure-and-manage-firewall-on-centos-8/">防火墙</a>中打开 Webmin 端口。</p>
-
 <p>运行以下命令以允许端口 <code>10000</code> 上的流量：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --add-port=10000/tcp
-sudo firewall-cmd --runtime-to-permanent</code></pre></div>
-<h2 id="访问-webmin-web-界面">访问 Webmin Web 界面</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --zone=public --add-port=10000/tcp
+sudo firewall-cmd --runtime-to-permanent
+</code></pre><h2 id="-webmin-web-">访问 Webmin Web 界面</h2>
 <p>现在，在 CentOS 服务器上已安装 Webmin ，请打开浏览器，然后键入服务器的主机名或公共 IP 地址，然后键入 Webmin 端口 <code>10000</code> ，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-url" data-lang="url">https://your_server_ip_or_hostname:10000/</code></pre></div>
-<p>浏览器会显示警告证书无效，因为默认情况下， Webmin 使用不受信任的<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名 SSL 证书</a>。</p>
-
+<pre><code class="language-url" data-lang="url">https://your_server_ip_or_hostname:10000/
+</code></pre><p>浏览器会显示警告证书无效，因为默认情况下， Webmin 使用不受信任的<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名 SSL 证书</a>。</p>
 <p>使用您的 root 用户凭据登录到 Webmin Web 界面：</p>
-
-<figure><img src="webmin-login-form.jpg" alt=""></figure>
-
+<p><img src="webmin-login-form.jpg" alt=""></p>
 <p>登录后，页面被重定向到 Webmin 仪表板，该仪表板提供有关系统的基本信息。</p>
-
-<figure><img src="webmin-dashboard.jpg" alt=""></figure>
-
+<p><img src="webmin-dashboard.jpg" alt=""></p>
 <p>从这里，您可以根据需要开始配置和管理 CentOS 8 服务器。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>您已经在 CentOS 8 机器上成功安装了 Webmin ，您可以开始通过 Webmin 的 Web 界面管理服务器了。</p>
-
 <p>要了解有关 Webmin 的更多信息，请访问其官方<a href="http://www.webmin.com/docs.html">文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -287,16 +266,13 @@ sudo firewall-cmd --runtime-to-permanent</code></pre></div>
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#在-centos-上安装-webmin">在 CentOS 上安装 Webmin</a></li>
-<li><a href="#调整防火墙">调整防火墙</a></li>
-<li><a href="#访问-webmin-web-界面">访问 Webmin Web 界面</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-centos--webmin">在 CentOS 上安装 Webmin</a></li>
+    <li><a href="#heading1">调整防火墙</a></li>
+    <li><a href="#-webmin-web-">访问 Webmin Web 界面</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

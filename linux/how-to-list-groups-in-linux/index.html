@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,30 +30,26 @@
 
     <meta property="og:title" content="在 Linux 中查看所有的用户组" />
 <meta property="og:description" content="在 Linux 中，组是用户的集合。这些组的主要目的是为给定资源定义一组权限，如读取，写入或执行权限，这些权限可以在组内的用户之间共享。还可以可以将用户添加到现有的用户组以利用其授予的权限。
-
 本教程介绍如何显示用户所属的所有组。我们还将解释如何列出组中的所有成员。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-list-groups-in-linux/" />
+<meta property="og:image" content="/linux/how-to-list-groups-in-linux/featured.jpg"/>
 <meta property="article:published_time" content="2019-07-08T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-07-08T05:00:00+08:00" />
 <meta itemprop="name" content="在 Linux 中查看所有的用户组">
 <meta itemprop="description" content="在 Linux 中，组是用户的集合。这些组的主要目的是为给定资源定义一组权限，如读取，写入或执行权限，这些权限可以在组内的用户之间共享。还可以可以将用户添加到现有的用户组以利用其授予的权限。
-
 本教程介绍如何显示用户所属的所有组。我们还将解释如何列出组中的所有成员。">
-
-
 <meta itemprop="datePublished" content="2019-07-08T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-08T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1003">
+<meta itemprop="wordCount" content="1005">
+<meta itemprop="image" content="/linux/how-to-list-groups-in-linux/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="terminal," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="terminal," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-list-groups-in-linux/featured.jpg"/>
 <meta name="twitter:title" content="在 Linux 中查看所有的用户组"/>
 <meta name="twitter:description" content="在 Linux 中，组是用户的集合。这些组的主要目的是为给定资源定义一组权限，如读取，写入或执行权限，这些权限可以在组内的用户之间共享。还可以可以将用户添加到现有的用户组以利用其授予的权限。
-
 本教程介绍如何显示用户所属的所有组。我们还将解释如何列出组中的所有成员。"/>
 
   </head>
@@ -148,73 +144,58 @@
           
   
           <p>在 Linux 中，组是用户的集合。这些组的主要目的是为给定资源定义一组权限，如读取，写入或执行权限，这些权限可以在组内的用户之间共享。还可以<a href="/linux/how-to-add-user-to-group-in-linux/">可以将用户添加到现有的用户组</a>以利用其授予的权限。</p>
-
 <p>本教程介绍如何显示用户所属的所有组。我们还将解释如何列出组中的所有成员。</p>
-
-<h2 id="linux组">Linux组</h2>
-
+<h2 id="linux">Linux组</h2>
 <p>用户可以属于两种类型的组：</p>
-
 <ul>
-<li><p><strong>主要或登录组</strong> - 是分配给用户<a href="/linux/create-a-file-in-linux/">创建的文件</a>的组。通常，主组的名称与用户的名称相同。每个用户必须属于一个主要组。</p></li>
-
-<li><p><strong>辅助或补充组</strong> - 用于向一组用户授予某些特权。用户可以是零个或多个辅助组的成员。</p></li>
+<li>
+<p><strong>主要或登录组</strong> - 是分配给用户<a href="/linux/create-a-file-in-linux/">创建的文件</a>的组。通常，主组的名称与用户的名称相同。每个用户必须属于一个主要组。</p>
+</li>
+<li>
+<p><strong>辅助或补充组</strong> - 用于向一组用户授予某些特权。用户可以是零个或多个辅助组的成员。</p>
+</li>
 </ul>
-
-<h2 id="列出用户所属的所有组">列出用户所属的所有组</h2>
-
+<h2 id="heading">列出用户所属的所有组</h2>
 <p>有多种方法可以找出用户所属的组。</p>
-
 <p>主用户的组存储在 <code>/etc/passwd</code> 文件中，补充组(如果有)列在 <code>/etc/group</code> 文件中。</p>
-
 <p>找到用户群的一种方法是使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> ， <a href="/linux/less-command-in-linux/"><code>less</code></a> 或 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> 这些命令列出这些文件的内容。另一个更简单的选择是使用一个命令，其目的是提供有关系统用户和组的信息。</p>
-
-<h3 id="使用-groups-命令">使用 <code>groups</code> 命令</h3>
-
+<h3 id="-groups-">使用 <code>groups</code> 命令</h3>
 <p>最常用的列出用户所属的所有组的命令是 <code>groups</code> 命令。在没有参数的情况下执行时，该命令将打印当前登录用户所属的所有组的列表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groups</code></pre></div>
-<p>第一组是主要组。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">john adm cdrom sudo dip plugdev lpadmin sambashare</code></pre></div>
-<p>要获取特定用户所属的所有组的列表，请将该用户名作为 <code>groups</code> 的参数提供：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">groups buzheng</code></pre></div>
-<p>与第一组是主要组之前相同。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">buzheng : buzheng sudo</code></pre></div>
-<h3 id="使用-id-命令">使用 <code>id</code> 命令</h3>
-
+<pre><code class="language-console-bash" data-lang="console-bash">groups
+</code></pre><p>第一组是主要组。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">john adm cdrom sudo dip plugdev lpadmin sambashare
+</code></pre><p>要获取特定用户所属的所有组的列表，请将该用户名作为 <code>groups</code> 的参数提供：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">groups buzheng
+</code></pre><p>与第一组是主要组之前相同。</p>
+<pre><code class="language-console-bash" data-lang="console-bash">buzheng : buzheng sudo
+</code></pre><h3 id="-id-">使用 <code>id</code> 命令</h3>
 <p>该 <code>id</code> 命令打印有关指定用户及其组的信息。如果省略用户名，则显示当前用户的信息。</p>
-
 <p>例如，要获取有关用户 <code>buzheng</code> 的信息，请键入：</p>
-<div class="highlight"><pre class="chroma"><code class="language-command-bash" data-lang="command-bash">id buzheng</code></pre></div>
-<p>该命令将显示用户名 (<code>uid</code>) ，用户的主要组 (<code>gid</code>) 和用户的辅助组 (<code>groups</code>)</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">uid=1001(buzheng) gid=1001(buzheng) groups=1001(buzheng),27(sudo)</code></pre></div>
-<p>要仅打印用户和组名称而不打印用户 ID 和组 ID ，请使用该 <code>-n</code> 选项。选项 <code>-g</code> 将仅打印主要组, 选项 <code>-G</code> 打印所有组。</p>
-
+<pre><code class="language-command-bash" data-lang="command-bash">id buzheng
+</code></pre><p>该命令将显示用户名 (<code>uid</code>) ，用户的主要组 (<code>gid</code>) 和用户的辅助组 (<code>groups</code>)</p>
+<pre><code class="language-output" data-lang="output">uid=1001(buzheng) gid=1001(buzheng) groups=1001(buzheng),27(sudo)
+</code></pre><p>要仅打印用户和组名称而不打印用户 ID 和组 ID ，请使用该 <code>-n</code> 选项。选项 <code>-g</code> 将仅打印主要组, 选项 <code>-G</code> 打印所有组。</p>
 <p>以下命令将打印当前用户所属组的名称：</p>
-<div class="highlight"><pre class="chroma"><code class="language-command-bash" data-lang="command-bash">id -nG</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">john adm cdrom sudo dip plugdev lpadmin sambashare</code></pre></div>
-<h2 id="列出组的所有成员">列出组的所有成员</h2>
-
+<pre><code class="language-command-bash" data-lang="command-bash">id -nG
+</code></pre><pre><code class="language-output" data-lang="output">john adm cdrom sudo dip plugdev lpadmin sambashare
+</code></pre><h2 id="heading1">列出组的所有成员</h2>
 <p>要列出组的所有成员，请使用 <code>getent group</code> 命令后跟组名。</p>
-
 <p>例如，要查找具有该名称的组的成员， <code>developers</code> 请使用以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">getent group developers</code></pre></div>
-<p>如果该组存在，该命令将打印该组及其所有成员：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">developers:x:126:frank,mary</code></pre></div>
-<p>如果没有输出则表示该组不存在。</p>
-
-<h2 id="列出所有组">列出所有组</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">getent group developers
+</code></pre><p>如果该组存在，该命令将打印该组及其所有成员：</p>
+<pre><code class="language-output" data-lang="output">developers:x:126:frank,mary
+</code></pre><p>如果没有输出则表示该组不存在。</p>
+<h2 id="heading2">列出所有组</h2>
 <p>要查看系统上存在的所有组，只需打开该 <code>/etc/group</code> 文件即可。此文件中的每一行代表一个组的信息。</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">less /etc/group</code></pre></div>
-<p>另一个选项是使用 <code>getent</code> 命令显示 <code>/etc/nsswitch.conf</code> 文件中配置的 <code>group</code> 数据库中的条目，包括可用于查询所有组列表的数据库。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">less /etc/group
+</code></pre><p>另一个选项是使用 <code>getent</code> 命令显示 <code>/etc/nsswitch.conf</code> 文件中配置的 <code>group</code> 数据库中的条目，包括可用于查询所有组列表的数据库。</p>
 <p>要获取所有组的列表，请键入以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">getent group</code></pre></div>
-<p>输出与显示 <code>/etc/group</code> 文件内容时的输出相同。如果使用 LDAP 进行用户身份验证， <code>getent</code> 则将显示 <code>/etc/group</code> 文件和 LDAP 数据库中的所有组。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">getent group
+</code></pre><p>输出与显示 <code>/etc/group</code> 文件内容时的输出相同。如果使用 LDAP 进行用户身份验证， <code>getent</code> 则将显示 <code>/etc/group</code> 文件和 LDAP 数据库中的所有组。</p>
 <p>您还可以使用 <code>awk</code> 或 <a href="/linux/linux-cut-command/"><code>cut</code></a> 仅打印包含组名称的第一个字段：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">getent group | awk -F: &#39;{ print $1}&#39;</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">getent group | cut -d: -f1</code></pre></div>
-<h2 id="结论">结论</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">getent group | awk -F: '{ print $1}'
+</code></pre><pre><code class="language-console-bash" data-lang="console-bash">getent group | cut -d: -f1
+</code></pre><h2 id="heading3">结论</h2>
 <p>在本教程中，您学习了如何查找用户所属的组。相同的命令适用于任何 Linux 发行版，包括 Ubuntu ， CentOS ， RHEL ， Debian 和 Linux Mint 。</p>
       </div><ul class="pa0">
   
@@ -284,20 +265,18 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#linux组">Linux组</a></li>
-<li><a href="#列出用户所属的所有组">列出用户所属的所有组</a>
-<ul>
-<li><a href="#使用-groups-命令">使用 <code>groups</code> 命令</a></li>
-<li><a href="#使用-id-命令">使用 <code>id</code> 命令</a></li>
-</ul></li>
-<li><a href="#列出组的所有成员">列出组的所有成员</a></li>
-<li><a href="#列出所有组">列出所有组</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#linux">Linux组</a></li>
+    <li><a href="#heading">列出用户所属的所有组</a>
+      <ul>
+        <li><a href="#-groups-">使用 groups 命令</a></li>
+        <li><a href="#-id-">使用 id 命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading1">列出组的所有成员</a></li>
+    <li><a href="#heading2">列出所有组</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

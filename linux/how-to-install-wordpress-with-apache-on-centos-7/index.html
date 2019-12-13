@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在CentOS 7上使用Apache安装WordPress" />
 <meta property="og:description" content="WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。
-
 在本教程中，我们将解释如何在CentOS 7上安装WordPress。在撰写本文时，最新版本的WordPress是5.0.3版。
-
 我们将使用LAMP堆栈与Apache作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-wordpress-with-apache-on-centos-7/" />
@@ -40,25 +38,18 @@
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="如何在CentOS 7上使用Apache安装WordPress">
 <meta itemprop="description" content="WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。
-
 在本教程中，我们将解释如何在CentOS 7上安装WordPress。在撰写本文时，最新版本的WordPress是5.0.3版。
-
 我们将使用LAMP堆栈与Apache作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。">
-
-
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1617">
+<meta itemprop="wordCount" content="1611">
 
 
 
-<meta itemprop="keywords" content="centos,wordpress,mysql,mariadb,cms,apache," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="centos,wordpress,mysql,mariadb,cms,apache," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在CentOS 7上使用Apache安装WordPress"/>
 <meta name="twitter:description" content="WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。
-
 在本教程中，我们将解释如何在CentOS 7上安装WordPress。在撰写本文时，最新版本的WordPress是5.0.3版。
-
 我们将使用LAMP堆栈与Apache作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。"/>
 
   </head>
@@ -153,61 +144,48 @@
           
   
           <p>WordPress是全球最受欢迎的开源博客和CMS平台，为当今互联网上四分之一的网站提供支持。它基于PHP和MySQL，包含大量可以通过免费和高级插件和主题扩展的功能。WordPress是创建在线商店，网站或博客的最简单方式。</p>
-
 <p>在本教程中，我们将解释如何在CentOS 7上安装WordPress。在撰写本文时，最新版本的WordPress是5.0.3版。</p>
-
 <p>我们将使用<a href="https://linuxize.com/series/install-lamp-stack-on-centos-7/">LAMP堆栈</a>与Apache作为Web服务器，SSL证书，最新的PHP 7.2和MySQL / MariaDB作为数据库服务器。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
-
 <ul>
 <li>域名指向您的服务器公共IP地址。我们会用<code>example.com</code>。</li>
 <li>以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</li>
 <li>按照<a href="/linux/how-to-install-apache-on-centos-7/">这些说明</a>安装Apache 。</li>
 <li>按照<a href="/linux/install-php-7-on-centos-7/">这些说明</a>安装PHP 7.2 。</li>
-<li>您已为您的域安装了SSL证书。您可以按照<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">这些说明</a>生成免费的Let&rsquo;s加密SSL证书。</li>
+<li>您已为您的域安装了SSL证书。您可以按照<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">这些说明</a>生成免费的Let's加密SSL证书。</li>
 </ul>
-
-<h2 id="创建mysql数据库">创建MySQL数据库</h2>
-
+<h2 id="mysql">创建MySQL数据库</h2>
 <p>WordPress将其数据和配置存储在MySQL数据库中。如果您已经没有在CentOS服务器上安装MySQL或MariaDB，可以按照以下指南安装：</p>
-
 <ul>
 <li><a href="/linux/install-mysql-on-centos-7/">在CentOS 7上安装MySQL</a>。</li>
 <li><a href="/linux/install-mariadb-on-centos-7/">在CentOS 7上安装MariaDB</a>。</li>
 </ul>
-
 <p>执行以下命令登录MySQL shell：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">mysql -u root -p</code></pre></div>
-<p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建</a>名为<a href="/linux/how-to-create-a-mysql-database/">的新数据库</a><code>wordpress</code>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</code></pre></div>
-<p>接下来，创建一个名为的MySQL用户帐户，<code>wordpressuser</code>并通过运行以下命令<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">向用户授予必要的权限</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON wordpress.* TO &#39;wordpressuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;</code></pre></div>
-<p>完成后，键入以下命令退出mysql控制台：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-mysql" data-lang="console-mysql">EXIT;</code></pre></div>
-<h2 id="正在下载wordpress">正在下载Wordpress</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">mysql -u root -p
+</code></pre><p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建</a>名为<a href="/linux/how-to-create-a-mysql-database/">的新数据库</a><code>wordpress</code>：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE wordpress CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</code></pre><p>接下来，创建一个名为的MySQL用户帐户，<code>wordpressuser</code>并通过运行以下命令<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">向用户授予必要的权限</a>：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost' IDENTIFIED BY 'change-with-strong-password';
+</code></pre><p>完成后，键入以下命令退出mysql控制台：</p>
+<pre><code class="language-console-mysql" data-lang="console-mysql">EXIT;
+</code></pre><h2 id="wordpress">正在下载Wordpress</h2>
 <p>下面的命令将从下载最新版本的WordPress的<a href="https://wordpress.org/download/">WordPress的下载页面</a>用<a href="/linux/wget-command-examples/">的wget</a>和<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">提取归档</a>到域的文档根目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">wget -q -O - &#34;http://wordpress.org/latest.tar.gz&#34; | sudo tar -xzf - -C /var/www/html --transform s/wordpress/example.com/</code></pre></div>
-<p>设置正确的权限，以便Web服务器可以完全访问站点的文件和目录：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">sudo chown -R apache: /var/www/html/example.com</code></pre></div>
-<h2 id="配置apache">配置Apache</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">wget -q -O - &quot;http://wordpress.org/latest.tar.gz&quot; | sudo tar -xzf - -C /var/www/html --transform s/wordpress/example.com/
+</code></pre><p>设置正确的权限，以便Web服务器可以完全访问站点的文件和目录：</p>
+<pre><code class="language-output" data-lang="output">sudo chown -R apache: /var/www/html/example.com
+</code></pre><h2 id="apache">配置Apache</h2>
 <p>到目前为止，您应该已经在系统上安装了Apache with SSL证书，如果没有，请检查本教程的先决条件。</p>
-
 <p>打开文本编辑器并编辑域的<a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">Apache虚拟主机配置</a>：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/httpd/conf.d/example.com.conf</code></pre></div>
-<p>不要忘记替换<code>example.com</code>您的Wordpress域并设置SSL证书文件的正确路径。</p>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/httpd/conf.d/example.com.conf
+</code></pre><p>不要忘记替换<code>example.com</code>您的Wordpress域并设置SSL证书文件的正确路径。</p>
 <p>/etc/httpd/conf.d/example.com.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
   <span class="nb">ServerName</span> example.com
   <span class="nb">ServerAlias</span> www.example.com
 
   <span class="nb">Redirect</span> permanent / https://example.com/
-<span class="nt">&lt;/VirtualHost&gt;</span>
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
 
 <span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
   <span class="nb">ServerName</span> example.com
@@ -215,7 +193,7 @@
 
   <span class="nt">&lt;If</span> <span class="s">&#34;%{HTTP_HOST} == &#39;www.example.com&#39;&#34;</span><span class="nt">&gt;</span>
     <span class="nb">Redirect</span> permanent / https://example.com/
-  <span class="nt">&lt;/If&gt;</span>
+  <span class="nt">&lt;/If</span><span class="s"></span><span class="nt">&gt;</span>
 
   <span class="nb">DirectoryIndex</span> index.html index.php
   <span class="nb">DocumentRoot</span> <span class="sx">/var/www/html/example.com</span>
@@ -232,61 +210,36 @@
       <span class="nb">Options</span> FollowSymLinks
       <span class="nb">AllowOverride</span> <span class="k">All</span>
       <span class="nb">Require</span> <span class="k">all</span> granted
-  <span class="nt">&lt;/Directory&gt;</span>
+  <span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
 
-<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
-<p>配置将告诉Apache重定向<code>http</code>到<code>https</code>和<code>www</code>到<code>non-www</code>您的域的版本。</p>
-
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+</code></pre></div><p>配置将告诉Apache重定向<code>http</code>到<code>https</code>和<code>www</code>到<code>non-www</code>您的域的版本。</p>
 <p>重新启动Apache服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd</code></pre></div>
-<h2 id="完成wordpress安装">完成WordPress安装</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd
+</code></pre><h2 id="wordpress1">完成WordPress安装</h2>
 <p>现在已下载Wordpress并配置了Apache服务器，您可以通过Web界面完成安装。</p>
-
 <p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-language-selector.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-language-selector.jpg" alt=""></p>
 <p>选择您要使用的语言，然后单击<code>Continue</code>按钮。</p>
-
 <p>接下来，您将看到以下信息页面，单击<code>Let's go!</code>按钮。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-information.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-information.jpg" alt=""></p>
 <p>在下一个屏幕上，安装向导将要求您输入数据库连接详细信息。输入您之前创建的MySQL用户和数据库详细信息。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-database-information.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-database-information.jpg" alt=""></p>
 <p>单击<code>Run the Installation</code>按钮启动WordPress安装。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-run-installation.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-run-installation.jpg" alt=""></p>
 <p>在下一步中，您需要输入WordPress站点的名称并选择用户名（出于安全考虑，请不要使用“admin”）。</p>
-
 <p>安装程序将自动为您生成强密码。不要忘记保存此密码。您也可以自己设置密码。</p>
-
 <p>输入您的电子邮件地址，然后选择是否要阻止搜索引擎索引网站（不推荐）。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-welcome.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-welcome.jpg" alt=""></p>
 <p>单击<code>Install WordPress</code>，安装完成后，您将进入一个页面，通知您已安装WordPress。</p>
-
 <p>要访问WordPress登录页面，请单击<code>Log in</code>按钮。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-completed.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/install-wordpress-completed.jpg" alt=""></p>
 <p>输入您的用户名和密码。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/wordpress-login-form.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/wordpress-login-form.jpg" alt=""></p>
 <p>您将被重定向到WordPress管理仪表板。</p>
-
-<figure><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/wordpress-dashboard.jpg" alt=""></figure>
-
+<p><img src="/images/linux/how-to-install-wordpress-with-apache-on-centos-7/wordpress-dashboard.jpg" alt=""></p>
 <p>从这里开始，您可以通过安装新主题和插件来开始自定义WordPress安装。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading1">结论</h2>
 <p>恭喜，您已在CentOS 7服务器上成功安装了带有Apache的WordPress。<a href="https://codex.wordpress.org/Getting_Started_with_WordPress">第一步使用WordPress</a>是一个很好的起点，可以了解如何开始使用WordPress。</p>
       </div><ul class="pa0">
   
@@ -376,17 +329,14 @@
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#创建mysql数据库">创建MySQL数据库</a></li>
-<li><a href="#正在下载wordpress">正在下载Wordpress</a></li>
-<li><a href="#配置apache">配置Apache</a></li>
-<li><a href="#完成wordpress安装">完成WordPress安装</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#mysql">创建MySQL数据库</a></li>
+    <li><a href="#wordpress">正在下载Wordpress</a></li>
+    <li><a href="#apache">配置Apache</a></li>
+    <li><a href="#wordpress1">完成WordPress安装</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

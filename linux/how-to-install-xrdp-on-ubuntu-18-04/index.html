@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,36 +30,29 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上安装 Xrdp 服务器(远程桌面)" />
 <meta property="og:description" content="Xrdp 是 Microsoft 远程桌面协议 (RDP) 的开源实现，允许您以图形方式控制远程系统。使用 RDP ，您可以登录到远程计算机并创建一个真实的桌面会话，就像您已登录到本地计算机一样。
-
 本教程介绍如何在 Ubuntu 18.04 上安装和配置 Xrdp 服务器。
-
 如果您想要远程桌面访问的开源解决方案，请使用 VNC 。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-install-xrdp-on-ubuntu-18-04/" />
+<meta property="og:image" content="/linux/how-to-install-xrdp-on-ubuntu-18-04/featured.jpg"/>
 <meta property="article:published_time" content="2019-07-29T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-07-29T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上安装 Xrdp 服务器(远程桌面)">
 <meta itemprop="description" content="Xrdp 是 Microsoft 远程桌面协议 (RDP) 的开源实现，允许您以图形方式控制远程系统。使用 RDP ，您可以登录到远程计算机并创建一个真实的桌面会话，就像您已登录到本地计算机一样。
-
 本教程介绍如何在 Ubuntu 18.04 上安装和配置 Xrdp 服务器。
-
 如果您想要远程桌面访问的开源解决方案，请使用 VNC 。">
-
-
 <meta itemprop="datePublished" content="2019-07-29T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-29T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="979">
+<meta itemprop="image" content="/linux/how-to-install-xrdp-on-ubuntu-18-04/featured.jpg">
 
 
 
-<meta itemprop="keywords" content="ubuntu,rdp," />
-<meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="ubuntu,rdp," /><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/linux/how-to-install-xrdp-on-ubuntu-18-04/featured.jpg"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上安装 Xrdp 服务器(远程桌面)"/>
 <meta name="twitter:description" content="Xrdp 是 Microsoft 远程桌面协议 (RDP) 的开源实现，允许您以图形方式控制远程系统。使用 RDP ，您可以登录到远程计算机并创建一个真实的桌面会话，就像您已登录到本地计算机一样。
-
 本教程介绍如何在 Ubuntu 18.04 上安装和配置 Xrdp 服务器。
-
 如果您想要远程桌面访问的开源解决方案，请使用 VNC 。"/>
 
   </head>
@@ -154,75 +147,52 @@
           
   
           <p>Xrdp 是 Microsoft 远程桌面协议 (RDP) 的开源实现，允许您以图形方式控制远程系统。使用 RDP ，您可以登录到远程计算机并创建一个真实的桌面会话，就像您已登录到本地计算机一样。</p>
-
 <p>本教程介绍如何在 Ubuntu 18.04 上安装和配置 Xrdp 服务器。</p>
-
 <p>如果您想要远程桌面访问的开源解决方案，请使用 <a href="/linux/how-to-install-and-configure-vnc-on-ubuntu-18-04/">VNC</a> 。</p>
-
-<h2 id="安装桌面环境">安装桌面环境</h2>
-
+<h2 id="heading">安装桌面环境</h2>
 <p>通常， Linux 服务器没有安装桌面环境。我们的第一步是安装 X11 和一个轻量级桌面环境，它将充当 Xrdp 的后端。</p>
-
 <p>Ubuntu 存储库中有几个桌面环境 (DE) 。我们将安装 <a href="https://xfce.org/">Xfce</a> 。它是一个快速，稳定和轻量级的桌面环境，非常适合在远程服务器上使用。</p>
-
 <p>以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份键入以下命令，以在服务器上安装 Xfce ：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils</code></pre></div>
-<p>根据您的系统，下载和安装 Xfce 软件包需要一些时间。</p>
-
-<h2 id="安装-xrdp">安装 Xrdp</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils
+</code></pre><p>根据您的系统，下载和安装 Xfce 软件包需要一些时间。</p>
+<h2 id="-xrdp">安装 Xrdp</h2>
 <p>Xrdp 包在默认的 Ubuntu 存储库中可用。要安装它，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apt install xrdp</code></pre></div>
-<p>安装过程完成后， Xrdp 服务将自动启动。您可以通过键入以下内容来验证 Xrdp 是否正在运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-condole-bash" data-lang="condole-bash">sudo systemctl status xrdp</code></pre></div>
-<p>输出看起来像这样：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">● xrdp.service - xrdp daemon
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install xrdp
+</code></pre><p>安装过程完成后， Xrdp 服务将自动启动。您可以通过键入以下内容来验证 Xrdp 是否正在运行：</p>
+<pre><code class="language-condole-bash" data-lang="condole-bash">sudo systemctl status xrdp
+</code></pre><p>输出看起来像这样：</p>
+<pre><code class="language-output" data-lang="output">● xrdp.service - xrdp daemon
    Loaded: loaded (/lib/systemd/system/xrdp.service; enabled; vendor preset: enabled)
    Active: active (running) since Sun 2019-07-28 22:40:53 UTC; 4min 21s ago
      Docs: man:xrdp(8)
            man:xrdp.ini(5)
-  ...</code></pre></div>
-<h2 id="配置-xrdp">配置 Xrdp</h2>
-
+  ...
+</code></pre><h2 id="-xrdp1">配置 Xrdp</h2>
 <p>Xrdp 配置文件位于 <code>/etc/xrdp</code> 目录中。对于基本的 Xrdp 连接，我们只需要配置 Xrdp 即可使用 Xfce 。为此，请在<a href="/linux/how-to-use-nano-text-editor/">文本编辑器中</a>打开以下文件：</p>
-
 <p>文件 /etc/xrdp/xrdp.ini</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/xrdp/xrdp.ini</code></pre></div>
-<p>在文件末尾添加以下行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">exec startxfce4 </span></code></pre></div>
-<p>保存文件并重新启动 Xrdp 服务：</p>
-<div class="highlight"><pre class="chroma"><code class="language-condole-bash" data-lang="condole-bash">sudo systemctl restart xrdp</code></pre></div>
-<h2 id="配置防火墙">配置防火墙</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/xrdp/xrdp.ini
+</code></pre><p>在文件末尾添加以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">exec startxfce4 </span>
+</code></pre></div><p>保存文件并重新启动 Xrdp 服务：</p>
+<pre><code class="language-condole-bash" data-lang="condole-bash">sudo systemctl restart xrdp
+</code></pre><h2 id="heading1">配置防火墙</h2>
 <p>默认情况下， Xrdp 侦听 <code>3389</code> 所有接口上的端口。如果您<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">在 Ubuntu 服务器上</a>运行<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">防火墙</a>(您应该总是这样做)，则需要添加一个规则来启用 Xrdp 端口上的流量。</p>
-
 <p>要允许从特定 IP 地址或 IP 范围访问 Xrdp 服务器，请在此示例 <code>192.168.1.0/24</code> 中运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow from 192.168.1.0/24 to any port 3389</code></pre></div>
-<p>如果您想允许从任何地方进行访问(出于安全原因而非常不鼓励)，请运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 3389</code></pre></div>
-<p>为了提高安全性，您可以考虑将 Xrdp 设置为仅在 localhost 上侦听并创建一个 SSH 隧道，该隧道将安全地将来自本地计算机的端口 <code>3389</code> 上的流量转发到同一端口上的服务器。另一个安全选项是<a href="/linux/how-to-set-up-an-openvpn-server-on-ubuntu-18-04/">安装 OpenVPN</a> 并通过专用网络连接到 Xrdp 服务器。</p>
-
-<h2 id="连接到-xrdp-服务器">连接到 Xrdp 服务器</h2>
-
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow from 192.168.1.0/24 to any port 3389
+</code></pre><p>如果您想允许从任何地方进行访问(出于安全原因而非常不鼓励)，请运行：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 3389
+</code></pre><p>为了提高安全性，您可以考虑将 Xrdp 设置为仅在 localhost 上侦听并创建一个 SSH 隧道，该隧道将安全地将来自本地计算机的端口 <code>3389</code> 上的流量转发到同一端口上的服务器。另一个安全选项是<a href="/linux/how-to-set-up-an-openvpn-server-on-ubuntu-18-04/">安装 OpenVPN</a> 并通过专用网络连接到 Xrdp 服务器。</p>
+<h2 id="-xrdp-">连接到 Xrdp 服务器</h2>
 <p>现在您已经设置了 Xrdp 服务器，现在是时候打开 Xrdp 客户端并连接到服务器了。</p>
-
 <p>如果您是 Windows 用户，则可以使用默认 RDP 客户端。在 Windows 搜索栏中键入 “remote” ，然后单击“远程桌面连接”。这将打开 RDP 客户端。在计算机字段中输入远程服务器 IP 地址，然后单击“连接”。</p>
-
-<figure><img src="rdp-client.jpg" alt=""></figure>
-
+<p><img src="rdp-client.jpg" alt=""></p>
 <p>在登录屏幕中输入您的<a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">用户名</a>和密码，然后单击“确定”。</p>
-
-<figure><img src="rdp-login.jpg" alt=""></figure>
-
+<p><img src="rdp-login.jpg" alt=""></p>
 <p>登录后，您应该会看到默认的 Xfce 桌面。它应该看起来像这样：</p>
-
-<figure><img src="xrdp-xfce-desktop.jpg" alt=""></figure>
-
+<p><img src="xrdp-xfce-desktop.jpg" alt=""></p>
 <p>您现在可以使用键盘和鼠标从本地计算机开始与远程 XFCE 桌面交互。</p>
-
-<h2 id="结论">结论</h2>
-
+<h2 id="heading2">结论</h2>
 <p>安装 Xrdp 服务器允许您使用易于使用的图形界面从本地桌面计算机管理 Ubuntu 18.04 服务器。</p>
       </div><ul class="pa0">
   
@@ -296,17 +266,14 @@ sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils</code></pre
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#安装桌面环境">安装桌面环境</a></li>
-<li><a href="#安装-xrdp">安装 Xrdp</a></li>
-<li><a href="#配置-xrdp">配置 Xrdp</a></li>
-<li><a href="#配置防火墙">配置防火墙</a></li>
-<li><a href="#连接到-xrdp-服务器">连接到 Xrdp 服务器</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">安装桌面环境</a></li>
+    <li><a href="#-xrdp">安装 Xrdp</a></li>
+    <li><a href="#-xrdp1">配置 Xrdp</a></li>
+    <li><a href="#heading1">配置防火墙</a></li>
+    <li><a href="#-xrdp-">连接到 Xrdp 服务器</a></li>
+    <li><a href="#heading2">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>

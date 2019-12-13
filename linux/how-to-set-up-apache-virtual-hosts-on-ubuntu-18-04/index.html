@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.59.0" />
+    <meta name="generator" content="Hugo 0.60.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,9 +30,7 @@
 
     <meta property="og:title" content="如何在 Ubuntu 18.04 上设置 Apache 虚拟主机" />
 <meta property="og:description" content="在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。
-
 Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。
-
 虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/" />
@@ -40,25 +38,18 @@ Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚�
 <meta property="article:modified_time" content="2019-04-12T05:00:00+08:00" />
 <meta itemprop="name" content="如何在 Ubuntu 18.04 上设置 Apache 虚拟主机">
 <meta itemprop="description" content="在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。
-
 Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。
-
 虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。">
-
-
 <meta itemprop="datePublished" content="2019-04-12T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-12T05:00:00&#43;08:00" />
 <meta itemprop="wordCount" content="1178">
 
 
 
-<meta itemprop="keywords" content="ubuntu,apache," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="ubuntu,apache," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何在 Ubuntu 18.04 上设置 Apache 虚拟主机"/>
 <meta name="twitter:description" content="在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。
-
 Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。
-
 虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。"/>
 
   </head>
@@ -153,23 +144,16 @@ Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚�
           
   
           <p>在本教程中，我们将提供有关如何在 Ubuntu 18.04 上设置 Apache 虚拟主机的分步说明。</p>
-
 <p>Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档根目录（包含网站文件的目录），为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。</p>
-
 <p>虽然本教程是为 Ubuntu 18.04 Bionic Beaver 编写的，但 Ubuntu 16.04 Xenial Xerus 可以使用相同的步骤。</p>
-
-<h2 id="先决条件">先决条件</h2>
-
+<h2 id="heading">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
-
 <ul>
 <li>您有一个指向公共服务器 IP 的域名。我们会用的 <code>example.com</code> 。</li>
 <li>您已经按照<a href="/linux/how-to-install-apache-on-ubuntu-18-04/">这些说明</a>安装了 Apache  。</li>
 <li>您以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</li>
 </ul>
-
-<h2 id="创建目录结构">创建目录结构</h2>
-
+<h2 id="heading1">创建目录结构</h2>
 <p>文档根是用来存储带有域名的网站的文件的目录，目录中的文件是用来响应请求的。您可以将文档根目录设置为您想要的任何位置，在本指南中我们将使用以下目录结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/var/www/
 ├── domain1.com
@@ -177,32 +161,27 @@ Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚�
 ├── domain2.com
 │   └── public_html
 ├── domain3.com
-│   └── public_html</code></pre></div>
-<p>基本上，我们将为我们想要服务器上托管的每个域名在 <code>/var/www</code> 目录中创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 存储域网站文件的目录。</p>
-
-<p>首先为域名 <code>example.com</code> <!--link:how-to-create-directories-in-linux-with-the-mkdir-command-->创建根目录<!--link-->：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.com/public_html</code></pre></div>
-<p>出于测试目的，还要在域名文档根目录中创建一个文件 <code>index.html</code> 。</p>
-
+│   └── public_html
+</code></pre></div><p>基本上，我们将为我们想要服务器上托管的每个域名在 <code>/var/www</code> 目录中创建一个单独的目录。在每个目录中，我们将创建一个 <code>public_html</code> 存储域网站文件的目录。</p>
+<p>首先为域名 <code>example.com</code> <!-- raw HTML omitted -->创建根目录<!-- raw HTML omitted -->：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.com/public_html
+</code></pre><p>出于测试目的，还要在域名文档根目录中创建一个文件 <code>index.html</code> 。</p>
 <p>打开编辑器并创建演示文件 <code>/var/www/example.com/public_html/index.html</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div>
-<p>在本指南中，我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
-
-<p>为避免任何权限问题，我们为域名文档根目录<!--link:linux-chown-command-->更改所有权<!--link-->为 apache user （<code>www-data</code>）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo chown -R www-data: /var/www/example.com</code></pre></div>
-<h2 id="创建虚拟主机">创建虚拟主机</h2>
-
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><p>在本指南中，我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
+<p>为避免任何权限问题，我们为域名文档根目录<!-- raw HTML omitted -->更改所有权<!-- raw HTML omitted -->为 apache user （<code>www-data</code>）：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo chown -R www-data: /var/www/example.com
+</code></pre><h2 id="heading2">创建虚拟主机</h2>
 <p>默认情况下，在 Ubuntu 系统上， Apache 虚拟主机配置文件存储在 <code>/etc/apache2/sites-available</code> 目录中，可以通过创建指向 <code>/etc/apache2/sites-enabled</code> 目录的符号链接来启用。</p>
-
 <p>打开您选择的编辑器并创建以下基本虚拟主机配置文件： <code>/etc/apache2/sites-available/example.com.conf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
     <span class="nb">ServerName</span> example.com
@@ -213,45 +192,39 @@ Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚�
     <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com/public_html</span><span class="nt">&gt;</span>
         <span class="nb">Options</span> -Indexes +FollowSymLinks
         <span class="nb">AllowOverride</span> <span class="k">All</span>
-    <span class="nt">&lt;/Directory&gt;</span>
+    <span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
 
     <span class="nb">ErrorLog</span> ${APACHE_LOG_DIR}/example.com-error.log
     <span class="nb">CustomLog</span> ${APACHE_LOG_DIR}/example.com-access.log combined
-<span class="nt">&lt;/VirtualHost&gt;</span></code></pre></div>
-<ul>
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+</code></pre></div><ul>
 <li><code>ServerName</code>：应与此虚拟主机配置匹配的域。这应该是您的域名。</li>
 <li><code>ServerAlias</code>：所有其他应与此虚拟主机匹配的 <code>www</code> 域，例如子域。</li>
 <li><code>DocumentRoot</code>： Apache 中提供网站文件的目录。</li>
 <li><code>Options</code>：<a href="https://httpd.apache.org/docs/2.4/mod/core.html#options">此指令</a>控制特定目录中可用的服务器功能。
-
 <ul>
 <li><code>-Indexes</code>：防止目录列表。</li>
 <li><code>FollowSymLinks</code>：此选项告诉您的 Web 服务器遵循符号链接。</li>
-</ul></li>
+</ul>
+</li>
 <li><code>AllowOverride</code>：指定 <code>.htaccess</code> 文件中声明的哪些指令可以覆盖配置指令。</li>
 <li><code>ErrorLog</code>，<code>CustomLog</code>：指定日志文件的位置。</li>
 </ul>
-
 <p>您可以根据需要命名配置文件，但最佳做法是使用域名作为虚拟主机配置文件的名称。</p>
-
 <p>要启用新的虚拟主机文件，我们需要创建从虚拟主机文件到 <code>sites-enabled</code> 目录的符号链接，该目录在启动期间由 apache2 读取。</p>
-
 <p>启用虚拟主机的最简单方法是使用 <code>a2ensite</code> 帮助程序：</p>
-<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">sudo</span> a2ensite example.com</code></pre></div>
-<p>另一个选项是手动<!--link:how-to-create-symbolic-links-in-linux-using-the-ln-command-->创建符号链接<!--link-->，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo ln -s /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-enabled/</code></pre></div>
-<p>完成后，测试配置是否存在任何语法错误：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo apachectl configtest</code></pre></div>
-<p>如果没有错误，您将看到以下输出：</p>
-<div class="highlight"><pre class="chroma"><code class="language-output" data-lang="output">Syntax OK</code></pre></div>
-<p>重新启动 Apache 服务以使更改生效：</p>
-<div class="highlight"><pre class="chroma"><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2</code></pre></div>
-<p>最后要验证一切是否按预期工作，在您选择的浏览器中打开 <code>http://example.com</code> ，您将看到如下内容：</p>
-
-<figure><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/apache-welcome-page.jpg" alt=""></figure>
-
-<h2 id="结论">结论</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">sudo</span> a2ensite example.com
+</code></pre></div><p>另一个选项是手动<!-- raw HTML omitted -->创建符号链接<!-- raw HTML omitted -->，如下所示：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo ln -s /etc/apache2/sites-available/example.com.conf /etc/apache2/sites-enabled/
+</code></pre><p>完成后，测试配置是否存在任何语法错误：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo apachectl configtest
+</code></pre><p>如果没有错误，您将看到以下输出：</p>
+<pre><code class="language-output" data-lang="output">Syntax OK
+</code></pre><p>重新启动 Apache 服务以使更改生效：</p>
+<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
+</code></pre><p>最后要验证一切是否按预期工作，在您选择的浏览器中打开 <code>http://example.com</code> ，您将看到如下内容：</p>
+<p><img src="/images/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/apache-welcome-page.jpg" alt=""></p>
+<h2 id="heading3">结论</h2>
 <p>您已经学习了如何创建 apache 虚拟主机配置以在单个 Ubuntu 服务器上托管多个域。您可以重复上面概述的步骤，并为您的所有域创建其他虚拟主机。</p>
       </div><ul class="pa0">
   
@@ -325,15 +298,12 @@ Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚�
   <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#先决条件">先决条件</a></li>
-<li><a href="#创建目录结构">创建目录结构</a></li>
-<li><a href="#创建虚拟主机">创建虚拟主机</a></li>
-<li><a href="#结论">结论</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#heading1">创建目录结构</a></li>
+    <li><a href="#heading2">创建虚拟主机</a></li>
+    <li><a href="#heading3">结论</a></li>
+  </ul>
 </nav>
   </div>
   </div></aside>
