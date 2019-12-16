@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Debian 10 Linux 上安装和使用 Docker Compose |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.60.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Debian 10 Linux 上安装和使用 Docker Compose" />
+<meta property="og:description" content="本教程介绍了如何在 Debian 10 Buster 上安装最新版本的 Docker Compose 。我们还将探讨基本的 Docker Compose 概念和命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-and-use-docker-compose-on-debian-10/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-and-use-docker-compose-on-debian-10/featured.jpg"/>
+<meta property="article:published_time" content="2019-12-16T12:00:00+08:00" />
+<meta property="article:modified_time" content="2019-12-16T12:00:00+08:00" />
+<meta itemprop="name" content="在 Debian 10 Linux 上安装和使用 Docker Compose">
+<meta itemprop="description" content="本教程介绍了如何在 Debian 10 Buster 上安装最新版本的 Docker Compose 。我们还将探讨基本的 Docker Compose 概念和命令。">
+<meta itemprop="datePublished" content="2019-12-16T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-16T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1690">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-and-use-docker-compose-on-debian-10/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="docker,debian," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-and-use-docker-compose-on-debian-10/featured.jpg"/>
+<meta name="twitter:title" content="在 Debian 10 Linux 上安装和使用 Docker Compose"/>
+<meta name="twitter:description" content="本教程介绍了如何在 Debian 10 Buster 上安装最新版本的 Docker Compose 。我们还将探讨基本的 Docker Compose 概念和命令。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Debian 10 Linux 上安装和使用 Docker Compose</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-12-16T12:00:00&#43;08:00">2019年12月16日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本教程介绍了如何在 Debian 10 Buster 上安装最新版本的 Docker Compose 。我们还将探讨基本的 Docker Compose 概念和命令。</p>
+<p>Docker 是一个容器化平台，可让您快速构建，测试和部署应用程序，作为可在几乎任何地方运行的可移植，自给自足的容器。</p>
+<p><a href="https://github.com/docker/compose">Docker Compose</a> 是一个工具，可用于定义和编排多容器 Docker 应用程序。它使用 YAML 文件来配置应用程序的容器，网络和卷。</p>
+<p>Compose 可以用于各种场景，单个主机应用程序部署，自动化测试和本地开发是 Docker Compose 最受欢迎的用例。</p>
+<h2 id="heading">先决条件</h2>
+<p>在继续之前，请确保您满足以下先决条件：</p>
+<ul>
+<li>以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 特权的用户</a>身份登录。</li>
+<li>您<a href="/linux/how-to-install-and-use-docker-on-debian-10/">在 Debian 10 机器上安装了 Docker</a> 。</li>
+</ul>
+<h2 id="-debian-10--docker-compose">在 Debian 10 上安装 Docker Compose</h2>
+<p>Docker Compose 安装软件包可在 Debian 10 官方存储库中找到，但不一定总是最新版本。推荐的方法是从 Docker 的 GitHub 存储库安装 Docker Compose 。</p>
+<p>在撰写本文时，最新的 Docker Compose 稳定版本是 <code>1.23.1</code> 。在下载 Compose 二进制文件之前，请访问 <a href="https://github.com/docker/compose/releases">GitHub 上的 Compose 存储库发行页面</a>，并检查是否有新版本可下载。</p>
+<p>使用以下步骤在 Debian 10 上安装最新版本的 Docker Compose ：</p>
+<ol>
+<li>使用 <a href="/linux/wget-command-examples/"><code>wget</code></a> 或 <a href="/linux/curl-command-examples/"><code>curl</code></a> 将 Docker Compose 二进制文件下载到<code>/usr/local/bin</code> 目录中 ：</li>
+</ol>
+<pre><code>```bash
+sudo curl -L &quot; https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m) &quot;  -o /usr/local/bin/docker-compose 
+```
+</code></pre>
+<ol start="2">
+<li>
+<p>使用 <a href="/linux/chmod-command-in-linux/"><code>chmod</code></a> 使撰写二进制可执行文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chmod +x /usr/local/bin/docker-compose
+</code></pre></div></li>
+<li>
+<p>要验证安装，请使用以下命令打印出 Compose 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose --version
+</code></pre></div><p>输出将如下所示：</p>
+<pre><code class="language-output" data-lang="output">docker-compose version 1.23.1, build b02f1306
+</code></pre></li>
+</ol>
+<h2 id="docker-compose-">Docker Compose 入门</h2>
+<p>在本节中，我们将展示如何使用 Docker Compose 设置本地 WordPress 开发环境。</p>
+<p>为项目创建一个目录并<a href="/linux/linux-cd-command/">导航到其中</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mkdir wordpress_app <span class="o">&amp;&amp;</span> <span class="nb">cd</span> wordpress_app
+</code></pre></div><p>打开文本编辑器，然后<a href="/linux/create-a-file-in-linux/">创建一个文件</a>，名为的<code>docker-compose.yml</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nano docker-compose.yml
+</code></pre></div><p>粘贴以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-YAML" data-lang="YAML">version<span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.7&#39;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>services<span class="p">:</span><span class="w">
+</span><span class="w">  </span>db<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>mysql<span class="p">:</span><span class="m">8.0</span><span class="w">
+</span><span class="w">    </span>command<span class="p">:</span><span class="w"> </span>--default-authentication-plugin=mysql_native_password<span class="w">
+</span><span class="w">    </span>restart<span class="p">:</span><span class="w"> </span>always<span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>db_data<span class="p">:</span>/var/lib/mysql<span class="w">
+</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
+</span><span class="w">      </span>MYSQL_ROOT_PASSWORD<span class="p">:</span><span class="w"> </span>password<span class="w">
+</span><span class="w">      </span>MYSQL_DATABASE<span class="p">:</span><span class="w"> </span>wordpress<span class="w">
+</span><span class="w">
+</span><span class="w">  </span>wordpress<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>wordpress<span class="w">
+</span><span class="w">    </span>restart<span class="p">:</span><span class="w"> </span>always<span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>./wp_data<span class="p">:</span>/var/www/html<span class="w">
+</span><span class="w">    </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;8080:80&#34;</span><span class="w">
+</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
+</span><span class="w">      </span>WORDPRESS_DB_HOST<span class="p">:</span><span class="w"> </span>db<span class="p">:</span><span class="m">3306</span><span class="w">
+</span><span class="w">      </span>WORDPRESS_DB_NAME<span class="p">:</span><span class="w"> </span>wordpress<span class="w">
+</span><span class="w">      </span>WORDPRESS_DB_USER<span class="p">:</span><span class="w"> </span>root<span class="w">
+</span><span class="w">      </span>WORDPRESS_DB_PASSWORD<span class="p">:</span><span class="w"> </span>password<span class="w">
+</span><span class="w">    </span>depends_on<span class="p">:</span><span class="w">
+</span><span class="w">       </span>-<span class="w"> </span>db<span class="w">
+</span><span class="w">
+</span><span class="w"></span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">    </span>db_data<span class="p">:</span><span class="w">
+</span><span class="w">    </span>wp_data<span class="p">:</span><span class="w">
+</span></code></pre></div><p>让我们逐行解释代码</p>
+<p>第一行指定 <a href="https://docs.docker.com/compose/compose-file/compose-versioning/">Compose 文件的版本</a>。有多种不同版本的 Compose 文件格式，支持特定的 Docker 版本。</p>
+<p>接下来，我们定义两个服务: <code>db</code> 和 <code>wordpress</code> 。运行 Docker Compose 时，每个服务都会创建一个单独的容器。</p>
+<p><strong><code>db</code> 服务</strong>：</p>
+<ul>
+<li>镜像被设置为 <a href="https://hub.docker.com/_/mysql/"><code>mysql:8.0</code></a> 镜像。如果不存在该映像，则 Compose 将从 Docker Hub 公共存储库中提取该映像。以 <code>command</code> 开头的行将覆盖默认命令。</li>
+<li><code>restart: always</code> 策略指示 Compose 如果发生故障，请重新启动容器。</li>
+<li>容器将使用命名卷 <code>db_data</code> 来持久化数据库。</li>
+<li>定义 <code>mysql:8.0</code> 镜像的环境变量。</li>
+</ul>
+<p>该 <code>wordpress</code> 服务：</p>
+<ul>
+<li>使用 <a href="https://hub.docker.com/_/wordpress/"><code>wordpress</code></a> 镜像。</li>
+<li>将主机上的目录挂载到 <code>/var/lib/mysql</code> 容器内部 <code>wp_data</code> 。</li>
+<li>将容器上的裸露 <code>8080</code> 端口转发到主机上的 <code>80</code> 端口。</li>
+<li>定义 <code>wordpress</code> 镜像的<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>。</li>
+<li>该 <code>depends_on</code> 指令定义了两个服务之间的依赖关系。在此示例中， <code>db</code> 将在 <code>wordpress</code> 之前启动。</li>
+</ul>
+<p>在项目目录中，通过运行以下命令来启动 WordPress 堆栈：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+] /usr/sbin/mysqld: ready for connections. Version: &#39;8.0.18&#39;  socket: &#39;/var/run/mysqld/mysqld.sock&#39;  port: 3306  MySQL Community Server - GPL.
+db_1_99946702ac7e | 2019-12-15T21:37:29.109255Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: &#39;/var/run/mysqld/mysqlx.sock&#39; bind-address: &#39;::&#39; port: 33060
+...
+</code></pre></div><p>Docker Compose 将提取镜像，启动容器，并在您的项目目录中创建目录 <code>wp_data</code> 。</p>
+<p>在浏览器中输入 <code>http://0.0.0.0:8080/</code> ，您将看到标准的 WordPress 安装屏幕。</p>
+<p>至此， WordPress 应用程序已启动并运行，您可以开始使用它了。</p>
+<p>要停止撰写，请按 <code>CTRL+C</code> 。</p>
+<p>您还可以使用以下 <code>-d</code> 选项以分离模式启动 Compose  ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d
+</code></pre></div><p>要查看正在运行的 Docker 容器，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose ps
+</code></pre></div><pre><code class="language-output" data-lang="output">                 Name                               Command               State          Ports        
+------------------------------------------------------------------------------------------------------
+wordpress_app_db_1_99946702ac7e          docker-entrypoint.sh --def ...   Up      3306/tcp, 33060/tcp 
+wordpress_app_wordpress_1_a428d8408817   docker-entrypoint.sh apach ...   Up      0.0.0.0:8080-&gt;80/tcp 
+
+</code></pre><p>要在Compose以分离模式运行时停止服务，请使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose stop
+</code></pre></div><p>如果要完全删除容器，请使用以下<code>down</code>选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose down
+</code></pre></div><p>通过 <code>--volumes</code> 选项还会删除数据量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose down --volumes
+</code></pre></div><h2 id="-docker-compose">卸载 Docker Compose</h2>
+<p>如果需要卸载 Docker Compose，只需输入以下内容即可<a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">删除</a>二进制文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm /usr/local/bin/docker-compose
+</code></pre></div><h2 id="heading1">结论</h2>
+<p>要在 Debian 10 上安装 Docker Compose，只需将二进制文件下载到<a href="/linux/how-to-add-directory-to-path-in-linux/">系统路径</a>中的目录中并使其具有可执行权限即可。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/docker" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">docker</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/debian" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-10/">如何在 Debian 10 Linux 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-debian-9/">如何在Debian 9上安装和使用Docker Compose</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-on-debian-9/">如何在 Debian 9 上安装和使用 Docker</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-debian-10/">在 Debian 10 Linux 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/docker-run-command/">Docker run 命令用法实例</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redis-on-debian-10/">在 Debian 10 Linux 上安装和配置 Redis</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-10/">在Debian 10 Linux 上使用 Let&#39;s Encrypt SSL 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-docker-containers/">Docker 查看容器命令详解</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-php-on-debian-10/">如何在 Debian 10 Linux 上安装 PHP</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-anaconda-on-debian-10/">Debian 10 上安装 Anaconda 教程</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading">先决条件</a></li>
+    <li><a href="#-debian-10--docker-compose">在 Debian 10 上安装 Docker Compose</a></li>
+    <li><a href="#docker-compose-">Docker Compose 入门</a></li>
+    <li><a href="#-docker-compose">卸载 Docker Compose</a></li>
+    <li><a href="#heading1">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
