@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在CentOS 8上安装Yarn |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.60.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在CentOS 8上安装Yarn" />
+<meta property="og:description" content="本教程将指导您完成在 CentOS 8 上安装 Yarn。我们还将介绍如何使用 Yarn 创建新项目以及添加/删除依赖项的基础知识。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-yarn-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-yarn-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2019-12-20T20:00:00+08:00" />
+<meta property="article:modified_time" content="2019-12-20T20:00:00+08:00" />
+<meta itemprop="name" content="在CentOS 8上安装Yarn">
+<meta itemprop="description" content="本教程将指导您完成在 CentOS 8 上安装 Yarn。我们还将介绍如何使用 Yarn 创建新项目以及添加/删除依赖项的基础知识。">
+<meta itemprop="datePublished" content="2019-12-20T20:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-20T20:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="891">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-yarn-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="nodejs,npm,yarn,centos," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-yarn-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在CentOS 8上安装Yarn"/>
+<meta name="twitter:description" content="本教程将指导您完成在 CentOS 8 上安装 Yarn。我们还将介绍如何使用 Yarn 创建新项目以及添加/删除依赖项的基础知识。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在CentOS 8上安装Yarn</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2019-12-20T20:00:00&#43;08:00">2019年12月20日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本教程将指导您完成在 CentOS 8 上安装 <a href="https://yarnpkg.com/">Yarn</a>。我们还将介绍如何使用 Yarn 创建新项目以及添加/删除依赖项的基础知识。</p>
+<p>Yarn 是与 npm 兼容的 JavaScript 软件包管理器，可帮助您自动化安装，更新，配置和删除 npm 软件包的过程。</p>
+<p>它的创建是为了解决 npm 的一系列问题，例如通过并行化操作并减少与网络连接有关的错误来加快软件包的安装过程。</p>
+<h2 id="-centos-8--yarn">在 CentOS 8 上安装 Yarn</h2>
+<p>以 root 或具有 <a href="/linux/create-a-sudo-user-on-centos/">sudo 特权的</a>用户执行以下步骤，以在 CentOS 8 上安装 Yarn ：</p>
+<ol>
+<li>
+<p>如果系统上未安装 <a href="/linux/how-to-install-node-js-on-centos-7/">Node.js</a>，请通过以下命令安装 Node.js ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo dnf install @nodejs 
+</code></pre></div><p>在撰写本文时， Centos8 存储库中的 Node.js 版本为 v10.x 。</p>
+</li>
+<li>
+<p>启用 Yarn 存储库并导入存储库的 GPG 密钥：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo <span class="p">|</span>  sudo tee /etc/yum.repos.d/yarn.repo 
+sudo rpm --import https://dl.yarnpkg.com/rpm/pubkey.gpg
+</code></pre></div><p>官方的 Yarn 存储库会得到持续维护，并提供最新版本。</p>
+</li>
+<li>
+<p>启用存储库后，安装 Yarn ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo dnf install yarn
+</code></pre></div></li>
+<li>
+<p>通过打印 Yarn 版本号来验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn --version
+</code></pre></div><p>在撰写本文时， Yarn 的最新版本是 version   <code>1.21.1</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1.21.1
+</code></pre></div></li>
+</ol>
+<h2 id="-yarn">使用 yarn</h2>
+<p>现在您已经在 CentOS 系统上安装了 Yarn ，我们将探索一些最常见的 Yarn 命令。</p>
+<h3 id="heading">创建一个新项目</h3>
+<p>要创建一个新的 Yarn 项目，请使用 <code>yarn init</code> 命令，后跟项目名称。例如，要创建一个名为 <code>my_project</code> 您的项目，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn init my_project
+</code></pre></div><p>该脚本将询问您几个问题。您可以回答或按 <code>enter</code> 以使用默认值：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">yarn init v1.21.1
+question name (alex): Linuxize
+question version (1.0.0): 0.0.1
+question description: Testing Yarn
+question entry point (index.js): 
+question repository url: 
+question author: Linuxize
+question license (MIT): 
+question private: 
+success Saved package.json
+Done in 20.18s.
+</code></pre></div><p>该命令所做的只是创建一个 <code>package.json</code> 包含您提供的信息的基本文件。可以随时修改此文件。</p>
+<p>您还可以将 Yarn 添加到现有代码目录。为此，请导航到目录并执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn init my_project
+</code></pre></div><h3 id="heading1">添加依赖</h3>
+<p>要将软件包添加为项目的依赖项，请使用 <code>yarn add</code> 命令，后跟软件包名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn add <span class="o">[</span>package_name<span class="o">]</span>
+</code></pre></div><p>该命令将安装软件包及其依赖的任何软件包，并更新项目 <code>package.json</code> 和 <code>yarn.lock</code> 文件。</p>
+<p>默认情况下，如果仅给出软件包名称，则 Yarn 将安装最新版本。要安装特定版本或标签，请使用以下语法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn add <span class="o">[</span>package_name<span class="o">]</span>@<span class="o">[</span>version_or_tag<span class="o">]</span>
+</code></pre></div><h3 id="heading2">升级依赖</h3>
+<p>要升级软件包，请运行 <code>yarn upgrade</code> 命令，然后输入软件包名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn upgrade <span class="o">[</span>package_name<span class="o">]</span>
+</code></pre></div><p>上面的命令根据 package.json 文件中指定的版本范围将项目依赖项更新为最新版本。</p>
+<p>您还可以指定软件包的版本或标签：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn upgrade <span class="o">[</span>package_name<span class="o">]</span>@<span class="o">[</span>version_or_tag<span class="o">]</span>
+</code></pre></div><h3 id="heading3">消除依赖</h3>
+<p>要从项目的依赖项中删除软件包，请调用 <code>yarn remove</code> 命令，然后输入软件包名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn remove <span class="o">[</span>package_name<span class="o">]</span>
+</code></pre></div><p>此命令还会更新项目 <code>package.json</code> 和 <code>yarn.lock</code> 文件。</p>
+<h3 id="heading4">安装所有项目依赖项</h3>
+<p>要安装 <code>package.json</code> 文件中指定的现有项目的所有依赖关系，请执行以下操作：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn
+</code></pre></div><p>要么</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">yarn install
+</code></pre></div><h2 id="heading5">结论</h2>
+<p>我们已经向您展示了如何在 CentOS 8 机器上安装 yarn 。有关 yarn 的更多信息，请访问 <a href="https://yarnpkg.com/en/docs">yarn 文档页面</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/nodejs" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">nodejs</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/npm" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">npm</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/yarn" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">yarn</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-centos-8/">如何在 CentOS 8 Linux 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-yarn-on-centos-7/">如何在CentOS 7上安装Yarn</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-debian-10/">如何在 Debian 10 Buster 上安装 node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-yarn-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Yarn</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-yarn-on-debian-9/">如何在Debian 9上安装Yarn</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-centos-7/">如何在 CentOS 7 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-raspberry-pi/">如何在 Raspberry Pi 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-ghost-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Ghost</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-debian-9/">如何在 Debian 9 上安装 Node.js 和 npm</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">如何在 Ubuntu 18.04 上安装 Node.js 和 npm</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#-centos-8--yarn">在 CentOS 8 上安装 Yarn</a></li>
+    <li><a href="#-yarn">使用 yarn</a>
+      <ul>
+        <li><a href="#heading">创建一个新项目</a></li>
+        <li><a href="#heading1">添加依赖</a></li>
+        <li><a href="#heading2">升级依赖</a></li>
+        <li><a href="#heading3">消除依赖</a></li>
+        <li><a href="#heading4">安装所有项目依赖项</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading5">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2019 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
