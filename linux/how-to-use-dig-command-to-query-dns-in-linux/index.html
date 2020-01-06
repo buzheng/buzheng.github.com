@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,103 +146,103 @@
           <p>Dig（Domain Information Groper）是一个功能强大的命令行工具，用于查询DNS名称服务器。</p>
 <p>使用dig命令，您可以查询有关各种DNS记录的信息，包括主机地址，邮件交换和名称服务器。它是系统管理员中用于排除DNS问题的最常用工具，因为它具有灵活性和易用性。</p>
 <p>在本教程中，我们将通过实际示例和最常见挖掘选项的详细说明向您展示如何使用挖掘实用程序。</p>
-<h2 id="dig">安装Dig</h2>
+<h2 id="安装dig">安装Dig</h2>
 <p>要检查您的系统类型是否有dig命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig -v
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">DiG 9.11.3-1ubuntu1.1-Ubuntu
-</code></pre><p>如果您的系统上没有挖掘工具，则上面的命令将打印出来，<code>dig: command not found</code>您可以使用发行版的软件包管理器轻松安装它。</p>
-<h3 id="ubuntudebiandig">在Ubuntu和Debian上安装Dig</h3>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install dnsutils
-</code></pre><h3 id="centosfedoradig">在CentOS和Fedora上安装Dig</h3>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install bind-utils
-</code></pre><h3 id="arch-linuxdig">在Arch Linux上安装Dig</h3>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo pacman -S bind-tools
-</code></pre><h2 id="dig1">了解Dig输出</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig -v
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">DiG 9.11.3-1ubuntu1.1-Ubuntu
+</code></pre></div><p>如果您的系统上没有挖掘工具，则上面的命令将打印出来，<code>dig: command not found</code>您可以使用发行版的软件包管理器轻松安装它。</p>
+<h3 id="在ubuntu和debian上安装dig">在Ubuntu和Debian上安装Dig</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install dnsutils
+</code></pre></div><h3 id="在centos和fedora上安装dig">在CentOS和Fedora上安装Dig</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install bind-utils
+</code></pre></div><h3 id="在arch-linux上安装dig">在Arch Linux上安装Dig</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo pacman -S bind-tools
+</code></pre></div><h2 id="了解dig输出">了解Dig输出</h2>
 <p>在用于查询单个主机（域）而没有任何其他参数的最简单形式中，dig命令非常详细。</p>
 <p>在以下示例中，我们将执行查询以检索有关<code>linux.org</code>域的信息。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig linux.org
-</code></pre><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig linux.org
+</code></pre></div><p>输出应该如下所示：</p>
 <p><img src="/images/linux/how-to-use-dig-command-to-query-dns-in-linux/dig-command-output.jpg" alt=""></p>
 <p>让我们逐节介绍并解释dig命令的输出：</p>
 <ol>
 <li>
 <p>输出的第一行打印已安装的dig版本以及调用的查询。第二行显示全局选项（默认情况下仅为cmd）。</p>
-<pre><code class="language-dig" data-lang="dig">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org
 ;; global options: +cmd
-</code></pre><p>如果您不希望这些行包含在输出中，请使用该<code>+nocmd</code>选项。此选项必须是dig命令后的第一个参数。</p>
+</code></pre></div><p>如果您不希望这些行包含在输出中，请使用该<code>+nocmd</code>选项。此选项必须是dig命令后的第一个参数。</p>
 </li>
 <li>
 <p>本节包括有关从请求的权限（DNS服务器）收到的答案的技术详细信息。此部分的第一行是标题，包括操作码（由dig执行的操作）和操作的状态。在这种情况下，状态<code>NOERROR</code>意味着请求的权限服务于查询而没有任何问题。</p>
-<pre><code class="language-dig" data-lang="dig">;; Got answer:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; Got answer:
 ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 37159
 ;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 2, ADDITIONAL: 5
-</code></pre><p>可以使用该<code>+nocomments</code>选项删除此部分输出。使用此选项时，它还会禁用其他一些节标题。</p>
+</code></pre></div><p>可以使用该<code>+nocomments</code>选项删除此部分输出。使用此选项时，它还会禁用其他一些节标题。</p>
 </li>
 <li>
 <p>如果使用挖掘实用程序，则此部分仅在较新版本上显示。您可以<a href="https://en.wikipedia.org/wiki/Extension_mechanisms_for_DNS">在此处</a>阅读有关DNS扩展机制（EDNS）的更多<a href="https://en.wikipedia.org/wiki/Extension_mechanisms_for_DNS">信息</a>。</p>
-<pre><code class="language-dig" data-lang="dig">;; OPT PSEUDOSECTION:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
-</code></pre><p>如果您不希望此部分包含在输出中，请使用该<code>+noedns</code>选项。</p>
+</code></pre></div><p>如果您不希望此部分包含在输出中，请使用该<code>+noedns</code>选项。</p>
 </li>
 <li>
 <p>这是dig显示我们的查询（问题）的部分。默认情况下，dig会请求A记录。</p>
-<pre><code class="language-dig" data-lang="dig">;; QUESTION SECTION:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; QUESTION SECTION:
 ;linux.org.         IN  A
-</code></pre><p>您可以使用该<code>+noquestion</code>选项禁用此部分。</p>
+</code></pre></div><p>您可以使用该<code>+noquestion</code>选项禁用此部分。</p>
 </li>
 <li>
 <p>答案部分为我们提供了一个问题的答案。正如我们已经提到的，默认情况下dig会请求A记录。这里，域<code>linux.org</code>指向<code>104.18.59.123</code>IP地址。</p>
-<pre><code class="language-dig" data-lang="dig">;; ANSWER SECTION:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; ANSWER SECTION:
 linux.org.      300 IN  A   104.18.59.123
 linux.org.      300 IN  A   104.18.58.123
-</code></pre><p>通常，您不想关闭答案，但可以使用<code>+noanswer</code>选项从输出中删除此部分。</p>
+</code></pre></div><p>通常，您不想关闭答案，但可以使用<code>+noanswer</code>选项从输出中删除此部分。</p>
 </li>
 <li>
 <p>权限部分告诉我们哪些服务器是回答有关查询域的DNS查询的权限。</p>
-<pre><code class="language-dig" data-lang="dig">;; AUTHORITY SECTION:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; AUTHORITY SECTION:
 linux.org.      86379   IN  NS  lia.ns.cloudflare.com.
 linux.org.      86379   IN  NS  mark.ns.cloudflare.com.
-</code></pre><p>您可以使用该<code>+noauthority</code>选项禁用输出的此部分。</p>
+</code></pre></div><p>您可以使用该<code>+noauthority</code>选项禁用输出的此部分。</p>
 </li>
 <li>
 <p>附加部分为我们提供了有关权限部分中显示的权威DNS服务器的IP地址的信息。</p>
-<pre><code class="language-dig" data-lang="dig">;; ADDITIONAL SECTION:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; ADDITIONAL SECTION:
 lia.ns.cloudflare.com.  84354   IN  A   173.245.58.185
 lia.ns.cloudflare.com.  170762  IN  AAAA    2400:cb00:2049:1::adf5:3ab9
 mark.ns.cloudflare.com. 170734  IN  A   173.245.59.130
 mark.ns.cloudflare.com. 170734  IN  AAAA    2400:cb00:2049:1::adf5:3b82
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>这是dig输出的最后一部分，其中包含有关查询的统计信息。</p>
-<pre><code class="language-dig" data-lang="dig">;; Query time: 58 msec
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">;; Query time: 58 msec
 ;; SERVER: 192.168.1.1#53(192.168.1.1)
 ;; WHEN: Fri Oct 12 11:46:46 CEST 2018
 ;; MSG SIZE  rcvd: 212
-</code></pre><p>您可以使用该<code>+nostats</code>选项禁用此部件。</p>
+</code></pre></div><p>您可以使用该<code>+nostats</code>选项禁用此部件。</p>
 </li>
 </ol>
-<h2 id="heading">仅打印答案</h2>
+<h2 id="仅打印答案">仅打印答案</h2>
 <p>在大多数情况下，您只想快速回答您的挖掘查询。</p>
-<h3 id="1">1.得到一个简短的答案</h3>
+<h3 id="1得到一个简短的答案">1.得到一个简短的答案</h3>
 <p>要获得查询的简短答案，请使用以下<code>+short</code>选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig linux.org +short
-</code></pre><pre><code class="language-output" data-lang="output">104.18.59.123
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig linux.org +short
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">104.18.59.123
 104.18.58.123
-</code></pre><p>输出将仅包括A记录的IP地址。</p>
-<h3 id="2">2.得到详细的答案</h3>
+</code></pre></div><p>输出将仅包括A记录的IP地址。</p>
+<h3 id="2得到详细的答案">2.得到详细的答案</h3>
 <p>有关更详细的答案，请使用<code>+noall</code>选项关闭所有结果，然后仅使用选项打开答案部分<code>+answer</code>。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig linux.org +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org +noall +answer
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig linux.org +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org +noall +answer
 ;; global options: +cmd
 linux.org.		67	IN	A	104.18.58.123
 linux.org.		67	IN	A	104.18.59.123
-</code></pre><h2 id="heading1">查询特定名称服务器</h2>
+</code></pre></div><h2 id="查询特定名称服务器">查询特定名称服务器</h2>
 <p>默认情况下，如果未指定名称服务器，dig将使用<code>/etc/resolv.conf</code>文件中列出的服务器。</p>
 <p>要指定将对其执行查询的名称服务器，请使用<code>@</code>（at）符号，后跟名称服务器IP地址或主机名。</p>
 <p>例如，要查询Google名称服务器（8.8.8.8）以获取有关<code>linux.org</code>您将使用的域的信息：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig linux.org @8.8.8.8
-</code></pre><pre><code class="language-output" data-lang="output">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org @8.8.8.8
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig linux.org @8.8.8.8
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; linux.org @8.8.8.8
 ;; global options: +cmd
 ;; Got answer:
 ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 39110
@@ -261,42 +261,42 @@ linux.org.		299	IN	A	104.18.59.123
 ;; SERVER: 8.8.8.8#53(8.8.8.8)
 ;; WHEN: Fri Oct 12 14:28:01 CEST 2018
 ;; MSG SIZE  rcvd: 70
-</code></pre><h2 id="heading2">查询记录类型</h2>
+</code></pre></div><h2 id="查询记录类型">查询记录类型</h2>
 <p>Dig允许您通过将记录类型附加到查询末尾来执行任何有效的DNS查询。在下一节中，我们将向您展示如何搜索最常见的记录，例如A（IP地址），CNAME（规范名称）TXT（文本记录），MX（邮件交换器）和NS（名称服务器）。</p>
-<h3 id="11">1.查询记录</h3>
+<h3 id="1查询记录">1.查询记录</h3>
 <p>要获取域名的所有地址列表，请使用以下<code>a</code>选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig +nocmd google.com a +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">google.com.		128	IN	A	216.58.206.206
-</code></pre><p>如您所知，如果未指定DNS记录类型，dig将请求A记录。您也可以在不指定<code>a</code>选项的情况下查询A记录</p>
-<h3 id="2cname">2.查询CNAME记录</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig +nocmd google.com a +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">google.com.		128	IN	A	216.58.206.206
+</code></pre></div><p>如您所知，如果未指定DNS记录类型，dig将请求A记录。您也可以在不指定<code>a</code>选项的情况下查询A记录</p>
+<h3 id="2查询cname记录">2.查询CNAME记录</h3>
 <p>要查找别名域名，请使用以下<code>cname</code>选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig +nocmd mail.google.com cname +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">mail.google.com.	553482	IN	CNAME	googlemail.l.google.com.
-</code></pre><h3 id="3txt">3.查询TXT记录</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig +nocmd mail.google.com cname +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mail.google.com.	553482	IN	CNAME	googlemail.l.google.com.
+</code></pre></div><h3 id="3查询txt记录">3.查询TXT记录</h3>
 <p>使用该<code>txt</code>选项可检索特定域的所有TXT记录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig +nocmd google.com txt +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">google.com.		300	IN	TXT	&quot;facebook-domain-verification=22rm551cu4k0ab0bxsw536tlds4h95&quot;
-google.com.		300	IN	TXT	&quot;v=spf1 include:_spf.google.com ~all&quot;
-google.com.		300	IN	TXT	&quot;docusign=05958488-4752-4ef2-95eb-aa7ba8a3bd0e&quot;
-</code></pre><h3 id="4mx">4.查询MX记录</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig +nocmd google.com txt +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">google.com.		300	IN	TXT	&#34;facebook-domain-verification=22rm551cu4k0ab0bxsw536tlds4h95&#34;
+google.com.		300	IN	TXT	&#34;v=spf1 include:_spf.google.com ~all&#34;
+google.com.		300	IN	TXT	&#34;docusign=05958488-4752-4ef2-95eb-aa7ba8a3bd0e&#34;
+</code></pre></div><h3 id="4查询mx记录">4.查询MX记录</h3>
 <p>要获取特定域的所有邮件服务器列表，请使用以下<code>mx</code>选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig +nocmd google.com mx +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">google.com.		494	IN	MX	30 alt2.aspmx.l.google.com.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig +nocmd google.com mx +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">google.com.		494	IN	MX	30 alt2.aspmx.l.google.com.
 google.com.		494	IN	MX	10 aspmx.l.google.com.
 google.com.		494	IN	MX	40 alt3.aspmx.l.google.com.
 google.com.		494	IN	MX	50 alt4.aspmx.l.google.com.
 google.com.		494	IN	MX	20 alt1.aspmx.l.google.com.
-</code></pre><h3 id="5ns">5.查询NS记录</h3>
+</code></pre></div><h3 id="5查询ns记录">5.查询NS记录</h3>
 <p>要查找特定域的权威名称服务器，请使用以下<code>ns</code>选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig +nocmd google.com ns +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">google.com.		84527	IN	NS	ns1.google.com.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig +nocmd google.com ns +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">google.com.		84527	IN	NS	ns1.google.com.
 google.com.		84527	IN	NS	ns2.google.com.
 google.com.		84527	IN	NS	ns4.google.com.
 google.com.		84527	IN	NS	ns3.google.com.
-</code></pre><h3 id="6">6.查询所有记录</h3>
+</code></pre></div><h3 id="6查询所有记录">6.查询所有记录</h3>
 <p>使用该<code>any</code>选项可获取特定域的所有DNS记录的列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig +nocmd google.com any +noall +answer
-</code></pre><pre><code class="language-output" data-lang="output">google.com.		299	IN	A	216.58.212.14
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig +nocmd google.com any +noall +answer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">google.com.		299	IN	A	216.58.212.14
 google.com.		299	IN	AAAA	2a00:1450:4017:804::200e
 google.com.		21599	IN	NS	ns2.google.com.
 google.com.		21599	IN	NS	ns1.google.com.
@@ -304,40 +304,40 @@ google.com.		599	IN	MX	30 alt2.aspmx.l.google.com.
 google.com.		21599	IN	NS	ns4.google.com.
 google.com.		599	IN	MX	50 alt4.aspmx.l.google.com.
 google.com.		599	IN	MX	20 alt1.aspmx.l.google.com.
-google.com.		299	IN	TXT	&quot;docusign=05958488-4752-4ef2-95eb-aa7ba8a3bd0e&quot;
-google.com.		21599	IN	CAA	0 issue &quot;pki.goog&quot;
+google.com.		299	IN	TXT	&#34;docusign=05958488-4752-4ef2-95eb-aa7ba8a3bd0e&#34;
+google.com.		21599	IN	CAA	0 issue &#34;pki.goog&#34;
 google.com.		599	IN	MX	40 alt3.aspmx.l.google.com.
-google.com.		3599	IN	TXT	&quot;facebook-domain-verification=22rm551cu4k0ab0bxsw536tlds4h95&quot;
+google.com.		3599	IN	TXT	&#34;facebook-domain-verification=22rm551cu4k0ab0bxsw536tlds4h95&#34;
 google.com.		21599	IN	NS	ns3.google.com.
 google.com.		599	IN	MX	10 aspmx.l.google.com.
-google.com.		3599	IN	TXT	&quot;v=spf1 include:_spf.google.com ~all&quot;
+google.com.		3599	IN	TXT	&#34;v=spf1 include:_spf.google.com ~all&#34;
 google.com.		59	IN	SOA	ns1.google.com. dns-admin.google.com. 216967258 900 900 1800 60
-</code></pre><h2 id="dns">反向DNS查找</h2>
+</code></pre></div><h2 id="反向dns查找">反向DNS查找</h2>
 <p>要查询与特定IP地址关联的<a href="/linux/how-to-change-hostname-on-ubuntu-18-04/">主机名</a>，请使用该<code>-x</code>选项。</p>
 <p>例如，要执行反向查找，<code>208.118.235.148</code>您将使用：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">dig -x 208.118.235.148 +noall +answer
-</code></pre><p>从下面的输出中可以看出，IP地址<code>208.118.235.148</code>与主机名相关联<code>wildebeest.gnu.org</code>。</p>
-<pre><code class="language-output" data-lang="output">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; -x 208.118.235.148 +noall +answer
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig -x 208.118.235.148 +noall +answer
+</code></pre></div><p>从下面的输出中可以看出，IP地址<code>208.118.235.148</code>与主机名相关联<code>wildebeest.gnu.org</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">; &lt;&lt;&gt;&gt; DiG 9.13.3 &lt;&lt;&gt;&gt; -x 208.118.235.148 +noall +answer
 ;; global options: +cmd
 148.235.118.208.in-addr.arpa. 245 IN	PTR	wildebeest.gnu.org.
-</code></pre><h2 id="heading3">批量查询</h2>
+</code></pre></div><h2 id="批量查询">批量查询</h2>
 <p>如果要查询大量域，可以将它们添加到文件中（每行一个域），然后使用<code>-f</code>选项后跟文件名。</p>
 <p>在以下示例中，我们将查询<code>domains.txt</code>文件中列出的域。</p>
 <p>domains.txt</p>
-<pre><code class="language-config" data-lang="config">lxer.com
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lxer.com
 linuxtoday.com
 tuxmachines.org
-</code></pre><pre><code class="language-console-bash" data-lang="console-bash">dig -f domains.txt +short
-</code></pre><pre><code class="language-output" data-lang="output">108.166.170.171
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dig -f domains.txt +short
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">108.166.170.171
 70.42.23.121
 204.68.122.43
-</code></pre><h2 id="digrc">.digrc文件</h2>
+</code></pre></div><h2 id="digrc文件">.digrc文件</h2>
 <p>可以通过在<code>${HOME}/.digrc</code>文件中设置每个用户选项来控制dig命令的行为。</p>
 <p>如果<code>.digrc</code>文件存在于用户的主目录中，则在命令行参数之前应用其中指定的选项。</p>
 <p>例如，如果只想显示答案部分，请打开文本编辑器并创建以下<code>~/.digrc</code>文件：</p>
 <p>〜/ .digrc</p>
-<pre><code class="language-config" data-lang="config">+nocmd +noall +answer
-</code></pre><h2 id="heading4">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">+nocmd +noall +answer
+</code></pre></div><h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用Linux dig命令，并且您应该能够解决大多数与DNS相关的问题。</p>
       </div><ul class="pa0">
   
@@ -412,35 +412,35 @@ tuxmachines.org
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#dig">安装Dig</a>
+    <li><a href="#安装dig">安装Dig</a>
       <ul>
-        <li><a href="#ubuntudebiandig">在Ubuntu和Debian上安装Dig</a></li>
-        <li><a href="#centosfedoradig">在CentOS和Fedora上安装Dig</a></li>
-        <li><a href="#arch-linuxdig">在Arch Linux上安装Dig</a></li>
+        <li><a href="#在ubuntu和debian上安装dig">在Ubuntu和Debian上安装Dig</a></li>
+        <li><a href="#在centos和fedora上安装dig">在CentOS和Fedora上安装Dig</a></li>
+        <li><a href="#在arch-linux上安装dig">在Arch Linux上安装Dig</a></li>
       </ul>
     </li>
-    <li><a href="#dig1">了解Dig输出</a></li>
-    <li><a href="#heading">仅打印答案</a>
+    <li><a href="#了解dig输出">了解Dig输出</a></li>
+    <li><a href="#仅打印答案">仅打印答案</a>
       <ul>
-        <li><a href="#1">1.得到一个简短的答案</a></li>
-        <li><a href="#2">2.得到详细的答案</a></li>
+        <li><a href="#1得到一个简短的答案">1.得到一个简短的答案</a></li>
+        <li><a href="#2得到详细的答案">2.得到详细的答案</a></li>
       </ul>
     </li>
-    <li><a href="#heading1">查询特定名称服务器</a></li>
-    <li><a href="#heading2">查询记录类型</a>
+    <li><a href="#查询特定名称服务器">查询特定名称服务器</a></li>
+    <li><a href="#查询记录类型">查询记录类型</a>
       <ul>
-        <li><a href="#11">1.查询记录</a></li>
-        <li><a href="#2cname">2.查询CNAME记录</a></li>
-        <li><a href="#3txt">3.查询TXT记录</a></li>
-        <li><a href="#4mx">4.查询MX记录</a></li>
-        <li><a href="#5ns">5.查询NS记录</a></li>
-        <li><a href="#6">6.查询所有记录</a></li>
+        <li><a href="#1查询记录">1.查询记录</a></li>
+        <li><a href="#2查询cname记录">2.查询CNAME记录</a></li>
+        <li><a href="#3查询txt记录">3.查询TXT记录</a></li>
+        <li><a href="#4查询mx记录">4.查询MX记录</a></li>
+        <li><a href="#5查询ns记录">5.查询NS记录</a></li>
+        <li><a href="#6查询所有记录">6.查询所有记录</a></li>
       </ul>
     </li>
-    <li><a href="#dns">反向DNS查找</a></li>
-    <li><a href="#heading3">批量查询</a></li>
-    <li><a href="#digrc">.digrc文件</a></li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#反向dns查找">反向DNS查找</a></li>
+    <li><a href="#批量查询">批量查询</a></li>
+    <li><a href="#digrc文件">.digrc文件</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -452,7 +452,7 @@ tuxmachines.org
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

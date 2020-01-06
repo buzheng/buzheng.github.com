@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,46 +142,46 @@
   
           <p>在本教程中，我们将引导您完成在 CentOS 7 系统上安装和配置 VNC 服务器的步骤。我们还将向您展示如何通过 SSH 隧道安全地连接到 VNC 服务器。</p>
 <p>虚拟网络计算(VNC)是一种图形桌面共享系统，允许您使用键盘和鼠标远程控制另一台计算机。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续学习本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。我们假设您以名 <code>buzheng</code> 为的用户身份登录。</p>
-<h2 id="-xfce-">安装 Xfce 桌面环境</h2>
+<h2 id="安装-xfce-桌面环境">安装 Xfce 桌面环境</h2>
 <p>CentOS 服务器安装通常不会安装桌面环境，因此我们首先要安装轻量级桌面环境。</p>
 <p>在本指南中，我们将安装 <a href="https://xfce.org/">Xfce</a> 。它快速，稳定且占用系统资源较少，因此非常适合在远程服务器上使用。</p>
 <p>EPEL 存储库中提供了 Xfce 包。如果您的服务器上没有启用 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>，则可以键入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release
-</code></pre><p>添加存储库后，在 CentOS 上安装 Xfce ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum groupinstall xfce
-</code></pre><p>根据您的系统，下载和安装 Xfce 软件包和依赖项可能需要一些时间。</p>
-<h2 id="-vnc-">安装 VNC 服务器</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install epel-release
+</code></pre></div><p>添加存储库后，在 CentOS 上安装 Xfce ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum groupinstall xfce
+</code></pre></div><p>根据您的系统，下载和安装 Xfce 软件包和依赖项可能需要一些时间。</p>
+<h2 id="安装-vnc-服务器">安装 VNC 服务器</h2>
 <p>我们将使用 TigerVNC 作为我们首选的 VNC 服务器。 <a href="http://tigervnc.org/">TigerVNC</a> 是一款积极维护的高性能开源 VNC 服务器。</p>
 <p>键入以下命令以在 CentOS 服务器上安装 TigerVNC ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">yum install tigervnc-server
-</code></pre><p>现在安装了 VNC 服务器，下一步是运行 <code>vncserver</code> 命令，该命令将创建初始配置并设置密码。运行以下命令时不要使用 sudo ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">vncserver
-</code></pre><p>系统将提示您输入并确认密码，以及是否将其设置为仅查看密码。如果您选择设置仅查看密码，则用户将无法使用鼠标和键盘与 VNC 实例进行交互。</p>
-<pre><code class="language-output" data-lang="output">You will require a password to access your desktops.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install tigervnc-server
+</code></pre></div><p>现在安装了 VNC 服务器，下一步是运行 <code>vncserver</code> 命令，该命令将创建初始配置并设置密码。运行以下命令时不要使用 sudo ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">vncserver
+</code></pre></div><p>系统将提示您输入并确认密码，以及是否将其设置为仅查看密码。如果您选择设置仅查看密码，则用户将无法使用鼠标和键盘与 VNC 实例进行交互。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">You will require a password to access your desktops.
 
 Password:
 Verify:
 Would you like to enter a view-only password (y/n)? n
 /usr/bin/xauth:  file /home/buzheng/.Xauthority does not exist
 
-New 'server2.buzheng.org:1 (buzheng)' desktop at :1 on machine server2.buzheng.org
+New &#39;server2.buzheng.org:1 (buzheng)&#39; desktop at :1 on machine server2.buzheng.org
 
 Starting applications specified in /etc/X11/Xvnc-session
 Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
-</code></pre><p>第一次运行 <code>vncserver</code> 命令时，它将创建密码文件并将其存储在 <code>~/.vnc</code> 目录中，如果不存在，将创建该目录。</p>
+</code></pre></div><p>第一次运行 <code>vncserver</code> 命令时，它将创建密码文件并将其存储在 <code>~/.vnc</code> 目录中，如果不存在，将创建该目录。</p>
 <p>注意上面输出中的<a href="/linux/how-to-change-hostname-on-centos-7/">主机名</a>之后的 <code>:1</code>。这表示运行 vnc 服务器的显示端口号。在我们的例子中，服务器在 TCP 端口 <code>5901</code> (5900 + 1)上运行。如果您创建第二个实例， <code>vncserver</code> 它将在下一个空闲端口上运行，即 <code>:2</code>，这意味着服务器正在端口 <code>5902</code> (5900 + 2)上运行。</p>
 <blockquote>
 <p>当使用 VNC 服务器时， 服务器编号 <code>:X</code> 代表了显示的端口是 <code>5900+X</code> 。</p>
 </blockquote>
 <p>在继续下一步之前，首先使用 <code>vncserver</code> 带有 <code>-kill</code> 选项和服务器编号作为参数的命令停止 VNC 实例。在我们的例子中，服务器在端口 5901 (<code>:1</code>)中运行，因此我们将使用以下命令停止它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">vncserver -kill :1
-</code></pre><pre><code class="language-output" data-lang="output">Killing Xvnc process ID 2432
-</code></pre><h2 id="-vnc-1">配置 VNC 服务器</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">vncserver -kill :1
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Killing Xvnc process ID 2432
+</code></pre></div><h2 id="配置-vnc-服务器">配置 VNC 服务器</h2>
 <p>现在我们的 CentOS 服务器上安装了 Xfce 和 TigerVNC ，下一步是配置 TigerVNC 使用 Xfce 。为此，请打开以下文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nano ~/.vnc/xstartup
-</code></pre><p>并将最后一行 <code>exec /etc/X11/xinit/xinitrc</code> 更改为 <code>exec startxfce4</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano ~/.vnc/xstartup
+</code></pre></div><p>并将最后一行 <code>exec /etc/X11/xinit/xinitrc</code> 更改为 <code>exec startxfce4</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/sh
 </span><span class="cp"></span><span class="nb">unset</span> SESSION_MANAGER
 <span class="nb">unset</span> DBUS_SESSION_BUS_ADDRESS
@@ -195,12 +195,12 @@ Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
 <span class="c1"># localhost</span>
 <span class="c1"># alwaysshared</span>
 <span class="nv">dpi</span><span class="o">=</span><span class="m">96</span>
-</code></pre></div><h2 id="-systemd-">创建 Systemd 单元文件</h2>
+</code></pre></div><h2 id="创建-systemd-单元文件">创建 Systemd 单元文件</h2>
 <p>我们将创建一个 systemd 单元文件，使我们能够根据需要轻松启动，停止和重新启动 VNC 服务，与任何其他 systemd 服务相同。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
-</code></pre><p>使用文本编辑器打开文件，并替换 <code>&lt;USER&gt;</code> 为您的实际用户名。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/vncserver@\:1.service
-</code></pre><div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo cp /usr/lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
+</code></pre></div><p>使用文本编辑器打开文件，并替换 <code>&lt;USER&gt;</code> 为您的实际用户名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/systemd/system/vncserver@\:1.service
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Remote desktop service (VNC)</span>
 <span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target</span>
 
@@ -216,15 +216,15 @@ Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
 <span class="k">[Install]</span>
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div><p>保存并关闭文件。通知 systemd 我们创建了一个新的单元文件，让其重新加载：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload
-</code></pre><p>下一步是使用以下命令启用单元文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable vncserver@:1.service
-</code></pre><p>符号 <code>1</code> 后面的数字 <code>@</code> 定义了 VNC 服务将在其上运行的显示端口，在我们的情况下，这是默认设置 <code>1</code> ， VNC 服务器将在端口上侦听， <code>5901</code> 如我们在上一节中讨论的那样。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl daemon-reload
+</code></pre></div><p>下一步是使用以下命令启用单元文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl enable vncserver@:1.service
+</code></pre></div><p>符号 <code>1</code> 后面的数字 <code>@</code> 定义了 VNC 服务将在其上运行的显示端口，在我们的情况下，这是默认设置 <code>1</code> ， VNC 服务器将在端口上侦听， <code>5901</code> 如我们在上一节中讨论的那样。</p>
 <p>执行以下命令启动 VNC 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start vncserver@:1.service
-</code></pre><p>验证服务是否已成功启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status vncserver@:1.service
-</code></pre><pre><code class="language-output" data-lang="output">● vncserver@:1.service - Remote desktop service (VNC)
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start vncserver@:1.service
+</code></pre></div><p>验证服务是否已成功启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status vncserver@:1.service
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● vncserver@:1.service - Remote desktop service (VNC)
    Loaded: loaded (/etc/systemd/system/vncserver@:1.service; enabled; vendor preset: disabled)
    Active: active (running) since Sun 2018-09-16 09:59:53 UTC; 4s ago
   Process: 6391 ExecStart=/usr/sbin/runuser -l buzheng -c /usr/bin/vncserver %i (code=exited, status=0/SUCCESS)
@@ -232,21 +232,21 @@ Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
  Main PID: 6413 (Xvnc)
    CGroup: /system.slice/system-vncserver.slice/vncserver@:1.service
            ‣ 6413 /usr/bin/Xvnc :1 -auth /home/buzheng/.Xauthority -desktop server2.buzheng.org:1 (buzheng) -fp catalogue:/etc/X11/fontpath.d -geometry 1024x768 -pn -rfbauth /home/buzheng/.vnc/passwd -rfbport ...
-</code></pre><h2 id="-vnc-2">连接到 VNC 服务器</h2>
+</code></pre></div><h2 id="连接到-vnc-服务器">连接到 VNC 服务器</h2>
 <p>VNC 不是加密协议，可以进行数据包嗅探。建议的方法是创建一个 SSH 隧道，该隧道将安全地将来自本地计算机的端口 5901 上的流量转发到同一端口上的服务器。</p>
-<h3 id="-linux--macos--ssh-">在 Linux 和 macOS 上设置 SSH 隧道</h3>
+<h3 id="在-linux-和-macos-上设置-ssh-隧道">在 Linux 和 macOS 上设置 SSH 隧道</h3>
 <p>如果在计算机上运行 Linux ， macOS 或任何其他基于 Unix 的操作系统，则可以使用以下命令轻松创建 SSH 隧道：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh -L 5901:127.0.0.1:5901 -N -f -l username server_ip_address
-</code></pre><p>系统将提示您输入用户密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh -L 5901:127.0.0.1:5901 -N -f -l username server_ip_address
+</code></pre></div><p>系统将提示您输入用户密码。</p>
 <p>不要忘了更换 <code>username</code> 和 <code>server_ip_address</code> 为您的用户名和服务器的 IP 地址。</p>
-<h3 id="-windows--ssh-">在 Windows 上设置 SSH 隧道</h3>
+<h3 id="在-windows-上设置-ssh-隧道">在 Windows 上设置 SSH 隧道</h3>
 <p>如果运行 Windows ，则可以使用 <a href="https://www.putty.org/">PuTTY SSH 客户端</a>设置 SSH 隧道。</p>
 <p>打开 Putty 并在 <code>Host name or IP address</code> 字段中输入您的服务器 IP 地址。</p>
 <p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-putty.jpg" alt=""></p>
 <p>在 <code>Connection</code> 菜单下，展开 <code>SSH</code> 并选择 <code>Tunnels</code> 。在<code> Source Port</code> 字段输入 VNC 服务器端口(<code>5901</code>) ，并在 <code>Destination</code>字段输入 <code>server_ip_address:5901</code>，最后点击如下图所示的图像按钮 <code>Add</code> ：</p>
 <p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-ssh-tunnel-putty.jpg" alt=""></p>
 <p>返回 <code>Session</code> 页面以保存设置，这样您每次都不需要输入它们。现在，您只需选择已保存的会话并通过单击 <code>Open</code> 按钮登录到远程服务器。</p>
-<h3 id="-vncviewer-">使用 Vncviewer 连接</h3>
+<h3 id="使用-vncviewer-连接">使用 Vncviewer 连接</h3>
 <p>现在您已经设置了 SSH 隧道，现在可以打开 Vncviewer 并连接到 <code>localhost:5901</code> 的 VNC 服务器了。</p>
 <p>您可以使用任何 VNC Viewer，如 TigerVNC ， TightVNC ， RealVNC ， UltraVNC Vinagre 和 VNC Viewer for Google Chrome 。</p>
 <p>在这个例子中，我们将使用 TigerVNC 。打开 VNC Viewer，输入 <code>localhost:5901</code> 并单击 <code>Connect</code> 按钮。</p>
@@ -254,7 +254,7 @@ Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
 <p>出现提示时输入密码，您应该会看到默认的 Xfce 桌面。它应该看起来像这样：</p>
 <p><img src="/images/linux/how-to-install-and-configure-vnc-on-centos-7/vnc-xfce-desktop.jpg" alt=""></p>
 <p>您现在可以使用键盘和鼠标从本地计算机开始与远程 XFCE 桌面交互。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>到目前为止，您已经启动并运行 VNC 服务器，并且可以使用图形界面轻松管理 CentOS 7 服务器。</p>
 <p>要配置 VNC 服务器以启动多个用户的显示，请使用 <code>vncserver</code> 命令创建初始配置并设置密码，并使用其他端口创建新的服务文件。</p>
       </div><ul class="pa0">
@@ -330,19 +330,19 @@ Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-xfce-">安装 Xfce 桌面环境</a></li>
-    <li><a href="#-vnc-">安装 VNC 服务器</a></li>
-    <li><a href="#-vnc-1">配置 VNC 服务器</a></li>
-    <li><a href="#-systemd-">创建 Systemd 单元文件</a></li>
-    <li><a href="#-vnc-2">连接到 VNC 服务器</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-xfce-桌面环境">安装 Xfce 桌面环境</a></li>
+    <li><a href="#安装-vnc-服务器">安装 VNC 服务器</a></li>
+    <li><a href="#配置-vnc-服务器">配置 VNC 服务器</a></li>
+    <li><a href="#创建-systemd-单元文件">创建 Systemd 单元文件</a></li>
+    <li><a href="#连接到-vnc-服务器">连接到 VNC 服务器</a>
       <ul>
-        <li><a href="#-linux--macos--ssh-">在 Linux 和 macOS 上设置 SSH 隧道</a></li>
-        <li><a href="#-windows--ssh-">在 Windows 上设置 SSH 隧道</a></li>
-        <li><a href="#-vncviewer-">使用 Vncviewer 连接</a></li>
+        <li><a href="#在-linux-和-macos-上设置-ssh-隧道">在 Linux 和 macOS 上设置 SSH 隧道</a></li>
+        <li><a href="#在-windows-上设置-ssh-隧道">在 Windows 上设置 SSH 隧道</a></li>
+        <li><a href="#使用-vncviewer-连接">使用 Vncviewer 连接</a></li>
       </ul>
     </li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -354,7 +354,7 @@ Log file is /home/buzheng/.vnc/server2.buzheng.org:1.log
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

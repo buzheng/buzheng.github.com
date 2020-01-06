@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,9 +146,9 @@
           <p>MongoDB 是一个免费的开源文档数据库。它属于一个名为 NoSQL 的数据库系列，它与传统的基于表的 SQL 数据库（如 MySQL 和 PostgreSQL ）不同。</p>
 <p>在 MongoDB 中，数据存储在灵活的、<a href="https://www.json.org/">类 JSON </a>的文档中，其中字段可能因文档而异。它不需要预定义的模式，数据结构可以随时间更改。</p>
 <p>在本教程中，我们将介绍从官方 MongoDB 存储库在 Ubuntu 18.04 计算机上安装和配置最新版 MongoDB Community Edition 的过程。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-mongodb">安装 MongoDB</h2>
+<h2 id="安装-mongodb">安装 MongoDB</h2>
 <p>在撰写本文时，最新版本的 MongoDB 是 4.0 版。</p>
 <p>在继续安装过程之前，请转到 MongoDB 文档中的 <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/#using-deb-packages-recommended">Install on Ubuntu</a> 部分，并检查是否有新版本可用。</p>
 <p>以下步骤描述了如何在 Ubuntu 服务器上安装 MongoDB ：</p>
@@ -156,10 +156,10 @@
 <li>
 <p>启用 MongoDB 存储库</p>
 <p>首先，使用以下命令将 MongoDB GPG 密钥添加到系统：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
-</code></pre><p>导入密钥后，添加 MongoDB 存储库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo add-apt-repository 'deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse'
-</code></pre><p>如果收到错误消息， <code>add-apt-repository command not found</code> 则说明您需要安装该 <code>software-properties-common</code> 软件包。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+</code></pre></div><p>导入密钥后，添加 MongoDB 存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo add-apt-repository &#39;deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse&#39;
+</code></pre></div><p>如果收到错误消息， <code>add-apt-repository command not found</code> 则说明您需要安装该 <code>software-properties-common</code> 软件包。</p>
 <blockquote>
 <p>要安装旧版本的 MongoDB ，只需替换 <code>4.0</code> 为您的想安装的版本即可。</p>
 </blockquote>
@@ -167,10 +167,10 @@
 <li>
 <p>安装 MongoDB</p>
 <p>为了能够从 MongoDB 存储库安装软件包，您需要首先更新软件包列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre><p>现在已启用存储库并更新了包列表，您可以使用 apt 包管理器安装 <code>mongodb-org</code> 包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install mongodb-org
-</code></pre><p>以下软件包将作为 <code>mongodb-org</code> 软件包的一部分安装在您的系统上：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div><p>现在已启用存储库并更新了包列表，您可以使用 apt 包管理器安装 <code>mongodb-org</code> 包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install mongodb-org
+</code></pre></div><p>以下软件包将作为 <code>mongodb-org</code> 软件包的一部分安装在您的系统上：</p>
 <ul>
 <li><code>mongodb-org-server</code>- <code>mongod</code> 守护程序和相应的 init 脚本和配置。</li>
 <li><code>mongodb-org-mongos</code>- <code>mongos</code> 守护进程。</li>
@@ -181,44 +181,44 @@
 <li>
 <p>启动 MongoDB</p>
 <p>安装完成后，通过键入以下内容启动 MongoDB 守护程序并启用随机自启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start mongod
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start mongod
 sudo systemctl enable mongod
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>验证 MongoDB 安装</p>
 <p>要验证安装是否已成功完成，我们要使用 <code>mongo</code> 工具连接到 MongoDB 数据库服务器并打印连接状态：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mongo --eval 'db.runCommand({ connectionStatus: 1 })'
-</code></pre><p>输出将如下所示：</p>
-<pre><code class="language-output" data-lang="output">MongoDB shell version v4.0.2
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mongo --eval &#39;db.runCommand({ connectionStatus: 1 })&#39;
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">MongoDB shell version v4.0.2
 connecting to: mongodb://127.0.0.1:27017
 MongoDB server version: 4.0.2
 {
-  &quot;authInfo&quot; : {
-    &quot;authenticatedUsers&quot; : [ ],
-    &quot;authenticatedUserRoles&quot; : [ ]
+  &#34;authInfo&#34; : {
+    &#34;authenticatedUsers&#34; : [ ],
+    &#34;authenticatedUserRoles&#34; : [ ]
   },
-  &quot;ok&quot; : 1
+  &#34;ok&#34; : 1
 }
-</code></pre><p>字段 <code>ok</code> 的值为 <code>1</code> 表示成功。</p>
+</code></pre></div><p>字段 <code>ok</code> 的值为 <code>1</code> 表示成功。</p>
 </li>
 </ol>
-<h2 id="-mongodb1">配置 MongoDB</h2>
+<h2 id="配置-mongodb">配置 MongoDB</h2>
 <p>MongoDB 使用 <a href="http://yaml.org/">YAML</a> 格式的配置文件 <code>/etc/mongod.conf</code> 。您可以通过编辑此文件来配置 MongoDB 实例。</p>
 <p>默认配置设置足以满足大多数用户的需求。但是，对于生产环境，建议把安全部分的注释取消并启用授权，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">security<span class="p">:</span><span class="w">
 </span><span class="w">  </span>authorization<span class="p">:</span><span class="w"> </span>enabled<span class="w">
 </span></code></pre></div><p>选项 <code>authorization</code> 启用<a href="https://docs.mongodb.com/manual/core/authorization/">基于角色的访问控制(RBAC)</a>，以控制用户对数据库资源和操作的访问。如果禁用此选项，则每个用户都可以访问所有数据库并执行任何操作。</p>
 <p>在更改 MongoDB 配置文件后，使用以下命令重新启动 mongod 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mongod
-</code></pre><p>要查找有关 MongoDB 4.0 中可用配置选项的更多信息，请访问<a href="https://docs.mongodb.com/manual/reference/configuration-options/">配置文件选项</a>文档页面。</p>
-<h2 id="-mongodb-">创建管理 MongoDB 用户</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart mongod
+</code></pre></div><p>要查找有关 MongoDB 4.0 中可用配置选项的更多信息，请访问<a href="https://docs.mongodb.com/manual/reference/configuration-options/">配置文件选项</a>文档页面。</p>
+<h2 id="创建管理-mongodb-用户">创建管理 MongoDB 用户</h2>
 <p>如果启用了 MongoDB 身份验证，请创建一个管理 MongoDB 用户，该用户将用于访问和管理 MongoDB 实例。</p>
 <p>首先访问 mongo shell ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mongo
-</code></pre><p>进入 MongoDB shell 后，键入以下命令以连接到 <code>admin</code> 数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mongo
+</code></pre></div><p>进入 MongoDB shell 后，键入以下命令以连接到 <code>admin</code> 数据库：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">u</span><span class="err">s</span><span class="err">e</span> <span class="err">a</span><span class="err">d</span><span class="err">m</span><span class="err">i</span><span class="err">n</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">switched to db admin
-</code></pre><p>发出以下命令以创建具有 <code>userAdminAnyDatabase</code> 角色的新用户 <code>mongoAdmin</code>：</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">switched to db admin
+</code></pre></div><p>发出以下命令以创建具有 <code>userAdminAnyDatabase</code> 角色的新用户 <code>mongoAdmin</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">d</span><span class="err">b</span><span class="err">.</span><span class="err">c</span><span class="err">r</span><span class="err">e</span><span class="err">a</span><span class="err">t</span><span class="err">e</span><span class="err">U</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">(</span>
   <span class="p">{</span>
     <span class="err">u</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">:</span> <span class="nt">&#34;mongoAdmin&#34;</span><span class="p">,</span> 
@@ -226,16 +226,16 @@ MongoDB server version: 4.0.2
     <span class="err">r</span><span class="err">o</span><span class="err">l</span><span class="err">e</span><span class="err">s</span><span class="err">:</span> <span class="err">[</span> <span class="err">{</span> <span class="err">r</span><span class="err">o</span><span class="err">l</span><span class="err">e</span><span class="err">:</span> <span class="nt">&#34;userAdminAnyDatabase&#34;</span><span class="p">,</span> <span class="err">d</span><span class="err">b</span><span class="err">:</span> <span class="nt">&#34;admin&#34;</span> <span class="p">}</span> <span class="err">]</span>
   <span class="err">}</span>
 <span class="err">)</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Successfully added user: {
-	&quot;user&quot; : &quot;mongoAdmin&quot;,
-	&quot;roles&quot; : [
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Successfully added user: {
+	&#34;user&#34; : &#34;mongoAdmin&#34;,
+	&#34;roles&#34; : [
 		{
-			&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,
-			&quot;db&quot; : &quot;admin&quot;
+			&#34;role&#34; : &#34;userAdminAnyDatabase&#34;,
+			&#34;db&#34; : &#34;admin&#34;
 		}
 	]
 }
-</code></pre><blockquote>
+</code></pre></div><blockquote>
 <p>您可以根据需要为管理 MongoDB 的用户命名。</p>
 </blockquote>
 <p>退出 mongo shell ：</p>
@@ -243,26 +243,26 @@ MongoDB server version: 4.0.2
 </code></pre></div><p>要测试更改，请使用先前创建的管理用户访问 mongo shell ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">m</span><span class="err">o</span><span class="err">n</span><span class="err">g</span><span class="err">o</span> <span class="err">-</span><span class="err">u</span> <span class="err">m</span><span class="err">o</span><span class="err">n</span><span class="err">g</span><span class="err">o</span><span class="err">A</span><span class="err">d</span><span class="err">m</span><span class="err">i</span><span class="err">n</span> <span class="err">-</span><span class="err">p</span> <span class="err">-</span><span class="err">-</span><span class="err">a</span><span class="err">u</span><span class="err">t</span><span class="err">h</span><span class="err">e</span><span class="err">n</span><span class="err">t</span><span class="err">i</span><span class="err">c</span><span class="err">a</span><span class="err">t</span><span class="err">i</span><span class="err">o</span><span class="err">n</span><span class="err">D</span><span class="err">a</span><span class="err">t</span><span class="err">a</span><span class="err">b</span><span class="err">a</span><span class="err">s</span><span class="err">e</span> <span class="err">a</span><span class="err">d</span><span class="err">m</span><span class="err">i</span><span class="err">n</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">u</span><span class="err">s</span><span class="err">e</span> <span class="err">a</span><span class="err">d</span><span class="err">m</span><span class="err">i</span><span class="err">n</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">switched to db admin
-</code></pre><p>现在，打印用户：</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">switched to db admin
+</code></pre></div><p>现在，打印用户：</p>
 <div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">s</span><span class="err">h</span><span class="err">o</span><span class="err">w</span> <span class="err">u</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">s</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">{
-	&quot;_id&quot; : &quot;admin.mongoAdmin&quot;,
-	&quot;user&quot; : &quot;mongoAdmin&quot;,
-	&quot;db&quot; : &quot;admin&quot;,
-	&quot;roles&quot; : [
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">{
+	&#34;_id&#34; : &#34;admin.mongoAdmin&#34;,
+	&#34;user&#34; : &#34;mongoAdmin&#34;,
+	&#34;db&#34; : &#34;admin&#34;,
+	&#34;roles&#34; : [
 		{
-			&quot;role&quot; : &quot;userAdminAnyDatabase&quot;,
-			&quot;db&quot; : &quot;admin&quot;
+			&#34;role&#34; : &#34;userAdminAnyDatabase&#34;,
+			&#34;db&#34; : &#34;admin&#34;
 		}
 	],
-	&quot;mechanisms&quot; : [
-		&quot;SCRAM-SHA-1&quot;,
-		&quot;SCRAM-SHA-256&quot;
+	&#34;mechanisms&#34; : [
+		&#34;SCRAM-SHA-1&#34;,
+		&#34;SCRAM-SHA-256&#34;
 	]
 }
-</code></pre><p>您也可以尝试访问没有任何参数的 mongo shell （只需键入 <code>mongo</code> ），看看是否可以使用与上面相同的命令列出用户。</p>
-<h2 id="heading1">结论</h2>
+</code></pre></div><p>您也可以尝试访问没有任何参数的 mongo shell （只需键入 <code>mongo</code> ），看看是否可以使用与上面相同的命令列出用户。</p>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在 Ubuntu 18.04 服务器上安装和配置 MongoDB 4.0 。</p>
 <p>有关此主题的更多信息，请参阅 <a href="https://docs.mongodb.com/manual/">The MongoDB 4.0 手册</a>。</p>
       </div><ul class="pa0">
@@ -342,11 +342,11 @@ MongoDB server version: 4.0.2
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-mongodb">安装 MongoDB</a></li>
-    <li><a href="#-mongodb1">配置 MongoDB</a></li>
-    <li><a href="#-mongodb-">创建管理 MongoDB 用户</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-mongodb">安装 MongoDB</a></li>
+    <li><a href="#配置-mongodb">配置 MongoDB</a></li>
+    <li><a href="#创建管理-mongodb-用户">创建管理 MongoDB 用户</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -358,7 +358,7 @@ MongoDB server version: 4.0.2
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

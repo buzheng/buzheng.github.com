@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,12 +145,12 @@
   
           <p>在 Linux 系统上工作时，有时您可能需要找出当前正在运行的进程。您可以使用许多命令来查找有关正在运行的进程的信息， <code>ps</code> 并且 <code>top</code> 这些命令是最常用的命令。</p>
 <p>在本文中，我们将讨论 <code>pstree</code> 命令。它与相似 <a href="/linux/ps-command-in-linux/"><code>ps</code></a> ，但是没有列出正在运行的进程，而是以树形显示它们。树状格式是一种更方便的方式来显示流程层次结构，并使输出在视觉上更具吸引力。</p>
-<h2 id="-pstree-">如何使用 <code>pstree</code> 命令</h2>
+<h2 id="如何使用-pstree-命令">如何使用 <code>pstree</code> 命令</h2>
 <p>该 <code>pstree</code> 命令的常规语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ps <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>USER or PID<span class="o">]</span>
 </code></pre></div><p>在没有任何选项或参数的情况下以最简单的形式 <code>pstree</code> 显示所有正在运行的进程的层次树结构：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree
-</code></pre><pre><code class="language-output" data-lang="output">systemd─┬─VBoxService───7*[{VBoxService}]
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemd─┬─VBoxService───7*[{VBoxService}]
         ├─accounts-daemon───2*[{accounts-daemon}]
         ├─2*[agetty]
         ├─atd
@@ -163,34 +163,34 @@
         ├─networkd-dispat───{networkd-dispat}
         ├─nginx───2*[nginx]
 ...
-</code></pre><p>树中的 top/root 项目是所有系统进程的父进程。在此示例中，即 <code>systemd</code> 是启动时启动的第一个进程。</p>
+</code></pre></div><p>树中的 top/root 项目是所有系统进程的父进程。在此示例中，即 <code>systemd</code> 是启动时启动的第一个进程。</p>
 <p><code>pstree</code> 合并相同的分支，方法是将它们放在方括号之间，并在它们前面加上表示分支数量的整数。这使输出更具可读性和视觉吸引力。</p>
 <p>以下是显示如何使用方括号的示例：</p>
-<pre><code class="language-output" data-lang="output">├─2*[agetty]
-</code></pre><p>与：</p>
-<pre><code class="language-output" data-lang="output">├─agetty        
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">├─2*[agetty]
+</code></pre></div><p>与：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">├─agetty        
 ├─agetty
-</code></pre><p>要禁用相同分支的合并，请使用以下 <code>-c</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -c
-</code></pre><p>进程的线程显示在父进程下，并使用花括号内的进程名称显示。这是一个例子：</p>
-<pre><code class="language-output" data-lang="output">├─lxcfs───2*[{lxcfs}]
-</code></pre><p>使用 <code>-t</code> 选项显示完整的线程名称。如果要隐藏线程并仅显示进程，请使用该 <code>-T</code> 选项。</p>
+</code></pre></div><p>要禁用相同分支的合并，请使用以下 <code>-c</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -c
+</code></pre></div><p>进程的线程显示在父进程下，并使用花括号内的进程名称显示。这是一个例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">├─lxcfs───2*[{lxcfs}]
+</code></pre></div><p>使用 <code>-t</code> 选项显示完整的线程名称。如果要隐藏线程并仅显示进程，请使用该 <code>-T</code> 选项。</p>
 <p>通常， <code>pstree</code> 显示许多屏幕上不适合的输出行。要一次查看一页输出，请将其通过管道传递给以下 <a href="/linux/less-command-in-linux/"><code>less</code></a> 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree | less
-</code></pre><p>如果使用用户名作为参数，则 <code>pstree</code> 仅显示该用户拥有的进程。例如，以下命令将仅显示由名为 “buzheng 的用户启动的那些进程：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree buzheng
-</code></pre><p>当将 PID 指定为参数时， <code>pstree</code> 显示以给定进程作为树根的树。这是一个例子：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree 1943
-</code></pre><pre><code class="language-output" data-lang="output">sshd───bash───pstree
-</code></pre><p>要显示给定进程的父流程，请使用 <code>-s</code> 选项，后跟流程 PID ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -s 1943
-</code></pre><pre><code class="language-output" data-lang="output">systemd───sshd───sshd───bash───pstree
-</code></pre><h2 id="-pid--pgid">显示 PID 和 PGID</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree | less
+</code></pre></div><p>如果使用用户名作为参数，则 <code>pstree</code> 仅显示该用户拥有的进程。例如，以下命令将仅显示由名为 “buzheng 的用户启动的那些进程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree buzheng
+</code></pre></div><p>当将 PID 指定为参数时， <code>pstree</code> 显示以给定进程作为树根的树。这是一个例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree 1943
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sshd───bash───pstree
+</code></pre></div><p>要显示给定进程的父流程，请使用 <code>-s</code> 选项，后跟流程 PID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -s 1943
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemd───sshd───sshd───bash───pstree
+</code></pre></div><h2 id="显示-pid-和-pgid">显示 PID 和 PGID</h2>
 <p>通常，在运行 <code>pstree</code> 命令时，用户正在寻找的最重要的信息是进程 ID 。例如，知道 PID 可以让您<a href="/linux/how-to-kill-a-process-in-linux/">杀死一个故障进程</a>。</p>
 <p><code>-p</code> 选项指示 <code>pstree</code> 显示 PID ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -p
-</code></pre><p>每个进程或线程后的括号中都显示 PID 。</p>
-<pre><code class="language-output" data-lang="output">systemd(1)─┬─VBoxService(955)─┬─{VBoxService}(956)
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -p
+</code></pre></div><p>每个进程或线程后的括号中都显示 PID 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemd(1)─┬─VBoxService(955)─┬─{VBoxService}(956)
            │                  ├─{VBoxService}(957)
            │                  ├─{VBoxService}(958)
            │                  ├─{VBoxService}(959)
@@ -198,13 +198,13 @@
            │                  ├─{VBoxService}(961)
            │                  └─{VBoxService}(962)
 ...
-</code></pre><p>默认情况下， <code>pstree</code> 按名称对具有相同父项的进程进行排序。该 <code>-n</code> 选项告诉 <code>pstree</code> 使用数字排序，即按 PID 排序：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -pn
-</code></pre><p>一个或多个进程组 ID 是进程组的第一个成员的进程 ID 。要查看 PGID ，请使用以下 <code>-g</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -g
+</code></pre></div><p>默认情况下， <code>pstree</code> 按名称对具有相同父项的进程进行排序。该 <code>-n</code> 选项告诉 <code>pstree</code> 使用数字排序，即按 PID 排序：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -pn
+</code></pre></div><p>一个或多个进程组 ID 是进程组的第一个成员的进程 ID 。要查看 PGID ，请使用以下 <code>-g</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -g
 
-</code></pre><p>每个进程或线程之后的括号中也会显示 PID 。</p>
-<pre><code class="language-output" data-lang="output">systemd(1)─┬─VBoxService(954)─┬─{VBoxService}(954)
+</code></pre></div><p>每个进程或线程之后的括号中也会显示 PID 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemd(1)─┬─VBoxService(954)─┬─{VBoxService}(954)
            │                  ├─{VBoxService}(954)
            │                  ├─{VBoxService}(954)
            │                  ├─{VBoxService}(954)
@@ -212,23 +212,23 @@
            │                  ├─{VBoxService}(954)
            │                  └─{VBoxService}(954)
 ...
-</code></pre><p>显示 PID 或 PGID 时，将隐式禁用合并。</p>
-<h2 id="heading">显示命令行参数</h2>
+</code></pre></div><p>显示 PID 或 PGID 时，将隐式禁用合并。</p>
+<h2 id="显示命令行参数">显示命令行参数</h2>
 <p>一些程序在被调用启动的时候会带上命令行参数作为配置选项使用。</p>
 <p>默认情况下， <code>pstree</code> 不会为您显示正在运行的进程的命令行参数。要查看该进程是如何开始的，请使用 <code>-a</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -a
-</code></pre><pre><code class="language-output" data-lang="output">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -a
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
   ├─agetty -o -p -- \\u --keep-baud 115200,38400,9600 ttyS0 vt220
   ├─agetty -o -p -- \\u --noclear tty1 linux
 ...
-</code></pre><h2 id="heading1">突出显示</h2>
+</code></pre></div><h2 id="突出显示">突出显示</h2>
 <p><code>pstree</code>  还可以让您突出显示流程以更好地呈现视觉效果。</p>
 <p>该 <code>-h</code> 选项指示 <code>pstree</code> 突出显示当前进程及其所有祖先。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -h
-</code></pre><p>要突出显示特定进程，请使用 <code>-H</code> 选项，后跟进程 ID ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pstree -H PID_NUMBER
-</code></pre><p>如果不支持突出显示，该命令将退出并显示错误。</p>
-<h2 id="heading2">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -h
+</code></pre></div><p>要突出显示特定进程，请使用 <code>-H</code> 选项，后跟进程 ID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pstree -H PID_NUMBER
+</code></pre></div><p>如果不支持突出显示，该命令将退出并显示错误。</p>
+<h2 id="结论">结论</h2>
 <p><code>pstree</code> 命令以树结构形式显示正在运行的进程。</p>
 <p>有关所有可用 <code>pstree</code> 选项的信息，请在终端中输入 <code>man pstree</code> 查看。</p>
       </div><ul class="pa0">
@@ -304,11 +304,11 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-pstree-">如何使用 pstree 命令</a></li>
-    <li><a href="#-pid--pgid">显示 PID 和 PGID</a></li>
-    <li><a href="#heading">显示命令行参数</a></li>
-    <li><a href="#heading1">突出显示</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#如何使用-pstree-命令">如何使用 pstree 命令</a></li>
+    <li><a href="#显示-pid-和-pgid">显示 PID 和 PGID</a></li>
+    <li><a href="#显示命令行参数">显示命令行参数</a></li>
+    <li><a href="#突出显示">突出显示</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -320,7 +320,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

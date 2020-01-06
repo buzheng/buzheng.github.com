@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,46 +142,46 @@
   
           <p><a href="https://getcomposer.org/">Composer</a> 是 PHP 的依赖管理器（类似于 <a href="/linux/how-to-install-node-js-on-ubuntu-18.04/">Node.js 的 npm</a> 或 <a href="/linux/how-to-install-pip-on-ubuntu-18.04/">Python 的 pip</a> ）。 Composer 将引入您项目所依赖的所有必需 PHP 包并为您管理它们。</p>
 <p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 计算机上安装和使用 Composer 。 Ubuntu 16.04 可以使用相同的步骤。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续学习本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录，并且<a href="/linux/how-to-install-php-on-ubuntu-18-04/">在 Ubuntu 18.04 系统上安装了 PHP</a> 。</p>
-<h2 id="-composer">安装 Composer</h2>
+<h2 id="安装-composer">安装 Composer</h2>
 <p>要在 Ubuntu 系统上安装 Composer ，请按照下列步骤操作：</p>
 <ol>
 <li>
 <p>在下载和安装 Composer 之前，首先更新软件包索引并安装必要的包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt install wget php-cli php-zip unzip
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>现在我们已经在我们的机器上安装了 php-cli ，我们可以下载 composer 安装程序：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">php -r &quot;copy('https://getcomposer.org/installer', 'composer-setup.php');&quot;
-</code></pre><p>上面的命令将在当前工作目录中下载 <code>composer-setup.php</code> 文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">php -r &#34;copy(&#39;https://getcomposer.org/installer&#39;, &#39;composer-setup.php&#39;);&#34;
+</code></pre></div><p>上面的命令将在当前工作目录中下载 <code>composer-setup.php</code> 文件。</p>
 </li>
 <li>
 <p>接下来，我们需要比较脚本文件的 <code>SHA-384</code> 哈希值与 <a href="https://composer.github.io/pubkeys.html">Composer 公钥/签名</a>页面上找到的最新安装程序哈希值, 来验证脚本的数据完整性。</p>
 <p>我们将使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>从 Composer 的 Github 页面下载最新 Composer 安装程序的预期签名，并将其存储在名为 <code>HASH</code> 的变量中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">HASH=&quot;$(wget -q -O - https://composer.github.io/installer.sig)&quot;
-</code></pre><p>现在运行以下命令以验证安装脚本是否已损坏：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">php -r &quot;if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;&quot;
-</code></pre><p>如果哈希匹配，您将看到以下输出：</p>
-<pre><code class="language-output" data-lang="output">Installer verified
-</code></pre><p>如果哈希值不匹配，你会看到 <code>Installer corrupt</code> 。在这种情况下，您需要重新下载 Composer 安装脚本并通过 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo $HASH</code></a> 仔细检查 <code>$HASH</code> 变量的值。验证安装程序后，您可以继续执行下一步。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HASH=&#34;$(wget -q -O - https://composer.github.io/installer.sig)&#34;
+</code></pre></div><p>现在运行以下命令以验证安装脚本是否已损坏：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">php -r &#34;if (hash_file(&#39;SHA384&#39;, &#39;composer-setup.php&#39;) === &#39;$HASH&#39;) { echo &#39;Installer verified&#39;; } else { echo &#39;Installer corrupt&#39;; unlink(&#39;composer-setup.php&#39;); } echo PHP_EOL;&#34;
+</code></pre></div><p>如果哈希匹配，您将看到以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Installer verified
+</code></pre></div><p>如果哈希值不匹配，你会看到 <code>Installer corrupt</code> 。在这种情况下，您需要重新下载 Composer 安装脚本并通过 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo $HASH</code></a> 仔细检查 <code>$HASH</code> 变量的值。验证安装程序后，您可以继续执行下一步。</p>
 </li>
 <li>
 <p>以下命令将在 <code>/usr/local/bin</code> 目录中安装 Composer  ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-</code></pre><pre><code class="language-output" data-lang="output">All settings correct for using Composer
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">All settings correct for using Composer
 Downloading...
 
 Composer (version 1.7.2) successfully installed to: /usr/local/bin/composer
 Use it: php /usr/local/bin/composer
-</code></pre><p><code>composer</code> 命令安装在系统范围，可供所有用户使用。</p>
+</code></pre></div><p><code>composer</code> 命令安装在系统范围，可供所有用户使用。</p>
 </li>
 <li>
 <p>最后一步是验证安装：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">composer
-</code></pre><p>上面的命令将打印 Composer 的版本，命令和参数。</p>
-<pre><code class="language-output" data-lang="output">______
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">composer
+</code></pre></div><p>上面的命令将打印 Composer 的版本，命令和参数。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">______
 / ____/___  ____ ___  ____  ____  ________  _____
 / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/
 / /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /
@@ -191,41 +191,41 @@ Composer version 1.7.2 2018-08-16 16:57:12
 
 Usage:
     command [options] [arguments]
-</code></pre></li>
+</code></pre></div></li>
 </ol>
 <blockquote>
 <p>如果您希望每个项目安装独立的 Composer ，请使用以下命令 <code>php composer-setup.php</code> ，它将在您当前的工作目录中创建一个名为 <code>composer.phar</code> 的文件。你可以通过运行 <code>./composer.phar</code> 来使用 Composer.</p>
 </blockquote>
-<h2 id="composer-">Composer 入门</h2>
+<h2 id="composer-入门">Composer 入门</h2>
 <p>现在，在您的 Ubuntu 系统上安装了 Composer ，我们将向您展示如何在 PHP 项目中使用 Composer 。</p>
 <p>第一步是创建一个目录，该目录将作为项目根目录，包含了 <code>composer.json</code> 文件。此文件描述了您的 PHP 项目，包括 PHP 依赖项和其他元数据。</p>
 <p>创建项目目录并切换到它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mkdir ~/my-first-composer-project
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir ~/my-first-composer-project
 cd ~/my-first-composer-project
-</code></pre><p>下一步是使用 <code>composer require &lt;package name&gt;</code> 命令初始化新的 <code>composer.json</code> 并指定我们要下载的包。</p>
+</code></pre></div><p>下一步是使用 <code>composer require &lt;package name&gt;</code> 命令初始化新的 <code>composer.json</code> 并指定我们要下载的包。</p>
 <p>在此示例中，我们将创建一个示例应用程序，该应用程序将使用名为 <a href="https://carbon.nesbot.com/docs/">carbon</a> 的包打印当前时间。</p>
 <p>运行以下命令初始化新的 <code>composer.json</code> 并安装 carbon 包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">composer require nesbot/carbon
-</code></pre><pre><code class="language-output" data-lang="output">Using version ^1.33 for nesbot/carbon
-./composer.json has been created
-Loading composer repositories with package information
-Updating dependencies (including require-dev)
-Package operations: 3 installs, 0 updates, 0 removals
-  - Installing symfony/polyfill-mbstring (v1.9.0): Downloading (100%)         
-  - Installing symfony/translation (v4.1.4): Downloading (100%)         
-  - Installing nesbot/carbon (1.33.0): Downloading (100%)         
-symfony/translation suggests installing symfony/config
-symfony/translation suggests installing symfony/yaml
-symfony/translation suggests installing psr/log-implementation (To use logging capability in translator)
-Writing lock file
-Generating autoload files
-</code></pre><p>正如您从上面的输出中看到的， Composer 将创建该 <code>composer.json</code> 文件，它将下载并安装 carbon 及其所有依赖项。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">composer require nesbot/carbon
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">Using</span> <span class="nx">version</span> <span class="p">^</span><span class="mf">1.33</span> <span class="k">for</span> <span class="nx">nesbot</span><span class="o">/</span><span class="nx">carbon</span>
+<span class="p">.</span><span class="o">/</span><span class="nx">composer</span><span class="p">.</span><span class="nx">json</span> <span class="nx">has</span> <span class="nx">been</span> <span class="nx">created</span>
+<span class="nx">Loading</span> <span class="nx">composer</span> <span class="nx">repositories</span> <span class="nx">with</span> <span class="kn">package</span> <span class="nx">information</span>
+<span class="nx">Updating</span> <span class="nf">dependencies</span> <span class="p">(</span><span class="nx">including</span> <span class="nx">require</span><span class="o">-</span><span class="nx">dev</span><span class="p">)</span>
+<span class="nx">Package</span> <span class="nx">operations</span><span class="p">:</span> <span class="mi">3</span> <span class="nx">installs</span><span class="p">,</span> <span class="mi">0</span> <span class="nx">updates</span><span class="p">,</span> <span class="mi">0</span> <span class="nx">removals</span>
+  <span class="o">-</span> <span class="nx">Installing</span> <span class="nx">symfony</span><span class="o">/</span><span class="nx">polyfill</span><span class="o">-</span><span class="nf">mbstring</span> <span class="p">(</span><span class="nx">v1</span><span class="mf">.9</span><span class="mf">.0</span><span class="p">)</span><span class="p">:</span> <span class="nf">Downloading</span> <span class="p">(</span><span class="mi">100</span><span class="o">%</span><span class="p">)</span>         
+  <span class="o">-</span> <span class="nx">Installing</span> <span class="nx">symfony</span><span class="o">/</span><span class="nf">translation</span> <span class="p">(</span><span class="nx">v4</span><span class="mf">.1</span><span class="mf">.4</span><span class="p">)</span><span class="p">:</span> <span class="nf">Downloading</span> <span class="p">(</span><span class="mi">100</span><span class="o">%</span><span class="p">)</span>         
+  <span class="o">-</span> <span class="nx">Installing</span> <span class="nx">nesbot</span><span class="o">/</span><span class="nf">carbon</span> <span class="p">(</span><span class="mf">1.33</span><span class="mf">.0</span><span class="p">)</span><span class="p">:</span> <span class="nf">Downloading</span> <span class="p">(</span><span class="mi">100</span><span class="o">%</span><span class="p">)</span>         
+<span class="nx">symfony</span><span class="o">/</span><span class="nx">translation</span> <span class="nx">suggests</span> <span class="nx">installing</span> <span class="nx">symfony</span><span class="o">/</span><span class="nx">config</span>
+<span class="nx">symfony</span><span class="o">/</span><span class="nx">translation</span> <span class="nx">suggests</span> <span class="nx">installing</span> <span class="nx">symfony</span><span class="o">/</span><span class="nx">yaml</span>
+<span class="nx">symfony</span><span class="o">/</span><span class="nx">translation</span> <span class="nx">suggests</span> <span class="nx">installing</span> <span class="nx">psr</span><span class="o">/</span><span class="nx">log</span><span class="o">-</span><span class="nf">implementation</span> <span class="p">(</span><span class="nx">To</span> <span class="nx">use</span> <span class="nx">logging</span> <span class="nx">capability</span> <span class="nx">in</span> <span class="nx">translator</span><span class="p">)</span>
+<span class="nx">Writing</span> <span class="nx">lock</span> <span class="nx">file</span>
+<span class="nx">Generating</span> <span class="nx">autoload</span> <span class="nx">files</span>
+</code></pre></div><p>正如您从上面的输出中看到的， Composer 将创建该 <code>composer.json</code> 文件，它将下载并安装 carbon 及其所有依赖项。</p>
 <p>如果你<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">列出你的项目目录</a>，你会看到它包含 <code>composer.json</code>, <code>composer.lock</code> 两个文件和 <code>vendor</code> 目录。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ls -l
-</code></pre><pre><code class="language-output" data-lang="output">-rw-r--r-- 1 buzheng users   60 Aug 29 00:50 composer.json
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ls -l
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">-rw-r--r-- 1 buzheng users   60 Aug 29 00:50 composer.json
 -rw-r--r-- 1 buzheng users 6.8K Aug 29 00:50 composer.lock
 drwxr-xr-x 5 buzheng users 4.0K Aug 29 00:50 vendor
-</code></pre><ul>
+</code></pre></div><ul>
 <li>目录 <code>vendor</code> 存储项目依赖项。</li>
 <li><code>composer.lock</code> 包含所有已安装软件包的列表，包括确切的软件包版本。</li>
 <li><code>composer.json</code> 描述了 PHP 项目和所有 PHP 依赖项。</li>
@@ -247,13 +247,13 @@ drwxr-xr-x 5 buzheng users 4.0K Aug 29 00:50 vendor
 <p>在打开 php 标签之后的第一行中，我们包含了 Composer 自动生成的文件 <code>vendor/autoload.php</code>，该文件将自动加载所有库。</p>
 <p>接下来我们给 <code>Carbon\Carbon</code> 创建别名 <code>Carbon</code>， 最后一行是使用 Carbon 的 <code>now</code> 方法打印当前时间。</p>
 <p>键入以下命令运行脚本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">php testing.php
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">Now: 2018-08-28 23:47:19
-</code></pre><p>稍后，如果要更新 PHP 包，只需运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">composer update
-</code></pre><p>上面的命令将检查已安装软件包的较新版本，如果找到较新版本且与 <code>composer.json</code> 中指定的<a href="https://getcomposer.org/doc/articles/versions.md">版本约束</a>匹配，则 Composer 将更新软件包。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">php testing.php
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Now: 2018-08-28 23:47:19
+</code></pre></div><p>稍后，如果要更新 PHP 包，只需运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">composer update
+</code></pre></div><p>上面的命令将检查已安装软件包的较新版本，如果找到较新版本且与 <code>composer.json</code> 中指定的<a href="https://getcomposer.org/doc/articles/versions.md">版本约束</a>匹配，则 Composer 将更新软件包。</p>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在 Ubuntu 18.04 计算机上安装 Composer 。我们还向您展示了如何使用 Composer 创建基本的 PHP 项目。</p>
 <p>要查找有关 Composer 的更多信息，请访问 <a href="https://getcomposer.org/doc/">Composer 官方文档</a>页面。</p>
       </div><ul class="pa0">
@@ -333,10 +333,10 @@ drwxr-xr-x 5 buzheng users 4.0K Aug 29 00:50 vendor
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-composer">安装 Composer</a></li>
-    <li><a href="#composer-">Composer 入门</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-composer">安装 Composer</a></li>
+    <li><a href="#composer-入门">Composer 入门</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -348,7 +348,7 @@ drwxr-xr-x 5 buzheng users 4.0K Aug 29 00:50 vendor
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

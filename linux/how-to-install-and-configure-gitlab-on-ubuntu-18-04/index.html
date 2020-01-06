@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,7 +150,7 @@
 <p>有三种不同版本的 GitLab 可用，社区版 (CE) ，企业版 (EE) 和 GitLab 托管版本。</p>
 <p>如果你想远离 <a href="https://github.com/">GitHub</a> ， <a href="https://about.gitlab.com/">GitLab</a> 是首选。它可以从不同的来源导入项目和问题，包括 GitHub ，这使得迁移过程无忧无虑。 GitLab 界面设计精良，干净，直观，并且在用户体验和功能方面与 GitHub 相近。</p>
 <p>根据所需的用例，有几种方法可以安装 GitLab 。本教程介绍了使用 Omnibus 软件包在 Ubuntu 18.04 系统上安装和配置 GitLab  (CE) 所需的步骤。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>本教程假设您安装了新的 Ubuntu 18.04 。根据 <a href="https://docs.gitlab.com/ee/install/requirements.html#hardware-requirements">GitLab 要求页面</a>，建议服务器的配置如下：</p>
 <ul>
 <li>至少 4GB 的 RAM 内存</li>
@@ -160,7 +160,7 @@
 </ul>
 <p>为了增加安全，建议设置基本防火墙。您可以按照<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"> Ubuntu 18.04 指南中的如何使用 UFW 设置防火墙</a>中的步骤进行操作。</p>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户身份</a>登录。</p>
-<h2 id="heading1">安装所需的依赖项</h2>
+<h2 id="安装所需的依赖项">安装所需的依赖项</h2>
 <p>更新本地程序包索引并使用以下命令安装依赖项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
 sudo apt install curl openssh-server ca-certificates
@@ -170,7 +170,7 @@ sudo apt install curl openssh-server ca-certificates
 debconf-set-selections <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;postfix postfix/main_mailer_type string &#39;Internet Site&#39;&#34;</span>
 sudo apt install postfix
 </code></pre></div><p>有关如何设置自己的邮件服务器的更多详细信息，请查看<!-- raw HTML omitted -->本系列<!-- raw HTML omitted -->。</p>
-<h2 id="-gitlab">安装 GitLab</h2>
+<h2 id="安装-gitlab">安装 GitLab</h2>
 <p>安装 GitLab 的过程非常简单。我们将使用 apt 包管理器安装 GitLab CE 包。</p>
 <p>首先使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>将 GitLab 软件仓库添加到系统源列表：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh <span class="p">|</span> sudo bash
@@ -178,7 +178,7 @@ sudo apt install postfix
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install gitlab-ce
 </code></pre></div><p>安装过程可能需要一段时间，安装成功后，您将看到以下输出：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Thank you <span class="k">for</span> installing GitLab!
-</code></pre></div><h2 id="heading2">调整防火墙规则</h2>
+</code></pre></div><h2 id="调整防火墙规则">调整防火墙规则</h2>
 <p>有关设置基本防火墙的指南在先决条件部分中进行了链接。为了能够访问 GitLab 接口，我们需要打开端口 <code>80</code> 和 <code>443</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow OpenSSH
 sudo ufw allow http
@@ -195,7 +195,7 @@ OpenSSH                    ALLOW       Anywhere
 80/tcp <span class="o">(</span>v6<span class="o">)</span>                ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
 443/tcp <span class="o">(</span>v6<span class="o">)</span>               ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
 OpenSSH <span class="o">(</span>v6<span class="o">)</span>               ALLOW       Anywhere <span class="o">(</span>v6<span class="o">)</span>
-</code></pre></div><h2 id="-gitlab-url">设置 GitLab URL</h2>
+</code></pre></div><h2 id="设置-gitlab-url">设置 GitLab URL</h2>
 <p>在访问 GitLab Web 界面之前，我们需要设置可以访问 GitLab 的 URL 。打开 Gitlab 的配置文件并进行以下更改：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/gitlab/gitlab.rb
 </code></pre></div><p>在配置文件的顶部附近，您将看到以 <code>external_url</code> 开头的行。。如果您有域名使用 https，如果要使用 http 通过服务器 IP 地址访问 GitLab 接口，更改值以匹配您的域名/子域名或 IP 地址。</p>
@@ -207,10 +207,10 @@ OpenSSH <span class="o">(</span>v6<span class="o">)</span>               ALLOW  
 </code></pre></div><p>最后，保存并关闭文件并运行以下命令来重新配置 Gitlab ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo gitlab-ctl reconfigure
 </code></pre></div><p>该命令将重新配置您的 GitLab 设置并生成一个免费的 Let's Encrypt SSL 证书。</p>
-<h2 id="-web-interface--gitlab">通过 Web Interface 配置 GitLab</h2>
+<h2 id="通过-web-interface-配置-gitlab">通过 Web Interface 配置 GitLab</h2>
 <p>现在您已经配置了 GitLab URL ，您可以通过 GitLab Web 界面从初始配置开始。</p>
 <p>启动 Web 浏览器并导航至： <code>https://your_gitlab_domain_or_server_IP.com</code></p>
-<h3 id="heading3">设置管理帐户密码</h3>
+<h3 id="设置管理帐户密码">设置管理帐户密码</h3>
 <p>首次访问 Web 界面时，系统会提示您设置管理帐户的密码。</p>
 <p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-initial-page.jpg" alt=""></p>
 <p>输入安全密码，完成后单击 <code>Change your password</code> 按钮。</p>
@@ -223,19 +223,19 @@ OpenSSH <span class="o">(</span>v6<span class="o">)</span>               ALLOW  
 </ul>
 <p>输入登录凭据并单击 <code>Sign in</code> 按钮后，您将进入 GitLab 欢迎页面。</p>
 <p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-welcome-page.jpg" alt=""></p>
-<h3 id="heading4">编辑用户配置文件</h3>
+<h3 id="编辑用户配置文件">编辑用户配置文件</h3>
 <p>您要做的第一件事是编辑您的用户个人资料。单击用户头像(右上角)，然后从下拉菜单中选择 Settings ：</p>
 <p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-access-user-profile.jpg" alt=""></p>
 <p>您可以在此处更改姓名，电子邮件和其他个人资料信息和设置。根据自己的喜好进行更改。</p>
 <p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-profile-page.jpg" alt=""></p>
 <p>完成后，单击 <code>Update Profile settings</code> 按钮，很快您将收到一封确认电子邮件，其中包含您提供的地址。要确认您的帐户，请按照电子邮件中提供的说明操作。</p>
-<h3 id="heading5">更改用户名</h3>
+<h3 id="更改用户名">更改用户名</h3>
 <p>要访问 Profile 页面，请单击 <code>Account</code> 左侧垂直导航菜单中的链接。</p>
 <p>您已经知道第一个管理帐户的默认用户名是 <code>root</code> 。要更改它，只需键入新用户名并单击 <code>Update username</code> 按钮即可。</p>
 <p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-change-user-name.jpg" alt=""></p>
 <p>在此屏幕上，您还可以启用双因素身份验证。</p>
 <p>下次您将登录 GitLab 仪表板时，您需要输入新的用户名。</p>
-<h3 id="-ssh-">添加 SSH 密钥</h3>
+<h3 id="添加-ssh-密钥">添加 SSH 密钥</h3>
 <p>为了能够将您的本地 git 更改推送到 GitLab 服务器，您需要将 SSH 公钥添加到 GitLab 帐户。</p>
 <p>如果您已在本地系统上创建了 SSH 密钥对，则可以通过键入以下内容来显示公钥：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat ~/.ssh/id_rsa.pub
@@ -248,7 +248,7 @@ OpenSSH <span class="o">(</span>v6<span class="o">)</span>               ALLOW  
 <p>在 Key 文本框粘贴您之前从本地计算机复制的公钥，设置描述性标题并单击 <code>Add key</code> 按钮：</p>
 <p><img src="/images/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/gitlab-add-ssh-key.jpg" alt=""></p>
 <p>现在，您应该能够从本地计算机推送和拉取项目更改，而无需提供 GitLab 帐户凭据。</p>
-<h2 id="heading6">结论</h2>
+<h2 id="结论">结论</h2>
 <p>本教程向您介绍了在 Ubuntu 18.04 上安装和配置 GitLab 的过程。您还学习了如何编辑配置文件设置，如何更改用户名以及添加 SSH 密钥。您现在可以创建第一个项目并开始使用 GitLab 。</p>
       </div><ul class="pa0">
   
@@ -327,20 +327,20 @@ OpenSSH <span class="o">(</span>v6<span class="o">)</span>               ALLOW  
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#heading1">安装所需的依赖项</a></li>
-    <li><a href="#-gitlab">安装 GitLab</a></li>
-    <li><a href="#heading2">调整防火墙规则</a></li>
-    <li><a href="#-gitlab-url">设置 GitLab URL</a></li>
-    <li><a href="#-web-interface--gitlab">通过 Web Interface 配置 GitLab</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装所需的依赖项">安装所需的依赖项</a></li>
+    <li><a href="#安装-gitlab">安装 GitLab</a></li>
+    <li><a href="#调整防火墙规则">调整防火墙规则</a></li>
+    <li><a href="#设置-gitlab-url">设置 GitLab URL</a></li>
+    <li><a href="#通过-web-interface-配置-gitlab">通过 Web Interface 配置 GitLab</a>
       <ul>
-        <li><a href="#heading3">设置管理帐户密码</a></li>
-        <li><a href="#heading4">编辑用户配置文件</a></li>
-        <li><a href="#heading5">更改用户名</a></li>
-        <li><a href="#-ssh-">添加 SSH 密钥</a></li>
+        <li><a href="#设置管理帐户密码">设置管理帐户密码</a></li>
+        <li><a href="#编辑用户配置文件">编辑用户配置文件</a></li>
+        <li><a href="#更改用户名">更改用户名</a></li>
+        <li><a href="#添加-ssh-密钥">添加 SSH 密钥</a></li>
       </ul>
     </li>
-    <li><a href="#heading6">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -352,7 +352,7 @@ OpenSSH <span class="o">(</span>v6<span class="o">)</span>               ALLOW  
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

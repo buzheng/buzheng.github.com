@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,39 +146,39 @@
           <p><a href="https://jenkins.io/">Jenkins</a>是一个开源自动化服务器，提供了一种简单的方法来建立持续集成和连续交付（CI / CD）管道。</p>
 <p>持续集成（CI）是一种DevOps实践，其中团队成员定期将其代码更改提交到版本控制存储库，然后运行自动构建和测试。持续交付（CD）是一系列实践，其中代码更改自动构建，测试并部署到生产中。</p>
 <p>在本教程中，我们将使用Jenkins Debian软件包存储库在Debian 9机器上安装Jenkins。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录。</p>
-<h2 id="jenkins">安装Jenkins</h2>
+<h2 id="安装jenkins">安装Jenkins</h2>
 <p>按照以下步骤在Debian系统上安装Jenkins：</p>
 <ol>
 <li>
 <p>Jenkins是一个Java应用程序，首先，您需要安装Java。为此，请使用以下命令更新程序包索引并安装Java 8 OpenJDK程序包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install openjdk-8-jdk
-</code></pre><p>当前版本的Jenkins尚不支持Java 10（和Java 11）。如果您的计算机上安装了多个Java版本，请<a href="/linux/install-java-on-debian-9/">确保Java 8是默认的Java版本</a>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install openjdk-8-jdk
+</code></pre></div><p>当前版本的Jenkins尚不支持Java 10（和Java 11）。如果您的计算机上安装了多个Java版本，请<a href="/linux/install-java-on-debian-9/">确保Java 8是默认的Java版本</a>。</p>
 </li>
 <li>
 <p>使用以下<a href="/linux/wget-command-examples/"><code>wget</code></a>命令导入Jenkins存储库的GPG密钥：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-</code></pre><p>命令应该返回<code>OK</code>，这意味着密钥已成功导入，并且此存储库中的包将被视为可信任。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+</code></pre></div><p>命令应该返回<code>OK</code>，这意味着密钥已成功导入，并且此存储库中的包将被视为可信任。</p>
 <p>导入密钥后，将Jenkins存储库添加到系统中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ &gt; /etc/apt/sources.list.d/jenkins.list'
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo sh -c &#39;echo deb http://pkg.jenkins.io/debian-stable binary/ &gt; /etc/apt/sources.list.d/jenkins.list&#39;
+</code></pre></div></li>
 <li>
 <p><code>apt</code>通过运行以下命令更新软件包列表并安装最新版本的Jenkins：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install jenkins
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install jenkins
+</code></pre></div></li>
 <li>
 <p>启动Jenkins服务并使其在启动时自动启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start jenkinssudo systemctl enable jenkins
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start jenkinssudo systemctl enable jenkins
+</code></pre></div></li>
 </ol>
-<h2 id="jenkins1">设置Jenkins</h2>
+<h2 id="设置jenkins">设置Jenkins</h2>
 <p>打开浏览器并键入域名或IP地址，然后输入端口<code>8080</code>，即可启动设置<code>http://your_ip_or_domain:8080</code>。将显示类似于以下的屏幕：</p>
 <p><img src="/images/linux/how-to-install-jenkins-on-debian-9/unlock-jenkins.jpg" alt=""></p>
 <p>在安装过程中，Jenkins安装程序会创建一个32个字符的长字母数字密码。要查找密码类型：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-</code></pre><pre><code class="language-output" data-lang="output">290ed743493b468ca767b4f363964c54
-</code></pre><p>复制密码，将其粘贴到管理员密码字段中，然后单击<code>Continue</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">290ed743493b468ca767b4f363964c54
+</code></pre></div><p>复制密码，将其粘贴到管理员密码字段中，然后单击<code>Continue</code>。</p>
 <p><img src="/images/linux/how-to-install-jenkins-on-debian-9/customize-jenkins.jpg" alt=""></p>
 <p>在下一个屏幕上，安装向导将询问您是要安装建议的插件还是要选择特定的插件。单击该<code>Install suggested plugins</code>框，安装过程将立即开始。</p>
 <p><img src="/images/linux/how-to-install-jenkins-on-debian-9/jenkins-getting-started.jpg" alt=""></p>
@@ -191,7 +191,7 @@
 <p>单击该<code>Start using Jenkins</code>按钮，您将被重定向到以前面一个步骤中创建的管理员用户身份登录的Jenkins仪表板。</p>
 <p><img src="/images/linux/how-to-install-jenkins-on-debian-9/jenkins-homepage.jpg" alt=""></p>
 <p>此时，您已在系统上成功安装了Jenkins。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何安装和执行Jenkins的初始配置。您现在可以通过访问官方<a href="https://jenkins.io/doc/">Jenkins文档</a>页面来开始探索Jenkins功能。</p>
       </div><ul class="pa0">
   
@@ -266,10 +266,10 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#jenkins">安装Jenkins</a></li>
-    <li><a href="#jenkins1">设置Jenkins</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装jenkins">安装Jenkins</a></li>
+    <li><a href="#设置jenkins">设置Jenkins</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -281,7 +281,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

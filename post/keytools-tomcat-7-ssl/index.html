@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -164,8 +164,8 @@ C 国家"/>
           
           
   
-          <h2 id="heading">第一、证书库、证书等生成</h2>
-<h3 id="1">1、生成服务器证书库</h3>
+          <h2 id="第一证书库证书等生成">第一、证书库、证书等生成</h2>
+<h3 id="1生成服务器证书库">1、生成服务器证书库</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -validity <span class="m">36500</span> -genkey -v -alias tomcat_server -keyalg RSA -keystore tomcat_server.keystore -dname <span class="s2">&#34;CN=127.0.0.1,OU=,O=,L=,ST=,c=&#34;</span> -storepass <span class="m">123456</span> -keypass <span class="m">123456</span>
 </code></pre></div><p>-validity 36500 有效期，以天为单位
 CN 这项一定是服务器的域名或者IP地址
@@ -174,23 +174,23 @@ O 组织
 L 区域
 ST 州/省份
 C 国家</p>
-<h3 id="2">2、客户端证书</h3>
+<h3 id="2客户端证书">2、客户端证书</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -validity <span class="m">36500</span> -genkeypair -v -alias testclient -keyalg RSA -storetype PKCS12 -keystore testclient.p12 -dname <span class="s2">&#34;CN=testclient,OU=,O=,L=,ST=,c=&#34;</span> -storepass <span class="m">123456</span>
 </code></pre></div><p>-storetype PKCS12 主要是为了将证书导入IE/firefox 中。</p>
 <p>将生成的证书导入IE中。</p>
-<h3 id="3">3、将客户端证书导入服务器端证书库</h3>
+<h3 id="3将客户端证书导入服务器端证书库">3、将客户端证书导入服务器端证书库</h3>
 <p>服务器端证书不识别 p12格式的证书，需要从客户端证书导出 CER格式证书，然后将CER格式证书导入到服务器端证书中。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -export -alias testclient -keystore testclient.p12 -storetype PKCS12 -storepass <span class="m">123456</span> -rfc -file testclient.cer
 </code></pre></div><p>然后将client.cer 导入到服务器证书库(使用下面任意一个命令)</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -import -v -file testclient.cer -keystore tomcat_server.keystore -storepass <span class="m">123456</span>
 keytool -import -alias testclient -v -file testclient.cer -keystore tomcat_server.keystore -storepass <span class="m">123456</span>
 </code></pre></div><p>注意这里的别名，如果不加别名，则默认别名则是 mykey，所以见到mykey 请不要吃惊。</p>
-<h3 id="4">4、从服务器证书库导出服务器证书</h3>
+<h3 id="4从服务器证书库导出服务器证书">4、从服务器证书库导出服务器证书</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -export -alias tomcat_server -keystore tomcat_server.keystore -storepass <span class="m">123456</span> -rfc -file tomcat_server.cer
 </code></pre></div><p>该证书可以导入浏览器中，让客户端信任服务器证书。不导入也不影响使用，但浏览器会不信任服务器证书，会提示错误信息。</p>
 <p>5、查看证书库中的所有证书</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">keytool -list -keystore tomcat_server.keystore -storepass <span class="m">123456</span>
-</code></pre></div><h2 id="tomcat-">第二、Tomcat 配置</h2>
+</code></pre></div><h2 id="第二tomcat-配置">第二、Tomcat 配置</h2>
 <p>配置 server.xml</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Connector</span> <span class="na">port=</span><span class="s">&#34;8443&#34;</span> <span class="na">protocol=</span><span class="s">&#34;HTTP/1.1&#34;</span> <span class="na">SSLEnabled=</span><span class="s">&#34;true&#34;</span>
 	<span class="na">maxThreads=</span><span class="s">&#34;150&#34;</span> <span class="na">scheme=</span><span class="s">&#34;https&#34;</span> <span class="na">secure=</span><span class="s">&#34;true&#34;</span>
@@ -200,7 +200,7 @@ keytool -import -alias testclient -v -file testclient.cer -keystore tomcat_serve
 	<span class="na">truststorePass=</span><span class="s">&#34;123456&#34;</span>
 	<span class="na">clientAuth=</span><span class="s">&#34;true&#34;</span> <span class="na">sslProtocol=</span><span class="s">&#34;TLS&#34;</span> <span class="nt">/&gt;</span>
 </code></pre></div><p>启动tomcat 就可以了。</p>
-<h2 id="heading1">问题</h2>
+<h2 id="问题">问题</h2>
 <p>如果启动时报如下错误：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">SEVERE: Failed to initialize end point associated with ProtocolHandler <span class="o">[</span><span class="s2">&#34;http-apr-8443&#34;</span><span class="o">]</span>
 java.lang.Exception: Connector attribute SSLCertificateFile must be defined when using SSL with APR
@@ -269,7 +269,7 @@ This connector uses the JSSE configuration, when using APR, the connector should
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

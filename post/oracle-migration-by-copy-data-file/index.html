@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,7 +138,7 @@
           
   
           <p>Oracle 数据迁移是比较麻烦的，作为菜鸟来说更是如此。最近由于更换服务器，需要将 Oracle 迁移到另外一台机器，在两个服务器环境相同，以及 Oracle 版本相同的前提下，通过直接拷贝数据文件到新服务器，就可以直接迁移成功。这里记录一下迁移步骤。</p>
-<h2 id="heading">背景</h2>
+<h2 id="背景">背景</h2>
 <p>由于机房服务器变更，需要将 Oracle 迁移到一台新服务器上去。一下是环境说明：</p>
 <ul>
 <li>原服务器地址： 192.168.1.15</li>
@@ -146,12 +146,12 @@
 <li>操作系统：都是 CentOS 6.5</li>
 <li>数据库版本： 都是 11.2.0.1</li>
 </ul>
-<h2 id="-oracle">新服务器上安装和配置 Oracle</h2>
+<h2 id="新服务器上安装和配置-oracle">新服务器上安装和配置 Oracle</h2>
 <blockquote>
 <p>192.168.1.18</p>
 </blockquote>
 <p>在新服务器（192.168.1.18）上安装了Oracle，为了保险，主机名、数据库实例名、安装目录都和原数据库保持一致。具体安装方法可参考：<a href="../centos-65-install-oracle-11g-r2/">centos 6.5 安装 oracle 11gR2 及配置Oracle自动启动</a></p>
-<h2 id="heading1">查询需要拷贝的文件</h2>
+<h2 id="查询需要拷贝的文件">查询需要拷贝的文件</h2>
 <blockquote>
 <p>192.168.1.15
 需要切换到 oracle 用户
@@ -191,7 +191,7 @@
 <span class="c1">--------------------------------------------------------------------------------
 </span><span class="c1"></span><span class="o">/</span><span class="n">u01</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="n">orcl</span><span class="o">/</span><span class="n">temp01</span><span class="p">.</span><span class="n">dbf</span>
 </code></pre></div><p>根据以上查询结果，发现有以下文件需要拷贝：</p>
-<pre><code>/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfileorcl.ora
 /u01/app/oracle/oradata/orcl/control01.ctl
 /u01/app/oracle/recovery_area/orcl/control02.ctl
 /u01/app/oracle/oradata/orcl/redo03.log
@@ -204,13 +204,13 @@
 /u01/app/oracle/oradata/orcl/users02.dbf
 /u01/app/oracle/oradata/orcl/users03.dbf
 /u01/app/oracle/oradata/orcl/temp01.dbf
-</code></pre><h2 id="heading2">停掉原数据库与新数据库</h2>
+</code></pre></div><h2 id="停掉原数据库与新数据库">停掉原数据库与新数据库</h2>
 <blockquote>
 <p>192.168.1.15 和 192.168.1.18
 使用 root 用户</p>
 </blockquote>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">service oracle stop
-</code></pre></div><h2 id="scp">使用scp拷贝文件到新服务器</h2>
+</code></pre></div><h2 id="使用scp拷贝文件到新服务器">使用scp拷贝文件到新服务器</h2>
 <blockquote>
 <p>192.168.1.15
 scp 命令可以把文件复制到远程 Linux 服务器，可以参考：<a href="/2015/linux-scp-notes.html">scp 命令</a></p>
@@ -229,7 +229,7 @@ scp /u01/app/oracle/oradata/orcl/users02.dbf oracle@192.168.1.18:/u01/app/oracle
 scp /u01/app/oracle/oradata/orcl/users03.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/users03.dbf
 scp /u01/app/oracle/oradata/orcl/temp01.dbf oracle@192.168.1.18:/u01/app/oracle/oradata/orcl/temp01.dbf
 </code></pre></div><p>等待拷贝完成</p>
-<h2 id="heading3">尝试启动新数据库</h2>
+<h2 id="尝试启动新数据库">尝试启动新数据库</h2>
 <blockquote>
 <p>192.168.1.18
 使用 oracle 用户</p>
@@ -263,7 +263,7 @@ Database opened.
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">recover</span> <span class="k">database</span><span class="p">;</span>
 </code></pre></div><p>完成后，再打开数据库，一般可以成功。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="k">database</span> <span class="k">open</span><span class="p">;</span>
-</code></pre></div><h2 id="heading4">验证两个库的数据</h2>
+</code></pre></div><h2 id="验证两个库的数据">验证两个库的数据</h2>
 <p>根据自己的实际情况进行验证, 这里不再赘述.</p>
 <p>Done.</p>
       </div><ul class="pa0">
@@ -326,7 +326,7 @@ Database opened.
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

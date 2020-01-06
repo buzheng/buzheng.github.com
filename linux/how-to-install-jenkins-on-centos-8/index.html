@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -143,49 +143,49 @@
           <p><a href="https://jenkins.io/">Jenkins</a> 是最流行的开源，基于 Java 的自动化服务器，它使您可以轻松地建立持续集成和持续交付 (CI/CD) 流程。</p>
 <p>持续集成 (CI) 是 DevOps 的一种实践，团队成员定期将其代码更改提交到版本控制存储库，然后运行自动构建和测试。持续交付 (CD) 是一系列实践，其中，代码更改会自动生成，测试并部署到生产中。</p>
 <p>本教程涵盖了从官方 Jenkins 存储库在 CentOS 8 上安装 Jenkins 的步骤。</p>
-<h2 id="-jenkins">安装 Jenkins</h2>
+<h2 id="安装-jenkins">安装 Jenkins</h2>
 <p>以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>执行以下步骤在 CentOS 8 上安装 Jenkins ：</p>
 <ol>
 <li>
 <p>Jenkins 用 Java 编写的，因此第一步是安装 Java 。 Jenkins 需要 Java 版本8和 11 ，但是某些 Jenkins 插件可能无法与 Java 8 一起编译。</p>
 <p>我们将安装 OpenJDK 8 ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install java-1.8.0-openjdk-devel
-</code></pre><p>如果系统上安装了多个 Java 版本，请确保 Java 8 是默认 Java 版本。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install java-1.8.0-openjdk-devel
+</code></pre></div><p>如果系统上安装了多个 Java 版本，请确保 Java 8 是默认 Java 版本。</p>
 </li>
 <li>
 <p>下一步是启用 Jenkins 存储库。运行以下命令以下载并导入 GPG 密钥：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
 sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>通过键入以下命令安装最新的 Jenkins 稳定版本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install jenkins
-</code></pre><p>安装过程完成后，启动 Jenkins 服务并启用它以在系统引导时启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start jenkins
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install jenkins
+</code></pre></div><p>安装过程完成后，启动 Jenkins 服务并启用它以在系统引导时启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start jenkins
 sudo systemctl enable jenkins
-</code></pre><p>要检查 Jenkins 是否正在运行，请输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">systemctl status jenkins
-</code></pre><p>输出应如下所示：</p>
-<pre><code class="language-output" data-lang="output">Loaded: loaded (/etc/rc.d/init.d/jenkins; generated)
+</code></pre></div><p>要检查 Jenkins 是否正在运行，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl status jenkins
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Loaded: loaded (/etc/rc.d/init.d/jenkins; generated)
 Active: active (running) since Thu 2019-10-31 21:31:36 UTC; 3s ago
 ...
-</code></pre></li>
+</code></pre></div></li>
 </ol>
-<h2 id="heading">调整防火墙</h2>
+<h2 id="调整防火墙">调整防火墙</h2>
 <p>如果要在<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">受防火墙保护</a>的远程 CentOS 服务器上安装 Jenkins ，则需要打开端口 <code>8080</code> 。</p>
 <p>使用以下命令打开必要的端口：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
 sudo firewall-cmd --reload
-</code></pre><h2 id="-jenkins1">设置 Jenkins</h2>
+</code></pre></div><h2 id="设置-jenkins">设置 Jenkins</h2>
 <p>要开始 Jenkins 设置过程，请打开浏览器并输入 <code>http://your_ip_or_domain:8080</code> ：</p>
-<pre><code class="language-url" data-lang="url">http://your_ip_or_domain:8080
-</code></pre><p>将会出现类似以下的屏幕，提示您输入在安装过程中创建的管理员密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">http://your_ip_or_domain:8080
+</code></pre></div><p>将会出现类似以下的屏幕，提示您输入在安装过程中创建的管理员密码：</p>
 <p><img src="unlock-jenkins.jpg" alt=""></p>
 <p>用 <a href="/linux/linux-cat-command/"><code>cat</code> 命令</a>在终端上显示密码：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-</code></pre><p>你应该看到一个 32 个字符的字母数字密码，如下图所示：</p>
-<pre><code class="language-output" data-lang="output">e1bc55ea402640c58970b8db41e4f3bc
-</code></pre><p>从终端复制密码，将其粘贴到 “Administrator password” 字段中，然后单击 “Continue”。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+</code></pre></div><p>你应该看到一个 32 个字符的字母数字密码，如下图所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">e1bc55ea402640c58970b8db41e4f3bc
+</code></pre></div><p>从终端复制密码，将其粘贴到 “Administrator password” 字段中，然后单击 “Continue”。</p>
 <p><img src="customize-jenkins.jpg" alt=""></p>
 <p>在下一个屏幕上，系统将询问您是否要安装建议的插件或选择要安装的插件。点击 “Install suggested plugins” 框，安装过程就会启动。</p>
 <p><img src="jenkins-getting-started.jpg" alt=""></p>
@@ -198,7 +198,7 @@ sudo firewall-cmd --reload
 <p>最后，单击 “Start using Jenkins” 按钮，您将被重定向到以您在前面的步骤之一中创建的 admin 用户身份登录的 Jenkins 仪表板。</p>
 <p><img src="jenkins-homepage.jpg" alt=""></p>
 <p>如果您到了这一步，则说明您已经在 CentOS 系统上成功安装了 Jenkins 。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在本教程中，我们向您展示了如何在基于 CentOS/RHEL 的系统上安装并完成 Jenkins 的初始配置。</p>
 <p>现在，您可以访问 <a href="https://jenkins.io/doc/">Jenkins</a> 官方<a href="https://jenkins.io/doc/">文档</a>页面，并开始探索 Jenkins 的工作流程和插件模型。</p>
       </div><ul class="pa0">
@@ -274,10 +274,10 @@ sudo firewall-cmd --reload
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-jenkins">安装 Jenkins</a></li>
-    <li><a href="#heading">调整防火墙</a></li>
-    <li><a href="#-jenkins1">设置 Jenkins</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#安装-jenkins">安装 Jenkins</a></li>
+    <li><a href="#调整防火墙">调整防火墙</a></li>
+    <li><a href="#设置-jenkins">设置 Jenkins</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -289,7 +289,7 @@ sudo firewall-cmd --reload
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

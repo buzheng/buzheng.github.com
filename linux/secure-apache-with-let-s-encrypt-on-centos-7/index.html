@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,7 +142,7 @@
   
           <p>Let's Encrypt 是由 Internet Security Research Group (ISRG) 开发的免费，自动化和开放的证书颁发机构。 Let's Encrypt 颁发的证书自签发之日起 90 天内有效，并且现在已经被所有主流浏览器信任。</p>
 <p>在本教程中，我们将介绍在运行 Apache 作为 Web 服务器的 CentOS 7 服务器上安装免费的 Let's Encrypt SSL 证书所需的步骤。我们将使用 certbot 实用程序来获取和续订 Let's Encrypt 证书。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li>有一个指向您的公共服务器 IP 的域名。在本教程中我们将使用 <code>example.com</code> 。</li>
@@ -151,25 +151,25 @@
 <li>在<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙中</a>打开端口 80 和 443  。</li>
 </ul>
 <p>安装 SSL 加密 Web 服务器所需的以下软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">yum install mod_ssl openssl
-</code></pre><h2 id="-certbot">安装 Certbot</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install mod_ssl openssl
+</code></pre></div><h2 id="安装-certbot">安装 Certbot</h2>
 <p>Certbot 是一种工具，可以简化从 Let's Encrypt 获取 SSL 证书并在服务器上自动启用 HTTPS 的过程。</p>
 <p>certbot 包由 EPEL 提供。如果系统上未安装 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>则可以使用以下命令安装它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release
-</code></pre><p>启用 EPEL 存储库后，键入以下命令安装 certbot 包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install certbot
-</code></pre><h2 id="-dh-diffiehellman">生成强 Dh (Diffie-Hellman)组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install epel-release
+</code></pre></div><p>启用 EPEL 存储库后，键入以下命令安装 certbot 包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install certbot
+</code></pre></div><h2 id="生成强-dh-diffie-hellman组">生成强 Dh (Diffie-Hellman)组</h2>
 <p>Diffie-Hellman 密钥交换(DH)是一种在不安全的通信信道上安全地交换密码密钥的方法。以下命令生成一组新的 2048 位 DH 参数以增强安全性：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-</code></pre><p>您可以将大小更改为 4096 位，但在这种情况下，生成可能需要超过 30 分钟，具体取决于系统熵。</p>
-<h2 id="-lets-encrypt-ssl-">获取 Let's Encrypt SSL 证书</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+</code></pre></div><p>您可以将大小更改为 4096 位，但在这种情况下，生成可能需要超过 30 分钟，具体取决于系统熵。</p>
+<h2 id="获取-lets-encrypt-ssl-证书">获取 Let's Encrypt SSL 证书</h2>
 <p>要获取我们域的 SSL 证书，我们将使用 Webroot 插件，该插件通过创建临时文件 <code>${webroot-path}/.well-known/acme-challenge</code> 来验证目录中的请求域。 Let's Encrypt 服务器向临时文件发出 HTTP 请求，以验证请求的域是否解析为运行 certbot 的服务器。</p>
 <p>为了使它更简单，我们将把所有到 <code>.well-known/acme-challenge</code> 的 HTTP 请求映射到单个目录， <code>/var/lib/letsencrypt</code> 。以下命令将创建目录并使其可写入。</p>
 <p>以下命令将创建目录并使其可供 Apache 服务器写入。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/lib/letsencrypt/.well-known
 sudo chgrp apache /var/lib/letsencrypt
 sudo chmod g+s /var/lib/letsencrypt
-</code></pre><p>为避免重复代码，请创建以下两个配置片段：</p>
+</code></pre></div><p>为避免重复代码，请创建以下两个配置片段：</p>
 <p>/etc/httpd/conf.d/letsencrypt.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> /.well-known/acme-challenge/ <span class="s2">&#34;/var/lib/letsencrypt/.well-known/acme-challenge/&#34;</span>
 <span class="nt">&lt;Directory</span> <span class="s">&#34;/var/lib/letsencrypt/&#34;</span><span class="nt">&gt;</span>
@@ -192,11 +192,11 @@ sudo chmod g+s /var/lib/letsencrypt
 <span class="nb">SSLSessionTickets</span> <span class="k">Off</span>
 </code></pre></div><p>上面的代码段使用的是 <a href="https://cipherli.st/">Cipherli.st</a> 推荐的配置，支持 OCSP Stapling ， HTTP 严格传输安全(HSTS)并强制执行一些以安全为中心的 HTTP 头。</p>
 <p>重新加载 Apache 配置以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload httpd
-</code></pre><p>现在，我们可以使用 webroot 插件运行 Certbot 工具，并通过键入以下内容获取 SSL 证书文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
-</code></pre><p>如果成功获得 SSL 证书， certbot 将打印以下消息：</p>
-<pre><code class="language-output" data-lang="output">IMPORTANT NOTES:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload httpd
+</code></pre></div><p>现在，我们可以使用 webroot 插件运行 Certbot 工具，并通过键入以下内容获取 SSL 证书文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
+</code></pre></div><p>如果成功获得 SSL 证书， certbot 将打印以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/example.com/fullchain.pem
    Your key file has been saved at:
@@ -204,15 +204,15 @@ sudo chmod g+s /var/lib/letsencrypt
    Your cert will expire on 2018-12-07\. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot
    again. To non-interactively renew *all* of your certificates, run
-   &quot;certbot renew&quot;
+   &#34;certbot renew&#34;
  - If you like Certbot, please consider supporting our work by:
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to ISRG / Let&#39;s Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
-</code></pre><p>CentOS 7 附带 Apache 2.4.6 版，不包含该 <code>SSLOpenSSLConfCmd</code> 指令。该指令仅在 Apache 2.4.8 之后可用，它用于配置 OpenSSL 参数，例如 Diffie-Hellman 密钥交换(DH)。</p>
+</code></pre></div><p>CentOS 7 附带 Apache 2.4.6 版，不包含该 <code>SSLOpenSSLConfCmd</code> 指令。该指令仅在 Apache 2.4.8 之后可用，它用于配置 OpenSSL 参数，例如 Diffie-Hellman 密钥交换(DH)。</p>
 <p>我们必须使用 Let's Encrypt SSL 证书和生成的 DH 文件创建一个新的组合文件。为此，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cat /etc/letsencrypt/live/example.com/cert.pem /etc/ssl/certs/dhparam.pem &gt;/etc/letsencrypt/live/example.com/cert.dh.pem
-</code></pre><p>现在一切都已设置，请按如下方式编辑域虚拟主机配置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cat /etc/letsencrypt/live/example.com/cert.pem /etc/ssl/certs/dhparam.pem &gt;/etc/letsencrypt/live/example.com/cert.dh.pem
+</code></pre></div><p>现在一切都已设置，请按如下方式编辑域虚拟主机配置：</p>
 <p>/etc/httpd/conf.d/example.com.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
   <span class="nb">ServerName</span> example.com
@@ -243,20 +243,20 @@ sudo chmod g+s /var/lib/letsencrypt
 <span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
 </code></pre></div><p>通过上面的配置，我们强制 HTTPS 并从 www 重定向到非 www 版本。您可根据需要随意调整配置。</p>
 <p>重新启动 Apache 服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd
-</code></pre><p>您现在可以使用打开您的网站 <code>https://</code> ，您会注意到绿色锁定图标。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart httpd
+</code></pre></div><p>您现在可以使用打开您的网站 <code>https://</code> ，您会注意到绿色锁定图标。</p>
 <p>如果您使用 <a href="https://www.ssllabs.com/ssltest/">SSL 实验室服务器测试</a>测试您的域，您将获得 A+ 等级，如下所示：</p>
 <p><img src="/images/linux/secure-apache-with-let-s-encrypt-on-centos-7/ssllabs-test.jpg" alt=""></p>
-<h2 id="-lets-encrypt-ssl-1">自动续订 Let's Encrypt SSL 证书</h2>
+<h2 id="自动续订-lets-encrypt-ssl-证书">自动续订 Let's Encrypt SSL 证书</h2>
 <p>我们的加密证书有效期为 90 天。要在证书过期之前自动续订证书，我们将创建一个每天运行两次的 cronjob ，并在证书到期前 30 天自动续订。</p>
 <p>运行 <code>crontab</code> 命令创建一个新的 cronjob ，它将更新证书，创建一个包含 DH 密钥的新组合文件并重启 apache ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo crontab -e
-</code></pre><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload httpd&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo crontab -e
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload httpd&#34;</span>
 </code></pre></div><p>保存并关闭文件。</p>
 <p>要测试续订过程，可以使用 certbot 命令，后跟 <code>--dry-run</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo certbot renew --dry-run
-</code></pre><p>如果没有错误，则表示续订过程成功。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo certbot renew --dry-run
+</code></pre></div><p>如果没有错误，则表示续订过程成功。</p>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您使用了 Let's Encrypt 客户端 certbot 来下载域的 SSL 证书。您还创建了 Apache 代码段以避免重复代码并将 Apache 配置为使用证书。在本教程结束时，您还设置了一个用于自动证书续订的 cronjob 。</p>
 <p>如果您想了解有关如何使用 Certbot 的更多信息，<a href="https://certbot.eff.org/docs/">他们的文档</a>是一个很好的起点。</p>
       </div><ul class="pa0">
@@ -344,12 +344,12 @@ sudo chmod g+s /var/lib/letsencrypt
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-certbot">安装 Certbot</a></li>
-    <li><a href="#-dh-diffiehellman">生成强 Dh (Diffie-Hellman)组</a></li>
-    <li><a href="#-lets-encrypt-ssl-">获取 Let's Encrypt SSL 证书</a></li>
-    <li><a href="#-lets-encrypt-ssl-1">自动续订 Let's Encrypt SSL 证书</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-certbot">安装 Certbot</a></li>
+    <li><a href="#生成强-dh-diffie-hellman组">生成强 Dh (Diffie-Hellman)组</a></li>
+    <li><a href="#获取-lets-encrypt-ssl-证书">获取 Let's Encrypt SSL 证书</a></li>
+    <li><a href="#自动续订-lets-encrypt-ssl-证书">自动续订 Let's Encrypt SSL 证书</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -361,7 +361,7 @@ sudo chmod g+s /var/lib/letsencrypt
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

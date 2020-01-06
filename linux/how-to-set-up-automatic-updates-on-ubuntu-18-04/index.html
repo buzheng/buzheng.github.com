@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,9 +146,9 @@
           <p>定期更新 Ubuntu 系统是保证系统安全性最重要的方法之一。如果不使用最新的安全修补程序更新操作系统的软件包，则计算机很容易受到攻击。</p>
 <p>如果您手动管理多个 Ubuntu 机器，更新系统软件包可能非常耗时。即使您管理单个 Ubuntu 安装，有时您可能会忽略重要更新。这是无人值守自动更新的便利之处。</p>
 <p>在本教程中，我们将介绍如何在 Ubuntu 18.04 上安装和配置无人值守自动更新。相同的步骤适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-unattendedupgrades-">安装 <code>unattended-upgrades</code> 升级包</h2>
+<h2 id="安装-unattended-upgrades-升级包">安装 <code>unattended-upgrades</code> 升级包</h2>
 <p>这个包 <code>unattended-upgrades</code> 用于自动安装更新的软件包。有可能这个软件包已经安装在您的 Ubuntu 系统上，如果没有，您可以通过在终端中输入以下命令来安装软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install unattended-upgrades
 </code></pre></div><p>安装完成后，该服务并自动启动并开启了随机自启动。您可以输入以下命令进行验证：</p>
@@ -158,7 +158,7 @@
    Active: active <span class="o">(</span>running<span class="o">)</span> since Sun 2019-03-10 07:52:08 UTC<span class="p">;</span> 2min 35s 
      Docs: man:unattended-upgrade<span class="o">(</span>8<span class="o">)</span>
    CGroup: /system.slice/unattended-upgrades.serviceq
-</code></pre></div><h2 id="heading1">配置无人值守自动更新</h2>
+</code></pre></div><h2 id="配置无人值守自动更新">配置无人值守自动更新</h2>
 <p>我们可以通过编辑 <code>/etc/apt/apt.conf.d/50unattended-upgrades</code> 文件来配置 <code>unattended-upgrades</code> 。默认配置一般适用于大多数用户，但您可以打开文件并根据需要进行更改。</p>
 <p>无人值守升级包，可以配置为更新所有包或仅更新安全更新。第一部分定义了哪些类型的包将自动更新。默认情况下，它将仅安装安全更新，如果要从其他存储库启用更新，则可以通过从行开头删除双斜杠 <code>//</code> 来取消注释相应的存储库。 配置文件中每行 <code>//</code> 之后的任何内容都是注释，不会被读取。</p>
 <p>文件 <code>/etc/apt/apt.conf.d/50unattended-upgrades</code></p>
@@ -184,7 +184,7 @@
 </code></pre></div><p>如果由于某种原因自动更新出现问题，您可能还希望收到电子邮件通知。为此，请取消以下两行注释并输入您的电子邮件地址。确保系统上有一个可以发送电子邮件的工具，例如 <code>mailx</code> 或 <code>postfix</code> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Unattended-Upgrade::Mail <span class="s2">&#34;your@email.com&#34;</span><span class="p">;</span>
 Unattended-Upgrade::MailOnlyOnError <span class="s2">&#34;true&#34;</span><span class="p">;</span>
-</code></pre></div><h2 id="heading2">启用无人值守自动更新</h2>
+</code></pre></div><h2 id="启用无人值守自动更新">启用无人值守自动更新</h2>
 <p>要启用自动更新，您需要确保 apt 配置文件 <code>/etc/apt/apt.conf.d/20auto-upgrades</code> 中至少包含以下两行，默认情况下应包含这两行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">APT::Periodic::Update-Package-Lists <span class="s2">&#34;1&#34;</span><span class="p">;</span>
 APT::Periodic::Unattended-Upgrade <span class="s2">&#34;1&#34;</span><span class="p">;</span>
@@ -193,7 +193,7 @@ APT::Periodic::Unattended-Upgrade <span class="s2">&#34;1&#34;</span><span class
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">APT::Periodic::AutocleanInterval <span class="s2">&#34;7&#34;</span><span class="p">;</span>
 </code></pre></div><p>启用/禁用自动更新的另一种方法是运行以下命令，该命令将修改（如果不存在或创建）文件 <code>/etc/apt/apt.conf.d/20auto-upgrades</code> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo dpkg-reconfigure -plow unattended-upgrades
-</code></pre></div><h2 id="heading3">测试</h2>
+</code></pre></div><h2 id="测试">测试</h2>
 <p>要测试自动升级是否工作请直接测试运行，如下面命令所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo unattended-upgrades --dry-run --debug
 </code></pre></div><p>输出应该如下所示：</p>
@@ -205,7 +205,7 @@ blacklist: <span class="o">[</span><span class="o">]</span>
 whitelist: <span class="o">[</span><span class="o">]</span>
 No packages found that can be upgraded unattended and no pending auto-removals
 </code></pre></div><p>无人值守自动升级的历史记录记录在 <code>/var/log/unattended-upgrades/unattended-upgrades.log</code> 文件中。</p>
-<h2 id="heading4">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何自动安装更新的软件包，并保持系统启用最新的安全更新。</p>
       </div><ul class="pa0">
   
@@ -276,12 +276,12 @@ No packages found that can be upgraded unattended and no pending auto-removals
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-unattendedupgrades-">安装 unattended-upgrades 升级包</a></li>
-    <li><a href="#heading1">配置无人值守自动更新</a></li>
-    <li><a href="#heading2">启用无人值守自动更新</a></li>
-    <li><a href="#heading3">测试</a></li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-unattended-upgrades-升级包">安装 unattended-upgrades 升级包</a></li>
+    <li><a href="#配置无人值守自动更新">配置无人值守自动更新</a></li>
+    <li><a href="#启用无人值守自动更新">启用无人值守自动更新</a></li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -293,7 +293,7 @@ No packages found that can be upgraded unattended and no pending auto-removals
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

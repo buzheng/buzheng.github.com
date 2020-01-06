@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,20 +142,20 @@
   
           <p>PHP 是最常用的服务器端编程语言之一。在本指南中，我们将讨论如何在 Debian 10 Buster 上安装 PHP 。我们还将向您展示如何将 PHP 与 Nginx 和 Apache 集成。</p>
 <p>Debian 10 附带了 PHP 版本 7.3 ，最流行的 CMS 和框架(如 WordPress ， Magento 和 Laravel) 都支持该版本。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>为了能够安装软件包，您需要以 root 用户或<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 特权的用户</a>身份登录。</p>
-<h2 id="-apache--php">为 Apache 安装 PHP</h2>
+<h2 id="为-apache-安装-php">为 Apache 安装 PHP</h2>
 <p>如果您使用 <a href="/linux/how-to-install-apache-on-debian-10/">Apache</a> 作为 Web 服务器来安装 PHP 和 Apache PHP 模块，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt install php libapache2-mod-php
-</code></pre><p>安装完成后，请重新启动 Apache 以加载 PHP 模块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
-</code></pre><h2 id="-nginx--php">为 Nginx 安装 PHP</h2>
+</code></pre></div><p>安装完成后，请重新启动 Apache 以加载 PHP 模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart apache2
+</code></pre></div><h2 id="为-nginx-安装-php">为 Nginx 安装 PHP</h2>
 <p>与 Apache 不同， <a href="/linux/how-to-install-nginx-on-debian-10/">Nginx</a> 不具有处理 PHP 文件的内置支持。您需要使用 PHP FPM(“fastCGI 进程管理器”) 服务来处理 PHP 文件。</p>
 <p>通过运行以下命令来安装 PHP 和 PHP FPM 软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt install php php-fpm
-</code></pre><p>安装软件包后， PHP FPM 服务将自动启动。</p>
+</code></pre></div><p>安装软件包后， PHP FPM 服务将自动启动。</p>
 <p>现在，您可以编辑网站的 Nginx 服务器块并添加以下行，以便 Nginx 可以处理 PHP 文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
 
@@ -167,14 +167,14 @@ sudo apt install php php-fpm
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><p>保存配置文件并<a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>，以使新配置生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
-</code></pre><h2 id="-php-">安装 PHP 扩展</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><h2 id="安装-php-扩展">安装 PHP 扩展</h2>
 <p>您可以通过安装其他扩展来扩展 PHP 核心功能。 PHP 扩展可以作为软件包提供，并且可以通过键入以下命令轻松安装：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install php-[extname]
-</code></pre><p>例如，要安装 MySQL 和 GD 扩展，您需要运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install php-mysql php-gd
-</code></pre><p>安装 PHP 扩展时，请不要忘记重新启动 Apache 或 PHP FPM 服务，具体取决于您的设置。</p>
-<h2 id="-php-1">测试 PHP 处理</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install php-[extname]
+</code></pre></div><p>例如，要安装 MySQL 和 GD 扩展，您需要运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install php-mysql php-gd
+</code></pre></div><p>安装 PHP 扩展时，请不要忘记重新启动 Apache 或 PHP FPM 服务，具体取决于您的设置。</p>
+<h2 id="测试-php-处理">测试 PHP 处理</h2>
 <p>要测试您的 Web 服务器是否已正确配置以进行 PHP 处理，请使用以下代码在 <code>/var/www/html</code> 目录内创建一个名为 <code>info.php</code> 的新文件：</p>
 <p>文件: <code>/var/www/html/info.php</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
@@ -184,7 +184,7 @@ sudo apt install php php-fpm
 </code></pre></div><p>保存文件，打开您选择的浏览器并访问  <code>http://your_server_ip/info.php</code></p>
 <p><code>phpinfo</code> 函数将打印有关 PHP 配置的信息，如下图所示：</p>
 <p><img src="phpinfo-debian.jpg" alt=""></p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>我们已经向您展示了如何在 Debian 10 上安装 PHP 以及如何配置 Web 服务器以处理 PHP 文件。</p>
       </div><ul class="pa0">
   
@@ -259,12 +259,12 @@ sudo apt install php php-fpm
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-apache--php">为 Apache 安装 PHP</a></li>
-    <li><a href="#-nginx--php">为 Nginx 安装 PHP</a></li>
-    <li><a href="#-php-">安装 PHP 扩展</a></li>
-    <li><a href="#-php-1">测试 PHP 处理</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#为-apache-安装-php">为 Apache 安装 PHP</a></li>
+    <li><a href="#为-nginx-安装-php">为 Nginx 安装 PHP</a></li>
+    <li><a href="#安装-php-扩展">安装 PHP 扩展</a></li>
+    <li><a href="#测试-php-处理">测试 PHP 处理</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -276,7 +276,7 @@ sudo apt install php php-fpm
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

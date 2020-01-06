@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -162,7 +162,7 @@ test EXPRESSION
 <span class="o">[</span> EXPRESSION <span class="o">]</span>
 <span class="o">[</span><span class="o">[</span> EXPRESSION <span class="o">]</span><span class="o">]</span>
 </code></pre></div><p>如果您希望脚本可移植，则应该使用 <code>test</code> 命令的旧语法形式 <code>[</code>，因为这种形式在所有 POSIX shell 上都可用的。<code>test</code> 命令的新语法版本 <code>[[</code> (双括号) 被大多数使用 Bash ， Zsh 和 Ksh 作为默认 shell 的现代系统支持。</p>
-<h2 id="heading">检查文件是否存在</h2>
+<h2 id="检查文件是否存在">检查文件是否存在</h2>
 <p>检查文件是否存在时，最常用的文件运算符是 <code>-e</code> 和 <code>-f</code> 。第一个将检查文件是否存在而不管类型如何，而第二个将仅在文件是常规文件 (不是目录或设备)时返回 <code>true</code> 。</p>
 <p>检查文件时最好的一个方法是将 <code>test</code> 命令与 <code>if</code> 语句结合使用。下面的任何片段都是检查 <code>/etc/resolv.conf</code> 文件是否存在：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/resolv.conf
@@ -196,7 +196,7 @@ test EXPRESSION
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span><span class="p">;</span> cp <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> /tmp/<span class="p">;</span> <span class="o">}</span>
 </code></pre></div><p>与 <code>&amp;&amp;</code> 相反，操作符 <code>||</code> 后的语句只有在 <code>test</code> 命令的退出状态为 <code>false</code> 的情况下才会执行。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist</span><span class="s2">&#34;</span>
-</code></pre></div><h2 id="heading1">检查目录是否存在</h2>
+</code></pre></div><h2 id="检查目录是否存在">检查目录是否存在</h2>
 <p>使用运算符 <code>-d</code> 来测试文件是否是目录。</p>
 <p>例如，要检查 <code>/etc/docker</code> 目录是否存在，您将使用：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
@@ -205,7 +205,7 @@ test EXPRESSION
 <span class="k">fi</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -d /etc/docker <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory</span><span class="s2">&#34;</span>
 </code></pre></div><p>您也可以使用双括号 <code>[[</code> 而不是单个括号 <code>[</code>。</p>
-<h2 id="heading2">检查文件是否不存在</h2>
+<h2 id="检查文件是否不存在">检查文件是否不存在</h2>
 <p>与许多其他语言类似， <code>test</code> 表达式可以使用 <code>!</code> (感叹号)作为逻辑非运算符：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
 <span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -213,7 +213,7 @@ test EXPRESSION
 <span class="k">fi</span>
 </code></pre></div><p>与上述相同：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> ! -f /etc/docker <span class="o">]</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist</span><span class="s2">&#34;</span>
-</code></pre></div><h2 id="heading3">检查多个文件是否存在</h2>
+</code></pre></div><h2 id="检查多个文件是否存在">检查多个文件是否存在</h2>
 <p>您可以使用 <code>-a</code> (或 <code>&amp;&amp;</code>)测试是否存在多个文件，而不是使用复杂的嵌套 <code>if/else</code> 结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
 <span class="k">if</span> <span class="o">[</span> -f /etc/resolv.conf -a -f /etc/hosts <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -226,29 +226,29 @@ test EXPRESSION
 </code></pre></div><p>不使用 IF 语句的等效变体：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf -a -f /etc/hosts <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;both files exist&#34;</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span><span class="o">[</span> -f /etc/resolv.conf <span class="o">&amp;&amp;</span> -f /etc/hosts <span class="o">]</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;both files exist&#34;</span> 
-</code></pre></div><h2 id="test-"><code>test</code> 命令的运算符</h2>
+</code></pre></div><h2 id="test-命令的运算符"><code>test</code> 命令的运算符</h2>
 <p><code>test</code> 命令包括以下 文件 运算符，允许您测试特定类型的文件：</p>
 <ul>
-<li><code>-b` </code>FILE` - 如果文件存在且为块特殊文件，则为 True 。</li>
-<li><code>-c` </code>FILE` - 如果文件存在且为特殊字符文件，则为 True 。</li>
-<li><code>-d` </code>FILE` - 如果文件存在且为目录，则为 True 。</li>
-<li><code>-e` </code>FILE` - 如果文件存在且为文件，则为 True ，不管文件类型 (节点，目录，套接字等)。</li>
-<li><code>-f` </code>FILE` - 如果文件存在且为常规文件 (不是目录或设备)，则为 True 。</li>
-<li><code>-G` </code>FILE` - 如果文件存在且与运行命令的用户具有相同的组，则为 True 。</li>
-<li><code>-h` </code>FILE` - 如果文件存在且为符号链接，则为 True 。</li>
-<li><code>-g` </code>FILE` - 如果文件存在且设置了 set-group-id (sgid) 标志，则为 True。</li>
-<li><code>-k` </code>FILE` - 如果文件存在且设置了粘滞位标志，则为 True。</li>
-<li><code>-L` </code>FILE` - 如果文件存在且为符号链接，则为 True。</li>
-<li><code>-O` </code>FILE` - 如果文件存在并且由运行该命令的用户拥有，则为 True。</li>
-<li><code>-p` </code>FILE` - 如果文件存在且为管道，则为 True。</li>
-<li><code>-r` </code>FILE` - 如果文件存在且可读，则为 True。</li>
-<li><code>-S` </code>FILE` - 如果文件存在且为套接字，则为 True。</li>
-<li><code>-s` </code>FILE` - 如果文件存在且非零大小，则为 True。</li>
-<li><code>-u` </code>FILE` - 如果文件存在并 set-user-id (suid) 标志，则为 True。</li>
-<li><code>-w` </code>FILE` - 如果文件存在且可写，则为 True。</li>
-<li><code>-x` </code>FILE` - 如果文件存在且可执行，则为 True。</li>
+<li><code>-b</code> <code>FILE</code> - 如果文件存在且为块特殊文件，则为 True 。</li>
+<li><code>-c</code> <code>FILE</code> - 如果文件存在且为特殊字符文件，则为 True 。</li>
+<li><code>-d</code> <code>FILE</code> - 如果文件存在且为目录，则为 True 。</li>
+<li><code>-e</code> <code>FILE</code> - 如果文件存在且为文件，则为 True ，不管文件类型 (节点，目录，套接字等)。</li>
+<li><code>-f</code> <code>FILE</code> - 如果文件存在且为常规文件 (不是目录或设备)，则为 True 。</li>
+<li><code>-G</code> <code>FILE</code> - 如果文件存在且与运行命令的用户具有相同的组，则为 True 。</li>
+<li><code>-h</code> <code>FILE</code> - 如果文件存在且为符号链接，则为 True 。</li>
+<li><code>-g</code> <code>FILE</code> - 如果文件存在且设置了 set-group-id (sgid) 标志，则为 True。</li>
+<li><code>-k</code> <code>FILE</code> - 如果文件存在且设置了粘滞位标志，则为 True。</li>
+<li><code>-L</code> <code>FILE</code> - 如果文件存在且为符号链接，则为 True。</li>
+<li><code>-O</code> <code>FILE</code> - 如果文件存在并且由运行该命令的用户拥有，则为 True。</li>
+<li><code>-p</code> <code>FILE</code> - 如果文件存在且为管道，则为 True。</li>
+<li><code>-r</code> <code>FILE</code> - 如果文件存在且可读，则为 True。</li>
+<li><code>-S</code> <code>FILE</code> - 如果文件存在且为套接字，则为 True。</li>
+<li><code>-s</code> <code>FILE</code> - 如果文件存在且非零大小，则为 True。</li>
+<li><code>-u</code> <code>FILE</code> - 如果文件存在并 set-user-id (suid) 标志，则为 True。</li>
+<li><code>-w</code> <code>FILE</code> - 如果文件存在且可写，则为 True。</li>
+<li><code>-x</code> <code>FILE</code> - 如果文件存在且可执行，则为 True。</li>
 </ul>
-<h2 id="heading4">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在本教程中，我们向您展示了如何使用 Bash 检查文件或目录是否存在。</p>
       </div><ul class="pa0">
   
@@ -291,12 +291,12 @@ test EXPRESSION
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">检查文件是否存在</a></li>
-    <li><a href="#heading1">检查目录是否存在</a></li>
-    <li><a href="#heading2">检查文件是否不存在</a></li>
-    <li><a href="#heading3">检查多个文件是否存在</a></li>
-    <li><a href="#test-">test 命令的运算符</a></li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#检查文件是否存在">检查文件是否存在</a></li>
+    <li><a href="#检查目录是否存在">检查目录是否存在</a></li>
+    <li><a href="#检查文件是否不存在">检查文件是否不存在</a></li>
+    <li><a href="#检查多个文件是否存在">检查多个文件是否存在</a></li>
+    <li><a href="#test-命令的运算符">test 命令的运算符</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -308,7 +308,7 @@ test EXPRESSION
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

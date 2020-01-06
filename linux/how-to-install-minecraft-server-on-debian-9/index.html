@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,53 +142,53 @@
   
           <p>Minecraft 是有史以来最受欢迎的游戏之一。这是一个有关建立各种建筑物和冒险的沙盒视频游戏，。</p>
 <p>本教程解释了如何在 Debian 9 上安装和配置 Minecraft 服务器。我们将使用 systemd 运行 Minecraft 服务器，并使用 <code>mcrcon</code> 程序连接到正在运行的实例。我们还将向您展示如何创建将执行常规服务器备份的 cronjob 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>您登录的用户必须具有 <a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo 权限</a>。</p>
 <p>安装构建 <code>mcrcon</code> 工具所需的包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install git build-essential
-</code></pre><h2 id="-java-">安装 Java 运行时环境</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install git build-essential
+</code></pre></div><h2 id="安装-java-运行时环境">安装 Java 运行时环境</h2>
 <p>Minecraft 要求在系统上安装 Oracle Java Standard Edition 8 或 OpenJRE 8 。</p>
 <p>我们将安装最新版的 JRE 8 。此版本更适合服务器应用程序，因为它具有较少的依赖性并使用较少的系统资源：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install openjdk-8-jre-headless
-</code></pre><p>通过运行验证安装：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">java -version
-</code></pre><pre><code class="language-output" data-lang="output">openjdk version &quot;1.8.0_212&quot;
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install openjdk-8-jre-headless
+</code></pre></div><p>通过运行验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">java -version
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">openjdk version &#34;1.8.0_212&#34;
 OpenJDK Runtime Environment (build 1.8.0_212-8u212-b01-1~deb9u1-b01)
 OpenJDK 64-Bit Server VM (build 25.212-b01, mixed mode)
-</code></pre><h2 id="-minecraft-">创建 Minecraft 用户</h2>
+</code></pre></div><h2 id="创建-minecraft-用户">创建 Minecraft 用户</h2>
 <p>下一步是<!-- raw HTML omitted -->创建一个新的系统用户<!-- raw HTML omitted -->和组来运行运行 Minecraft 服务器, 该用户的主目录是 <code>/opt/minecraft</code> 。请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
-</code></pre><p>用户没有密码，所以该用户将无法通过 SSH 登录。这是一种很好的安全措施。</p>
-<h2 id="-debian--minecraft">在 Debian 上安装 Minecraft</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo useradd -r -m -U -d /opt/minecraft -s /bin/bash minecraft
+</code></pre></div><p>用户没有密码，所以该用户将无法通过 SSH 登录。这是一种很好的安全措施。</p>
+<h2 id="在-debian-上安装-minecraft">在 Debian 上安装 Minecraft</h2>
 <p>在开始安装过程之前，请确保切换到 <code>minecraft</code> 用户。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo su - minecraft
-</code></pre><p>在用户主目录中创建三个新目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mkdir -p ~/{backups,tools,server}
-</code></pre><ul>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo su - minecraft
+</code></pre></div><p>在用户主目录中创建三个新目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p ~/{backups,tools,server}
+</code></pre></div><ul>
 <li><code>backups</code> 目录将存储您的服务器备份。您可以稍后将此目录同步到远程备份服务器。</li>
 <li><code>tools</code> 目录将存储 <code>mcrcon</code> 客户端和备份脚本。</li>
 <li><code>server</code> 目录将包含实际的 Minecraft 服务器及其数据。</li>
 </ul>
-<h3 id="-mcrcon">下载和编译 mcrcon</h3>
+<h3 id="下载和编译-mcrcon">下载和编译 mcrcon</h3>
 <p>RCON 是一种协议，允许您连接到 Minecraft 服务器并执行命令。 <a href="https://github.com/tiiffi/mcrcon">mcron</a> 是用 C 语言构建的 RCON 客户端。</p>
 <p>我们将从 GitHub 下载源代码并构建 <code>mcrcon</code> 二进制文件。</p>
 <p>首先跳转到 <code>~/tools</code> 目录并使用以下命令从 GitHub  克隆存储库 <code>Tiiffi/mcrcon</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd ~/tools &amp;&amp; git clone https://github.com/Tiiffi/mcrcon.git
-</code></pre><p>切换到存储库目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd ~/tools/mcrcon
-</code></pre><p>通过运行以下命令开始编译 <code>mcrcon</code> 程序：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">gcc -std=gnu11 -pedantic -Wall -Wextra -O2 -s -o mcrcon mcrcon.c
-</code></pre><p>完成后，您可以键入以下内容进行测试：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">./mcrcon -h
-</code></pre><p>输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">Usage: mcrcon [OPTIONS]... [COMMANDS]...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/tools &amp;&amp; git clone https://github.com/Tiiffi/mcrcon.git
+</code></pre></div><p>切换到存储库目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/tools/mcrcon
+</code></pre></div><p>通过运行以下命令开始编译 <code>mcrcon</code> 程序：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gcc -std=gnu11 -pedantic -Wall -Wextra -O2 -s -o mcrcon mcrcon.c
+</code></pre></div><p>完成后，您可以键入以下内容进行测试：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">./mcrcon -h
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Usage: mcrcon [OPTIONS]... [COMMANDS]...
 Sends rcon commands to minecraft server.
 
 Option:
   -h		Prints usage.
   -s		Silent mode. Do not print data received from rcon.
   -t		Terminal mode. Acts as interactive terminal.
-  -p		Rcon password. Default: &quot;&quot;.
+  -p		Rcon password. Default: &#34;&#34;.
   -H		Host address or ip.
   -P		Port. Default: 25575.
   -c		Do not print colors. Disables bukkit color printing.
@@ -196,23 +196,23 @@ Option:
 Individual commands must be separated with spaces.
 
 Example:
-  mcrcon -c -H 192.168.1.42 -P 9999 -p password cmd1 &quot;cmd2 with spaces&quot;
+  mcrcon -c -H 192.168.1.42 -P 9999 -p password cmd1 &#34;cmd2 with spaces&#34;
 
 minecraft rcon (mcrcon) 0.0.5.
 Report bugs to tiiffi_at_gmail_dot_com.
-</code></pre><h3 id="-minecraft-1">下载 Minecraft 服务器</h3>
+</code></pre></div><h3 id="下载-minecraft-服务器">下载 Minecraft 服务器</h3>
 <p>有几个 Minecraft 服务器模块（如 <a href="https://getbukkit.org/download/craftbukkit">Craftbukkit</a> 或 <a href="https://www.spigotmc.org/">Spigot</a>）允许您在服务器上添加功能（插件），并进一步自定义和调整服务器设置。在本教程中，我们将安装最新的 Mojang 官方 vanilla Minecraft 服务器。</p>
 <!-- raw HTML omitted -->
 <p>最新的 Minecraft 服务器的 Java 归档文件（ JAR ）不一定是最稳定的，您可从 <a href="https://minecraft.net/en-us/download/server/">Minecraft 下载页面</a>下载。</p>
 <p>在撰写本文时，最新版本是 <code>1.13.2</code> 。在继续下一步之前，您应该到检查下载页面以获取新版本。</p>
 <p>运行以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令下载 Minecraft jar 文件到 <code>~/server</code> 目录中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">wget https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar -P ~/server
-</code></pre><h3 id="-minecraft-2">配置 Minecraft 服务器</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar -P ~/server
+</code></pre></div><h3 id="配置-minecraft-服务器">配置 Minecraft 服务器</h3>
 <p>下载完成后，导航到 <code>~/server</code> 目录并启动 Minecraft 服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd ~/server
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/server
 java -Xmx1024M -Xms512M -d64 -jar server.jar nogui
-</code></pre><p>当服务器第一次启动时，它会执行一些操作并创建 <code>server.properties</code> 和 <code>eula.txt</code> 文件并停止。</p>
-<pre><code class="language-output" data-lang="output">[14:47:54] [main/INFO]: Loaded 0 recipes
+</code></pre></div><p>当服务器第一次启动时，它会执行一些操作并创建 <code>server.properties</code> 和 <code>eula.txt</code> 文件并停止。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[14:47:54] [main/INFO]: Loaded 0 recipes
 [14:47:54] [main/INFO]: Loaded 0 advancements
 [14:47:54] [Server thread/INFO]: Starting minecraft server version 1.13.2
 [14:47:54] [Server thread/INFO]: Loading properties
@@ -224,14 +224,14 @@ java -Xmx1024M -Xms512M -d64 -jar server.jar nogui
 [14:47:54] [Server thread/INFO]: Saving worlds
 [14:47:54] [Server Shutdown Thread/INFO]: Stopping server
 [14:47:54] [Server Shutdown Thread/INFO]: Saving worlds
-</code></pre><p>从上面的输出中可以看出，您需要同意 Minecraft EULA 才能运行服务器。打开 <code>~/server/eula.txt</code> 文件并更改 <code>eula=false</code> 为 <code>eula=true</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nano ~/server/eula.txt
-</code></pre><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1">#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).</span>
+</code></pre></div><p>从上面的输出中可以看出，您需要同意 Minecraft EULA 才能运行服务器。打开 <code>~/server/eula.txt</code> 文件并更改 <code>eula=false</code> 为 <code>eula=true</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano ~/server/eula.txt
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1">#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).</span>
 <span class="c1">#Thu Dec 27 03:33:56 PST 2018</span>
 <span class="na">eula</span><span class="o">=</span><span class="s">true</span>
 </code></pre></div><p>关闭并保存文件。</p>
 <p>接下来，通过编辑 <code>~/server/server.properties</code> 文件来启用 rcon 协议并设置 rcon 密码。您可以在 <code>mcrcon</code> 工具中使用这些详细信息连接到 Minecraft 服务器。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nano ~/server/server.properties
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano ~/server/server.properties
 ``
 
 
@@ -239,16 +239,16 @@ java -Xmx1024M -Xms512M -d64 -jar server.jar nogui
 rcon.port=23888
 rcon.password=strong-password
 enable-rcon=true
-</code></pre><blockquote>
+</code></pre></div><blockquote>
 <p>不要忘记把 <code>strong-password</code> 更改更安全的密码。或者，您可以指定另一个端口。
 如果您不想从远程位置连接到 Minecraft 服务器，请确保防火墙阻止 rcon 端口。</p>
 </blockquote>
 <p>您还可以调整服务器的默认属性。有关设置的更多信息，请访问 <a href="https://minecraft.gamepedia.com/Server.properties">server.properties</a> 页面。</p>
-<h2 id="-systemd-">创建 systemd 单元文件</h2>
+<h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
 <p>通过输入 <code>exit</code> 切换回您的 sudo 用户。</p>
 <p>打开文本编辑器，在 <code>/etc/systemd/system/</code> 中创建一个文件 <code>minecraft.service</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/systemd/system/minecraft.service
-</code></pre><div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/systemd/system/minecraft.service
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-systemd" data-lang="systemd"><span class="k">[Unit]</span>
 <span class="na">Description</span><span class="o">=</span><span class="s">Minecraft Server</span>
 <span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
 
@@ -269,31 +269,31 @@ enable-rcon=true
 <span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
 </code></pre></div><p>根据您的服务器资源修改 <code>Xmx</code> 和 <code>Xms</code> 标记。 <code>Xmx</code> 标志定义 Java 虚拟机（ JVM ）的最大内存分配池，同时 <code>Xms</code> 定义初始内存分配池。另外，请确保使用正确的 <code>rcon</code> 端口和密码。</p>
 <p>保存并关闭文件并通知 systemd 重新加载文件列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl daemon-reload
-</code></pre><p>通过执行以下命令启动并启用 Minecraft 服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start minecraft
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl daemon-reload
+</code></pre></div><p>通过执行以下命令启动并启用 Minecraft 服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start minecraft
 sudo systemctl enable minecraft
-</code></pre><p>第一次启动服务时，它将生成几个配置文件和目录，包括 Minecraft 世界。</p>
+</code></pre></div><p>第一次启动服务时，它将生成几个配置文件和目录，包括 Minecraft 世界。</p>
 <p>使用以下命令检查服务状态：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status minecraft
-</code></pre><pre><code class="language-output" data-lang="output">● minecraft.service - Minecraft Server
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status minecraft
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● minecraft.service - Minecraft Server
    Loaded: loaded (/etc/systemd/system/minecraft.service; disabled; vendor preset: enabled)
    Active: active (running) since Sun 2019-03-31 14:55:19 PDT; 28s ago
  Main PID: 7262 (java)
     Tasks: 19 (limit: 4915)
    CGroup: /system.slice/minecraft.service
            └─7262 /usr/bin/java -Xmx1024M -Xms512M -jar server.jar nogui --noconsole
-</code></pre><h2 id="heading1">调整防火墙</h2>
+</code></pre></div><h2 id="调整防火墙">调整防火墙</h2>
 <p>如果您的服务器<!-- raw HTML omitted -->受防火墙保护<!-- raw HTML omitted -->，并且您想从本地网络外部访问 Minecraft 服务器，则需要打开端口 <code>25565</code> 。</p>
 <p>要允许 Minecraft 默认端口 <code>25565</code> 上的流量，请键入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 25565/tcp
-</code></pre><h2 id="heading2">配置备份</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow 25565/tcp
+</code></pre></div><h2 id="配置备份">配置备份</h2>
 <p>在本节中，我们将创建一个 shell 备份脚本和 cronjob 来自动备份 Minecraft 服务器。</p>
 <p>首先切换到 <code>minecraft</code> 用户：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo su - minecraft
-</code></pre><p>打开文本编辑器并创建 <code>/opt/minecraft/tools/backup.sh</code> 文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nano /opt/minecraft/tools/backup.sh
-</code></pre><p>粘贴以下配置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo su - minecraft
+</code></pre></div><p>打开文本编辑器并创建 <code>/opt/minecraft/tools/backup.sh</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano /opt/minecraft/tools/backup.sh
+</code></pre></div><p>粘贴以下配置：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="k">function</span> rcon <span class="o">{</span>
@@ -308,22 +308,22 @@ rcon <span class="s2">&#34;save-on&#34;</span>
 <span class="c1">## Delete older backups</span>
 find /opt/minecraft/backups/ -type f -mtime +7 -name <span class="s1">&#39;*.gz&#39;</span> -delete
 </code></pre></div><p>保存文件并使其可执行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod +x /opt/minecraft/tools/backup.sh
-</code></pre><p>接下来，<!-- raw HTML omitted -->创建一个 cron 作业<!-- raw HTML omitted -->，该作业将在一天中自动在固定时间运行一次。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod +x /opt/minecraft/tools/backup.sh
+</code></pre></div><p>接下来，<!-- raw HTML omitted -->创建一个 cron 作业<!-- raw HTML omitted -->，该作业将在一天中自动在固定时间运行一次。</p>
 <p>键入以下命令打开 crontab 文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">crontab -e
-</code></pre><p>要在每天 23:00 运行备份脚本，请粘贴以下行：</p>
-<pre><code class="language-cron" data-lang="cron">0 23 * * * /opt/minecraft/tools/backup.sh
-</code></pre><h2 id="-minecraft-3">访问 Minecraft 控制台</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">crontab -e
+</code></pre></div><p>要在每天 23:00 运行备份脚本，请粘贴以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 23 * * * /opt/minecraft/tools/backup.sh
+</code></pre></div><h2 id="访问-minecraft-控制台">访问 Minecraft 控制台</h2>
 <p>要访问 Minecraft 控制台，您可以使用 <code>mcrcon</code> 程序。语法如下，您需要指定主机、rcon 端口， rcon 密码并使用 <code>-t</code> 开关启用 <code>mcrcon</code> 终端模式：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">/opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P 23888 -p strong-password -t
-</code></pre><pre><code class="language-output" data-lang="output">Logged in. Type &quot;Q&quot; to quit!
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P 23888 -p strong-password -t
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Logged in. Type &#34;Q&#34; to quit!
 &gt; 
-</code></pre><blockquote>
+</code></pre></div><blockquote>
 <p>要从远程位置访问 Minecraft 控制台，请确保未阻止 rcon 端口。</p>
 </blockquote>
 <p>如果您经常连接到 Minecraft 控制台，而不是键入这个长命令，您可以创建一个 <!-- raw HTML omitted -->bash 别名<!-- raw HTML omitted -->。</p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在 Debian 9 系统上成功安装了 Minecraft 服务器并设置了每日备份。</p>
       </div><ul class="pa0">
   
@@ -402,21 +402,21 @@ find /opt/minecraft/backups/ -type f -mtime +7 -name <span class="s1">&#39;*.gz&
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-java-">安装 Java 运行时环境</a></li>
-    <li><a href="#-minecraft-">创建 Minecraft 用户</a></li>
-    <li><a href="#-debian--minecraft">在 Debian 上安装 Minecraft</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-java-运行时环境">安装 Java 运行时环境</a></li>
+    <li><a href="#创建-minecraft-用户">创建 Minecraft 用户</a></li>
+    <li><a href="#在-debian-上安装-minecraft">在 Debian 上安装 Minecraft</a>
       <ul>
-        <li><a href="#-mcrcon">下载和编译 mcrcon</a></li>
-        <li><a href="#-minecraft-1">下载 Minecraft 服务器</a></li>
-        <li><a href="#-minecraft-2">配置 Minecraft 服务器</a></li>
+        <li><a href="#下载和编译-mcrcon">下载和编译 mcrcon</a></li>
+        <li><a href="#下载-minecraft-服务器">下载 Minecraft 服务器</a></li>
+        <li><a href="#配置-minecraft-服务器">配置 Minecraft 服务器</a></li>
       </ul>
     </li>
-    <li><a href="#-systemd-">创建 systemd 单元文件</a></li>
-    <li><a href="#heading1">调整防火墙</a></li>
-    <li><a href="#heading2">配置备份</a></li>
-    <li><a href="#-minecraft-3">访问 Minecraft 控制台</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#创建-systemd-单元文件">创建 systemd 单元文件</a></li>
+    <li><a href="#调整防火墙">调整防火墙</a></li>
+    <li><a href="#配置备份">配置备份</a></li>
+    <li><a href="#访问-minecraft-控制台">访问 Minecraft 控制台</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -428,7 +428,7 @@ find /opt/minecraft/backups/ -type f -mtime +7 -name <span class="s1">&#39;*.gz&
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

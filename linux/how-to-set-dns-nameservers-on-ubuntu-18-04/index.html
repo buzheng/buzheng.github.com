@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -155,7 +155,7 @@
 </ul>
 <p>在本指南中，我们将解释如何在 Ubuntu 18.04 上配置 DNS 域名服务器。</p>
 <p>如果要为连接到本地网络的所有设备设置 DNS 名称服务器，则最简单和推荐的方法是在家庭路由器上进行更改。</p>
-<h2 id="-ubuntu--dns-">在 Ubuntu 桌面上设置 DNS 名称服务器</h2>
+<h2 id="在-ubuntu-桌面上设置-dns-名称服务器">在 Ubuntu 桌面上设置 DNS 名称服务器</h2>
 <p>在 Ubuntu 18.04 桌面计算机上设置 DNS 名称服务器非常简单，无需任何技术知识。</p>
 <ol>
 <li>
@@ -180,14 +180,14 @@
 </ol>
 <p>除非您的系统或应用程序<a href="/linux/how-to-clear-the-dns-cache/">缓存 DNS 条目，</a>否则更改会立即生效。</p>
 <p>如果要切换回旧设置，请打开网络管理器，转到 IPv4 设置并启用 “Automatic” 切换开关。</p>
-<h2 id="-ubuntu-server--dns-">在 Ubuntu Server 上设置 DNS 名称服务器</h2>
+<h2 id="在-ubuntu-server-上设置-dns-名称服务器">在 Ubuntu Server 上设置 DNS 名称服务器</h2>
 <p>回到过去，每当你想在 Linux 中配置 DNS 解析器时，你只需打开 <code>/etc/resolv.conf</code> 文件，编辑条目，保存文件就可以了。此文件仍然存在，但它是由 systemd-resolved 服务控制的<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>，不应手动编辑。</p>
 <p>systemd-resolved 是一种为本地服务和应用程序提供 DNS 名称解析的服务，它可以使用 Ubuntu 18.04 上的默认网络管理工具 <a href="https://netplan.io/">Netplan</a> 进行配置。</p>
 <p>Netplan 配置文件存储在 <code>/etc/netplan</code> 目录中。您可能会在此目录中找到一个或两个 YAML 文件。文件名可能因设置而异。通常情况下，该文件名为可以是 <code>01-netcfg.yaml</code>，也可以是 <code>50-cloud-init.yaml</code> ，但在你的系统中，它可能是不同的。</p>
 <p>这些文件允许您配置网络接口，包括 IP 地址，网关， DNS 名称服务器等。</p>
 <p>要配置 DNS 名称服务器，请使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>打开接口配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/netplan/01-netcfg.yaml
-</code></pre><p>该文件 <code>/etc/netplan/01-netcfg.yaml</code> 的内容将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/netplan/01-netcfg.yaml
+</code></pre></div><p>该文件 <code>/etc/netplan/01-netcfg.yaml</code> 的内容将如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">network<span class="p">:</span><span class="w">
 </span><span class="w">  </span>version<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span><span class="w">  </span>renderer<span class="p">:</span><span class="w"> </span>networkd<span class="w">
@@ -205,14 +205,14 @@
 </span></code></pre></div><p>DNS 服务器必须以逗号分隔。您还可以添加两个以上的名称服务器。</p>
 <p>如果该条目不存在，直接添加进来即可。编辑 Yaml 文件时，请确保遵循 <a href="https://yaml.org/start.html">YAML 代码缩进标准</a>。如果配置中存在语法错误， Netplan 将无法解析该文件。</p>
 <p>完成后保存文件并应用以下更改：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo netplan apply
-</code></pre><p>Netplan 将为 systemd-resolved 服务生成配置文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo netplan apply
+</code></pre></div><p>Netplan 将为 systemd-resolved 服务生成配置文件。</p>
 <p>要验证是否已设置新的 DNS 解析器，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">systemd-resolve --status | grep 'DNS Servers' -A2
-</code></pre><p><code>systemd-resolve -status</code> 打印了很多信息。我们使用 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> 过滤 “DNS Servers” 字符串。输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">         DNS Servers: 1.1.1.1
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemd-resolve --status | grep &#39;DNS Servers&#39; -A2
+</code></pre></div><p><code>systemd-resolve -status</code> 打印了很多信息。我们使用 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> 过滤 “DNS Servers” 字符串。输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">         DNS Servers: 1.1.1.1
                       1.0.0.1
-</code></pre><h2 id="heading">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>Netplan 是在 Ubuntu 18.04 默认的网络管理工具，不用再直接编辑 <code>/etc/resolv.conf</code> 和 <code>/etc/network/interfaces</code> 这些在以前的 Ubuntu 版本用于配置网络的配置文件。</p>
       </div><ul class="pa0">
   
@@ -287,9 +287,9 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-ubuntu--dns-">在 Ubuntu 桌面上设置 DNS 名称服务器</a></li>
-    <li><a href="#-ubuntu-server--dns-">在 Ubuntu Server 上设置 DNS 名称服务器</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#在-ubuntu-桌面上设置-dns-名称服务器">在 Ubuntu 桌面上设置 DNS 名称服务器</a></li>
+    <li><a href="#在-ubuntu-server-上设置-dns-名称服务器">在 Ubuntu Server 上设置 DNS 名称服务器</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -301,7 +301,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

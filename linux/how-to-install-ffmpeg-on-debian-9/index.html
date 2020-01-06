@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,59 +142,59 @@
   
           <p>FFmpeg是一个免费的开源命令行工具，用于转码多媒体文件。它包含一组共享的音频和视频库，如libavcodec，libavformat和libavutil。使用FFmpeg，您可以在各种视频和音频格式之间进行转换，设置采样率并调整视频大小。</p>
 <p>本教程介绍如何在Debian 9上安装FFmpeg。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录才能在Debian系统上安装软件包。</p>
-<h2 id="debianffmpeg">在Debian上安装FFmpeg</h2>
+<h2 id="在debian上安装ffmpeg">在Debian上安装FFmpeg</h2>
 <p>官方Debian存储库包含可以与<code>apt</code>软件包管理器一起安装的FFmpeg软件包。在撰写本文时，Debian 9存储库中提供的当前版本的FFmpeg是<code>3.2.12</code>。</p>
 <p>以下步骤描述了如何在Debian 9上安装FFmpeg：</p>
 <ol>
 <li>
 <p>首先更新包列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div></li>
 <li>
 <p>运行以下命令安装FFmpeg软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install ffmpeg
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install ffmpeg
+</code></pre></div></li>
 <li>
 <p>通过运行<code>ffmpeg -version</code>将打印FFmpeg版本的命令来验证安装：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ffmpeg -version
-</code></pre><p>输出应如下所示：</p>
-<pre><code class="language-output" data-lang="output">ffmpeg version 3.2.12-1~deb9u1 Copyright (c) 2000-2018 the FFmpeg developers
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg -version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg version 3.2.12-1~deb9u1 Copyright (c) 2000-2018 the FFmpeg developers
 built with gcc 6.3.0 (Debian 6.3.0-18+deb9u1) 20170516
-</code></pre><p>要打印所有可用的FFmpeg编码器和解码器，您可以使用：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ffmpeg -encodersffmpeg -decoders
-</code></pre></li>
+</code></pre></div><p>要打印所有可用的FFmpeg编码器和解码器，您可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg -encodersffmpeg -decoders
+</code></pre></div></li>
 </ol>
 <p>而已。FFmpeg现已安装在您的系统上，您可以开始使用它。</p>
 <p>Debian存储库中包含的版本总是落后于最新版本的FFmpeg。如果要安装最新版本的FFmpeg，则需要<a href="https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu">从源代码构建FFmpeg工具</a>。</p>
-<h2 id="ffmpeg">FFmpeg示例</h2>
+<h2 id="ffmpeg示例">FFmpeg示例</h2>
 <p>在本节中，我们将向您展示如何使用该<code>ffmpeg</code>工具的一些示例。</p>
-<h3 id="heading1">基本转换</h3>
+<h3 id="基本转换">基本转换</h3>
 <p>使用<code>ffmpeg</code>您转换音频和视频文件时，无需指定输入和输出格式。自动检测输入文件格式，并从指定的文件扩展名中猜出输出格式。</p>
 <ul>
 <li>
 <p>将视频文件从mov转换为mp4：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mov output.mp4
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg -i input.mov output.mp4
+</code></pre></div></li>
 <li>
 <p>将音频文件从mp3转换为flac：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp3 output.flac
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg -i input.mp3 output.flac
+</code></pre></div></li>
 </ul>
-<h3 id="heading2">指定编解码器</h3>
+<h3 id="指定编解码器">指定编解码器</h3>
 <p>要指定编解码器，请使用该<code>-c</code>选项。编解码器可以是任何支持的解码器/编码器的名称或<code>copy</code>仅复制输入流的特殊值。</p>
 <ul>
 <li>
 <p>使用<code>libvpx</code>视频编解码器和<code>libvorbis</code>音频编解码器将视频文件从mp4转换为webm ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp4 -c:v libvpx -c:a libvorbis output.webm
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg -i input.mp4 -c:v libvpx -c:a libvorbis output.webm
+</code></pre></div></li>
 <li>
 <p>将音频文件从mp3转换为使用<code>libopus</code>编解码器编码的ogg 。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ffmpeg -i input.mp3 -c:a libopus output.ogg
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ffmpeg -i input.mp3 -c:a libopus output.ogg
+</code></pre></div></li>
 </ul>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在Debian 9上安装FFmpeg。您现在可以访问官方的<a href="https://www.ffmpeg.org/ffmpeg.html">FFmpeg文档</a>页面，了解如何使用FFmpeg进行转换以及您的视频和音频文件。</p>
       </div><ul class="pa0">
   
@@ -269,15 +269,15 @@ built with gcc 6.3.0 (Debian 6.3.0-18+deb9u1) 20170516
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#debianffmpeg">在Debian上安装FFmpeg</a></li>
-    <li><a href="#ffmpeg">FFmpeg示例</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在debian上安装ffmpeg">在Debian上安装FFmpeg</a></li>
+    <li><a href="#ffmpeg示例">FFmpeg示例</a>
       <ul>
-        <li><a href="#heading1">基本转换</a></li>
-        <li><a href="#heading2">指定编解码器</a></li>
+        <li><a href="#基本转换">基本转换</a></li>
+        <li><a href="#指定编解码器">指定编解码器</a></li>
       </ul>
     </li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -289,7 +289,7 @@ built with gcc 6.3.0 (Debian 6.3.0-18+deb9u1) 20170516
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

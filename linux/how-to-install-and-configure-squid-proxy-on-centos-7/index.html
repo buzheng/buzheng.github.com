@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,25 +145,25 @@
   
           <p>Squid 是一个功能齐全的缓存代理，支持流行的网络协议，如 HTTP ， HTTPS ， FTP 等。将 Squid 放置在 Web 服务器前可以通过缓存重复请求，过滤 Web 流量和访问地理限制内容来极大地提高服务器性能。</p>
 <p>本教程介绍如何在 CentOS 7 上设置 Squid 并配置 Firefox 和 Google Chrome Web 浏览器以使用代理。</p>
-<h2 id="-centos--squid">在 CentOS 上安装 Squid</h2>
+<h2 id="在-centos-上安装-squid">在 CentOS 上安装 Squid</h2>
 <p>Squid 包包含在默认的 CentOS 7 存储库中。要安装它，请以 <a href="/linux/create-a-sudo-user-on-centos/">sudo 用户</a>身份运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install squid
-</code></pre><p>安装完成后，启动并启用 Squid 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start squid
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install squid
+</code></pre></div><p>安装完成后，启动并启用 Squid 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start squid
 sudo systemctl enable squid
-</code></pre><p>要验证安装是否成功，请键入以下命令以打印服务状态：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status squid
-</code></pre><pre><code class="language-output" data-lang="output">● squid.service - Squid caching proxy
+</code></pre></div><p>要验证安装是否成功，请键入以下命令以打印服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status squid
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● squid.service - Squid caching proxy
    Loaded: loaded (/usr/lib/systemd/system/squid.service; enabled; vendor preset: disabled)
    Active: active (running) since Sat 2019-07-13 16:47:56 UTC; 12s ago
 ...
-</code></pre><h2 id="-squid">配置 Squid</h2>
+</code></pre></div><h2 id="配置-squid">配置 Squid</h2>
 <p>可以通过编辑 <code>/etc/squid/squid.conf</code> 文件来配置 Squid 。</p>
 <p>在进行任何更改之前，请备份原始配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /etc/squid/squid.conf{,.orginal}
-</code></pre><p>要编辑文件，请在<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>中将其打开：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/squid/squid.conf
-</code></pre><p>默认情况下， Squid 配置为侦听 <code>3128</code> 服务器上所有网络接口上的端口。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo cp /etc/squid/squid.conf{,.orginal}
+</code></pre></div><p>要编辑文件，请在<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>中将其打开：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/squid/squid.conf
+</code></pre></div><p>默认情况下， Squid 配置为侦听 <code>3128</code> 服务器上所有网络接口上的端口。</p>
 <p>如果要更改端口并设置侦听接口，请找到以 <code>http_port</code> 开头的行，并指定接口 IP 地址和新端口。如果没有指定接口， Squid 将监听所有接口。</p>
 <p>/etc/squid/squid.conf 中</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># Squid normally listens to port 3128</span>
@@ -189,16 +189,16 @@ sudo systemctl enable squid
 </code></pre></div><p><code>http_access</code> 规则的顺序很重要。请务必最后添加该行 <code>http_access deny all</code> 。</p>
 <p>该 <code>http_access</code> 指令的工作方式与防火墙规则类似。 Squid 从上到下读取规则，当规则匹配时，不处理下面的规则。</p>
 <p>每当您更改配置文件时，都需要重新启动 Squid 服务才能使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart squid
-</code></pre><h2 id="squid-">Squid 身份验证</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart squid
+</code></pre></div><h2 id="squid-身份验证">Squid 身份验证</h2>
 <p>Squid 可以对经过身份验证的用户使用不同的后端，包括 <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">Samba</a> ， LDAP 和 HTTP 基本身份验证。</p>
 <p>在这个例子中，我们将配置 Squid 使用基本身份验证。它是 HTTP 协议中内置的简单身份验证方法。</p>
 <p>我们将使用 <code>openssl</code> 生成密码并使用命令将该 <code>username:password</code> 对附加到 <code>/etc/squid/htpasswd</code> 文件，如下所示的  <a href="/linux/linux-tee-command/"><code>tee</code></a> 命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">printf</span> <span class="s2">&#34;</span><span class="s2">USERNAME:</span><span class="k">$(</span>openssl passwd -crypt PASSWORD<span class="k">)</span><span class="s2">\n</span><span class="s2">&#34;</span> <span class="p">|</span> sudo tee -a /etc/squid/htpasswd
 </code></pre></div><p>例如，要使用密码“  <code>Pz$lPk76</code>”  创建名为 “mike” 的用户，您将运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">printf &quot;mike:$(openssl passwd -crypt 'Pz$lPk76')\n&quot; | sudo tee -a /etc/squid/htpasswd
-</code></pre><pre><code class="language-output" data-lang="output">mike:2nkgQsTSPCsIo
-</code></pre><p>下一步是配置 Squid 以启用 HTTP 基本身份验证并使用该文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">printf &#34;mike:$(openssl passwd -crypt &#39;Pz$lPk76&#39;)\n&#34; | sudo tee -a /etc/squid/htpasswd
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mike:2nkgQsTSPCsIo
+</code></pre></div><p>下一步是配置 Squid 以启用 HTTP 基本身份验证并使用该文件。</p>
 <p>打开主配置并添加以下内容：</p>
 <p>/etc/squid/squid.conf 中</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># ...</span>
@@ -213,14 +213,14 @@ sudo systemctl enable squid
 <span class="na">http_access deny all</span>
 </code></pre></div><p>通过前三个突出显示的行，我们将创建一个名为 <code>authenticated</code> 的新 ACL  。最后突出显示的行允许访问经过身份验证的用户。</p>
 <p>重启 Squid 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart squid
-</code></pre><h2 id="heading">配置防火墙</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart squid
+</code></pre></div><h2 id="配置防火墙">配置防火墙</h2>
 <p>如果您正在运行<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙</a>，则需要打开端口 <code>3128</code> 。为此，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --add-port=3128/tcpfirewall-cmd --reload
-</code></pre><p>如果 Squid 在另一个非默认端口上运行，则需要允许该端口上的流量。</p>
-<h2 id="heading1">配置浏览器以使用代理</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --permanent --add-port=3128/tcpfirewall-cmd --reload
+</code></pre></div><p>如果 Squid 在另一个非默认端口上运行，则需要允许该端口上的流量。</p>
+<h2 id="配置浏览器以使用代理">配置浏览器以使用代理</h2>
 <p>现在您已经设置了 Squid ，最后一步是配置您首选的浏览器以使用它。</p>
-<h3 id="heading2">火狐</h3>
+<h3 id="火狐">火狐</h3>
 <p>对于 Windows ， macOS 和 Linux ，以下步骤相同。</p>
 <ol>
 <li>
@@ -246,7 +246,7 @@ sudo systemctl enable squid
 <p>此时，您的 Firefox 已配置，您可以通过 Squid 代理浏览 Internet 。要验证它，打开 <code>google.com</code> ，键入“我的 IP 是什么”，你应该看到你的 Squid 服务器 IP 地址。</p>
 <p>要恢复默认设置，请转到 <code>Network Settings</code> ，选择 <code>Use system proxy settings</code> 单选按钮并保存设置。</p>
 <p>还有几个插件可以帮助您配置 Firefox 的代理设置，如 <a href="https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/">FoxyProxy</a> 。</p>
-<h3 id="heading3">谷歌浏览器</h3>
+<h3 id="谷歌浏览器">谷歌浏览器</h3>
 <p>Google Chrome 使用默认的系统代理设置。您可以使用插件(如 <a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif">SwitchyOmega)</a> 或<a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif">从命令行</a>启动 Chrome 网络浏览器，而不是更改操作系统代理设置。</p>
 <p>要使用新配置文件启动 Chrome 并连接到 Squid 服务器，请使用以下命令：</p>
 <p><strong>Linux：</strong></p>
@@ -263,7 +263,7 @@ sudo systemctl enable squid
     --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span>
 </code></pre></div><p>如果配置文件不存在，将自动创建配置文件。这样，您可以同时运行多个 Chrome 实例。</p>
 <p>要确认代理服务器是否正常工作，请打开 <code>google.com</code> ，然后键入 “what is my ip” 。浏览器中显示的 IP 应该是服务器的 IP 地址。</p>
-<h2 id="heading4">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在 CentOS 7 上安装 squid 并配置浏览器以使用它。</p>
 <p>Squid 是最受欢迎的代理缓存服务器之一。它可以提高 Web 服务器的速度，并可以帮助您限制用户访问 Internet 。</p>
       </div><ul class="pa0">
@@ -339,17 +339,17 @@ sudo systemctl enable squid
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-centos--squid">在 CentOS 上安装 Squid</a></li>
-    <li><a href="#-squid">配置 Squid</a></li>
-    <li><a href="#squid-">Squid 身份验证</a></li>
-    <li><a href="#heading">配置防火墙</a></li>
-    <li><a href="#heading1">配置浏览器以使用代理</a>
+    <li><a href="#在-centos-上安装-squid">在 CentOS 上安装 Squid</a></li>
+    <li><a href="#配置-squid">配置 Squid</a></li>
+    <li><a href="#squid-身份验证">Squid 身份验证</a></li>
+    <li><a href="#配置防火墙">配置防火墙</a></li>
+    <li><a href="#配置浏览器以使用代理">配置浏览器以使用代理</a>
       <ul>
-        <li><a href="#heading2">火狐</a></li>
-        <li><a href="#heading3">谷歌浏览器</a></li>
+        <li><a href="#火狐">火狐</a></li>
+        <li><a href="#谷歌浏览器">谷歌浏览器</a></li>
       </ul>
     </li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -361,7 +361,7 @@ sudo systemctl enable squid
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

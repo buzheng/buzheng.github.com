@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,56 +145,56 @@
   
           <p>符号链接，是一种指向另一文件或目录的特殊类型的文件。这有点像 Windows 中的快捷方式。符号链接可以指向相同或不同文件系统或分区上的文件或目录。</p>
 <p>在本指南中，我们将告诉你如何使用 <code>rm</code> ， <code>unlink</code> 和 <code>find</code> 命令在 Linux/Unix 系统中删除符号链接。</p>
-<h2 id="heading">在你开始之前</h2>
+<h2 id="在你开始之前">在你开始之前</h2>
 <p>要删除符号链接，您需要对包含符号链接的目录具有写权限。否则，将出现 “Operation not permitted” 错误。</p>
 <p>删除符号链接时，它指向的文件不受影响。</p>
 <p>使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls -l</code></a> 命令检查给定文件是否为符号链接，并查找符号链接指向的文件或目录。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ls -l /usr/bin/python
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ls -l /usr/bin/python
 
-</code></pre><pre><code class="language-output" data-lang="output">lrwxrwxrwx 1 root root 9 Apr 16  2018 /usr/bin/python -&gt; python2.7
-</code></pre><p>第一个字符 “ l” 表示文件是符号链接。 “-&gt;” 符号显示符号链接指向的文件。</p>
-<h2 id="-rm-">使用 <code>rm</code> 删除符号链接 </h2>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lrwxrwxrwx 1 root root 9 Apr 16  2018 /usr/bin/python -&gt; python2.7
+</code></pre></div><p>第一个字符 “ l” 表示文件是符号链接。 “-&gt;” 符号显示符号链接指向的文件。</p>
+<h2 id="使用-rm-删除符号链接">使用 <code>rm</code> 删除符号链接 </h2>
 <p>该 <a href="/linux/rm-command-in-linux/"><code>rm</code></a> 命令将删除给定的文件和目录。</p>
 <p>要删除符号链接，请调用 <code>rm</code> 命令，后跟符号链接名称作为参数：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rm symlink_name
-</code></pre><p>成功后，命令以零退出，不显示任何输出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm symlink_name
+</code></pre></div><p>成功后，命令以零退出，不显示任何输出。</p>
 <p>使用 <code>rm</code> 您可以一次删除多个符号链接。为此，将符号链接的名称作为参数传递，并用空格分隔：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rm symlink1 symlink2
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm symlink1 symlink2
 
-</code></pre><p>要在删除符号链接之前得到提示，请使用以下 <code>-i</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rm -i symlink_name
-</code></pre><p>确认输入 <code>y</code> ，然后按 <code>Enter</code> 。</p>
-<pre><code class="language-output" data-lang="output">rm: remove symbolic link 'symlink_name'? 
-</code></pre><p>如果符号链接指向目录，请不要在 <code>/</code> 末尾添加斜杠。否则，您将得到一个错误：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rm symlink_to_dir/
+</code></pre></div><p>要在删除符号链接之前得到提示，请使用以下 <code>-i</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm -i symlink_name
+</code></pre></div><p>确认输入 <code>y</code> ，然后按 <code>Enter</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm: remove symbolic link &#39;symlink_name&#39;? 
+</code></pre></div><p>如果符号链接指向目录，请不要在 <code>/</code> 末尾添加斜杠。否则，您将得到一个错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm symlink_to_dir/
 
-</code></pre><pre><code class="language-output" data-lang="output">rm: cannot remove 'symlink_to_dir/': Is a directory
-</code></pre><p>如果参数的名称以结尾 <code>/</code> ，则该 <code>rm</code> 命令将假定该文件是目录。发生该错误的原因是，当不带 <code>-d</code> 或 <code>-r</code> 选项使用时， <code>rm</code> 无法删除目录。</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm: cannot remove &#39;symlink_to_dir/&#39;: Is a directory
+</code></pre></div><p>如果参数的名称以结尾 <code>/</code> ，则该 <code>rm</code> 命令将假定该文件是目录。发生该错误的原因是，当不带 <code>-d</code> 或 <code>-r</code> 选项使用时， <code>rm</code> 无法删除目录。</p>
 <p>为了安全起见，使用 <code>rm</code> 删除符号链接时，请不要使用 <code>-r</code> 选项。例如，如果您键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rm -f symlink_to_dir/
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rm -f symlink_to_dir/
 
-</code></pre><p>目标目录的内容将被删除。</p>
-<h2 id="-unlink-">使用 <code>unlink</code> 删除符号链接 </h2>
+</code></pre></div><p>目标目录的内容将被删除。</p>
+<h2 id="使用-unlink-删除符号链接">使用 <code>unlink</code> 删除符号链接 </h2>
 <p>该 <a href="/linux/unlink-command-in-linux/"><code>unlink</code></a> 命令删除给定的文件。不同于 <code>rm</code> ，<code>unlink</code> 仅接受一个参数。</p>
 <p>要删除符号链接，请运行 <code>unlink</code> 命令，后跟符号链接名称作为参数：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">unlink symlink_name
-</code></pre><p>如果命令成功执行，则不显示任何输出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">unlink symlink_name
+</code></pre></div><p>如果命令成功执行，则不显示任何输出。</p>
 <p>不要在符号链接名称的末尾添加斜杠 <code>/</code> ，因为 <code>unlink</code> 无法删除目录。</p>
-<h2 id="heading1">查找和删除损坏的符号链接</h2>
+<h2 id="查找和删除损坏的符号链接">查找和删除损坏的符号链接</h2>
 <p>如果您将源文件删除或移动到其他位置，则符号文件将失效。</p>
 <p>要查找给定目录下所有失效的符号链接，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">find /path/to/directory -xtype l
-</code></pre><pre><code class="language-output" data-lang="output">/path/to/directory/symlink1
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">find /path/to/directory -xtype l
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/path/to/directory/symlink1
 /path/to/directory/subdir/symlink2
-</code></pre><p>该命令将列出目录及其子目录下的所有失效的链接。</p>
+</code></pre></div><p>该命令将列出目录及其子目录下的所有失效的链接。</p>
 <p>如果要排除子目录中包含的符号链接，请将 <code>-maxdepth 1</code> 选项传递给 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">find /path/to/directory -maxdepth 1 -xtype l
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">find /path/to/directory -maxdepth 1 -xtype l
 
-</code></pre><pre><code class="language-output" data-lang="output">/path/to/directory/symlink1
-</code></pre><p>一旦你找到了破碎的符号链接，您可以手动删除 <code>rm</code> 或 <code>unlink</code> 或使用带有 <code>-delete</code> 选项的 <code>find</code> 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">find /path/to/directory -xtype l -delete
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/path/to/directory/symlink1
+</code></pre></div><p>一旦你找到了破碎的符号链接，您可以手动删除 <code>rm</code> 或 <code>unlink</code> 或使用带有 <code>-delete</code> 选项的 <code>find</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">find /path/to/directory -xtype l -delete
 
-</code></pre><h2 id="heading2">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>要删除符号链接，请使用 <code>rm</code> 或 <code>unlink</code> 命令，后跟符号链接的名称作为参数。删除指向目录的符号链接时，请勿在符号链接名称后添加斜杠。</p>
       </div><ul class="pa0">
   
@@ -277,11 +277,11 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">在你开始之前</a></li>
-    <li><a href="#-rm-">使用 rm 删除符号链接 </a></li>
-    <li><a href="#-unlink-">使用 unlink 删除符号链接 </a></li>
-    <li><a href="#heading1">查找和删除损坏的符号链接</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#在你开始之前">在你开始之前</a></li>
+    <li><a href="#使用-rm-删除符号链接">使用 rm 删除符号链接 </a></li>
+    <li><a href="#使用-unlink-删除符号链接">使用 unlink 删除符号链接 </a></li>
+    <li><a href="#查找和删除损坏的符号链接">查找和删除损坏的符号链接</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -293,7 +293,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

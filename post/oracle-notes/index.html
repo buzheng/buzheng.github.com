@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -137,7 +137,7 @@
           
           
   
-          <h2 id="heading">常用命令</h2>
+          <h2 id="常用命令">常用命令</h2>
 <ul>
 <li>lsnrctl status 查看监听状态</li>
 <li>lsnrctl start  启动监听</li>
@@ -150,7 +150,7 @@
 </li>
 </ul>
 <!-- raw HTML omitted -->
-<h2 id="oracle">oracle启动步骤</h2>
+<h2 id="oracle启动步骤">oracle启动步骤</h2>
 <ol>
 <li>启动侦听 lsnrctl start</li>
 <li>启动数据库实例</li>
@@ -186,7 +186,7 @@ Redo Buffers                <span class="m">5988352</span> bytes
 Database mounted.
 Database opened.
 SQL&gt; 
-</code></pre></div><h2 id="oracle1">连接Oracle时，建立连接很慢</h2>
+</code></pre></div><h2 id="连接oracle时建立连接很慢">连接Oracle时，建立连接很慢</h2>
 <p>表现为客户端连接 Oracle 时，建立连接时很慢，约耗时10-30秒，建立连接后，查询很快。这个主要是由于服务器主机配置了DNS解析导致的，去掉DNS后连接正常。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@linux001 ~<span class="o">]</span><span class="c1"># vi /etc/sysconfig/network-scripts/ifcfg-eth0</span>
 <span class="nv">DEVICE</span><span class="o">=</span>eth0
@@ -205,7 +205,7 @@ SQL&gt;
 <span class="c1">#DNS1=192.168.1.1</span>
 <span class="nv">HWADDR</span><span class="o">=</span>00:E0:4C:19:CF:79
 <span class="nv">LAST_CONNECT</span><span class="o">=</span><span class="m">1418632757</span>
-</code></pre></div><h2 id="heading1">用户、表空间、权限相关</h2>
+</code></pre></div><h2 id="用户表空间权限相关">用户、表空间、权限相关</h2>
 <p><strong>创建用户</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">-</span> <span class="k">create</span> <span class="k">user</span> <span class="n">username</span> <span class="n">identified</span> <span class="k">by</span> <span class="n">password</span><span class="p">;</span> 
 </code></pre></div><p><strong>创建表空间</strong></p>
@@ -232,7 +232,7 @@ SQL&gt;
 </ul>
 <p><strong>调试存储过程权限</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">GRANT</span> <span class="n">debug</span> <span class="k">any</span> <span class="k">procedure</span><span class="p">,</span> <span class="n">debug</span> <span class="k">connect</span> <span class="k">session</span> <span class="k">TO</span> <span class="n">username</span><span class="p">;</span>
-</code></pre></div><h2 id="heading2">查杀死锁会话</h2>
+</code></pre></div><h2 id="查杀死锁会话">查杀死锁会话</h2>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">OBJECT_NAME</span> <span class="k">AS</span> <span class="err">对</span><span class="err">象</span><span class="err">名</span><span class="err">称</span><span class="p">,</span><span class="n">S</span><span class="p">.</span><span class="n">SID</span><span class="p">,</span><span class="n">S</span><span class="p">.</span><span class="nb">SERIAL</span><span class="o">#</span><span class="p">,</span><span class="n">P</span><span class="p">.</span><span class="n">SPID</span> <span class="k">AS</span> <span class="err">系</span><span class="err">统</span><span class="err">截</span><span class="err">程</span><span class="err">号</span> <span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">USERNAME</span>
 <span class="k">FROM</span> <span class="n">V$LOCKED_OBJECT</span> <span class="n">L</span> <span class="p">,</span> <span class="n">DBA_OBJECTS</span> <span class="n">O</span> <span class="p">,</span> <span class="n">V$SESSION</span> <span class="n">S</span> <span class="p">,</span> <span class="n">V$PROCESS</span> <span class="n">P</span>  
 <span class="k">WHERE</span> <span class="n">L</span><span class="p">.</span><span class="n">OBJECT_ID</span><span class="o">=</span><span class="n">O</span><span class="p">.</span><span class="n">OBJECT_ID</span> <span class="k">AND</span> <span class="n">L</span><span class="p">.</span><span class="n">SESSION_ID</span><span class="o">=</span><span class="n">S</span><span class="p">.</span><span class="n">SID</span> <span class="k">AND</span> <span class="n">S</span><span class="p">.</span><span class="n">PADDR</span><span class="o">=</span><span class="n">P</span><span class="p">.</span><span class="n">ADDR</span><span class="p">;</span> 
@@ -242,7 +242,7 @@ SQL&gt;
 </span><span class="c1"></span><span class="k">SELECT</span> <span class="n">v</span><span class="p">.</span><span class="n">sid</span><span class="p">,</span><span class="n">v</span><span class="p">.</span><span class="nb">SERIAL</span><span class="o">#</span><span class="p">,</span><span class="n">v</span><span class="p">.</span><span class="n">USERNAME</span><span class="p">,</span><span class="n">v</span><span class="p">.</span><span class="n">ACTION</span> <span class="k">FROM</span> <span class="n">v$session</span> <span class="n">v</span> <span class="k">WHERE</span> <span class="n">v</span><span class="p">.</span><span class="n">sid</span> <span class="k">IN</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">session_id</span> <span class="k">FROM</span> <span class="n">v$locked_object</span> <span class="k">WHERE</span> <span class="n">ORACLE_USERNAME</span><span class="o">=</span> <span class="s1">&#39;</span><span class="s1">USERNAME</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- 杀死会话： SID,SERIAL# 由上个语句查出
 </span><span class="c1"></span><span class="k">ALTER</span> <span class="k">SYSTEM</span> <span class="n">KILL</span> <span class="k">SESSION</span> <span class="s1">&#39;</span><span class="s1">SID,SERIAL#</span><span class="s1">&#39;</span><span class="p">;</span>  
-</code></pre></div><h2 id="heading3">超过最大进程数</h2>
+</code></pre></div><h2 id="超过最大进程数">超过最大进程数</h2>
 <p>今天碰到一个问题，登陆不上数据库了，登陆时报错：<!-- raw HTML omitted -->ORA-00020: maximum number of processes (150) exceeded<!-- raw HTML omitted -->。这意思是很明显，就是超过最大进程数了，这个可以问题可以通过修改进程数的设置来进行修改，方法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SQL</span><span class="o">&gt;</span><span class="k">alter</span> <span class="k">system</span> <span class="k">set</span> <span class="n">processes</span> <span class="o">=</span> <span class="mi">500</span> <span class="k">scope</span><span class="o">=</span><span class="n">SPFILE</span><span class="p">;</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="n">shutdown</span> <span class="k">immediate</span>
@@ -252,7 +252,7 @@ SQL&gt;
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">lsof -i:1521
 </code></pre></div><p>当时就看到有个 IP 地址与 oracle 机器建立了好多链接，于是得出该IP地址的程序操作后没有及时关闭连接，导致连接不能释放。经与同事沟通后，验证了猜测，修复了程序后恢复正常。</p>
 <p>@2015-04-08</p>
-<h2 id="heading4">查询每个表占用的存储空间</h2>
+<h2 id="查询每个表占用的存储空间">查询每个表占用的存储空间</h2>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">segment_name</span><span class="p">,</span><span class="k">sum</span><span class="p">(</span><span class="n">bytes</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span> <span class="k">from</span> <span class="n">user_extents</span> <span class="k">group</span> <span class="k">by</span> <span class="n">segment_name</span><span class="p">;</span>
 </code></pre></div>
       </div><ul class="pa0">
@@ -291,7 +291,7 @@ SQL&gt;
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

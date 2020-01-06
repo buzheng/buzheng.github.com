@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -153,7 +153,7 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
 <p>如果您的 Raspberry Pi 没有通过 NOOBS 预先加载的 SD 卡，则需要在 SD 卡上手动安装操作系统。您可以在 Raspberry Pi 上运行许多不同的操作系统，包括各种 Linux 发行版，Windows 10 IoT 和 FreeBSD。</p>
 <p>Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian，专为 Raspberry Pi 板而构建。Raspbian 预装了大量用于开发，教育和多媒体的软件，使其成为 Raspberry Pi 用户的最佳通用操作系统。</p>
 <p>安装 Raspbian 就像将操作系统映像文件写入 SD 卡一样简单。在本教程中，我们将向您展示如何格式化 SD 卡，刷新 Raspbian 镜像以及启动 Raspberry Pi。</p>
-<h2 id="-raspbian-os">下载 Raspbian OS</h2>
+<h2 id="下载-raspbian-os">下载 Raspbian OS</h2>
 <p>访问 <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian 下载页面</a>，您可以在其中找到以下链接：</p>
 <ul>
 <li>Raspbian Stretch 与桌面和推荐的软件</li>
@@ -161,7 +161,7 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
 <li>Raspbian Stretch Lite</li>
 </ul>
 <p>如果您想将 Raspberry Pi 用作台式 PC，请下载一个 Raspbian 桌面映像。否则，如果您打算将 Raspberry Pi 用作媒体中心或其他不需要 GUI 的内容，请下载 Raspbian Lite 镜像。</p>
-<h2 id="-sd-">准备 SD 卡</h2>
+<h2 id="准备-sd-卡">准备 SD 卡</h2>
 <p>在首先将镜像闪存到 micro SD 卡之前，需要将其格式化为 FAT32 文件系统。</p>
 <p>Raspberry Pi 的引导加载程序仅支持从 FAT 文件系统读取。如果您的 SD 卡是 64GB 或更大，请确保它格式化为 FAT32 而不是 exFAT。</p>
 <p>请注意，格式化是一个破坏性的过程，它将擦除所有现有数据。如果 SD 卡上有数据，请先备份。</p>
@@ -183,20 +183,20 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
 </li>
 <li>
 <p>使用以下 <code>lsblk</code> 命令找出 SD 卡的名称：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">    lsblk</code></pre>
-<pre><code class="language-output" data-lang="output">    NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">    lsblk</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">    NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
     ...
     sdb           8:16   1  59.6G  0 disk
-    ...</code></pre>
+    ...</code></pre></div>
 <p>在这种情况下，SD设备的名称是， <code>/dev/sdb</code> 但这可能会因您的系统而异。识别名称的最佳方法是检查设备的大小。</p>
 </li>
 <li>
 <p>下一步是使用 parted 格式化卡片：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">    sudo parted /dev/sdb --script -- mklabel msdossudo parted /dev/sdb --script -- mkpart primary fat32 1MiB 100%</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">    sudo parted /dev/sdb --script -- mklabel msdossudo parted /dev/sdb --script -- mkpart primary fat32 1MiB 100%</code></pre></div>
 </li>
 <li>
 <p>将分区格式化为 FAT32：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">    sudo mkfs.fat -F32 /dev/sdb1</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">    sudo mkfs.fat -F32 /dev/sdb1</code></pre></div>
 </li>
 </ol>
 <h3 id="mac-os">Mac OS</h3>
@@ -207,15 +207,15 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
 </li>
 <li>
 <p>在终端窗口中键入以下命令以标识 SD 卡名称：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">    sudo diskutil list</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">    sudo diskutil list</code></pre></div>
 </li>
 <li>
 <p>执行以下命令，将 SD 卡格式化为 FAT32：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">    sudo diskutil eraseDisk FAT32 RPI MBRFormat /dev/disk2</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">    sudo diskutil eraseDisk FAT32 RPI MBRFormat /dev/disk2</code></pre></div>
 <p>确保使用正确的驱动器。</p>
 </li>
 </ol>
-<h2 id="heading">写镜像</h2>
+<h2 id="写镜像">写镜像</h2>
 <p>有几种不同的应用程序可供免费使用，它们允许您将 ISO 映像闪存到 SD 卡。在本教程中，我们将使用 Etcher。</p>
 <p>Etcher 是一个免费的开源实用程序，用于将镜像闪存到 SD 卡和 USB 驱动器，并支持 Windows，macOS 和 Linux。</p>
 <p>转到<a href="https://www.balena.io/etcher/#download">Etcher 下载页面</a>，下载适用于您的操作系统的最新 Etcher 并安装该应用程序。</p>
@@ -233,16 +233,16 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
 </ol>
 <p>在 Raspbian 上，默认情况下禁用 SSH 服务器。对于无头 Raspbian 设置，您可以通过将名为 ssh 且没有任何扩展名的文件放入启动分区来启用 SSH。只需在文件管理器中打开 SD 卡即可创建文件。</p>
 <p>就这样！您的 SD 卡上有可启动的 Raspbian OS。</p>
-<h2 id="-raspbian">设置 Raspbian</h2>
+<h2 id="设置-raspbian">设置 Raspbian</h2>
 <p>将 SD 卡放入 Raspberry Pi 板，插入显示器，键盘和电源，即可开始使用。</p>
 <p>默认用户名是<strong>pi</strong>，密码是<strong>raspberry</strong>。</p>
 <p>如果您<a href="/linux/how-to-enable-ssh-on-raspberry-pi/">启用了 SSH</a>并且想要将 Raspberry Pi 用作无头服务器，请使用网络电缆将该板与路由器连接。一旦启动，您可以在路由器的 DHCP 租约表中找到板 IP 地址，并通过 ssh 登录到 Raspbian：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pi@192.168.1.149
-</code></pre><p>要开始配置 Pi，请使用该 <code>raspi-config</code> 工具：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo raspi-config
-</code></pre><p><img src="raspi-config.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pi@192.168.1.149
+</code></pre></div><p>要开始配置 Pi，请使用该 <code>raspi-config</code> 工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo raspi-config
+</code></pre></div><p><img src="raspi-config.jpg" alt=""></p>
 <p>从这里您可以更改 pi 用户密码，设置 WiFi 并展开文件系统。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在 Raspberry Pi 上安装 Raspbian 是一个非常简单的过程。基本上，您需要做的就是将镜像写入 SD 卡并启动 Raspberry Pi。</p>
       </div><ul class="pa0">
   
@@ -285,17 +285,17 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-raspbian-os">下载 Raspbian OS</a></li>
-    <li><a href="#-sd-">准备 SD 卡</a>
+    <li><a href="#下载-raspbian-os">下载 Raspbian OS</a></li>
+    <li><a href="#准备-sd-卡">准备 SD 卡</a>
       <ul>
         <li><a href="#windows">Windows</a></li>
         <li><a href="#linux">Linux</a></li>
         <li><a href="#mac-os">Mac OS</a></li>
       </ul>
     </li>
-    <li><a href="#heading">写镜像</a></li>
-    <li><a href="#-raspbian">设置 Raspbian</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#写镜像">写镜像</a></li>
+    <li><a href="#设置-raspbian">设置 Raspbian</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -307,7 +307,7 @@ Raspberry 是 Raspberry Pi Foundation 推荐的操作系统。它基于 Debian�
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

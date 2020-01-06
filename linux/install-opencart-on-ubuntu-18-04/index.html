@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,7 +146,7 @@
           <p>OpenCart 是一个免费的开源 PHP 电子商务平台，同时具有强大的功能，灵活性和用户友好的界面。</p>
 <p>因为本身带有的用户管理，多商店，关联企业，折扣，产品评论，多语言支持和多个支付网关支持等功能， OpenCart 成为许多在线商家的首选平台。</p>
 <p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 服务器上安装 OpenCart 。我们将使用 Nginx 作为 Web 服务器，最新的 PHP 7.2和 MySQL / MariaDB 作为数据库服务器。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li>有一个指向您的公共服务器 IP 的域名。我们会用 example.com。</li>
@@ -156,7 +156,7 @@
 <p>将系统软件包更新到最新版本并安装解压缩实用程序 unzip ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade
 sudo apt install unzip
-</code></pre></div><h2 id="-mysql-">创建 MySQL 数据库</h2>
+</code></pre></div><h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
 <p>如果您的服务器上安装了MySQL或MariaDB，则可以跳过此步骤，否则可以通过键入以下命令从 Ubuntu 的默认存储库安装 MySQL 5.7 服务器包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install mysql-server mysql-client
 </code></pre></div><p>对于全新的 MySQL 安装，建议运行该 <code>mysql_secure_installation</code> 命令以提高 MySQL 服务器的安全性。</p>
@@ -171,7 +171,7 @@ sudo apt install unzip
 </blockquote>
 <p>完成后，键入以下命令退出mysql控制台：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">EXIT</span><span class="p">;</span>
-</code></pre></div><h3 id="php">安装和配置PHP</h3>
+</code></pre></div><h3 id="安装和配置php">安装和配置PHP</h3>
 <p>PHP 7.2 是 Ubuntu 18.04中的默认 PHP 版本，完全支持并推荐用于 OpenCart。由于我们将使用 Nginx 作为 Web 服务器，因此我们还将安装 PHP-FPM 软件包。</p>
 <p>运行以下命令以安装 PHP 和所有必需的 PHP 模块：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install php7.2-common php7.2-cli php7.2-fpm php7.2-opcache php7.2-gd php7.2-mysql php7.2-curl php7.2-intl php7.2-xsl php7.2-mbstring php7.2-zip php7.2-bcmath php7.2-soap
@@ -194,7 +194,7 @@ sudo sed -i <span class="s2">&#34;s/zlib.output_compression = .*/zlib.output_com
 sudo sed -i <span class="s2">&#34;s/max_execution_time = .*/max_execution_time = 18000/&#34;</span> /etc/php/7.2/fpm/php.ini
 sudo sed -i <span class="s2">&#34;s/;date.timezone.*/date.timezone = UTC/&#34;</span> /etc/php/7.2/fpm/php.ini
 sudo sed -i <span class="s2">&#34;s/;opcache.save_comments.*/opcache.save_comments = 1/&#34;</span> /etc/php/7.2/fpm/php.ini
-</code></pre></div><h2 id="opencart">安装OpenCart</h2>
+</code></pre></div><h2 id="安装opencart">安装OpenCart</h2>
 <p>在撰写本文时，OpenCart的最新稳定版本是版本3.0.3.1。</p>
 <p>在下载 OpenCart 存档之前，首先要创建一个保存 OpenCart 文件的目录：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /var/www/html/example.com
@@ -209,12 +209,12 @@ sudo mv /tmp/upload/* /var/www/html/example.com/
 sudo cp /var/www/html/example.com/admin/<span class="o">{</span>config-dist.php,config.php<span class="o">}</span>
 </code></pre></div><p>设置正确的权限，以便Web服务器可以使用以下chown命令对站点的文件和目录具有完全访问权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R www-data: /var/www/html
-</code></pre></div><h2 id="nginx">配置Nginx</h2>
+</code></pre></div><h2 id="配置nginx">配置Nginx</h2>
 <p>到目前为止，您应该已经在Ubuntu服务器上安装了具有 SSL 证书的 Nginx，如果没有检查本教程的先决条件。</p>
 <p>打开文本编辑器并创建以下文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/nginx/sites-available/example.com
 </code></pre></div><p>以下是文件 /etc/nginx/sites-available/example.com 的文件内容</p>
-<pre><code># Redirect HTTP -&gt; HTTPS
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># Redirect HTTP -&gt; HTTPS
 server {
     listen 80;
     server_name www.example.com example.com;
@@ -280,7 +280,7 @@ server {
     }
 
 }
-</code></pre><blockquote>
+</code></pre></div><blockquote>
 <p>不要忘记将 example.com 替换为您的 OpenCart 域名，并设置 SSL 证书文件的正确路径。此配置中使用的片段在本指南中创建。</p>
 </blockquote>
 <p>在重新启动 Nginx 服务之前，请先通过以下命令对配置文件进行测试以确保没有语法错误：</p>
@@ -290,7 +290,7 @@ server {
 nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful
 </code></pre></div><p>最后，键入以下命令重启 Nginx 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart nginx
-</code></pre></div><h2 id="-opencart-">完成 OpenCart 安装</h2>
+</code></pre></div><h2 id="完成-opencart-安装">完成 OpenCart 安装</h2>
 <p>现在已经下载了 OpenCart 并且服务器配置已完成，您可以通过 OpenCart 提供的 Web 界面完成安装。</p>
 <p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
 <p><img src="/images/linux/install-opencart-on-ubuntu-18-04/install-opencart-licence.jpg" alt=""></p>
@@ -310,7 +310,7 @@ nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is 
 <p>从这里开始，您可以开始自定义OpenCart安装并添加新产品。</p>
 <p>您还需要删除安装目录。为此，请返回终端并输入以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm -rf /var/www/html/example.com/install
-</code></pre></div><h2 id="heading1">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>恭喜，您已在Ubuntu 18.04服务器上成功安装了OpenCart。</p>
 <p>如果想了解更多关于如何安装和管理 OpenCart 信息， 阅读 <a href="http://docs.opencart.com/en-gb/introduction/">OpenCart 文档</a>是一个很好的起点。</p>
 <!-- raw HTML omitted -->
@@ -359,16 +359,16 @@ nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is 
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-mysql-">创建 MySQL 数据库</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建-mysql-数据库">创建 MySQL 数据库</a>
       <ul>
-        <li><a href="#php">安装和配置PHP</a></li>
+        <li><a href="#安装和配置php">安装和配置PHP</a></li>
       </ul>
     </li>
-    <li><a href="#opencart">安装OpenCart</a></li>
-    <li><a href="#nginx">配置Nginx</a></li>
-    <li><a href="#-opencart-">完成 OpenCart 安装</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#安装opencart">安装OpenCart</a></li>
+    <li><a href="#配置nginx">配置Nginx</a></li>
+    <li><a href="#完成-opencart-安装">完成 OpenCart 安装</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -380,7 +380,7 @@ nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is 
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

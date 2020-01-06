@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,18 +150,18 @@
 <p>一种选择是使用VPN，但这需要在您的计算机上安装客户端软件并<a href="/linux/how-to-set-up-an-openvpn-server-on-ubuntu-18-04/">设置您自己的VPN服务器</a>或订阅VPN服务。</p>
 <p>更简单的替代方法是使用加密的SOCKS代理隧道路由本地网络流量。这样，使用代理的所有应用程序都将连接到SSH服务器，服务器会将所有流量转发到其实际目标。您的ISP（互联网服务提供商）和其他第三方将无法检查您的流量并阻止您访问网站。</p>
 <p>本教程将引导您完成创建加密SSH隧道和配置Firefox和<a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">Google Chrome</a> Web浏览器以使用SOCKS代理的过程。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <ul>
 <li>运行任何Linux版本的服务器，具有SSH访问权限以通过它路由您的流量。</li>
 <li>网页浏览器。</li>
 <li>SSH客户端。</li>
 </ul>
-<h2 id="ssh">设置SSH隧道</h2>
+<h2 id="设置ssh隧道">设置SSH隧道</h2>
 <p>我们将创建一个SSH隧道，该隧道将安全地将来自本地计算机的端口<code>9090</code>上的流量转发到端口上的SSH服务器<code>22</code>。您可以使用大于的任何端口号<code>1024</code>。</p>
-<h3 id="linuxmacos">Linux和macOS</h3>
+<h3 id="linux和macos">Linux和macOS</h3>
 <p>如果在本地计算机上运行Linux，macOS或任何其他基于Unix的操作系统，则可以使用以下命令轻松启动SSH隧道：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh -N -D 9090 [USER]@[SERVER_IP]
-</code></pre><p>使用的选项如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh -N -D 9090 [USER]@[SERVER_IP]
+</code></pre></div><p>使用的选项如下：</p>
 <ul>
 <li><code>-N</code> - 告诉SSH不要执行远程命令。</li>
 <li><code>-D 9090</code> - 在指定的端口号上打开SOCKS隧道。</li>
@@ -171,7 +171,7 @@
 </ul>
 <p>运行该命令后，系统将提示您输入用户密码。输入后，您将登录到服务器并建立SSH隧道。</p>
 <p>您可以<a href="/linux/how-to-setup-passwordless-ssh-login/">设置基于SSH密钥的身份验证，</a>并在不输入密码的情况下连接到服务器。</p>
-<h3 id="heading1">视窗</h3>
+<h3 id="视窗">视窗</h3>
 <p>Windows用户可以使用PuTTY SSH客户端创建SSH隧道。你可以<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">在这里</a>下载PuTTY 。</p>
 <ol>
 <li>
@@ -196,9 +196,9 @@
 <p>将显示一个询问您的用户名和密码的新窗口。输入用户名和密码后，您将登录到服务器并启动SSH隧道。</p>
 </li>
 </ol>
-<h2 id="heading2">配置浏览器以使用代理</h2>
+<h2 id="配置浏览器以使用代理">配置浏览器以使用代理</h2>
 <p>现在您已打开SSH SOCKS隧道，最后一步是配置首选浏览器以使用它。</p>
-<h3 id="heading3">火狐</h3>
+<h3 id="火狐">火狐</h3>
 <p>对于Windows，macOS和Linux，以下步骤相同。</p>
 <ol>
 <li>
@@ -224,7 +224,7 @@
 <p>此时，您的Firefox已配置，您可以通过SSH隧道浏览Internet。要验证它，您可以打开<code>google.com</code>，键入“我的IP是什么”，您应该看到您的服务器IP地址。</p>
 <p>要恢复默认设置，请转到<code>Network Settings</code>，选择<code>Use system proxy settings</code>单选按钮并保存设置。</p>
 <p>还有几个插件可以帮助您配置Firefox的代理设置，如<a href="https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/">FoxyProxy</a>。</p>
-<h3 id="heading4">谷歌浏览器</h3>
+<h3 id="谷歌浏览器">谷歌浏览器</h3>
 <p>Google Chrome使用默认的系统代理设置。您可以使用插件（如<a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif">SwitchyOmega）</a>或<a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif">从命令行</a>启动Chrome网络浏览器，而不是更改操作系统代理设置。</p>
 <p>要使用新配置文件和SSH隧道启动Chrome，请使用以下命令：</p>
 <p><strong>Linux：</strong></p>
@@ -241,7 +241,7 @@
     --proxy-server<span class="o">=</span><span class="s2">&#34;socks5://localhost:9090&#34;</span>
 </code></pre></div><p>如果配置文件不存在，将自动创建配置文件。这样，您可以同时运行多个Chrome实例。</p>
 <p>要确认SSH隧道是否正常工作，请打开<code>google.com</code>，然后键入“what is my ip”。浏览器中显示的IP应该是服务器的IP地址。</p>
-<h2 id="heading5">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已学习如何设置SSH SOCKS 5隧道并将浏览器配置为私下匿名访问Internet。为了便于使用，您可以在<a href="/linux/using-the-ssh-config-file/">SSH配置文件中</a>定义SSH隧道，或创建将设置SSH隧道并启动浏览器的<a href="/linux/how-to-create-bash-aliases/">Bash别名</a>。</p>
       </div><ul class="pa0">
   
@@ -316,20 +316,20 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#ssh">设置SSH隧道</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#设置ssh隧道">设置SSH隧道</a>
       <ul>
-        <li><a href="#linuxmacos">Linux和macOS</a></li>
-        <li><a href="#heading1">视窗</a></li>
+        <li><a href="#linux和macos">Linux和macOS</a></li>
+        <li><a href="#视窗">视窗</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">配置浏览器以使用代理</a>
+    <li><a href="#配置浏览器以使用代理">配置浏览器以使用代理</a>
       <ul>
-        <li><a href="#heading3">火狐</a></li>
-        <li><a href="#heading4">谷歌浏览器</a></li>
+        <li><a href="#火狐">火狐</a></li>
+        <li><a href="#谷歌浏览器">谷歌浏览器</a></li>
       </ul>
     </li>
-    <li><a href="#heading5">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -341,7 +341,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

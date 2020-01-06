@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,31 +146,31 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
           <p>Zabbix是一个成熟的开源软件，用于监控网络和应用程序。Zabbix可以从各种网络设备，系统和应用程序中收集指标。如果发生任何故障，Zabbix将通过各种方法发送通知警报。</p>
 <p>Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间小，可以在各种平台上运行，包括Linux，UNIX，macOS和Windows。</p>
 <p>本教程介绍如何使用MySQL作为数据库后端在Debian 9 Linux服务器上安装和配置最新版本的Zabbix 4.0。我们还将向您展示如何在远程主机上安装Zabbix代理并将主机添加到Zabbix服务器。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>您登录的用户必须具有<a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo权限</a>才能安装软件包。</p>
-<h2 id="mysql">创建MySQL数据库</h2>
+<h2 id="创建mysql数据库">创建MySQL数据库</h2>
 <p>Zabbix支持<a href="/linux/how-to-install-mysql-on-debian-9/">MySQL</a> / MariaDB和<a href="/linux/how-to-install-postgresql-on-debian-9/">PostgreSQL</a>。在本指南中，我们将使用MariaDB作为数据库后端。</p>
 <p>如果您没有在Debian服务器上安装MariaDB，请按照<a href="/linux/how-to-install-mariadb-on-debian-9/">这些说明进行</a>安装。</p>
 <p>登录MySQL控制台：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE zabbix CHARACTER SET utf8 collate utf8_bin;
-</code></pre><p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON zabbix.* TO 'zabbix'@'localhost' IDENTIFIED BY 'change-with-strong-password';
-</code></pre><p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE zabbix CHARACTER SET utf8 collate utf8_bin;
+</code></pre></div><p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT ALL ON zabbix.* TO &#39;zabbix&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;
+</code></pre></div><p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
 <p>完成后，键入以下命令退出MySQL控制台：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">EXIT;
-</code></pre><h2 id="debianzabbix">在Debian上安装Zabbix</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">EXIT;
+</code></pre></div><h2 id="在debian上安装zabbix">在Debian上安装Zabbix</h2>
 <p>在撰写本文时，Zabbix的最新稳定版本是4.0版。Debian存储库中提供的Zabbix软件包经常过时，因此我们将使用官方的<a href="https://www.zabbix.com/download">Zabbix存储库</a>。</p>
-<h3 id="1zabbix">1.安装Zabbix</h3>
+<h3 id="1安装zabbix">1.安装Zabbix</h3>
 <p><code>.deb</code>使用以下<a href="/linux/wget-command-examples/">wget命令</a>下载最新的Zabbix存储库包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">wget https://repo.zabbix.com/zabbix/4.0/debian/pool/main/z/zabbix-release/zabbix-release_4.0-2+stretch_all.deb
-</code></pre><p>下载文件后，安装它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install ./zabbix-release_4.0-2+stretch_all.deb
-</code></pre><p>更新软件包列表并安装Zabbix服务器，带有MySQL数据库支持的Web前端和Zabbix代理：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install zabbix-server-mysql zabbix-frontend-php zabbix-agent
-</code></pre><p>上面的命令还将安装<a href="/linux/how-to-install-apache-on-debian-9/">Apache</a>，<a href="/linux/how-to-install-php-on-debian-9/">PHP</a>和所有必需的PHP模块。</p>
-<h3 id="2zabbixphp">2.为Zabbix前端配置PHP</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget https://repo.zabbix.com/zabbix/4.0/debian/pool/main/z/zabbix-release/zabbix-release_4.0-2+stretch_all.deb
+</code></pre></div><p>下载文件后，安装它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install ./zabbix-release_4.0-2+stretch_all.deb
+</code></pre></div><p>更新软件包列表并安装Zabbix服务器，带有MySQL数据库支持的Web前端和Zabbix代理：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install zabbix-server-mysql zabbix-frontend-php zabbix-agent
+</code></pre></div><p>上面的命令还将安装<a href="/linux/how-to-install-apache-on-debian-9/">Apache</a>，<a href="/linux/how-to-install-php-on-debian-9/">PHP</a>和所有必需的PHP模块。</p>
+<h3 id="2为zabbix前端配置php">2.为Zabbix前端配置PHP</h3>
 <p>安装期间会创建包含所有必需的Apache和PHP设置的Apache配置文件。</p>
 <p>打开配置文件，取消注释时区线并将其更改为您的时区。您可以在<a href="https://php.net/manual/en/timezones.php">此处</a>找到PHP支持的完整时区列表。</p>
 <p>/etc/apache2/conf-enabled/zabbix.conf</p>
@@ -187,14 +187,14 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
     <span class="na">&lt;/IfModule&gt;</span>
 <span class="na">...</span>
 </code></pre></div><p>完成后，保存文件并重新启动Apache服务以激活更改。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
-</code></pre><h3 id="3zabbix-servermysql">3.为Zabbix Server配置MySQL数据库</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart apache2
+</code></pre></div><h3 id="3为zabbix-server配置mysql数据库">3.为Zabbix Server配置MySQL数据库</h3>
 <p>导入MySQL转储文件，其中包含Zabbix服务器与MySQL的初始架构和数据。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">gunzip &lt; /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -uzabbix -p zabbix
-</code></pre><p>出现提示时，输入您之前创建的用户密码。成功时，没有给出输出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gunzip &lt; /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -uzabbix -p zabbix
+</code></pre></div><p>出现提示时，输入您之前创建的用户密码。成功时，没有给出输出。</p>
 <p>接下来，打开Zabbix配置并设置数据库密码：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/zabbix/zabbix_server.conf
-</code></pre><p>搜索以下部分，取消注释该<code>DBPassword</code>指令并添加数据库密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/zabbix/zabbix_server.conf
+</code></pre></div><p>搜索以下部分，取消注释该<code>DBPassword</code>指令并添加数据库密码。</p>
 <p>/etc/zabbix/zabbix_server.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
 <span class="c1">### Option: DBPassword</span>
@@ -207,20 +207,20 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
 <span class="na">...</span>
 </code></pre></div><p>保存并关闭文件。</p>
 <p>重新启动并启用Zabbix服务器和代理服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart zabbix-server zabbix-agentsudo systemctl enable zabbix-server zabbix-agent
-</code></pre><p>验证Zabbix服务器是否正在运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status zabbix-server
-</code></pre><pre><code class="language-output" data-lang="output">● zabbix-server.service - Zabbix Server
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart zabbix-server zabbix-agentsudo systemctl enable zabbix-server zabbix-agent
+</code></pre></div><p>验证Zabbix服务器是否正在运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status zabbix-server
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● zabbix-server.service - Zabbix Server
    Loaded: loaded (/lib/systemd/system/zabbix-server.service; enabled; vendor preset: enabled)
    Active: active (running) since Mon 2019-01-28 15:37:21 CST; 35s ago
  Main PID: 27632 (zabbix_server)
    CGroup: /system.slice/zabbix-server.service
    ...
-</code></pre><h2 id="zabbix">安装和配置Zabbix前端</h2>
+</code></pre></div><h2 id="安装和配置zabbix前端">安装和配置Zabbix前端</h2>
 <p>Zabbix Web界面是用PHP编写的，允许您配置服务器，查看收集的数据并添加要监视的主机。</p>
 <p>要开始安装，请打开您<a href="/linux/how-to-install-google-chrome-web-browser-on-debian-9/">喜欢的浏览器</a>并键入服务器的域名或公共IP地址，然后<code>/zabbix</code>：</p>
-<pre><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/zabbix
-</code></pre><p>在第一个屏幕上，您将看到一条欢迎信息。点击<code>Next step</code>继续。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">http(s)://your_domain_or_ip_address/zabbix
+</code></pre></div><p>在第一个屏幕上，您将看到一条欢迎信息。点击<code>Next step</code>继续。</p>
 <p><img src="/images/linux/how-to-install-and-configure-zabbix-on-debian-9/zabbix-welcome-screen.jpg" alt=""></p>
 <p>接下来，您将看到一个信息页面，其中包含运行Zabbix前端所需的必需PHP包的列表。向下滚动以验证是否已正确安装和设置所有内容。验证后，单击<code>Next step</code>继续。</p>
 <p><img src="/images/linux/how-to-install-and-configure-zabbix-on-debian-9/zabbix-check-pre-requisites.jpg" alt=""></p>
@@ -237,23 +237,23 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
 <p><img src="/images/linux/how-to-install-and-configure-zabbix-on-debian-9/zabbix-login-screen.jpg" alt=""></p>
 <p>登录后，您将被重定向到Zabbix管理仪表板。</p>
 <p>从这里开始，您可以开始自定义Zabbix安装并添加新主机。首先，您需要更改当前密码。为此，请通过单击顶部导航上的配置文件图标导航到用户配置文件页面。</p>
-<h2 id="zabbix1">将新主机添加到Zabbix服务器</h2>
+<h2 id="将新主机添加到zabbix服务器">将新主机添加到Zabbix服务器</h2>
 <p>将新主机添加到Zabbix服务器的过程包括两个步骤。</p>
 <p>首先，您需要在远程主机上安装Zabbix代理，然后通过Web界面将主机添加到Zabbix服务器。</p>
-<h3 id="zabbix2">安装Zabbix代理</h3>
+<h3 id="安装zabbix代理">安装Zabbix代理</h3>
 <p>本教程假设主机也使用Debian 9。</p>
 <p>与安装Zabbix服务器时相同，运行以下命令以启用Zabbix存储库：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">wget https://repo.zabbix.com/zabbix/4.0/debian/pool/main/z/zabbix-release/zabbix-release_4.0-2+stretch_all.debsudo apt install ./zabbix-release_4.0-2+stretch_all.deb
-</code></pre><p>更新软件包列表并安装Zabbix代理软件包：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo apt updatesudo apt install zabbix-agent
-</code></pre><p>Zabbix支持两种服务器 - 客户端通信加密方法，预共享密钥（PSK）和基于证书的加密。在本指南中，我们将使用预共享密钥（PSK）方法来保护服务器和代理之间的连接。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget https://repo.zabbix.com/zabbix/4.0/debian/pool/main/z/zabbix-release/zabbix-release_4.0-2+stretch_all.debsudo apt install ./zabbix-release_4.0-2+stretch_all.deb
+</code></pre></div><p>更新软件包列表并安装Zabbix代理软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install zabbix-agent
+</code></pre></div><p>Zabbix支持两种服务器 - 客户端通信加密方法，预共享密钥（PSK）和基于证书的加密。在本指南中，我们将使用预共享密钥（PSK）方法来保护服务器和代理之间的连接。</p>
 <p>运行以下命令以生成预共享密钥并将其保存到文件中：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.psk
-</code></pre><p>PSK键看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">fc3077ed3db8589ec920ac98a7ddea96aca205eb63bbd29c66ae91743a7ecbb6
-</code></pre><p>打开Zabbix代理配置文件：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo nano /etc/zabbix/zabbix_agentd.conf
-</code></pre><p>搜索<code>Server</code>IP地址并将其从默认值更改为Zabbix服务器IP：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">openssl rand -hex 32 | sudo tee /etc/zabbix/zabbix_agentd.psk
+</code></pre></div><p>PSK键看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">fc3077ed3db8589ec920ac98a7ddea96aca205eb63bbd29c66ae91743a7ecbb6
+</code></pre></div><p>打开Zabbix代理配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/zabbix/zabbix_agentd.conf
+</code></pre></div><p>搜索<code>Server</code>IP地址并将其从默认值更改为Zabbix服务器IP：</p>
 <p>/etc/zabbix/zabbix_agentd.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
 <span class="c1">### Option: Server</span>
@@ -320,15 +320,15 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
 <span class="na">...</span>
 </code></pre></div><p>完成后，保存并关闭文件。</p>
 <p>启动Zabbix代理服务并将其设置为在启动时启动：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo systemctl start zabbix-agentsudo systemctl enable zabbix-agent
-</code></pre><p>接下来，添加防火墙规则，以便在TCP端口上启用来自Zabbix服务器的流量<code>10050</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start zabbix-agentsudo systemctl enable zabbix-agent
+</code></pre></div><p>接下来，添加防火墙规则，以便在TCP端口上启用来自Zabbix服务器的流量<code>10050</code>。</p>
 <p>假设您正在使用<a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/"><code>UFW</code></a>管理防火墙，并且希望允许从<code>192.168.121.70</code>IP地址进行访问，则可以运行以下命令：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo ufw allow proto tcp from 192.168.121.70 to any port 10050
-</code></pre><h3 id="heading1">设置新主机</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow proto tcp from 192.168.121.70 to any port 10050
+</code></pre></div><h3 id="设置新主机">设置新主机</h3>
 <p>既然已安装并配置了要监视的远程主机上的代理，则下一步是在Zabbix服务器上注册主机。</p>
 <p>以admin用户登录Zabbix Server Web界面：</p>
-<pre><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/zabbix
-</code></pre><p>进入后，在顶部导航栏中单击<code>Configuration</code>，然后单击<code>Hosts</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">http(s)://your_domain_or_ip_address/zabbix
+</code></pre></div><p>进入后，在顶部导航栏中单击<code>Configuration</code>，然后单击<code>Hosts</code></p>
 <p>接下来，单击<code>Create host</code>屏幕右上角的蓝色按钮，将打开主机配置页面：</p>
 <p><img src="/images/linux/how-to-install-and-configure-zabbix-on-debian-9/zabbix-hosts-host.jpg" alt=""></p>
 <p>输入要监视的远程主机的主机名和IP地址。通过从列表中选择组，将主机添加到一个或多个组，或输入不存在的组名称以创建新组。该<code>Linux Servers</code>团体是一个不错的选择。</p>
@@ -339,7 +339,7 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
 <p>在<code>PSK value</code>字段中添加您为Zabbix代理生成的密钥，即存储在<code>/etc/zabbix/zabbix_agentd.psk</code>文件中的密钥。</p>
 <p><img src="/images/linux/how-to-install-and-configure-zabbix-on-debian-9/zabbix-hosts-encryption.jpg" alt=""></p>
 <p>最后，要添加主机，请单击蓝色添加<code>button</code>。</p>
-<h2 id="heading2">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在Debian系统上成功安装了最新的Zabbix，并学习了如何添加要监视的新主机。</p>
 <p>您现在应该查看<a href="https://www.zabbix.com/documentation/current/">Zabbix文档</a>并了解有关如何配置和使用Zabbix的更多信息。</p>
       </div><ul class="pa0">
@@ -419,23 +419,23 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#mysql">创建MySQL数据库</a></li>
-    <li><a href="#debianzabbix">在Debian上安装Zabbix</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建mysql数据库">创建MySQL数据库</a></li>
+    <li><a href="#在debian上安装zabbix">在Debian上安装Zabbix</a>
       <ul>
-        <li><a href="#1zabbix">1.安装Zabbix</a></li>
-        <li><a href="#2zabbixphp">2.为Zabbix前端配置PHP</a></li>
-        <li><a href="#3zabbix-servermysql">3.为Zabbix Server配置MySQL数据库</a></li>
+        <li><a href="#1安装zabbix">1.安装Zabbix</a></li>
+        <li><a href="#2为zabbix前端配置php">2.为Zabbix前端配置PHP</a></li>
+        <li><a href="#3为zabbix-server配置mysql数据库">3.为Zabbix Server配置MySQL数据库</a></li>
       </ul>
     </li>
-    <li><a href="#zabbix">安装和配置Zabbix前端</a></li>
-    <li><a href="#zabbix1">将新主机添加到Zabbix服务器</a>
+    <li><a href="#安装和配置zabbix前端">安装和配置Zabbix前端</a></li>
+    <li><a href="#将新主机添加到zabbix服务器">将新主机添加到Zabbix服务器</a>
       <ul>
-        <li><a href="#zabbix2">安装Zabbix代理</a></li>
-        <li><a href="#heading1">设置新主机</a></li>
+        <li><a href="#安装zabbix代理">安装Zabbix代理</a></li>
+        <li><a href="#设置新主机">设置新主机</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -447,7 +447,7 @@ Zabbix支持基于代理的监控和无代理监控。Zabbix代理占用空间�
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

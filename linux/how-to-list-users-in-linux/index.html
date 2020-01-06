@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,10 +142,10 @@
   
           <p>您是否想要列出 Linux 系统中的所有用户或计算系统中的用户数？有命令可以创建用户，删除用户，列出登录用户，但是列出 Linux 中所有用户的命令是什么？</p>
 <p>本教程将向您展示如何在 Linux 系统中列出用户。</p>
-<h2 id="-etcpasswd-">使用 <code>/etc/passwd</code> 文件获取所有用户列表</h2>
+<h2 id="使用-etcpasswd-文件获取所有用户列表">使用 <code>/etc/passwd</code> 文件获取所有用户列表</h2>
 <p>本地用户信息存储在 <code>/etc/passwd</code> 文件中。此文件中的每一行代表一个用户的登录信息。要打开文件，您可以使用 <code>cat</code> 或 <code>less</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">less /etc/passwd
-</code></pre><p><img src="/images/linux/how-to-list-users-in-linux/linux-etc-passwd-list-users.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">less /etc/passwd
+</code></pre></div><p><img src="/images/linux/how-to-list-users-in-linux/linux-etc-passwd-list-users.jpg" alt=""></p>
 <p>从上面的输出中可以看出，每行有七个以冒号分隔的字段，其中包含以下信息：</p>
 <ul>
 <li>用户名</li>
@@ -157,9 +157,9 @@
 <li>登录 shell （默认为 <code>/bin/bash</code>)</li>
 </ul>
 <p>如果您只想显示您可以使用的用户名， <code>awk</code> 或者 <code>cut</code> 只打印包含用户名的第一个字段的命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">awk -F: '{ print $1}' /etc/passwd
-</code></pre><pre><code class="language-console-bash" data-lang="console-bash">cut -d: -f1 /etc/passwd
-</code></pre><pre><code class="language-output" data-lang="output">root
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">awk -F: &#39;{ print $1}&#39; /etc/passwd
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cut -d: -f1 /etc/passwd
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">root
 daemon
 bin
 sys
@@ -170,49 +170,49 @@ sshd
 vagrant
 jack
 anne
-</code></pre><h2 id="-getent-">使用 getent 命令获取所有用户的列表</h2>
+</code></pre></div><h2 id="使用-getent-命令获取所有用户的列表">使用 getent 命令获取所有用户的列表</h2>
 <p><code>getent</code> 命令用来显示在 <code>/etc/nsswitch.conf</code> 文件中配置的数据库中的条目，其中包括 <code>passwd</code> 数据库，该数据库可用于查询所有的用户列表。</p>
 <p>要获取所有 Linux 用户的列表，请键入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">getent passwd
-</code></pre><p><img src="/images/linux/how-to-list-users-in-linux/linux-getent-list-users.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd
+</code></pre></div><p><img src="/images/linux/how-to-list-users-in-linux/linux-getent-list-users.jpg" alt=""></p>
 <p>如您所见，输出与显示 <code>/etc/passwd</code> 文件内容时的输出相同。如果使用 LDAP 进行用户身份验证， <code>getent</code> 则将显示 <code>/etc/passwd</code> 文件和 LDAP 数据库中的所有 Linux 用户。</p>
 <p>您还可以使用 <code>awk</code> 或 <code>cut</code> 仅打印包含用户名的第一个字段：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">getent passwd | awk -F: '{ print $1}'
-</code></pre><pre><code class="language-console-bash" data-lang="console-bash">getent passwd | cut -d: -f1
-</code></pre><h2 id="-linux-">检查 Linux 系统中是否存在用户</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd | awk -F: &#39;{ print $1}&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd | cut -d: -f1
+</code></pre></div><h2 id="检查-linux-系统中是否存在用户">检查 Linux 系统中是否存在用户</h2>
 <p>现在我们已经知道如何列出所有用户，如果要检查用户是否存在于我们的 Linux 系统中，我们可以通过将所有用户的列表传递给 grep 命令来过滤用户列表。</p>
 <p>例如，要查明我们的 Linux 系统中是否存在具有 <code>jack</code> 名称的用户，我们可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">getent passwd | grep jack
-</code></pre><p><img src="/images/linux/how-to-list-users-in-linux/check-whether-a-user-exists-in-the-linux-system.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd | grep jack
+</code></pre></div><p><img src="/images/linux/how-to-list-users-in-linux/check-whether-a-user-exists-in-the-linux-system.jpg" alt=""></p>
 <p>如果用户存在，则上面的命令将打印用户的登录信息。如果没有输出则表示用户不存在。</p>
 <p>我们还可以在不使用 <code>grep</code> 命令的情况下检查用户是否存在，如下所示：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">getent passwd jack
-</code></pre><p>与之前相同，如果用户存在，该命令将显示用户的登录信息。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd jack
+</code></pre></div><p>与之前相同，如果用户存在，该命令将显示用户的登录信息。</p>
 <p>如果要查找系统上有多少用户帐户，请将 <code>getent passwd</code> 输出通过管道传递给 <code>wc</code> 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">getent passwd | wc -l
-</code></pre><pre><code class="language-output" data-lang="output">33
-</code></pre><p>从上面的输出可以看出，我的 Linux 系统有 33 个用户帐户。</p>
-<h2 id="heading">系统和普通用户</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd | wc -l
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">33
+</code></pre></div><p>从上面的输出可以看出，我的 Linux 系统有 33 个用户帐户。</p>
+<h2 id="系统和普通用户">系统和普通用户</h2>
 <p>系统用户与常规（普通) 用户之间没有真正的技术差异。通常，在安装操作系统和新软件包时会创建系统用户。在某些情况下，您可以创建将由某个应用程序使用的系统用户。</p>
 <p>普通用户是由 root 用户或具有 sudo 权限的其他用户创建的用户。通常，普通用户具有真实的登录 shell 和主目录。</p>
 <p>每个用户都有一个名为 UID 的数字用户 ID 。如果在使用 <code>useradd</code> 命令创建新用户时未指定，则将根据 <code>UID_MIN</code> 和 <code>UID_MIN</code> 值自动从文件 <code>/etc/login.defs</code> 中选择 UID  。</p>
 <p>要检查系统上的 <code>UID_MIN</code> 和 <code>UID_MIN</code> 的值，可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -E '^UID_MIN|^UID_MAX' /etc/login.defs
-</code></pre><pre><code class="language-output" data-lang="output">UID_MIN          1000
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -E &#39;^UID_MIN|^UID_MAX&#39; /etc/login.defs
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">UID_MIN          1000
 UID_MAX         60000
-</code></pre><p>从上面的输出中，我们可以看到所有普通用户都应该具有 1000 到 60000 之间的 UID 。了解最小值和最大值允许我们查询系统中所有普通用户的列表。</p>
+</code></pre></div><p>从上面的输出中，我们可以看到所有普通用户都应该具有 1000 到 60000 之间的 UID 。了解最小值和最大值允许我们查询系统中所有普通用户的列表。</p>
 <p>以下命令将列出 Linux 系统中的所有普通用户：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">getent passwd {1000..60000}
-</code></pre><p><img src="/images/linux/how-to-list-users-in-linux/linux-system-and-normal-users.jpg" alt=""></p>
-<pre><code class="language-output" data-lang="output">vagrant:x:1000:1000:vagrant,,,:/home/vagrant:/bin/bash
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">getent passwd {1000..60000}
+</code></pre></div><p><img src="/images/linux/how-to-list-users-in-linux/linux-system-and-normal-users.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">vagrant:x:1000:1000:vagrant,,,:/home/vagrant:/bin/bash
 jack:x:1001:1001:,,,:/home/jack:/bin/bash
 anne:x:1002:1002:Anne Stone,,,:/home/anne:/bin/bash
 patrick:x:1003:1003:Patrick Star,,,:/home/patrick:/usr/sbin/nologin
-</code></pre><p>您的系统 <code>UID_MIN</code> 和 <code>UID_MIN</code> 值可能不同，因此上面命令的更通用版本将是：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)}
-</code></pre><p>如果只想打印用户名，只需将输出传递给 <code>cut</code> 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} | cut -d: -f1
-</code></pre><h2 id="heading1">结论</h2>
+</code></pre></div><p>您的系统 <code>UID_MIN</code> 和 <code>UID_MIN</code> 值可能不同，因此上面命令的更通用版本将是：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">eval getent passwd {$(awk &#39;/^UID_MIN/ {print $2}&#39; /etc/login.defs)..$(awk &#39;/^UID_MAX/ {print $2}&#39; /etc/login.defs)}
+</code></pre></div><p>如果只想打印用户名，只需将输出传递给 <code>cut</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">eval getent passwd {$(awk &#39;/^UID_MIN/ {print $2}&#39; /etc/login.defs)..$(awk &#39;/^UID_MAX/ {print $2}&#39; /etc/login.defs)} | cut -d: -f1
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何列出和过滤 Linux 系统中的用户以及系统和普通 Linux 用户之间的主要区别。</p>
 <p>相同的命令适用于任何 Linux 发行版，包括 Ubuntu ， CentOS ， RHEL ， Debian 和 Linux Mint 。</p>
       </div><ul class="pa0">
@@ -292,11 +292,11 @@ patrick:x:1003:1003:Patrick Star,,,:/home/patrick:/usr/sbin/nologin
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-etcpasswd-">使用 /etc/passwd 文件获取所有用户列表</a></li>
-    <li><a href="#-getent-">使用 getent 命令获取所有用户的列表</a></li>
-    <li><a href="#-linux-">检查 Linux 系统中是否存在用户</a></li>
-    <li><a href="#heading">系统和普通用户</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#使用-etcpasswd-文件获取所有用户列表">使用 /etc/passwd 文件获取所有用户列表</a></li>
+    <li><a href="#使用-getent-命令获取所有用户的列表">使用 getent 命令获取所有用户的列表</a></li>
+    <li><a href="#检查-linux-系统中是否存在用户">检查 Linux 系统中是否存在用户</a></li>
+    <li><a href="#系统和普通用户">系统和普通用户</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -308,7 +308,7 @@ patrick:x:1003:1003:Patrick Star,,,:/home/patrick:/usr/sbin/nologin
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

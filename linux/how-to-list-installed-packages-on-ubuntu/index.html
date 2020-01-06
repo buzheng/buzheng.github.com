@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,36 +146,36 @@
           <p>在本教程中，我们将向您展示如何在 Ubuntu 上查看和过滤已安装的软件包的列表。了解如何在 Ubuntu 系统上列出已安装的软件包对于需要在另一台计算机上安装相同软件包或者要重新安装系统的情况非常有用。</p>
 <p>我们还将向您展示如何检查是否安装了特定软件包，计算已安装的软件包以及查找已安装软件包的版本。</p>
 <p>虽然本教程是为 Ubuntu 编写的，但相同的说明适用于任何基于 Ubuntu 的发行版，包括 Kubuntu ， Linux Mint 和 Elementary OS 。</p>
-<h2 id="-apt-">使用 apt 列出已安装的包</h2>
+<h2 id="使用-apt-列出已安装的包">使用 apt 列出已安装的包</h2>
 <p><a href="http://manpages.ubuntu.com/manpages/cosmic/man8/apt.8.html">APT</a> 是一个命令行界面的包管理系统。它是在 Ubuntu 14.04 中引入的，它结合了 <code>apt-get</code> 和 <code>apt-cache</code> 中最常用的命令， 其中包括列出已安装软件包的方法。</p>
 <p>要列出 Ubuntu 系统上已安装的软件包，请使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt list --installed
-</code></pre><p><img src="/images/linux/how-to-list-installed-packages-on-ubuntu/ubuntu-list-installed-packages-with-apt.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt list --installed
+</code></pre></div><p><img src="/images/linux/how-to-list-installed-packages-on-ubuntu/ubuntu-list-installed-packages-with-apt.jpg" alt=""></p>
 <p>从上面的输出中可以看出，该命令打印了所有已安装软件包的列表，包括有关软件包版本和体系结构的信息。</p>
 <p>包列表很长，最好将输出结果通过管道传递到 <code>less</code> 以使其更易于阅读：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt list --installed | less
-</code></pre><p>要确定是否安装了特定软件包，可以使用 <!-- raw HTML omitted -->grep 命令<!-- raw HTML omitted -->过滤输出。例如，要查明我们的系统上是否安装了 <a href="/linux/how-to-use-linux-screen/">screen</a> 软件包，我们将运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt list --installed | grep screen
-</code></pre><pre><code class="language-output" data-lang="output">screen/bionic,now 4.6.2-1 amd64 [installed]
-</code></pre><p>上面的输出显示我们的系统上安装了屏幕版本 4.6.2-1 。</p>
-<h2 id="-dpkgquery-">使用 dpkg-query 列出已安装的软件包</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt list --installed | less
+</code></pre></div><p>要确定是否安装了特定软件包，可以使用 <!-- raw HTML omitted -->grep 命令<!-- raw HTML omitted -->过滤输出。例如，要查明我们的系统上是否安装了 <a href="/linux/how-to-use-linux-screen/">screen</a> 软件包，我们将运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt list --installed | grep screen
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">screen/bionic,now 4.6.2-1 amd64 [installed]
+</code></pre></div><p>上面的输出显示我们的系统上安装了屏幕版本 4.6.2-1 。</p>
+<h2 id="使用-dpkg-query-列出已安装的软件包">使用 dpkg-query 列出已安装的软件包</h2>
 <p>如果您运行的是较旧的 Ubuntu 版本，则可以使用该 <code>dpkg-query</code> 命令列出软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dpkg-query -l | less
-</code></pre><p><img src="/images/linux/how-to-list-installed-packages-on-ubuntu/ubuntu-list-installed-packages-with-dpkg-query.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dpkg-query -l | less
+</code></pre></div><p><img src="/images/linux/how-to-list-installed-packages-on-ubuntu/ubuntu-list-installed-packages-with-dpkg-query.jpg" alt=""></p>
 <p>该命令将显示所有已安装软件包的列表，包括软件包版本，体系结构和简短描述。</p>
 <p>您可以使用 <code>grep</code> 过滤 <code>dpkg-query -l</code> 的输出，就像上面的 <code>apt</code> 输出一样：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dpkg-query -l | grep package_name
-</code></pre><h2 id="heading">创建一个包含所有已安装软件包的列表文件</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dpkg-query -l | grep package_name
+</code></pre></div><h2 id="创建一个包含所有已安装软件包的列表文件">创建一个包含所有已安装软件包的列表文件</h2>
 <p>要在 Ubuntu 或 Debian 系统上创建一个包含所有已安装软件包的名称的列表的文件 <code>packages_list.txt</code> ，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dpkg-query -f '${binary:Package}\n' -W &gt; packages_list.txt
-</code></pre><p>现在您已拥有该列表，如果要在新服务器上安装相同的软件包，可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo xargs -a packages_list.txt apt install
-</code></pre><h2 id="-ubuntu-">计算 Ubuntu 计算机上安装的软件包数量</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dpkg-query -f &#39;${binary:Package}\n&#39; -W &gt; packages_list.txt
+</code></pre></div><p>现在您已拥有该列表，如果要在新服务器上安装相同的软件包，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo xargs -a packages_list.txt apt install
+</code></pre></div><h2 id="计算-ubuntu-计算机上安装的软件包数量">计算 Ubuntu 计算机上安装的软件包数量</h2>
 <p>要了解系统上安装了多少软件包，您可以使用与以前相同的命令，但不是将输出重定向到文件，而是可以将其传送到 <code>wc</code> 实用程序并计算行数：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dpkg-query -f '${binary:Package}\n' -W | wc -l
-</code></pre><pre><code class="language-output" data-lang="output">544
-</code></pre><p>如您所见，我的 Ubuntu 服务器上安装了 544 个软件包。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dpkg-query -f &#39;${binary:Package}\n&#39; -W | wc -l
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">544
+</code></pre></div><p>如您所见，我的 Ubuntu 服务器上安装了 544 个软件包。</p>
+<h2 id="结论">结论</h2>
 <p>到目前为止，您应该知道如何在 Ubuntu 系统上列出和过滤已安装的软件包。如果您想了解有关 Apt 命令的更多信息，请打开您的终端并输入 <code>man apt</code> 。</p>
       </div><ul class="pa0">
   
@@ -254,11 +254,11 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-apt-">使用 apt 列出已安装的包</a></li>
-    <li><a href="#-dpkgquery-">使用 dpkg-query 列出已安装的软件包</a></li>
-    <li><a href="#heading">创建一个包含所有已安装软件包的列表文件</a></li>
-    <li><a href="#-ubuntu-">计算 Ubuntu 计算机上安装的软件包数量</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#使用-apt-列出已安装的包">使用 apt 列出已安装的包</a></li>
+    <li><a href="#使用-dpkg-query-列出已安装的软件包">使用 dpkg-query 列出已安装的软件包</a></li>
+    <li><a href="#创建一个包含所有已安装软件包的列表文件">创建一个包含所有已安装软件包的列表文件</a></li>
+    <li><a href="#计算-ubuntu-计算机上安装的软件包数量">计算 Ubuntu 计算机上安装的软件包数量</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -270,7 +270,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

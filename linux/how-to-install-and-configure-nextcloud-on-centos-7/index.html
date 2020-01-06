@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,9 +146,9 @@ Nextcloud可通过应用程序进行扩展，并为所有主要平台提供桌�
           <p><a href="https://nextcloud.com/">Nextcloud</a>是一个开源的，自托管的文件共享和协作平台，类似于Dropbox。它捆绑了媒体播放器，日历和联系人管理。</p>
 <p>Nextcloud可通过应用程序进行扩展，并为所有主要平台提供桌面和移动客户端。</p>
 <p>本教程将引导您完成在CentOS 7系统上使用Apache安装和配置Nextcloud的过程。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</p>
-<h2 id="1mysql">第1步：创建MySQL数据库</h2>
+<h2 id="第1步创建mysql数据库">第1步：创建MySQL数据库</h2>
 <p>NextCloud可以使用SQLite，<a href="/linux/how-to-install-postgresql-on-centos-7/">PostgreSQL</a>或MySQL数据库来存储其所有数据。</p>
 <p>在本教程中，我们将使用MySQL作为首选数据库。</p>
 <p>如果您已经没有在CentOS服务器上安装MySQL或MariaDB，可以按照以下说明之一进行安装：</p>
@@ -157,31 +157,31 @@ Nextcloud可通过应用程序进行扩展，并为所有主要平台提供桌�
 <li><a href="/linux/install-mariadb-on-centos-7/">在CentOS 7上安装MariaDB</a></li>
 </ul>
 <p>首先输入以下命令登录MySQL shell：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建</a>名为<code>nextcloud</code>user user <a href="/linux/how-to-create-a-mysql-database/">的数据库</a>，<code>nextclouduser</code>并为用户<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">授予必要的权限</a>：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;GRANT ALL ON nextcloud.* TO 'nextclouduser'@'localhost' IDENTIFIED BY 'change-with-strong-password';FLUSH PRIVILEGES;EXIT;
-</code></pre><h2 id="2phpapache">第2步：安装PHP和Apache</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建</a>名为<code>nextcloud</code>user user <a href="/linux/how-to-create-a-mysql-database/">的数据库</a>，<code>nextclouduser</code>并为用户<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">授予必要的权限</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;GRANT ALL ON nextcloud.* TO &#39;nextclouduser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;FLUSH PRIVILEGES;EXIT;
+</code></pre></div><h2 id="第2步安装php和apache">第2步：安装PHP和Apache</h2>
 <p>Nextcloud是一个PHP应用程序。CentOS 7附带PHP 5.4，Nextcloud不支持。</p>
 <p>我们将从Remi存储库安装PHP 7.2。以下命令将启用EPEL和Remi存储库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release yum-utilssudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpmsudo yum-config-manager --enable remi-php72
-</code></pre><p>启用存储库后，使用以下命令<a href="/linux/how-to-install-apache-on-centos-7/">安装Apache </a><a href="/linux/install-php-7-on-centos-7/">PHP 7.2</a>和所有必需的PHP扩展：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install httpd php php-gd php-json php-mysql php-curl php-mbstring php-intl php-mcrypt php-imagick php-xml php-zip
-</code></pre><h2 id="3">第3步：配置防火墙</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install epel-release yum-utilssudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpmsudo yum-config-manager --enable remi-php72
+</code></pre></div><p>启用存储库后，使用以下命令<a href="/linux/how-to-install-apache-on-centos-7/">安装Apache </a><a href="/linux/install-php-7-on-centos-7/">PHP 7.2</a>和所有必需的PHP扩展：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install httpd php php-gd php-json php-mysql php-curl php-mbstring php-intl php-mcrypt php-imagick php-xml php-zip
+</code></pre></div><h2 id="第3步配置防火墙">第3步：配置防火墙</h2>
 <p>如果您在CentOS服务器上运行<a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">防火墙</a>，则需要打开HTTP（<code>80</code>）和HTTPS（<code>443</code>）端口。</p>
 <p>您可以通过运行以下命令来执行此操作：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-service=httpsudo firewall-cmd --permanent --zone=public --add-service=httpssudo firewall-cmd --reload
-</code></pre><h2 id="4nextcloud">第4步：下载Nextcloud</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --permanent --zone=public --add-service=httpsudo firewall-cmd --permanent --zone=public --add-service=httpssudo firewall-cmd --reload
+</code></pre></div><h2 id="第4步下载nextcloud">第4步：下载Nextcloud</h2>
 <p>使用<a href="/linux/wget-command-examples/">wget</a>从<a href="https://nextcloud.com/install/#instructions-server">Nextcloud下载页面</a>下载最新版本的Nextcloud ：[](/linux/wget-command-examples/)</p>
-<pre><code class="language-console-bash" data-lang="console-bash">wget -P /tmp https://download.nextcloud.com/server/releases/nextcloud-15.0.0.zip
-</code></pre><p>在撰写本文时，Nextcloud的最新版本是15.0.0版。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget -P /tmp https://download.nextcloud.com/server/releases/nextcloud-15.0.0.zip
+</code></pre></div><p>在撰写本文时，Nextcloud的最新版本是15.0.0版。</p>
 <p>下载完成后，<a href="/linux/how-to-unzip-files-in-linux/">将存档解压缩</a>到/ var / www目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo unzip /tmp/nextcloud-15.0.0.zip  -d /var/www
-</code></pre><p><a href="/linux/linux-chown-command/">设置正确的所有权，</a>以便Apache Web服务器可以完全访问Nextcloud的文件和目录：</p>
-<pre><code class="language-output" data-lang="output">sudo chown -R apache: /var/www/nextcloud
-</code></pre><h2 id="5apache">第5步：配置Apache</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo unzip /tmp/nextcloud-15.0.0.zip  -d /var/www
+</code></pre></div><p><a href="/linux/linux-chown-command/">设置正确的所有权，</a>以便Apache Web服务器可以完全访问Nextcloud的文件和目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chown -R apache: /var/www/nextcloud
+</code></pre></div><h2 id="第5步配置apache">第5步：配置Apache</h2>
 <p>打开文本编辑器并创建以下Apache配置文件。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/httpd/conf.d/nextcloud.conf
-</code></pre><p>/etc/httpd/conf.d/nextcloud.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/httpd/conf.d/nextcloud.conf
+</code></pre></div><p>/etc/httpd/conf.d/nextcloud.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> <span class="sx">/nextcloud</span> <span class="s2">&#34;/var/www/nextcloud/&#34;</span>
 
 <span class="nt">&lt;Directory</span> <span class="s">/var/www/nextcloud/</span><span class="nt">&gt;</span>
@@ -197,16 +197,16 @@ Nextcloud可通过应用程序进行扩展，并为所有主要平台提供桌�
 
 <span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
 </code></pre></div><p>通过重新启动Apache服务激活更改：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd
-</code></pre><h2 id="6nextcloud">第6步：安装Nextcloud</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart httpd
+</code></pre></div><h2 id="第6步安装nextcloud">第6步：安装Nextcloud</h2>
 <p>现在下载了Nextcloud并配置了所有必要的服务，打开浏览器并通过访问服务器的域名或IP地址启动Nextcloud安装，然后执行以下操作<code>/nextcloud</code>：</p>
-<pre><code class="language-url" data-lang="url">http://domain_name_or_ip_address/nextcloud
-</code></pre><p>您将看到Nextcloud设置页面。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">http://domain_name_or_ip_address/nextcloud
+</code></pre></div><p>您将看到Nextcloud设置页面。</p>
 <p><img src="/images/linux/how-to-install-and-configure-nextcloud-on-centos-7/install-nextcloud-centos.jpg" alt=""></p>
 <p>输入您想要的管理员用户名和密码以及您之前创建的MySQL用户和数据库详细信息。</p>
 <p>单击<code>Finish setup</code>按钮，安装过程完成后，您将被重定向到以admin用户身份登录的Nextcloud仪表板。</p>
 <p><img src="/images/linux/how-to-install-and-configure-nextcloud-on-centos-7/nextcloud-dashboard.jpg" alt=""></p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在CentOS 7计算机上安装和配置Nextcloud。如果您的域名与Nextcloud服务器相关联，则可以按照本指南<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用Let's Encrypt</a>保护<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">Apache</a>。</p>
 <p>要查找有关如何管理Nextcloud实例的更多信息，请访问<a href="https://docs.nextcloud.com/">Nextcloud文档</a>页面。</p>
       </div><ul class="pa0">
@@ -286,14 +286,14 @@ Nextcloud可通过应用程序进行扩展，并为所有主要平台提供桌�
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#1mysql">第1步：创建MySQL数据库</a></li>
-    <li><a href="#2phpapache">第2步：安装PHP和Apache</a></li>
-    <li><a href="#3">第3步：配置防火墙</a></li>
-    <li><a href="#4nextcloud">第4步：下载Nextcloud</a></li>
-    <li><a href="#5apache">第5步：配置Apache</a></li>
-    <li><a href="#6nextcloud">第6步：安装Nextcloud</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#第1步创建mysql数据库">第1步：创建MySQL数据库</a></li>
+    <li><a href="#第2步安装php和apache">第2步：安装PHP和Apache</a></li>
+    <li><a href="#第3步配置防火墙">第3步：配置防火墙</a></li>
+    <li><a href="#第4步下载nextcloud">第4步：下载Nextcloud</a></li>
+    <li><a href="#第5步配置apache">第5步：配置Apache</a></li>
+    <li><a href="#第6步安装nextcloud">第6步：安装Nextcloud</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -305,7 +305,7 @@ Nextcloud可通过应用程序进行扩展，并为所有主要平台提供桌�
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

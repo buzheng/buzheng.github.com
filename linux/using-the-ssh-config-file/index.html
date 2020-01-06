@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,17 +146,17 @@
           <p>如果您每天定期通过SSH连接到多个远程系统，您会发现记住所有远程IP地址，不同的用户名，非标准端口和各种命令行选项很困难，如果不是不可能的话。</p>
 <p>一种选择是为每个远程服务器连接<a href="/linux/how-to-create-bash-aliases/">创建一个bash别名</a>。但是，对于这个问题，还有另一种更好，更简单的解决方案。OpenSSH允许您设置每用户配置文件，您可以在其中为连接的每台远程计算机存储不同的SSH选项。</p>
 <p>本指南介绍了SSH客户端配置文件的基础知识，并介绍了一些最常用的配置选项。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>我们假设您使用的是安装了OpenSSH客户端的Linux或macOS系统。</p>
-<h2 id="ssh">SSH配置文件位置</h2>
+<h2 id="ssh配置文件位置">SSH配置文件位置</h2>
 <p>OpenSSH客户端配置文件已命名<code>config</code>，它存储在<code>.ssh</code>用户主目录下的目录中。<code>~/.ssh</code>当用户第一次运行ssh命令时，将自动创建该目录。+</p>
 <p>如果您从未使用过ssh，则<code>command</code>需要使用以下命令创建目录：</p>
 <p><code>mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh</code></p>
 <p>默认情况下，SSH配置文件可能不存在，因此您可能需要使用<a href="/linux/linux-touch-command/">touch命令</a>创建它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">touch ~/.ssh/config &amp;&amp; chmod 600 ~/.ssh/config
-</code></pre><p>此文件必须只能由用户读写，并且其他人无法访问：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod 700 ~/.ssh/config
-</code></pre><h2 id="ssh1">SSH配置文件结构和模式</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">touch ~/.ssh/config &amp;&amp; chmod 600 ~/.ssh/config
+</code></pre></div><p>此文件必须只能由用户读写，并且其他人无法访问：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod 700 ~/.ssh/config
+</code></pre></div><h2 id="ssh配置文件结构和模式">SSH配置文件结构和模式</h2>
 <p>SSH配置文件采用以下结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">Host hostname1</span>
     <span class="na">SSH_OPTION value</span>
@@ -178,20 +178,20 @@
 <p>SSH客户端按节读取配置文件节，如果多个模式匹配，则第一个匹配节中的选项优先。因此，应在文件开头提供更多特定于主机的声明，并在文件末尾提供更一般的覆盖。</p>
 <p>您可以通过键入<code>man ssh_config</code>终端或访问<a href="https://man.openbsd.org/OpenBSD-current/man5/ssh_config.5">ssh_config手册页</a>来查找可用ssh选项的完整列表。</p>
 <p>SSH的配置文件也被其他程序，如阅读<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/"><code>scp</code></a>，<a href="/linux/how-to-use-linux-sftp-command-to-transfer-files/"><code>sftp</code></a>和<a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/"><code>rsync</code></a>。</p>
-<h2 id="ssh2">基本SSH配置文件示例</h2>
+<h2 id="基本ssh配置文件示例">基本SSH配置文件示例</h2>
 <p>现在我们已经介绍了SSH配置文件的基础知识，让我们看一下下面的例子。</p>
 <p>通常，当您通过SSH连接到远程服务器时，您将指定远程用户名，主机名和端口。例如，为了连接为指定用户<code>john</code>到一个名为主机<code>dev.example.com</code>端口<code>2322</code>的命令行，键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh john@dev.example.com -p 2322
-</code></pre><p>如果您想使用上面命令中提供的相同选项连接到服务器，只需输入named，<code>ssh dev</code>您需要将以下行放入您的<code>&quot;~/.ssh/config</code>文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh john@dev.example.com -p 2322
+</code></pre></div><p>如果您想使用上面命令中提供的相同选项连接到服务器，只需输入named，<code>ssh dev</code>您需要将以下行放入您的<code>&quot;~/.ssh/config</code>文件：</p>
 <p>的〜/ .ssh /配置</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">Host dev</span>
     <span class="na">HostName dev.example.com</span>
     <span class="na">User john</span>
     <span class="na">Port 2322</span>
 </code></pre></div><p>现在，如果你输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh dev
-</code></pre><p>ssh客户端将读取配置文件，它将使用为<code>dev</code>主机指定的连接详细信息，</p>
-<h2 id="ssh3">共享SSH配置文件示例</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh dev
+</code></pre></div><p>ssh客户端将读取配置文件，它将使用为<code>dev</code>主机指定的连接详细信息，</p>
+<h2 id="共享ssh配置文件示例">共享SSH配置文件示例</h2>
 <p>此示例提供有关主机模式和选项优先级的更多详细信息。</p>
 <p>我们来看下面的示例文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">Host targaryen</span>
@@ -242,7 +242,7 @@
 <p>对于所有其他连接<code>Host * !martell</code>，<code>Host *</code>将使用和部分中指定的选项。</p>
 </li>
 </ul>
-<h2 id="ssh4">覆盖SSH配置文件选项</h2>
+<h2 id="覆盖ssh配置文件选项">覆盖SSH配置文件选项</h2>
 <p>ssh客户端按以下优先顺序接收其配置：</p>
 <ol>
 <li>从命令行指定的选项</li>
@@ -255,11 +255,11 @@
     <span class="na">User john</span>
     <span class="na">Port 2322</span>
 </code></pre></div><p>并且您希望使用所有其他选项，但要以用户身份进行连接，<code>root</code>而不是<code>john</code>仅在命令行上指定用户：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh -o &quot;User=root&quot; dev
-</code></pre><p>在<code>-F</code>（<code>configfile</code>）开关允许你指定一个替代每个用户配置文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh -o &#34;User=root&#34; dev
+</code></pre></div><p>在<code>-F</code>（<code>configfile</code>）开关允许你指定一个替代每个用户配置文件。</p>
 <p>如果您希望ssh客户端忽略ssh配置文件中指定的所有选项，则可以使用：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh -F /dev/null user@example.com
-</code></pre><h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh -F /dev/null user@example.com
+</code></pre></div><h2 id="结论">结论</h2>
 <p>您已经学习了如何配置用户ssh配置文件。您可能还需要设置基于<a href="/linux/how-to-setup-passwordless-ssh-login/">SSH密钥的身份验证</a>并连接到Linux服务器而无需输入密码。</p>
 <p>默认情况下，SSH侦听端口22. <a href="/linux/how-to-change-ssh-port-in-linux/">更改默认SSH端口</a>可以降低自动攻击的风险，从而为服务器增加额外的安全层。</p>
       </div><ul class="pa0">
@@ -335,13 +335,13 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#ssh">SSH配置文件位置</a></li>
-    <li><a href="#ssh1">SSH配置文件结构和模式</a></li>
-    <li><a href="#ssh2">基本SSH配置文件示例</a></li>
-    <li><a href="#ssh3">共享SSH配置文件示例</a></li>
-    <li><a href="#ssh4">覆盖SSH配置文件选项</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#ssh配置文件位置">SSH配置文件位置</a></li>
+    <li><a href="#ssh配置文件结构和模式">SSH配置文件结构和模式</a></li>
+    <li><a href="#基本ssh配置文件示例">基本SSH配置文件示例</a></li>
+    <li><a href="#共享ssh配置文件示例">共享SSH配置文件示例</a></li>
+    <li><a href="#覆盖ssh配置文件选项">覆盖SSH配置文件选项</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -353,7 +353,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

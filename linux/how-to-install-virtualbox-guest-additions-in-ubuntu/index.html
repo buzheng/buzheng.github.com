@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,7 +146,7 @@ VirtualBox 提供了一组驱动程序和应用程序 (VirtualBox Guest Addition
           <p><a href="https://www.virtualbox.org/">VirtualBox</a> 是一种开源的跨平台虚拟化软件，允许您同时运行多个客户操作系统(虚拟机)。</p>
 <p>VirtualBox 提供了一组驱动程序和应用程序 (VirtualBox Guest Additions) ，可以安装在客户机操作系统中。 Guest Additions 为 Guest 机提供了一些有用的功能，例如共享文件夹，共享剪贴板，鼠标指针集成，更好的视频支持等。</p>
 <p>在本教程中，我们将向您展示如何在 Ubuntu 18.04 guest 虚拟机上安装 VirtualBox Guest Additions 。相同的说明适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Linux Mint 和 Elementary OS 。</p>
-<h2 id="-ubuntu--guest-additions">在 Ubuntu 虚拟机上安装 Guest Additions</h2>
+<h2 id="在-ubuntu-虚拟机上安装-guest-additions">在 Ubuntu 虚拟机上安装 Guest Additions</h2>
 <p>VirtualBox 附带一个名为 “VBoxGuestAdditions.iso” 的 ISO 文件，其中包含适用于所有受支持的客户机操作系统的 Guest Additions 安装程序。此文件位于主机上，可以使用 VirtualBox GUI 管理器<a href="/linux/how-to-mount-and-unmount-file-systems-in-linux/">挂载</a>到客户机系统。安装后， Guest Additions 安装程序可用于在来宾系统上安装 Guest Additions 。</p>
 <p>以下是在 Ubuntu guest 虚拟机上安装 VirtualBox guest 虚拟机添加的分步说明。此步骤适用于 Ubuntu Desktop 和 Server guest 虚拟机安装。</p>
 <ol>
@@ -158,8 +158,8 @@ VirtualBox 提供了一组驱动程序和应用程序 (VirtualBox Guest Addition
 </li>
 <li>
 <p>以 <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo 用户</a>身份登录 Ubuntu guest 虚拟机并安装构建外部内核模块所需的软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install build-essential dkms linux-headers-$(uname -r)</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+sudo apt install build-essential dkms linux-headers-$(uname -r)</code></pre></div>
 <p><code>$(uname -r)</code> 将打印正在运行的<a href="/linux/how-to-check-the-kernel-version-in-linux/">内核版本</a>。</p>
 </li>
 <li>
@@ -168,39 +168,39 @@ sudo apt install build-essential dkms linux-headers-$(uname -r)</code></pre>
 </li>
 <li>
 <p>打开 Ubuntu 来虚拟机终端，<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个新目录</a>作为 CD 驱动器的挂载点并挂载 ISO 文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /mnt/cdrom
-sudo mount /dev/cdrom /mnt/cdrom</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /mnt/cdrom
+sudo mount /dev/cdrom /mnt/cdrom</code></pre></div>
 </li>
 <li>
 <p><a href="/linux/linux-cd-command/">导航到该目录</a>并运行 <code>VBoxLinuxAdditions.run</code> 脚本以安装 Guest Additions 。该 <code>--nox11</code> 选项将告诉安装程序不要生成 xterm 窗口：</p>
 </li>
 </ol>
-<pre><code><pre><code class="language-console-bash" data-lang="console-bash">cd /mnt/cdrom
+<pre><code><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /mnt/cdrom
 sudo sh ./VBoxLinuxAdditions.run --nox11
-  </code></pre>
+  </code></pre></div>
 
 输出如下所示：
 
-<pre><code class="language-output" data-lang="output">Verifying archive integrity... All good.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Verifying archive integrity... All good.
 Uncompressing VirtualBox 5.2.32 Guest Additions for Linux........
 ...
-VirtualBox Guest Additions: Starting.</code></pre>
+VirtualBox Guest Additions: Starting.</code></pre></div>
 </code></pre>
 <ol start="7">
 <li>
 <p>重新启动 Ubuntu guest 虚拟机以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo shutdown -r now</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo shutdown -r now</code></pre></div>
 </li>
 <li>
 <p>引导虚拟机后，登录并验证安装是否成功并加载了内核模块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">lsmod |  grep vboxguest </code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lsmod |  grep vboxguest </code></pre></div>
 <p>输出看起来像这样：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">vboxguest             303104  2 vboxsf</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">vboxguest             303104  2 vboxsf</code></pre></div>
 <p>没有输出意味着没有加载 VirtualBox 内核模块。</p>
 <p>现在，在 Ubuntu 来宾计算机上安装了 VirtualBox Guest Additions ，您可以从虚拟机设置“存储”选项卡启用共享剪贴板和 Drag'n Drop 支持，从“显示”选项卡启用 3D 加速，创建共享文件夹等。</p>
 </li>
 </ol>
-<h2 id="heading">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在 Ubuntu 18.04 虚拟机上安装 VirtualBox Guest Additions 是一项简单的任务。 Guest Additions 将优化客户操作系统，以获得更好的性能并增强可用性。</p>
 <p>要查找有关 Guest Additions 的更多信息，请访问 <a href="https://www.virtualbox.org/manual/ch04.html">VirtualBox Guest Additions</a> 官方文档页面。</p>
       </div><ul class="pa0">
@@ -276,8 +276,8 @@ VirtualBox Guest Additions: Starting.</code></pre>
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-ubuntu--guest-additions">在 Ubuntu 虚拟机上安装 Guest Additions</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#在-ubuntu-虚拟机上安装-guest-additions">在 Ubuntu 虚拟机上安装 Guest Additions</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -289,7 +289,7 @@ VirtualBox Guest Additions: Starting.</code></pre>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

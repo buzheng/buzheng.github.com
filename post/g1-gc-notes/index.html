@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -139,9 +139,9 @@
   
           <p>G1 GC 是一种新的垃圾回收策略，从 JDK7 开始，主要适用于服务器端的JVM，和大内存的应用，其目标是达到类似 CMS 的高吞吐量。G1 中依然有分代管理的思想，主要采用分块管理的思想，通过将内存分为不超过2048个块，每块大小在 1M-32M 之间， Eden、Survivor space 和 年老代 都是一系列不连续的逻辑区域。</p>
 <p>这里不谈 G1 的具体的实现思路，只记录一下如何配置和使用。</p>
-<h2 id="-g1-gc">启动 G1 GC</h2>
+<h2 id="启动-g1-gc">启动 G1 GC</h2>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">-XX:+UseG1GC
-</code></pre></div><h2 id="heading">几个参数及默认值</h2>
+</code></pre></div><h2 id="几个参数及默认值">几个参数及默认值</h2>
 <ul>
 <li><!-- raw HTML omitted -->-XX:MaxGCPauseMillis=200<!-- raw HTML omitted --> 最大停顿时间, 这是一个目标值，JVM会尽量向此目标靠近，默认值为 200。</li>
 <li><!-- raw HTML omitted -->-XX:G1HeapRegionSize=n<!-- raw HTML omitted --> G1 的区域块大小，1M-32M 之间，必须是2的幂，G1 会根据块大小规划出不大于 2048 个块。</li>
@@ -152,12 +152,12 @@
 <li><!-- raw HTML omitted -->-XX:InitiatingHeapOccupancyPercent=45<!-- raw HTML omitted --> 标记垃圾阀值， 默认45%</li>
 <li><!-- raw HTML omitted -->-XX:G1ReservePercent=10<!-- raw HTML omitted --> 设置作为空闲空间的预留内存百分比，以降低目标空间溢出的风险。默认值是 10%。</li>
 </ul>
-<h2 id="heading1">建议</h2>
+<h2 id="建议">建议</h2>
 <ul>
 <li>避免使用 -Xmn 选项或 -XX:NewRatio 等其他相关选项显式设置年轻代大小。固定年轻代的大小会覆盖暂停时间目标。</li>
 <li>暂停时间目标不要太小，因为暂停时间与吞吐量是一个相互矛盾的指标。</li>
 </ul>
-<h2 id="heading2">例子</h2>
+<h2 id="例子">例子</h2>
 <p>这是 tomcat 启动的一个简单配置</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xms10g</span><span class="s2">&#34;</span>
 <span class="nb">export</span> <span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Xmx10g</span><span class="s2">&#34;</span>
@@ -251,7 +251,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

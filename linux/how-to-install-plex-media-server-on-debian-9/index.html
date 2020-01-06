@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,9 +142,9 @@
   
           <p>Plex 是一种流媒体服务器，可让您随时随地组织视频，音乐和照片集，并将其流式传输到您的所有设备。</p>
 <p>本教程介绍如何在 Debian 9 上安装 Plex 媒体服务器。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>您登录的用户必须具有 sudo 权限才能进行安装。</p>
-<h2 id="-plex-">安装 Plex 媒体服务器</h2>
+<h2 id="安装-plex-媒体服务器">安装 Plex 媒体服务器</h2>
 <p>按照以下步骤在 Debian 系统上安装 Plex 媒体服务器：</p>
 <ol>
 <li>
@@ -172,14 +172,14 @@ Main PID: <span class="m">2998</span> <span class="o">(</span>sh<span class="o">
   CGroup: /system.slice/plexmediaserver.service
 </code></pre></div></li>
 </ol>
-<h2 id="heading1">调整防火墙规则</h2>
+<h2 id="调整防火墙规则">调整防火墙规则</h2>
 <p>现在您已在服务器上安装并运行 Plex ，您需要确保将防火墙配置为允许 Plex 媒体服务器特定端口上的流量。</p>
 <blockquote>
 <p>如果您的系统上没有运行防火墙，则可以跳过此部分。</p>
 </blockquote>
 <p>以下步骤的前提是假定您用 UFW 来管理防火墙：</p>
 <p>打开您选择的文本编辑器并创建 UFW 应用程序配置文件： <code>/etc/ufw/applications.d/plexmediaserver</code></p>
-<pre><code class="language-conf" data-lang="conf">[plexmediaserver]
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[plexmediaserver]
 title=Plex Media Server (Standard)
 description=The Plex Media Server
 ports=32400/tcp|3005/tcp|5353/udp|8324/tcp|32410:32414/udp
@@ -193,7 +193,7 @@ ports=1900/udp|32469/tcp
 title=Plex Media Server (Standard + DLNA)
 description=The Plex Media Server (with additional DLNA capability)
 ports=32400/tcp|3005/tcp|5353/udp|8324/tcp|32410:32414/udp|1900/udp|32469/tcp
-</code></pre><p>保存文件并更新配置文件列表：</p>
+</code></pre></div><p>保存文件并更新配置文件列表：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw app update plexmediaserver
 </code></pre></div><p>通过以下命令来应用防火墙规则：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow <span class="m">22</span>
@@ -215,7 +215,7 @@ To                         Action      From
 32410:32414/udp <span class="o">(</span>plexmediaserver-all<span class="o">)</span> ALLOW IN    Anywhere
 1900/udp <span class="o">(</span>plexmediaserver-all<span class="o">)</span> ALLOW IN    Anywhere
 32469/tcp <span class="o">(</span>plexmediaserver-all<span class="o">)</span> ALLOW IN    Anywhere
-</code></pre></div><h2 id="-plex-1">配置 Plex 媒体服务器</h2>
+</code></pre></div><h2 id="配置-plex-媒体服务器">配置 Plex 媒体服务器</h2>
 <p>在启动 Plex 设置向导之前，我们先创建存储 Plex 媒体文件的目录：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mkdir -p /opt/plexmedia/<span class="o">{</span>movies,series<span class="o">}</span>
 </code></pre></div><p>Plex 媒体服务器作为用户 <code>plex</code> 运行，该用户必须具有对媒体文件和目录的读取和执行权限。请运行以下命令设置正确的所有权。</p>
@@ -243,11 +243,11 @@ To                         Action      From
 <p>单击 <code>Next</code> ，继续点击 <code>Done</code>， 您将被重定向到 Plex Web 仪表板。</p>
 <p><img src="/images/linux/how-to-install-plex-media-server-on-debian-9/plex-media-server-dashboard.jpg" alt=""></p>
 <p>现在您已经完成了设置向导，后续您可以开始探索 Plex 选项及其可以执行的所有操作。</p>
-<h2 id="-plex-2">更新 Plex 媒体服务器</h2>
+<h2 id="更新-plex-媒体服务器">更新 Plex 媒体服务器</h2>
 <p>发布新版本后，您可以通过桌面标准软件更新工具或在终端中运行以下命令来更新 Plex 媒体服务器软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
 sudo apt upgrade
-</code></pre></div><h2 id="heading2">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>您已经学习了如何在 Debian 9 计算机上安装 Plex 媒体服务器以及如何创建媒体库。</p>
 <p>您现在可以在 Android ， iPhone ，智能电视， Xbox ， Roku 或任何其他受支持的设备上安装 Plex 应用程序。您可以在 <a href="https://www.plex.tv/media-server-downloads/#plex-app">Plex 下载页面</a>上找到支持的应用程序和设备列表，也可以从设备的应用程序商店中安装该应用程序。</p>
 <p>您还应该查看官方的 <a href="https://support.plex.tv/articles/200264746-quick-start-step-by-step-guides/">Plex 快速入门指南</a>和 <a href="https://support.plex.tv/articles/categories/plex-media-server/">Plex 文档</a>页面。</p>
@@ -296,12 +296,12 @@ sudo apt upgrade
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-plex-">安装 Plex 媒体服务器</a></li>
-    <li><a href="#heading1">调整防火墙规则</a></li>
-    <li><a href="#-plex-1">配置 Plex 媒体服务器</a></li>
-    <li><a href="#-plex-2">更新 Plex 媒体服务器</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-plex-媒体服务器">安装 Plex 媒体服务器</a></li>
+    <li><a href="#调整防火墙规则">调整防火墙规则</a></li>
+    <li><a href="#配置-plex-媒体服务器">配置 Plex 媒体服务器</a></li>
+    <li><a href="#更新-plex-媒体服务器">更新 Plex 媒体服务器</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -313,7 +313,7 @@ sudo apt upgrade
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

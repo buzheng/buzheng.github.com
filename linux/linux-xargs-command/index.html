@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -149,7 +149,7 @@ Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标�
           <p>xargs 实用程序允许您从标准输入构建和执行命令。</p>
 <p>Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标准输入作为参数提供给命令行实用程序，如 <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">mkdir</a> 和 <a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">rm</a> 。</p>
 <p>在本教程中，我们将介绍使用 xargs 命令的基础知识。</p>
-<h2 id="-linux-xargs-">如何使用 Linux xargs 命令</h2>
+<h2 id="如何使用-linux-xargs-命令">如何使用 Linux xargs 命令</h2>
 <p>Xargs 从标准输入读取参数，用空格或换行符分隔，并使用输入作为命令的参数执行指定的命令。如果未提供命令，则默认为 <a href="/linux/echo-command-in-linux-with-examples/">/bin/echo</a> 。</p>
 <p>xargs 命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">xargs <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>COMMAND <span class="o">[</span>initial-arguments<span class="o">]</span><span class="o">]</span>
@@ -157,39 +157,39 @@ Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标�
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs touch
 </code></pre></div><p>在上面的示例中，我们将标准输入传递给 xargs ，并为每个参数运行 <a href="/linux/linux-touch-command/">touch 命令</a>，创建三个文件。这与运行时相同：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">touch file1 file2 file3
-</code></pre></div><h2 id="heading">如何查看命令并提示用户</h2>
+</code></pre></div><h2 id="如何查看命令并提示用户">如何查看命令并提示用户</h2>
 <p>要在执行它之前在终端上打印命令，请使用 <code>-t</code> (<code>--verbose</code>) 选项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span>  <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs -t touch
-</code></pre></div><pre><code class="language-output" data-lang="output">touch file1 file2 file3
-</code></pre><p>如果要在执行之前获得是否运行每个命令的提示，请使用 <code>-p`(</code>&ndash;interactive`) 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo  &quot;file1 file2 file3&quot; | xargs -p touch
-</code></pre><p>输入 <code>y</code> 或 <code>Y</code> 确认并运行命令：</p>
-<pre><code class="language-output" data-lang="output">touch file1 file2 file3 ?...y
-</code></pre><p>执行破坏性命令时，此开关非常有用。</p>
-<h2 id="heading1">如何限制参数数量</h2>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">touch file1 file2 file3
+</code></pre></div><p>如果要在执行之前获得是否运行每个命令的提示，请使用 <code>-p</code>(<code>--interactive</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo  &#34;file1 file2 file3&#34; | xargs -p touch
+</code></pre></div><p>输入 <code>y</code> 或 <code>Y</code> 确认并运行命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">touch file1 file2 file3 ?...y
+</code></pre></div><p>执行破坏性命令时，此开关非常有用。</p>
+<h2 id="如何限制参数数量">如何限制参数数量</h2>
 <p>默认情况下，传递给命令的参数数量由系统限制决定。</p>
-<p>在 <code>-n`(</code>&ndash;max-args`) 选项指定要传递给所述给定命令的参数的数目。 Xargs 将根据需要多次运行指定的命令，直到所有参数都用完为止。</p>
+<p>在 <code>-n</code>(<code>--max-args</code>) 选项指定要传递给所述给定命令的参数的数目。 Xargs 将根据需要多次运行指定的命令，直到所有参数都用完为止。</p>
 <p>在以下示例中，从标准输入读取的参数数量限制为 1 。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo  &quot;file1 file2 file3&quot; |  xargs -n 1 -t touch
-</code></pre><p>从下面的详细输出中可以看出， touch 命令是针对每个参数单独执行的：</p>
-<pre><code class="language-output" data-lang="output">touch file1
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo  &#34;file1 file2 file3&#34; |  xargs -n 1 -t touch
+</code></pre></div><p>从下面的详细输出中可以看出， touch 命令是针对每个参数单独执行的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">touch file1
 touch file2
 touch file3
-</code></pre><h2 id="heading2">如何运行多个命令</h2>
+</code></pre></div><h2 id="如何运行多个命令">如何运行多个命令</h2>
 <p>要使用 xargs 运行多个命令，请使用该 <code>-I</code> 选项。它的工作原理是在 <code>-I</code> 选项之后定义一个 <code>replace-str</code> ，然后将针对 <code>replace-str</code> 的所有出现的内容替换为传递给 xargs 的参数。</p>
 <p>以下 xargs 示例将运行两个命令，首先它将使用 touch 创建文件，然后它将使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">ls 命令</a>列出文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;file1 file2 file3&quot; | xargs -t -I % sh -c '{ touch %; ls -l %; }'
-</code></pre><pre><code class="language-output" data-lang="output">-rw-r--r-- 1 linuxize users 0 May  6 11:54 file1
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;file1 file2 file3&#34; | xargs -t -I % sh -c &#39;{ touch %; ls -l %; }&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">-rw-r--r-- 1 linuxize users 0 May  6 11:54 file1
 -rw-r--r-- 1 linuxize users 0 May  6 11:54 file2
 -rw-r--r-- 1 linuxize users 0 May  6 11:54 file3
-</code></pre><p>replace-str 的一个常见用法是 <code>%</code> ， 但是您可以使用另一个占位符，例如 <code>ARGS</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;file1 file2 file3&quot; | xargs -t -I ARGS sh -c '{ touch ARGS; ls -l ARGS; }'
-</code></pre><h2 id="heading3">如何指定分隔符</h2>
-<p>使用 <code>-d`(</code>&ndash;delimiter<code>) 选项设置自定义分隔符，该分隔符可以是单个字符，也可以是以 `\</code> 开头的转义序列。</p>
+</code></pre></div><p>replace-str 的一个常见用法是 <code>%</code> ， 但是您可以使用另一个占位符，例如 <code>ARGS</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;file1 file2 file3&#34; | xargs -t -I ARGS sh -c &#39;{ touch ARGS; ls -l ARGS; }&#39;
+</code></pre></div><h2 id="如何指定分隔符">如何指定分隔符</h2>
+<p>使用 <code>-d</code>(<code>--delimiter</code>) 选项设置自定义分隔符，该分隔符可以是单个字符，也可以是以 <code>\</code> 开头的转义序列。</p>
 <p>以下示例我们用 <code>;</code> 作分隔符：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span>  <span class="s2">&#34;file1;file2;file3&#34;</span> <span class="p">|</span> xargs -d <span class="se">\;</span> -t touch
-</code></pre></div><pre><code class="language-output" data-lang="output">touch file1 file2 file3
-</code></pre><h2 id="heading4">如何从文件中读取项目</h2>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">touch file1 file2 file3
+</code></pre></div><h2 id="如何从文件中读取项目">如何从文件中读取项目</h2>
 <p>xargs 命令还可以从文件而不是标准输入中读取项目。为此，请使用 <code>-a</code> (<code>--arg-file</code>) 选项，后跟文件名。</p>
 <p>在以下示例中， xargs 命令将读取 <code>ips.txt</code> 文件并 ping 每个 IP 地址。</p>
 <p>文件： ips.txt</p>
@@ -197,8 +197,8 @@ touch file3
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">8.8.8.8
 1.1.1.1
 </code></pre></div><p>我们还使用了 <code>-L 1</code> 选项指示 xargs 每次读取一行。如果省略此选项， xargs 会将所有 IP 传递给单个 <a href="/linux/linux-ping-command/">ping 命令</a>。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">xargs -t -L 1 -a ips.txt ping -c 1
-</code></pre><pre><code class="language-output" data-lang="output">ping -c 1 8.8.8.8 
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">xargs -t -L 1 -a ips.txt ping -c 1
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ping -c 1 8.8.8.8 
 PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 64 bytes from 8.8.8.8: icmp_seq=1 ttl=50 time=68.1 ms
 
@@ -206,16 +206,16 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 ping -c 1 1.1.1.1 
 PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 64 bytes from 1.1.1.1: icmp_seq=1 ttl=59 time=21.4 ms
-</code></pre><h2 id="-find--xargs">使用带有 find 的 xargs</h2>
+</code></pre></div><h2 id="使用带有-find-的-xargs">使用带有 find 的 xargs</h2>
 <p>xargs 最常与 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/">find 命令</a>结合使用。您可以使用 find 搜索特定文件，然后使用 xargs 对这些文件执行操作。</p>
-<p>要避免包含换行符或其他特殊字符的文件名出现问题，请始终使用 find 的 <code>-print0</code> 选项，这将导致 find 打印完整文件名后跟空字符。 xargs 可以使用 <code>-0`(</code>&ndash;null`) 选项正确解释此输出。</p>
+<p>要避免包含换行符或其他特殊字符的文件名出现问题，请始终使用 find 的 <code>-print0</code> 选项，这将导致 find 打印完整文件名后跟空字符。 xargs 可以使用 <code>-0</code>(<code>--null</code>) 选项正确解释此输出。</p>
 <p>在以下示例中， find 将打印 <code>/var/www/.cache</code> 目录中所有文件的全名， xargs 将文件路径传递给 rm 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">find /var/www/.cache -type f -print0 | xargs -0 rm -f
-</code></pre><h2 id="-xargs-">使用 xargs 修剪空白字符</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">find /var/www/.cache -type f -print0 | xargs -0 rm -f
+</code></pre></div><h2 id="使用-xargs-修剪空白字符">使用 xargs 修剪空白字符</h2>
 <p>Xargs 还可以用作从给定字符串两侧删除空格的工具。只需将字符串传递给 xargs 命令，它就会进行修剪：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;  Long line &quot; | xargs
-</code></pre><pre><code class="language-output" data-lang="output">Long line
-</code></pre><p>在比较 shell 脚本中的字符串时，这很有用。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;  Long line &#34; | xargs
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Long line
+</code></pre></div><p>在比较 shell 脚本中的字符串时，这很有用。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="nv">VAR1</span><span class="o">=</span><span class="s2">&#34; buzheng &#34;</span>
@@ -233,9 +233,9 @@ PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 <span class="k">else</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are not equal.&#34;</span>
 <span class="k">fi</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Strings are not equal.
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Strings are not equal.
 Strings are equal.
-</code></pre><h2 id="heading5">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用 Linux xargs 命令。有关每个 xargs 选项的更多详细信息，请阅读 <a href="http://man7.org/linux/man-pages/man1/xargs.1.html">xargs 手册</a>页。</p>
       </div><ul class="pa0">
   
@@ -310,15 +310,15 @@ Strings are equal.
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-linux-xargs-">如何使用 Linux xargs 命令</a></li>
-    <li><a href="#heading">如何查看命令并提示用户</a></li>
-    <li><a href="#heading1">如何限制参数数量</a></li>
-    <li><a href="#heading2">如何运行多个命令</a></li>
-    <li><a href="#heading3">如何指定分隔符</a></li>
-    <li><a href="#heading4">如何从文件中读取项目</a></li>
-    <li><a href="#-find--xargs">使用带有 find 的 xargs</a></li>
-    <li><a href="#-xargs-">使用 xargs 修剪空白字符</a></li>
-    <li><a href="#heading5">结论</a></li>
+    <li><a href="#如何使用-linux-xargs-命令">如何使用 Linux xargs 命令</a></li>
+    <li><a href="#如何查看命令并提示用户">如何查看命令并提示用户</a></li>
+    <li><a href="#如何限制参数数量">如何限制参数数量</a></li>
+    <li><a href="#如何运行多个命令">如何运行多个命令</a></li>
+    <li><a href="#如何指定分隔符">如何指定分隔符</a></li>
+    <li><a href="#如何从文件中读取项目">如何从文件中读取项目</a></li>
+    <li><a href="#使用带有-find-的-xargs">使用带有 find 的 xargs</a></li>
+    <li><a href="#使用-xargs-修剪空白字符">使用 xargs 修剪空白字符</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -330,7 +330,7 @@ Strings are equal.
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,53 +150,53 @@ Nginx 的可以被用作一个独立的 Web 服务器，还可以作为 Apache�
 <p>Nginx 的可以被用作一个独立的 Web 服务器，还可以作为 <a href="/linux/how-to-install-apache-on-debian-9/">Apache</a>和其它的 web 服务器的<!-- raw HTML omitted -->反向代理<!-- raw HTML omitted -->。</p>
 <p>与 Apache 相比， Nginx 可以处理大量并发连接，并且每个连接的内存占用量更小。</p>
 <p>本教程将概述在 Debian 机器上安装和管理 Nginx 的步骤。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-nginx">安装 Nginx</h2>
+<h2 id="安装-nginx">安装 Nginx</h2>
 <p>安装非常简单。按照以下步骤在 Debian 系统上安装 Nginx ：</p>
 <ol>
 <li>
 <p>更新包索引：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div></li>
 <li>
 <p>安装 Nginx 包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install nginx
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install nginx
+</code></pre></div></li>
 <li>
 <p>安装过程完成后， Nginx 服务将自动启动。您可以通过运行以下 <a href="/linux/curl-command-examples/">curl</a> 命令来验证它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">curl -I 127.0.0.1
-</code></pre><pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -I 127.0.0.1
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 200 OK
 Server: nginx/1.10.3
 Date: Mon, 27 Aug 2018 22:29:02 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Mon, 27 Aug 2018 22:27:54 GMT
 Connection: keep-alive
-ETag: &quot;5b847aea-264&quot;
+ETag: &#34;5b847aea-264&#34;
 Accept-Ranges: bytes
-</code></pre></li>
+</code></pre></div></li>
 </ol>
-<h2 id="heading1">调整防火墙</h2>
+<h2 id="调整防火墙">调整防火墙</h2>
 <p>如果使用 iptables 过滤与系统的连接，则需要打开 HTTP (<code>80</code>) 和 HTTPS (<code>443</code>) 端口。</p>
 <p>通过发出以下命令打开必要的端口：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-</code></pre><h2 id="-systemctl--nginx-">使用 systemctl 管理 Nginx 服务</h2>
+</code></pre></div><h2 id="使用-systemctl-管理-nginx-服务">使用 systemctl 管理 Nginx 服务</h2>
 <p>您可以使用 <code>systemctl</code> 命令来管理 Nginx 服务，管理方式与任何其他 systemd 单元一样。</p>
 <p>要停止 Nginx 服务，请运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl stop nginx
-</code></pre><p>要再次启动它，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start nginx
-</code></pre><p>要重新启动 Nginx 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
-</code></pre><p>完成一些配置更改后重新加载 Nginx 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload nginx
-</code></pre><p>禁用 Nginx 服务以在启动时启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl disable nginx
-</code></pre><p>并重新启用它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable nginx
-</code></pre><h2 id="nginx-">Nginx 配置文件的结构和最佳实践</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl stop nginx
+</code></pre></div><p>要再次启动它，请键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start nginx
+</code></pre></div><p>要重新启动 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><p>完成一些配置更改后重新加载 Nginx 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload nginx
+</code></pre></div><p>禁用 Nginx 服务以在启动时启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl disable nginx
+</code></pre></div><p>并重新启用它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl enable nginx
+</code></pre></div><h2 id="nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</h2>
 <ul>
 <li>Nginx 配置文件存储在 <code>/etc/nginx</code> 目录中。</li>
 <li>主要的 Nginx 配置文件是 <code>/etc/nginx/nginx.conf</code> 。</li>
@@ -214,7 +214,7 @@ sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 </ul>
 </li>
 </ul>
-<h2 id="heading2">结论</h2>
+<h2 id="结论">结论</h2>
 <p>恭喜，您已在 Debian 9 服务器上成功安装了 Nginx 。您现在可以开始部署应用程序并将 Nginx 用作 Web 或代理服务器。</p>
       </div><ul class="pa0">
   
@@ -289,12 +289,12 @@ sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-nginx">安装 Nginx</a></li>
-    <li><a href="#heading1">调整防火墙</a></li>
-    <li><a href="#-systemctl--nginx-">使用 systemctl 管理 Nginx 服务</a></li>
-    <li><a href="#nginx-">Nginx 配置文件的结构和最佳实践</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-nginx">安装 Nginx</a></li>
+    <li><a href="#调整防火墙">调整防火墙</a></li>
+    <li><a href="#使用-systemctl-管理-nginx-服务">使用 systemctl 管理 Nginx 服务</a></li>
+    <li><a href="#nginx-配置文件的结构和最佳实践">Nginx 配置文件的结构和最佳实践</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -306,7 +306,7 @@ sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

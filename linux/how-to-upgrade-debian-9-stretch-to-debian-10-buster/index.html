@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -149,62 +149,62 @@
           <p>经过两年多的开发，新的 Debian 稳定版本 Debian 10 代号为 Buster ，于 2019 年 7 月 6 日发布，并将支持5年。</p>
 <p>此版本附带了许多新软件包和主要软件升级。 Debian 10 buster 附带 Linux 4.19 LTS 内核，使用 nftables 框架作为默认的 iptables 后端，支持 UEFI 安全启动并默认启用 AppArmor 。</p>
 <p>在本教程中，我们将向您展示如何将 Debian 9 Stretch 系统升级到 Debian 10 Buster 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>必须以超级用户权限运行升级操作。您需要以 root  用户或<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="heading1">备份您的数据</h2>
+<h2 id="备份您的数据">备份您的数据</h2>
 <p>首先，请确保在开始主要升级操作系统之前备份数据。如果您在虚拟机上运行 Debian ，最好采用完整的系统快照，以便在更新过程中轻松恢复您的计算机。</p>
-<h2 id="heading2">更新当前安装的软件包</h2>
+<h2 id="更新当前安装的软件包">更新当前安装的软件包</h2>
 <p>在开始版本升级之前，建议将所有当前安装的软件包更新到其最新版本。</p>
 <p>标记为阻止的程序包无法自动安装，升级或删除。这可能会在升级过程中导致问题。要检查系统上是否存在阻止包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt-mark showhold
-</code></pre><p>如果有 <code>onhold</code> 软件包，您应该要么不使用此软件包，要么运行 <code>sudo apt-mark unhold package_name</code> 确保软件包不会干扰升级过程。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-mark showhold
+</code></pre></div><p>如果有 <code>onhold</code> 软件包，您应该要么不使用此软件包，要么运行 <code>sudo apt-mark unhold package_name</code> 确保软件包不会干扰升级过程。</p>
 <p>刷新包索引并升级所有已安装的包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt upgrade
-</code></pre><p>运行 <code>apt full-upgrade</code> 将执行已安装软件包的主要版本升级，并可能删除一些不必要的软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt full-upgrade
-</code></pre><p>删除任何包不再需要的所有自动安装的依赖项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt autoremove
-</code></pre><h2 id="-debian-9-stretch--debian-10-buster">将 Debian 9 Stretch 升级到 Debian 10 Buster</h2>
+</code></pre></div><p>运行 <code>apt full-upgrade</code> 将执行已安装软件包的主要版本升级，并可能删除一些不必要的软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt full-upgrade
+</code></pre></div><p>删除任何包不再需要的所有自动安装的依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt autoremove
+</code></pre></div><h2 id="将-debian-9-stretch-升级到-debian-10-buster">将 Debian 9 Stretch 升级到 Debian 10 Buster</h2>
 <p>第一步是重新配置 APT 的源列表文件。</p>
 <p>要做到这一点，你既可以使用你的<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>编辑该 <code>/etc/apt/sources.list</code> 文件，也可以使用下面的 <code>sed</code> 命令用 <code>buster</code> 替换每个 <code>stretch</code>。如果您在 <code>/etc/apt/sources.list.d</code> 目录下有其他源列表文件，则必须更新这些源。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apt/sources.list
-</code></pre><p>/etc/apt/sources.list</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/apt/sources.list
+</code></pre></div><p>/etc/apt/sources.list</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">deb http://deb.debian.org/debian buster main</span>
 <span class="na">deb http://deb.debian.org/debian buster-updates main</span>
 <span class="na">deb http://security.debian.org/debian-security buster/updates main</span>
 </code></pre></div><p>另外，您也可以使用下面的 <code>sed</code> 命令，用 <code>buster</code> 替换 <code>stretch</code> 到所有源列表文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo sed -i 's/stretch/buster/g' /etc/apt/sources.listsudo sed -i 's/stretch/buster/g' /etc/apt/sources.list.d/*.list
-</code></pre><p>完成后，更新包索引：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre><p>如果存在与第三方存储库相关的任何错误或警告消息，请尝试解决该问题或禁用存储库。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo sed -i &#39;s/stretch/buster/g&#39; /etc/apt/sources.listsudo sed -i &#39;s/stretch/buster/g&#39; /etc/apt/sources.list.d/*.list
+</code></pre></div><p>完成后，更新包索引：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div><p>如果存在与第三方存储库相关的任何错误或警告消息，请尝试解决该问题或禁用存储库。</p>
 <p>通过升级已安装的软件包来启动系统升级。这将仅升级那些不需要安装或删除任何其他软件包的软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt upgrade
-</code></pre><p>系统将询问您是否希望在升级期间自动重新启动服务。</p>
-<pre><code class="language-output" data-lang="output">Restart services during package upgrades without asking?  
-</code></pre><p>在升级过程中，您可能还会被问到其他各种问题，例如您是要保留现有配置文件还是安装软件包维护者的版本。如果您没有对文件进行任何自定义更改，则应安全地键入 <code>Y</code>，否则输入 <code>N</code> 以保持当前配置。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt upgrade
+</code></pre></div><p>系统将询问您是否希望在升级期间自动重新启动服务。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">Restart</span> <span class="nx">services</span> <span class="nx">during</span> <span class="kn">package</span> <span class="nx">upgrades</span> <span class="nx">without</span> <span class="nx">asking</span><span class="err">?</span>  
+</code></pre></div><p>在升级过程中，您可能还会被问到其他各种问题，例如您是要保留现有配置文件还是安装软件包维护者的版本。如果您没有对文件进行任何自定义更改，则应安全地键入 <code>Y</code>，否则输入 <code>N</code> 以保持当前配置。</p>
 <p>升级可能需要一些时间，具体取决于更新次数和 Internet 速度。</p>
 <p>接下来，执行 <code>apt full-upgrade</code> 将执行系统的完整升级，安装最新版本的软件包，并解决不同版本中软件包之间的依赖关系更改。这将升级未使用上一个命令升级的所有软件包。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt full-upgrade
-</code></pre><p>上面的命令可能会安装一些新软件包并删除冲突和过时的软件包。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt full-upgrade
+</code></pre></div><p>上面的命令可能会安装一些新软件包并删除冲突和过时的软件包。</p>
 <p>完成后，使用以下方法清理不必要的包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt autoremove
-</code></pre><p>最后，通过键入以下内容<a href="/linux/reboot-linux-using-command-line/">重新启动计算机</a>以激活新内核：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reboot
-</code></pre><h2 id="heading3">确认升级</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt autoremove
+</code></pre></div><p>最后，通过键入以下内容<a href="/linux/reboot-linux-using-command-line/">重新启动计算机</a>以激活新内核：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reboot
+</code></pre></div><h2 id="确认升级">确认升级</h2>
 <p>等待一会儿，直到系统启动并登录。</p>
 <p>登录后，您将收到以下消息：</p>
-<pre><code class="language-output" data-lang="output">Linux stretch 4.19.0-5-amd64 #1 SMP Debian 4.19.37-5 (2019-06-19) x86_64
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Linux stretch 4.19.0-5-amd64 #1 SMP Debian 4.19.37-5 (2019-06-19) x86_64
 ...
-</code></pre><p>您还可以使用以下命令<a href="/linux/how-to-check-your-debian-version/">检查 Debian 版本</a>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">lsb_release -a
-</code></pre><pre><code class="language-output" data-lang="output">No LSB modules are available.
+</code></pre></div><p>您还可以使用以下命令<a href="/linux/how-to-check-your-debian-version/">检查 Debian 版本</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lsb_release -a
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">No LSB modules are available.
 Distributor ID:	Debian
 Description:	Debian GNU/Linux 10 (buster)
 Release:	10
 Codename:	buster
-</code></pre><p>就是这样，你现在可以享受你的新 Debian 10 Buster 了。</p>
-<h2 id="heading4">结论</h2>
+</code></pre></div><p>就是这样，你现在可以享受你的新 Debian 10 Buster 了。</p>
+<h2 id="结论">结论</h2>
 <p>在大多数情况下，从 Debian 9 Stretch 升级到 Debian 10 Buster 应该相对容易和轻松。</p>
 <p>如果您遇到任何错误，请访问 <a href="https://www.debian.org/releases/stable/ppc64el/release-notes/ch-upgrading.en.html">Debian 9 (stretch) 升级页面</a>，其中包含升级到 Debian 10 Buster 期间可能发生的已知问题。</p>
       </div><ul class="pa0">
@@ -276,12 +276,12 @@ Codename:	buster
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#heading1">备份您的数据</a></li>
-    <li><a href="#heading2">更新当前安装的软件包</a></li>
-    <li><a href="#-debian-9-stretch--debian-10-buster">将 Debian 9 Stretch 升级到 Debian 10 Buster</a></li>
-    <li><a href="#heading3">确认升级</a></li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#备份您的数据">备份您的数据</a></li>
+    <li><a href="#更新当前安装的软件包">更新当前安装的软件包</a></li>
+    <li><a href="#将-debian-9-stretch-升级到-debian-10-buster">将 Debian 9 Stretch 升级到 Debian 10 Buster</a></li>
+    <li><a href="#确认升级">确认升级</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -293,7 +293,7 @@ Codename:	buster
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

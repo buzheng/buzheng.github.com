@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,7 +145,7 @@
   
           <p>在 Linux 中，通过文件许可权，属性和所有权来管理对文件的访问。这样可以确保只有授权的用户和进程才能访问文件和目录。</p>
 <p>本教程介绍如何使用 <code>chmod</code> 命令更改文件和目录的访问权限。</p>
-<h2 id="linux-">Linux 文件权限</h2>
+<h2 id="linux-文件权限">Linux 文件权限</h2>
 <p>在继续之前，让我们解释一下基本的 Linux 权限模型。</p>
 <p>在 Linux 中，每个文件都与一个所有者和一个组相关联，并为三类不同的用户分配了权限访问权限：</p>
 <ul>
@@ -162,8 +162,8 @@
 </ul>
 <p>此概念使您可以指定允许哪些用户读取文件，写入文件或执行文件。</p>
 <p>可以使用以下 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令查看文件权限：</p>
-<pre><code class="language-bash-console" data-lang="bash-console">ls -l filename.txt
-</code></pre><pre><code class="language-output" data-lang="output">-rw-r--r-- 12 username group 12.0K Apr  8 20:51 filename.txt
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ls -l filename.txt
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">-rw-r--r-- 12 username group 12.0K Apr  8 20:51 filename.txt
 |[-][-][-]-   [------] [---]
 | |  |  | |      |       |
 | |  |  | |      |       +-----------&gt; 7\. Group
@@ -173,7 +173,7 @@
 | |  +-------------------------------&gt; 3\. Group Permissions
 | +----------------------------------&gt; 2\. Owner Permissions
 +------------------------------------&gt; 1\. File Type
-</code></pre><p>第一个字符显示文件类型。它可以是常规文件 (<code>-</code>) ，目录 (<code>d</code>) ，<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a> (<code>l</code>) 或任何其他特殊类型的文件。</p>
+</code></pre></div><p>第一个字符显示文件类型。它可以是常规文件 (<code>-</code>) ，目录 (<code>d</code>) ，<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a> (<code>l</code>) 或任何其他特殊类型的文件。</p>
 <p>接下来的 9 个字符代表文件许可权，每 3 个为一个三元组，分别对应一类用户的权限。第一个三元组显示所有者权限，第二个三元组显示组用户权限，最后一个三元组显示其他用户的权限。根据文件类型，权限可能具有不同的含义。</p>
 <p>在上面的示例中， (<code>rw-r--r--</code>) 表示文件所有者具有读写权限 (<code>rw-</code>) ，组用户和其他用户仅具有读取权限 (<code>r--</code>) 。</p>
 <p>这三个权限三元组中的每一个都可以由以下字符构成，并具有不同的效果：</p>
@@ -302,12 +302,12 @@
 </tr>
 </tbody>
 </table>
-<h2 id="chmod-"><code>chmod</code> 命令</h2>
+<h2 id="chmod-命令"><code>chmod</code> 命令</h2>
 <p><code>chmod</code> 命令的一般形式采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chmod <span class="o">[</span>OPTIONS<span class="o">]</span> MODE FILE...
 </code></pre></div><p><code>chmod</code> 命令允许您使用符号或数字方式或参考文件来更改文件的权限。我们将在本文后面详细解释这些模式。该命令可以接受以空格分隔的一个或多个文件和目录作为参数。</p>
 <p>只有 root 用户，文件所有者或具有 sudo 特权的用户才能更改文件的权限。使用 <code>chmod</code> 时要格外小心，尤其是在递归更改权限时。</p>
-<h2 id="heading">使用符号修改权限</h2>
+<h2 id="使用符号修改权限">使用符号修改权限</h2>
 <p><code>chmod</code> 使用符号模式时，命令的语法具有以下格式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chmod <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>ugoa…<span class="o">]</span><span class="o">[</span>-+<span class="o">=</span><span class="o">]</span>perms…<span class="o">[</span>,…<span class="o">]</span> FILE...
 </code></pre></div><p>第一组标志 (<code>[ugoa …]</code>)用户选项定义了更改文件权限的用户类别。</p>
@@ -330,36 +330,36 @@
 <ul>
 <li>
 <p>授予组成员读取文件的权限，但不允许编写和执行该文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod g=r filename
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod g=r filename
+</code></pre></div></li>
 <li>
 <p>删除所有用户的执行权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod a-x filename
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod a-x filename
+</code></pre></div></li>
 <li>
 <p>递归地删除其他用户的写许可权：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod -R o-w dirname
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod -R o-w dirname
+</code></pre></div></li>
 <li>
 <p>删除文件所有者和组用户的读取，写入和执行权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod og-rwx filename
-</code></pre><p>同样的事情也可以通过使用以下形式来完成：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod og= filename
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod og-rwx filename
+</code></pre></div><p>同样的事情也可以通过使用以下形式来完成：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod og= filename
+</code></pre></div></li>
 <li>
 <p>授予文件所有者的读取，写入和执行权限，授予文件组的读取权限，而不授予所有其他用户的权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod u=rwx,g=r,o= filename
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod u=rwx,g=r,o= filename
+</code></pre></div></li>
 <li>
 <p>将文件所有者权限添加到文件组成员具有的权限中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod g+u filename
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod g+u filename
+</code></pre></div></li>
 <li>
 <p>在给定目录中添加一个粘性位：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod o+t dirname
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod o+t dirname
+</code></pre></div></li>
 </ul>
-<h2 id="heading1">数值方法</h2>
+<h2 id="数值方法">数值方法</h2>
 <p><code>chmod</code> 使用数字方法时，命令的语法具有以下格式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chmod <span class="o">[</span>OPTIONS<span class="o">]</span> NUMBER FILE...
 </code></pre></div><p>使用数字方式时，可以同时设置所有三个用户类(所有者，组和所有其他用户)的权限。</p>
@@ -393,60 +393,60 @@
 <p>要计算数字模式，您还可以使用另一种方法(二进制方法)，但是稍微复杂一点。对于大多数用户，知道如何使用4、2和1计算数字模式就足够了。</p>
 <p>您可以使用以下 <code>stat</code> 命令以数字符号检查文件的权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">stat -c <span class="s2">&#34;%a&#34;</span> filename
-</code></pre></div><pre><code class="language-output" data-lang="output">644
-</code></pre><p>以下是一些 <code>chmod</code> 在数字模式下使用命令的示例：</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">644
+</code></pre></div><p>以下是一些 <code>chmod</code> 在数字模式下使用命令的示例：</p>
 <ul>
 <li>
 <p>授予文件所有者的读写权限，仅授予组成员和所有其他用户的读取权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod 644 dirname
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod 644 dirname
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>授予文件所有者读取，写入和执行的权限，授予组成员的读取和执行的权限，而不授予所有其他用户的权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod 750 dirname
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod 750 dirname
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>授予读取，写入和执行权限，并给指定目录添加一些便利：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod 1777 dirname
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod 1777 dirname
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>递归设置文件所有者的读取，写入和执行权限，而对给定目录上的所有其他用户则没有权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod -R 700 dirname
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod -R 700 dirname
 
-</code></pre></li>
+</code></pre></div></li>
 </ul>
-<h2 id="heading2">使用参考文件</h2>
+<h2 id="使用参考文件">使用参考文件</h2>
 <p>该 <code>--reference=ref_file</code> 选项使您可以将文件的权限设置为与指定参考文件 (<code>ref_file</code>) 相同。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chmod --reference<span class="o">=</span>REF_FILE FILE
 </code></pre></div><p>例如，以下命令将 <code>file1</code> 的权限分配给 <code>file2</code></p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod --reference=file1 file2
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod --reference=file1 file2
 
-</code></pre><h2 id="heading3">递归更改文件的权限</h2>
-<p>要对给定目录下的所有文件和目录进行递归操作，请使用 <code>-R`(</code>&ndash;recursive`) 选项：</p>
+</code></pre></div><h2 id="递归更改文件的权限">递归更改文件的权限</h2>
+<p>要对给定目录下的所有文件和目录进行递归操作，请使用 <code>-R</code>(<code>--recursive</code>) 选项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chmod -R MODE DIRECTORY
 </code></pre></div><p>例如，改变所有文件和子目录的权限下 <code>/var/www</code> 目录 <code>755</code> ，你可以使用：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod -R 755 /var/www
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod -R 755 /var/www
 
-</code></pre><h2 id="heading4">在符号链接上操作</h2>
+</code></pre></div><h2 id="在符号链接上操作">在符号链接上操作</h2>
 <p><a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>始终具有 <code>777</code> 权限。</p>
 <p>默认情况下，更改 symlink 的权限时， <code>chmod</code> 将更改链接指向的文件的权限。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod 755 symlink
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod 755 symlink
 
-</code></pre><p>很有可能是，您将收到 “cannot access ‘symlink’: Permission denied” 错误，而不是更改目标所有权。</p>
+</code></pre></div><p>很有可能是，您将收到 “cannot access ‘symlink’: Permission denied” 错误，而不是更改目标所有权。</p>
 <p>发生该错误是因为默认情况下，大多数 Linux 发行版上的符号链接均受保护，并且您无法对目标文件进行操作。此选项在 <code>/proc/sys/fs/protected_symlinks</code> 中指定， <code>1</code> 表示启用和 <code>0</code> 表示禁用。建议不要禁用符号链接保护。</p>
-<h2 id="heading5">批量更改文件权限</h2>
+<h2 id="批量更改文件权限">批量更改文件权限</h2>
 <p>有时在某些情况下，您需要批量更改文件和目录的权限。</p>
 <p>最常见的情况是将网站文件的权限递归更改为 <code>644</code> ，将目录文件的权限递归更改为 <code>755</code> 。</p>
 <p>使用数值方法：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">find /var/www/my_website -type d -exec chmod 755 {} \;
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">find /var/www/my_website -type d -exec chmod 755 {} \;
 find /var/www/my_website -type f -exec chmod 644 {} \;
-</code></pre><p>使用符号方法：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">find /var/www/my_website -type d -exec chmod u=rwx,go=rx {} \;
+</code></pre></div><p>使用符号方法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">find /var/www/my_website -type d -exec chmod u=rwx,go=rx {} \;
 find /var/www/my_website -type f -exec chmod u=rw,go=r {} \;
-</code></pre><p>该 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a> 命令将在 <code>/var/www/my_website</code> 下面搜索文件和目录，并将找到的每个文件和目录传递给 <code>chmod</code> 命令以设置权限。</p>
-<h2 id="heading6">结论</h2>
+</code></pre></div><p>该 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a> 命令将在 <code>/var/www/my_website</code> 下面搜索文件和目录，并将找到的每个文件和目录传递给 <code>chmod</code> 命令以设置权限。</p>
+<h2 id="结论">结论</h2>
 <p><code>chmod</code> 命令更改文件的权限，可以使用符号或数字模式设置权限。</p>
 <p>要了解更多关于 <code>chmod</code> 的信息，请访问 <a href="https://linux.die.net/man/1/chmod">chmod 手册</a>页。</p>
       </div><ul class="pa0">
@@ -522,15 +522,15 @@ find /var/www/my_website -type f -exec chmod u=rw,go=r {} \;
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#linux-">Linux 文件权限</a></li>
-    <li><a href="#chmod-">chmod 命令</a></li>
-    <li><a href="#heading">使用符号修改权限</a></li>
-    <li><a href="#heading1">数值方法</a></li>
-    <li><a href="#heading2">使用参考文件</a></li>
-    <li><a href="#heading3">递归更改文件的权限</a></li>
-    <li><a href="#heading4">在符号链接上操作</a></li>
-    <li><a href="#heading5">批量更改文件权限</a></li>
-    <li><a href="#heading6">结论</a></li>
+    <li><a href="#linux-文件权限">Linux 文件权限</a></li>
+    <li><a href="#chmod-命令">chmod 命令</a></li>
+    <li><a href="#使用符号修改权限">使用符号修改权限</a></li>
+    <li><a href="#数值方法">数值方法</a></li>
+    <li><a href="#使用参考文件">使用参考文件</a></li>
+    <li><a href="#递归更改文件的权限">递归更改文件的权限</a></li>
+    <li><a href="#在符号链接上操作">在符号链接上操作</a></li>
+    <li><a href="#批量更改文件权限">批量更改文件权限</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -542,7 +542,7 @@ find /var/www/my_website -type f -exec chmod u=rw,go=r {} \;
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

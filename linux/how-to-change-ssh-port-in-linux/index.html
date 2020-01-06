@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,12 +146,12 @@
           <p>默认情况下， SSH 侦听端口 <code>22</code> 。 更改默认 SSH 端口可以降低被自动攻击的风险，从而为服务器增加额外的安全层。</p>
 <p>和更改默认端口相比，将防火墙配置为仅允许从特定主机访问端口 <code>22</code> 则更加简单和安全。</p>
 <p>本教程介绍如何更改 Linux 中的默认 SSH 端口。我们还将向您展示如何配置防火墙以允许访问新的 SSH 端口。</p>
-<h2 id="-ssh-">更改 SSH 端口</h2>
+<h2 id="更改-ssh-端口">更改 SSH 端口</h2>
 <p>请按照以下步骤更改 Linux 系统上的 SSH 端口：</p>
-<h3 id="heading">选择新的端口号</h3>
+<h3 id="选择新的端口号">选择新的端口号</h3>
 <p>在 Linux 中，低于 1024 的端口号保留用于众所周知的服务，并且只能由 root 绑定。虽然您可以使用 1-1024 范围内的端口进行 SSH 服务，但为了避免将来出现端口分配问题，建议选择 1024 以上的端口。</p>
 <p>在此示例中，将 SSH 端口更改为 <code>5522</code> ，当然您可以选择任何您喜欢的端口。</p>
-<h3 id="heading1">调整防火墙</h3>
+<h3 id="调整防火墙">调整防火墙</h3>
 <p>在更改 SSH 端口之前，首先需要调整防火墙以允许新 SSH 端口上的流量。</p>
 <p>如果您使用的是 Ubuntu 的默认防火墙配置工具 UFW ， 请运行以下命令来打开新的 SSH 端口：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow 5522/tcp
@@ -162,7 +162,7 @@ sudo firewall-cmd --reload
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo semanage port -a -t ssh_port_t -p tcp <span class="m">5522</span>
 </code></pre></div><p>如果您使用 iptables 作为防火墙，则以下命令将打开新的 SSH 端口：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo iptables -A INPUT -p tcp --dport <span class="m">22</span> -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-</code></pre></div><h3 id="-ssh-1">编辑 SSH 配置</h3>
+</code></pre></div><h3 id="编辑-ssh-配置">编辑 SSH 配置</h3>
 <p>使用文本编辑器打开 SSH 配置文件 <code>/etc/ssh/sshd_config</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/ssh/sshd_config
 </code></pre></div><p>搜索以 <code>Port 22</code> 开头的行。在大多数情况下，此行将以 <code>#</code> 开头。删除 <code>#</code> 并输入将用于代替标准 SSH 端口 22 的新 SSH 端口号。</p>
@@ -178,11 +178,11 @@ sudo firewall-cmd --reload
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tcp   LISTEN      <span class="m">0</span>        <span class="m">128</span>            0.0.0.0:5522           0.0.0.0:*
 tcp   ESTAB       <span class="m">0</span>        <span class="m">0</span>      192.168.121.108:5522     192.168.121.1:57638
 tcp   LISTEN      <span class="m">0</span>        <span class="m">128</span>               <span class="o">[</span>::<span class="o">]</span>:5522              <span class="o">[</span>::<span class="o">]</span>:*
-</code></pre></div><h2 id="-ssh-2">使用新的 SSH 端口</h2>
+</code></pre></div><h2 id="使用新的-ssh-端口">使用新的 SSH 端口</h2>
 <p>现在您已经更改了要登录远程的计算机 SSH 端口，您需要在登录时指定新端口。</p>
 <p>使用 <code>-p &lt;port_number&gt;</code> 选项指定端口：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh -p <span class="m">5522</span> username@remote_host_or_ip
-</code></pre></div><h2 id="heading2">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何更改 Linux 服务器上的 SSH 端口。您可能还需要设置<a href="/linux/how-to-setup-passwordless-ssh-login/">基于 SSH 密钥的身份验证</a>，不输入密码的情况下连接到 Linux 服务器。</p>
 <p>如果您经常连接到多个系统，则可以通过在 <!-- raw HTML omitted -->SSH 配置文件<!-- raw HTML omitted -->中定义所有连接来简化工作流程。</p>
       </div><ul class="pa0">
@@ -258,15 +258,15 @@ tcp   LISTEN      <span class="m">0</span>        <span class="m">128</span>    
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-ssh-">更改 SSH 端口</a>
+    <li><a href="#更改-ssh-端口">更改 SSH 端口</a>
       <ul>
-        <li><a href="#heading">选择新的端口号</a></li>
-        <li><a href="#heading1">调整防火墙</a></li>
-        <li><a href="#-ssh-1">编辑 SSH 配置</a></li>
+        <li><a href="#选择新的端口号">选择新的端口号</a></li>
+        <li><a href="#调整防火墙">调整防火墙</a></li>
+        <li><a href="#编辑-ssh-配置">编辑 SSH 配置</a></li>
       </ul>
     </li>
-    <li><a href="#-ssh-2">使用新的 SSH 端口</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#使用新的-ssh-端口">使用新的 SSH 端口</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -278,7 +278,7 @@ tcp   LISTEN      <span class="m">0</span>        <span class="m">128</span>    
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

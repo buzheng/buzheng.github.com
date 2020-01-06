@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -164,7 +164,7 @@
 </ul>
 <p>使用 scp 传输数据时，文件和密码都是加密的，这样任何窥探流量的人都不会得到任何敏感信息。</p>
 <p>在本教程中，我们将向您展示如何通过实际示例和最常见的 scp 选项的详细说明来使用 scp 命令。</p>
-<h2 id="scp-">SCP 命令语法</h2>
+<h2 id="scp-命令语法">SCP 命令语法</h2>
 <p>在讨论如何使用 <code>scp</code> 命令之前，让我们先回顾一下基本语法。</p>
 <p>scp 实用程序表达式采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">scp <span class="o">[</span>OPTION<span class="o">]</span> <span class="o">[</span>user@<span class="o">]</span>SRC_HOST:<span class="o">]</span>file1 <span class="o">[</span>user@<span class="o">]</span>DEST_HOST:<span class="o">]</span>file2
@@ -182,38 +182,38 @@
 <li><code>-C</code>。此选项将强制 scp 在将数据发送到目标计算机时压缩数据。</li>
 <li><code>-r</code> 此选项将告诉 scp 以递归方式复制目录。</li>
 </ul>
-<h2 id="heading">在你开始之前</h2>
+<h2 id="在你开始之前">在你开始之前</h2>
 <p>该 <code>scp</code> 命令依赖于 <code>ssh</code> 数据传输，因此需要 ssh 密钥或密码才能在远程系统上进行身份验证。</p>
 <p>scp 通过冒号 (<code>:</code>) 来区分本地和远程位置。</p>
 <p>为了能够复制文件，您必须至少具有对源文件的读取权限和对目标系统的写入权限。</p>
 <p>在两个系统上复制共享相同名称和位置的文件时要小心， scp 会在没有警告的情况下覆盖文件。</p>
 <p>传输大文件时，建议在 <a href="/linux/how-to-use-linux-screen/">screen</a> 或 <a href="/linux/getting-started-with-tmux/">tmux</a> 会话中运行 scp 命令。</p>
-<h2 id="-scp-">使用 SCP 复制两个系统之间的文件和目录</h2>
-<h3 id="-scp-1">使用 scp 命令将本地文件复制到远程系统</h3>
+<h2 id="使用-scp-复制两个系统之间的文件和目录">使用 SCP 复制两个系统之间的文件和目录</h2>
+<h3 id="使用-scp-命令将本地文件复制到远程系统">使用 scp 命令将本地文件复制到远程系统</h3>
 <p>要将文件从本地复制到远程系统，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">scp file.txt remote_username@10.10.0.2:/remote/directory
-</code></pre><p>这里， <code>file.txt</code> 是我们要复制的文件的名称， <code>remote_username</code> 是远程服务器上的用户， <code>10.10.0.2</code> 是远程服务器的 IP 地址。该 <code>/remote/directory</code> 是你要复制的文件的目标目录，如果不指定远程目录，文件将被复制到远程用户的主目录。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">scp file.txt remote_username@10.10.0.2:/remote/directory
+</code></pre></div><p>这里， <code>file.txt</code> 是我们要复制的文件的名称， <code>remote_username</code> 是远程服务器上的用户， <code>10.10.0.2</code> 是远程服务器的 IP 地址。该 <code>/remote/directory</code> 是你要复制的文件的目标目录，如果不指定远程目录，文件将被复制到远程用户的主目录。</p>
 <p>系统将提示您输入用户密码，然后将开始传输过程。</p>
-<pre><code class="language-output" data-lang="output">remote_username@10.10.0.2's password:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">remote_username@10.10.0.2&#39;s password:
 file.txt                             100%    0     0.0KB/s   00:00
-</code></pre><p>从目标位置省略文件名会使用原始名称复制文件。如果要以不同的名称保存文件，则需要指定新名称：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">scp file.txt remote_username@10.10.0.2:/remote/directory/newfilename.txt
-</code></pre><p>如果远程主机上的 SSH 正在侦听默认端口 22 以外的端口，则可以使用以下 <code>-P</code> 参数指定端口：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh -P 2322 file.txt remote_username@10.10.0.2:/remote/directory
-</code></pre><p>复制目录的命令与复制文件时的命令非常相似。唯一的区别是你需要使用 <code>-r</code> 标志进行递归。</p>
+</code></pre></div><p>从目标位置省略文件名会使用原始名称复制文件。如果要以不同的名称保存文件，则需要指定新名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">scp file.txt remote_username@10.10.0.2:/remote/directory/newfilename.txt
+</code></pre></div><p>如果远程主机上的 SSH 正在侦听默认端口 22 以外的端口，则可以使用以下 <code>-P</code> 参数指定端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh -P 2322 file.txt remote_username@10.10.0.2:/remote/directory
+</code></pre></div><p>复制目录的命令与复制文件时的命令非常相似。唯一的区别是你需要使用 <code>-r</code> 标志进行递归。</p>
 <p>要将目录从本地复制到远程系统，请使用以下 <code>-r</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">scp -r /local/directory remote_username@10.10.0.2:/remote/directory
-</code></pre><h3 id="-scp-2">使用 scp 命令将远程文件复制到本地系统</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">scp -r /local/directory remote_username@10.10.0.2:/remote/directory
+</code></pre></div><h3 id="使用-scp-命令将远程文件复制到本地系统">使用 scp 命令将远程文件复制到本地系统</h3>
 <p>要将文件从远程文件复制到本地系统，请使用远程位置作为源和本地位置作为目标。</p>
 <p>例如，要将 <code>file.txt</code> 从 ip 为 <code>10.10.0.2</code> 的远程服务器复制到本地，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">scp remote_username@10.10.0.2:/remote/file.txt /local/directory
-</code></pre><p>如果尚未设置<a href="/linux/how-to-setup-passwordless-ssh-login/">无密码 SSH 登录</a>到远程计算机，则会要求您输入用户密码。</p>
-<h3 id="-scp-3">使用 scp 命令在两个远程系统之间复制文件</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">scp remote_username@10.10.0.2:/remote/file.txt /local/directory
+</code></pre></div><p>如果尚未设置<a href="/linux/how-to-setup-passwordless-ssh-login/">无密码 SSH 登录</a>到远程计算机，则会要求您输入用户密码。</p>
+<h3 id="使用-scp-命令在两个远程系统之间复制文件">使用 scp 命令在两个远程系统之间复制文件</h3>
 <p>与 <a href="/linux/how-to-use-rsync-for-local-and-remote-data-transfer-and-synchronization/">rsync</a> 不同，使用 scp 时，您无需提前登录其中一台服务器即可将文件从一台远程计算机传输到另一台远程计算机。</p>
 <p>下面的命令将文件复制 <code>/files/file.txt</code> 从远程主机 <code>host1.com</code> 的目录 <code>/files</code> 在远程主机上 <code>host2.com</code> 。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">scp user1@host1.com:/files/file.txt user2@host2.com:/files
-</code></pre><p>系统将提示您输入两个远程帐户的密码。数据将直接从一个远程主机传输到另一个远程主机。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">scp user1@host1.com:/files/file.txt user2@host2.com:/files
+</code></pre></div><p>系统将提示您输入两个远程帐户的密码。数据将直接从一个远程主机传输到另一个远程主机。</p>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何使用 scp 命令复制文件和目录。</p>
 <p>您可能还需要设置基于 <a href="/linux/how-to-setup-passwordless-ssh-login/">SSH 密钥的身份验证</a>并连接到 Linux 服务器而无需输入密码。</p>
 <p>如果您经常连接到相同的系统，则可以通过在 <a href="/linux/using-the-ssh-config-file/">SSH 配置文件中</a>定义所有连接来简化工作流程。</p>
@@ -290,16 +290,16 @@ file.txt                             100%    0     0.0KB/s   00:00
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#scp-">SCP 命令语法</a></li>
-    <li><a href="#heading">在你开始之前</a></li>
-    <li><a href="#-scp-">使用 SCP 复制两个系统之间的文件和目录</a>
+    <li><a href="#scp-命令语法">SCP 命令语法</a></li>
+    <li><a href="#在你开始之前">在你开始之前</a></li>
+    <li><a href="#使用-scp-复制两个系统之间的文件和目录">使用 SCP 复制两个系统之间的文件和目录</a>
       <ul>
-        <li><a href="#-scp-1">使用 scp 命令将本地文件复制到远程系统</a></li>
-        <li><a href="#-scp-2">使用 scp 命令将远程文件复制到本地系统</a></li>
-        <li><a href="#-scp-3">使用 scp 命令在两个远程系统之间复制文件</a></li>
+        <li><a href="#使用-scp-命令将本地文件复制到远程系统">使用 scp 命令将本地文件复制到远程系统</a></li>
+        <li><a href="#使用-scp-命令将远程文件复制到本地系统">使用 scp 命令将远程文件复制到本地系统</a></li>
+        <li><a href="#使用-scp-命令在两个远程系统之间复制文件">使用 scp 命令在两个远程系统之间复制文件</a></li>
       </ul>
     </li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -311,7 +311,7 @@ file.txt                             100%    0     0.0KB/s   00:00
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

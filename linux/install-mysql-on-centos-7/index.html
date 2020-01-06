@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,11 +146,11 @@
           <p>随着 CentOS 7 的发布， CentOS 的软件仓库中不再提供世界上最流行的开源关系数据库管理系统 MySQL ， MariaDB 已成为默认的数据库系统。 MariaDB 是 MySQL 的向后兼容，二进制插件替代品。</p>
 <p>在本教程中，我们将向您展示如何在 CentOS 7 机器上安装 MySQL 。</p>
 <p>如果要安装 MariaDB 而不是 MySQL ，请查看我们的<a href="/linux/install-mariadb-on-centos-7/">安装说明</a>教程。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在开始本教程之前，请确保使用具有 sudo 权限的用户帐户或 root 用户登录服务器。最好使用 sudo 用户运行管理命令作而不是用 root 用户运行，如果系统上没有 sudo 用户，则可以按照这些说明<a href="/linux/create-a-sudo-user-on-centos/">创建 sudo 用户</a>。</p>
 <p>正如我们在介绍中提到的， MySQL 在默认的 CentOS 7 软件仓库中不可用，因此我们将从 <a href="https://dev.mysql.com/downloads/repo/yum/">MySQL Yum 软件仓库</a>安装软件包。在以下部分中，我们将向您展示如何安装 MySQL 8.0 和 MySQL 5.7 。</p>
 <p>在 CentOS 7 服务器上您最好只<strong>安装一个 MySQL 版本</strong>。如果您不确定要安装哪个版本，请参阅您要在服务器上部署的应用程序的文档。</p>
-<h2 id="-centos-7--mysql-80">在 CentOS 7 上安装 MySQL 8.0</h2>
+<h2 id="在-centos-7-上安装-mysql-80">在 CentOS 7 上安装 MySQL 8.0</h2>
 <p>在撰写本文时，最新版本的 MySQL 是 8.0 版。要在 CentOS 7 服务器上安装它，请按照以下步骤操作：</p>
 <ol>
 <li>
@@ -163,7 +163,7 @@
 </code></pre></div><p>在安装过程中， yum 可能会提示您导入 MySQL GPG 密钥。输入 <code>y</code> 并点击 <code>Enter</code> 。</p>
 </li>
 </ol>
-<h2 id="-centos-7--mysql-57">在 CentOS 7 上安装 MySQL 5.7</h2>
+<h2 id="在-centos-7-上安装-mysql-57">在 CentOS 7 上安装 MySQL 5.7</h2>
 <p>要在 CentOS 7 服务器上安装以前的稳定版本的 MySQL 5.7 版，请按照以下步骤操作：</p>
 <ol>
 <li>
@@ -179,7 +179,7 @@
 <blockquote>
 <p>以下部分与 MySQL 8.0 和 MySQL 5.7 相关。</p>
 </blockquote>
-<h2 id="-mysql">启动 MySQL</h2>
+<h2 id="启动-mysql">启动 MySQL</h2>
 <p>安装完成后，启动 MySQL 服务并启用随机启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> mysqld
 sudo systemctl start mysqld
@@ -195,7 +195,7 @@ sudo systemctl start mysqld
    Status: <span class="s2">&#34;SERVER_OPERATING&#34;</span>
    CGroup: /system.slice/mysqld.service
            └─4310 /usr/sbin/mysqld
-</code></pre></div><h2 id="-mysql-">让 MySQL 更安全</h2>
+</code></pre></div><h2 id="让-mysql-更安全">让 MySQL 更安全</h2>
 <p>当 MySQL 服务器第一次启动时，会为 MySQL root 用户生成临时密码。您可以通过运行以下命令找到密码：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo grep <span class="s1">&#39;temporary password&#39;</span> /var/log/mysqld.log
 </code></pre></div><p>输出应该如下所示：</p>
@@ -213,7 +213,7 @@ New password:
 
 Re-enter new password:
 </code></pre></div><p>该脚本还将要求您删除匿名用户，限制 <code>root</code> 用户对本地计算机的访问权限并删除测试数据库。你应该对所有问题回答“是”（是）。</p>
-<h2 id="-mysql1">从命令行连接到 MySQL</h2>
+<h2 id="从命令行连接到-mysql">从命令行连接到 MySQL</h2>
 <p>要通过终端与 MySQL 交互，我们将使用 MySQL 客户端工具，它已经作为 MySQL 服务器软件包的依赖项被安装。</p>
 <p>以 <code>root</code> 用户的身份登录 MySQL 服务器：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p
@@ -230,11 +230,11 @@ Re-enter new password:
 <span class="n">owners</span><span class="p">.</span>
 
 <span class="k">Type</span> <span class="s1">&#39;</span><span class="s1">help;</span><span class="s1">&#39;</span> <span class="k">or</span> <span class="s1">&#39;</span><span class="s1">\h</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">help</span><span class="p">.</span> <span class="k">Type</span> <span class="s1">&#39;</span><span class="s1">\c</span><span class="s1">&#39;</span> <span class="k">to</span> <span class="n">clear</span> <span class="n">the</span> <span class="k">current</span> <span class="k">input</span> <span class="k">statement</span><span class="p">.</span>
-</code></pre></div><h2 id="heading1">创建数据库</h2>
+</code></pre></div><h2 id="创建数据库">创建数据库</h2>
 <p>连接到 MySQL shell 后，可以通过输入以下命令来创建新数据库：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">new_database</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="k">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div><h2 id="heading2">创建表</h2>
+</code></pre></div><h2 id="创建表">创建表</h2>
 <p>现在我们创建了一个数据库，我们可以创建一个表来存储一些数据。</p>
 <p>在运行用于创建表的 SQL 语句之前，我们需要连接到数据库：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">use</span> <span class="n">new_database</span><span class="p">;</span>
@@ -245,7 +245,7 @@ Re-enter new password:
   <span class="n">email</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 <span class="p">)</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">1</span> <span class="k">row</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
-</code></pre></div><h2 id="heading3">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在本教程中，我们向您展示了如何在 CentOS 7 服务器上安装 Mysql 和让 MySQL 服务器更加安全。我们还向您展示了如何连接到 MySQL shell 以及如何创建新的数据库和表。</p>
 <p>现在您的 MySQL 服务器已启动并运行，并且您知道如何从命令行连接到 MySQL 服务器，您可能需要以下教程获取更多知识：</p>
 <ul>
@@ -336,15 +336,15 @@ Re-enter new password:
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-centos-7--mysql-80">在 CentOS 7 上安装 MySQL 8.0</a></li>
-    <li><a href="#-centos-7--mysql-57">在 CentOS 7 上安装 MySQL 5.7</a></li>
-    <li><a href="#-mysql">启动 MySQL</a></li>
-    <li><a href="#-mysql-">让 MySQL 更安全</a></li>
-    <li><a href="#-mysql1">从命令行连接到 MySQL</a></li>
-    <li><a href="#heading1">创建数据库</a></li>
-    <li><a href="#heading2">创建表</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在-centos-7-上安装-mysql-80">在 CentOS 7 上安装 MySQL 8.0</a></li>
+    <li><a href="#在-centos-7-上安装-mysql-57">在 CentOS 7 上安装 MySQL 5.7</a></li>
+    <li><a href="#启动-mysql">启动 MySQL</a></li>
+    <li><a href="#让-mysql-更安全">让 MySQL 更安全</a></li>
+    <li><a href="#从命令行连接到-mysql">从命令行连接到 MySQL</a></li>
+    <li><a href="#创建数据库">创建数据库</a></li>
+    <li><a href="#创建表">创建表</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -356,7 +356,7 @@ Re-enter new password:
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

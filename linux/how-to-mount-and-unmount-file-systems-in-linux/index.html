@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,28 +146,28 @@
           <p>在Linux和UNIX操作系统上，您可以使用该<code>mount</code>命令在目录树中的特定安装点附加（安装）文件系统和可移动设备（如USB闪存驱动器）。</p>
 <p>该<code>umount</code>命令从目录树中分离（卸载）已安装的文件系统。</p>
 <p>在本教程中，我们将介绍使用<code>mount</code>和<code>umount</code>命令附加和分离各种文件系统的基础知识。</p>
-<h2 id="heading">如何列出已安装的文件系统</h2>
+<h2 id="如何列出已安装的文件系统">如何列出已安装的文件系统</h2>
 <p>如果在没有任何参数的情况下使用，该<code>mount</code>命令将显示所有当前连接的文件系</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mount
-</code></pre><p>默认情况下，输出将包括所有文件系统，包括虚拟文件系统，如cgroup，sysfs等。每行包括有关设备名称，设备安装目录，文件系统类型和安装选项的信息，格式如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mount
+</code></pre></div><p>默认情况下，输出将包括所有文件系统，包括虚拟文件系统，如cgroup，sysfs等。每行包括有关设备名称，设备安装目录，文件系统类型和安装选项的信息，格式如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">device_name on directory type filesystem_type (options)
 </code></pre></div><p>要仅显示某些文件系统，请使用该<code>-t</code>选项。</p>
 <p>例如，要仅打印您将使用的ext4分区：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mount -t ext4
-</code></pre><h2 id="heading1">挂载文件系统</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mount -t ext4
+</code></pre></div><h2 id="挂载文件系统">挂载文件系统</h2>
 <p>要在指定位置（挂载点）附加文件系统，请使用<code>mount</code>以下格式的命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME DIRECTORY
 </code></pre></div><p>连接文件系统后，安装点将成为已安装文件系统的根目录。</p>
 <p>例如，要将<code>/dev/sdb1</code>文件系统挂载到<code>/mnt/media</code>您将使用的目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mount /dev/sdb1 /mnt/media
-</code></pre><p>通常在安装具有公共文件系统（如ext4或xfs）的设备时，该<code>mount</code>命令将自动检测文件系统类型。但是，有些文件系统无法识别，需要明确指定。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mount /dev/sdb1 /mnt/media
+</code></pre></div><p>通常在安装具有公共文件系统（如ext4或xfs）的设备时，该<code>mount</code>命令将自动检测文件系统类型。但是，有些文件系统无法识别，需要明确指定。</p>
 <p>使用该<code>-t</code>选项指定文件系统类型：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount -t TYPE DEVICE_NAME DIRECTORY
 </code></pre></div><p>要指定其他<a href="http://man7.org/linux/man-pages/man8/mount.8.html#FILESYSTEM-INDEPENDENT_MOUNT_OPTIONS">安装选项</a>，请使用以下<code>-o</code>选项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount -o OPTIONS DEVICE_NAME DIRECTORY
 </code></pre></div><p>可以提供多个选项作为逗号分隔列表（不要在逗号后插入空格）。</p>
 <p>您可以通过键入<code>man mount</code>终端获取所有挂载选项的列表。</p>
-<h3 id="-etc--fstab">使用/ etc / fstab挂载文件系统</h3>
+<h3 id="使用-etc--fstab挂载文件系统">使用/ etc / fstab挂载文件系统</h3>
 <p>当只为<code>mount</code>命令提供一个参数（目录或设备）时，它将读取<code>/etc/fstab</code>配置文件的内容以检查是否列出了指定的文件系统。</p>
 <p>如果<code>/etc/fstab</code>包含有关给定文件系统的信息，该<code>mount</code>命令将填写另一个参数的值，并使用fstab文件中指定的mount选项。</p>
 <p>该<code>/etc/fstab</code>文件包含以下格式的条目列表：</p>
@@ -175,35 +175,35 @@
 </code></pre></div><p>使用<code>mount</code>以下某种形式的命令附加文件中指定的文件系统<code>/etc/fstab</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mount <span class="o">[</span>OPTION...<span class="o">]</span> DIRECTORY
 mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME
-</code></pre></div><h3 id="usb">安装USB驱动器</h3>
+</code></pre></div><h3 id="安装usb驱动器">安装USB驱动器</h3>
 <p>在大多数现代Linux发行版中，如Ubuntu USB驱动器在插入时会自动挂载，但有时您可能需要手动安装驱动器。</p>
 <p>要手动安装USB设备，请执行以下步骤：</p>
 <ol>
 <li>
 <p>创建挂载点：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /media/usb
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /media/usb
+</code></pre></div></li>
 <li>
 <p>假设USB驱动器使用该<code>/dev/sdd1</code>设备，您可以<code>/media/usb</code>通过键入以下内容将其安装到目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mount /dev/sdd1 /media/usb
-</code></pre><p>要查找设备和文件系统类型，可以使用以下任何命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">fdisk -lls -l /dev/disk/by-id/usb*dmesglsblk
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mount /dev/sdd1 /media/usb
+</code></pre></div><p>要查找设备和文件系统类型，可以使用以下任何命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">fdisk -lls -l /dev/disk/by-id/usb*dmesglsblk
+</code></pre></div></li>
 </ol>
-<h3 id="iso">挂载ISO文件</h3>
+<h3 id="挂载iso文件">挂载ISO文件</h3>
 <p>我们可以使用循环设备挂载ISO文件。循环设备是一种特殊的伪设备，它使文件可作为块设备访问。</p>
 <ol>
 <li>
 <p>首先创建挂载点，它可以是您想要的任何位置：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /media/iso
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir /media/iso
+</code></pre></div></li>
 <li>
 <p>通过键入以下命令将ISO文件挂载到挂载点：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mount /path/to/image.iso /mnt/iso -o loop
 </code></pre></div><p>不要忘记替换<code>/path/to/image.iso</code>ISO文件的路径。</p>
 </li>
 </ol>
-<h3 id="nfs">挂载NFS</h3>
+<h3 id="挂载nfs">挂载NFS</h3>
 <p>要安装NFS系统，您需要在系统上安装NFS客户端软件包。</p>
 <ul>
 <li>
@@ -219,35 +219,35 @@ mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME
 <ol>
 <li>
 <p>创建一个目录作为远程文件系统的挂载点：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /media/nfs
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir /media/nfs
+</code></pre></div></li>
 <li>
 <p>通常，您需要在引导时自动挂载远程NFS目录。为此<code>/etc/fstab</code>，请使用文本编辑器打开文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/fstab
-</code></pre><p><code>remote.server:/dir</code>将以下行添加到文件中，替换为NFS服务器IP地址或主机名以及导出的目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/fstab
+</code></pre></div><p><code>remote.server:/dir</code>将以下行添加到文件中，替换为NFS服务器IP地址或主机名以及导出的目录：</p>
 <p>/ etc / fstab文件</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="c1"># &lt;file system&gt;    &lt;dir&gt;       &lt;type&gt;   &lt;options&gt;   &lt;dump&gt;  &lt;pass&gt;</span>
 <span class="na">remote.server:/dir /media/nfs  nfs      defaults    0       0</span>
 </code></pre></div></li>
 <li>
 <p>通过运行以下命令挂载NFS共享：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mount /mnt/nfs
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mount /mnt/nfs
+</code></pre></div></li>
 </ol>
-<h2 id="heading2">卸载文件系统</h2>
+<h2 id="卸载文件系统">卸载文件系统</h2>
 <p>要分离已装入的文件系统，请使用<code>umount</code>命令后面的安装目录（安装点）或设备名称：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">umount DIRECTORYumount DEVICE_NAME
-</code></pre><p>如果文件系统正在使用，该<code>umount</code>命令将无法分离文件系统。在这些情况下，您可以使用该<code>fuser</code>命令找出正在访问文件系统的进程：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">fuser -m DIRECTORY
-</code></pre><p>确定进程后，可以停止它们并卸载文件系统。</p>
-<h3 id="heading3">懒惰卸载</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">umount DIRECTORYumount DEVICE_NAME
+</code></pre></div><p>如果文件系统正在使用，该<code>umount</code>命令将无法分离文件系统。在这些情况下，您可以使用该<code>fuser</code>命令找出正在访问文件系统的进程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">fuser -m DIRECTORY
+</code></pre></div><p>确定进程后，可以停止它们并卸载文件系统。</p>
+<h3 id="懒惰卸载">懒惰卸载</h3>
 <p>使用<code>-l</code>（<code>--lazy</code>）选项可以在忙碌文件系统不再忙时立即卸载它。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">umount -l DIRECTORY
-</code></pre><h3 id="heading4">强行卸下</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">umount -l DIRECTORY
+</code></pre></div><h3 id="强行卸下">强行卸下</h3>
 <p>使用<code>-f</code>（<code>--force</code>）选项强制卸载。此选项通常用于卸载无法访问的NFS系统。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">umount -f DIRECTORY
-</code></pre><p>强制卸载通常不是一个好主意，因为它可能会破坏文件系统上的数据。</p>
-<h2 id="heading5">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">umount -f DIRECTORY
+</code></pre></div><p>强制卸载通常不是一个好主意，因为它可能会破坏文件系统上的数据。</p>
+<h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用该<code>mount</code>命令将各种文件系统附加到目录树并使用该<code>umount</code>命令分离安装。</p>
 <p>要了解有关命令<code>mount</code>和<code>umount</code>命令选项的更多信息，请参阅各自的手册页。</p>
       </div><ul class="pa0">
@@ -327,22 +327,22 @@ mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">如何列出已安装的文件系统</a></li>
-    <li><a href="#heading1">挂载文件系统</a>
+    <li><a href="#如何列出已安装的文件系统">如何列出已安装的文件系统</a></li>
+    <li><a href="#挂载文件系统">挂载文件系统</a>
       <ul>
-        <li><a href="#-etc--fstab">使用/ etc / fstab挂载文件系统</a></li>
-        <li><a href="#usb">安装USB驱动器</a></li>
-        <li><a href="#iso">挂载ISO文件</a></li>
-        <li><a href="#nfs">挂载NFS</a></li>
+        <li><a href="#使用-etc--fstab挂载文件系统">使用/ etc / fstab挂载文件系统</a></li>
+        <li><a href="#安装usb驱动器">安装USB驱动器</a></li>
+        <li><a href="#挂载iso文件">挂载ISO文件</a></li>
+        <li><a href="#挂载nfs">挂载NFS</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">卸载文件系统</a>
+    <li><a href="#卸载文件系统">卸载文件系统</a>
       <ul>
-        <li><a href="#heading3">懒惰卸载</a></li>
-        <li><a href="#heading4">强行卸下</a></li>
+        <li><a href="#懒惰卸载">懒惰卸载</a></li>
+        <li><a href="#强行卸下">强行卸下</a></li>
       </ul>
     </li>
-    <li><a href="#heading5">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -354,7 +354,7 @@ mount <span class="o">[</span>OPTION...<span class="o">]</span> DEVICE_NAME
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

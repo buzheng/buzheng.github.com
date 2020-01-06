@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -153,16 +153,16 @@
 <p>但是，在某些情况下，您可能希望从远程位置连接到服务器。一种选择是将 <a href="/linux/mysql-remote-access/">MySQL 服务器配置为允许远程连接</a>，但这需要管理权限，这可能会带来安全风险。</p>
 <p>一种更安全的替代方法是创建从本地系统到服务器的 SSH 隧道。 <a href="/linux/how-to-setup-ssh-tunneling/">SSH 隧道</a>是一种在客户端和服务器计算机之间创建加密 SSH 连接的方法，通过该连接可以中继服务端口。</p>
 <p>在本指南中，我们将说明如何创建 SSH 隧道并从远程客户端连接到 MySQL 服务器。相同的说明适用于 MariaDB 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <ul>
 <li>SSH 客户端。</li>
 <li>通过 SSH 访问运行 MySQL 服务器的系统。</li>
 </ul>
-<h2 id="-linux--macos--ssh-">在 Linux 和 macOS 上创建 SSH 隧道</h2>
+<h2 id="在-linux-和-macos-上创建-ssh-隧道">在 Linux 和 macOS 上创建 SSH 隧道</h2>
 <p><code>ssh</code> 客户端已预安装在大多数基于 Linux 和 Unix 的系统上。</p>
 <p>如果您使用 Linux 或 macOS 作为操作系统，则可以使用以下命令创建 SSH 隧道：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ssh -N -L 3336:127.0.0.1:3306 [USER]@[SERVER_IP]
-</code></pre><p>使用的选项如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ssh -N -L 3336:127.0.0.1:3306 [USER]@[SERVER_IP]
+</code></pre></div><p>使用的选项如下：</p>
 <ul>
 <li><code>-N</code> - 告诉 SSH 不要执行远程命令。</li>
 <li><code>-L 3336:127.0.0.1:3306</code> - 创建本地端口转发。本地端口 (<code>3306</code>) ，目标 IP(<code>127.0.0.1</code>) 和远程端口 (<code>3306</code>) 用冒号 (<code>:</code>) 分隔。</li>
@@ -173,11 +173,11 @@
 <p>运行命令后，系统将提示您输入 SSH 用户密码。输入后，您将登录到服务器，并建立 SSH 隧道。最好<a href="/linux/how-to-setup-passwordless-ssh-login/">设置一个基于 SSH 密钥的身份验证</a>并连接到服务器而无需输入密码。</p>
 <p>现在，您可以本地计算机 MySQL 客户端连接 <code>127.0.0.1:3336</code> 来访问远程 MySQL 数据库服务器。</p>
 <p>例如，要使用命令行 <code>mysql</code> 客户端连接到 MySQL 服务器，您将发出：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -u MYSQL_USER -p -h 127.0.0.1
-</code></pre><p><code>MYSQL_USER</code> 是你要访问的远程 MySQL 数据库的用户。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u MYSQL_USER -p -h 127.0.0.1
+</code></pre></div><p><code>MYSQL_USER</code> 是你要访问的远程 MySQL 数据库的用户。</p>
 <p>出现提示时，输入 MySQL 用户密码。</p>
 <p>要终止 SSH 隧道 <code>CTRL+C</code> ，请在运行 ssh 客户端的控制台中输入。</p>
-<h2 id="-windows--ssh-">在 Windows 上创建 SSH 隧道</h2>
+<h2 id="在-windows-上创建-ssh-隧道">在 Windows 上创建 SSH 隧道</h2>
 <p>Windows 用户首先需要下载并安装 SSH 客户端程序。最受欢迎的 Windows SSH 客户端是 PuTTY 。您可以<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">在此处</a>下载 PuTTY  。</p>
 <p>执行以下步骤以使用 PuTTY 创建到 MySQL 服务器的 SSH 隧道：</p>
 <ol>
@@ -205,7 +205,7 @@
 <p>现在，您可以使用本地 MySQL 客户端连接到远程数据库。</p>
 <p>例如，如果您使用的是 HeidiSQL，请在 <code>Hostname/IP</code> 字段中输入 <code>127.0.0.1</code> ，并在 <code>User</code> 和 <code>Password</code> 字段中输入 MySQL 用户和密码：</p>
 <p><img src="heidisql.jpg" alt=""></p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>MySQL 是最流行的开源数据库服务器，默认仅在 localhost 上侦听传入的连接。创建 SSH 隧道可以使您从本地客户端安全地连接到远程 MySQL 服务器。</p>
       </div><ul class="pa0">
   
@@ -284,10 +284,10 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-linux--macos--ssh-">在 Linux 和 macOS 上创建 SSH 隧道</a></li>
-    <li><a href="#-windows--ssh-">在 Windows 上创建 SSH 隧道</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在-linux-和-macos-上创建-ssh-隧道">在 Linux 和 macOS 上创建 SSH 隧道</a></li>
+    <li><a href="#在-windows-上创建-ssh-隧道">在 Windows 上创建 SSH 隧道</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -299,7 +299,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

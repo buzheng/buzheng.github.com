@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,7 +150,7 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
 <p>Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们无法通过 Oumo 存储库中的 yum 安装 Odoo 包。</p>
 <p>我们要么在 docker  容器中运行 Odoo ，要么在 Python 虚拟环境中安装它。</p>
 <p>在本教程中，我们将向您介绍如何在 CentOS 7 计算机上使用 Git 源和 Python 虚拟环境安装 Odoo 11 。</p>
-<h2 id="heading">在开始之前</h2>
+<h2 id="在开始之前">在开始之前</h2>
 <p>以 <a href="/linux/create-a-sudo-user-on-centos/">sudo 用户身份</a>登录 CentOS 计算机并将系统更新到最新的软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum update
 </code></pre></div><p>键入以下命令启用 EPEL 存储库：</p>
@@ -162,13 +162,13 @@ Odoo 11 需要的 Python 3.5 在 CentOS 存储库中不可用。因此，我们�
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install rh-python35
 </code></pre></div><p>最后安装 <code>git</code> ， <code>pip</code> 以及构建 Odoo 依赖项所需的所有工具：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install git gcc wget nodejs-less libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel postgresql-devel
-</code></pre></div><h2 id="-odoo-">创建 Odoo 用户</h2>
+</code></pre></div><h2 id="创建-odoo-用户">创建 Odoo 用户</h2>
 <p>创建新的系统用户和组来运行 Odoo 服务， 用户的主目录设置为 <code>/opt/odoo</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -r -d /opt/odoo -s /bin/bash odoo
 </code></pre></div><blockquote>
 <p>您可以随意为用户命名，只需确保 PostgreSQL 也创建具有相同名称的用户即可。</p>
 </blockquote>
-<h2 id="-postgresql">安装和配置 PostgreSQL</h2>
+<h2 id="安装和配置-postgresql">安装和配置 PostgreSQL</h2>
 <p>安装 PostgreSQL 服务器并创建一个新的 PostgreSQL 数据库集群：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install postgresql-server
 sudo postgresql-setup initdb
@@ -177,12 +177,12 @@ sudo postgresql-setup initdb
 sudo systemctl start postgresql
 </code></pre></div><p>在我们的示例中，创建一个与先前创建的系统用户同名的 PostgreSQL 用户 <code>odoo</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - postgres -c <span class="s2">&#34;createuser -s odoo&#34;</span>
-</code></pre></div><h2 id="-wkhtmltopdf">安装 Wkhtmltopdf</h2>
+</code></pre></div><h2 id="安装-wkhtmltopdf">安装 Wkhtmltopdf</h2>
 <p>软件包 <code>wkhtmltox</code> 提供了一组开源命令行工具，可以将 HTML 呈现为 PDF 和各种图像格式。要打印 PDF 报告，您需要使用该 <code>wkhtmltopdf</code> 工具。 Odoo 的推荐版本 0.12.1 在官方 CentOS 7 存储库中并b不可用。</p>
 <p>要下载并安装推荐的版本，请运行以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm
 sudo yum localinstall wkhtmltox-0.12.1_linux-centos7-amd64.rpm
-</code></pre></div><h2 id="-odoo-11">安装和配置 Odoo 11</h2>
+</code></pre></div><h2 id="安装和配置-odoo-11">安装和配置 Odoo 11</h2>
 <p>我们将从 GitHub 存储库安装 Odoo ，以便我们可以更好地控制版本和更新。我们还将使用 <code>virtualenv</code> ，这是一个创建独立的 Python 环境的工具。</p>
 <p>在开始安装过程之前，请确保切换到 <code>odoo</code> 用户。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - odoo
@@ -222,7 +222,7 @@ sudo chown odoo: /opt/odoo/odoo11-custom-addons
 </code></pre></div><blockquote>
 <p>不要忘记更改 <code>superadmin_passwd</code> 为更安全的密码，如果使用自定义模块调整 <code>addons_path</code> 为自定义模块目录。</p>
 </blockquote>
-<h2 id="-systemd-">创建 systemd 单元文件</h2>
+<h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
 <p>为了将 odoo 作为服务运行，我们将在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件 <code>odoo11.service </code> ：</p>
 <p><code>/etc/systemd/system/odoo11.service</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit<span class="o">]</span>
@@ -258,14 +258,14 @@ sudo systemctl start odoo11
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> odoo11
 </code></pre></div><p>如果要查看 Odoo 服务记录的消息，可以使用以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo journalctl -u odoo11
-</code></pre></div><h2 id="heading1">测试安装</h2>
+</code></pre></div><h2 id="测试安装">测试安装</h2>
 <p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8069</code></p>
 <p>假设安装成功，将出现类似于以下内容的屏幕：</p>
 <p><img src="/images/linux/install-odoo-11-on-centos-7/odoo-screenshot.jpg" alt=""></p>
 <blockquote>
 <p>如果您无法访问该页面，那么您的防火墙可能阻止了端口 8069 。</p>
 </blockquote>
-<h2 id="heading2">结论</h2>
+<h2 id="结论">结论</h2>
 <p>本教程向您介绍了在 Python 虚拟环境中在 CentOS 7 上安装 Odoo 11 的过程。</p>
 <p>您可能还想了解有关如何为 Odoo 数据库创建自动每日备份的教程。</p>
 <!-- raw HTML omitted -->
@@ -346,14 +346,14 @@ sudo systemctl start odoo11
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">在开始之前</a></li>
-    <li><a href="#-odoo-">创建 Odoo 用户</a></li>
-    <li><a href="#-postgresql">安装和配置 PostgreSQL</a></li>
-    <li><a href="#-wkhtmltopdf">安装 Wkhtmltopdf</a></li>
-    <li><a href="#-odoo-11">安装和配置 Odoo 11</a></li>
-    <li><a href="#-systemd-">创建 systemd 单元文件</a></li>
-    <li><a href="#heading1">测试安装</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#在开始之前">在开始之前</a></li>
+    <li><a href="#创建-odoo-用户">创建 Odoo 用户</a></li>
+    <li><a href="#安装和配置-postgresql">安装和配置 PostgreSQL</a></li>
+    <li><a href="#安装-wkhtmltopdf">安装 Wkhtmltopdf</a></li>
+    <li><a href="#安装和配置-odoo-11">安装和配置 Odoo 11</a></li>
+    <li><a href="#创建-systemd-单元文件">创建 systemd 单元文件</a></li>
+    <li><a href="#测试安装">测试安装</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -365,7 +365,7 @@ sudo systemctl start odoo11
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

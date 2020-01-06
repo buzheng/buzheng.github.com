@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,44 +138,44 @@
           
   
           <p>在本教程中，我们将向您展示如何更改MySQL用户密码。这些说明适用于任何现代Linux发行版，如Ubuntu 18.04和CentOS 7。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>根据您在系统上运行的MySQL或MariaDB服务器版本，您需要使用不同的命令来更改用户密码。</p>
 <p>您可以通过发出以下命令找到数据库服务器版本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql --version
-</code></pre><p>如果你的系统中安装了MySQL，输出将如下所示：</p>
-<pre><code class="language-output" data-lang="output">mysql  Ver 14.14 Distrib 5.7.22, for Linux (x86_64) using  EditLine wrapper
-</code></pre><p>或者为MariaDB输出如下：</p>
-<pre><code class="language-output" data-lang="output">mysql  Ver 15.1 Distrib 10.1.33-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
-</code></pre><p>请务必记下您正在运行的MySQL或MariaDB版本。如果您想获得所有MySQL用户帐户的列表，请查看<a href="/linux/how-to-show-mysql-users/">本</a>指南。</p>
-<h2 id="mysql">如何更改MySQL用户密码</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql --version
+</code></pre></div><p>如果你的系统中安装了MySQL，输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql  Ver 14.14 Distrib 5.7.22, for Linux (x86_64) using  EditLine wrapper
+</code></pre></div><p>或者为MariaDB输出如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql  Ver 15.1 Distrib 10.1.33-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
+</code></pre></div><p>请务必记下您正在运行的MySQL或MariaDB版本。如果您想获得所有MySQL用户帐户的列表，请查看<a href="/linux/how-to-show-mysql-users/">本</a>指南。</p>
+<h2 id="如何更改mysql用户密码">如何更改MySQL用户密码</h2>
 <p>执行以下步骤更改MySQL用户密码：</p>
-<h3 id="1rootmysql-shell">1.以root用户身份登录MySQL shell</h3>
+<h3 id="1以root用户身份登录mysql-shell">1.以root用户身份登录MySQL shell</h3>
 <p>通过键入以下命令访问MySQL shell，并在出现提示时输入您的MySQL root用户密码：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -u root -p
-</code></pre><p>如果您尚未为MySQL root用户设置密码，则可以使用<code>sudo mysql</code>。</p>
-<h3 id="2mysql">2.设置MySQL用户密码</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p
+</code></pre></div><p>如果您尚未为MySQL root用户设置密码，则可以使用<code>sudo mysql</code>。</p>
+<h3 id="2设置mysql用户密码">2.设置MySQL用户密码</h3>
 <ul>
 <li>
 <p>如果您有MySQL 5.7.6及更高版本或MariaDB 10.1.20及更高版本，请键入以下命令：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">ALTER USER 'user-name'@'localhost' IDENTIFIED BY 'NEW_USER_PASSWORD';FLUSH PRIVILEGES;
-</code></pre><p>如果<code>ALTER USER</code>语句不适合您，您可以直接修改用户表：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">UPDATE mysql.user SET authentication_string = PASSWORD('NEW_USER_PASSWORD')WHERE User = 'user-name' AND Host = 'localhost';FLUSH PRIVILEGES;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ALTER USER &#39;user-name&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;NEW_USER_PASSWORD&#39;;FLUSH PRIVILEGES;
+</code></pre></div><p>如果<code>ALTER USER</code>语句不适合您，您可以直接修改用户表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">UPDATE mysql.user SET authentication_string = PASSWORD(&#39;NEW_USER_PASSWORD&#39;)WHERE User = &#39;user-name&#39; AND Host = &#39;localhost&#39;;FLUSH PRIVILEGES;
+</code></pre></div></li>
 <li>
 <p>如果您有MySQL 5.7.5及更早版本或MariaDB 10.1.20及更早版本，请键入以下命令：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">SET PASSWORD FOR 'user-name'@'localhost' = PASSWORD('NEW_USER_PASSWORD');FLUSH PRIVILEGES;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">SET PASSWORD FOR &#39;user-name&#39;@&#39;localhost&#39; = PASSWORD(&#39;NEW_USER_PASSWORD&#39;);FLUSH PRIVILEGES;
+</code></pre></div></li>
 </ul>
 <p>确保<code>user-name</code>使用要更改密码的用户的名称进行更改。如果用户从另一台主机连接到MySQL服务器，请<code>localhost</code>使用远程主机名或IP地址进行更改。</p>
 <p>在这两种情况下如果一切顺利，您将看到以下输出：</p>
-<pre><code class="language-output" data-lang="output">Query OK, 0 rows affected (0.00 sec)
-</code></pre><p>通过执行以下命令退出MySQL提示符：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">quit;
-</code></pre><h3 id="3">3.验证新密码</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Query OK, 0 rows affected (0.00 sec)
+</code></pre></div><p>通过执行以下命令退出MySQL提示符：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">quit;
+</code></pre></div><h3 id="3验证新密码">3.验证新密码</h3>
 <p>要验证是否已正确应用新密码，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -u user-name -h localhost -p
-</code></pre><p>系统将提示您输入新的用户密码。输入它，您将登录到您的MySQL服务器。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u user-name -h localhost -p
+</code></pre></div><p>系统将提示您输入新的用户密码。输入它，您将登录到您的MySQL服务器。</p>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何更改MySQL或MariaDB用户密码。确保新密码牢固且安全，并将其保存在安全的地方。</p>
 <p>要了解有关如何使用MySQL shell执行各种管理操作的更多信息，您可以查看我们的指南，了解如何管理<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">MySQL用户帐户和数据库</a>。</p>
       </div><ul class="pa0">
@@ -251,15 +251,15 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#mysql">如何更改MySQL用户密码</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#如何更改mysql用户密码">如何更改MySQL用户密码</a>
       <ul>
-        <li><a href="#1rootmysql-shell">1.以root用户身份登录MySQL shell</a></li>
-        <li><a href="#2mysql">2.设置MySQL用户密码</a></li>
-        <li><a href="#3">3.验证新密码</a></li>
+        <li><a href="#1以root用户身份登录mysql-shell">1.以root用户身份登录MySQL shell</a></li>
+        <li><a href="#2设置mysql用户密码">2.设置MySQL用户密码</a></li>
+        <li><a href="#3验证新密码">3.验证新密码</a></li>
       </ul>
     </li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -271,7 +271,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

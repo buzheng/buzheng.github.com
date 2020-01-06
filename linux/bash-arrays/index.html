@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,14 +145,14 @@
   
           <p>数组是最常用和最基本的数据结构之一。您可以认为数组是一个可以在其中存储多个变量的变量。</p>
 <p>在本文中，我们将讨论 Bash 数组，并列举了几个在 Bash 脚本中使用它们的示例。</p>
-<h2 id="bash-">Bash 数组</h2>
+<h2 id="bash-数组">Bash 数组</h2>
 <p>Bash 支持一维数字索引和关联数组类型。使用整数引用数值数组，使用字符串引用关联。指数不必是连续的。</p>
 <p>可以使用负索引从末尾访问数字索引数组， <code>-1</code> 引用索引是最后一个元素。</p>
 <p>与大多数编程语言不同， Bash 数组元素不必具有相同的数据类型。您可以创建一个包含字符串和数字的数组。 Bash 不支持多维数组，也不能包含也是数组的数组元素。</p>
 <p>可以存储在数组中的最大元素数没有限制。</p>
-<h2 id="-bash-">创建 Bash 数组</h2>
+<h2 id="创建-bash-数组">创建 Bash 数组</h2>
 <p>Bash 中的数组可以以不同的方式初始化。</p>
-<h3 id="heading">创建数字索引数组</h3>
+<h3 id="创建数字索引数组">创建数字索引数组</h3>
 <p>Bash 变量是无类型的，任何变量都可以用作索引数组而不声明它。</p>
 <p>要显式声明一个数组，请使用内置的 <code>declare</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">declare</span> -a array_name
@@ -164,7 +164,7 @@ array_name<span class="o">[</span>index_n<span class="o">]</span><span class="o"
 <p>创建数值数组的另一种方法是指定括号内的元素列表，用空格分隔：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">array_name</span><span class="o">=</span><span class="o">(</span> element_1 element_2 element_N <span class="o">)</span>
 </code></pre></div><p>使用上面的表单创建数组时，索引从零开始，即第一个元素的索引为 <code>0</code> 。</p>
-<h3 id="heading1">创建关联数组</h3>
+<h3 id="创建关联数组">创建关联数组</h3>
 <p>与数字索引不同，必须首先使用内置的 declare 和 <code>-A</code> （大写）选项声明关联数组：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">declare</span> -A array_name
 </code></pre></div><p>要创建关联数组，请使用以下格式：</p>
@@ -182,9 +182,9 @@ array_name<span class="o">[</span>index_xyz<span class="o">]</span><span class="
   <span class="o">[</span>index_bar<span class="o">]</span><span class="o">=</span>value_bar 
   <span class="o">[</span>index_xyz<span class="o">]</span><span class="o">=</span>value_xyz 
 <span class="o">)</span>
-</code></pre></div><h2 id="heading2">数组操作</h2>
+</code></pre></div><h2 id="数组操作">数组操作</h2>
 <p>Bash 数组的语法起初可能看起来有些奇怪，但是一旦你阅读这篇文章就会更有意义。</p>
-<h3 id="heading3">参考元素</h3>
+<h3 id="参考元素">参考元素</h3>
 <p>要引用单个元素，您需要知道元素索引。可以使用以下形式引用任何元素：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="si">${</span><span class="nv">array_name</span><span class="p">[index]</span><span class="si">}</span>
 </code></pre></div><blockquote>
@@ -197,15 +197,15 @@ array_name<span class="o">[</span>index_xyz<span class="o">]</span><span class="
 
 <span class="c1">## print element</span>
 <span class="nb">echo</span> <span class="si">${</span><span class="nv">my_array</span><span class="p">[1]</span><span class="si">}</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Helium
-</code></pre><p>如果指定的索引是 <code>@</code> 或 <code>*</code> ，则单词将扩展为数组的所有成员。要打印您将使用的所有元素：</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Helium
+</code></pre></div><p>如果指定的索引是 <code>@</code> 或 <code>*</code> ，则单词将扩展为数组的所有成员。要打印您将使用的所有元素：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1">## declare the array</span>
 <span class="nb">declare</span> -a <span class="nv">my_array</span><span class="o">=</span><span class="o">(</span> <span class="s2">&#34;Hydrogen&#34;</span> <span class="s2">&#34;Helium&#34;</span> <span class="s2">&#34;Lithium&#34;</span> <span class="s2">&#34;Beryllium&#34;</span> <span class="o">)</span>
 
 <span class="c1">## print all elements</span>
 <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">my_array</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Hydrogen Helium Lithium Beryllium
-</code></pre><p><code>@</code> 或者 <code>*</code> 唯一的区别是 <code> ${my_array[x]}</code> 用双引号括起来时。在这种情况下，<code>*</code> 扩展为数组元素用空格分隔的单个单词，而 <code>@</code> 将每个数组元素扩展为单独的单词。<!-- raw HTML omitted --></p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Hydrogen Helium Lithium Beryllium
+</code></pre></div><p><code>@</code> 或者 <code>*</code> 唯一的区别是 <code> ${my_array[x]}</code> 用双引号括起来时。在这种情况下，<code>*</code> 扩展为数组元素用空格分隔的单个单词，而 <code>@</code> 将每个数组元素扩展为单独的单词。<!-- raw HTML omitted --></p>
 <p>您还可以通过在数组名称之前添加运算符 <code>!</code> 来打印数组的键：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="si">${</span><span class="p">!array_name[index]</span><span class="si">}</span>
 </code></pre></div><p>例如，要打印您将使用的所有键：</p>
@@ -214,8 +214,8 @@ array_name<span class="o">[</span>index_xyz<span class="o">]</span><span class="
 
 <span class="c1">## print all elements</span>
 <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="p">!my_array[@]</span><span class="si">}</span><span class="s2">&#34;</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">0 1 2 3
-</code></pre><h3 id="heading4">数组长度</h3>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 1 2 3
+</code></pre></div><h3 id="数组长度">数组长度</h3>
 <p>要获取数组的长度，请使用以下格式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="si">${#</span><span class="nv">array_name</span><span class="p">[@]</span><span class="si">}</span>
 </code></pre></div><p>语法与引用所有元素以及 <code>#</code> 数组名称前的字符时的语法相同。</p>
@@ -224,8 +224,8 @@ array_name<span class="o">[</span>index_xyz<span class="o">]</span><span class="
 
 <span class="c1">## array Length</span>
 <span class="nb">echo</span> <span class="si">${#</span><span class="nv">my_array</span><span class="p">[@]</span><span class="si">}</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">4
-</code></pre><h3 id="heading5">循环遍历数组</h3>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">4
+</code></pre></div><h3 id="循环遍历数组">循环遍历数组</h3>
 <p>迭代数组中每个项目的最常用方法是使用 <a href="/linux/bash-for-loop/">for 循环</a>。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">declare</span> -a <span class="nv">my_array</span><span class="o">=</span><span class="o">(</span> <span class="s2">&#34;Hydrogen&#34;</span> <span class="s2">&#34;Helium&#34;</span> <span class="s2">&#34;Lithium&#34;</span> <span class="s2">&#34;Beryllium&#34;</span> <span class="o">)</span>
 
@@ -235,11 +235,11 @@ array_name<span class="o">[</span>index_xyz<span class="o">]</span><span class="
   <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span>
 <span class="k">done</span>
 </code></pre></div><p>上面的代码将遍历数组并在新行中打印每个元素：</p>
-<pre><code class="language-output" data-lang="output">Hydrogen
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Hydrogen
 Helium
 Lithium
 Beryllium
-</code></pre><p>以下是如何打印所有键和值的示例</p>
+</code></pre></div><p>以下是如何打印所有键和值的示例</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">declare</span> -a <span class="nv">my_array</span><span class="o">=</span><span class="o">(</span> <span class="s2">&#34;Hydrogen&#34;</span> <span class="s2">&#34;Helium&#34;</span> <span class="s2">&#34;Lithium&#34;</span> <span class="s2">&#34;Beryllium&#34;</span> <span class="o">)</span>
 
 <span class="c1">## Array Loop</span>
@@ -247,11 +247,11 @@ Beryllium
 <span class="k">do</span>
   <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">my_array</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span>
 <span class="k">done</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">0 Hydrogen
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 Hydrogen
 1 Helium
 2 Lithium
 3 Beryllium
-</code></pre><p>循环数组的另一种方法是获取数组的长度并使用 C 样式循环：</p>
+</code></pre></div><p>循环数组的另一种方法是获取数组的长度并使用 C 样式循环：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">declare</span> -a <span class="nv">my_array</span><span class="o">=</span><span class="o">(</span> <span class="s2">&#34;Hydrogen&#34;</span> <span class="s2">&#34;Helium&#34;</span> <span class="s2">&#34;Lithium&#34;</span> <span class="s2">&#34;Beryllium&#34;</span> <span class="o">)</span>
 
 <span class="c1"># Length of the array</span>
@@ -262,11 +262,11 @@ Beryllium
 <span class="k">do</span>
   <span class="nb">echo</span> <span class="nv">$i</span> <span class="si">${</span><span class="nv">my_array</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span>
 <span class="k">done</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">0 Hydrogen
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 Hydrogen
 1 Helium
 2 Lithium
 3 Beryllium
-</code></pre><h3 id="heading6">添加一个新元素</h3>
+</code></pre></div><h3 id="添加一个新元素">添加一个新元素</h3>
 <p>要向 bash 数组添加新元素并指定其索引，请使用以下格式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">my_array<span class="o">[</span>index_n<span class="o">]</span><span class="o">=</span><span class="s2">&#34;New Element&#34;</span>
 </code></pre></div><p>这是一个例子：</p>
@@ -277,8 +277,8 @@ my_array<span class="o">[</span>9<span class="o">]</span><span class="o">=</span
 
 <span class="c1">## print all elements</span>
 <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">my_array</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Hydrogen Helium Lithium Beryllium Aluminum
-</code></pre><p>在不指定索引的情况下向数组添加新元素的另一种方法是使用 <code>+=</code> 运算符。您可以添加一个或多个元素：</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Hydrogen Helium Lithium Beryllium Aluminum
+</code></pre></div><p>在不指定索引的情况下向数组添加新元素的另一种方法是使用 <code>+=</code> 运算符。您可以添加一个或多个元素：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">declare</span> -a <span class="nv">my_array</span><span class="o">=</span><span class="o">(</span> <span class="s2">&#34;Hydrogen&#34;</span> <span class="s2">&#34;Helium&#34;</span> <span class="s2">&#34;Lithium&#34;</span> <span class="s2">&#34;Beryllium&#34;</span> <span class="o">)</span>
 
 <span class="c1">## add new elements</span>
@@ -286,8 +286,8 @@ my_array<span class="o">[</span>9<span class="o">]</span><span class="o">=</span
 
 <span class="c1">## print all elements</span>
 <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">my_array</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Hydrogen Helium Lithium Beryllium Cobalt Nickel
-</code></pre><h2 id="heading7">删除元素</h2>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Hydrogen Helium Lithium Beryllium Cobalt Nickel
+</code></pre></div><h2 id="删除元素">删除元素</h2>
 <p>要删除单个元素，您需要知道元素索引。可以使用以下 <code>unset</code> 命令删除元素：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">unset</span> my_array<span class="o">[</span>index<span class="o">]</span>
 </code></pre></div><p>我们来看一个例子：</p>
@@ -298,8 +298,8 @@ my_array<span class="o">[</span>9<span class="o">]</span><span class="o">=</span
 
 <span class="c1">## print all elements</span>
 <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">my_array</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Hydrogen Helium Beryllium
-</code></pre><h2 id="heading8">结论</h2>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Hydrogen Helium Beryllium
+</code></pre></div><h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用 bash 数组。我们已经向您展示了如何创建数字索引和关联数组，如何遍历数组，计算数组长度以及添加和删除元素。</p>
       </div><ul class="pa0">
   
@@ -374,23 +374,23 @@ my_array<span class="o">[</span>9<span class="o">]</span><span class="o">=</span
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#bash-">Bash 数组</a></li>
-    <li><a href="#-bash-">创建 Bash 数组</a>
+    <li><a href="#bash-数组">Bash 数组</a></li>
+    <li><a href="#创建-bash-数组">创建 Bash 数组</a>
       <ul>
-        <li><a href="#heading">创建数字索引数组</a></li>
-        <li><a href="#heading1">创建关联数组</a></li>
+        <li><a href="#创建数字索引数组">创建数字索引数组</a></li>
+        <li><a href="#创建关联数组">创建关联数组</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">数组操作</a>
+    <li><a href="#数组操作">数组操作</a>
       <ul>
-        <li><a href="#heading3">参考元素</a></li>
-        <li><a href="#heading4">数组长度</a></li>
-        <li><a href="#heading5">循环遍历数组</a></li>
-        <li><a href="#heading6">添加一个新元素</a></li>
+        <li><a href="#参考元素">参考元素</a></li>
+        <li><a href="#数组长度">数组长度</a></li>
+        <li><a href="#循环遍历数组">循环遍历数组</a></li>
+        <li><a href="#添加一个新元素">添加一个新元素</a></li>
       </ul>
     </li>
-    <li><a href="#heading7">删除元素</a></li>
-    <li><a href="#heading8">结论</a></li>
+    <li><a href="#删除元素">删除元素</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -402,7 +402,7 @@ my_array<span class="o">[</span>9<span class="o">]</span><span class="o">=</span
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

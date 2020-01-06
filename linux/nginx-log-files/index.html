@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -144,7 +144,7 @@
 <p>在对服务器或应用程序问题进行故障排除时，知道如何配置和读取日志非常有用，因为它们提供了详细的调试信息。</p>
 <p>Nginx 用两种类型的日志记录其事件记录：访问日志和错误日志。访问日志记录有关客户端请求的信息，错误日志记录有关服务器和应用程序问题的信息。</p>
 <p>本文概述了如何配置和读取 Nginx 访问和错误日​​志。</p>
-<h2 id="heading">配置访问日志</h2>
+<h2 id="配置访问日志">配置访问日志</h2>
 <p>每当处理客户请求时， Nginx 都会在访问日志中生成一个新事件。每个事件记录都包含一个时间戳，并包含有关客户端和所请求资源的各种信息。访问日志可以向您显示访问者的位置，访问者访问的页面，他们在页面上花费的时间等等。</p>
 <p>在 <code>log_format</code> 指令中您可以定义记录消息的格式。<code>access_log</code> 指令启用并设置日志文件的位置和使用的格式。</p>
 <p><code>access_log</code> 指令的最基本语法如下：</p>
@@ -181,7 +181,7 @@
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span>  <span class="s">/var/log/nginx/access.log</span> <span class="s">custom</span><span class="p">;</span>
 </code></pre></div><p>而访问日志提供了非常有用的信息。它会占用磁盘空间，并可能影响服务器性能。如果服务器资源不足，并且网站繁忙，则可能要禁用访问日志。为此，请将 <code>access_log</code> 伪指令的值设置为 <code>off</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">access_log</span>  <span class="no">off</span><span class="p">;</span>
-</code></pre></div><h2 id="heading1">配置错误日志</h2>
+</code></pre></div><h2 id="配置错误日志">配置错误日志</h2>
 <p>Nginx 在错误日志文件中记录有关应用程序和常规服务器错误的消息。如果您在 Web 应用程序中遇到错误，则错误日志往往是开始进行故障排除问题的第一选择。</p>
 <p><code>error_log</code> 指令用来启用错误日志并设置错误日志的位置和严重性级别。它采用下列形式，并且可以配置在 <code>http</code> ， <code>server</code> 或 <code>location</code> 块中：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">error_log</span> <span class="s">log_file</span> <span class="s">log_level</span>
@@ -218,13 +218,13 @@
   <span class="err">}</span>
 <span class="err">}</span>
 </code></pre></div><p>每当您修改配置文件时，都必须<a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>以使更改生效。</p>
-<h2 id="heading2">日志文件的位置</h2>
+<h2 id="日志文件的位置">日志文件的位置</h2>
 <p>默认情况下，在大多数 Linux 发行版(如 <a href="/linux/nginx-reverse-proxy/">Ubuntu</a> ， <a href="/linux/how-to-install-nginx-on-centos-8/">CentOS</a> 和 <a href="/linux/how-to-install-nginx-on-debian-10/">Debian) 上</a>，访问和错误日​​志位于 <code>/var/log/nginx</code> 目录中。</p>
-<h2 id="-nginx-">查看和分析 Nginx 日志文件</h2>
+<h2 id="查看和分析-nginx-日志文件">查看和分析 Nginx 日志文件</h2>
 <p>您可以打开并使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> ， <a href="/linux/less-command-in-linux/"><code>less</code></a> ， <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> ， <a href="/linux/linux-cut-command/"><code>cut</code></a> ， <code>awk</code> 等类似的标准命令解析日志文件。</p>
 <p>这是来自访问日志文件的示例记录，该记录使用默认的 Nginx 日志格式：</p>
-<pre><code class="language-output" data-lang="output">192.168.33.1 - - [15/Oct/2019:19:41:46 +0000] &quot;GET/HTTP/1.1&quot; 200 396 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36&quot;
-</code></pre><p>让我们分解一下记录的每个字段的含义：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">192.168.33.1 - - [15/Oct/2019:19:41:46 +0000] &#34;GET/HTTP/1.1&#34; 200 396 &#34;-&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36&#34;
+</code></pre></div><p>让我们分解一下记录的每个字段的含义：</p>
 <ul>
 <li><code>$remote_addr</code> &ndash;  <code>192.168.33.1</code> 发出请求的客户端的 IP 地址。</li>
 <li><code>$remote_user</code> &ndash; <code>-</code> HTTP 验证用户。未设置用户名时，显示 <code>-</code> 。</li>
@@ -236,8 +236,8 @@
 <li><code>&quot; $http_user_agent &quot; </code> &ndash;   <code>Mozilla/5.0 ...</code> 客户端的用户代理 (Web 浏览器)。</li>
 </ul>
 <p>使用以下 <a href="/linux/linux-tail-command/"><code>tail</code></a> 命令实时查看日志文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">tail -f  access.log
-</code></pre><h2 id="heading3">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tail -f  access.log
+</code></pre></div><h2 id="结论">结论</h2>
 <p>日志文件记录了有关服务器问题以及访问者如何与您的网站进行交互的有用信息。您可以根据自己的和实际情况和需要配置访问和错误日​​志。</p>
       </div><ul class="pa0">
   
@@ -308,11 +308,11 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">配置访问日志</a></li>
-    <li><a href="#heading1">配置错误日志</a></li>
-    <li><a href="#heading2">日志文件的位置</a></li>
-    <li><a href="#-nginx-">查看和分析 Nginx 日志文件</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#配置访问日志">配置访问日志</a></li>
+    <li><a href="#配置错误日志">配置错误日志</a></li>
+    <li><a href="#日志文件的位置">日志文件的位置</a></li>
+    <li><a href="#查看和分析-nginx-日志文件">查看和分析 Nginx 日志文件</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -324,7 +324,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

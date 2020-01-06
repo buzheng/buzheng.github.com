@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -41,7 +41,7 @@
 在本文中，我们将解释如何列出 Docker 容器。">
 <meta itemprop="datePublished" content="2019-11-21T12:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-21T12:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1211">
+<meta itemprop="wordCount" content="1191">
 <meta itemprop="image" content="https://buzheng.org/linux/how-to-list-docker-containers/featured.jpg">
 
 
@@ -127,7 +127,7 @@
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 1300 字</span>
+          <span class="f6 dib tracked">约 1200 字</span>
           <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
         
       </div>
@@ -145,20 +145,20 @@
   
           <p>Docker 是一个容器化平台，可让您快速构建，测试和部署应用程序，作为可在任何地方虚拟运行的、可移植的、自给自足的容器。它是事实上的容器部署标准，对于 DevOps 工程师及其持续的集成和交付管道而言，是必不可少的工具。</p>
 <p>在本文中，我们将解释如何列出 Docker 容器。</p>
-<h2 id="-docker-">列出 Docker 容器</h2>
+<h2 id="列出-docker-容器">列出 Docker 容器</h2>
 <p>用于列出容器的 Docker 命令采用以下形式：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls [options]
-</code></pre><p>1.13 之前的旧 Docker 版本使用不同的命令来列出容器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker ps [options]
-</code></pre><p>较新的 Docker 版本仍支持上述 <code>ps</code> 命令，该命令是的别名 <code>container ls</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls [options]
+</code></pre></div><p>1.13 之前的旧 Docker 版本使用不同的命令来列出容器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker ps [options]
+</code></pre></div><p>较新的 Docker 版本仍支持上述 <code>ps</code> 命令，该命令是的别名 <code>container ls</code> 。</p>
 <p>要列出正在运行的容器，请运行 <code>docker container ls</code> 不带任何选项的命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls
-</code></pre><p>输出将如下所示：</p>
-<pre><code class="language-output" data-lang="output">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS        PORTS       NAMES
-c8bded53da86    postgres     &quot;docker-entrypoint.s…&quot;   2 hours ago    Up 2 hours    5432/tcp    pg
-571c3a115fcf    redis        &quot;docker-entrypoint.s…&quot;   4 hours ago    Up 4 hours    6379/tcp    cache
-05ef6d8680ba    nginx        &quot;nginx -g 'daemon of…&quot;   2 hours ago    Up 2 hours    80/tcp      web
-</code></pre><p>输出的每一行包括以下几列：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS        PORTS       NAMES
+c8bded53da86    postgres     &#34;docker-entrypoint.s…&#34;   2 hours ago    Up 2 hours    5432/tcp    pg
+571c3a115fcf    redis        &#34;docker-entrypoint.s…&#34;   4 hours ago    Up 4 hours    6379/tcp    cache
+05ef6d8680ba    nginx        &#34;nginx -g &#39;daemon of…&#34;   2 hours ago    Up 2 hours    80/tcp      web
+</code></pre></div><p>输出的每一行包括以下几列：</p>
 <ul>
 <li><code>Container ID</code> – 容器ID，标识每个容器的唯一的字母数字字符串。</li>
 <li><code>Image</code> – 用于创建容器的 Docker 映像。</li>
@@ -170,46 +170,46 @@ c8bded53da86    postgres     &quot;docker-entrypoint.s…&quot;   2 hours ago   
 </ul>
 <p>如果没有正在运行的容器，则仅显示标题行。</p>
 <p>如果想打印所有容器的列表，请在 <code>docker container ls</code> 后面带上 <code>-a</code> 或者 <code>--all</code> 选项告诉 ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -a
-</code></pre><pre><code class="language-output" data-lang="output">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS                    PORTS       NAMES
-b28cbaa91f15    couchbase    &quot;/entrypoint.sh couc…&quot;   5 hours ago    Exited (0) 3 hours ago                db
-c8bded53da86    postgres     &quot;docker-entrypoint.s…&quot;   2 hours ago    Up 2 hours                5432/tcp    pg
-571c3a115fcf    redis        &quot;docker-entrypoint.s…&quot;   4 hours ago    Up 4 hours                6379/tcp    cache
-05ef6d8680ba    nginx        &quot;nginx -g 'daemon of…&quot;   2 hours ago    Up 2 hours                80/tcp      web
-</code></pre><p>默认情况下，长度超过指定限制的列将被截断。使用该 <code>--no-trunc</code> 选项禁用截断：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls --no-trunc
-</code></pre><p>要仅显示容器的 ID ，请传递 <code>-q</code> 或者 <code>--quiet</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -q
-</code></pre><pre><code class="language-output" data-lang="output">c8bded53da86
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -a
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS                    PORTS       NAMES
+b28cbaa91f15    couchbase    &#34;/entrypoint.sh couc…&#34;   5 hours ago    Exited (0) 3 hours ago                db
+c8bded53da86    postgres     &#34;docker-entrypoint.s…&#34;   2 hours ago    Up 2 hours                5432/tcp    pg
+571c3a115fcf    redis        &#34;docker-entrypoint.s…&#34;   4 hours ago    Up 4 hours                6379/tcp    cache
+05ef6d8680ba    nginx        &#34;nginx -g &#39;daemon of…&#34;   2 hours ago    Up 2 hours                80/tcp      web
+</code></pre></div><p>默认情况下，长度超过指定限制的列将被截断。使用该 <code>--no-trunc</code> 选项禁用截断：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls --no-trunc
+</code></pre></div><p>要仅显示容器的 ID ，请传递 <code>-q</code> 或者 <code>--quiet</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -q
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">c8bded53da86
 571c3a115fcf
 05ef6d8680ba
-</code></pre><p><code>--format</code> 选项允许你使用模板格式化输出。例如，仅打印容器的名称和状态，包括要运行的标题：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls --format 'table {{.Names}}\t{{.Status}}'
+</code></pre></div><p><code>--format</code> 选项允许你使用模板格式化输出。例如，仅打印容器的名称和状态，包括要运行的标题：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls --format &#39;table {{.Names}}\t{{.Status}}&#39;
 
-</code></pre><pre><code class="language-output" data-lang="output">NAMES    STATUS
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAMES    STATUS
 pg       Up 2 hours
 cache    Up 4 hours
 web      Up 2 hours
-</code></pre><p>使用 <code>-s</code> 或 <code>--size</code> 选项查看容器的大小：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -s
-</code></pre><p>每行将包含一列 <code>SIZE</code> ，该列显示容器的大小：</p>
-<pre><code class="language-output" data-lang="output">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS        PORTS       NAMES    SIZE
-c8bded53da86    postgres     &quot;docker-entrypoint.s…&quot;   2 hours ago    Up 2 hours    5432/tcp    pg       63B (virtual 394MB)
-571c3a115fcf    redis        &quot;docker-entrypoint.s…&quot;   4 hours ago    Up 4 hours    6379/tcp    cache    0B (virtual 98.2MB)
-05ef6d8680ba    nginx        &quot;nginx -g 'daemon of…&quot;   2 hours ago    Up 2 hours    80/tcp      web      2B (virtual 126MB)
-</code></pre><p><code>--last</code> ， <code>-n</code> 选项告诉命令显示最后创建的 <code>n</code> 个容器。例如，要查看最近创建的两个容器，可以运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -n 2
-</code></pre><pre><code class="language-output" data-lang="output">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS                    PORTS       NAMES
-b28cbaa91f15    couchbase    &quot;/entrypoint.sh couc…&quot;   5 hours ago    Exited (0) 3 hours ago                db
-c8bded53da86    postgres     &quot;docker-entrypoint.s…&quot;   2 hours ago    Up 2 hours                5432/tcp    pg
-</code></pre><p>还有一个选项仅列出最新创建的容器 <code>--latest</code> ，与 <code>-l</code> 和 <code>-n 1</code> 选项相同 ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -l
-</code></pre><p>使用 <code>--filter</code> 或 <code>-f</code> 选项，您可以根据某些条件过滤输出。例如，要仅查看具有 <code>exited</code> 状态的容器，请运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -f &quot;status=exited&quot;
-</code></pre><pre><code class="language-output" data-lang="output">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS                    PORTS       NAMES
-b28cbaa91f15    couchbase    &quot;/entrypoint.sh couc…&quot;   5 hours ago    Exited (0) 3 hours ago                db
-</code></pre><p>有关所有支持的过滤器的列表，请查阅 <a href="https://docs.docker.com/engine/reference/commandline/ps/#filtering">Docker 文档。</a></p>
-<h2 id="heading">结论</h2>
+</code></pre></div><p>使用 <code>-s</code> 或 <code>--size</code> 选项查看容器的大小：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -s
+</code></pre></div><p>每行将包含一列 <code>SIZE</code> ，该列显示容器的大小：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS        PORTS       NAMES    SIZE
+c8bded53da86    postgres     &#34;docker-entrypoint.s…&#34;   2 hours ago    Up 2 hours    5432/tcp    pg       63B (virtual 394MB)
+571c3a115fcf    redis        &#34;docker-entrypoint.s…&#34;   4 hours ago    Up 4 hours    6379/tcp    cache    0B (virtual 98.2MB)
+05ef6d8680ba    nginx        &#34;nginx -g &#39;daemon of…&#34;   2 hours ago    Up 2 hours    80/tcp      web      2B (virtual 126MB)
+</code></pre></div><p><code>--last</code> ， <code>-n</code> 选项告诉命令显示最后创建的 <code>n</code> 个容器。例如，要查看最近创建的两个容器，可以运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -n 2
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS                    PORTS       NAMES
+b28cbaa91f15    couchbase    &#34;/entrypoint.sh couc…&#34;   5 hours ago    Exited (0) 3 hours ago                db
+c8bded53da86    postgres     &#34;docker-entrypoint.s…&#34;   2 hours ago    Up 2 hours                5432/tcp    pg
+</code></pre></div><p>还有一个选项仅列出最新创建的容器 <code>--latest</code> ，与 <code>-l</code> 和 <code>-n 1</code> 选项相同 ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -l
+</code></pre></div><p>使用 <code>--filter</code> 或 <code>-f</code> 选项，您可以根据某些条件过滤输出。例如，要仅查看具有 <code>exited</code> 状态的容器，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -f &#34;status=exited&#34;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CONTAINER ID    IMAGE        COMMAND                  CREATED        STATUS                    PORTS       NAMES
+b28cbaa91f15    couchbase    &#34;/entrypoint.sh couc…&#34;   5 hours ago    Exited (0) 3 hours ago                db
+</code></pre></div><p>有关所有支持的过滤器的列表，请查阅 <a href="https://docs.docker.com/engine/reference/commandline/ps/#filtering">Docker 文档。</a></p>
+<h2 id="结论">结论</h2>
 <p>Docker 容器是映像的独立运行时实例。</p>
 <p>要列出 Docker 容器，请使用 <code>docker container ls</code> 命令或其别名 <code>docker ps</code> 。</p>
       </div><ul class="pa0">
@@ -281,8 +281,8 @@ b28cbaa91f15    couchbase    &quot;/entrypoint.sh couc…&quot;   5 hours ago   
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-docker-">列出 Docker 容器</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#列出-docker-容器">列出 Docker 容器</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -294,7 +294,7 @@ b28cbaa91f15    couchbase    &quot;/entrypoint.sh couc…&quot;   5 hours ago   
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

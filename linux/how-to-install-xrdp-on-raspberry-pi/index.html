@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,27 +142,27 @@
   
           <p>Xrdp 是 Microsoft 远程桌面协议 (RDP) 的开源实现，可让您以图形方式控制远程系统。本教程说明如何在 Raspberry Pi 3 和4上安装和配置 Xrdp 服务器。</p>
 <p>使用 RDP ，您可以从另一台运行 Windows ， Linux 或 macOS 的计算机登录到 Raspberry Pi 盒子，并创建真实的桌面会话，就像登录本地计算机一样。 Pi 和客户端计算机必须连接到同一网络或 Internet 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>我们假设您<a href="/linux/how-to-install-raspbian-on-raspberry-pi/">在 Raspberry Pi 上安装了 Raspbian</a> 。</p>
 <p>Raspbian Buster 有几种不同的选项，如果您安装的是不带 GUI 的 Raspbian Lite ，则需要安装一个桌面环境，该环境将充当 Xrdp 的后端。</p>
 <p>Rabsbian 存储库中有几种可用的桌面环境 (DE) 。我们将安装 <a href="https://www.raspberrypi.org/blog/introducing-pixel/">Pixel</a> ，这是 Raspbian Desktop 图像上的默认桌面环境。它是一种快速，稳定且轻巧的桌面环境，非常适合在远程服务器上使用。</p>
 <p>登录到您的 Pi 并运行以下命令来安装 Pixel 桌面：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
-</code></pre><p>根据您的系统，下载和安装 Pixel 软件包可能需要一些时间。</p>
+</code></pre></div><p>根据您的系统，下载和安装 Pixel 软件包可能需要一些时间。</p>
 <p>完成后，<a href="/linux/reboot-linux-using-command-line/">重启系统</a>以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo reboot
-</code></pre><h2 id="-xrdp">安装 Xrdp</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo reboot
+</code></pre></div><h2 id="安装-xrdp">安装 Xrdp</h2>
 <p>Xrdp 软件包在默认的 Raspbian Buster 存储库中可用。要安装它，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install xrdp
-</code></pre><p>安装过程完成后， Xrdp 服务将自动启动。您可以通过键入以下命令来验证 Xrdp 是否正在运行：</p>
-<pre><code class="language-condole-bash" data-lang="condole-bash">systemctl show -p SubState --value xrdp
-</code></pre><p>该命令将显示 “running”。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install xrdp
+</code></pre></div><p>安装过程完成后， Xrdp 服务将自动启动。您可以通过键入以下命令来验证 Xrdp 是否正在运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl show -p SubState --value xrdp
+</code></pre></div><p>该命令将显示 “running”。</p>
 <p>默认情况下， Xrdp 使用的 <code>/etc/ssl/private/ssl-cert-snakeoil.key</code> 文件只有 “ssl-cert” 组的用户才能读取。您需要将运行 Xrdp 服务器的用户添加到 <code>ssl-cert</code> 组中。</p>
 <p>执行以下命令<a href="/linux/how-to-add-user-to-group-in-linux/">将用户添加到组中</a>：</p>
-<pre><code class="language-condole-bash" data-lang="condole-bash">sudo adduser xrdp ssl-cert  
-</code></pre><p>现在， Xrdp 已安装在您的 Pi 上。</p>
-<h2 id="-raspberry-pi">连接到 Raspberry Pi</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo adduser xrdp ssl-cert  
+</code></pre></div><p>现在， Xrdp 已安装在您的 Pi 上。</p>
+<h2 id="连接到-raspberry-pi">连接到 Raspberry Pi</h2>
 <p>现在您已经设置了 Xrdp 服务器，是时候打开 Xrdp 客户端并连接到 Pi 了。</p>
 <p>如果您是 Windows 用户，则可以使用默认的 RDP 客户端连接到 Pi 。在 Windows 搜索栏中键入 “remote” ，然后单击 “ Remote Desktop Connection” 。这将打开 RDP 客户端。在计算机字段中，输入 Raspberry Pi 的 <a href="/linux/how-to-find-ip-address-linux/">IP 地址</a>，然后单击“连接”。</p>
 <p><img src="rdp-client.jpg" alt=""></p>
@@ -172,7 +172,7 @@ sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
 <p><img src="xrdp-pixel-desktop.jpg" alt=""></p>
 <p>从这里开始，您可以使用键盘和鼠标从本地计算机与远程 Raspberry Pi 桌面进行交互。</p>
 <p>如果您使用的是 macOS ，则可以从 Mac App Store 安装 Microsoft 远程桌面应用程序。 Linux 用户可以使用 RDP 客户端，例如 Remmina 或 Vinagre 。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>安装 Xrdp 服务器后，您可以使用易于使用的图形界面从本地台式机管理 Raspberry Pi 服务器。</p>
       </div><ul class="pa0">
   
@@ -243,10 +243,10 @@ sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-xrdp">安装 Xrdp</a></li>
-    <li><a href="#-raspberry-pi">连接到 Raspberry Pi</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-xrdp">安装 Xrdp</a></li>
+    <li><a href="#连接到-raspberry-pi">连接到 Raspberry Pi</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -258,7 +258,7 @@ sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

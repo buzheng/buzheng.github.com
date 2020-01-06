@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -149,31 +149,31 @@
           <p>使用 <a href="/linux/how-to-move-files-in-linux-with-mv-command/"><code>mv</code></a> 命令重命名多个文件和目录可能是一个繁琐的过程，因为它涉及使用管道，<a href="/linux/bash-for-loop/">循环等</a>编写复杂命令。</p>
 <p>这是 <code>rename</code> 命令派上用场的地方。它通过使用指定的替换替换其名称中的搜索表达式来重命名给定文件。</p>
 <p>在本教程中，我们将解释如何使用该 <code>rename</code> 命令批量重命名文件。</p>
-<h2 id="-rename">安装  <code>rename</code></h2>
+<h2 id="安装-rename">安装  <code>rename</code></h2>
 <p>该 <code>rename</code> 命令有两个版本，具有不同的语法和功能。我们将使用 <code>rename</code> 命令的 Perl 版本。</p>
 <p>如果您的系统上未安装此版本，请使用 Linux 发行版的软件包管理器进行安装：</p>
 <ul>
 <li>
 <p><strong>Ubuntu 和 Debian</strong></p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-sudo apt install rename</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+sudo apt install rename</code></pre></div>
 </li>
 <li>
 <p><strong>CentOS 和 Fedora</strong></p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install prename</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install prename</code></pre></div>
 </li>
 <li>
 <p><strong>Arch Linux</strong></p>
-<pre><code class="language-console-bash" data-lang="console-bash">yay perl-rename</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yay perl-rename</code></pre></div>
 </li>
 </ul>
-<h2 id="-rename1">使用  <code>rename</code></h2>
+<h2 id="使用-rename">使用  <code>rename</code></h2>
 <p>以下是 <code>rename</code> 命令的一般语法：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">rename <span class="o">[</span>OPTIONS<span class="o">]</span> perlexpr files
 </code></pre></div><p>该 <code>rename</code> 命令基本上是一个 Perl 脚本。它将根据指定的 <code>perlexpr</code> 正则表达式重命名给定 <code>files</code>。你可以<a href="https://perldoc.perl.org/perlre.html#Regular-Expressions">在这里</a>阅读有关 Perl 的正则表达式。</p>
 <p>例如，以下命令将所有 <code>.css</code> 文件的扩展名更改为 <code>.scss</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rename 's/.css/.scss/' *.css
-</code></pre><p>让我们更详细地解释一下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename &#39;s/.css/.scss/&#39; *.css
+</code></pre></div><p>让我们更详细地解释一下命令：</p>
 <ul>
 <li><code>s/search_pattern/replacement/</code> - 替换模式。</li>
 <li><code>.css</code> - 搜索模式。它是替换运算符中的第一个参数。 rename 命令将在给定的文件名中搜索此模式，如果找到它将用 replace 参数替换它。</li>
@@ -181,35 +181,35 @@ sudo apt install rename</code></pre>
 <li><code>*.css</code> - 所有扩展名为 “.css” 的文件。通配符 (<code>*</code>) 是用于表示零个，一个或多个字符的符号。</li>
 </ul>
 <p>在运行实际命令并重命名文件和目录之前，最好使用 <code>-n</code> 将执行“空运行” 的选项并显示将重命名的文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rename -n 's/.css/.scss/' *.css
-</code></pre><p>输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">rename(file-0.css, file-0.scss)
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename -n &#39;s/.css/.scss/&#39; *.css
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename(file-0.css, file-0.scss)
 rename(file-1.css, file-1.scss)
 rename(file-2.css, file-2.scss)
 rename(file-3.css, file-3.scss)
 rename(file-4.css, file-4.scss)
-</code></pre><p>默认情况下，<code>rename</code> 命令不会覆盖现有文件。使用 <code>-f</code> 选项告诉 <code>rename to</code> 覆盖现有文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rename -f 's/.css/.scss/' *.css
-</code></pre><p>如果要 <code>rename</code> 打印已成功重命名的文件的名称，请使用 <code>-v</code> (详细)选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">rename -v 's/.css/.scss/' *.css
-</code></pre><pre><code class="language-output" data-lang="output">file-0.css renamed as file-0.scss
+</code></pre></div><p>默认情况下，<code>rename</code> 命令不会覆盖现有文件。使用 <code>-f</code> 选项告诉 <code>rename to</code> 覆盖现有文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename -f &#39;s/.css/.scss/&#39; *.css
+</code></pre></div><p>如果要 <code>rename</code> 打印已成功重命名的文件的名称，请使用 <code>-v</code> (详细)选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename -v &#39;s/.css/.scss/&#39; *.css
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">file-0.css renamed as file-0.scss
 file-1.css renamed as file-1.scss
 file-2.css renamed as file-2.scss
 file-3.css renamed as file-3.scss
 file-4.css renamed as file-4.scss
-</code></pre><h2 id="rename"><code>rename</code> 例子</h2>
+</code></pre></div><h2 id="rename例子"><code>rename</code> 例子</h2>
 <p>以下是如何使用 rename 命令的一些常见示例：</p>
-<h3 id="heading">用下划线替换文件名中的空格</h3>
-<pre><code class="language-console-bash" data-lang="console-bash">rename 'y/ /_/' *
-</code></pre><h3 id="heading1">将文件名转换为小写</h3>
-<pre><code class="language-console-bash" data-lang="console-bash">rename 'y/A-Z/a-z/' *
-</code></pre><h3 id="heading2">将文件名转换为大写</h3>
-<pre><code class="language-console-bash" data-lang="console-bash">rename 'y/a-z/A-Z/' *
-</code></pre><h3 id="-bak">从文件名中删除 <code>.bak</code></h3>
-<pre><code class="language-console-bash" data-lang="console-bash">rename 's/\.bak$//' *.bak
-</code></pre><h3 id="-jpeg--jpg--jpg">重命名 <code>.jpeg</code> 和 <code>.JPG</code> 文件名为 <code>.jpg</code></h3>
-<pre><code class="language-console-bash" data-lang="console-bash">rename 's/\.jpe?g$/.jpg/i' *
-</code></pre><h2 id="heading3">结论</h2>
+<h3 id="用下划线替换文件名中的空格">用下划线替换文件名中的空格</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename &#39;y/ /_/&#39; *
+</code></pre></div><h3 id="将文件名转换为小写">将文件名转换为小写</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename &#39;y/A-Z/a-z/&#39; *
+</code></pre></div><h3 id="将文件名转换为大写">将文件名转换为大写</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename &#39;y/a-z/A-Z/&#39; *
+</code></pre></div><h3 id="从文件名中删除-bak">从文件名中删除 <code>.bak</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename &#39;s/\.bak$//&#39; *.bak
+</code></pre></div><h3 id="重命名-jpeg-和-jpg-文件名为-jpg">重命名 <code>.jpeg</code> 和 <code>.JPG</code> 文件名为 <code>.jpg</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">rename &#39;s/\.jpe?g$/.jpg/i&#39; *
+</code></pre></div><h2 id="结论">结论</h2>
 <p><code>rename</code> 命令允许您使用 Perl 正则表达式一次重命名多个文件。</p>
       </div><ul class="pa0">
   
@@ -284,18 +284,18 @@ file-4.css renamed as file-4.scss
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-rename">安装  rename</a></li>
-    <li><a href="#-rename1">使用  rename</a></li>
-    <li><a href="#rename">rename 例子</a>
+    <li><a href="#安装-rename">安装  rename</a></li>
+    <li><a href="#使用-rename">使用  rename</a></li>
+    <li><a href="#rename例子">rename 例子</a>
       <ul>
-        <li><a href="#heading">用下划线替换文件名中的空格</a></li>
-        <li><a href="#heading1">将文件名转换为小写</a></li>
-        <li><a href="#heading2">将文件名转换为大写</a></li>
-        <li><a href="#-bak">从文件名中删除 .bak</a></li>
-        <li><a href="#-jpeg--jpg--jpg">重命名 .jpeg 和 .JPG 文件名为 .jpg</a></li>
+        <li><a href="#用下划线替换文件名中的空格">用下划线替换文件名中的空格</a></li>
+        <li><a href="#将文件名转换为小写">将文件名转换为小写</a></li>
+        <li><a href="#将文件名转换为大写">将文件名转换为大写</a></li>
+        <li><a href="#从文件名中删除-bak">从文件名中删除 .bak</a></li>
+        <li><a href="#重命名-jpeg-和-jpg-文件名为-jpg">重命名 .jpeg 和 .JPG 文件名为 .jpg</a></li>
       </ul>
     </li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -307,7 +307,7 @@ file-4.css renamed as file-4.scss
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

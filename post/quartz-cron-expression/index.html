@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -152,13 +152,13 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
           
           
   
-          <h2 id="heading">表达式格式及字段说明</h2>
+          <h2 id="表达式格式及字段说明">表达式格式及字段说明</h2>
 <p>Quartz 定时表达式一般有6个字段单位（也可7个），使用空格间隔。从前到后按照如下的格式：
 秒 分 时 日 月 星期[ 年] （最后一个单位“年”是可选的）。</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h2 id="heading1">特殊字符含义</h2>
+<h2 id="特殊字符含义">特殊字符含义</h2>
 <p><strong>*</strong> : 对应于该时间域中的每一个值，也就是任何时刻。例如 在秒字段，表示每秒钟。</p>
 <p><strong>?</strong> : 只能用于天和星期字段，表示不指定值。当其中一个字段指定了值以后，未避免冲突，另一个值需指定为 ? 。</p>
 <p><strong>-</strong> : 表示一个范围，例如 时字段指定 1-3，表示 1点，2点，3点 。</p>
@@ -171,7 +171,7 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
 <p>虽然你能用星期数(1-7)与 L 连用，但是不允许你用一个范围值和列表值与 L 连用。这会产生不可预知的结果。</p>
 <p><strong>W</strong> : 代表着平日 (Mon-Fri),也就是工作日（周一到周五），并且仅能用于日域中。它用来指定离指定日的最近的一个平日。大部分的商业处理都是基于工作周的，所以 W 字符可能是非常重要的。例如，日域中的15W 意味着 &ldquo;离该月15号的最近一个平日。&rdquo; 假如15号是星期六，那么 trigger 会在14号(星期五)触发，因为星期四比星期一（这个例子中是17号）离15号更近。（译者Unmi注：不会在17号触发的，如果是15W，可能会是在14号(15号是星期六)或者15号(15号是星期天)触发，也就是只能出现在邻近的一天，如果15号当天为平日直接就会当日执行）。W只能用在指定的日域为单天，不能是范围或列表值。</p>
 <p><strong>#</strong> : 仅能用于周域中，它用于指定月份中的第几周的哪一天。例如，如果你指定周域的值为6#3，它意思是某月的第三个周五 (6=星期五，#3意味着月份中的第三周)。另一个例子2#1意思是某月的第一个星期一 (2=星期一，#1意味着月份中的第一周)。注意，假如你指定#5，然而月份中没有第 5 周，那么该月不会触发。</p>
-<h2 id="quartz--spring-">Quartz 在 Spring 中的应用</h2>
+<h2 id="quartz-在-spring-中的应用">Quartz 在 Spring 中的应用</h2>
 <p>俺都是在Spring中使用 quartz的，从来没有单独使用过。Spring 简化了 Quartz 的使用，通过简单的配置，就能达到定时出发某个类的某个方法的目的。在一个简单的配置中包括 触发器。触发器配置要包括作业内容和作业触发条件2部分内容，作业触发条件配置作业的开始结束时间或处理频度，而作业内容指定了要处理某个类的某个方法。如下面的配置：</p>
 <div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="o">&lt;</span><span class="n">bean</span> <span class="n">id</span><span class="o">=</span><span class="s">&#34;trigger1&#34;</span> <span class="n">class</span><span class="o">=</span><span class="s">&#34;org.springframework.scheduling.quartz.CronTriggerBean&#34;</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&#34;jobDetail&#34;</span><span class="o">&gt;</span>
@@ -192,7 +192,7 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
     <span class="o">&lt;</span><span class="o">/</span><span class="n">property</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="o">/</span><span class="n">bean</span><span class="o">&gt;</span>
 </code></pre></div><p><!-- raw HTML omitted -->更多配置代码可参看我在github上的代码：<!-- raw HTML omitted --></p>
-<p><a href="https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml"><a href="https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml">https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml</a></a></p>
+<p><a href="https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml">https://github.com/buzheng/buzheng-study-java/blob/master/src/main/java/org/buzheng/study/quartz/applicationContext-schedule.xml</a></p>
 <p>参考：
 <a href="http://blog.csdn.net/lvshow/article/details/6952400">http://blog.csdn.net/lvshow/article/details/6952400</a>
 <a href="http://biaoming.iteye.com/blog/39532">http://biaoming.iteye.com/blog/39532</a></p>
@@ -221,7 +221,7 @@ Quartz 定时表达式一般有6个字段单位（也可7个），使用空格�
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

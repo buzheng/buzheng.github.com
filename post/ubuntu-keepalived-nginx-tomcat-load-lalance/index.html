@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -163,7 +163,7 @@
 <li>192.168.1.44 - 虚拟IP</li>
 </ul>
 <!-- raw HTML omitted -->
-<h2 id="-virtual-box--ubuntu-server">安装 Virtual box 和 Ubuntu Server</h2>
+<h2 id="安装-virtual-box-和-ubuntu-server">安装 Virtual box 和 Ubuntu Server</h2>
 <p>分别到 Oracle 官网和 Ubuntu 官网下载相应的版本，安装 Virtual Box， 并新建虚拟机安装 Ubuntu Server。这里Virtual Box 中的网络设置选择“桥接网卡”，启动Ubuntu Server 后， 配置IP地址为 192.168.1.50。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/network/interfaces
 </code></pre></div><p>修改文件内容为：</p>
@@ -187,7 +187,7 @@ gateway 192.168.1.1
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nameserver 192.168.1.1
 nameserver 8.8.8.8
 </code></pre></div><p>设置完成后重启生效。</p>
-<h2 id="-jre--tomcat">安装 JRE 与 Tomcat</h2>
+<h2 id="安装-jre-与-tomcat">安装 JRE 与 Tomcat</h2>
 <p>1,先到oracle官网下载 jre， 以下是 oracle java 下载首页：http://www.oracle.com/technetwork/java/javase/downloads/index.html，然后选择相应的版本下载即可。这里选择版本是：server-jre-7u60-linux-x64.tar.gz</p>
 <p>2，上传到 用户目录下，解压缩</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">tar -xvf server-jre-7u60-linux-x64.tar.gz
@@ -211,10 +211,10 @@ sudo cp -r ./jdk1.7.0_60 /usr/local/java/
 <p>8，启动tomcat</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">apache-tomcat-7.0.54/bin/startup.sh
 </code></pre></div><p>查看地址 http://192.168.1.50:8080/load-balance/ 页面正常显示，并输出服务器的IP地址。</p>
-<h2 id="-515240-">创建 51，52，40 节点</h2>
+<h2 id="创建-515240-节点">创建 51，52，40 节点</h2>
 <p>利用 Virtual Box 的虚拟机复制功能，将192.168.1.50节点复制三个，然后利用刚刚上面的办法将Ip地址分别修改为 192.168.1.51，192.168.1.51，192.168.1.40。</p>
 <p>192.168.1.40 节点留作 nginx 节点。</p>
-<h2 id="-nginx-">安装 Nginx 并配置负载均衡</h2>
+<h2 id="安装-nginx-并配置负载均衡">安装 Nginx 并配置负载均衡</h2>
 <p>1，在节点 192.168.1.40 上执行安装 nginx，操作如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-add-repository ppa:nginx/development
 sudo apt-get update
@@ -258,7 +258,7 @@ server
 </code></pre></div><p>3，验证</p>
 <p>使用URL: http://192.168.1.40/load-balance 来验证请求是否分发到tomcat节点上，如果配置成功，不停的刷新页面，会发现页面的内容为3个tomcat节点的IP地址交替出现。</p>
 <p>停止一个tomcat 节点后，会发现请求不再向此节点转发。重启tomcat节点后，又自动加入负载均衡队伍中。</p>
-<h2 id="-keepalived-">使用 Keepalived 保证高可用性</h2>
+<h2 id="使用-keepalived-保证高可用性">使用 Keepalived 保证高可用性</h2>
 <p>nginx 负载均衡虽然提高了性能，但是一个 nginx 节点会成为很容易成带来一个问题，那就是“单点故障”。万一机器挂掉怎么办？如何平滑切换到备份机？ keepalived 可以在主 nginx 节点挂掉时，能自动帮助我们切换到备份节点。这里主要用到一个虚拟IP，即主 nginx 节点和备份 nginx 节点都使用同一个虚拟IP 192.168.1.44，访问的时候，我们通过虚拟IP来访问应用，具体步骤请继续往下（以下操作都在 192.168.1.40 节点上进行， 等配置完成后，直接克隆出 192.168.1.41 节点，只需要修改 IP地址和keepalived 的配置文件）。</p>
 <p>1，增加虚拟IP</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ifconfig  eth0:0 192.168.1.44 netmask 255.255.255.0
@@ -355,7 +355,7 @@ sleep <span class="m">3</span>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

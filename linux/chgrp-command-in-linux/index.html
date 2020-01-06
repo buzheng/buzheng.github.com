@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -149,7 +149,7 @@
           <p>在 Linux 中，每个文件都与一个所有者和一个用户组相关联，并具有确定哪些用户可以读取，写入或执行该文件的权限。</p>
 <p>该 <code>chgrp</code> 命令更改给定文件的用户组所有权。</p>
 <p>本指南说明了如何使用 <code>chgrp</code> 。</p>
-<h2 id="chgrp"><code>chgrp</code> 命令语法</h2>
+<h2 id="chgrp命令语法"><code>chgrp</code> 命令语法</h2>
 <p>该 <code>chgrp</code> 命令采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chgrp <span class="o">[</span>OPTIONS<span class="o">]</span> GROUP FILE..
 </code></pre></div><ul>
@@ -159,44 +159,44 @@
 <p>与 <a href="/linux/linux-chown-command/"><code>chown</code></a> 允许您更改用户和组所有权的命令不同， <code>chgrp</code> 仅更改组所有权。</p>
 <p>要找出文件属于哪个组，请使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls -l</code></a> 命令。</p>
 <p>只有 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo 特权的用户</a>才能更改文件的组所有权。</p>
-<h2 id="heading">如何更改文件组所有权</h2>
+<h2 id="如何更改文件组所有权">如何更改文件组所有权</h2>
 <p>要更改文件或目录的组所有权，请调用 <code>chgrp</code> 命令，后跟新的组名和目标文件作为参数。</p>
 <p>例如，将文件 <code>filename</code> 的组更改为 <code>www-data</code>，请运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp www-data filename
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp www-data filename
 
-</code></pre><p>如果您以非特权用户身份运行该命令，则将出现 “Operation not permitted” 错误。要消除错误，请运行带有 <code>-f</code> 选项的命令。默认情况下，成功时 <code>chgrp</code> 不产生任何输出并返回零。</p>
+</code></pre></div><p>如果您以非特权用户身份运行该命令，则将出现 “Operation not permitted” 错误。要消除错误，请运行带有 <code>-f</code> 选项的命令。默认情况下，成功时 <code>chgrp</code> 不产生任何输出并返回零。</p>
 <p>您还可以将多个文件作为参数传递给 <code>chgrp</code> 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp www-data file1 file2 dir1
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp www-data file1 file2 dir1
 
-</code></pre><p>使用该 <code>-v</code> 选项来获取有关正在处理的文件的信息：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp www-data file1 file2
+</code></pre></div><p>使用该 <code>-v</code> 选项来获取有关正在处理的文件的信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp www-data file1 file2
 
-</code></pre><pre><code class="language-output" data-lang="output">changed group of 'file1' from nginx to www-data
-group of 'file2' retained as www-data
-</code></pre><p>要仅打印有关实际更改组的那些文件的信息，请使用 <code>-c</code> 代替 <code>-v</code> 。</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">changed group of &#39;file1&#39; from nginx to www-data
+group of &#39;file2&#39; retained as www-data
+</code></pre></div><p>要仅打印有关实际更改组的那些文件的信息，请使用 <code>-c</code> 代替 <code>-v</code> 。</p>
 <p>可以使用数字组 ID(GID) 代替用户名。以下示例将文件的组所有权更改为 GID 为 1000 的新组：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp +1000 filename
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp +1000 filename
 
-</code></pre><h2 id="-symlinks-">如何更改 Symlinks 组所有权</h2>
+</code></pre></div><h2 id="如何更改-symlinks-组所有权">如何更改 Symlinks 组所有权</h2>
 <p>当不递归操作时，该 <code>chgrp</code> 命令的默认行为是更改符号链接目标的组所有权，而不是<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a>本身的组所有权。</p>
 <p>例如，如果您尝试更改指向 <code>/opt/file1</code> 的符号链接 <code>symlink1</code> 的组， <code>chgrp</code> 将更改符号链接指向的文件或目录的所有权：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp www-data symlink1
-</code></pre><p>很有可能您会收到 “cannot dereference ‘symlink1’: Permission denied” 错误，而不是更改目标组。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp www-data symlink1
+</code></pre></div><p>很有可能您会收到 “cannot dereference ‘symlink1’: Permission denied” 错误，而不是更改目标组。</p>
 <p>发生错误是因为默认情况下，大多数 Linux 发行版上的符号链接均受保护，并且您无法对目标文件进行操作。此选项在 <code>/proc/sys/fs/protected_symlinks</code> 中指定。 <code>1</code> 表示启用， <code>0</code> 表示禁用。我们建议不要禁用符号链接保护。</p>
 <p>要更改符号链接本身的组所有权，请使用以下 <code>-h</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp -h www-data symlink1
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp -h www-data symlink1
 
-</code></pre><h2 id="heading1">如何递归更改组所有权</h2>
+</code></pre></div><h2 id="如何递归更改组所有权">如何递归更改组所有权</h2>
 <p>要递归更改给定目录下所有文件和目录的组所有权，请使用该 <code>-R</code> 选项。</p>
 <p>例如，以下命令会将 <code>/var/www</code> 目录下所有文件和目录的所有权更改为该 <code>www-data</code> 组：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp -R www-data /var/www
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp -R www-data /var/www
 
-</code></pre><p>指定递归选项时， <code>chgrp</code> 将不会遍历符号链接，也不会更改符号链接。要更改符号链接的组所有权，请传递以下 <code>-h</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chgrp -hR www-data /var/www
+</code></pre></div><p>指定递归选项时， <code>chgrp</code> 将不会遍历符号链接，也不会更改符号链接。要更改符号链接的组所有权，请传递以下 <code>-h</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chgrp -hR www-data /var/www
 
-</code></pre><p>递归更改组所有权时可以使用的其他选项是 <code>-H</code> 和 <code>-L</code> 。</p>
+</code></pre></div><p>递归更改组所有权时可以使用的其他选项是 <code>-H</code> 和 <code>-L</code> 。</p>
 <p>如果传递给 <code>chgrp</code> 命令的参数是符号链接，则该 <code>-H</code> 选项将导致命令遍历它。 <code>-L</code> 告诉 <code>chgrp</code> 将每个符号链接遍历到遇到的目录。在大多数情况下，不应使用这些选项，因为这可能会使系统混乱或造成安全风险。</p>
-<h2 id="heading2">结论</h2>
+<h2 id="结论">结论</h2>
 <p><code>chgrp</code> 命令更改文件，目录和符号链接的组所有权。</p>
 <p>尽管您可以使用更常用的 <code>chown</code> 命令来更改组，但是 <code>chgrp</code> 它具有简单的语法，易于记住。</p>
 <p>有关该 <code>chgrp</code> 命令的更多信息，请访问 <a href="https://www.gnu.org/software/coreutils/manual/html_node/chgrp-invocation.html">chgrp 手册</a>页或在终端中键入 <code>man chgrp</code> 查看。</p>
@@ -273,11 +273,11 @@ group of 'file2' retained as www-data
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#chgrp">chgrp 命令语法</a></li>
-    <li><a href="#heading">如何更改文件组所有权</a></li>
-    <li><a href="#-symlinks-">如何更改 Symlinks 组所有权</a></li>
-    <li><a href="#heading1">如何递归更改组所有权</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#chgrp命令语法">chgrp 命令语法</a></li>
+    <li><a href="#如何更改文件组所有权">如何更改文件组所有权</a></li>
+    <li><a href="#如何更改-symlinks-组所有权">如何更改 Symlinks 组所有权</a></li>
+    <li><a href="#如何递归更改组所有权">如何递归更改组所有权</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -289,7 +289,7 @@ group of 'file2' retained as www-data
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

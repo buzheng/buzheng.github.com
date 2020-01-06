@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,55 +142,55 @@
   
           <p>Memcached 是一个免费的开源高性能的基于内存存储的键值数据库。它主要用作缓存系统，通过从数据库调用的结果中缓存各种对象来加速应用程序。</p>
 <p>在本教程中，我们将解释如何在 CentOS 7 上安装和配置 Memcached。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-memcached">安装 Memcached</h2>
+<h2 id="安装-memcached">安装 Memcached</h2>
 <p>Memcached 软件包包含在默认的 CentOS 7 存储库中。安装非常简单，只需输入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install memcached libmemcached
-</code></pre><p>该 <code>libmemcached</code> 软件包包含几个用于管理 Memcached 服务器的命令行工具。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install memcached libmemcached
+</code></pre></div><p>该 <code>libmemcached</code> 软件包包含几个用于管理 Memcached 服务器的命令行工具。</p>
 <p>安装完成后，启动并启用 Memcached 服务</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start memcached
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start memcached
 sudo systemctl enable memcached
-</code></pre><p>就这样，此时你已经在 CentOS 7 服务器上安装并运行了 Memcached。</p>
-<h2 id="-memcached1">配置 Memcached</h2>
+</code></pre></div><p>就这样，此时你已经在 CentOS 7 服务器上安装并运行了 Memcached。</p>
+<h2 id="配置-memcached">配置 Memcached</h2>
 <p>可以通过编辑 <code>/etc/sysconfig/memcached</code> 文件来配置 Memcached 。默认情况下，Memcached 设置为侦听所有接口。在以下部分中，我们将向您展示如何为本地和远程访问配置服务。</p>
 <p>如果配置不当，Memcached 可用于执行分布式拒绝服务（DDoS）攻击。</p>
-<h3 id="heading1">仅限本地访问</h3>
+<h3 id="仅限本地访问">仅限本地访问</h3>
 <p>如果连接到服务器的客户端也在同一主机上运行，​​则建议将 Memcached 服务设置为仅侦听 localhost。</p>
 <p>为此 <code>memcached</code> ，请使用文本编辑器打开配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/sysconfig/memcached
-</code></pre><p>在 <code>OPTIONS</code> 参数 add  <code>-l 127.0.0.1</code> 。这指示 Memcached 仅绑定到指定的接口。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/sysconfig/memcached
+</code></pre></div><p>在 <code>OPTIONS</code> 参数 add  <code>-l 127.0.0.1</code> 。这指示 Memcached 仅绑定到指定的接口。</p>
 <p>的/ etc / SYSCONFIG /分布式缓存</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">OPTIONS</span><span class="o">=</span><span class="s">&#34;-l 127.0.0.1&#34;</span>
 </code></pre></div><p>重新启动 Memcached 服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart memcached
-</code></pre><h3 id="heading2">远程访问</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart memcached
+</code></pre></div><h3 id="远程访问">远程访问</h3>
 <p>如果将连接到 Memcached 的应用程序托管在远程服务器上，则需要配置防火墙并仅允许从客户端 IP 地址访问 Memcached 端口 11211。</p>
 <p>以下示例假定您要通过专用网络连接到 Memcached 服务器。Memcached 服务器 IP 是 <code>192.168.100.20</code>，客户端的 IP 地址 <code>192.168.100.30</code></p>
 <p>CentOS 附带防火墙配置工具 <a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/"><code>FirewallD</code></a>。以下命令将创建一个名为<code>memcached</code> 的新区域 ，打开端口 <code>11211</code> 并仅允许从客户端 IP 地址访问。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --new-zone=memcached --permanent
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --new-zone=memcached --permanent
 sudo firewall-cmd --zone=memcached --add-port=11211/udp --permanent
 sudo firewall-cmd --zone=memcached --add-port=11211/tcp --permanent
 sudo firewall-cmd --zone=memcached --add-source=192.168.100.30/32 --permanent
 sudo firewall-cmd --reload
-</code></pre><p>配置防火墙后，下一步是编辑 Memcached 配置并将服务设置为侦听服务器的专用网络接口：</p>
+</code></pre></div><p>配置防火墙后，下一步是编辑 Memcached 配置并将服务设置为侦听服务器的专用网络接口：</p>
 <p>打开 <code>memcached</code> 配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/sysconfig/memcached
-</code></pre><p>在 <code>OPTIONS</code> 参数中添加服务器 IP 地址 <code>-l 192.168.100.20</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/sysconfig/memcached
+</code></pre></div><p>在 <code>OPTIONS</code> 参数中添加服务器 IP 地址 <code>-l 192.168.100.20</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">OPTIONS</span><span class="o">=</span><span class="s">&#34;-l 192.168.100.20&#34;</span>
 </code></pre></div><p>保存文件并重新启动 Memcached 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart memcached
-</code></pre><h2 id="-memcached2">连接到 Memcached</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart memcached
+</code></pre></div><h2 id="连接到-memcached">连接到 Memcached</h2>
 <p>要连接到 Memcached 服务器，您需要使用特定于语言的客户端。</p>
 <h3 id="php">PHP</h3>
 <p>要将 Memcached 用作<a href="/linux/install-php-7-on-centos-7/">PHP</a>应用程序（如 <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">WordPress</a>，<a href="/linux/how-to-install-drupal-on-centos-7/">Drupal</a>或 <a href="/linux/install-magento-2-on-centos-7/">Magento</a>）的缓存数据库，您需要安装 <code>php-pecl-memcached</code> 扩展：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install php-pecl-memcache
-</code></pre><h3 id="python">Python</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install php-pecl-memcache
+</code></pre></div><h3 id="python">Python</h3>
 <p>有几个<a href="/linux/how-to-install-python-3-on-centos-7/">Python</a>库可以与 memcache 进行交互。您可以使用<a href="/linux/how-to-install-pip-on-centos-7/">pip</a>安装首选库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pip install pymemcache
-</code></pre><p>或者</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pip install python-memcached
-</code></pre><h2 id="heading3">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install pymemcache
+</code></pre></div><p>或者</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install python-memcached
+</code></pre></div><h2 id="结论">结论</h2>
 <p>您已经学习了如何在 CentOS 7 服务器上安装 Memcached。有关该主题的更多信息，请参阅<a href="https://github.com/memcached/memcached/wiki">Memcached Wiki</a>。</p>
       </div><ul class="pa0">
   
@@ -265,21 +265,21 @@ sudo firewall-cmd --reload
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-memcached">安装 Memcached</a></li>
-    <li><a href="#-memcached1">配置 Memcached</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-memcached">安装 Memcached</a></li>
+    <li><a href="#配置-memcached">配置 Memcached</a>
       <ul>
-        <li><a href="#heading1">仅限本地访问</a></li>
-        <li><a href="#heading2">远程访问</a></li>
+        <li><a href="#仅限本地访问">仅限本地访问</a></li>
+        <li><a href="#远程访问">远程访问</a></li>
       </ul>
     </li>
-    <li><a href="#-memcached2">连接到 Memcached</a>
+    <li><a href="#连接到-memcached">连接到 Memcached</a>
       <ul>
         <li><a href="#php">PHP</a></li>
         <li><a href="#python">Python</a></li>
       </ul>
     </li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -291,7 +291,7 @@ sudo firewall-cmd --reload
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

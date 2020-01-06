@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,7 +138,7 @@
           
   
           <p>安装和配置 Kubernetes 集群的过程是比较繁琐的，这里阐述在 Mac 上利用 virtualbox 配置 centos 上的 Kubernetes 集群的过程。</p>
-<h2 id="heading">目标</h2>
+<h2 id="目标">目标</h2>
 <p>我们需要搭建的 Kubernetes 集群目标和规格如下：</p>
 <ul>
 <li>k8s 集群包含 4 个节点，一个 Master 节点， 3 个 Worker 节点</li>
@@ -187,11 +187,11 @@
 </tr>
 </tbody>
 </table>
-<h2 id="heading1">开始之前</h2>
+<h2 id="开始之前">开始之前</h2>
 <p>请按照如下要求准备环境</p>
-<h3 id="-virtualbox-6">安装 VirtualBox 6</h3>
+<h3 id="安装-virtualbox-6">安装 VirtualBox 6</h3>
 <p>本文使用 VirtualBox 6 配置虚拟机，请自行安装。</p>
-<h3 id="-nat-">设置 NAT 网络</h3>
+<h3 id="设置-nat-网络">设置 NAT 网络</h3>
 <ol>
 <li>
 <p>打开 VirtualBox, 按下快捷键 <code>Command + ,</code>， 或者点击菜单 <code>VirtualBox -&gt; 偏好设置</code>，打开偏好设置窗口， 然后进入网络标签，点击 NAT 网络列表右侧的 <code>添加新NAT网络</code> 按钮，则添加了一个 NAT 网络 <code>NatNetwork</code>, 如下图</p>
@@ -201,7 +201,7 @@
 </li>
 </ol>
 <p>现在 NAT 网络就设置好了。</p>
-<h3 id="-hostonly-">设置 Host-Only 网络</h3>
+<h3 id="设置-host-only-网络">设置 Host-Only 网络</h3>
 <ol>
 <li>点击菜单 <code>管理 -&gt; 主机网络管理器</code>，进入主机网络管理器界面，点击 <code>创建</code> 按钮,  添加 <code>vboxnet0</code>  网络，如下图</li>
 <li>切换到 <code>网卡</code> 标签页
@@ -221,10 +221,10 @@
 </ol>
 <p>这里设置最小地址为 <code>192.168.7.11</code>， 单纯是为了和 NAT 服务器的地址的最后一位对应上，没有其他的意义。</p>
 <p>现在已经设置好了 Host-Only 网络</p>
-<h2 id="heading2">创建和配置虚拟机</h2>
-<h3 id="-centos-76-">下载 CentOS 7.6 镜像</h3>
+<h2 id="创建和配置虚拟机">创建和配置虚拟机</h2>
+<h3 id="下载-centos-76-镜像">下载 CentOS 7.6 镜像</h3>
 <p>请在 <a href="http://mirrors.163.com/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso">http://mirrors.163.com/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso</a> 下载 CentOS 7.6 镜像</p>
-<h3 id="heading3">新建虚拟机节点</h3>
+<h3 id="新建虚拟机节点">新建虚拟机节点</h3>
 <ol>
 <li>在 VirtualBox 中点击新建虚拟机, 名称命名成 <code>k8s-node1</code>，并配置成 CPU 1 核，内存 2G，硬盘 50G (动态分配)。</li>
 <li>选择启动开始安装 centos, 启动后会让提示选择 刚刚下载的 centos 7.6 的 iso 文件。</li>
@@ -260,7 +260,7 @@
        valid_lft forever preferred_lft forever
 
 </code></pre></div><p>则接口 enp0s8 为 Host-Only 的接口，ip 地址为 <code>192.168.7.11</code> 。</p>
-<h3 id="-1">配置节点 1</h3>
+<h3 id="配置节点-1">配置节点 1</h3>
 <p>由于以后安装的需要，这里要做一些基础的配置。</p>
 <ol>
 <li>
@@ -305,8 +305,8 @@ sed -i <span class="s1">&#39;s/^SELINUX=enforcing$/SELINUX=permissive/&#39;</spa
 <p>通过以下命令将本机的主机名修改为 <code>k8s-node1</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> k8s-node1 &gt; /etc/hostname</code></pre></div>
 <p>修改文件 <code>/etc/hosts</code>，将主机名 <code>k8s-node1</code> 添加到 hosts ，以便在本机能够解析。效果如下：</p>
-<pre><code class="language-output" data-lang="output">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 k8s-node1
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 k8s-node1
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</code></pre></div>
 </li>
 <li>
 <p>关闭 swap， 并取消自动挂载 <code>/swap</code></p>
@@ -314,7 +314,7 @@ sed -i <span class="s1">&#39;s/^SELINUX=enforcing$/SELINUX=permissive/&#39;</spa
 sed -ri <span class="s1">&#39;/^[^#]*swap/s@^@#@&#39;</span> /etc/fstab</code></pre></div>
 </li>
 </ol>
-<h3 id="heading4">复制其他节点</h3>
+<h3 id="复制其他节点">复制其他节点</h3>
 <blockquote>
 <ul>
 <li>操作之前建议备份节点。</li>
@@ -327,7 +327,7 @@ sed -ri <span class="s1">&#39;/^[^#]*swap/s@^@#@&#39;</span> /etc/fstab</code></
 <li>修改节点的主机名 和 hosts 文件</li>
 </ol>
 <p>至此基础环境已经安装完毕，下一步进入到 docker 和 k8s 的安装。</p>
-<h2 id="-docker">安装 docker</h2>
+<h2 id="安装-docker">安装 docker</h2>
 <blockquote>
 <p>此步骤要在所有的 4 个节点执行。</p>
 </blockquote>
@@ -372,7 +372,7 @@ yum makecache fast</code></pre></div>
 systemctl <span class="nb">enable</span> docker</code></pre></div>
 </li>
 </ol>
-<h2 id="-kubelet-kubeadm-kubectl">安装 kubelet kubeadm kubectl</h2>
+<h2 id="安装-kubelet-kubeadm-kubectl">安装 kubelet kubeadm kubectl</h2>
 <blockquote>
 <p>此步骤要在所有的 4 个节点执行。</p>
 </blockquote>
@@ -414,8 +414,8 @@ modprobe  br_netfilte</code></pre></div>
 systemctl <span class="nb">enable</span> kubelet</code></pre></div>
 </li>
 </ol>
-<h2 id="-master-">配置 master 节点</h2>
-<h3 id="heading5">执行初始化操作</h3>
+<h2 id="配置-master-节点">配置 master 节点</h2>
+<h3 id="执行初始化操作">执行初始化操作</h3>
 <p>执行如下命令来初始化 master 节点。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubeadm init <span class="se">\
 </span><span class="se"></span>--apiserver-advertise-address<span class="o">=</span>192.168.56.11 <span class="se">\
@@ -508,12 +508,12 @@ kubeadm join 192.168.56.11:6443 --token 5wf7mp.v61tv0s23ewbun1l <span class="se"
 <li>需要执行几个命令来在用户目录下建立配置文件</li>
 <li>告诉我们其他节点加入集群的命令</li>
 </ul>
-<h3 id="heading6">准备配置文件</h3>
+<h3 id="准备配置文件">准备配置文件</h3>
 <p>按照上面的执行结果中的要求，执行以下命令。</p>
-<pre><code>mkdir -p $HOME/.kube
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
-</code></pre><p>在配置文件中，记录了 API Server 的访问地址，所以后面直接执行 kubectl 命令就可以正常连接到 API Server 中。</p>
+</code></pre></div><p>在配置文件中，记录了 API Server 的访问地址，所以后面直接执行 kubectl 命令就可以正常连接到 API Server 中。</p>
 <p>使用以下命令查看组件的状态</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get cs
 </code></pre></div><p>输出结果如下</p>
@@ -528,7 +528,7 @@ etcd-0               Healthy   <span class="o">{</span><span class="s2">
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">NAME        STATUS     ROLES    AGE     VERSION
 k8s-node1   NotReady   master   6m48s   v1.15.0
 </code></pre></div><p>可以看出 k8s-node1 还是 <code>NotReady</code> 的状态，这是因为还未安装网络插件。现在进入网络插件的安装。</p>
-<h3 id="-canal">部署网络插件 canal</h3>
+<h3 id="部署网络插件-canal">部署网络插件 canal</h3>
 <p>插件的部署通过 kubectl 命令应用 yaml 配置文件。分别运行以下两个命令。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/canal/rbac.yaml
 </code></pre></div><p>输出</p>
@@ -578,25 +578,25 @@ kube-system   kube-scheduler-k8s-node1            1/1     Running   1�
 </code></pre></div><p>此时再运行 <code>kubectl get node</code> 查看 master 节点的状态，则状态已经 <code>Ready</code>, 如下</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">NAME        STATUS   ROLES    AGE   VERSION
 k8s-node1   Ready    master   48m   v1.15.0
-</code></pre></div><h2 id="-worker-">部署 Worker 节点</h2>
+</code></pre></div><h2 id="部署-worker-节点">部署 Worker 节点</h2>
 <p>首先在 master 节点上执行以下命令来获取在集群中添加节点的命令</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubeadm token create --print-join-command
 </code></pre></div><p>输出为</p>
-<pre><code class="language-output" data-lang="output">kubeadm join 192.168.56.11:6443 --token eb0k80.qhqbjon1mh55w803     --discovery-token-ca-cert-hash sha256:ca524d88dbcc9a79c70c4cf21fba7252c0f12e5ab0fe9674e7f6998ab9fb5901 
-</code></pre><p>然后在每个 worker 节点上执行上面的命令，这个时候 kubernetes 会使用 DaemonSet 在所有节点上都部署 canal 和 kube-proxy。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kubeadm join 192.168.56.11:6443 --token eb0k80.qhqbjon1mh55w803     --discovery-token-ca-cert-hash sha256:ca524d88dbcc9a79c70c4cf21fba7252c0f12e5ab0fe9674e7f6998ab9fb5901 
+</code></pre></div><p>然后在每个 worker 节点上执行上面的命令，这个时候 kubernetes 会使用 DaemonSet 在所有节点上都部署 canal 和 kube-proxy。</p>
 <blockquote>
 <p>需要注意的是，如果出现 <code>ErrImagePull</code> 等错误，则可能是由于镜像由于在 google 服务器访问不到的缘故，此时需要开启 VPN 才能正常下载。</p>
 </blockquote>
 <p>等待全部部署完毕，在 master 节点运行以下命令查看信息。</p>
 <p><strong>查看所有 daemonset</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get daemonset --all-namespaces
-</code></pre></div><pre><code class="language-output" data-lang="output">NAMESPACE     NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                 AGE
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAMESPACE     NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                 AGE
 kube-system   canal        4         4         4       4            4           beta.kubernetes.io/os=linux   16h
 kube-system   kube-proxy   4         4         4       4            4           beta.kubernetes.io/os=linux   17h
-</code></pre><p>可以看到 READY 和 AVAILABLE 都是 4， 也就是 4 个节点都已经可用了。</p>
+</code></pre></div><p>可以看到 READY 和 AVAILABLE 都是 4， 也就是 4 个节点都已经可用了。</p>
 <p><strong>查看所有 Pod</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get pod --all-namespaces
-</code></pre></div><pre><code class="language-output" data-lang="output">NAMESPACE     NAME                                READY   STATUS    RESTARTS   AGE
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAMESPACE     NAME                                READY   STATUS    RESTARTS   AGE
 kube-system   canal-6w2zb                         3/3     Running   12         16h
 kube-system   canal-jgw4m                         3/3     Running   47         16h
 kube-system   canal-klmfs                         3/3     Running   33         16h
@@ -611,92 +611,92 @@ kube-system   kube-proxy-cd8xj                    1/1     Running �
 kube-system   kube-proxy-xfzfp                    1/1     Running   0          16h
 kube-system   kube-proxy-zcssq                    1/1     Running   4          17h
 kube-system   kube-scheduler-k8s-node1            1/1     Running   4          17h
-</code></pre><p><strong>查看所有节点</strong></p>
+</code></pre></div><p><strong>查看所有节点</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get node
-</code></pre></div><pre><code class="language-output" data-lang="output">NAME        STATUS   ROLES    AGE   VERSION
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAME        STATUS   ROLES    AGE   VERSION
 k8s-node1   Ready    master   17h   v1.15.0
 k8s-node2   Ready    &lt;none&gt;   16h   v1.15.0
 k8s-node3   Ready    &lt;none&gt;   16h   v1.15.0
 k8s-node4   Ready    &lt;none&gt;   16h   v1.15.0
-</code></pre><p>现在可以看到所有的节点已经运行 Ready 。</p>
-<h2 id="heading7">测试集群</h2>
+</code></pre></div><p>现在可以看到所有的节点已经运行 Ready 。</p>
+<h2 id="测试集群">测试集群</h2>
 <p>通过上面的步骤，k8s 集群（1个 master 节点和 3 个 worker 节点）环境已经搭建完毕，并且所有的节点都得正常工作，现在我们要通过添加 Nginx 应用来测试集群。</p>
 <p><strong>创建单 Pod 的 Nginx 应用</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create deployment nginx --image<span class="o">=</span>nginx:alpine
-</code></pre></div><pre><code class="language-output" data-lang="output">deployment.apps/nginx created
-</code></pre><p><strong>查看 pod 详情</strong></p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">deployment.apps/nginx created
+</code></pre></div><p><strong>查看 pod 详情</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get pod -o wide
-</code></pre></div><pre><code class="language-output" data-lang="output">NAME                   READY   STATUS    RESTARTS   AGE   IP         NODE        NOMINATED NODE   READINESS GATES
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAME                   READY   STATUS    RESTARTS   AGE   IP         NODE        NOMINATED NODE   READINESS GATES
 nginx-8f6959bd-6pth6   1/1     Running   0          73s   10.2.1.2   k8s-node2   &lt;none&gt;           &lt;none&gt;
-</code></pre><p>Pod 的 IP 地址是从 Master 节点初始化的参数 <code>--pod-network-cidr=10.2.0.0/16</code> 的地址段中分配的。</p>
+</code></pre></div><p>Pod 的 IP 地址是从 Master 节点初始化的参数 <code>--pod-network-cidr=10.2.0.0/16</code> 的地址段中分配的。</p>
 <p><strong>访问 nginx</strong></p>
 <p>通过上面获取的 Pod 的 ip <code>10.2.1.2</code> 地址访问 nginx</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -I http://10.2.1.2
-</code></pre></div><pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 200 OK
 Server: nginx/1.17.1
 Date: Thu, 18 Jul 2019 07:53:22 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Tue, 25 Jun 2019 14:15:08 GMT
 Connection: keep-alive
-ETag: &quot;5d122c6c-264&quot;
+ETag: &#34;5d122c6c-264&#34;
 Accept-Ranges: bytes
-</code></pre><p><strong>扩容为 2 个 节点</strong></p>
+</code></pre></div><p><strong>扩容为 2 个 节点</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl scale deployment nginx --replicas<span class="o">=</span><span class="m">2</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">deployment.extensions/nginx scaled
-</code></pre><p>查看 pod</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">deployment.extensions/nginx scaled
+</code></pre></div><p>查看 pod</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get pod -o wide
-</code></pre></div><pre><code class="language-output" data-lang="output">NAME                   READY   STATUS    RESTARTS   AGE     IP         NODE        NOMINATED NODE   READINESS GATES
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAME                   READY   STATUS    RESTARTS   AGE     IP         NODE        NOMINATED NODE   READINESS GATES
 nginx-8f6959bd-6pth6   1/1     Running   0          6m44s   10.2.1.2   k8s-node2   &lt;none&gt;           &lt;none&gt;
 nginx-8f6959bd-l56n9   1/1     Running   0          28s     10.2.3.2   k8s-node4   &lt;none&gt;           &lt;none&gt;
-</code></pre><p>可以看到 Pod 已经有了两个副本，每个副本都有各自的 IP， 通过 IP 访问新增加的副本，照样是可以提供服务的。</p>
+</code></pre></div><p>可以看到 Pod 已经有了两个副本，每个副本都有各自的 IP， 通过 IP 访问新增加的副本，照样是可以提供服务的。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -I http://10.2.3.2
-</code></pre></div><pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 200 OK
 Server: nginx/1.17.1
 Date: Thu, 18 Jul 2019 07:58:27 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Tue, 25 Jun 2019 14:15:08 GMT
 Connection: keep-alive
-ETag: &quot;5d122c6c-264&quot;
+ETag: &#34;5d122c6c-264&#34;
 Accept-Ranges: bytes
-</code></pre><p>**暴露为服务 **</p>
+</code></pre></div><p>**暴露为服务 **</p>
 <p>多个副本需要暴露为一个服务来统一对外提供服务，服务会创建一个Cluster IP，从 Master 节点初始化参数 <code>--service-cidr=10.1.0.0/16</code> 地址段中进行分配。服务会自动在在多个副本之间进行负载均衡。</p>
 <p>运行以下命令为 nginx 应用暴露服务，并开启 NodePort 在所有节点上进行端口映射，进行外部访问。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl expose deployment nginx --port<span class="o">=</span><span class="m">80</span> --type<span class="o">=</span>NodePort
-</code></pre></div><pre><code class="language-output" data-lang="output">service/nginx exposed
-</code></pre><p>运行以下命令看一下服务列表</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">service/nginx exposed
+</code></pre></div><p>运行以下命令看一下服务列表</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get service
-</code></pre></div><pre><code class="language-output" data-lang="output">NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 kubernetes   ClusterIP   10.1.0.1      &lt;none&gt;        443/TCP        19h
 nginx        NodePort    10.1.59.105   &lt;none&gt;        80:32502/TCP   80s
-</code></pre><p>可以看到，nginx 服务的 vip  为 10.1.59.105， Node 节点上端口 32502 映射到 nginx 的 80 端口。</p>
+</code></pre></div><p>可以看到，nginx 服务的 vip  为 10.1.59.105， Node 节点上端口 32502 映射到 nginx 的 80 端口。</p>
 <p>运行以下命令，通过 vip 访问服务</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -I http://10.1.59.105
-</code></pre></div><pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 200 OK
 Server: nginx/1.17.1
 Date: Thu, 18 Jul 2019 08:10:45 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Tue, 25 Jun 2019 14:15:08 GMT
 Connection: keep-alive
-ETag: &quot;5d122c6c-264&quot;
+ETag: &#34;5d122c6c-264&#34;
 Accept-Ranges: bytes
-</code></pre><p><strong>在主机上运行以下命令通过节点的 IP 访问服务</strong></p>
+</code></pre></div><p><strong>在主机上运行以下命令通过节点的 IP 访问服务</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -I http://192.168.7.11:32502
-</code></pre></div><pre><code class="language-output" data-lang="output">HTTP/1.1 200 OK
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HTTP/1.1 200 OK
 Server: nginx/1.17.1
 Date: Thu, 18 Jul 2019 08:14:31 GMT
 Content-Type: text/html
 Content-Length: 612
 Last-Modified: Tue, 25 Jun 2019 14:15:08 GMT
 Connection: keep-alive
-ETag: &quot;5d122c6c-264&quot;
+ETag: &#34;5d122c6c-264&#34;
 Accept-Ranges: bytes
-</code></pre><blockquote>
+</code></pre></div><blockquote>
 <p>这里由于宿主机不能直接访问 VirtualBox 的 NAT 网络，采用的 Host-Only 网络的 IP 进行访问。</p>
 </blockquote>
-<h2 id="heading8">参考文章</h2>
+<h2 id="参考文章">参考文章</h2>
 <ul>
 <li><a href="http://k8s.unixhot.com/kubernetes/kubernetes-kubeadm.html">http://k8s.unixhot.com/kubernetes/kubernetes-kubeadm.html</a></li>
 <li><a href="https://github.com/qxl1231/2019-k8s-centos">https://github.com/qxl1231/2019-k8s-centos</a></li>
@@ -778,34 +778,34 @@ Accept-Ranges: bytes
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">目标</a></li>
-    <li><a href="#heading1">开始之前</a>
+    <li><a href="#目标">目标</a></li>
+    <li><a href="#开始之前">开始之前</a>
       <ul>
-        <li><a href="#-virtualbox-6">安装 VirtualBox 6</a></li>
-        <li><a href="#-nat-">设置 NAT 网络</a></li>
-        <li><a href="#-hostonly-">设置 Host-Only 网络</a></li>
+        <li><a href="#安装-virtualbox-6">安装 VirtualBox 6</a></li>
+        <li><a href="#设置-nat-网络">设置 NAT 网络</a></li>
+        <li><a href="#设置-host-only-网络">设置 Host-Only 网络</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">创建和配置虚拟机</a>
+    <li><a href="#创建和配置虚拟机">创建和配置虚拟机</a>
       <ul>
-        <li><a href="#-centos-76-">下载 CentOS 7.6 镜像</a></li>
-        <li><a href="#heading3">新建虚拟机节点</a></li>
-        <li><a href="#-1">配置节点 1</a></li>
-        <li><a href="#heading4">复制其他节点</a></li>
+        <li><a href="#下载-centos-76-镜像">下载 CentOS 7.6 镜像</a></li>
+        <li><a href="#新建虚拟机节点">新建虚拟机节点</a></li>
+        <li><a href="#配置节点-1">配置节点 1</a></li>
+        <li><a href="#复制其他节点">复制其他节点</a></li>
       </ul>
     </li>
-    <li><a href="#-docker">安装 docker</a></li>
-    <li><a href="#-kubelet-kubeadm-kubectl">安装 kubelet kubeadm kubectl</a></li>
-    <li><a href="#-master-">配置 master 节点</a>
+    <li><a href="#安装-docker">安装 docker</a></li>
+    <li><a href="#安装-kubelet-kubeadm-kubectl">安装 kubelet kubeadm kubectl</a></li>
+    <li><a href="#配置-master-节点">配置 master 节点</a>
       <ul>
-        <li><a href="#heading5">执行初始化操作</a></li>
-        <li><a href="#heading6">准备配置文件</a></li>
-        <li><a href="#-canal">部署网络插件 canal</a></li>
+        <li><a href="#执行初始化操作">执行初始化操作</a></li>
+        <li><a href="#准备配置文件">准备配置文件</a></li>
+        <li><a href="#部署网络插件-canal">部署网络插件 canal</a></li>
       </ul>
     </li>
-    <li><a href="#-worker-">部署 Worker 节点</a></li>
-    <li><a href="#heading7">测试集群</a></li>
-    <li><a href="#heading8">参考文章</a></li>
+    <li><a href="#部署-worker-节点">部署 Worker 节点</a></li>
+    <li><a href="#测试集群">测试集群</a></li>
+    <li><a href="#参考文章">参考文章</a></li>
   </ul>
 </nav>
   </div>
@@ -817,7 +817,7 @@ Accept-Ranges: bytes
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -160,7 +160,7 @@ DELIMITER
 <li>here-document 块可以包含字符串，变量，命令和任何其他类型的输入。</li>
 <li>最后一行以分隔标识符结束。不允许在分隔符前面使用空格。</li>
 </ul>
-<h2 id="-heredoc-">基本的 Heredoc 例子</h2>
+<h2 id="基本的-heredoc-例子">基本的 Heredoc 例子</h2>
 <p>在本节中，我们将介绍如何使用 heredoc 的一些基本示例。</p>
 <p>Heredoc 最常与 <a href="/linux/linux-cat-command/">cat 命令</a>结合使用。</p>
 <p>在下面的示例中，我们使用 here document 将包含<a href="/linux/linux-cat-command/">环境变量</a>和命令的两行文本传递给 cat 。</p>
@@ -169,24 +169,24 @@ DELIMITER
 </span><span class="s">You are logged in as: $(whoami)
 </span><span class="s">EOF</span>
 </code></pre></div><p>从下面的输出中可以看出，变量和命令都被替换：</p>
-<pre><code class="language-output" data-lang="output">The current working directory is: /home/buzheng
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">The current working directory is: /home/buzheng
 You are logged in as: buzheng
-</code></pre><p>让我们看看如果我们将分隔符用单引号或双引号括起来会发生什么。</p>
+</code></pre></div><p>让我们看看如果我们将分隔符用单引号或双引号括起来会发生什么。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cat &lt;&lt;- <span class="s2">&#34;EOF&#34;</span>
 The current working directory is: <span class="nv">$PWD</span>
 You are logged in as: <span class="k">$(</span>whoami<span class="k">)</span>
 EOF
 </code></pre></div><p>您可以注意到，当引用分隔符时， shell 不会执行参数扩展和命令替换。</p>
-<pre><code class="language-output" data-lang="output">The current working directory is: $PWD
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">The current working directory is: $PWD
 You are logged in as: $(whoami)
-</code></pre><p>如果您把 heredoc 用在语句或循环中，请使用允许缩进代码的重定向操作符 <code>&lt;&lt;-</code> 。</p>
+</code></pre></div><p>如果您把 heredoc 用在语句或循环中，请使用允许缩进代码的重定向操作符 <code>&lt;&lt;-</code> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">if</span> true<span class="p">;</span> <span class="k">then</span>
     cat <span class="s">&lt;&lt;- EOF
 </span><span class="s">    Line with a leading tab.
 </span><span class="s">    EOF</span>
 <span class="k">fi</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Line with a leading tab.
-</code></pre><p>您可以使用 <code>&gt;</code> ， <code>&gt;&gt;</code> 运算符将其重定向到文件，而不是在屏幕上显示输出。</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Line with a leading tab.
+</code></pre></div><p>您可以使用 <code>&gt;</code> ， <code>&gt;&gt;</code> 运算符将其重定向到文件，而不是在屏幕上显示输出。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cat <span class="s">&lt;&lt; EOF &gt; file.txt
 </span><span class="s">The current working directory is: $PWD
 </span><span class="s">You are logged in as: $(whoami)
@@ -197,24 +197,24 @@ You are logged in as: $(whoami)
 </span><span class="s">Hello
 </span><span class="s">World
 </span><span class="s">EOF</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">Heeeo
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Heeeo
 Wored
-</code></pre><p>要将管道数据写入文件：</p>
+</code></pre></div><p>要将管道数据写入文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cat <span class="s">&lt;&lt;&#39;EOF&#39; |  sed &#39;s/l/e/g&#39; &gt; file.txt
 </span><span class="s">Hello
 </span><span class="s">World
 </span><span class="s">EOF</span>
-</code></pre></div><h2 id="-heredoc--ssh">使用 Heredoc 和 SSH</h2>
+</code></pre></div><h2 id="使用-heredoc-和-ssh">使用 Heredoc 和 SSH</h2>
 <p>通过 SSH 在远程系统上执行多个命令的最方便和最简单的方法是使用 Heredoc。</p>
 <p>使用不带引号的分隔符时，请确保转义所有变量，命令和特殊字符，否则它们将在本地进行插值</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ssh -T user@host.com <span class="s">&lt;&lt; EOF
 </span><span class="s">echo &#34;The current local working directory is: $PWD&#34;
 </span><span class="s">echo &#34;The current remote working directory is: \$PWD&#34;
 </span><span class="s">EOF</span>
-</code></pre></div><pre><code class="language-output" data-lang="output">The current local working directory is: /home/buzheng
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">The current local working directory is: /home/buzheng
 The current remote working directory is: /home/user
-</code></pre><p>为了更方便执行远程操作，您可能还需要设置<a href="/linux/how-to-setup-passwordless-ssh-login/">基于 SSH 密钥的身份验证</a>并连接到 Linux 服务器而无需输入密码。</p>
-<h2 id="heading">结论</h2>
+</code></pre></div><p>为了更方便执行远程操作，您可能还需要设置<a href="/linux/how-to-setup-passwordless-ssh-login/">基于 SSH 密钥的身份验证</a>并连接到 Linux 服务器而无需输入密码。</p>
+<h2 id="结论">结论</h2>
 <p>在本指南中，您已经了解了什么是 heredoc 以及如何在 shell 脚本中使用它。</p>
       </div><ul class="pa0">
   
@@ -289,9 +289,9 @@ The current remote working directory is: /home/user
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-heredoc-">基本的 Heredoc 例子</a></li>
-    <li><a href="#-heredoc--ssh">使用 Heredoc 和 SSH</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#基本的-heredoc-例子">基本的 Heredoc 例子</a></li>
+    <li><a href="#使用-heredoc-和-ssh">使用 Heredoc 和 SSH</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -303,7 +303,7 @@ The current remote working directory is: /home/user
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

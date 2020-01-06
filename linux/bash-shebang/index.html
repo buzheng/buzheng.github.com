@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,7 +145,7 @@
   
           <p>如果您通过阅读其他人的代码来学习 Bash 脚本，您可能已经注意到脚本中的第一行以 <code>#!</code> 字符和 Bash 解释器的路径开头。</p>
 <p>这个字符序列 (<code>#!</code>) 称为 <strong>shebang</strong>，用于告诉操作系统使用哪个解释器来解析文件的其余部分。</p>
-<h2 id="shebang-">Shebang 解释器指令</h2>
+<h2 id="shebang-解释器指令">Shebang 解释器指令</h2>
 <p>Shebang 解释器指令采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!解释器r [arguments]
 </span></code></pre></div><ul>
@@ -161,7 +161,7 @@
 <li><code>#!/usr/bin/env perl</code>- 使用 <code>env</code> 命令查找 <code>perl</code> 可执行文件的路径。</li>
 <li><code>#!/usr/bin/python</code>使用 <code>python</code> 二进制文件执行文件。</li>
 </ul>
-<h2 id="-bash--shebang">在 Bash 脚本中使用 Shebang</h2>
+<h2 id="在-bash-脚本中使用-shebang">在 Bash 脚本中使用 Shebang</h2>
 <p>如果未指定 shebang 且运行 Bash 脚本的用户正在使用另一个 Shell ，则该 Shell 将使用该 Shell 使用的任何默认解释器来解析该脚本。例如，对于 <code>bash</code> 来说默认的解释器就是 <code>bash</code> ，对于 <code>zsh</code> 来说默认的解释器是 <code>sh</code> 。为了确保您的脚本始终使用 Bash 进行解释，您需要使用 shebang 指定可执行路径。</p>
 <p>有两种方法可以使用 Shebang 指令并设置解释器。</p>
 <ol>
@@ -176,24 +176,24 @@
 </ol>
 <p>使用第二种方法的优点是它将在用户的 <code>$PATH</code>  <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>中搜索可执行文件 <code>bash</code> 。如果找到多个 <code>bash</code> 的路径，则脚本将使用第一个路径。</p>
 <p>使用第一个选项向 Bash shell 供应添加选项时，将其传递给解释器。例如，要以调试模式运行脚本，您将使用 <code>#!/bin/bash -x</code> 。如果您正在使用该 <code>env</code> 方法，则需要使用 <code>set</code> 声明该选项。要启用调试模式，您可以在 shebang 行的最后添加 <code>set -x</code> 。</p>
-<h2 id="heading">示例脚本</h2>
+<h2 id="示例脚本">示例脚本</h2>
 <p>让我们使用 shebang 创建一个简单的脚本，打印出 “Hello，World” 。打开<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>并粘贴以下行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nano hello_world
-</code></pre><p>文件: hello_world</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano hello_world
+</code></pre></div><p>文件: hello_world</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="nb">echo</span> <span class="s2">&#34;Hello, World&#34;</span>
 </code></pre></div><p>为了能够在不指定解释器的情况下从命令行运行脚本，您需要使文件可执行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chmod +x hello_world
-</code></pre><p>现在，如果您可以通过键入 <code>./</code> 后跟脚本名称来运行脚本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">./hello_world
-</code></pre><pre><code class="language-output" data-lang="output">Hello, World
-</code></pre><h2 id="-shebang">覆盖 Shebang</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chmod +x hello_world
+</code></pre></div><p>现在，如果您可以通过键入 <code>./</code> 后跟脚本名称来运行脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">./hello_world
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Hello, World
+</code></pre></div><h2 id="覆盖-shebang">覆盖 Shebang</h2>
 <p>如果由于某种原因想要覆盖 Shebang 行中的解释器集，则需要通过显式指定所需的 shell 来运行脚本。</p>
 <p>例如，要想在 <code>bash</code> shell 运行在 Shebang 行中指定为 <code>#!/bin/sh</code> 的脚本文件，您可以键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">bash hello_world
-</code></pre><p>请注意，覆盖 shell 解释器不是一个好主意，因为它可能会导致脚本的意外行为。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">bash hello_world
+</code></pre></div><p>请注意，覆盖 shell 解释器不是一个好主意，因为它可能会导致脚本的意外行为。</p>
+<h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解什么是 Shebang 以及如何在 Bash 脚本中使用它。</p>
       </div><ul class="pa0">
   
@@ -268,11 +268,11 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#shebang-">Shebang 解释器指令</a></li>
-    <li><a href="#-bash--shebang">在 Bash 脚本中使用 Shebang</a></li>
-    <li><a href="#heading">示例脚本</a></li>
-    <li><a href="#-shebang">覆盖 Shebang</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#shebang-解释器指令">Shebang 解释器指令</a></li>
+    <li><a href="#在-bash-脚本中使用-shebang">在 Bash 脚本中使用 Shebang</a></li>
+    <li><a href="#示例脚本">示例脚本</a></li>
+    <li><a href="#覆盖-shebang">覆盖 Shebang</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -284,7 +284,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

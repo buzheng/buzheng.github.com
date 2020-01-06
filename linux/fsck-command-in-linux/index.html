@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -143,7 +143,7 @@
           <p><code>fsck</code>(文件系统检查)是一种命令行实用程序，可让您在一个或多个 Linux 文件系统上执行一致性检查和交互式修复。它的程序独立于所检查文件的系统类型。</p>
 <p>在系统无法启动或无法挂载分区的情况下，可以使用 <code>fsck</code> 命令修复损坏的文件系统。</p>
 <p>在本文中，我们将讨论 <code>fsck</code> 命令。</p>
-<h2 id="-fsck">如何使用  <code>fsck</code></h2>
+<h2 id="如何使用-fsck">如何使用  <code>fsck</code></h2>
 <p><code>fsck</code> 命令采用以下一般形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">fsck <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>FILESYSTEM<span class="o">]</span>
 </code></pre></div><p>只有 root 或具有 <a href="/linux/sudo-command-in-linux/"><code>sudo</code> 特权</a>的用户才能清除缓冲区。</p>
@@ -151,8 +151,8 @@
 <p>切勿在已挂载的分区上运行 <code>fsck</code> ，因为这可能会损坏文件系统。在尝试检查或修复文件系统之前，请先进行操作 <a href="/linux/how-to-mount-and-unmount-file-systems-in-linux/"><code>unmount</code></a> 。</p>
 <p><code>fsck</code> 命令是各种 Linux 文件系统检查器 (<code>fsck.*</code>) 的包装，并且根据文件系统的类型接受不同的选项。</p>
 <p>可以在手册页以获取有关特定检查器的更多信息。例如，要查看 <code>fsck.ext4</code> 可用的选项，请输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">man fsck.ext4
-</code></pre><h2 id="heading">修复损坏的文件系统</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">man fsck.ext4
+</code></pre></div><h2 id="修复损坏的文件系统">修复损坏的文件系统</h2>
 <p>该 <code>fsck</code> 命令最简单的用例是修复无根损坏的 ext3 或 ext4 文件系统。</p>
 <ol>
 <li>
@@ -160,19 +160,19 @@
 </li>
 <li>
 <p>卸载设备：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo umount /dev/sdc1
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo umount /dev/sdc1
+</code></pre></div></li>
 <li>
 <p>运行 <code>fsck</code> 以修复文件系统：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo fsck -p /dev/sdc1
-</code></pre><p><code>-p</code> 选项告知 <code>fsck</code> 自动修复可以安全解决的所有问题，而无需用户干预。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo fsck -p /dev/sdc1
+</code></pre></div><p><code>-p</code> 选项告知 <code>fsck</code> 自动修复可以安全解决的所有问题，而无需用户干预。</p>
 </li>
 <li>
 <p>修复文件系统后，挂载分区：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mount /dev/sdc1
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mount /dev/sdc1
+</code></pre></div></li>
 </ol>
-<h2 id="heading1">修复根文件系统</h2>
+<h2 id="修复根文件系统">修复根文件系统</h2>
 <p><code>fsck</code>  无法检查正在运行的计算机上的根文件系统，因为无法将其卸载。</p>
 <p>如果要检查或修复根文件系统，则可以使用几种选择。您可以将 <code>fsck</code> 设置为在引导时运行，以恢复模式引导系统或使用实时 CD 。</p>
 <p>在恢复模式下运行 <code>fsck</code> 的步骤：</p>
@@ -192,34 +192,34 @@
 </li>
 <li>
 <p>打开终端并运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo fsck -p /dev/sda1
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo fsck -p /dev/sda1
+</code></pre></div></li>
 <li>
 <p>完成后，重新启动实时分发并启动系统。</p>
 </li>
 </ol>
-<h2 id="heading2">在启动时检查文件系统</h2>
+<h2 id="在启动时检查文件系统">在启动时检查文件系统</h2>
 <p>在大多数 Linux 发行版中，如果文件系统被标记为脏文件，则在引导时运行 <code>fsck</code> , 或者在设定的启动次数后运行。</p>
 <p>要查看当前的挂载计数，检查频率编号，检查间隔以及最后一次检查特定分区的时间，请使用以下 <code>tune2fs</code> 工具：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo tune2fs -l /dev/sdc1 | grep -i 'last checked\|mount count'
-</code></pre><pre><code class="language-output" data-lang="output">Mount count:              292
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tune2fs -l /dev/sdc1 | grep -i &#39;last checked\|mount count&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Mount count:              292
 Maximum mount count:      -1
 Last checked:             Tue Jul 24 11:10:07 2018
 Check interval:           0 (&lt;none&gt;)
-</code></pre><ul>
+</code></pre></div><ul>
 <li><code>Maximum mount count</code> 是将检查文件系统的挂载次数。 值 <code>0</code> 或 <code>-1</code> 表示 <code>fsck</code> 永远不会运行。</li>
 <li><code>Check interval</code> 是两次文件系统检查之间的最长时间。</li>
 </ul>
 <p>例如，如果要在每 25 次引导(装载)后运行 <code>fsck</code> ，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo tune2fs -c 25 /dev/sdc1
-</code></pre><p>您还可以设置两次检查之间的最长时间。例如，要将其设置为一个月，可以运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo tune2fs -i 1m /dev/sdc1
-</code></pre><p>要在启动时在 SystemD 发行版上强制运行 <code>fsck</code> ，请传递以下内核启动参数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tune2fs -c 25 /dev/sdc1
+</code></pre></div><p>您还可以设置两次检查之间的最长时间。例如，要将其设置为一个月，可以运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tune2fs -i 1m /dev/sdc1
+</code></pre></div><p>要在启动时在 SystemD 发行版上强制运行 <code>fsck</code> ，请传递以下内核启动参数：</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">fsck.mode=force
 fsck.repair=yes
 </code></pre></div><p>在较早的发行版上，如果 <code>/forcefsck</code> 文件存在，会在引导时运行 <code>fsck</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo touch /forcefsck
-</code></pre><h2 id="fstab"><code>fstab</code> 选项</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo touch /forcefsck
+</code></pre></div><h2 id="fstab选项"><code>fstab</code> 选项</h2>
 <p><code>fstab</code>  是一个配置文件，它告诉系统如何以及在何处挂载分区。</p>
 <p>该文件 <code>/etc/fstab</code> 包含以下形式的条目列表：</p>
 <p>/ etc/fstab</p>
@@ -234,7 +234,7 @@ server:/dir     /media/nfs    nfs                defaults  <span class="m">0</sp
 <li><code>2</code> - 所有其他文件系统，这些文件系统将在以后进行检查，并可能会进行并行检查。</li>
 </ul>
 <p>根文件系统的值应为 <code>1</code> ，要检查的所有其他文件系统的值应为 <code>2</code> 。</p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p><code>fsck</code> 是用于检查和选择修复 Linux 文件系统的命令行工具。</p>
 <p>要了解有关 <code>fsck</code> 命令的更多信息，请访问 <a href="https://linux.die.net/man/8/fsck">fsck 手册</a>页或在终端中键入 <code>man fsck</code> 。</p>
       </div><ul class="pa0">
@@ -310,12 +310,12 @@ server:/dir     /media/nfs    nfs                defaults  <span class="m">0</sp
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-fsck">如何使用  fsck</a></li>
-    <li><a href="#heading">修复损坏的文件系统</a></li>
-    <li><a href="#heading1">修复根文件系统</a></li>
-    <li><a href="#heading2">在启动时检查文件系统</a></li>
-    <li><a href="#fstab">fstab 选项</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#如何使用-fsck">如何使用  fsck</a></li>
+    <li><a href="#修复损坏的文件系统">修复损坏的文件系统</a></li>
+    <li><a href="#修复根文件系统">修复根文件系统</a></li>
+    <li><a href="#在启动时检查文件系统">在启动时检查文件系统</a></li>
+    <li><a href="#fstab选项">fstab 选项</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -327,7 +327,7 @@ server:/dir     /media/nfs    nfs                defaults  <span class="m">0</sp
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

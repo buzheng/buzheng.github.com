@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,39 +146,39 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
           <p>phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。</p>
 <p>phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执行SQL语句，以各种数据格式导入和导出数据等等。</p>
 <p>在本教程中，我们将向您展示如何在CentOS 7上安装带有Nginx的phpMyAdmin。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li><a href="https://linuxize.com/series/install-lemp-stack-on-centos-7/">LEMP（Linux，Nginx，MySQL和PHP 7）安装在CentOS服务器上</a>。</li>
 <li>以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</li>
 </ul>
 <p>虽然没有必要，但建议通过HTTPS访问您的phpMyAdmin安装。如果您的站点上没有SSL，请按照有关<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在CentOS 7上使用Let's Encrypt</a>保护<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">Nginx</a>的说明进行操作。</p>
-<h2 id="centosphpmyadmin">在CentOS上安装phpMyAdmin</h2>
+<h2 id="在centos上安装phpmyadmin">在CentOS上安装phpMyAdmin</h2>
 <p>使用以下步骤在CentOS 7系统上安装phpMyAdmin：</p>
 <ol>
 <li>
 <p>phpMyAdmin包含在<a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL存储库中</a>。如果您尚未启用EPEL，可以键入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install epel-release
+</code></pre></div></li>
 <li>
 <p>启用EPEL存储库后，使用以下命令安装phpMyAdmin及其所有依赖项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install phpmyadmin
-</code></pre><pre><code>Make sure you have Nginx and PHP 7 installed on your system before installing phpMyAdmin.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install phpmyadmin
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Make sure you have Nginx and PHP 7 installed on your system before installing phpMyAdmin.
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>将<code>/etc/phpMyAdmin</code>目录的组所有权更改为<code>nginx</code>（运行PHP FPM服务的用户）：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo chgrp -R nginx /etc/phpMyAdmin
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chgrp -R nginx /etc/phpMyAdmin
+</code></pre></div></li>
 </ol>
-<h2 id="nginxphpmyadmin">配置Nginx和phpMyAdmin</h2>
+<h2 id="配置nginx和phpmyadmin">配置Nginx和phpMyAdmin</h2>
 <p>有几种方法可以配置Nginx来提供phpMyAdmin文件。如果您的域的服务器块已经设置为提供PHP请求，那么您只需创建一个从phpMyAdmin安装文件到域文档根目录的符号链接。</p>
 <p>在本指南中，我们将创建一个片段，我们可以将其包含在任何Nginx服务器块文件中。</p>
 <p>首先创建<code>snippets</code>目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /etc/nginx/snippets
-</code></pre><p>打开文本编辑器并创建以下文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/snippets/phpMyAdmin.conf
-</code></pre><p>粘贴以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /etc/nginx/snippets
+</code></pre></div><p>打开文本编辑器并创建以下文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/snippets/phpMyAdmin.conf
+</code></pre></div><p>粘贴以下内容：</p>
 <p>/etc/nginx/snippets/phpMyAdmin.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">location</span> <span class="s">/phpMyAdmin</span> <span class="p">{</span>
        <span class="kn">root</span> <span class="s">/usr/share/</span><span class="p">;</span>
@@ -213,14 +213,14 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
     <span class="c1"># . . . other code 
 </span><span class="c1"></span>
 <span class="p">}</span>
-</code></pre></div><h2 id="phpmyadmin">访问phpMyAdmin</h2>
+</code></pre></div><h2 id="访问phpmyadmin">访问phpMyAdmin</h2>
 <p>要访问phpMyAdmin界面，请打开您喜欢的浏览器并键入服务器的域名或公共IP地址，然后<code>/phpmyadmin</code>：</p>
-<pre><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/phpmyadmin
-</code></pre><p>输入管理用户登录凭据，然后单击<code>Go</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">http(s)://your_domain_or_ip_address/phpmyadmin
+</code></pre></div><p>输入管理用户登录凭据，然后单击<code>Go</code>。</p>
 <p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/phpmyadmin-login.jpg" alt=""></p>
 <p>登录后，您将看到phpMyAdmin仪表板，其外观如下所示：</p>
 <p><img src="/images/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/phpmyadmin-interface.jpg" alt=""></p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>恭喜，您已在CentOS 7服务器上成功安装了phpMyAdmin。您现在可以开始<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">创建MySQL数据库，用户和表，</a>并执行各种MySQL查询和操作。</p>
       </div><ul class="pa0">
   
@@ -311,11 +311,11 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#centosphpmyadmin">在CentOS上安装phpMyAdmin</a></li>
-    <li><a href="#nginxphpmyadmin">配置Nginx和phpMyAdmin</a></li>
-    <li><a href="#phpmyadmin">访问phpMyAdmin</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在centos上安装phpmyadmin">在CentOS上安装phpMyAdmin</a></li>
+    <li><a href="#配置nginx和phpmyadmin">配置Nginx和phpMyAdmin</a></li>
+    <li><a href="#访问phpmyadmin">访问phpMyAdmin</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -327,7 +327,7 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

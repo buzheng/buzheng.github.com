@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,31 +145,31 @@
   
           <p><code>SIGHUP</code> 是当控制终端关闭时发送到进程的信号。而 <code>nohup</code> 命令参数指定执行的另一个命令在执行后会忽略 <code>SIGHUP</code> (挂断) 信号。</p>
 <p>通常，当您通过 SSH 运行命令时，如果连接断开，或者您注销， SSH 会话将终止，并且终端执行的所有命令都将停止。这是 <code>nohup</code> 命令派上用场的地方。它将忽略所有挂断信号，命令将继续运行。</p>
-<h2 id="-nohup-">如何使用 nohup 命令</h2>
+<h2 id="如何使用-nohup-命令">如何使用 nohup 命令</h2>
 <p><code>nohup</code> 命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">nohup COMMAND <span class="o">[</span>ARGS<span class="o">]</span>
 </code></pre></div><p>该命令不接受除标准的 <code>--help</code> 和 <code>--version</code> 以外的任何其他选项。</p>
 <p>我们来看看下面的例子：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nohup mycommand
-</code></pre><pre><code class="language-output" data-lang="output">nohup: ignoring input and appending output to 'nohup.out'
-</code></pre><p><code>nohup</code> 将在前台运行该命令 <code>mycommand</code> 并将命令输出重定向到该 <code>nohup.out</code> 文件。此文件将在<a href="/linux/current-working-directory/">当前工作目录中</a>创建。如果运行该命令的用户没有对工作目录的写权限，则将在用户的主目录中创建该文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nohup mycommand
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nohup: ignoring input and appending output to &#39;nohup.out&#39;
+</code></pre></div><p><code>nohup</code> 将在前台运行该命令 <code>mycommand</code> 并将命令输出重定向到该 <code>nohup.out</code> 文件。此文件将在<a href="/linux/current-working-directory/">当前工作目录中</a>创建。如果运行该命令的用户没有对工作目录的写权限，则将在用户的主目录中创建该文件。</p>
 <p>如果您注销或关闭终端， <code>mycommand</code> 命令不会终止。</p>
-<h3 id="heading">在后台运行命令</h3>
+<h3 id="在后台运行命令">在后台运行命令</h3>
 <p><code>nohup</code> 在前台使用不是很有用，因为在命令完成之前，您将无法与 shell 交互。</p>
 <p>要 <code>nohup</code> 在后台运行，请在命令末尾添加<code>&amp;</code>符号：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nohup mycommand &amp;
-</code></pre><p>在后台运行命令时，将在终端上打印 shell 作业 ID (用括号[]括起来)和进程 ID ：</p>
-<pre><code class="language-output" data-lang="output">[1] 25177
-</code></pre><p>您可以使用 <code>fg</code> 命令和作业 ID 将命令置于前台。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nohup mycommand &amp;
+</code></pre></div><p>在后台运行命令时，将在终端上打印 shell 作业 ID (用括号[]括起来)和进程 ID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[1] 25177
+</code></pre></div><p>您可以使用 <code>fg</code> 命令和作业 ID 将命令置于前台。</p>
 <p>如果由于某种原因要终止进程，请使用 <a href="/linux/how-to-kill-a-process-in-linux/"><code>kill</code> 命令</a>后跟进程 ID ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">kill -9 25132
-</code></pre><h3 id="heading1">将输出重定向到文件</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -9 25132
+</code></pre></div><h3 id="将输出重定向到文件">将输出重定向到文件</h3>
 <p>默认情况下， <code>nohup</code> 会将输出重定向到 <code>nohup.out</code> 文件。如果要将命令输出重定向到其他文件，可以使用标准 shell 重定向。</p>
 <p>例如，要将标准输出和标准错误重定向到 <code>mycommand.out</code> 您将使用的：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nohup mycommand &gt; mycommand.out 2&gt;&amp;1 &amp;
-</code></pre><p>要将标准输出和标准错误重定向到不同的文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nohup mycommand &gt; mycommand.out 2&gt; mycommand.err &amp;
-</code></pre><h2 id="heading2">其他方案</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nohup mycommand &gt; mycommand.out 2&gt;&amp;1 &amp;
+</code></pre></div><p>要将标准输出和标准错误重定向到不同的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nohup mycommand &gt; mycommand.out 2&gt; mycommand.err &amp;
+</code></pre></div><h2 id="其他方案">其他方案</h2>
 <p>您可以使用许多备用程序来避免在关闭终端或断开连接时终止命令。</p>
 <h3 id="screen">Screen</h3>
 <p><a href="/linux/how-to-use-linux-screen/">Screen</a> 或 GNU Screen 是一个终端多路复用程序，允许您启动 Screen 会话并在该会话内打开任意数量的窗口(虚拟终端)。即使断开连接，当其窗口不可见时，在 Screen 上运行的进程将继续运行。</p>
@@ -177,7 +177,7 @@
 <p><a href="/linux/getting-started-with-tmux/">Tmux</a> 是 GNU Screen 的现代替代品。使用 Tmux ，您还可以创建会话并在该会话中打开多个窗口。 Tmux 会话是持久的，这意味着即使您关闭终端，在 Tmux 中运行的程序也将继续运行。</p>
 <h3 id="disown">Disown</h3>
 <p><code>disown</code> 是一个 shell 内置程序，它从 shell 的作业控件中删除一个 shell 作业。与 <code>nohup</code> 您 <code>disown</code> 在运行流程中使用的不同。</p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用 <code>nohup</code> 命令来防止在注销或退出终端时终止命令。</p>
       </div><ul class="pa0">
   
@@ -252,20 +252,20 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-nohup-">如何使用 nohup 命令</a>
+    <li><a href="#如何使用-nohup-命令">如何使用 nohup 命令</a>
       <ul>
-        <li><a href="#heading">在后台运行命令</a></li>
-        <li><a href="#heading1">将输出重定向到文件</a></li>
+        <li><a href="#在后台运行命令">在后台运行命令</a></li>
+        <li><a href="#将输出重定向到文件">将输出重定向到文件</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">其他方案</a>
+    <li><a href="#其他方案">其他方案</a>
       <ul>
         <li><a href="#screen">Screen</a></li>
         <li><a href="#tmux">TMUX</a></li>
         <li><a href="#disown">Disown</a></li>
       </ul>
     </li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -277,7 +277,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

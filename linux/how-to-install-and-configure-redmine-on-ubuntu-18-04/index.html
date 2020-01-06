@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,7 +146,7 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
           <p>Redmine是最受欢迎的开源项目管理和问题跟踪软件工具之一。它是跨平台和跨数据库，构建在Ruby on Rails框架之上。</p>
 <p><a href="https://www.redmine.org/">Redmine</a>包括对多个项目，维基，问题跟踪系统，论坛，日历，电子邮件通知等的支持。</p>
 <p>本教程介绍如何在Ubuntu 18.04服务器上安装和配置最新版本的Redmine，使用MySQL作为数据库后端，将Passenger + Nginx作为Ruby应用程序服务器。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
 <ul>
 <li>您有一个指向您的服务器公共IP的域名。在本教程中我们将使用<code>example.com</code>。</li>
@@ -154,48 +154,48 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
 <li>您按照<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">这些说明</a>安装了Nginx 。</li>
 <li>您已为您的域安装了SSL证书。您可以按照<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">这些说明</a>安装免费的Let's加密SSL证书。</li>
 </ul>
-<h2 id="mysql">创建MySQL数据库</h2>
+<h2 id="创建mysql数据库">创建MySQL数据库</h2>
 <p>Redmine支持MySQL / MariaDB，Microsoft SQL Server，SQLite 3和<a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">PostgreSQL</a>。在本教程中，我们将使用MySQL作为数据库后端。</p>
 <p>如果您已经在Ubuntu服务器上安装了MySQL，则可以按照<a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">这些说明</a>进行安装。</p>
 <p>键入以下命令登录MySQL shell：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE redmine CHARACTER SET utf8mb4;
-</code></pre><p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON redmine.* TO 'redmine'@'localhost' IDENTIFIED BY 'change-with-strong-password';
-</code></pre><p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>在MySQL shell中，运行以下SQL语句以<a href="/linux/how-to-create-a-mysql-database/">创建新数据库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE redmine CHARACTER SET utf8mb4;
+</code></pre></div><p>接下来，创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">MySQL用户帐户并授予对数据库的访问权限</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT ALL ON redmine.* TO &#39;redmine&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;
+</code></pre></div><p>确保<code>change-with-strong-password</code>使用强密码进行更改。</p>
 <p>完成后，键入以下命令退出mysql控制台：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">EXIT;
-</code></pre><h2 id="ruby">安装Ruby</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">EXIT;
+</code></pre></div><h2 id="安装ruby">安装Ruby</h2>
 <p>在Ubuntu系统上安装Ruby的最简单方法是通过apt包管理器。在撰写本文时，Ubuntu存储库中的版本是2.5.1，这是Ruby的最新稳定版本。</p>
 <p>输入以下命令安装Ruby：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install ruby-full
-</code></pre><p>如果要通过Rbenv或RVM安装Ruby，请查看<a href="/linux/how-to-install-ruby-on-ubuntu-18-04/">本指南</a>。</p>
-<h2 id="passengernginx">安装Passenger和Nginx</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install ruby-full
+</code></pre></div><p>如果要通过Rbenv或RVM安装Ruby，请查看<a href="/linux/how-to-install-ruby-on-ubuntu-18-04/">本指南</a>。</p>
+<h2 id="安装passenger和nginx">安装Passenger和Nginx</h2>
 <p><a href="https://www.phusionpassenger.com/">Passenger</a>是一个快速轻量级的Web应用程序服务器，适用于Ruby，Node.js和Python，可以与Apache和Nginx集成。我们将安装Passenger作为Nginx模块。</p>
 <p>确保遵循先决条件并安装Nginx，然后再继续执行以下步骤。</p>
 <p>首先安装必要的包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install dirmngr gnupg apt-transport-https ca-certificates
-</code></pre><p>导入存储库GPG密钥并启用<a href="https://www.phusionpassenger.com/library/install/nginx/install/oss/bionic/">Phusionpassenger</a>存储库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 561F9B9CAC40B2F7sudo add-apt-repository 'deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main'
-</code></pre><p>启用存储库后，更新软件包列表并安装Passenger Nginx模块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install libnginx-mod-http-passenger
-</code></pre><h2 id="ubunturedmine">在Ubuntu上安装Redmine</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install dirmngr gnupg apt-transport-https ca-certificates
+</code></pre></div><p>导入存储库GPG密钥并启用<a href="https://www.phusionpassenger.com/library/install/nginx/install/oss/bionic/">Phusionpassenger</a>存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 561F9B9CAC40B2F7sudo add-apt-repository &#39;deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main&#39;
+</code></pre></div><p>启用存储库后，更新软件包列表并安装Passenger Nginx模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install libnginx-mod-http-passenger
+</code></pre></div><h2 id="在ubuntu上安装redmine">在Ubuntu上安装Redmine</h2>
 <p>我们首先安装构建Redmine所需的依赖项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install build-essential libmysqlclient-dev imagemagick libmagickwand-dev
-</code></pre><p>在撰写本文时，Redmine的最新稳定版本是4.0.0版。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install build-essential libmysqlclient-dev imagemagick libmagickwand-dev
+</code></pre></div><p>在撰写本文时，Redmine的最新稳定版本是4.0.0版。</p>
 <p>在继续下一步之前，您应该检查<a href="https://www.redmine.org/projects/redmine/wiki/Download">Redmine下载页面</a>以查看是否有更新的版本。</p>
-<h3 id="1redmine">1.下载Redmine</h3>
+<h3 id="1下载redmine">1.下载Redmine</h3>
 <p>使用以下<a href="/linux/curl-command-examples/">curl命令</a>下载Redmine存档：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo curl -L http://www.redmine.org/releases/redmine-4.0.0.tar.gz -o /tmp/redmine.tar.gz
-</code></pre><p>下载完成后，提取存档并将其移动到<code>/opt</code>目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd /tmpsudo tar zxf /tmp/redmine.tar.gzsudo mv /tmp/redmine-4.0.0 /opt/redmine
-</code></pre><h3 id="2redmine">2.配置Redmine数据库</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo curl -L http://www.redmine.org/releases/redmine-4.0.0.tar.gz -o /tmp/redmine.tar.gz
+</code></pre></div><p>下载完成后，提取存档并将其移动到<code>/opt</code>目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /tmpsudo tar zxf /tmp/redmine.tar.gzsudo mv /tmp/redmine-4.0.0 /opt/redmine
+</code></pre></div><h3 id="2配置redmine数据库">2.配置Redmine数据库</h3>
 <p>首先复制Redmine示例配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /opt/redmine/config/database.yml.example /opt/redmine/config/database.yml
-</code></pre><p>使用文本编辑器打开文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /opt/redmine/config/database.yml
-</code></pre><p>搜索该<code>production</code>部分并输入我们之前创建的MySQL数据库和用户信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo cp /opt/redmine/config/database.yml.example /opt/redmine/config/database.yml
+</code></pre></div><p>使用文本编辑器打开文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /opt/redmine/config/database.yml
+</code></pre></div><p>搜索该<code>production</code>部分并输入我们之前创建的MySQL数据库和用户信息：</p>
 <p>/opt/redmine/config/database.yml</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">production:</span>
   <span class="na">adapter: mysql2</span>
@@ -205,20 +205,20 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
   <span class="na">password: &#34;change-with-strong-password&#34;</span>
   <span class="na">encoding: utf8</span>
 </code></pre></div><p>完成后，保存文件并退出编辑器。</p>
-<h3 id="3ruby">3.安装Ruby依赖项</h3>
+<h3 id="3安装ruby依赖项">3.安装Ruby依赖项</h3>
 <p>导航到redmine目录并安装bundler和其他Ruby依赖项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd /opt/redmine/sudo gem install bundler --no-rdoc --no-risudo bundle install --without development test postgresql sqlite
-</code></pre><h3 id="4">4.生成密钥并迁移数据库</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /opt/redmine/sudo gem install bundler --no-rdoc --no-risudo bundle install --without development test postgresql sqlite
+</code></pre></div><h3 id="4生成密钥并迁移数据库">4.生成密钥并迁移数据库</h3>
 <p>运行以下命令以生成密钥并迁移数据库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd /opt/redmine/sudo bundle exec rake generate_secret_tokensudo RAILS_ENV=production bundle exec rake db:migrate
-</code></pre><h3 id="5">5.设置正确的权限</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /opt/redmine/sudo bundle exec rake generate_secret_tokensudo RAILS_ENV=production bundle exec rake db:migrate
+</code></pre></div><h3 id="5设置正确的权限">5.设置正确的权限</h3>
 <p>Nginx作为<code>www-data</code>用户和组运行。通过发出以下<a href="/linux/linux-chown-command/">chown命令</a>设置正确的权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo chown -R www-data: /opt/redmine/
-</code></pre><h2 id="nginx">配置Nginx</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chown -R www-data: /opt/redmine/
+</code></pre></div><h2 id="配置nginx">配置Nginx</h2>
 <p>到目前为止，您应该已经在系统上安装了Nginx和SSL证书，如果没有，请检查本教程的先决条件。</p>
 <p>打开文本编辑器并创建以下<a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">Nginx服务器块</a>文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/sites-available/example.com
-</code></pre><p>/etc/nginx/sites-available/example.com</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/sites-available/example.com
+</code></pre></div><p>/etc/nginx/sites-available/example.com</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="c1"># Redirect HTTP -&gt; HTTPS
 </span><span class="c1"></span><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
@@ -264,15 +264,15 @@ Redmine包括对多个项目，维基，问题跟踪系统，论坛，日历，�
 <span class="p">}</span>
 </code></pre></div><p>不要忘记将example.com替换为Redmine域，并设置SSL证书文件的正确路径。此配置中使用的片段在<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">本指南</a>中创建。</p>
 <p>通过创建指向<code>sites-enabled</code>目录的符号链接来启用服务器块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
-</code></pre><p>在重新启动Nginx服务之前，请进行测试以确保没有语法错误：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nginx -t
-</code></pre><p>如果没有错误，输出应如下所示：</p>
-<pre><code class="language-output" data-lang="output">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+</code></pre></div><p>在重新启动Nginx服务之前，请进行测试以确保没有语法错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nginx -t
+</code></pre></div><p>如果没有错误，输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
-</code></pre><p>最后，键入以下命令重启Nginx服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
-</code></pre><h2 id="redmine">访问Redmine</h2>
+</code></pre></div><p>最后，键入以下命令重启Nginx服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><h2 id="访问redmine">访问Redmine</h2>
 <p>打开<a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">浏览器</a>，键入您的域并假设安装成功，将出现类似于以下内容的屏幕：</p>
 <p><img src="/images/linux/how-to-install-and-configure-redmine-on-ubuntu-18-04/redmine-login.jpg" alt=""></p>
 <p>Redmine的默认登录凭据是：</p>
@@ -283,7 +283,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 <p>当您第一次登录时，系统将提示您更改密码，如下所示：</p>
 <p><img src="/images/linux/how-to-install-and-configure-redmine-on-ubuntu-18-04/redmine-change-password.jpg" alt=""></p>
 <p>更改密码后，您将被重定向到用户帐户页面。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在Ubuntu系统上成功安装了Redmine。您现在应该查看<a href="https://www.redmine.org/guide">Redmine文档</a>并了解有关如何配置和使用Redmine的更多信息。</p>
       </div><ul class="pa0">
   
@@ -370,22 +370,22 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#mysql">创建MySQL数据库</a></li>
-    <li><a href="#ruby">安装Ruby</a></li>
-    <li><a href="#passengernginx">安装Passenger和Nginx</a></li>
-    <li><a href="#ubunturedmine">在Ubuntu上安装Redmine</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建mysql数据库">创建MySQL数据库</a></li>
+    <li><a href="#安装ruby">安装Ruby</a></li>
+    <li><a href="#安装passenger和nginx">安装Passenger和Nginx</a></li>
+    <li><a href="#在ubuntu上安装redmine">在Ubuntu上安装Redmine</a>
       <ul>
-        <li><a href="#1redmine">1.下载Redmine</a></li>
-        <li><a href="#2redmine">2.配置Redmine数据库</a></li>
-        <li><a href="#3ruby">3.安装Ruby依赖项</a></li>
-        <li><a href="#4">4.生成密钥并迁移数据库</a></li>
-        <li><a href="#5">5.设置正确的权限</a></li>
+        <li><a href="#1下载redmine">1.下载Redmine</a></li>
+        <li><a href="#2配置redmine数据库">2.配置Redmine数据库</a></li>
+        <li><a href="#3安装ruby依赖项">3.安装Ruby依赖项</a></li>
+        <li><a href="#4生成密钥并迁移数据库">4.生成密钥并迁移数据库</a></li>
+        <li><a href="#5设置正确的权限">5.设置正确的权限</a></li>
       </ul>
     </li>
-    <li><a href="#nginx">配置Nginx</a></li>
-    <li><a href="#redmine">访问Redmine</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#配置nginx">配置Nginx</a></li>
+    <li><a href="#访问redmine">访问Redmine</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -397,7 +397,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

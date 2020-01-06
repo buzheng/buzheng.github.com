@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,17 +145,17 @@
   
           <p>在对网络连接或特定于应用程序的问题进行故障排除时，首先要检查的是应该在系统上实际使用哪些端口以及哪个应用程序正在侦听特定端口。</p>
 <p>本文会介绍如何使用 <code>netstat</code> ， <code>ss</code> 和 <code>lsof</code> 命令找出哪些服务上使用哪些端口。这些说明适用于所有基于 Linux 和 Unix 的操作系统，如 macOS 。</p>
-<h2 id="heading">什么是正在侦听的端口</h2>
+<h2 id="什么是正在侦听的端口">什么是正在侦听的端口</h2>
 <p>网络端口由他的编号，关联的 IP 地址以及 TCP 或 UDP 等通信协议的类型来标识。</p>
 <p>侦听端口是应用程序或进程侦听的网络端口，充当通信端点。</p>
 <p>可以使用防火墙打开或关闭(过滤)每个侦听端口。一般而言，<a href="/linux/check-open-ports-linux/">开放端口</a>是一个接收来自远程位置的传入数据包的网络端口。</p>
 <p>您不能在同一个 IP 地址上有两个不同的服务侦听同一端口。</p>
 <p>例如，如果你运行的 Apache Web 服务器正在监听 <code>80</code> 和 <code>443</code> 端口，您尝试<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">安装 Nginx</a> 以后将无法启动，因为 HTTP 和 HTTPS 端口已在使用。</p>
-<h2 id="-netstat-">使用 <code>netstat</code> 检查端口</h2>
+<h2 id="使用-netstat-检查端口">使用 <code>netstat</code> 检查端口</h2>
 <p><code>netstat</code>  是一个命令行工具，可以提供有关网络连接的信息。</p>
 <p>要列出正在侦听的所有 TCP 或 UDP 端口，包括使用端口和套接字状态的服务，请使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo netstat -tunlp
-</code></pre><p>此命令中使用的选项具有以下含义：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo netstat -tunlp
+</code></pre></div><p>此命令中使用的选项具有以下含义：</p>
 <ul>
 <li><code>-t</code> - 显示 TCP 端口。</li>
 <li><code>-u</code> - 显示 UDP 端口。</li>
@@ -164,7 +164,7 @@
 <li><code>-p</code> - 显示进程的 PID 和名称。仅当您以 root 或 <a href="/linux/sudo-command-in-linux/">sudo</a> 用户身份运行命令时，才会显示此信息。</li>
 </ul>
 <p>输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      445/sshd            
 tcp        0      0 0.0.0.0:25              0.0.0.0:*               LISTEN      929/master          
 tcp6       0      0 :::3306                 :::*                    LISTEN      534/mysqld          
@@ -173,45 +173,45 @@ tcp6       0      0 :::22                   :::*                    LISTEN      
 tcp6       0      0 :::25                   :::*                    LISTEN      929/master          
 tcp6       0      0 :::33060                :::*                    LISTEN      534/mysqld          
 udp        0      0 0.0.0.0:68              0.0.0.0:*                           966/dhclient  
-</code></pre><p>我们例子中的比较重要的列是：</p>
+</code></pre></div><p>我们例子中的比较重要的列是：</p>
 <ul>
 <li><code>Proto</code> - 套接字使用的协议。</li>
 <li><code>Local Address</code> - 进程侦听的 IP 地址和端口号。</li>
 <li><code>PID/Program name</code>  - PID 和进程名称。</li>
 </ul>
 <p>如果要过滤结果，请使用 <a href="/linux/curl-command-examples/">grep 命令</a>。例如，要查找在 TCP 端口 22 上侦听的进程，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo netstat -tnlp | grep :22
-</code></pre><p>输出显示在此机器端口 22 由 SSH 服务器使用：</p>
-<pre><code class="language-output" data-lang="output">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      445/sshd
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo netstat -tnlp | grep :22
+</code></pre></div><p>输出显示在此机器端口 22 由 SSH 服务器使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      445/sshd
 tcp6       0      0 :::22                   :::*                    LISTEN      445/sshd
-</code></pre><p>如果输出为空，则表示没有任何内容正在侦听端口。</p>
+</code></pre></div><p>如果输出为空，则表示没有任何内容正在侦听端口。</p>
 <p>您还可以根据条件筛选列表，例如 PID ，协议，状态等。</p>
 <p><code>netstat</code> 是过时的，他的替代者是 <code>ss</code> 和 <a href="/linux/linux-ip-command/"><code>ip</code></a> ，但它仍然是最常用的命令来检查网络连接。</p>
-<h2 id="-ss-">使用 <code>ss</code> 检查端口 </h2>
+<h2 id="使用-ss-检查端口">使用 <code>ss</code> 检查端口 </h2>
 <p><code>ss</code> 是新的 <code>netstat</code> 。它缺少一些 <code>netstat</code> 功能，但暴露了更多的 TCP 状态，而且速度稍快。命令选项大致相同，因此从 <code>netstat</code> 转换为 <code>ss</code> 并不困难。</p>
 <p>要使用 <code>ss</code> 获取所有侦听端口的列表，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ss -tunlp
-</code></pre><p>输出几乎与报告的输出相同 <code>netstat</code> ：</p>
-<pre><code class="language-output" data-lang="output">State    Recv-Q   Send-Q     Local Address:Port      Peer Address:Port                                                                                        
-LISTEN   0        128              0.0.0.0:22             0.0.0.0:*      users:((&quot;sshd&quot;,pid=445,fd=3))                                                        
-LISTEN   0        100              0.0.0.0:25             0.0.0.0:*      users:((&quot;master&quot;,pid=929,fd=13))                                                     
-LISTEN   0        128                    *:3306                 *:*      users:((&quot;mysqld&quot;,pid=534,fd=30))                                                     
-LISTEN   0        128                    *:80                   *:*      users:((&quot;apache2&quot;,pid=765,fd=4),(&quot;apache2&quot;,pid=764,fd=4),(&quot;apache2&quot;,pid=515,fd=4))   
-LISTEN   0        128                 [::]:22                [::]:*      users:((&quot;sshd&quot;,pid=445,fd=4))                                                        
-LISTEN   0        100                 [::]:25                [::]:*      users:((&quot;master&quot;,pid=929,fd=14))                                                     
-LISTEN   0        70                     *:33060                *:*      users:((&quot;mysqld&quot;,pid=534,fd=33))
-</code></pre><h2 id="-lsof-">使用 <code>lsof</code> 检查端口 </h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ss -tunlp
+</code></pre></div><p>输出几乎与报告的输出相同 <code>netstat</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">State    Recv-Q   Send-Q     Local Address:Port      Peer Address:Port                                                                                        
+LISTEN   0        128              0.0.0.0:22             0.0.0.0:*      users:((&#34;sshd&#34;,pid=445,fd=3))                                                        
+LISTEN   0        100              0.0.0.0:25             0.0.0.0:*      users:((&#34;master&#34;,pid=929,fd=13))                                                     
+LISTEN   0        128                    *:3306                 *:*      users:((&#34;mysqld&#34;,pid=534,fd=30))                                                     
+LISTEN   0        128                    *:80                   *:*      users:((&#34;apache2&#34;,pid=765,fd=4),(&#34;apache2&#34;,pid=764,fd=4),(&#34;apache2&#34;,pid=515,fd=4))   
+LISTEN   0        128                 [::]:22                [::]:*      users:((&#34;sshd&#34;,pid=445,fd=4))                                                        
+LISTEN   0        100                 [::]:25                [::]:*      users:((&#34;master&#34;,pid=929,fd=14))                                                     
+LISTEN   0        70                     *:33060                *:*      users:((&#34;mysqld&#34;,pid=534,fd=33))
+</code></pre></div><h2 id="使用-lsof-检查端口">使用 <code>lsof</code> 检查端口 </h2>
 <p><code>lsof</code>  是一个功能强大的命令行实用程序，它提供有关进程打开的文件的信息。</p>
 <p>在 Linux 中，一切都是文件。您可以将套接字视为写入网络的文件。</p>
 <p>要使用 <code>lsof</code> 获取所有侦听 TCP 端口的列表，请输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo lsof -nP -iTCP -sTCP:LISTEN
-</code></pre><p>使用的选项如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo lsof -nP -iTCP -sTCP:LISTEN
+</code></pre></div><p>使用的选项如下：</p>
 <ul>
 <li><code>-n</code> - 不要将端口号转换为端口名称。</li>
 <li><code>-p</code> - 不要解析主机名，显示数字地址。</li>
 <li><code>-iTCP -sTCP:LISTEN</code> - 仅显示 <code>TCP</code> 协议状态为 <code>LISTEN</code> 的网络文件。</li>
 </ul>
-<pre><code class="language-output" data-lang="output">COMMAND   PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">COMMAND   PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 sshd      445     root    3u  IPv4  16434      0t0  TCP *:22 (LISTEN)
 sshd      445     root    4u  IPv6  16445      0t0  TCP *:22 (LISTEN)
 apache2   515     root    4u  IPv6  16590      0t0  TCP *:80 (LISTEN)
@@ -221,18 +221,18 @@ apache2   764 www-data    4u  IPv6  16590      0t0  TCP *:80 (LISTEN)
 apache2   765 www-data    4u  IPv6  16590      0t0  TCP *:80 (LISTEN)
 master    929     root   13u  IPv4  19637      0t0  TCP *:25 (LISTEN)
 master    929     root   14u  IPv6  19638      0t0  TCP *:25 (LISTEN)
-</code></pre><p>大多数输出​​列名称都是不言自明的：</p>
+</code></pre></div><p>大多数输出​​列名称都是不言自明的：</p>
 <ul>
 <li><code>COMMAND</code>， <code>PID</code> ， <code>USER</code>- 命令， PID 以及运行命令的用户。</li>
 <li><code>NAME</code> - 端口号。</li>
 </ul>
 <p>要查找正在侦听特定端口(例如 <code>3306</code>)的进程，请使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo lsof -nP -iTCP:3306 -sTCP:LISTEN
-</code></pre><p>输出显示 MySQL 服务器使用该 <code>3306</code> 端口：</p>
-<pre><code class="language-output" data-lang="output">COMMAND PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo lsof -nP -iTCP:3306 -sTCP:LISTEN
+</code></pre></div><p>输出显示 MySQL 服务器使用该 <code>3306</code> 端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">COMMAND PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
 mysqld  534 mysql   30u  IPv6  17636      0t0  TCP *:3306 (LISTEN)
-</code></pre><p>有关更多信息，请访问 <a href="https://linux.die.net/man/8/lsof">lsof 手册页</a>并阅读此工具的所有其他强大选项。</p>
-<h2 id="heading1">结论</h2>
+</code></pre></div><p>有关更多信息，请访问 <a href="https://linux.die.net/man/8/lsof">lsof 手册页</a>并阅读此工具的所有其他强大选项。</p>
+<h2 id="结论">结论</h2>
 <p>我们向您展示了几个命令，您可以使用这些命令来检查系统上正在使用的端口，以及如何查找侦听特定端口的进程</p>
       </div><ul class="pa0">
   
@@ -303,11 +303,11 @@ mysqld  534 mysql   30u  IPv6  17636      0t0  TCP *:3306 (LISTEN)
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">什么是正在侦听的端口</a></li>
-    <li><a href="#-netstat-">使用 netstat 检查端口</a></li>
-    <li><a href="#-ss-">使用 ss 检查端口 </a></li>
-    <li><a href="#-lsof-">使用 lsof 检查端口 </a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#什么是正在侦听的端口">什么是正在侦听的端口</a></li>
+    <li><a href="#使用-netstat-检查端口">使用 netstat 检查端口</a></li>
+    <li><a href="#使用-ss-检查端口">使用 ss 检查端口 </a></li>
+    <li><a href="#使用-lsof-检查端口">使用 lsof 检查端口 </a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -319,7 +319,7 @@ mysqld  534 mysql   30u  IPv6  17636      0t0  TCP *:3306 (LISTEN)
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

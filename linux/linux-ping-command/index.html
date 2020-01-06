@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,13 +150,13 @@ ping实用程序是iputils（或iputils-ping）程序包的一部分，该程序
 <p>Ping通过将一个或多个ICMP（Internet控制消息协议）Echo请求包发送到网络上的指定目标IP并等待回复来工作。当目的地收到包时，它将回复ICMP回应回复。</p>
 <p>使用ping命令，我们可以确定远程目标IP是处于活动状态还是非活动状态，找到与目标通信的往返延迟并检查是否存在数据包丢失。</p>
 <p>ping实用程序是<code>iputils</code>（或<code>iputils-ping</code>）程序包的一部分，该程序包预先安装在几乎所有Linux发行版上。ping命令也可用于Windows，MacOSX和FreeBSD。</p>
-<h2 id="ping">如何使用Ping命令</h2>
+<h2 id="如何使用ping命令">如何使用Ping命令</h2>
 <p>ping命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping <span class="o">[</span>OPTIONS<span class="o">]</span> DESTINATION
 </code></pre></div><p>为了更好地说明ping命令如何工作，让我们ping <code>google.com</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ping google.com
-</code></pre><p>输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">PING google.com (172.217.22.206) 56(84) bytes of data.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ping google.com
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">PING google.com (172.217.22.206) 56(84) bytes of data.
 64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=1 ttl=53 time=40.2 ms
 64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=2 ttl=53 time=41.8 ms
 64 bytes from muc11s01-in-f14.1e100.net (172.217.22.206): icmp_seq=3 ttl=53 time=47.4 ms
@@ -165,7 +165,7 @@ ping实用程序是iputils（或iputils-ping）程序包的一部分，该程序
 --- google.com ping statistics ---
 4 packets transmitted, 4 received, 0% packet loss, time 7ms
 rtt min/avg/max/mdev = 40.163/42.700/47.408/2.790 ms
-</code></pre><p>ping命令将域名解析为一个地址，并开始将ICMP包发送到目标IP。如果目标IP可达，它将响应并且ping命令将打印包含以下字段的行：</p>
+</code></pre></div><p>ping命令将域名解析为一个地址，并开始将ICMP包发送到目标IP。如果目标IP可达，它将响应并且ping命令将打印包含以下字段的行：</p>
 <ul>
 <li>数据字节数。默认值为56，转换为64个ICMP数据字节 - <code>64 bytes</code></li>
 <li>目的地的IP地址 - <code>from muc11s01-in-f14.1e100.net (172.217.22.206)</code></li>
@@ -179,22 +179,22 @@ rtt min/avg/max/mdev = 40.163/42.700/47.408/2.790 ms
 <p>如果ping没有返回答复，则表示未建立网络通信。如果发生这种情况，并不总是意味着目标IP未处于活动状态，某些主机可能具有阻止ICMP流量的防火墙或设置为不响应ping请求。</p>
 <p>成功时，ping命令退出代码，<code>0</code>否则将退出代码<code>1</code>或<code>2</code>。如果您在shell脚本中使用ping实用程序，这将非常有用。</p>
 <p>在以下部分中，我们将介绍最常用的ping命令选项。</p>
-<h2 id="heading">指定数据包数</h2>
+<h2 id="指定数据包数">指定数据包数</h2>
 <p>正如我们已经讨论的那样，默认情况下，ping命令将继续发送ICMP包，直到收到中断信号。要指定要在ping退出之后发送的Echo Request包的数量，请使用<code>-c</code>选项后跟包的数量：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -c <span class="m">1</span> DESTINATION
 </code></pre></div><p>例如，要<code>linuxize.com</code>只使用一次ping</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ping -c 1 linuxize.com
-</code></pre><h2 id="heading1">指定源接口</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ping -c 1 linuxize.com
+</code></pre></div><h2 id="指定源接口">指定源接口</h2>
 <p>默认情况下，ping将通过默认路由发送ICMP包。如果您的计算机上有多个接口，则可以使用以下<code>-I</code>选项指定源接口：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -I INTERFACE_NAME DESTINATION
 </code></pre></div><p>下面的命令将执行ping <code>linuxize.com</code>使用<code>em2</code>作为源接口</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ping -I em2 linuxize.com
-</code></pre><h2 id="internet">指定Internet协议</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ping -I em2 linuxize.com
+</code></pre></div><h2 id="指定internet协议">指定Internet协议</h2>
 <p>运行ping命令时，它将使用IPv4或IPv6，具体取决于您的计算机DNS设置。</p>
 <p>强制ping使用IPv4传递<code>-4</code>选项或使用其别名<code>ping4</code>。对于IPv6传递<code>-6</code>选项或使用<code>ping6</code>。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -4 DESTINATION
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ping -6 DESTINATION
-</code></pre></div><h2 id="heading2">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用Linux <code>ping</code>命令。您始终可以<code>ping</code>通过键入<code>man ping</code>终端来查看所有可用的命令选项。</p>
       </div><ul class="pa0">
   
@@ -269,11 +269,11 @@ rtt min/avg/max/mdev = 40.163/42.700/47.408/2.790 ms
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#ping">如何使用Ping命令</a></li>
-    <li><a href="#heading">指定数据包数</a></li>
-    <li><a href="#heading1">指定源接口</a></li>
-    <li><a href="#internet">指定Internet协议</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#如何使用ping命令">如何使用Ping命令</a></li>
+    <li><a href="#指定数据包数">指定数据包数</a></li>
+    <li><a href="#指定源接口">指定源接口</a></li>
+    <li><a href="#指定internet协议">指定Internet协议</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -285,7 +285,7 @@ rtt min/avg/max/mdev = 40.163/42.700/47.408/2.790 ms
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

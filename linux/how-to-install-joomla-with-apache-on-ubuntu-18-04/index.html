@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,7 +142,7 @@
   
           <p>Joomla 是最受欢迎的开源内容管理系统之一，为数十万个网站提供支持。它是用 PHP 编写的，包含大量可以通过免费和高级扩展和主题扩展的功能。使用 Joomla ，您可以轻松构建您的电子商务商店，个人网站，社交网站或博客。</p>
 <p>在本教程中，我们将解释如何在 Ubuntu 18.04 上安装 Joomla 。我们将使用 Apache 作为 Web 服务器， 使用 SSL 证书，使用最新的 PHP 7.2 和 MySQL/MariaDB 作为数据库服务器。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li>拥有指向您的服务器公共 IP 的域名。我们会用 <code>example.com</code> 。</li>
@@ -150,46 +150,46 @@
 <li>按照<a href="/linux/how-to-install-apache-on-ubuntu-18-04/">这些说明</a>安装 Apache  。</li>
 <li>您已为您的域名安装了 SSL 证书。您可以按照<a href="/linux/secure-apache-with-let-s-encrypt-on-ubuntu-18-04/">这些说明</a>安装免费的 Let's Encrypt SSL 证书。</li>
 </ul>
-<h2 id="-mysql-">创建 MySQL 数据库</h2>
+<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
 <p>Joomla 可以将其数据（如文章，类别，用户，扩展和主题设置）存储在 MySQL ， PostgreSQL 或 MS SQL 数据库中。</p>
 <p>我们将使用 MySQL 作为后端数据库。如果您没有在 Ubuntu 服务器上安装 <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">MySQL</a>，可以通过键入以下命令安装它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt-get updatesudo apt-get install mysql-server
-</code></pre><p>输入以下命令登录 MySQL 控制台：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>在 MySQL shell 中，运行以下 SQL 语句来<!-- raw HTML omitted -->创建数据库<!-- raw HTML omitted -->：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE joomla CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-</code></pre><p>接下来，在新数据库上创建一个新的 <!-- raw HTML omitted -->MySQL 用户并为该用户授予权限<!-- raw HTML omitted -->：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON joomla.* TO 'joomlauser'@'localhost' IDENTIFIED BY 'change-with-strong-password';
-</code></pre><p>完成后，键入以下命令退出 mysql 控制台：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">EXIT
-</code></pre><h2 id="-php">安装 PHP</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-get updatesudo apt-get install mysql-server
+</code></pre></div><p>输入以下命令登录 MySQL 控制台：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>在 MySQL shell 中，运行以下 SQL 语句来<!-- raw HTML omitted -->创建数据库<!-- raw HTML omitted -->：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE joomla CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</code></pre></div><p>接下来，在新数据库上创建一个新的 <!-- raw HTML omitted -->MySQL 用户并为该用户授予权限<!-- raw HTML omitted -->：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT ALL ON joomla.* TO &#39;joomlauser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;
+</code></pre></div><p>完成后，键入以下命令退出 mysql 控制台：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">EXIT
+</code></pre></div><h2 id="安装-php">安装 PHP</h2>
 <p>PHP 7.2 是 Ubuntu 18.04 中的默认 PHP 版本，Joomla 完全支持并推荐使用 。</p>
 <p>使用以下命令<a href="/linux/how-to-install-php-on-ubuntu-18-04/">安装 PHP</a> 所有必需的 PHP 扩展：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install php7.2 php7.2-cli php7.2-mysql php7.2-json php7.2-opcache php7.2-mbstring php7.2-intl php7.2-xml php7.2-gd  php7.2-zip php7.2-curl php7.2-xmlrpc php7.2-xmlrpc
-</code></pre><p>设置推荐的 PHP 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo sed -i &quot;s/memory_limit = .*/memory_limit = 512M/&quot; /etc/php/7.2/apache2/php.ini
-sudo sed -i &quot;s/upload_max_filesize = .*/upload_max_filesize = 256M/&quot; /etc/php/7.2/apache2/php.ini
-sudo sed -i &quot;s/post_max_size = .*/post_max_size = 256M/&quot; /etc/php/7.2/apache2/php.ini
-sudo sed -i &quot;s/output_buffering = .*/output_buffering = Off/&quot; /etc/php/7.2/apache2/php.ini
-sudo sed -i &quot;s/max_execution_time = .*/max_execution_time = 300/&quot; /etc/php/7.2/apache2/php.ini
-sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/apache2/php.ini
-</code></pre><p>重新启动 apache 以便加载新安装的 PHP 扩展：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
-</code></pre><h2 id="-joomla">下载 Joomla</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install php7.2 php7.2-cli php7.2-mysql php7.2-json php7.2-opcache php7.2-mbstring php7.2-intl php7.2-xml php7.2-gd  php7.2-zip php7.2-curl php7.2-xmlrpc php7.2-xmlrpc
+</code></pre></div><p>设置推荐的 PHP 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo sed -i &#34;s/memory_limit = .*/memory_limit = 512M/&#34; /etc/php/7.2/apache2/php.ini
+sudo sed -i &#34;s/upload_max_filesize = .*/upload_max_filesize = 256M/&#34; /etc/php/7.2/apache2/php.ini
+sudo sed -i &#34;s/post_max_size = .*/post_max_size = 256M/&#34; /etc/php/7.2/apache2/php.ini
+sudo sed -i &#34;s/output_buffering = .*/output_buffering = Off/&#34; /etc/php/7.2/apache2/php.ini
+sudo sed -i &#34;s/max_execution_time = .*/max_execution_time = 300/&#34; /etc/php/7.2/apache2/php.ini
+sudo sed -i &#34;s/;date.timezone.*/date.timezone = UTC/&#34; /etc/php/7.2/apache2/php.ini
+</code></pre></div><p>重新启动 apache 以便加载新安装的 PHP 扩展：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart apache2
+</code></pre></div><h2 id="下载-joomla">下载 Joomla</h2>
 <p>在撰写本文时，最新版本的 Joomla 是版本 3.9.4 。</p>
 <p>在下载 Joomla 存档之前，首先创建一个用来存放 Joomla 文件的目录并跳转进来：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/www/example.comcd /var/www/example.com
-</code></pre><p>接下来，使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>从<a href="https://downloads.joomla.org/"> Joomla 下载页面下载</a> 下载 Joomla 的当前版本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo wget https://downloads.joomla.org/cms/joomla3/3-9-4/Joomla_3-9-4-Stable-Full_Package.zip
-</code></pre><p>下载完成后，<!-- raw HTML omitted -->解压缩存档<!-- raw HTML omitted -->并将文件移动到域的文档根目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo unzip Joomla_3-9-4-Stable-Full_Package.zip
-</code></pre><p>使用 [<!-- raw HTML omitted -->chown 命令<!-- raw HTML omitted -->将目录的所有者更改为 <code>www-data</code> 以便 Web 服务器可以完全访问站点的文件和目录：</p>
-<pre><code class="language-output" data-lang="output">sudo chown -R www-data: /var/www/example.com
-</code></pre><h2 id="-apache">配置 Apache</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/www/example.comcd /var/www/example.com
+</code></pre></div><p>接下来，使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>从<a href="https://downloads.joomla.org/"> Joomla 下载页面下载</a> 下载 Joomla 的当前版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo wget https://downloads.joomla.org/cms/joomla3/3-9-4/Joomla_3-9-4-Stable-Full_Package.zip
+</code></pre></div><p>下载完成后，<!-- raw HTML omitted -->解压缩存档<!-- raw HTML omitted -->并将文件移动到域的文档根目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo unzip Joomla_3-9-4-Stable-Full_Package.zip
+</code></pre></div><p>使用 [<!-- raw HTML omitted -->chown 命令<!-- raw HTML omitted -->将目录的所有者更改为 <code>www-data</code> 以便 Web 服务器可以完全访问站点的文件和目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chown -R www-data: /var/www/example.com
+</code></pre></div><h2 id="配置-apache">配置 Apache</h2>
 <p>到目前为止，您应该已经在系统上安装了 Apache with SSL 证书，如果没有，请检查本教程的先决条件。</p>
 <p>下一步是编辑 Apache 虚拟主机配置 <code>/etc/apache2/sites-available/example.com.conf</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/apache2/sites-available/example.com.conf
-</code></pre><p>下面的 Apache 配置重定向 <code>http</code> 到 <code>https</code>， 重定向 <code>www</code> 到 <code>non-www</code> 的版本，使 HTTP2 。不要忘记替换 <code>example.com</code> 为您的 Joomla 域名并设置 SSL 证书文件的正确路径。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/apache2/sites-available/example.com.conf
+</code></pre></div><p>下面的 Apache 配置重定向 <code>http</code> 到 <code>https</code>， 重定向 <code>www</code> 到 <code>non-www</code> 的版本，使 HTTP2 。不要忘记替换 <code>example.com</code> 为您的 Joomla 域名并设置 SSL 证书文件的正确路径。</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
   <span class="nb">ServerName</span> example.com
   <span class="nb">ServerAlias</span> www.example.com
@@ -226,10 +226,10 @@ sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/apa
 
 <span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
 </code></pre></div><p>如果未启用，请为域启用虚拟主机。此命令将创建从目录 <code>sites-available</code> 到 <code>sites-enabled</code> 目录的符号链接：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo a2ensite example.com
-</code></pre><p>要使新配置生效，请键入以下命令重新启动 Apache 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
-</code></pre><h2 id="-joomla-">完成 Joomla 安装</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo a2ensite example.com
+</code></pre></div><p>要使新配置生效，请键入以下命令重新启动 Apache 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart apache2
+</code></pre></div><h2 id="完成-joomla-安装">完成 Joomla 安装</h2>
 <p>现在已经下载了 Joomla 并且服务器配置已经完成，现在是时候使用 Web 界面完成 Joomla 安装了。</p>
 <p>打开浏览器，键入您的域名，将出现类似如下的屏幕：</p>
 <p><img src="/images/linux/how-to-install-joomla-with-apache-on-ubuntu-18-04/install-joomla-configuration.jpg" alt=""></p>
@@ -256,9 +256,9 @@ sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/apa
 <p>在这里，您可以选择安装示例数据并验证是否已通过所有检查。单击 <code>Install</code> 按钮，安装完成后，您将进入一个页面，通知您已安装 Joomla 。</p>
 <p>如果要安装其他语言，请单击“额外步骤：安装语言”按钮。</p>
 <p>出于安全原因，您需要删除安装目录。为此，请返回终端并输入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo rm -rf /var/www/example.com/installation
-</code></pre><p>要访问 Joomla 后端，请单击 <code>Adminstrator</code> 按钮。从这里开始，您可以通过安装新的主题和插件来开始自定义您的 Joomla 安装。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo rm -rf /var/www/example.com/installation
+</code></pre></div><p>要访问 Joomla 后端，请单击 <code>Adminstrator</code> 按钮。从这里开始，您可以通过安装新的主题和插件来开始自定义您的 Joomla 安装。</p>
+<h2 id="结论">结论</h2>
 <p>恭喜，您已在 Ubuntu 18.04 服务器上成功安装了 Joomla 和 Apache 。 <a href="https://docs.joomla.org/">Joomla 文档</a>是一个很好的起点，可以了解如何开始使用新的 Joomla 网站。</p>
       </div><ul class="pa0">
   
@@ -349,13 +349,13 @@ sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/apa
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-mysql-">创建 MySQL 数据库</a></li>
-    <li><a href="#-php">安装 PHP</a></li>
-    <li><a href="#-joomla">下载 Joomla</a></li>
-    <li><a href="#-apache">配置 Apache</a></li>
-    <li><a href="#-joomla-">完成 Joomla 安装</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建-mysql-数据库">创建 MySQL 数据库</a></li>
+    <li><a href="#安装-php">安装 PHP</a></li>
+    <li><a href="#下载-joomla">下载 Joomla</a></li>
+    <li><a href="#配置-apache">配置 Apache</a></li>
+    <li><a href="#完成-joomla-安装">完成 Joomla 安装</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -367,7 +367,7 @@ sudo sed -i &quot;s/;date.timezone.*/date.timezone = UTC/&quot; /etc/php/7.2/apa
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

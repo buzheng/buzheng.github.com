@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,58 +142,58 @@
   
           <p>Apache Cassandra 是一个免费的开源 NoSQL 数据库，没有单点故障。它可以在不影响性能的前提下提供线性可扩展性和高可用性。 Apache Cassandra 被许多拥有大型活跃数据集的公司使用，包括 Reddit ， NetFlix ， Instagram 和 Github 。</p>
 <p>本教程将指导您完成在 Debian 9 上安装 Apache Cassandra 的过程。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>为了能够在 Debian 系统上安装软件包，您需要以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-apache-cassandra">安装 Apache Cassandra</h2>
+<h2 id="安装-apache-cassandra">安装 Apache Cassandra</h2>
 <p>在 Debian 9 上安装 Apache Cassandra 的推荐方法是从官方 Apache Cassandra 存储库安装 deb 软件包。</p>
 <p>在撰写本文时，最新版本的 Apache Cassandra 是 <code>3.11</code> 并且需要在机器上安装 OpenJDK 8 或 Oracle Java 8 。</p>
 <p>我们先安装 OpenJDK 8 包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt install openjdk-8-jdk
-</code></pre><p>完成后，通过打印 Java 版本进行验证：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">java -version
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">openjdk version &quot;1.8.0_181&quot;
+</code></pre></div><p>完成后，通过打印 Java 版本进行验证：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">java -version
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">openjdk version &#34;1.8.0_181&#34;
 OpenJDK Runtime Environment (build 1.8.0_181-8u181-b13-2~deb9u1-b13)
 OpenJDK 64-Bit Server VM (build 25.181-b13, mixed mode)
-</code></pre><blockquote>
+</code></pre></div><blockquote>
 <p>如果您更喜欢 Oracle Java 而不是 OpenJDK ，请按照<a href="/linux/install-java-on-debian-9/">安装 Oracle Java</a> 。</p>
 </blockquote>
 <p>下一步是启用 Apache Cassandra 存储库。</p>
 <p>使用以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令导入存储库的公钥：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">wget -q -O - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
-</code></pre><p>上面的命令应该输出 <code>OK</code> ，这意味着密钥已成功导入，并且来自此存储库的包将被视为可信。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget -q -O - https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
+</code></pre></div><p>上面的命令应该输出 <code>OK</code> ，这意味着密钥已成功导入，并且来自此存储库的包将被视为可信。</p>
 <p>通过运行以下命令将 Cassandra 存储库添加到系统源列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo sh -c 'echo &quot;deb http://www.apache.org/dist/cassandra/debian 311x main&quot; &gt; /etc/apt/sources.list.d/cassandra.list'
-</code></pre><p>更新软件包的索引并安装最新版本的 Apache Cassandra ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo sh -c &#39;echo &#34;deb http://www.apache.org/dist/cassandra/debian 311x main&#34; &gt; /etc/apt/sources.list.d/cassandra.list&#39;
+</code></pre></div><p>更新软件包的索引并安装最新版本的 Apache Cassandra ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt install cassandra
-</code></pre><p>安装过程完成后， Cassandra 服务将自动启动。您可以通过键入以下内容来验证 Cassandra 是否正在运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nodetool status
-</code></pre><p>你应该看到类似的东西：</p>
-<pre><code class="language-output" data-lang="output">Datacenter: datacenter1
+</code></pre></div><p>安装过程完成后， Cassandra 服务将自动启动。您可以通过键入以下内容来验证 Cassandra 是否正在运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nodetool status
+</code></pre></div><p>你应该看到类似的东西：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Datacenter: datacenter1
 =======================
 Status=Up/Down
 |/ State=Normal/Leaving/Joining/Moving
 --  Address    Load        Tokens       Owns (effective)  Host ID                               Rack
 UN  127.0.0.1  114.55 KiB  256          100.0%            d8c27e24-ea26-4eeb-883c-5986218ba3ca  rack1
-</code></pre><p>现在， Apache Cassandra 已经安装在您的 Debian 服务器上了。</p>
-<h2 id="-apache-cassandra1">配置 Apache Cassandra</h2>
+</code></pre></div><p>现在， Apache Cassandra 已经安装在您的 Debian 服务器上了。</p>
+<h2 id="配置-apache-cassandra">配置 Apache Cassandra</h2>
 <p>Apache Cassandra 数据存储在 <code>/var/lib/cassandra</code> 目录中。配置文件位于， <code>/etc/cassandra</code> 并且可以在 <code>/etc/default/cassandra</code> 文件中配置 Java 启动选项。</p>
 <p>默认情况下， Cassandra 仅侦听 localhost 。如果连接到数据库的客户端也在同一台计算机上运行，​​则无需更改绑定接口。</p>
 <p>要通过命令行与 Cassandra 交互，请使用 Cassandra 软件包附带的工具 <code>cqlsh</code>。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cqlsh
-</code></pre><pre><code class="language-output" data-lang="output">Connected to Test Cluster at 127.0.0.1:9042.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cqlsh
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Connected to Test Cluster at 127.0.0.1:9042.
 [cqlsh 5.0.1 | Cassandra 3.11.4 | CQL spec 3.4.4 | Native protocol v4]
 Use HELP for help.
 cqlsh&gt;
-</code></pre><h2 id="-apache-cassandra-">重命名 Apache Cassandra 集群</h2>
+</code></pre></div><h2 id="重命名-apache-cassandra-集群">重命名 Apache Cassandra 集群</h2>
 <p>默认情况下， Cassandra 群集名为“ Test Cluster ”。如果要更改它，请按照以下步骤操作：</p>
 <ol>
 <li>
 <p>首先，输入以下命令登录 Cassandra CQL 终端：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cqlsh
-</code></pre><p>并运行以下命令将群集名称更改为“ Cassandra Cluster ”：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cqlsh
+</code></pre></div><p>并运行以下命令将群集名称更改为“ Cassandra Cluster ”：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">UPDATE</span> <span class="k">system</span><span class="p">.</span><span class="k">local</span> <span class="k">SET</span> <span class="n">cluster_name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s1">Cassandra Cluster</span><span class="s1">&#39;</span> <span class="k">WHERE</span> <span class="k">KEY</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s1">local</span><span class="s1">&#39;</span><span class="p">;</span>
 </code></pre></div><p>完成后，键入 <code>exit</code> 以退出终端。</p>
 </li>
@@ -208,10 +208,10 @@ cqlsh&gt;
 </code></pre></div></li>
 <li>
 <p>最后运行以下命令重新启动Cassandra服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart cassandra
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart cassandra
+</code></pre></div></li>
 </ol>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在 Debian 9 服务器上成功安装了 Apache Cassandra 。有关如何开始使用 Cassandra 的更多信息，请访问他们的官方<a href="https://cassandra.apache.org/doc/latest/getting_started/index.html">文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -294,11 +294,11 @@ cqlsh&gt;
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-apache-cassandra">安装 Apache Cassandra</a></li>
-    <li><a href="#-apache-cassandra1">配置 Apache Cassandra</a></li>
-    <li><a href="#-apache-cassandra-">重命名 Apache Cassandra 集群</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-apache-cassandra">安装 Apache Cassandra</a></li>
+    <li><a href="#配置-apache-cassandra">配置 Apache Cassandra</a></li>
+    <li><a href="#重命名-apache-cassandra-集群">重命名 Apache Cassandra 集群</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -310,7 +310,7 @@ cqlsh&gt;
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -149,85 +149,85 @@
           <p>Tr 是 Linux 和 Unix 系统中的命令行实用程序，用于转换，删除和挤压标准输入中的字符，并将结果写入标准输出。</p>
 <p>该 <code>tr</code> 命令通常通过管道与其他命令结合使用，可以执行删除重复字符，将大写转换为小写，以及替换和删除基本字符等操作。</p>
 <p>在本教程中，我们将向您展示如何 <code>tr</code> 通过实际示例和最常见选项的详细说明来使用该命令。</p>
-<h2 id="-tr-">如何使用 Tr 命令</h2>
+<h2 id="如何使用-tr-命令">如何使用 Tr 命令</h2>
 <p>该 <code>tr</code> 命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tr OPTION... SET1 <span class="o">[</span>SET2<span class="o">]</span>
 </code></pre></div><p><code>tr</code>  接受两组字符，通常具有相同的长度，并用第二组中的相应字符替换第一组的字符。</p>
 <p>一个 SET 就是一串字符，包括特殊的反斜杠转义字符。</p>
 <p>在下面的示例中， <code>tr</code> 将 <code>linuxize</code> 通过将第一个集合中的字符与第二个集合中的匹配元素进行映射来替换标准输入中的所有字符。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'linuxize' | tr 'lin' 'red'
-</code></pre><p><code>tr</code> 将使用 <code>r</code> 替换 <code>l</code> ，使用  <code>e</code> 替换 <code>i</code> 和 <code>d</code> 替换 <code>n</code> 。</p>
-<pre><code class="language-output" data-lang="output">reduxeze
-</code></pre><p>也可以使用字符范围定义字符集。例如，而不是写：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'linuxize' | tr 'lmno' 'wxyz'
-</code></pre><p>您可以使用：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'linuxize' | tr 'l-n' 'w-z'
-</code></pre><p>当使用 <code>-c`(</code>&ndash;complement<code>) 选项时， </code>tr` 将替换不在 SET1 中的所有字符。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;linuxize&#39; | tr &#39;lin&#39; &#39;red&#39;
+</code></pre></div><p><code>tr</code> 将使用 <code>r</code> 替换 <code>l</code> ，使用  <code>e</code> 替换 <code>i</code> 和 <code>d</code> 替换 <code>n</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">reduxeze
+</code></pre></div><p>也可以使用字符范围定义字符集。例如，而不是写：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;linuxize&#39; | tr &#39;lmno&#39; &#39;wxyz&#39;
+</code></pre></div><p>您可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;linuxize&#39; | tr &#39;l-n&#39; &#39;w-z&#39;
+</code></pre></div><p>当使用 <code>-c</code>(<code>--complement</code>) 选项时， <code>tr</code> 将替换不在 SET1 中的所有字符。</p>
 <p>在下面的示例中， SET1 中不包含的所有字符将替换为 SET2 中的最后一个字符：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'linuxize' | tr -c 'li' 'xy'
-</code></pre><pre><code class="language-output" data-lang="output">liyyyiyyy
-</code></pre><p>您可能已经注意到输出比输入多了一个字符。这是因为该 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo</code></a> 命令打印了一个不可见换行符 <code>\n</code> 也被替换为 <code>y</code> 。要在没有新行的情况下回显字符串，请使用该 <code>-n</code> 选项。</p>
-<p><code>-d`(</code>&ndash;delete<code>) 选项告诉 </code>tr` 以删除 SET1 指定的字符。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;linuxize&#39; | tr -c &#39;li&#39; &#39;xy&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">liyyyiyyy
+</code></pre></div><p>您可能已经注意到输出比输入多了一个字符。这是因为该 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo</code></a> 命令打印了一个不可见换行符 <code>\n</code> 也被替换为 <code>y</code> 。要在没有新行的情况下回显字符串，请使用该 <code>-n</code> 选项。</p>
+<p><code>-d</code>(<code>--delete</code>) 选项告诉 <code>tr</code> 以删除 SET1 指定的字符。</p>
 <p>以下命令将删除 SET1 中指定的所有字符。在不挤压的情况下删除字符时，只能指定一个字符集。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'Linuxize' | tr -d 'liz'
-</code></pre><p><code>L</code> 不会删除该字符，因为输入包含的是大写的 <code>L</code> ，而集合中的字符包含小写的 <code>l</code> 。</p>
-<pre><code class="language-output" data-lang="output">Lnuxe
-</code></pre><p>在 <code>-s`(</code>&ndash;squeeze-repeats<code>) 选项替换重复出现的字符集。在以下示例 </code>tr` 中将删除重复的空格字符：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;GNU     \    Linux&quot; | tr -s ' '
-</code></pre><pre><code class="language-output" data-lang="output">GNU \ Linux
-</code></pre><p>使用 SET2 时， SET1 中指定的字符序列将替换为 SET2 。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;GNU     \    Linux&quot; | tr -s ' ' '_'
-</code></pre><pre><code class="language-output" data-lang="output">GNU_\_Linux
-</code></pre><p><code>-t`(</code>&ndash;truncate-set1<code>) 选项强制 </code>tr` 到做进一步处理之前截断 SET1 到 SET2 的长度。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;Linuxize&#39; | tr -d &#39;liz&#39;
+</code></pre></div><p><code>L</code> 不会删除该字符，因为输入包含的是大写的 <code>L</code> ，而集合中的字符包含小写的 <code>l</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Lnuxe
+</code></pre></div><p>在 <code>-s</code>(<code>--squeeze-repeats</code>) 选项替换重复出现的字符集。在以下示例 <code>tr</code> 中将删除重复的空格字符：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;GNU     \    Linux&#34; | tr -s &#39; &#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GNU \ Linux
+</code></pre></div><p>使用 SET2 时， SET1 中指定的字符序列将替换为 SET2 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;GNU     \    Linux&#34; | tr -s &#39; &#39; &#39;_&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GNU_\_Linux
+</code></pre></div><p><code>-t</code>(<code>--truncate-set1</code>) 选项强制 <code>tr</code> 到做进一步处理之前截断 SET1 到 SET2 的长度。</p>
 <p>默认情况下，如果 SET1 大于 SET2   <code>tr</code> 将重用 SET2  的最后一个字符。这是一个例子：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'Linux ize' | tr 'abcde' '12'
-</code></pre><p>输出将显示 SET1 中的字符 <code>e</code> 与 SET2 的最后字符匹配，即 <code>2</code> ：</p>
-<pre><code class="language-output" data-lang="output">Linux iz2
-</code></pre><p>现在使用带有 <code>-t</code> 选项的相同命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'Linux ize' | tr -t 'abcde' '12'
-</code></pre><p>您可以看到，在这种情况下， SET1 的最后三个字符将被删除。 SET1 变为 &lsquo;ab&rsquo; ，与 SET2 的长度相同。</p>
-<pre><code class="language-output" data-lang="output">Linux ize
-</code></pre><h3 id="heading">组合选项</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;Linux ize&#39; | tr &#39;abcde&#39; &#39;12&#39;
+</code></pre></div><p>输出将显示 SET1 中的字符 <code>e</code> 与 SET2 的最后字符匹配，即 <code>2</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Linux iz2
+</code></pre></div><p>现在使用带有 <code>-t</code> 选项的相同命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;Linux ize&#39; | tr -t &#39;abcde&#39; &#39;12&#39;
+</code></pre></div><p>您可以看到，在这种情况下， SET1 的最后三个字符将被删除。 SET1 变为 &lsquo;ab&rsquo; ，与 SET2 的长度相同。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Linux ize
+</code></pre></div><h3 id="组合选项">组合选项</h3>
 <p>该 <code>tr</code> 命令还允许您组合使用选项。例如，下面的命令将替换所有字符除了 <code>i</code> 用 <code>0</code> ，然后它会挤压重复 <code>0</code> 字符：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'Linux ize' | tr -cs 'i' '0'
-</code></pre><pre><code class="language-output" data-lang="output">0i0i0
-</code></pre><h2 id="tr-">Tr 命令示例</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;Linux ize&#39; | tr -cs &#39;i&#39; &#39;0&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0i0i0
+</code></pre></div><h2 id="tr-命令示例">Tr 命令示例</h2>
 <p>在本节中，我们将介绍 <code>tr</code> 命令常见用法的几个示例。</p>
-<h3 id="heading1">将小写转换为大写</h3>
+<h3 id="将小写转换为大写">将小写转换为大写</h3>
 <p>将小写转换为大写或大写转为小写是 <code>tr</code> 命令的典型用例之一。 <code>[:lower:]</code> 匹配所有小写字符， <code>[:upper:]</code> 匹配所有大写字符。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'Linuxize' | tr '[:lower:]' '[:upper:]'
-</code></pre><pre><code class="language-output" data-lang="output">LINUXIZE
-</code></pre><p>您也可以使用范围代替字符类：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'Linuxize' | tr 'a-z' 'A-Z'
-</code></pre><p>要将大写字母转换为小写字母，只需切换集合的位置即可。</p>
-<h3 id="heading2">删除所有非数字字符</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;Linuxize&#39; | tr &#39;[:lower:]&#39; &#39;[:upper:]&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">LINUXIZE
+</code></pre></div><p>您也可以使用范围代替字符类：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;Linuxize&#39; | tr &#39;a-z&#39; &#39;A-Z&#39;
+</code></pre></div><p>要将大写字母转换为小写字母，只需切换集合的位置即可。</p>
+<h3 id="删除所有非数字字符">删除所有非数字字符</h3>
 <p>以下示例将从传递给 <code>tr</code> 命令的输入中删除所有非数字字符：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo &quot;my phone is 123-456-7890&quot; | tr -cd [:digit:]
-</code></pre><p><code>[:digit:]</code> 代表所有数字字符，通过使用该 <code>-c</code> 选项，该命令将删除所有非数字字符。输出将如下所示：</p>
-<pre><code class="language-output" data-lang="output">1234567890
-</code></pre><h3 id="heading3">将每个单词放在新行中</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;my phone is 123-456-7890&#34; | tr -cd [:digit:]
+</code></pre></div><p><code>[:digit:]</code> 代表所有数字字符，通过使用该 <code>-c</code> 选项，该命令将删除所有非数字字符。输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">1234567890
+</code></pre></div><h3 id="将每个单词放在新行中">将每个单词放在新行中</h3>
 <p>要将每个单词放在一个新行中，我们需要匹配所有非 alpha 数字字符并用新行替换它们：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo 'GNU is an operating system' | tr -cs '[:alnum:]' '\n'
-</code></pre><pre><code class="language-output" data-lang="output">GNU
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#39;GNU is an operating system&#39; | tr -cs &#39;[:alnum:]&#39; &#39;\n&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GNU
 is
 an
 operating
 system
-</code></pre><h3 id="heading4">删除空行</h3>
+</code></pre></div><h3 id="删除空行">删除空行</h3>
 <p>要删除空白行，只需挤压重复的换行符：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">tr -s '\n' &lt; file.txt &gt; new_file.txt
-</code></pre><p>在上面的命令中，我们使用重定向符号将命令 <code>&lt;</code> 的内容作为输入传递 <code>file.txt</code> 给 <code>tr</code> 命令。重定向 <code>&gt;</code> 将命令的输出写入 <code>new_file.txt</code> 。</p>
-<h3 id="-path-">在单独的行上打印 <code>$PATH</code> 目录</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tr -s &#39;\n&#39; &lt; file.txt &gt; new_file.txt
+</code></pre></div><p>在上面的命令中，我们使用重定向符号将命令 <code>&lt;</code> 的内容作为输入传递 <code>file.txt</code> 给 <code>tr</code> 命令。重定向 <code>&gt;</code> 将命令的输出写入 <code>new_file.txt</code> 。</p>
+<h3 id="在单独的行上打印-path-目录">在单独的行上打印 <code>$PATH</code> 目录</h3>
 <p>该 <code>$PATH</code> <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>是一个冒号分隔的列表，告诉 SHELL 当你输入一个命令时可以在哪些目录来搜索可执行文件。</p>
 <p>要在单独的行上打印每个目录，我们需要匹配冒号 (<code>:</code>) 并将其替换为新行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">echo $PATH | tr  ':' '\n'
-</code></pre><pre><code class="language-output" data-lang="output">/usr/local/sbin
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo $PATH | tr  &#39;:&#39; &#39;\n&#39;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local/sbin
 /usr/local/bin
 /usr/sbin
 /usr/bin
 /sbin
 /bin
-</code></pre><h2 id="heading5">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用 Linux   <code>tr</code> 命令。虽然非常有用， <code>tr</code> 但只能使用单个字符。对于更复杂的模式匹配和字符串操作，您应该使用 <code>sed</code> 或 <code>awk</code> 。</p>
       </div><ul class="pa0">
   
@@ -302,21 +302,21 @@ system
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-tr-">如何使用 Tr 命令</a>
+    <li><a href="#如何使用-tr-命令">如何使用 Tr 命令</a>
       <ul>
-        <li><a href="#heading">组合选项</a></li>
+        <li><a href="#组合选项">组合选项</a></li>
       </ul>
     </li>
-    <li><a href="#tr-">Tr 命令示例</a>
+    <li><a href="#tr-命令示例">Tr 命令示例</a>
       <ul>
-        <li><a href="#heading1">将小写转换为大写</a></li>
-        <li><a href="#heading2">删除所有非数字字符</a></li>
-        <li><a href="#heading3">将每个单词放在新行中</a></li>
-        <li><a href="#heading4">删除空行</a></li>
-        <li><a href="#-path-">在单独的行上打印 $PATH 目录</a></li>
+        <li><a href="#将小写转换为大写">将小写转换为大写</a></li>
+        <li><a href="#删除所有非数字字符">删除所有非数字字符</a></li>
+        <li><a href="#将每个单词放在新行中">将每个单词放在新行中</a></li>
+        <li><a href="#删除空行">删除空行</a></li>
+        <li><a href="#在单独的行上打印-path-目录">在单独的行上打印 $PATH 目录</a></li>
       </ul>
     </li>
-    <li><a href="#heading5">结论</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -328,7 +328,7 @@ system
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

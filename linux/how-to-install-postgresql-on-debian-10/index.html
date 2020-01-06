@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,27 +145,27 @@
   
           <p>PostgreSQL ，通常简称为 Postgres ，是一种开放源代码的通用对象关系数据库管理系统。它具有许多强大的功能，例如在线备份，时间点恢复，嵌套事务， SQL 和 JSON 查询，多版本并发控制 (MVCC) ，异步复制等等。</p>
 <p>本教程将引导您在 Debian 10 上安装 PostgreSQL 数据库服务器，我们还将探讨基本数据库管理的基础。</p>
-<h2 id="-postgresql">安装 PostgreSQL</h2>
+<h2 id="安装-postgresql">安装 PostgreSQL</h2>
 <p>在撰写本文时，可从默认 Debian 存储库中获得的最新 PostgreSQL 版本是 PostgreSQL 11.5 版本。</p>
 <p>要在 Debian 服务器上安装 PostgreSQL ，请以 root 或具有 <a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo 权限的用户</a>执行以下步骤：</p>
 <ol>
 <li>
 <p>首先更新 APT 包索引：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div></li>
 <li>
 <p>安装 PostgreSQL 服务器和 contrib 软件包，该软件包为 PostgreSQL 数据库提供附加功能：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install postgresql postgresql-contrib
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install postgresql postgresql-contrib
+</code></pre></div></li>
 <li>
 <p>安装完成后， PostgreSQL 服务将启动。要验证安装，请使用该 <code>psql</code> 工具打印服务器版本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql -c &quot; SELECT version(); &quot;
-</code></pre><p>输出应类似于以下内容：</p>
-<pre><code class="language-output" data-lang="output">PostgreSQL 11.5 (Debian 11.5-1+deb10u1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo -u postgres psql -c &#34; SELECT version(); &#34;
+</code></pre></div><p>输出应类似于以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">PostgreSQL 11.5 (Debian 11.5-1+deb10u1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit
+</code></pre></div></li>
 </ol>
 <p><code>psql</code>  是一个交互式终端程序，可让您与 PostgreSQL 服务器进行交互。</p>
-<h2 id="postgresql-">PostgreSQL 角色和验证方法</h2>
+<h2 id="postgresql-角色和验证方法">PostgreSQL 角色和验证方法</h2>
 <p>PostgreSQL 使用角色的概念来处理数据库访问权限。根据角色的设置方式，它可以代表一个数据库用户或一组数据库用户。</p>
 <p>PostgreSQL 支持多种<a href="https://www.postgresql.org/docs/10/static/auth-methods.html">身份验证方法</a>。最常用的方法是：</p>
 <ul>
@@ -177,56 +177,56 @@
 <p>PostgreSQL 客户端身份验证在 <code>pg_hba.conf</code> 配置文件中定义。对于本地连接， PostgreSQL 设置为使用 Peer 身份验证方法。</p>
 <p>在安装 PostgreSQL 时自动创建 “ postgres” 用户。该用户是 PostgreSQL 实例的超级用户，它等效于 MySQL 的 root 用户。</p>
 <p>要以 “postgres” 身份登录到 PostgreSQL 服务器，请<a href="/linux/su-command-in-linux/">切换到 postgres 用户</a> 并使用 <code>psql</code> 实用程序访问 PostgreSQL 提示符：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo su - postgres
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo su - postgres
 psql
-</code></pre><p>在这里，您可以与 PostgreSQL 服务器进行交互。要退出 PostgreSQL shell ，请输入：</p>
-<pre><code class="language-psql" data-lang="psql">\q
-</code></pre><p>您还可以使用该 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 命令访问 PostgreSQL 提示符，而无需切换用户：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql
-</code></pre><blockquote>
+</code></pre></div><p>在这里，您可以与 PostgreSQL 服务器进行交互。要退出 PostgreSQL shell ，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">\q
+</code></pre></div><p>您还可以使用该 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 命令访问 PostgreSQL 提示符，而无需切换用户：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo -u postgres psql
+</code></pre></div><blockquote>
 <p>通常仅从服务器本地主机使用 <code>postgres</code> 用户。</p>
 </blockquote>
-<h2 id="-postgresql-">创建 PostgreSQL 角色和数据库</h2>
+<h2 id="创建-postgresql-角色和数据库">创建 PostgreSQL 角色和数据库</h2>
 <p>您从命令行可以使用 <code>createuser</code> 命令创建新角色。只有超级用户和具有 <code>CREATEROLE</code> 特权的角色才能创建新角色。</p>
 <p>在以下示例中，我们将创建一个名为 <code>kylo</code> 的新角色，一个名为 <code>kylodb</code> 的数据库，并授予该角色对该数据库的特权。</p>
 <ol>
 <li>
 <p>首先，运行以下命令来创建角色：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo su - postgres -c &quot; createuser kylo &quot;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo su - postgres -c &#34; createuser kylo &#34;
+</code></pre></div></li>
 <li>
 <p>接下来，使用 <code>createdb</code> 命令创建数据库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo su - postgres -c &quot; createdb kylodb &quot;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo su - postgres -c &#34; createdb kylodb &#34;
+</code></pre></div></li>
 <li>
 <p>要向数据库上的用户授予权限，请连接到 PostgreSQL shell ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo -u postgres psql
-</code></pre><p>运行以下查询：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo -u postgres psql
+</code></pre></div><p>运行以下查询：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="k">database</span> <span class="n">kylodb</span> <span class="k">to</span> <span class="n">kylo</span><span class="p">;</span>
 </code></pre></div></li>
 </ol>
-<h2 id="-postgresql-1">启用对 PostgreSQL 服务器的远程访问</h2>
+<h2 id="启用对-postgresql-服务器的远程访问">启用对 PostgreSQL 服务器的远程访问</h2>
 <p>默认情况下， PostgreSQL 服务器仅侦听本地接口 <code>127.0.0.1</code> 。</p>
 <p>如果要从远程位置连接到 PostgreSQL 服务器，则需要将服务器设置为在公共接口上侦听，并编辑配置以接受远程连接。</p>
 <p>打开配置文件 <code>/etc/postgresql/11/main/postgresql.conf</code> ，然后在 <code>CONNECTIONS AND AUTHENTICATION</code> 部分中添加 <code>listen_addresses = '*'</code> 。这是配置服务器在所有网络接口上进行侦听。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/postgresql/11/main/postgresql.conf
-</code></pre><pre><code class="language-conf" data-lang="conf">#------------------------------------------------------------------------------
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/postgresql/11/main/postgresql.conf
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">#------------------------------------------------------------------------------
 # CONNECTIONS AND AUTHENTICATION
 #------------------------------------------------------------------------------
 
 # - Connection Settings -
 
-listen_addresses = '*'     # what IP address(es) to listen on;
-</code></pre><p>保存文件并重新启动 PostgreSQL 服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo service postgresql restart
-</code></pre><p>使用 <code>ss</code> 实用程序验证<a href="/linux/check-listening-ports-linux/">服务器侦听的端口</a>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ss -nlt | grep 5432
-</code></pre><pre><code class="language-output" data-lang="output">LISTEN   0         128                 0.0.0.0:5432             0.0.0.0:*
+listen_addresses = &#39;*&#39;     # what IP address(es) to listen on;
+</code></pre></div><p>保存文件并重新启动 PostgreSQL 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo service postgresql restart
+</code></pre></div><p>使用 <code>ss</code> 实用程序验证<a href="/linux/check-listening-ports-linux/">服务器侦听的端口</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ss -nlt | grep 5432
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">LISTEN   0         128                 0.0.0.0:5432             0.0.0.0:*
 LISTEN   0         128                    [::]:5432                [::]:*
-</code></pre><p>输出应显示 PostgreSQL  服务器在所有接口 (0.0.0.0) 上进行侦听。</p>
+</code></pre></div><p>输出应显示 PostgreSQL  服务器在所有接口 (0.0.0.0) 上进行侦听。</p>
 <p>最后一步是通过编辑 <code>/etc/postgresql/11/main/pg_hba.conf</code> 文件将服务器配置为接受远程登录。</p>
 <p>以下是显示不同用例的一些示例：</p>
-<pre><code class="language-conf" data-lang="conf"># TYPE  DATABASE        USER            ADDRESS                 METHOD
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # 用户 jane 能够使用 md5 密码从任何位置访问任何数据库
 host    all             jane            0.0.0.0/0                md5
@@ -236,7 +236,7 @@ host    janedb          jane            0.0.0.0/0                md5
 
 # 用户 jane 能够使用 md5 密码从 192.168.1.134 访问所有的数据库
 host    all             jane            192.168.1.134            trust
-</code></pre><h2 id="heading">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>我们已经向您展示了如何在 Debian 10 上安装和配置 PostgreSQL 。有关此主题的更多信息，请参阅 <a href="https://www.postgresql.org/docs/11/static/index.html">PostgreSQL 文档</a>。</p>
       </div><ul class="pa0">
   
@@ -315,11 +315,11 @@ host    all             jane            192.168.1.134            trust
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-postgresql">安装 PostgreSQL</a></li>
-    <li><a href="#postgresql-">PostgreSQL 角色和验证方法</a></li>
-    <li><a href="#-postgresql-">创建 PostgreSQL 角色和数据库</a></li>
-    <li><a href="#-postgresql-1">启用对 PostgreSQL 服务器的远程访问</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#安装-postgresql">安装 PostgreSQL</a></li>
+    <li><a href="#postgresql-角色和验证方法">PostgreSQL 角色和验证方法</a></li>
+    <li><a href="#创建-postgresql-角色和数据库">创建 PostgreSQL 角色和数据库</a></li>
+    <li><a href="#启用对-postgresql-服务器的远程访问">启用对 PostgreSQL 服务器的远程访问</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -331,7 +331,7 @@ host    all             jane            192.168.1.134            trust
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

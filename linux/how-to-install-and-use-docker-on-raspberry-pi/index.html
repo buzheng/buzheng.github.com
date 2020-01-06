@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,52 +145,52 @@
   
           <p>Docker 是一个容器化平台，允许您快速构建，测试和部署应用程序，作为便携式，自给自足的容器，几乎可以在任何地方运行。</p>
 <p>在本教程中，我们将解释如何在 Raspberry Pi 上安装 Docker 并探索基本的 Docker 概念和命令。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>我们假设您<a href="/linux/how-to-install-raspbian-on-raspberry-pi/">在 Raspberry Pi 上安装了 Raspbian</a> 。 Docker 不需要图形界面，最好是使用 Raspbian Stretch Lite 镜像并<a href="/linux/how-to-enable-ssh-on-raspberry-pi/">启用S​​SH</a> 。这样， Raspberry Pi 将具有更多可用的处理能力和内存来运行 Docker 容器。</p>
-<h2 id="-raspberry-pi--docker">在 Raspberry Pi 上安装 Docker</h2>
+<h2 id="在-raspberry-pi-上安装-docker">在 Raspberry Pi 上安装 Docker</h2>
 <p>在 Raspberry Pi 上安装 Docker 只需要运行一些命令。</p>
 <p>首先，使用以下 <a href="/linux/curl-command-examples/">curl 命令</a>下载 Docker 安装脚本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">curl -fsSL https://get.docker.com -o get-docker.sh
-</code></pre><p>下载完成后，键入以下命令执行脚本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sh get-docker.sh
-</code></pre><p>该脚本将检测 Linux 发行版，安装所需的包，并启动 Docker 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -fsSL https://get.docker.com -o get-docker.sh
+</code></pre></div><p>下载完成后，键入以下命令执行脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sh get-docker.sh
+</code></pre></div><p>该脚本将检测 Linux 发行版，安装所需的包，并启动 Docker 。</p>
 <p>该过程可能需要几分钟，完成后脚本将输出有关 Docker 版本以及如何将 Docker 用作非 root 用户的信息。</p>
 <p>完成后，Docker 就安装在 Pi 板上了。</p>
-<h2 id="-sudo--docker-">在没有 Sudo 的情况下执行 Docker 命令</h2>
+<h2 id="在没有-sudo-的情况下执行-docker-命令">在没有 Sudo 的情况下执行 Docker 命令</h2>
 <p>默认情况下，只有具有管理权限的用户才能执行 Docker 命令。</p>
 <p>要以非 root 用户身份运行 Docker 命令而不需要预先添加 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> ，您需要将用户添加到安装期间创建的 docker 组。要按类型执行此操作：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -aG docker $USER
-</code></pre><p><code>$USER</code> 是一个保存用户名的<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -aG docker $USER
+</code></pre></div><p><code>$USER</code> 是一个保存用户名的<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>。</p>
 <p>注销并重新登录，以便刷新组成员身份。</p>
 <p>要验证您是否可以不使用 <code>sudo</code> 而直接运行 docker 命令请运行下载测试镜像的命令，请在容器中运行它，打印 “Hello from Docker” 消息并退出：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container run hello-world
-</code></pre><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container run hello-world
+</code></pre></div><p>输出看起来像这样：</p>
 <p><img src="docker-hello-world.jpg" alt=""></p>
-<h2 id="-docker">如何使用 Docker</h2>
+<h2 id="如何使用-docker">如何使用 Docker</h2>
 <p>现在 Docker 已经在你的 Raspberry Pi 上安装和设置好了，让我们来看看基本的 docker 概念和命令。</p>
-<h3 id="docker-">Docker 镜像</h3>
+<h3 id="docker-镜像">Docker 镜像</h3>
 <p>Docker 镜像由一系列文件系统层组成，这些文件系统层表示构成可执行软件应用程序的镜像的 <a href="/linux/how-to-build-docker-images-with-dockerfile/">Dockerfile</a> 中的指令。镜像是一个不可变的二进制文件，包括应用程序和运行应用程序所需的所有其他依赖项，如库，二进制文件和指令。</p>
 <p><a href="https://hub.docker.com/">Docker Hub</a> 上提供了大多数 Docker 镜像。它是一个基于云的注册服务，其中包括其他功能，用于将 Docker 镜像保存在公共或私有存储库中。</p>
 <p>要从 Docker Hub 注册表中搜索镜像，请使用该 <code>docker search</code> 命令。例如，要搜索 Debian 镜像，您可以键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker search debian
-</code></pre><h2 id="docker-1">Docker 容器</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker search debian
+</code></pre></div><h2 id="docker-容器">Docker 容器</h2>
 <p>镜像的实例称为容器。容器表示单个应用程序，进程或服务的运行时。</p>
 <p>它可能不是最合适的类比，但如果您是程序员，您可以将 Docker 镜像视为类，将 Docker 容器视为类的实例。</p>
 <p>要启动，停止，删除和管理容器，请使用该 <code>docker container</code> 命令。例如，以下命令将基于 Debian 镜像启动 Docker 容器。如果您没有本地镜像，将首先下载它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container run debian
-</code></pre><p>Debian 容器将在启动后立即停止，因为它没有长时间运行的进程，也没有提供其他命令。容器启动，运行一个空命令，然后退出。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container run debian
+</code></pre></div><p>Debian 容器将在启动后立即停止，因为它没有长时间运行的进程，也没有提供其他命令。容器启动，运行一个空命令，然后退出。</p>
 <p>该选项 <code>-it</code> 允许您通过命令行与容器进行交互。要启动交互式容器类型：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container run -it debian /bin/bash
-</code></pre><pre><code class="language-output" data-lang="output">root@ee86c8c81b3b:/#
-</code></pre><p>正如您在容器启动时从上面的输出中看到的那样，命令提示符已更改，这意味着您现在正在从容器内部工作：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container run -it debian /bin/bash
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">root@ee86c8c81b3b:/#
+</code></pre></div><p>正如您在容器启动时从上面的输出中看到的那样，命令提示符已更改，这意味着您现在正在从容器内部工作：</p>
 <p>要列出活动的 Docker 容器，请使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls
-</code></pre><p>如果您没有任何正在运行的容器，则输出将为空。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls
+</code></pre></div><p>如果您没有任何正在运行的容器，则输出将为空。</p>
 <p>要查看活动和非活动的所有容器，请使用 <code>-a</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls -a
-</code></pre><p>要删除一个或多个容器，只需复制容器 ID 并在 <code>container rm</code> 命令后粘贴它们：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container rm c55680af670c
-</code></pre><h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -a
+</code></pre></div><p>要删除一个或多个容器，只需复制容器 ID 并在 <code>container rm</code> 命令后粘贴它们：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container rm c55680af670c
+</code></pre></div><h2 id="结论">结论</h2>
 <p>您已经学习了如何在 Raspberry Pi 机器上安装 Docker 以及如何运行 Docker 容器。有关此主题的更多信息，请查看 <a href="https://docs.docker.com/">Docker</a> 官方<a href="https://docs.docker.com/">文档</a>。</p>
       </div><ul class="pa0">
   
@@ -265,16 +265,16 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-raspberry-pi--docker">在 Raspberry Pi 上安装 Docker</a></li>
-    <li><a href="#-sudo--docker-">在没有 Sudo 的情况下执行 Docker 命令</a></li>
-    <li><a href="#-docker">如何使用 Docker</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在-raspberry-pi-上安装-docker">在 Raspberry Pi 上安装 Docker</a></li>
+    <li><a href="#在没有-sudo-的情况下执行-docker-命令">在没有 Sudo 的情况下执行 Docker 命令</a></li>
+    <li><a href="#如何使用-docker">如何使用 Docker</a>
       <ul>
-        <li><a href="#docker-">Docker 镜像</a></li>
+        <li><a href="#docker-镜像">Docker 镜像</a></li>
       </ul>
     </li>
-    <li><a href="#docker-1">Docker 容器</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#docker-容器">Docker 容器</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -286,7 +286,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

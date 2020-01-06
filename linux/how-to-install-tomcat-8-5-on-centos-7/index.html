@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,19 +138,19 @@
           
   
           <p>Tomcat 是 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 技术的开源实现。本教程介绍如何在 CentOS 7 上安装 Tomcat 8.5 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在开始本教程之前，请确保使用<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 权限的用户</a>或 root 用户登录服务器。最好使用 sudo 用户而不是 root 用户运行管理命令。 如果您的系统上没有 sudo 用户，请按照这些说明创建一个。</p>
-<h2 id="-openjdk">安装 OpenJDK</h2>
+<h2 id="安装-openjdk">安装 OpenJDK</h2>
 <p>Tomcat 8.5 需要 Java SE 7 或更高版本。在本教程中，我们将安装 OpenJDK ，它是 Java 平台的开源实现，也是 CentOS 7 中的默认 Java 开发和运行时。</p>
 <p>OpenJDK 的安装简单直接：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install java-1.8.0-openjdk-devel
 </code></pre></div><blockquote>
 <p>如果要安装 Oracle Java 而不是 OpenJDK ，请查看<a href="/linux/install-java-on-centos-7/">本指南</a>。</p>
 </blockquote>
-<h2 id="-tomcat-">创建 Tomcat 系统用户</h2>
+<h2 id="创建-tomcat-系统用户">创建 Tomcat 系统用户</h2>
 <p>不建议使用 root 用户身份运行 Tomcat ，因为存在安全风险。相反，我们将创建一个新的系统用户和组来运行 Tomcat 服务，用户的主目录是 <code>/opt/tomcat</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
-</code></pre></div><h2 id="-tomcat">下载 Tomcat</h2>
+</code></pre></div><h2 id="下载-tomcat">下载 Tomcat</h2>
 <p>我们将会从 <a href="https://tomcat.apache.org/download-80.cgi">Tomcat 下载页面</a>下载最新版本的 Tomcat 8.5.x 。在撰写本文时，最新版本为 8.5.37 。在继续下一步之前，您应该在下载页面检查是否有新版本。</p>
 <p>切换到 <code>/tmp</code> 目录并使用 wget 下载 zip 文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /tmp
@@ -165,7 +165,7 @@ sudo mv apache-tomcat-8.5.37 /opt/tomcat/
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R tomcat: /opt/tomcat
 </code></pre></div><p>赋予 <code>bin</code> 目录中的脚本具有执行权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sh -c <span class="s1">&#39;chmod +x /opt/tomcat/latest/bin/*.sh&#39;</span>
-</code></pre></div><h2 id="-systemd-">创建 systemd 单元文件</h2>
+</code></pre></div><h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
 <p>要将 Tomcat 作为服务运行，请在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的单元文件 <code>tomcat.service</code> ：</p>
 <p><code>/etc/systemd/system/tomcat.service</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit<span class="o">]</span>
@@ -205,13 +205,13 @@ sudo systemctl start tomcat
            └─23833 /usr/lib/jvm/jre/bin/java -Djava.util.logging.config.file<span class="o">=</span>/opt/tomcat/latest/conf/logging.properties -Djava.util.logging.manager<span class="o">=</span>org.apache.juli.ClassLoaderLogManager -Djava.security.egd<span class="o">=</span><span class="k">fi</span>...
 </code></pre></div><p>如果没有错误，您可以启用 Tomcat 服务随系统自动启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> tomcat
-</code></pre></div><h2 id="heading1">调整防火墙</h2>
+</code></pre></div><h2 id="调整防火墙">调整防火墙</h2>
 <p>如果您的服务器受防火墙保护，并且您想从本地网络外部访问 tomcat 接口，请打开端口 8080 。</p>
 <p>使用以下命令打开必要的端口：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo firewall-cmd --zone<span class="o">=</span>public --permanent --add-port<span class="o">=</span>8080/tcp
 sudo firewall-cmd --reload
 </code></pre></div><p>在大多数情况下，在生产环境中运行 Tomcat 时，一般会使用负载平衡器或反向代理服务器，最佳做法是仅允许内部网络访问 <code>8080</code> 端口。</p>
-<h2 id="-tomcat-web-">配置 Tomcat Web 管理界面</h2>
+<h2 id="配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</h2>
 <p>此时已安装 Tomcat ，我们可以在 Web 浏览器通过 <code>8080</code> 端口访问它，但我们无法访问 Web 管理界面，因为我们尚未创建用户。</p>
 <p>Tomcat 用户及其角色在 <code>tomcat-users.xml</code> 文件中定义。打开该文件，您会注意到它里面充满了描述如何配置文件的注释和示例。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml
@@ -255,14 +255,14 @@ sudo firewall-cmd --reload
 </code></pre></div><p>允许的 IP 地址列表是用竖线 <code>|</code> 分隔的列表。 您可以添加单个 IP 地址或使用正则表达式。</p>
 <p>重新启动 Tomcat 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart tomcat
-</code></pre></div><h2 id="heading2">测试安装</h2>
+</code></pre></div><h2 id="测试安装">测试安装</h2>
 <p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8080</code>，如果成功安装，将出现类似于以下内容的屏幕：</p>
 <p><img src="/images/linux/how-to-install-tomcat-8-5-on-centos-7/tomcat-home.jpg" alt=""></p>
 <p>从 <code>http://&lt;your_domain_or_IP_address&gt;:8080/manager/html</code> 可以访问 Tomcat 应用程序管理器仪表板。您可以从这里部署、取消部署、启动、停止和重新加载应用程序。</p>
 <p><img src="/images/linux/how-to-install-tomcat-8-5-on-centos-7/tomcat-manager.jpg" alt=""></p>
 <p>从 <code>http://&lt;your_domain_or_IP_address&gt;:8080/host-manager/html</code> 可以访问 Tomcat 虚拟主机管理器仪表板。您可以从这里创建，删除和管理 Tomcat 虚拟主机。</p>
 <p><img src="/images/linux/how-to-install-tomcat-8-5-on-centos-7/tomcat-host-manager.jpg" alt=""></p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在 CentOS 7 系统上成功安装了 Tomcat 8.5 ，并学习了如何访问 Tomcat 管理界面。现在您可以访问 <a href="https://tomcat.apache.org/tomcat-8.5-doc/index.html">Apache Tomcat 8 官方文档</a> 了解有关 Apache Tomcat 的更多信息了。</p>
 <!-- raw HTML omitted -->
       </div><ul class="pa0">
@@ -342,15 +342,15 @@ sudo firewall-cmd --reload
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-openjdk">安装 OpenJDK</a></li>
-    <li><a href="#-tomcat-">创建 Tomcat 系统用户</a></li>
-    <li><a href="#-tomcat">下载 Tomcat</a></li>
-    <li><a href="#-systemd-">创建 systemd 单元文件</a></li>
-    <li><a href="#heading1">调整防火墙</a></li>
-    <li><a href="#-tomcat-web-">配置 Tomcat Web 管理界面</a></li>
-    <li><a href="#heading2">测试安装</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-openjdk">安装 OpenJDK</a></li>
+    <li><a href="#创建-tomcat-系统用户">创建 Tomcat 系统用户</a></li>
+    <li><a href="#下载-tomcat">下载 Tomcat</a></li>
+    <li><a href="#创建-systemd-单元文件">创建 systemd 单元文件</a></li>
+    <li><a href="#调整防火墙">调整防火墙</a></li>
+    <li><a href="#配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</a></li>
+    <li><a href="#测试安装">测试安装</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -362,7 +362,7 @@ sudo firewall-cmd --reload
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,7 +146,7 @@ Grep在一个或多个输入文件中搜索与给定模式匹配的行，并将�
           <p>grep命令代表“全局正则表达式打印”，是Linux中最强大和最常用的命令之一。</p>
 <p>Grep在一个或多个输入文件中搜索与给定模式匹配的行，并将每个匹配行写入标准输出。如果没有指定文件，则grep从标准输入读取，标准输入通常是另一个命令的输出。</p>
 <p>在本教程中，我们将通过实际示例和最常见的GNU grep选项的详细说明向您展示如何使用grep命令。</p>
-<h2 id="grep">Grep命令语法</h2>
+<h2 id="grep命令语法">Grep命令语法</h2>
 <p>在讨论如何使用Grep命令之前，让我们先回顾一下基本语法。</p>
 <p>Grep实用程序表达式采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="o">[</span>OPTIONS<span class="o">]</span> PATTERN <span class="o">[</span>FILE...<span class="o">]</span>
@@ -156,74 +156,74 @@ Grep在一个或多个输入文件中搜索与给定模式匹配的行，并将�
 <li><code>PATTERN</code> - 搜索模式。</li>
 <li><code>FILE</code> - 零个或多个输入文件名。</li>
 </ul>
-<h2 id="grep1">如何使用Grep在文件中搜索字符串</h2>
+<h2 id="如何使用grep在文件中搜索字符串">如何使用Grep在文件中搜索字符串</h2>
 <p>grep命令的最基本用法是在文件中搜索字符串（文本）。</p>
 <p>例如，要显示<code>/etc/passwd</code>包含该字符串的文件中的行，<code>bash</code>可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep bash /etc/passwd
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">root❌0:0:root:/root:/bin/bash
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep bash /etc/passwd
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">root❌0:0:root:/root:/bin/bash
 linuxize❌1000:1000:linuxize:/home/linuxize:/bin/bash
-</code></pre><p>如果字符串包含空格，则需要用单引号或双引号将其括起来：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep &quot;Gnome Display Manager&quot; /etc/passwd
-</code></pre><h2 id="grep2">Grep反转匹配（排除）</h2>
+</code></pre></div><p>如果字符串包含空格，则需要用单引号或双引号将其括起来：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#34;Gnome Display Manager&#34; /etc/passwd
+</code></pre></div><h2 id="grep反转匹配排除">Grep反转匹配（排除）</h2>
 <p>要显示与模式不匹配的行，请使用<code>-v</code>（或<code>--invert-match</code>）选项。</p>
 <p>例如，要显示<code>/etc/passwd</code>文件中不包含字符串的行<code>nologin</code>，可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -v nologin /etc/passwd
-</code></pre><pre><code class="language-output" data-lang="output">root❌0:0:root:/root:/bin/bash
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -v nologin /etc/passwd
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">root❌0:0:root:/root:/bin/bash
 colord❌124:124::/var/lib/colord:/bin/false
 git❌994:994:git daemon user:/:/usr/bin/git-shell
 linuxize❌1000:1000:linuxize:/home/linuxize:/bin/bash
-</code></pre><h2 id="grep3">如何使用Grep在命令输出中搜索字符串</h2>
+</code></pre></div><h2 id="如何使用grep在命令输出中搜索字符串">如何使用Grep在命令输出中搜索字符串</h2>
 <p>相反，如果指定输入文件，则可以将另一个命令的输出传递给grep，然后仅显示与给定模式匹配的行。</p>
 <p>例如，要查找作为用户在系统上运行的进程，<code>www-data</code>可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ps -ef | grep www-data
-</code></pre><pre><code class="language-output" data-lang="output">www-data 18247 12675  4 16:00 ?        00:00:00 php-fpm: pool www
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ps -ef | grep www-data
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">www-data 18247 12675  4 16:00 ?        00:00:00 php-fpm: pool www
 root     18272 17714  0 16:00 pts/0    00:00:00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn www-data
 www-data 31147 12770  0 Oct22 ?        00:05:51 nginx: worker process
 www-data 31148 12770  0 Oct22 ?        00:00:00 nginx: cache manager process
-</code></pre><p>您还可以在命令中链接多个管道。正如您在上面的输出中看到的那样，还有一行包含grep进程。如果您不希望显示该行，则将输出传递给另一个grep实例，如下所示。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ps -ef | grep www-data | grep -v grep
-</code></pre><pre><code class="language-output" data-lang="output">www-data 18247 12675  4 16:00 ?        00:00:00 php-fpm: pool www
+</code></pre></div><p>您还可以在命令中链接多个管道。正如您在上面的输出中看到的那样，还有一行包含grep进程。如果您不希望显示该行，则将输出传递给另一个grep实例，如下所示。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ps -ef | grep www-data | grep -v grep
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">www-data 18247 12675  4 16:00 ?        00:00:00 php-fpm: pool www
 root     18272 17714  0 16:00 pts/0    00:00:00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn www-data
 www-data 31147 12770  0 Oct22 ?        00:05:51 nginx: worker process
 www-data 31148 12770  0 Oct22 ?        00:00:00 nginx: cache manager process
-</code></pre><h2 id="grep4">Grep递归搜索</h2>
+</code></pre></div><h2 id="grep递归搜索">Grep递归搜索</h2>
 <p>要递归搜索模式，请使用<code>-r</code>选项（或<code>--recursive</code>）。这将搜索指定目录中的所有文件，跳过递归遇到的符号链接。要关注所有符号链接，请使用<code>-R</code>选项（或<code>--dereference-recursive</code>）。</p>
 <p>在以下示例中，我们将在目录<code>linuxize.com</code>中的所有文件中搜索字符串<code>/etc</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -r linuxize.com /etc
-</code></pre><p>该命令将打印以文件的完整路径为前缀的匹配行。</p>
-<pre><code class="language-output" data-lang="output">/etc/hosts:127.0.0.1 node2.linuxize.com
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -r linuxize.com /etc
+</code></pre></div><p>该命令将打印以文件的完整路径为前缀的匹配行。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/etc/hosts:127.0.0.1 node2.linuxize.com
 /etc/nginx/sites-available/linuxize.com:    server_name linuxize.com   www.linuxize.com;
-</code></pre><p>如果<code>-r</code>您使用<code>-R</code>选项grep将遵循所有符号链接：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -R linuxize.com /etc
-</code></pre><p>注意输出的最后一行。上面的示例中未打印该行，因为Nginx <code>sites-enabled</code>目录中的文件是<code>sites-available</code>目录内配置文件的符号链接。</p>
-<pre><code class="language-output" data-lang="output">/etc/hosts:127.0.0.1 node2.linuxize.com
+</code></pre></div><p>如果<code>-r</code>您使用<code>-R</code>选项grep将遵循所有符号链接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -R linuxize.com /etc
+</code></pre></div><p>注意输出的最后一行。上面的示例中未打印该行，因为Nginx <code>sites-enabled</code>目录中的文件是<code>sites-available</code>目录内配置文件的符号链接。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/etc/hosts:127.0.0.1 node2.linuxize.com
 /etc/nginx/sites-available/linuxize.com:    server_name linuxize.com   www.linuxize.com;
 /etc/nginx/sites-enabled/linuxize.com:    server_name linuxize.com   www.linuxize.com;
-</code></pre><h2 id="grep5">Grep仅显示文件名</h2>
+</code></pre></div><h2 id="grep仅显示文件名">Grep仅显示文件名</h2>
 <p>要禁止默认grep输出并仅打印包含匹配模式的文件的名称，可以使用<code>-l</code>（或<code>--files-with-matches</code>）选项。</p>
 <p>例如，搜索<code>.conf</code>以当前工作目录结尾的所有文件，并仅打印包含字符串<code>linuxize.com</code>类型的文件的名称：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -l linuxize.com *.conf
-</code></pre><p>输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">tmux.conf
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -l linuxize.com *.conf
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tmux.conf
 haproxy.conf
-</code></pre><p>该<code>-l</code>选项通常与递归选项结合使用<code>-R</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -Rl linuxize.com /tmp
-</code></pre><h2 id="grep6">Grep案例不敏感</h2>
+</code></pre></div><p>该<code>-l</code>选项通常与递归选项结合使用<code>-R</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -Rl linuxize.com /tmp
+</code></pre></div><h2 id="grep案例不敏感">Grep案例不敏感</h2>
 <p>默认情况下，grep命令区分大小写，这意味着大写和小写字符被视为不同。</p>
 <p>要在搜索时忽略大小写，请使用<code>-i</code>选项（或<code>--ignore-case</code>）。</p>
 <p>例如，在<code>Zebra</code>没有任何选项的情况下搜索时，以下命令将不显示任何输出，即存在匹配的行。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep Zebra /usr/share/words
-</code></pre><p>但是如果使用该<code>-i</code>选项执行不区分大小写的搜索，它将匹配大写和小写字母：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -i Zebra /usr/share/words
-</code></pre><p>指定“Zebra”将匹配“zebra”，“ZEbrA”或该字符串的大写和小写字母的任何其他组合。</p>
-<pre><code class="language-output" data-lang="output">zebra
-zebra's
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep Zebra /usr/share/words
+</code></pre></div><p>但是如果使用该<code>-i</code>选项执行不区分大小写的搜索，它将匹配大写和小写字母：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -i Zebra /usr/share/words
+</code></pre></div><p>指定“Zebra”将匹配“zebra”，“ZEbrA”或该字符串的大写和小写字母的任何其他组合。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">zebra
+zebra&#39;s
 zebras
-</code></pre><h2 id="grep-full-words">Grep Full Words</h2>
+</code></pre></div><h2 id="grep-full-words">Grep Full Words</h2>
 <p>搜索<code>gnu</code>grep时，还会打印<code>gnu</code>嵌入较大单词的行，例如<code>cygnus</code>或<code>magnum</code>。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep gnu /usr/share/words
-</code></pre><pre><code class="language-output" data-lang="output">cygnus
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep gnu /usr/share/words
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cygnus
 gnu
 interregnum
 lgnu9d
@@ -232,78 +232,78 @@ magnum
 magnuson
 sphagnum
 wingnut
-</code></pre><p>要仅返回指定字符串为整个单词的行（由非单词字符括起），可以使用<code>-w</code>（或<code>--word-regexp</code>）选项。</p>
+</code></pre></div><p>要仅返回指定字符串为整个单词的行（由非单词字符括起），可以使用<code>-w</code>（或<code>--word-regexp</code>）选项。</p>
 <p>单词字符包括字母数字字符（<code>a-z</code>，<code>A-Z</code>和<code>0-9</code>）和下划线（<code>_</code>）。所有其他字符都被视为非单词字符。</p>
 <p>如果运行与上面相同的命令（包括该<code>-w</code>选项），则grep命令将仅返回<code>gnu</code>包含在单独单词中的那些行。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -w gnu /usr/share/words
-</code></pre><pre><code class="language-output" data-lang="output">gnu
-</code></pre><h2 id="grep7">Grep显示行号</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -w gnu /usr/share/words
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gnu
+</code></pre></div><h2 id="grep显示行号">Grep显示行号</h2>
 <p>要显示包含与模式匹配的字符串的行数，请使用<code>-n</code>（或<code>--line-number</code>）选项。使用此选项时，grep会将匹配打印到标准输出，前缀为其上的行号。</p>
 <p>例如，要显示<code>/etc/services</code>包含<code>bash</code>前缀为匹配行号的字符串的文件中的行，可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -n 10000 /etc/services
-</code></pre><p>下面的输出向我们显示匹配在行10423和10424上找到。</p>
-<pre><code class="language-output" data-lang="output">10423:ndmp            10000/tcp
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -n 10000 /etc/services
+</code></pre></div><p>下面的输出向我们显示匹配在行10423和10424上找到。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">10423:ndmp            10000/tcp
 10424:ndmp            10000/udp
-</code></pre><h2 id="grep-count-matches">Grep Count Matches</h2>
+</code></pre></div><h2 id="grep-count-matches">Grep Count Matches</h2>
 <p>要将匹配行的计数打印到标准输出，请使用<code>-c</code>（或<code>--count</code>）选项。</p>
 <p>在下面的示例中，我们计算了<code>/usr/bin/zsh</code>作为shell 的帐户数量。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -c '/usr/bin/zsh' /etc/passwd
-</code></pre><pre><code class="language-output" data-lang="output">4
-</code></pre><h2 id="grep8">Grep多个字符串（模式）</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -c &#39;/usr/bin/zsh&#39; /etc/passwd
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">4
+</code></pre></div><h2 id="grep多个字符串模式">Grep多个字符串（模式）</h2>
 <p>OR运算符可以连接两个或多个搜索模式<code>|</code>。</p>
 <p>默认情况下，Grep将模式解释为基本正则表达式，其中<code>|</code>必须使用元字符，例如失去其特殊含义和背面版本。</p>
 <p>在下面的示例中，我们将搜索所有出现的单词<code>fatal</code>，<code>error</code>并<code>critical</code>在Nginx日志错误文件中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep 'fatal\|error\|critical' /var/log/nginx/error.log
-</code></pre><p>如果使用扩展正则表达式选项<code>-E</code>（或<code>--extended-regexp</code>），则不<code>|</code>应对运算符进行转义，如下所示：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -E 'fatal|error|critical' /var/log/nginx/error.log
-</code></pre><h2 id="grep9">Grep正则表达式</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#39;fatal\|error\|critical&#39; /var/log/nginx/error.log
+</code></pre></div><p>如果使用扩展正则表达式选项<code>-E</code>（或<code>--extended-regexp</code>），则不<code>|</code>应对运算符进行转义，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -E &#39;fatal|error|critical&#39; /var/log/nginx/error.log
+</code></pre></div><h2 id="grep正则表达式">Grep正则表达式</h2>
 <p>GNU Grep有两个正则表达式功能集，Basic和Extended。默认情况下，Grep将模式解释为基本正则表达式，要切换到扩展正则表达式，您需要使用该<code>-E</code>选项。</p>
 <p>当在基本正则表达式模式中使用时，除元字符之外的所有其他字符实际上是与自身匹配的正则表达式。以下是最常用的元字符列表：</p>
 <ul>
 <li>
 <p>使用<code>^</code>（插入符号）符号匹配行开头的表达式。在下面的示例中，<code>^kangaroo</code>仅当字符串出现在行的最开头时，该字符串才会匹配。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep &quot;^kangaroo&quot; file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#34;^kangaroo&#34; file.txt
+</code></pre></div></li>
 <li>
 <p>使用<code>$</code>（美元）符号匹配行尾的表达式。在以下示例中，<code>kangaroo$</code>仅当字符串出现在行的最后时，该字符串才会匹配。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep &quot;kangaroo$&quot; file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#34;kangaroo$&#34; file.txt
+</code></pre></div></li>
 <li>
 <p>使用<code>.</code>（句点）符号匹配任何单个字符。例如，要匹配以<code>kan</code>当时开头的任何内容有两个字符并以字符串结尾<code>roo</code>，您可以使用以下模式：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep &quot;kan..roo&quot; file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#34;kan..roo&#34; file.txt
+</code></pre></div></li>
 <li>
 <p>使用<code>[ ]</code>（括号）匹配括号中的任何单个字符。例如，找到包含<code>accept</code>或“ 的行<code>accent</code>，您可以使用以下模式：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep &quot;acce[np]t&quot; file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#34;acce[np]t&#34; file.txt
+</code></pre></div></li>
 <li>
 <p>使用<code>[^ ]</code>（括号）匹配括号中的任何单个字符。以下模式将匹配包含的所有字符串组合<code>co(any_leter_except_l )a</code>，例如<code>coca</code>，<code>cobalt</code>等等，但不匹配包含的行<code>cola</code>，</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep &quot;co[^l]a&quot; file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#34;co[^l]a&#34; file.txt
+</code></pre></div></li>
 </ul>
 <p>要逃避下一个字符的特殊含义，请使用<code>\</code>（反斜杠）符号。</p>
-<h2 id="grep10">Grep扩展正则表达式</h2>
+<h2 id="grep扩展正则表达式">Grep扩展正则表达式</h2>
 <p>要将模式解释为扩展正则表达式，请使用<code>-E</code>（或<code>--extended-regexp</code>）选项。扩展正则表达式包括所有基本元字符，以及其他元字符，以创建更复杂和强大的搜索模式。以下是一些例子：</p>
 <ul>
 <li>
 <p>匹配并提取给定文件中的所有电子邮件地址：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -E -o &quot;\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b&quot; file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -E -o &#34;\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}\b&#34; file.txt
+</code></pre></div></li>
 <li>
 <p>匹配并提取给定文件中的所有有效IP地址：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)' file.txt
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -E -o &#39;(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)&#39; file.txt
+</code></pre></div></li>
 </ul>
 <p>该<code>-o</code>选项用于仅打印匹配的字符串。</p>
-<h2 id="grep11">比赛前的Grep打印线</h2>
+<h2 id="比赛前的grep打印线">比赛前的Grep打印线</h2>
 <p>要在匹配行之前打印特定数量的行，请使用<code>-B</code>（或<code>--before-context</code>）选项。</p>
 <p>例如，要在匹配行之前显示5行前导上下文，可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -B 5 root /etc/passwd
-</code></pre><h2 id="grep12">匹配后Grep打印线</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -B 5 root /etc/passwd
+</code></pre></div><h2 id="匹配后grep打印线">匹配后Grep打印线</h2>
 <p>要在匹配行后打印特定数量的行，请使用<code>-A</code>（或<code>--after-context</code>）选项。</p>
 <p>例如，要在匹配行后显示5行尾随上下文，可以使用以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">grep -A 5 root /etc/passwd
-</code></pre><h2 id="heading">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -A 5 root /etc/passwd
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何使用Grep搜索文件内部的模式。在<a href="https://www.gnu.org/software/grep/manual/grep.html">Grep用户手册</a>页面上可以了解更多有关Grep <a href="https://www.gnu.org/software/grep/manual/grep.html">的信息</a>。</p>
       </div><ul class="pa0">
   
@@ -378,22 +378,22 @@ wingnut
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#grep">Grep命令语法</a></li>
-    <li><a href="#grep1">如何使用Grep在文件中搜索字符串</a></li>
-    <li><a href="#grep2">Grep反转匹配（排除）</a></li>
-    <li><a href="#grep3">如何使用Grep在命令输出中搜索字符串</a></li>
-    <li><a href="#grep4">Grep递归搜索</a></li>
-    <li><a href="#grep5">Grep仅显示文件名</a></li>
-    <li><a href="#grep6">Grep案例不敏感</a></li>
+    <li><a href="#grep命令语法">Grep命令语法</a></li>
+    <li><a href="#如何使用grep在文件中搜索字符串">如何使用Grep在文件中搜索字符串</a></li>
+    <li><a href="#grep反转匹配排除">Grep反转匹配（排除）</a></li>
+    <li><a href="#如何使用grep在命令输出中搜索字符串">如何使用Grep在命令输出中搜索字符串</a></li>
+    <li><a href="#grep递归搜索">Grep递归搜索</a></li>
+    <li><a href="#grep仅显示文件名">Grep仅显示文件名</a></li>
+    <li><a href="#grep案例不敏感">Grep案例不敏感</a></li>
     <li><a href="#grep-full-words">Grep Full Words</a></li>
-    <li><a href="#grep7">Grep显示行号</a></li>
+    <li><a href="#grep显示行号">Grep显示行号</a></li>
     <li><a href="#grep-count-matches">Grep Count Matches</a></li>
-    <li><a href="#grep8">Grep多个字符串（模式）</a></li>
-    <li><a href="#grep9">Grep正则表达式</a></li>
-    <li><a href="#grep10">Grep扩展正则表达式</a></li>
-    <li><a href="#grep11">比赛前的Grep打印线</a></li>
-    <li><a href="#grep12">匹配后Grep打印线</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#grep多个字符串模式">Grep多个字符串（模式）</a></li>
+    <li><a href="#grep正则表达式">Grep正则表达式</a></li>
+    <li><a href="#grep扩展正则表达式">Grep扩展正则表达式</a></li>
+    <li><a href="#比赛前的grep打印线">比赛前的Grep打印线</a></li>
+    <li><a href="#匹配后grep打印线">匹配后Grep打印线</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -405,7 +405,7 @@ wingnut
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

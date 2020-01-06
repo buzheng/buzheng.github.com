@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,50 +142,50 @@
   
           <p><a href="http://www.webmin.com/">Webmin</a>是一个用于管理Linux服务器的开源Web控制面板。使用Webmin，您可以管理系统用户，组，磁盘配额以及配置最流行的服务，包括Web，ssh，ftp，电子邮件和数据库服务器。</p>
 <p>本教程介绍如何在Debian Linux 9上安装Webmin。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>您需要以具有<a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo访问权限</a>的用户身份登录才能安装软件包。</p>
-<h2 id="debianwebmin">在Debian上安装Webmin</h2>
+<h2 id="在debian上安装webmin">在Debian上安装Webmin</h2>
 <p>在Debian Linux上安装Webmin是一个相对简单的过程，只需几分钟。</p>
 <ol>
 <li>
 <p>首先更新包列表并安装依赖项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install software-properties-common apt-transport-https wget
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install software-properties-common apt-transport-https wget
+</code></pre></div></li>
 <li>
 <p>接下来，使用以下<a href="/linux/wget-command-examples/">wget命令</a>导入Webmin GPG密钥：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
-</code></pre><p>启用Webmin存储库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo add-apt-repository &quot;deb [arch=amd64] http://download.webmin.com/download/repository sarge contrib&quot;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
+</code></pre></div><p>启用Webmin存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo add-apt-repository &#34;deb [arch=amd64] http://download.webmin.com/download/repository sarge contrib&#34;
+</code></pre></div></li>
 <li>
 <p>键入以下命令安装Webmin包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">apt update &amp;&amp; sudo apt install webmin
-</code></pre><p>安装完成后，将显示以下输出：</p>
-<pre><code class="language-output" data-lang="output">Webmin install complete. You can now login to https://your_server_ip_or_hostname:10000/
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">apt update &amp;&amp; sudo apt install webmin
+</code></pre></div><p>安装完成后，将显示以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Webmin install complete. You can now login to https://your_server_ip_or_hostname:10000/
 as root with your root password, or as any user who can use sudo
 to run commands as root.
-</code></pre><p>Webmin服务将自动启动。</p>
+</code></pre></div><p>Webmin服务将自动启动。</p>
 </li>
 </ol>
 <p>而已！此时，您已在Debian 9服务器上成功安装了Webmin。</p>
-<h2 id="heading1">调整防火墙</h2>
+<h2 id="调整防火墙">调整防火墙</h2>
 <p>默认情况下，Webmin <code>10000</code>在所有网络接口上侦听端口上的连接。</p>
 <p>如果您的服务器运行<a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">UFW防火墙</a>，则需要打开Webmin端口。</p>
 <p>要允许端口<code>10000</code>上的流量运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 10000/tcp
-</code></pre><h2 id="webmin-web">访问Webmin Web界面</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow 10000/tcp
+</code></pre></div><h2 id="访问webmin-web界面">访问Webmin Web界面</h2>
 <p>既然Webmin已安装在Debian服务器上，请启动Web浏览器并键入服务器的主机名或公共IP地址，然后键入Webmin端口<code>10000</code>：</p>
-<pre><code class="language-url" data-lang="url">https://your_server_ip_or_hostname:10000/
-</code></pre><p>浏览器会抱怨证书无效，因为默认情况下Webmin使用不受信任的<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名SSL证书</a>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">https://your_server_ip_or_hostname:10000/
+</code></pre></div><p>浏览器会抱怨证书无效，因为默认情况下Webmin使用不受信任的<a href="/linux/creating-a-self-signed-ssl-certificate/">自签名SSL证书</a>。</p>
 <p>使用root或sudo用户凭据登录Webmin Web界面：</p>
 <p><img src="/images/linux/how-to-install-webmin-on-debian-9/webmin-login-form.jpg" alt=""></p>
 <p>登录后，您将被重定向到Webmin仪表板，您可以在其中查看有关系统的基本信息。</p>
 <p><img src="/images/linux/how-to-install-webmin-on-debian-9/webmin-dashboard.jpg" alt=""></p>
 <p>从这里开始，您可以根据需要开始配置和管理Debian 9服务器。</p>
-<h2 id="webmin">升级Webmin</h2>
+<h2 id="升级webmin">升级Webmin</h2>
 <p>要在发布新版本时升级Webmin安装，可以使用<code>apt</code>包管理器正常升级过程：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt upgrade
-</code></pre><h2 id="heading2">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt upgrade
+</code></pre></div><h2 id="结论">结论</h2>
 <p>您已在Debian 9计算机上成功安装了Webmin。您现在可以安装<a href="/linux/how-to-setup-ftp-server-with-vsftpd-on-debian-9/">FTP服务器</a>或<a href="https://linuxize.com/series/how-to-install-lamp-stack-on-debian-9/">LAMP</a> / LEMP堆栈，并开始通过Webmin Web界面管理服务。</p>
 <p>要了解有关Webmin的更多信息，请访问其官方<a href="http://www.webmin.com/docs.html">文档</a>页面。</p>
       </div><ul class="pa0">
@@ -261,12 +261,12 @@ to run commands as root.
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#debianwebmin">在Debian上安装Webmin</a></li>
-    <li><a href="#heading1">调整防火墙</a></li>
-    <li><a href="#webmin-web">访问Webmin Web界面</a></li>
-    <li><a href="#webmin">升级Webmin</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在debian上安装webmin">在Debian上安装Webmin</a></li>
+    <li><a href="#调整防火墙">调整防火墙</a></li>
+    <li><a href="#访问webmin-web界面">访问Webmin Web界面</a></li>
+    <li><a href="#升级webmin">升级Webmin</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -278,7 +278,7 @@ to run commands as root.
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

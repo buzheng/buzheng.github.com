@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,30 +146,30 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
           <p>phpMyAdmin是一个基于PHP的开源工具，用于通过基于Web的界面管理MySQL和MariaDB服务器。</p>
 <p>phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执行SQL语句，以各种数据格式导入和导出数据等等。</p>
 <p>在本教程中，我们将介绍在CentOS 7上使用Apache安装和保护phpMyAdmin所需的步骤。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li><a href="https://linuxize.com/series/install-lamp-stack-on-centos-7/">在CentOS服务器上安装LAMP（Linux，Apache，MySQL和PHP）</a>。</li>
 <li>以<a href="/linux/create-a-sudo-user-on-centos/">具有sudo权限</a>的<a href="/linux/create-a-sudo-user-on-centos/">用户</a>身份登录。</li>
 </ul>
 <p>虽然没有必要，但建议通过HTTPS访问您的phpMyAdmin安装。如果您的站点上没有SSL，请按照有关<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用CentOS 7上的Let's Encrypt</a>保护<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">Apache</a>的说明进行操作。</p>
-<h2 id="phpmyadmin">安装phpMyAdmin</h2>
+<h2 id="安装phpmyadmin">安装phpMyAdmin</h2>
 <p>要在CentOS 7系统上安装phpMyAdmin，请执行以下步骤：</p>
 <ol>
 <li>
 <p>phpMyAdmin在CentOS 7核心存储库中不可用。要安装phpMyAdmin，我们需要首先启用<a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL存储库</a>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install epel-release
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install epel-release
+</code></pre></div></li>
 <li>
 <p>启用EPEL存储库后，我们可以使用以下命令安装phpMyAdmin及其所有依赖项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo yum install phpmyadmin
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install phpmyadmin
+</code></pre></div></li>
 </ol>
-<h2 id="phpmyadmin1">配置和保护phpMyAdmin</h2>
+<h2 id="配置和保护phpmyadmin">配置和保护phpMyAdmin</h2>
 <p>在安装过程中会自动创建phpMyAdmin的Apache配置文件。默认情况下，除localhost之外的所有连接都被拒绝。由于我们将从远程位置访问phpMyAdmin，因此我们需要修改配置文件并指定允许的IP地址。</p>
 <p>打开phpMyAdmin Apache配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/httpd/conf.d/phpMyAdmin.conf
-</code></pre><p>更改<code>Require ip 127.0.0.1</code>使用家庭连接的IP地址读取的两行。如果您不知道自己的家庭IP地址，请在网络浏览器中打开Goog​​le搜索并输入<code>what is my ip</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/httpd/conf.d/phpMyAdmin.conf
+</code></pre></div><p>更改<code>Require ip 127.0.0.1</code>使用家庭连接的IP地址读取的两行。如果您不知道自己的家庭IP地址，请在网络浏览器中打开Goog​​le搜索并输入<code>what is my ip</code>。</p>
 <p>/etc/httpd/conf.d/phpMyAdmin.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="c"># Apache 2.4</span>
 <span class="nt">&lt;RequireAny</span><span class="s"></span><span class="nt">&gt;</span>
@@ -180,17 +180,17 @@ phpMyAdmin允许您与MySQL数据库交互，管理用户帐户和权限，执�
 <p>如果您希望能够从任何位置访问您的phpMyAdmin安装，<code>Require all granted</code>请<code>Require ip</code>在行之前添加。</p>
 <p>为了额外的安全层，我们将通过设置基本身份验证来密码保护phpMyAdmin目录。</p>
 <p>首先使用该<code>htpasswd</code>工具创建新的身份验证文件。我们将<code>.htpasswd</code>文件存储在<code>/etc/phpMyAdmin</code>目录中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo htpasswd -c /etc/phpMyAdmin/.htpasswd admin
-</code></pre><p>在这个例子中，我们创建了一个名为的用户<code>admin</code>。您可以选择任何您想要的用户名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo htpasswd -c /etc/phpMyAdmin/.htpasswd admin
+</code></pre></div><p>在这个例子中，我们创建了一个名为的用户<code>admin</code>。您可以选择任何您想要的用户名。</p>
 <p>上面的命令将提示您输入并确认用户的密码。</p>
-<pre><code class="language-output" data-lang="output">New password: 
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">New password: 
 Re-type new password: 
 Adding password for user admin
-</code></pre><p>稍后，如果您需要添加其他用户，请使用不带<code>-c</code>标志的相同命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo htpasswd /etc/phpMyAdmin/.htpasswd admin2
-</code></pre><p>下一步是将Apache配置为密码保护phpMyAdmin目录并使用该<code>.htpasswd</code>文件。为此，请打开<code>phpMyAdmin.conf</code>在phpMyAdmin安装期间自动创建的文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/httpd/conf.d/phpMyAdmin.conf
-</code></pre><p>并插入以黄色突出显示的以下行：</p>
+</code></pre></div><p>稍后，如果您需要添加其他用户，请使用不带<code>-c</code>标志的相同命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo htpasswd /etc/phpMyAdmin/.htpasswd admin2
+</code></pre></div><p>下一步是将Apache配置为密码保护phpMyAdmin目录并使用该<code>.htpasswd</code>文件。为此，请打开<code>phpMyAdmin.conf</code>在phpMyAdmin安装期间自动创建的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/httpd/conf.d/phpMyAdmin.conf
+</code></pre></div><p>并插入以黄色突出显示的以下行：</p>
 <p>/etc/httpd/conf.d/phpMyAdmin.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;Directory</span> <span class="s">/usr/share/phpMyAdmin/</span><span class="nt">&gt;</span>
     <span class="nb">AddDefaultCharset</span> UTF-8
@@ -205,20 +205,20 @@ Adding password for user admin
    <span class="nt">&lt;IfModule</span> <span class="s">mod_authz_core.c</span><span class="nt">&gt;</span>
    ...
 </code></pre></div><p>保存文件并重新启动Apache服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd
-</code></pre><p>将<code>/phpmyadmin</code>别名更改为更独特和安全的东西也是一个好主意。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart httpd
+</code></pre></div><p>将<code>/phpmyadmin</code>别名更改为更独特和安全的东西也是一个好主意。</p>
 <p>访问phpMyAdmin时，系统将提示您输入之前创建的用户的登录凭据：</p>
-<pre><code class="language-url" data-lang="url">https://your_domain_or_ip_address/phpmyadmin
-</code></pre><p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/phpmyadmin-basic-auth.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">https://your_domain_or_ip_address/phpmyadmin
+</code></pre></div><p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/phpmyadmin-basic-auth.jpg" alt=""></p>
 <p>进入基本身份验证后，您将进入phpMyAdmin登录页面，您需要输入MySQL管理用户登录凭据。</p>
-<h2 id="phpmyadmin2">访问phpMyAdmin</h2>
+<h2 id="访问phpmyadmin">访问phpMyAdmin</h2>
 <p>要访问phpMyAdmin界面，请打开您喜欢的浏览器并键入服务器的域名或公共IP地址，然后<code>/phpmyadmin</code>：</p>
-<pre><code class="language-url" data-lang="url">https://your_domain_or_ip_address/phpmyadmin
-</code></pre><p>输入先前创建的管理用户登录凭据，然后单击<code>Go</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">https://your_domain_or_ip_address/phpmyadmin
+</code></pre></div><p>输入先前创建的管理用户登录凭据，然后单击<code>Go</code>。</p>
 <p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/phpmyadmin-login.jpg" alt=""></p>
 <p>登录后，您将看到phpMyAdmin仪表板，其外观如下所示：</p>
 <p><img src="/images/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/phpmyadmin-interface.jpg" alt=""></p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>恭喜，您已在CentOS 7服务器上成功安装了phpMyAdmin。您现在可以开始<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">创建MySQL数据库，用户和表，</a>并执行各种MySQL查询和操作。</p>
       </div><ul class="pa0">
   
@@ -309,11 +309,11 @@ Adding password for user admin
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#phpmyadmin">安装phpMyAdmin</a></li>
-    <li><a href="#phpmyadmin1">配置和保护phpMyAdmin</a></li>
-    <li><a href="#phpmyadmin2">访问phpMyAdmin</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装phpmyadmin">安装phpMyAdmin</a></li>
+    <li><a href="#配置和保护phpmyadmin">配置和保护phpMyAdmin</a></li>
+    <li><a href="#访问phpmyadmin">访问phpMyAdmin</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -325,7 +325,7 @@ Adding password for user admin
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

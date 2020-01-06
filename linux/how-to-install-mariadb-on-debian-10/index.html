@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,43 +145,43 @@
   
           <p>MariaDB 是一个开源的，多线程的关系数据库管理系统，是 MySQL 向后兼容的替代品。 MariaDB 是 Debian 中 MySQL 的默认实现。</p>
 <p>本教程介绍如何在 Debian 10 上安装 MariaDB 。</p>
-<h2 id="-debian-10--mariadb">在 Debian 10 上安装 MariaDB</h2>
+<h2 id="在-debian-10-上安装-mariadb">在 Debian 10 上安装 MariaDB</h2>
 <p>在撰写本文时， Debian main 中提供的最新 MariaDB 版本是版本 10.3 。</p>
 <p>以 root 身份或<a href="/linux/how-to-create-a-sudo-user-on-debian/">使用 sudo 权限的用户</a>执行以下步骤，在 Debian 10 上安装 MariaDB ：</p>
 <ol>
 <li>
 <p>首先更新包索引：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update</code></pre></div>
 </li>
 <li>
 <p>通过运行以下命令安装 MariaDB 服务器和客户端软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install mariadb-server</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install mariadb-server</code></pre></div>
 </li>
 <li>
 <p>MariaDB 服务将自动启动。要验证它，请检查服务状态：</p>
 </li>
 </ol>
-<pre><code><pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status mariadb</code></pre>
+<pre><code><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status mariadb</code></pre></div>
 
 输出应该如下所示：
 
-<pre><code class="language-output" data-lang="output">●  mariadb.service - MariaDB 10.3.15 database server 
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">●  mariadb.service - MariaDB 10.3.15 database server 
    Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
    Active: active (running) since Thu 2019-07-11 14:36:28 PDT; 19min ago
      Docs: man:mysqld(8)
            https://mariadb.com/kb/en/library/systemd/
  Main PID: 4509 (mysqld)
-   Status: " Taking your SQL requests now... "
+   Status: &#34; Taking your SQL requests now... &#34;
     Tasks: 30 (limit: 2359)
    Memory: 78.6M
    CGroup: /system.slice/mariadb.service
-           └─ 4509 /usr/sbin/mysqld   </code></pre>
+           └─ 4509 /usr/sbin/mysqld   </code></pre></div>
 </code></pre>
-<h2 id="-mariadb">保护 MariaDB</h2>
+<h2 id="保护-mariadb">保护 MariaDB</h2>
 <p>MariaDB 附带了一个脚本 <code>mysql_secure_installation</code> ，可以帮助您提高安装的安全性。请在终端中运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql_secure_installation
-</code></pre><p>系统将提示您为 root 帐户设置密码，删除匿名用户，限制 root 用户对本地计算机的访问权限并删除测试数据库。</p>
-<pre><code class="language-output" data-lang="output">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql_secure_installation
+</code></pre></div><p>系统将提示您为 root 帐户设置密码，删除匿名用户，限制 root 用户对本地计算机的访问权限并删除测试数据库。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 Enter current password for root (enter for none):
 ...
 Set root password? [Y/n] Y
@@ -197,21 +197,21 @@ Remove test database and access to it? [Y/n] Y
 Reload privilege tables now? [Y/n] Y
 ...
 Thanks for using MariaDB!
-</code></pre><p>如果选中，脚本将重新加载权限表，确保更改立即生效。</p>
+</code></pre></div><p>如果选中，脚本将重新加载权限表，确保更改立即生效。</p>
 <p>所有步骤都会详细解释，建议对所有问题回答“Y”。</p>
-<h2 id="heading">认证方法</h2>
+<h2 id="认证方法">认证方法</h2>
 <p>默认情况下， MariaDB root 用户使用 <code>unix_socket</code> 身份验证插件，该插件在调用 <code>mysql</code> 客户端工具时检查有效用户 ID  。</p>
 <p>这意味着只有在 <code>mysql</code> 以系统 root 身份调用命令或将 sudo 添加到命令时，才能以 root 身份连接到 MariaDB 服务器。</p>
 <p>为了提高安全性，建议保留默认的身份验证插件，并允许 root 用户仅通过 Unix 套接字进行身份验证。</p>
 <p>如果要将根身份验证更改为经典身份验证，请登录 MariaDB 服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>运行以下语句以更改身份验证插件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>运行以下语句以更改身份验证插件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;</span><span class="s1">root</span><span class="s1">&#39;</span><span class="o">@</span><span class="s1">&#39;</span><span class="s1">localhost</span><span class="s1">&#39;</span> <span class="n">IDENTIFIED</span> <span class="n">VIA</span> <span class="n">mysql_native_password</span><span class="p">;</span>
 <span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;</span><span class="s1">root</span><span class="s1">&#39;</span><span class="o">@</span><span class="s1">&#39;</span><span class="s1">localhost</span><span class="s1">&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;</span><span class="s1">your_root_passwd</span><span class="s1">&#39;</span><span class="p">;</span>
 </code></pre></div><p>您现在可以使用新密码连接到 MariaDB 服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -u root -p
-</code></pre><p>更改身份验证插件后同样会允许您从外部程序(如 phpMyAdmin) 以 root 用户身份登录</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p
+</code></pre></div><p>更改身份验证插件后同样会允许您从外部程序(如 phpMyAdmin) 以 root 用户身份登录</p>
+<h2 id="结论">结论</h2>
 <p>在本教程中，我们向您展示了如何在 Debian 10 服务器上安装和保护 MariaDB 。</p>
       </div><ul class="pa0">
   
@@ -290,10 +290,10 @@ Thanks for using MariaDB!
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-debian-10--mariadb">在 Debian 10 上安装 MariaDB</a></li>
-    <li><a href="#-mariadb">保护 MariaDB</a></li>
-    <li><a href="#heading">认证方法</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#在-debian-10-上安装-mariadb">在 Debian 10 上安装 MariaDB</a></li>
+    <li><a href="#保护-mariadb">保护 MariaDB</a></li>
+    <li><a href="#认证方法">认证方法</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -305,7 +305,7 @@ Thanks for using MariaDB!
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

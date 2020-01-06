@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,56 +146,56 @@
           <p>PHP 是最常用的服务器端编程语言之一。许多流行的 CMS 和框架(例如 WordPress ， Magento 和 Laravel) 都是用 PHP 构建的。</p>
 <p>在本指南中，我们将讨论如何在 CentOS 8 上安装 PHP 7.2 、 7.3 或 7.4 。在选择要安装的 PHP 版本之前，请确保您的应用程序支持它。</p>
 <p>我们还将向您展示如何将 PHP 与 Nginx 和 Apache 集成。</p>
-<h2 id="-centos-8--php">在 CentOS 8 上安装 PHP</h2>
+<h2 id="在-centos-8-上安装-php">在 CentOS 8 上安装 PHP</h2>
 <p>CentOS 8 默认的 PHP 版本是 7.2。该版本支持大多数现代 PHP 应用程序，但自 2019 年 11 月起将不再有效维护。可从 <a href="https://rpms.remirepo.net/">Remi 存储库</a>中获得更新的 PHP 版本。</p>
-<h3 id="-remi-">启用 Remi 存储库</h3>
+<h3 id="启用-remi-存储库">启用 Remi 存储库</h3>
 <p>如果要安装发行版稳定的 PHP 版本 7.2 ，请跳过此步骤。否则，如果要安装 PHP 7.3 或 7.4 ，请以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份运行以下命令来启用 Remi 存储库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
-</code></pre><p>上面的命令还将启用 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+</code></pre></div><p>上面的命令还将启用 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>。</p>
 <p>安装完成后，请运行以下命令以获取所有可用 PHP 版本的列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf module list php
-</code></pre><p>输出将显示所有可用模块的列表，包括关联的流，版本和安装配置文件。</p>
-<pre><code class="language-output" data-lang="output">Last metadata expiration check: 0:02:11 ago on Fri 18 Oct 2019 08:31:43 PM UTC.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf module list php
+</code></pre></div><p>输出将显示所有可用模块的列表，包括关联的流，版本和安装配置文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Last metadata expiration check: 0:02:11 ago on Fri 18 Oct 2019 08:31:43 PM UTC.
 CentOS-8 - AppStream
 Name    Stream       Profiles                     Summary                 
 php     7.2 [d][e]   common [d], devel, minimal   PHP scripting language  
 
-Remi's Modular repository for Enterprise Linux 8 - x86_64
+Remi&#39;s Modular repository for Enterprise Linux 8 - x86_64
 Name    Stream       Profiles                     Summary                 
 php     remi-7.2     common [d], devel, minimal   PHP scripting language  
 php     remi-7.3     common [d], devel, minimal   PHP scripting language  
 php     remi-7.4     common [d], devel, minimal   PHP scripting language  
 
 Hint: [d]efault, [e]nabled, [x]disabled, [i]nstalled
-</code></pre><p>默认的 PHP 模块设置为 PHP 7.2 。要安装较新的 PHP 版本，请启用适当的版本：</p>
+</code></pre></div><p>默认的 PHP 模块设置为 PHP 7.2 。要安装较新的 PHP 版本，请启用适当的版本：</p>
 <p><strong>PHP 7.3</strong></p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf module reset php
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf module reset php
 sudo dnf module enable php:remi-7.3
-</code></pre><p><strong>PHP 7.4</strong></p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf module reset php
+</code></pre></div><p><strong>PHP 7.4</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf module reset php
 sudo dnf module enable php:remi-7.4
-</code></pre><p>您现在可以在 CentOS 服务器上安装 PHP 了。</p>
-<h3 id="-php">安装 PHP</h3>
+</code></pre></div><p>您现在可以在 CentOS 服务器上安装 PHP 了。</p>
+<h3 id="安装-php">安装 PHP</h3>
 <p>以下命令将安装 PHP 和一些最常见的 PHP 模块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install php php-opcache php-gd php-curl php-mysqlnd
-</code></pre><p>PHP 使用 FPM 作为依赖安装，并用作 FastCGI 服务器。启动 FPM 服务，并使它能够在启动时自动启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now php-fpm
-</code></pre><h2 id="-php--apache-">配置 PHP 以与 Apache 一起使用</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install php php-opcache php-gd php-curl php-mysqlnd
+</code></pre></div><p>PHP 使用 FPM 作为依赖安装，并用作 FastCGI 服务器。启动 FPM 服务，并使它能够在启动时自动启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl enable --now php-fpm
+</code></pre></div><h2 id="配置-php-以与-apache-一起使用">配置 PHP 以与 Apache 一起使用</h2>
 <p>如果您将 <a href="/linux/how-to-install-apache-on-centos-8/">Apache</a> 用作 Web 服务器，请使用以下命令重新 <code>httpd</code> 启动服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart httpd
-</code></pre><h2 id="-php--nginx-">配置 PHP 以与 Nginx 一起使用</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart httpd
+</code></pre></div><h2 id="配置-php-以与-nginx-一起使用">配置 PHP 以与 Nginx 一起使用</h2>
 <p>默认情况下， PHP FPM 以 user 身份运行 <code>apache</code> 。为避免权限问题，我们将用户更改为 <code>nginx</code> 。为此，请编辑以黄色突出显示的行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/php-fpm.d/www.conf
-</code></pre><p>/etc/php-fpm.d/www.conf</p>
-<pre><code class="language-config" data-lang="config">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/php-fpm.d/www.conf
+</code></pre></div><p>/etc/php-fpm.d/www.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 user = nginx
 ...
 group = nginx
-</code></pre><p>确保 <code>/var/lib/php</code> 目录具有正确的<a href="/linux/linux-chown-command/">所有权</a>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">chown -R root:nginx /var/lib/php
-</code></pre><p>完成后，重新启动 PHP FPM 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart php-fpm
-</code></pre><p>接下来，编辑 Nginx 虚拟主机指令，并添加以下位置块，以便 <a href="/linux/how-to-install-nginx-on-centos-8/">Nginx</a> 可以处理 PHP 文件：</p>
+</code></pre></div><p>确保 <code>/var/lib/php</code> 目录具有正确的<a href="/linux/linux-chown-command/">所有权</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">chown -R root:nginx /var/lib/php
+</code></pre></div><p>完成后，重新启动 PHP FPM 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart php-fpm
+</code></pre></div><p>接下来，编辑 Nginx 虚拟主机指令，并添加以下位置块，以便 <a href="/linux/how-to-install-nginx-on-centos-8/">Nginx</a> 可以处理 PHP 文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
 
     <span class="c1"># . . . other code
@@ -209,8 +209,8 @@ group = nginx
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><p>为了使新配置生效，请重新启动 Nginx 服务：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
-</code></pre><h2 id="heading">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在 CentOS 8 中，可以从默认的存储库中安装 PHP 7.2 。如果要安装最新版本，则需要启用 Remi 存储库。</p>
       </div><ul class="pa0">
   
@@ -285,15 +285,15 @@ group = nginx
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-centos-8--php">在 CentOS 8 上安装 PHP</a>
+    <li><a href="#在-centos-8-上安装-php">在 CentOS 8 上安装 PHP</a>
       <ul>
-        <li><a href="#-remi-">启用 Remi 存储库</a></li>
-        <li><a href="#-php">安装 PHP</a></li>
+        <li><a href="#启用-remi-存储库">启用 Remi 存储库</a></li>
+        <li><a href="#安装-php">安装 PHP</a></li>
       </ul>
     </li>
-    <li><a href="#-php--apache-">配置 PHP 以与 Apache 一起使用</a></li>
-    <li><a href="#-php--nginx-">配置 PHP 以与 Nginx 一起使用</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#配置-php-以与-apache-一起使用">配置 PHP 以与 Apache 一起使用</a></li>
+    <li><a href="#配置-php-以与-nginx-一起使用">配置 PHP 以与 Nginx 一起使用</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -305,7 +305,7 @@ group = nginx
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,24 +142,24 @@
   
           <p>Redis是一个开源的内存数据结构存储。它可以用作数据库，缓存和消息代理，并支持各种数据结构，如字符串，散列，列表，集等.Redis通过Redis Sentinel提供高可用性，包括监控，通知自动故障转移。它还提供了使用Redis Cluster跨多个Redis节点的自动分区。</p>
 <p>本教程介绍如何在Ubuntu 18.04服务器上安装和配置Redis。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在开始本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">用户</a>身份登录。</p>
-<h2 id="ubunturedis">在Ubuntu上安装Redis</h2>
+<h2 id="在ubuntu上安装redis">在Ubuntu上安装Redis</h2>
 <p>Redis软件包包含在默认的Ubuntu 18.04存储库中。安装非常简单，只需按照以下步骤操作：</p>
 <ol>
 <li>
 <p>首先在SSH终端中运行以下命令来更新apt软件包列表：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div></li>
 <li>
 <p>键入以下命令安装Redis：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install redis-server
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install redis-server
+</code></pre></div></li>
 <li>
 <p>安装完成后，Redis服务将自动启动。要检查服务的状态，请输入以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status redis-server
-</code></pre><p>你应该看到这样的东西：</p>
-<pre><code class="language-output" data-lang="output">● redis-server.service - Advanced key-value store
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status redis-server
+</code></pre></div><p>你应该看到这样的东西：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● redis-server.service - Advanced key-value store
    Loaded: loaded (/lib/systemd/system/redis-server.service; enabled; vendor preset: enabled)
    Active: active (running) since Sun 2018-10-28 05:10:45 PDT; 2h ago
      Docs: http://redis.io/documentation,
@@ -170,39 +170,39 @@
     Tasks: 4 (limit: 2319)
    CGroup: /system.slice/redis-server.service
            `-2226 /usr/bin/redis-server 0.0.0.0:6379
-</code></pre></li>
+</code></pre></div></li>
 </ol>
 <p>如果在服务器上禁用IPv6，Redis服务将无法启动。</p>
 <p>恭喜，此时您已在Ubuntu 18.04服务器上安装并运行Redis。</p>
-<h2 id="redis">配置Redis远程访问</h2>
+<h2 id="配置redis远程访问">配置Redis远程访问</h2>
 <p>默认情况下，Redis不允许远程连接。您只能从运行Redis的127.0.0.1（localhost）连接到Redis服务器。</p>
 <p>仅当您要从远程主机连接到Redis服务器时，才执行以下步骤。如果您使用单个服务器设置，应用程序和Redis在同一台计算机上运行，​​则不应启用远程访问。</p>
 <p>要将Redis配置为接受远程连接，请使用文本编辑器打开Redis配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/redis/redis.conf
-</code></pre><p>找到开头的行<code>bind 127.0.0.1 ::1</code>和替换<code>127.0.0.1</code>用<code>0.0.0.0</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/redis/redis.conf
+</code></pre></div><p>找到开头的行<code>bind 127.0.0.1 ::1</code>和替换<code>127.0.0.1</code>用<code>0.0.0.0</code>。</p>
 <p>/etc/redis/redis.conf</p>
-<pre><code class="language-output" data-lang="output"># IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
 # JUST COMMENT THE FOLLOWING LINE.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 bind 0.0.0.0 ::1
-</code></pre><p>保存文件并关闭编辑器。</p>
+</code></pre></div><p>保存文件并关闭编辑器。</p>
 <p>重新启动Redis服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart redis-server
-</code></pre><p>使用以下命令验证redis是否正在侦听端口上的所有接口<code>6379</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ss -an | grep 6379
-</code></pre><p>你应该看到类似下面的内容。<code>0.0.0.0</code>表示计算机上的所有IPv4地址。</p>
-<pre><code class="language-output" data-lang="output">tcp  LISTEN 0   128   0.0.0.0:6379   0.0.0.0:*
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart redis-server
+</code></pre></div><p>使用以下命令验证redis是否正在侦听端口上的所有接口<code>6379</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ss -an | grep 6379
+</code></pre></div><p>你应该看到类似下面的内容。<code>0.0.0.0</code>表示计算机上的所有IPv4地址。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tcp  LISTEN 0   128   0.0.0.0:6379   0.0.0.0:*
 tcp  LISTEN 0   128      [::]:6379      [::]:*  
-</code></pre><p>接下来，您需要添加防火墙规则，以便在TCP端口上启用来自远程计算机的流量<code>6379</code>。</p>
+</code></pre></div><p>接下来，您需要添加防火墙规则，以便在TCP端口上启用来自远程计算机的流量<code>6379</code>。</p>
 <p>假设您正在使用<a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/"><code>UFW</code></a>管理防火墙并且希望允许从<code>192.168.121.0/24</code>子网进行访问，则可以运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow proto tcp from 192.168.121.0/24 to any port 6379
-</code></pre><p>此时，Redis服务器将接受TCP端口6379上的远程连接。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow proto tcp from 192.168.121.0/24 to any port 6379
+</code></pre></div><p>此时，Redis服务器将接受TCP端口6379上的远程连接。</p>
 <p>确保您的防火墙配置为仅接受来自可信IP范围的连接。</p>
 <p>要验证是否已正确设置所有内容，您可以尝试使用该<code>redis-cli</code>实用程序从远程计算机ping Redis服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">redis-cli -h &lt;REDIS_IP_ADDRESS&gt; ping
-</code></pre><p>该命令应返回以下响应<code>PONG</code>：</p>
-<pre><code class="language-output" data-lang="output">PONG
-</code></pre><h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">redis-cli -h &lt;REDIS_IP_ADDRESS&gt; ping
+</code></pre></div><p>该命令应返回以下响应<code>PONG</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">PONG
+</code></pre></div><h2 id="结论">结论</h2>
 <p>恭喜，您已在Ubuntu 18.04服务器上成功安装了Redis。要查找有关如何管理Redis安装的更多信息，请访问<a href="https://redis.io/documentation">Redis文档</a>页面。</p>
       </div><ul class="pa0">
   
@@ -277,10 +277,10 @@ tcp  LISTEN 0   128      [::]:6379      [::]:*
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#ubunturedis">在Ubuntu上安装Redis</a></li>
-    <li><a href="#redis">配置Redis远程访问</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在ubuntu上安装redis">在Ubuntu上安装Redis</a></li>
+    <li><a href="#配置redis远程访问">配置Redis远程访问</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -292,7 +292,7 @@ tcp  LISTEN 0   128      [::]:6379      [::]:*
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,9 +145,9 @@
   
           <p>使用 Git 时，可能会遇到需要编辑提交消息的情况。做出更改的原因有很多，例如，修正了错字，删除了敏感信息或添加了其他信息。</p>
 <p>本指南说明了如何更改最新或较旧的 Git 提交的消息。</p>
-<h2 id="heading">更改最近的提交</h2>
+<h2 id="更改最近的提交">更改最近的提交</h2>
 <p>该 <code>git commit --amend</code> 命令允许您更改最新的提交消息。</p>
-<h3 id="heading1">未推送的提交</h3>
+<h3 id="未推送的提交">未推送的提交</h3>
 <p>要更改尚未推送到远程存储库的最新提交的消息，请使用该 <code>--amend</code> 标志再次提交。</p>
 <ol>
 <li>
@@ -155,15 +155,15 @@
 </li>
 <li>
 <p>运行以下命令以修改最新提交的消息：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git commit --amend -m &quot; New commit message. &quot;
-</code></pre><p>该命令的作用是用新的覆盖新的提交。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git commit --amend -m &#34; New commit message. &#34;
+</code></pre></div><p>该命令的作用是用新的覆盖新的提交。</p>
 <p>该 <code>-m</code> 选项允许您在不打开编辑器会话的情况下在命令行上编写新消息。</p>
 </li>
 </ol>
 <p>在更改提交消息之前，您还可以添加以前忘记的其他更改：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git add .
-git commit --amend -m &quot;New commit message.&quot;
-</code></pre><h3 id="heading2">推送提交</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git add .
+git commit --amend -m &#34;New commit message.&#34;
+</code></pre></div><h3 id="推送提交">推送提交</h3>
 <p>被修改的提交是具有不同 SHA-1 的新实体。先前的提交将不再存在于当前分支中。</p>
 <p>通常，您应该避免修改已经推送的提交，因为这可能会给基于此提交工作的人们带来麻烦。在更改推送的提交之前，最好先咨询您的开发人员。</p>
 <p>如果更改了最近推送的提交的消息，则必须强制推送它。</p>
@@ -173,14 +173,14 @@ git commit --amend -m &quot;New commit message.&quot;
 </li>
 <li>
 <p>修改最新的推送提交的消息：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git commit --amend -m &quot; New commit message. &quot;
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git commit --amend -m &#34; New commit message. &#34;
+</code></pre></div></li>
 <li>
 <p>强制推送以更新远程存储库的历史记录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git push --force branch-name
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git push --force branch-name
+</code></pre></div></li>
 </ol>
-<h2 id="heading3">更改较早或多次提交</h2>
+<h2 id="更改较早或多次提交">更改较早或多次提交</h2>
 <p>如果需要更改较旧或多次提交的消息，则可以使用交互方式 <code>git rebase</code> 来更改一个或多个较早提交。</p>
 <p>该 <code>rebase</code> 命令将重写提交历史记录，强烈建议不要对已经推送到<a href="/linux/how-to-setup-a-git-server/">远程 Git 存储库的</a>提交进行重新整理。</p>
 <ol>
@@ -189,40 +189,40 @@ git commit --amend -m &quot;New commit message.&quot;
 </li>
 <li>
 <p>键入 <code>git rebase -i HEAD~N</code> ，其中 <code>N</code> 是执行基础更改的提交次数。例如，如果要更改第 4 次提交和第 5 次最新提交，请输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git rebase -i HEAD~5
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git rebase -i HEAD~5
 
-</code></pre><p>该命令将在<a href="/linux/how-to-use-nano-text-editor/">默认的文本编辑器中</a>显示最新的 <code>X</code> 次提交：</p>
-<pre><code class="language-git" data-lang="git">pick 43f8707f9 fix: update dependency json5 to ^ 2.1.1 
+</code></pre></div><p>该命令将在<a href="/linux/how-to-use-nano-text-editor/">默认的文本编辑器中</a>显示最新的 <code>X</code> 次提交：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pick 43f8707f9 fix: update dependency json5 to ^ 2.1.1 
 pick cea1fb88a fix: update dependency verdaccio to ^ 4.3.3 
 pick aa540c364 fix: update dependency webpack-dev-server to ^ 3.8.2 
 pick c5e078656 chore: update dependency flow-bin to ^ 0.109.0 
 pick 11ce0ab34 fix: Fix spelling.
 
 # Rebase 7e59e8ead..11ce0ab34 onto 7e59e8ead (5 commands)
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>移至要更改的提交消息的行，并替换 <code>pick</code> 为 <code>reword</code> ：</p>
-<pre><code class="language-git" data-lang="git">reword 43f8707f9 fix: update dependency json5 to ^ 2.1.1 
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">reword 43f8707f9 fix: update dependency json5 to ^ 2.1.1 
 reword cea1fb88a fix: update dependency verdaccio to ^ 4.3.3 
 pick aa540c364 fix: update dependency webpack-dev-server to ^ 3.8.2 
 pick c5e078656 chore: update dependency flow-bin to ^ 0.109.0 
 pick 11ce0ab34 fix: Fix spelling.
 
 # Rebase 7e59e8ead..11ce0ab34 onto 7e59e8ead (5 commands)
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>保存更改并关闭编辑器。</p>
 </li>
 <li>
 <p>对于每个选定的提交，将打开一个新的文本编辑器窗口。更改提交消息，保存文件，然后关闭编辑器。</p>
-<pre><code class="language-git" data-lang="git">fix: update dependency json5 to ^ 2.1.1 
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">fix: update dependency json5 to ^ 2.1.1 
+</code></pre></div></li>
 <li>
 <p>强制将更改推送到远程存储库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git push --force branch-name
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git push --force branch-name
+</code></pre></div></li>
 </ol>
-<h2 id="heading4">结论</h2>
+<h2 id="结论">结论</h2>
 <p>要更改最新的提交消息，请使用 <code>git commit --amend</code> 命令；使用 <code>git rebase -i HEAD~N</code> 来更改旧的或多条提交消息。</p>
 <p>一般不要修改推送的提交，因为它可能会给您的同事带来很多问题。</p>
       </div><ul class="pa0">
@@ -294,14 +294,14 @@ pick 11ce0ab34 fix: Fix spelling.
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">更改最近的提交</a>
+    <li><a href="#更改最近的提交">更改最近的提交</a>
       <ul>
-        <li><a href="#heading1">未推送的提交</a></li>
-        <li><a href="#heading2">推送提交</a></li>
+        <li><a href="#未推送的提交">未推送的提交</a></li>
+        <li><a href="#推送提交">推送提交</a></li>
       </ul>
     </li>
-    <li><a href="#heading3">更改较早或多次提交</a></li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#更改较早或多次提交">更改较早或多次提交</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -313,7 +313,7 @@ pick 11ce0ab34 fix: Fix spelling.
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

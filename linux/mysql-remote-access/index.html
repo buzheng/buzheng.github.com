@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -149,15 +149,15 @@
           <p>默认情况下， MySQL 服务器仅侦听来自本地主机的连接，这意味着它只能由在同一主机上运行的应用程序访问。</p>
 <p>但是，在某些情况下，有必要从远程位置访问 MySQL 服务器。例如，当您想从本地系统连接到远程 MySQL 服务器时，或者当使用多服务器部署时，应用程序与数据库服务器不在同一台计算机上运行。一种选择是<a href="/linux/mysql-ssh-tunnel/">通过 SSH 隧道访问 MySQL 服务器</a>，另一种选择是将 MySQL 服务器配置为接受远程连接。</p>
 <p>在本指南中，我们将介绍必要的步骤，以允许与 MySQL 服务器的远程连接。相同的说明适用于 MariaDB 。</p>
-<h2 id="-mysql-">配置 MySQL 服务器</h2>
+<h2 id="配置-mysql-服务器">配置 MySQL 服务器</h2>
 <p>第一步是将 MySQL 服务器设置为侦听计算机上的特定 IP 地址或所有 IP 地址。</p>
 <p>如果 MySQL 服务器和客户端可以通过专用网络相互通信，那么最好的选择是将 MySQL 服务器设置为仅在专用 IP 上侦听。否则，如果要通过公用网络连接到服务器，请将 MySQL 服务器设置为侦听计算机上的所有 IP 地址。</p>
 <p>为此，您需要编辑 MySQL 配置文件并添加或更改 <code>bind-address</code> 选项的值。您可以设置一个 IP 地址和 IP 范围。如果地址为 <code>0.0.0.0</code> ，则 MySQL 服务器将在所有主机 IPv4 接口上接受连接。如果您在系统上配置了 IPv6 ，请使用 <code>::</code>代替 <code>0.0.0.0</code> 。</p>
 <p>MySQL 配置文件的位置因发行版本而异。在 Ubuntu 和 Debian 中，文件位于 <code>/etc/mysql/mysql.conf.d/mysqld.cnf</code> ，而在基于 Red Hat 的发行版(例如 CentOS) 中，文件位于 <code>/etc/my.cnf</code> 。</p>
 <p>使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>打开文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 
-</code></pre><p>搜索以<code>bind-address</code> 开头的行， 并将其值设置为 MySQL 服务器应侦听的 IP 地址。</p>
+</code></pre></div><p>搜索以<code>bind-address</code> 开头的行， 并将其值设置为 MySQL 服务器应侦听的 IP 地址。</p>
 <p>默认情况下，该值设置为 <code>127.0.0.1</code>( 仅在 localhost 中监听)。</p>
 <p>在此示例中，我们将值设置为 <code>0.0.0.0</code>，将 MySQL 服务器设置为侦听所有 IPv4 接口。 </p>
 <p>mysqld.cnf</p>
@@ -167,19 +167,19 @@
 <p>在 MySQL 8.0 和更高版本中，该 <code>bind-address</code> 指令可能不存在。在这种情况下，请将其添加到该 <code>[mysqld]</code> 部分下。</p>
 <p>完成后，重新启动 MySQL 服务以使更改生效。只有 root 或具有 <a href="/linux/sudo-command-in-linux/">sudo 特权的用户</a>才能重新启动服务。</p>
 <p>要在 Debian 或 Ubuntu 上重新启动 MySQL 服务，请输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysql
-</code></pre><p>在基于 RedHat 的发行版(如 CentOS) 上重新启动服务，请运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mysqld
-</code></pre><h2 id="heading">向远程计算机授予用户访问权限</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart mysql
+</code></pre></div><p>在基于 RedHat 的发行版(如 CentOS) 上重新启动服务，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart mysqld
+</code></pre></div><h2 id="向远程计算机授予用户访问权限">向远程计算机授予用户访问权限</h2>
 <p>下一步是允许远程用户访问数据库。</p>
 <p>通过键入以下内容以 root 用户身份登录到 MySQL 服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>如果您使用旧的本地 MySQL 身份验证插件以 root 用户身份登录，请运行以下命令并在出现提示时输入密码：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -uroot -p
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>如果您使用旧的本地 MySQL 身份验证插件以 root 用户身份登录，请运行以下命令并在出现提示时输入密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -uroot -p
 
-</code></pre><p>在 MySQL Shell 中，使用该 <code>GRANT</code> 语句为远程用户<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">授予访问权限</a>。</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON database_name.* TO user_name@'ip_address' IDENTIFIED BY 'user_password';
-</code></pre><p>说明：</p>
+</code></pre></div><p>在 MySQL Shell 中，使用该 <code>GRANT</code> 语句为远程用户<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">授予访问权限</a>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT ALL ON database_name.* TO user_name@&#39;ip_address&#39; IDENTIFIED BY &#39;user_password&#39;;
+</code></pre></div><p>说明：</p>
 <ul>
 <li><code>database_name</code> 是用户将连接到的数据库的名称。</li>
 <li><code>user_name</code> 是 MySQL 用户的名称。</li>
@@ -187,40 +187,40 @@
 <li><code>user_password</code> 是用户密码。</li>
 </ul>
 <p>例如，要将访问数据库 <code>dbname</code> 的权限授予具有 IP 为 <code>10.8.0.5</code> 的客户端计算机上的名称为 <code>foo</code> 密码为 <code>my_passwd</code> 的用户，应运行：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">GRANT ALL ON dbname.* TO foo@'10.8.0.5' IDENTIFIED BY 'my_passwd';
-</code></pre><h2 id="heading1">配置防火墙</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT ALL ON dbname.* TO foo@&#39;10.8.0.5&#39; IDENTIFIED BY &#39;my_passwd&#39;;
+</code></pre></div><h2 id="配置防火墙">配置防火墙</h2>
 <p>最后一步是配置防火墙，以允许 <code>3306</code> 来自远程计算机的端口 (MySQL 默认端口)上的流量。</p>
 <h3 id="iptables">iptables</h3>
 <p>如果将 <a href="/linux/how-to-install-iptables-on-centos-7/">iptables</a> 用作防火墙，则下面的命令将允许从 Internet 上的任何 IP 地址访问 MySQL 端口。这是非常不安全的。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo iptables -A INPUT -p tcp --destination-port 3306 -j ACCEPT
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo iptables -A INPUT -p tcp --destination-port 3306 -j ACCEPT
 
-</code></pre><p>允许从特定 IP 地址进行访问：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo iptables -A INPUT -s 10.8.0.5 -p tcp --destination-port 3306 -j ACCEPT
-</code></pre><h3 id="ufw">UFW</h3>
+</code></pre></div><p>允许从特定 IP 地址进行访问：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo iptables -A INPUT -s 10.8.0.5 -p tcp --destination-port 3306 -j ACCEPT
+</code></pre></div><h3 id="ufw">UFW</h3>
 <p><a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">UFW</a> 是 Ubuntu 中的默认防火墙工具。要允许从 Internet 上的任何 IP 地址访问(非常不安全)，请运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow 3306/tcp
-</code></pre><p>允许从特定 IP 地址进行访问：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow from 10.8.0.5 to any port 3306
-</code></pre><h3 id="firewalld">FirewallD</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow 3306/tcp
+</code></pre></div><p>允许从特定 IP 地址进行访问：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow from 10.8.0.5 to any port 3306
+</code></pre></div><h3 id="firewalld">FirewallD</h3>
 <p><a href="/linux/how-to-setup-a-firewall-with-firewalld-on-centos-7/">FirewallD</a> 是 CentOS 中的默认防火墙管理工具。要允许从 Internet 上的任何 IP 地址访问(非常不安全)，请输入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
 sudo firewall-cmd --reload
-</code></pre><p>要允许从特定端口上的特定 IP 地址进行访问，可以创建新的 FirewallD 区域，也可以使用丰富规则。下面创建创建一个新区域 <code>mysqlzone</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo firewall-cmd --new-zone=mysqlzone --permanent
+</code></pre></div><p>要允许从特定端口上的特定 IP 地址进行访问，可以创建新的 FirewallD 区域，也可以使用丰富规则。下面创建创建一个新区域 <code>mysqlzone</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --new-zone=mysqlzone --permanent
 sudo firewall-cmd --reload
 sudo firewall-cmd --permanent --zone=mysqlzone --add-source=10.8.0.5/32
 sudo firewall-cmd --permanent --zone=mysqlzone --add-port=3306/tcp
 sudo firewall-cmd --reload
-</code></pre><h2 id="heading2">验证更改</h2>
+</code></pre></div><h2 id="验证更改">验证更改</h2>
 <p>要验证远程用户可以连接到 MySQL 服务器，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -u user_name -h mysql_server_ip -p
-</code></pre><p>其中 <code>user_name</code> ，您被授予访问权限的用户名， <code>mysql_server_ip</code> 是 MySQL 服务器运行所在主机的 IP 地址。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u user_name -h mysql_server_ip -p
+</code></pre></div><p>其中 <code>user_name</code> ，您被授予访问权限的用户名， <code>mysql_server_ip</code> 是 MySQL 服务器运行所在主机的 IP 地址。</p>
 <p>如果一切设置正确，您将能够登录到远程 MySQL 服务器。</p>
 <p>如果出现以下错误，则<a href="/linux/check-open-ports-linux/">说明端口 3306 未打开</a>，或者 MySQL 服务器未<a href="/linux/check-listening-ports-linux/">在 IP 地址上进行侦听</a>。</p>
-<pre><code class="language-output" data-lang="output">ERROR 2003 (HY000): Can't connect to MySQL server on '10.8.0.5' (111)&quot;
-</code></pre><p>下面的错误表明您尝试登录的用户没有访问远程 MySQL 服务器的权限。</p>
-<pre><code class="language-output" data-lang="output">&quot;ERROR 1130 (HY000): Host ‘10.8.0.5’ is not allowed to connect to this MySQL server&quot; 
-</code></pre><h2 id="heading3">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ERROR 2003 (HY000): Can&#39;t connect to MySQL server on &#39;10.8.0.5&#39; (111)&#34;
+</code></pre></div><p>下面的错误表明您尝试登录的用户没有访问远程 MySQL 服务器的权限。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">&#34;ERROR 1130 (HY000): Host ‘10.8.0.5’ is not allowed to connect to this MySQL server&#34; 
+</code></pre></div><h2 id="结论">结论</h2>
 <p>MySQL 是最受欢迎的开源数据库服务器，默认情况下它仅在 localhost 上侦听传入的连接。</p>
 <p>要允许到 MySQL 服务器的远程连接，您需要执行以下步骤：</p>
 <ol>
@@ -301,17 +301,17 @@ sudo firewall-cmd --reload
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-mysql-">配置 MySQL 服务器</a></li>
-    <li><a href="#heading">向远程计算机授予用户访问权限</a></li>
-    <li><a href="#heading1">配置防火墙</a>
+    <li><a href="#配置-mysql-服务器">配置 MySQL 服务器</a></li>
+    <li><a href="#向远程计算机授予用户访问权限">向远程计算机授予用户访问权限</a></li>
+    <li><a href="#配置防火墙">配置防火墙</a>
       <ul>
         <li><a href="#iptables">iptables</a></li>
         <li><a href="#ufw">UFW</a></li>
         <li><a href="#firewalld">FirewallD</a></li>
       </ul>
     </li>
-    <li><a href="#heading2">验证更改</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#验证更改">验证更改</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -323,7 +323,7 @@ sudo firewall-cmd --reload
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

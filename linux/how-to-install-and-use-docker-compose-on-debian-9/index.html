@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,39 +146,39 @@ Compose可用于各种目的。单个宿主应用程序部署，自动化测试�
           <p><a href="https://github.com/docker/compose">Docker Compose</a>是一个允许您定义和编排多容器Docker应用程序的工具。它使用YAML文件来配置应用程序的容器，网络和卷。</p>
 <p>Compose可用于各种目的。单个宿主应用程序部署，自动化测试和本地开发是Docker Compose最常用的用例。</p>
 <p>本教程将介绍在Debian 9上安装最新版本的Docker Compose的过程。我们还将探索基本的Docker Compose概念和命令。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li>以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录。</li>
 <li>已<a href="/linux/how-to-install-and-use-docker-on-debian-9/">安装您的Debian 9泊坞窗</a>机。</li>
 </ul>
-<h2 id="debiandocker-compose">在Debian上安装Docker Compose</h2>
+<h2 id="在debian上安装docker-compose">在Debian上安装Docker Compose</h2>
 <p>Docker Compose安装包可以在官方Debian 9存储库中找到，但它可能并不总是最新版本。建议的方法是从Docker的GitHub存储库安装Docker Compose。</p>
 <p>在撰写本文时，Docker Compose的最新稳定版本是版本<code>1.23.1</code>。在下载Compose二进制文件之前，请访问<a href="https://github.com/docker/compose/releases">GitHub上</a>的<a href="https://github.com/docker/compose/releases">Compose存储库版本页面</a>，检查是否有可供下载的新版本。</p>
 <p>执行以下步骤在Debian 9上安装最新版本的Docker Compose：</p>
 <ol>
 <li>
 <p>首先<code>/usr/local/bin</code>使用以下<a href="/linux/curl-command-examples/">curl</a>命令将Docker Compose二进制文件下载到目录中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo curl -L &#34;https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)&#34; -o /usr/local/bin/docker-compose
+</code></pre></div></li>
 <li>
 <p>下载完成后，为Compose二进制文件提供可执行权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo chmod +x /usr/local/bin/docker-compose
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chmod +x /usr/local/bin/docker-compose
+</code></pre></div></li>
 <li>
 <p>键入以下命令验证安装：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose --version
-</code></pre><p>输出看起来像这样：</p>
-<pre><code class="language-output" data-lang="output">docker-compose version 1.23.1, build b02f1306
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose --version
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose version 1.23.1, build b02f1306
+</code></pre></div></li>
 </ol>
-<h2 id="docker-compose">Docker Compose入门</h2>
+<h2 id="docker-compose入门">Docker Compose入门</h2>
 <p>在本节中，我们将展示如何使用Docker Compose管理Debian 9机器上的WordPress堆栈。</p>
 <p>首先为项目创建一个目录并进行更改：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mkdir wordpress_appcd wordpress_app
-</code></pre><p>打开文本编辑器并<code>docker-compose.yml</code>在项目目录中创建一个名为的文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">nano docker-compose.yml
-</code></pre><p>粘贴以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir wordpress_appcd wordpress_app
+</code></pre></div><p>打开文本编辑器并<code>docker-compose.yml</code>在项目目录中创建一个名为的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano docker-compose.yml
+</code></pre></div><p>粘贴以下内容：</p>
 <p>泊坞窗，compose.yml</p>
 <div class="highlight"><pre class="chroma"><code class="language-YAML" data-lang="YAML">version<span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.3&#39;</span><span class="w">
 </span><span class="w">
@@ -230,33 +230,33 @@ Compose可用于各种目的。单个宿主应用程序部署，自动化测试�
 <li>该<code>depends_on</code>指令定义了两个服务之间的依赖关系。在这个例子中，<code>db</code>将在之前启动<code>wordpress</code>。</li>
 </ul>
 <p>从项目目录中，通过运行以下命令启动WordPress应用程序：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose up
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose up
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 wordpress_1_70f2f980e1fb | [Mon Nov 19 18:00:31.002748 2018] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.25 (Debian) PHP/7.2.12 configured -- resuming normal operations
-wordpress_1_70f2f980e1fb | [Mon Nov 19 18:00:31.002912 2018] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
-</code></pre><p>Compose将拉出两个图像，启动两个容器并<code>wp_data</code>在项目目录中创建目录。</p>
+wordpress_1_70f2f980e1fb | [Mon Nov 19 18:00:31.002912 2018] [core:notice] [pid 1] AH00094: Command line: &#39;apache2 -D FOREGROUND&#39;
+</code></pre></div><p>Compose将拉出两个图像，启动两个容器并<code>wp_data</code>在项目目录中创建目录。</p>
 <p><code>http://0.0.0.0:8080/</code>在浏览器中输入，您将看到Wordpress安装屏幕。</p>
 <p>此时，Wordpress应用程序已启动并运行，您可以开始使用主题或插件。</p>
 <p>要停止撰写新闻<code>CTRL+C</code>。</p>
 <p>您还可以通过传递<code>-d</code>标志以分离模式启动Compose 。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose up -d
-</code></pre><p>要检查正在运行的服务，请使用以下<code>ps</code>选项</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose ps
-</code></pre><pre><code class="language-output" data-lang="output">       Name                     Command               State          Ports        
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose up -d
+</code></pre></div><p>要检查正在运行的服务，请使用以下<code>ps</code>选项</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose ps
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">       Name                     Command               State          Ports        
 ----------------------------------------------------------------------------------
 wordpress_app_db_1          docker-entrypoint.sh mysqld      Up      3306/tcp, 33060/tcp 
 wordpress_app_wordpress_1   docker-entrypoint.sh apach ...   Up      0.0.0.0:8080-&gt;80/tcp
-</code></pre><p>当Compose以分离模式运行以停止服务使用时：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose stop
-</code></pre><p>如果要完全删除容器，请使用以下<code>down</code>选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose down
-</code></pre><p>通过<code>--volumes</code>交换机也将删除数据卷：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker-compose down --volumes
-</code></pre><h2 id="docker-compose1">卸载Docker Compose</h2>
+</code></pre></div><p>当Compose以分离模式运行以停止服务使用时：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose stop
+</code></pre></div><p>如果要完全删除容器，请使用以下<code>down</code>选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose down
+</code></pre></div><p>通过<code>--volumes</code>交换机也将删除数据卷：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker-compose down --volumes
+</code></pre></div><h2 id="卸载docker-compose">卸载Docker Compose</h2>
 <p>如果您需要卸载Docker Compose，只需输入以下内容即可删除二进制文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo rm /usr/local/bin/docker-compose
-</code></pre><h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo rm /usr/local/bin/docker-compose
+</code></pre></div><h2 id="结论">结论</h2>
 <p>您已经学会了如何在Debian 9上安装和使用Docker Compose。</p>
       </div><ul class="pa0">
   
@@ -331,11 +331,11 @@ wordpress_app_wordpress_1   docker-entrypoint.sh apach ...   Up      0.0.0.0:808
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#debiandocker-compose">在Debian上安装Docker Compose</a></li>
-    <li><a href="#docker-compose">Docker Compose入门</a></li>
-    <li><a href="#docker-compose1">卸载Docker Compose</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在debian上安装docker-compose">在Debian上安装Docker Compose</a></li>
+    <li><a href="#docker-compose入门">Docker Compose入门</a></li>
+    <li><a href="#卸载docker-compose">卸载Docker Compose</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -347,7 +347,7 @@ wordpress_app_wordpress_1   docker-entrypoint.sh apach ...   Up      0.0.0.0:808
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

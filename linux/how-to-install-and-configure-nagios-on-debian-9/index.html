@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,24 +142,24 @@
   
           <p>Nagios是一种流行的开源监控软件。它可以保留整个IT基础架构的清单，并确保您的网络，服务器，应用程序，服务和流程正常运行。如果关键基础架构组件发生故障，Nagios会发送通知警报。</p>
 <p>本教程介绍如何在Debian 9上安装和配置最新版本的Nagios Core。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>您需要以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有sudo访问权限</a>的<a href="/linux/how-to-create-a-sudo-user-on-debian/">用户</a>身份登录才能安装软件包。</p>
-<h2 id="debiannagios">在Debian上安装Nagios</h2>
+<h2 id="在debian上安装nagios">在Debian上安装Nagios</h2>
 <p>以下步骤介绍如何从源安装最新版本的Nagios Core。</p>
 <p>首先安装编译和运行Nagios所需的以下软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update &amp;&amp; sudo apt upgradesudo apt install autoconf gcc libc6 make wget unzip apache2 php libapache2-mod-php7.0 libgd-devsudo apt install libmcrypt-dev libssl-dev bc gawk dc build-essential libnet-snmp-perl gettext
-</code></pre><h3 id="1nagios">1.下载Nagios</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update &amp;&amp; sudo apt upgradesudo apt install autoconf gcc libc6 make wget unzip apache2 php libapache2-mod-php7.0 libgd-devsudo apt install libmcrypt-dev libssl-dev bc gawk dc build-essential libnet-snmp-perl gettext
+</code></pre></div><h3 id="1下载nagios">1.下载Nagios</h3>
 <p>导航到该<code>/usr/src</code>目录并使用<a href="/linux/wget-command-examples/">wget</a>从<a href="https://github.com/NagiosEnterprises/nagioscore/releases">项目Github存储库</a>下载最新版本的Nagios ：[](/linux/wget-command-examples/)</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd /usr/src/sudo wget https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.3.tar.gz
-</code></pre><p>下载完成后，解<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">压缩tar文件</a>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo tar zxf nagios-*.tar.gz
-</code></pre><p>在继续执行后续步骤之前，请确保键入以下内容以切换到Nagios源目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd nagioscore-nagios-*/
-</code></pre><h3 id="2nagios">2.编译Nagios</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/src/sudo wget https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.3.tar.gz
+</code></pre></div><p>下载完成后，解<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">压缩tar文件</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tar zxf nagios-*.tar.gz
+</code></pre></div><p>在继续执行后续步骤之前，请确保键入以下内容以切换到Nagios源目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd nagioscore-nagios-*/
+</code></pre></div><h3 id="2编译nagios">2.编译Nagios</h3>
 <p>通过运行<code>configure</code>脚本启动构建过程：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled
-</code></pre><p>成功完成后，您将看到以下消息：</p>
-<pre><code class="language-output" data-lang="output">*** Configuration summary for nagios 4.4.3 2019-01-15 ***:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled
+</code></pre></div><p>成功完成后，您将看到以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*** Configuration summary for nagios 4.4.3 2019-01-15 ***:
 
  General Options:
  -------------------------
@@ -184,77 +184,77 @@
  Traceroute (used by WAP):  /usr/sbin/traceroute
 
 Review the options above for accuracy.  If they look okay,
-type 'make all' to compile the main program and CGIs.
-</code></pre><p>运行<code>make</code>命令以启动构建过程：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make all
-</code></pre><p>编译可能需要一些时间，具体取决于您的系统。构建过程完成后，您将看到如下内容：</p>
-<pre><code class="language-output" data-lang="output">*** Compile finished ***
+type &#39;make all&#39; to compile the main program and CGIs.
+</code></pre></div><p>运行<code>make</code>命令以启动构建过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make all
+</code></pre></div><p>编译可能需要一些时间，具体取决于您的系统。构建过程完成后，您将看到如下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*** Compile finished ***
 ...
 Enjoy.
-</code></pre><h3 id="3nagios">3.创建Nagios用户和组</h3>
+</code></pre></div><h3 id="3创建nagios用户和组">3.创建Nagios用户和组</h3>
 <p>要创建新的系统<code>nagios</code>用户和组类型：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make install-groups-users
-</code></pre><p>将Apache <code>www-data</code>用户添加到<code>nagios</code>组：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G nagios www-data
-</code></pre><h3 id="4nagios">4.安装Nagios二进制文件</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make install-groups-users
+</code></pre></div><p>将Apache <code>www-data</code>用户添加到<code>nagios</code>组：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -a -G nagios www-data
+</code></pre></div><h3 id="4安装nagios二进制文件">4.安装Nagios二进制文件</h3>
 <p>运行以下命令以安装Nagios二进制文件，CGI和HTML文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make install
-</code></pre><p>您应该看到以下输出：</p>
-<pre><code class="language-output" data-lang="output">*** Main program, CGIs and HTML files installed ***
-</code></pre><h3 id="5">5.创建外部命令目录</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make install
+</code></pre></div><p>您应该看到以下输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*** Main program, CGIs and HTML files installed ***
+</code></pre></div><h3 id="5创建外部命令目录">5.创建外部命令目录</h3>
 <p>通过键入以下内容创建外部命令目录并设置适当的权限：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make install-commandmode
-</code></pre><pre><code class="language-output" data-lang="output">*** External command directory configured ***
-</code></pre><h3 id="6nagios">6.安装Nagios配置文件</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make install-commandmode
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*** External command directory configured ***
+</code></pre></div><h3 id="6安装nagios配置文件">6.安装Nagios配置文件</h3>
 <p>安装示例Nagios配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make install-config
-</code></pre><pre><code class="language-output" data-lang="output">*** Config files installed ***
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make install-config
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*** Config files installed ***
 
-Remember, these are *SAMPLE* config files.  You'll need to read
+Remember, these are *SAMPLE* config files.  You&#39;ll need to read
 the documentation for more information on how to actually define
 services, hosts, etc. to fit your particular needs.
-</code></pre><h3 id="7apache">7.安装Apache配置文件</h3>
+</code></pre></div><h3 id="7安装apache配置文件">7.安装Apache配置文件</h3>
 <p>以下命令将创建Apache配置文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make install-webconf
-</code></pre><pre><code class="language-output" data-lang="output">*** Nagios/Apache conf file installed ***
-</code></pre><p>确保启用了Apache重写和cgi模块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo a2enmod rewritesudo a2enmod cgi
-</code></pre><h3 id="8">8.创建系统单元文件</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make install-webconf
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*** Nagios/Apache conf file installed ***
+</code></pre></div><p>确保启用了Apache重写和cgi模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo a2enmod rewritesudo a2enmod cgi
+</code></pre></div><h3 id="8创建系统单元文件">8.创建系统单元文件</h3>
 <p>以下命令将安装systemd单元文件，并使Nagios服务能够在引导时启动。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make install-daemoninit
-</code></pre><pre><code class="language-output" data-lang="output">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make install-daemoninit
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 *** Init script installed ***
-</code></pre><h3 id="9">9.创建用户帐户</h3>
+</code></pre></div><h3 id="9创建用户帐户">9.创建用户帐户</h3>
 <p>为了能够访问Nagios Web界面，您需要创建一个管理员用户。</p>
 <p>在本教程中，我们将创建一个名为的用户<code>nagiosadmin</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
-</code></pre><p>系统将提示您输入并确认用户密码。</p>
-<pre><code class="language-output" data-lang="output">New password: 
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+</code></pre></div><p>系统将提示您输入并确认用户密码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">New password: 
 Re-type new password: 
 Adding password for user nagiosadmin
-</code></pre><p>重新启动Apache服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart apache2
-</code></pre><h3 id="10">10.配置防火墙</h3>
+</code></pre></div><p>重新启动Apache服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart apache2
+</code></pre></div><h3 id="10配置防火墙">10.配置防火墙</h3>
 <p>防火墙将保护您的服务器免受不必要的流量。</p>
 <p>如果您的服务器上没有配置防火墙，您可以查看我们的指南，了解<a href="/linux/how-to-setup-a-firewall-with-ufw-on-debian-9/">如何在Debian上使用ufw设置防火墙</a></p>
 <p>输入以下命令打开Apache端口：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ufw allow Apache
-</code></pre><h2 id="nagios">安装Nagios插件</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow Apache
+</code></pre></div><h2 id="安装nagios插件">安装Nagios插件</h2>
 <p>切换回<code>/usr/src</code>目录并从<a href="https://github.com/nagios-plugins/nagios-plugins/">项目Github存储库</a>下载最新版本的Nagios插件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd /usr/src/sudo wget -O nagios-plugins.tar.gz https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
-</code></pre><p>下载完成后，键入以下命令提取tar文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo tar zxf nagios-plugins.tar.gz
-</code></pre><p>切换到插件源目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd nagios-plugins-release-2.2.1
-</code></pre><p>逐个运行以下命令来编译和安装Nagios插件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ./tools/setupsudo ./configuresudo makesudo make install
-</code></pre><h2 id="nagios1">启动Nagios</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/src/sudo wget -O nagios-plugins.tar.gz https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+</code></pre></div><p>下载完成后，键入以下命令提取tar文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tar zxf nagios-plugins.tar.gz
+</code></pre></div><p>切换到插件源目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd nagios-plugins-release-2.2.1
+</code></pre></div><p>逐个运行以下命令来编译和安装Nagios插件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ./tools/setupsudo ./configuresudo makesudo make install
+</code></pre></div><h2 id="启动nagios">启动Nagios</h2>
 <p>现在你已经在你的Debian服务器上安装了Nagios，启动它：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl start nagios
-</code></pre><p>要验证Nagios是否正在运行，请检查服务状态：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status nagios
-</code></pre><p>输出应如下所示，表示Nagios服务处于活动状态并正在运行。</p>
-<pre><code class="language-output" data-lang="output">● nagios.service - Nagios Core 4.4.3
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl start nagios
+</code></pre></div><p>要验证Nagios是否正在运行，请检查服务状态：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status nagios
+</code></pre></div><p>输出应如下所示，表示Nagios服务处于活动状态并正在运行。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● nagios.service - Nagios Core 4.4.3
    Loaded: loaded (/lib/systemd/system/nagios.service; enabled; vendor preset: enabled)
    Active: active (running) since Sun 2019-02-10 17:07:21 CST; 9s ago
      Docs: https://www.nagios.org/documentation
@@ -263,12 +263,12 @@ Adding password for user nagiosadmin
  Main PID: 26243 (nagios)
     Tasks: 6 (limit: 4915)
    CGroup: /system.slice/nagios.service
-</code></pre><h2 id="nagios-web">访问Nagios Web界面</h2>
+</code></pre></div><h2 id="访问nagios-web界面">访问Nagios Web界面</h2>
 <p>要访问Nagios Web界面，请打开您喜欢的浏览器并键入服务器的域名或公共IP地址，然后执行以下操作<code>/nagios</code>：</p>
-<pre><code class="language-url" data-lang="url">http(s)://your_domain_or_ip_address/nagios
-</code></pre><p>输入<code>nagiosadmin</code>用户登录凭据，您将被重定向到默认的Nagios主页，如下图所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">http(s)://your_domain_or_ip_address/nagios
+</code></pre></div><p>输入<code>nagiosadmin</code>用户登录凭据，您将被重定向到默认的Nagios主页，如下图所示：</p>
 <p><img src="/images/linux/how-to-install-and-configure-nagios-on-debian-9/install-nagios-debian.jpg" alt=""></p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在Debian系统上从源代码成功安装了最新的Nagios版本。</p>
 <p>您现在应该访问<a href="https://www.nagios.org/documentation/">Nagios文档</a>并了解有关如何配置和使用Nagios的更多信息。</p>
       </div><ul class="pa0">
@@ -348,25 +348,25 @@ Adding password for user nagiosadmin
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#debiannagios">在Debian上安装Nagios</a>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在debian上安装nagios">在Debian上安装Nagios</a>
       <ul>
-        <li><a href="#1nagios">1.下载Nagios</a></li>
-        <li><a href="#2nagios">2.编译Nagios</a></li>
-        <li><a href="#3nagios">3.创建Nagios用户和组</a></li>
-        <li><a href="#4nagios">4.安装Nagios二进制文件</a></li>
-        <li><a href="#5">5.创建外部命令目录</a></li>
-        <li><a href="#6nagios">6.安装Nagios配置文件</a></li>
-        <li><a href="#7apache">7.安装Apache配置文件</a></li>
-        <li><a href="#8">8.创建系统单元文件</a></li>
-        <li><a href="#9">9.创建用户帐户</a></li>
-        <li><a href="#10">10.配置防火墙</a></li>
+        <li><a href="#1下载nagios">1.下载Nagios</a></li>
+        <li><a href="#2编译nagios">2.编译Nagios</a></li>
+        <li><a href="#3创建nagios用户和组">3.创建Nagios用户和组</a></li>
+        <li><a href="#4安装nagios二进制文件">4.安装Nagios二进制文件</a></li>
+        <li><a href="#5创建外部命令目录">5.创建外部命令目录</a></li>
+        <li><a href="#6安装nagios配置文件">6.安装Nagios配置文件</a></li>
+        <li><a href="#7安装apache配置文件">7.安装Apache配置文件</a></li>
+        <li><a href="#8创建系统单元文件">8.创建系统单元文件</a></li>
+        <li><a href="#9创建用户帐户">9.创建用户帐户</a></li>
+        <li><a href="#10配置防火墙">10.配置防火墙</a></li>
       </ul>
     </li>
-    <li><a href="#nagios">安装Nagios插件</a></li>
-    <li><a href="#nagios1">启动Nagios</a></li>
-    <li><a href="#nagios-web">访问Nagios Web界面</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#安装nagios插件">安装Nagios插件</a></li>
+    <li><a href="#启动nagios">启动Nagios</a></li>
+    <li><a href="#访问nagios-web界面">访问Nagios Web界面</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -378,7 +378,7 @@ Adding password for user nagiosadmin
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

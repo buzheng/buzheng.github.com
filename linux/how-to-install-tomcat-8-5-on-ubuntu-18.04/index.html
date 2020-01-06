@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,19 +142,19 @@
   
           <p>Apache Tomcat 是 Java Servlet ， JavaServer Pages ， Java Expression Language 和 Java WebSocket 等技术的开源实现。它是当今世界上应用最广泛的应用程序和 Web 服务器之一。 Tomcat 易于使用，并且具有强大的附加组件生态。</p>
 <p>本教程演示了如何在 Ubuntu 18.04 上安装 Tomcat 8.5 。本教程同样适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Linux Mint 和 Elementary OS 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-openjdk">安装 OpenJDK</h2>
+<h2 id="安装-openjdk">安装 OpenJDK</h2>
 <p>OpenJDK 是 Java 平台的开源实现，是 Ubuntu 18.04 中的默认 Java 开发和运行时。</p>
 <p>安装 OpenJDK 软件包非常简单：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install default-jdk
 </code></pre></div><blockquote>
 <p>如果要安装 Oracle Java 而不是 OpenJDK ，请查看<a href="/linux/install-java-on-ubuntu-18-04/">此说明</a>。</p>
 </blockquote>
-<h2 id="-tomcat-">创建 Tomcat 用户</h2>
+<h2 id="创建-tomcat-用户">创建 Tomcat 用户</h2>
 <p>我们将<!-- raw HTML omitted -->创建一个新的系统用户<!-- raw HTML omitted -->和组来运行 Tomcat 服务，该用户的的主目录是 <code>/opt/tomcat</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
-</code></pre></div><h2 id="-tomcat">下载 Tomcat</h2>
+</code></pre></div><h2 id="下载-tomcat">下载 Tomcat</h2>
 <p>我们将使用 <code>wget</code> 和 <code>unzip</code> 下载并解压缩 Tomcat 安装文档。如果您的系统上没有安装 <code>unzip</code> 和 <code>wget</code>，请运行以下命令安装软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install unzip wget
 </code></pre></div><p>从 <a href="https://tomcat.apache.org/download-80.cgi">Tomcat 下载页面</a>下载最新版本的 Tomcat 8.5.x 。在撰写本文时，最新版本为 8.5.37 。在继续下一步之前，您应该从下载页面检查是否有新版本。</p>
@@ -172,7 +172,7 @@ sudo mv apache-tomcat-8.5.37 /opt/tomcat/
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo chown -R tomcat: /opt/tomcat
 </code></pre></div><p>赋予 bin 目录中的脚本可执行权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo sh -c <span class="s1">&#39;chmod +x /opt/tomcat/latest/bin/*.sh&#39;</span>
-</code></pre></div><h2 id="-systemd-">创建 systemd 单元文件</h2>
+</code></pre></div><h2 id="创建-systemd-单元文件">创建 systemd 单元文件</h2>
 <p>要将 Tomcat 作为服务运行，我们要在 <code>/etc/systemd/system/</code> 目录中创建一个包含以下内容的新单元文件 <code>tomcat.service</code> ：</p>
 <p>/etc/systemd/system/tomcat.service</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Unit<span class="o">]</span>
@@ -213,14 +213,14 @@ sudo systemctl start tomcat
            └─13499 /usr/lib/jvm/default-java/bin/java -Djava.util.logging.config.file<span class="o">=</span>/opt/tomcat/latest/conf/logging.properties -Djava.util.logging.manager<span class="o">=</span>org.apache.juli.ClassLoaderLogManager -Djava.security.
 </code></pre></div><p>如果没有错误，您可以启用 Tomcat 服务在引导时自动启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> tomcat
-</code></pre></div><h2 id="heading1">调整防火墙</h2>
+</code></pre></div><h2 id="调整防火墙">调整防火墙</h2>
 <p>如果您的<!-- raw HTML omitted -->服务器受防火墙保护<!-- raw HTML omitted -->，并且您希望从本地网络外部访问 tomcat 接口，则需要打开端口 <code>8080</code> 。</p>
 <p>要允许端口上 <code>8080</code> 的流量，请键入以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo ufw allow 8080/tcp
 </code></pre></div><blockquote>
 <p>在生产环境中运行 Tomcat 应用程序时，您很可能将拥有负载平衡器或<!-- raw HTML omitted -->反向代理<!-- raw HTML omitted -->，最佳做法是仅将端口 8080 的访问限制到内部网络。</p>
 </blockquote>
-<h2 id="-tomcat-web-">配置 Tomcat Web 管理界面</h2>
+<h2 id="配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</h2>
 <p>现在我们已经在 Ubuntu 服务器上安装了 Tomcat ，下一步是创建一个可以访问 Web 管理界面的用户。</p>
 <p>Tomcat 用户及其角色在 <code>tomcat-users.xml</code> 文件中定义。</p>
 <p>如果您打开该文件，您会注意到文件中充满了描述如何配置文件的注释和示例。</p>
@@ -265,14 +265,14 @@ sudo systemctl start tomcat
 </code></pre></div><p>允许的 IP 地址列表是用竖线分隔的列表|。您可以添加单个 IP 地址或使用正则表达式。</p>
 <p>重新启动 Tomcat 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart tomcat
-</code></pre></div><h2 id="heading2">测试安装</h2>
+</code></pre></div><h2 id="测试安装">测试安装</h2>
 <p>打开浏览器并输入： <code>http://&lt;your_domain_or_IP_address&gt;:8080</code>，如果安装成功，将出现类似于以下内容的屏幕：</p>
 <p><img src="/images/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/tomcat-home.jpg" alt=""></p>
 <p>通过这个地址 <code>http://&lt;your_domain_or_IP_address&gt;:8080/manager/html</code> 可以访问 Tomcat Web 应用程序管理界面 。您在这里可以部署，取消部署，启动，停止和重新加载您的应用程序。</p>
 <p><img src="/images/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/tomcat-manager.jpg" alt=""></p>
 <p>通过这个地址 <code>http://&lt;your_domain_or_IP_address&gt;:8080/host-manager/html</code> 可以访问 Tomcat 虚拟主机管理界面 。您在这里可以创建，删除和管理 Tomcat 虚拟主机。</p>
 <p><img src="/images/linux/how-to-install-tomcat-8-5-on-ubuntu-18.04/tomcat-host-manager.jpg" alt=""></p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在 Ubuntu 18.04 系统上成功安装了 Tomcat 8.5 。您如果想了解有关 Apache Tomcat 功能的更多信息，可以访问 <a href="https://tomcat.apache.org/tomcat-8.5-doc/index.html">Apache Tomcat 8 官方文档</a>。</p>
       </div><ul class="pa0">
   
@@ -351,15 +351,15 @@ sudo systemctl start tomcat
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-openjdk">安装 OpenJDK</a></li>
-    <li><a href="#-tomcat-">创建 Tomcat 用户</a></li>
-    <li><a href="#-tomcat">下载 Tomcat</a></li>
-    <li><a href="#-systemd-">创建 systemd 单元文件</a></li>
-    <li><a href="#heading1">调整防火墙</a></li>
-    <li><a href="#-tomcat-web-">配置 Tomcat Web 管理界面</a></li>
-    <li><a href="#heading2">测试安装</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-openjdk">安装 OpenJDK</a></li>
+    <li><a href="#创建-tomcat-用户">创建 Tomcat 用户</a></li>
+    <li><a href="#下载-tomcat">下载 Tomcat</a></li>
+    <li><a href="#创建-systemd-单元文件">创建 systemd 单元文件</a></li>
+    <li><a href="#调整防火墙">调整防火墙</a></li>
+    <li><a href="#配置-tomcat-web-管理界面">配置 Tomcat Web 管理界面</a></li>
+    <li><a href="#测试安装">测试安装</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -371,7 +371,7 @@ sudo systemctl start tomcat
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

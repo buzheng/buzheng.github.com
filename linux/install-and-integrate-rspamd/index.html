@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,12 +146,12 @@
           <p>这是我们设置和配置邮件服务器的第三部分。在本教程中，我们将完成 Rspamd 垃圾邮件过滤系统的安装和配置，并将其集成到我们的邮件服务器中，创建 DKIM 和 DMARC   DNS 记录。</p>
 <p>您可能会问我们为什么选择使用 Rspamd 而不使用 Spamassassin 。 Rspamd 用 C 语言编写并且更加活跃的维护，它比用 Perl 编写的 Spamassassin 快得多。另一个原因是 Rspamd 带有 DKIM 签名模块，因此我们不必使用其他软件来签署我们的外发电子邮件。</p>
 <p>如果您不熟悉 Rspamd ，可以在此处查看其<a href="https://rspamd.com/doc/quickstart.html#introduction">官方文档</a> 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以具有 sudo 权限的用户身份登录。</p>
-<h2 id="-redis">安装 Redis</h2>
+<h2 id="安装-redis">安装 Redis</h2>
 <p>Redis 将被 Rspamd 用作存储和缓存系统，只需运行下面的命令就能安装：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install redis-server
-</code></pre></div><h2 id="-unbound">安装 Unbound</h2>
+</code></pre></div><h2 id="安装-unbound">安装 Unbound</h2>
 <p>Unbound 是一个非常安全的验证，递归和缓存 DNS 解析器。</p>
 <p>安装此服务的主要目的是减少外部 DNS 请求的数量。此步骤是可选的，可以跳过。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
@@ -163,7 +163,7 @@ sudo resolvconf -u
 </code></pre></div><blockquote>
 <p>如果您不使用 <code>resolvconf</code> 则需要手动编辑该文件 <code>/etc/resolv.conf</code> 。</p>
 </blockquote>
-<h2 id="-rspamd">安装 Rspamd</h2>
+<h2 id="安装-rspamd">安装 Rspamd</h2>
 <p>我们将从其官方存储库安装最新的稳定版 Rspamd。</p>
 <p>首先安装必要的包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install software-properties-common lsb-release
@@ -175,21 +175,21 @@ sudo apt install lsb-release wget
 </code></pre></div><p>启用存储库后，请更新程序包索引并使用以下命令安装 Rspamd ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt update
 sudo apt install rspamd
-</code></pre></div><h2 id="-rspamd1">配置 Rspamd</h2>
+</code></pre></div><h2 id="配置-rspamd">配置 Rspamd</h2>
 <p>我们将在 <code>/etc/rspamd/local.d/local.d/</code> 目录中创建新文件来覆盖默认设置，而不是修改库存配置文件。</p>
 <p>默认情况下，Rspamd 的 <code>normal worker</code> 程序监听所有网络接口的 11333 端口，来扫描电子邮件信息。创建以下文件以将 Rspamd 普通工作程序配置为仅侦听 localhost：</p>
 <p>/etc/rspamd/local.d/worker-normal.inc</p>
-<pre><code class="language-conf" data-lang="conf">bind_socket = &quot;127.0.0.1:11333&quot;;
-</code></pre><p><code>proxy worker</code> 监听 11332 端口并支持 milter 协议。为了让 Postfix 与 Rspamd 通信，我们需要启用 milter 模式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">bind_socket = &#34;127.0.0.1:11333&#34;;
+</code></pre></div><p><code>proxy worker</code> 监听 11332 端口并支持 milter 协议。为了让 Postfix 与 Rspamd 通信，我们需要启用 milter 模式：</p>
 <p>/etc/rspamd/local.d/worker-proxy.inc</p>
-<pre><code class="language-conf" data-lang="conf">bind_socket = &quot;127.0.0.1:11332&quot;;
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">bind_socket = &#34;127.0.0.1:11332&#34;;
 milter = yes;
 timeout = 120s;
-upstream &quot;local&quot; {
+upstream &#34;local&#34; {
   default = yes;
   self_scan = yes;
 }
-</code></pre><p>接下来，我们需要为 <code>controller worker</code> 服务器设置一个密码，<code>controller worker</code> 提供了访问 Rspamd 的 Web 界面。要生成加密密码，请运行：</p>
+</code></pre></div><p>接下来，我们需要为 <code>controller worker</code> 服务器设置一个密码，<code>controller worker</code> 提供了访问 Rspamd 的 Web 界面。要生成加密密码，请运行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rspamadm pw --encrypt -p P4ssvv0rD
 </code></pre></div><p>输出应该如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">$2</span><span class="nv">$khz7u8nxgggsfay3qta7ousbnmi1skew</span><span class="nv">$zdat4nsm7nd3ctmiigx9kjyo837hcjodn1bob5jaxt7xpkieoctb</span>
@@ -197,33 +197,33 @@ upstream &quot;local&quot; {
 <p>不要忘记将密码 <code>P4ssvv0rD</code> 更改为更安全的密码。</p>
 </blockquote>
 <p>从终端复制密码并将其粘贴到配置文件 <code>/etc/rspamd/local.d/worker-controller.inc</code> 中：</p>
-<pre><code class="language-conf" data-lang="conf">password = &quot;$2$khz7u8nxgggsfay3qta7ousbnmi1skew$zdat4nsm7nd3ctmiigx9kjyo837hcjodn1bob5jaxt7xpkieoctb&quot;;
-</code></pre><p>稍后我们将配置<code>controller worker</code> Web 服务器使用  <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">Nginx</a> 作为反向代理，以便我们可以访问 Rspamd Web 界面。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">password = &#34;$2$khz7u8nxgggsfay3qta7ousbnmi1skew$zdat4nsm7nd3ctmiigx9kjyo837hcjodn1bob5jaxt7xpkieoctb&#34;;
+</code></pre></div><p>稍后我们将配置<code>controller worker</code> Web 服务器使用  <a href="/linux/how-to-install-nginx-on-ubuntu-16-04/">Nginx</a> 作为反向代理，以便我们可以访问 Rspamd Web 界面。</p>
 <p>通过在 <code>classifier-bayes.conf</code> 文件中添加以下行，将 Redis 设置为 <code>Rspamd</code> 统计信息的后端：</p>
 <p>/etc/rspamd/local.d/classifier-bayes.conf</p>
-<pre><code class="language-conf" data-lang="conf">servers = &quot;127.0.0.1&quot;;
-backend = &quot;redis&quot;;
-</code></pre><p>打开 <code>milter_headers.conf</code> 文件并设置 <code>milter</code> 标题：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">servers = &#34;127.0.0.1&#34;;
+backend = &#34;redis&#34;;
+</code></pre></div><p>打开 <code>milter_headers.conf</code> 文件并设置 <code>milter</code> 标题：</p>
 <p>/etc/rspamd/local.d/milter_headers.conf</p>
-<pre><code class="language-conf" data-lang="conf">use = [&quot;x-spamd-bar&quot;, &quot;x-spam-level&quot;, &quot;authentication-results&quot;];
-</code></pre><p>您可以在此处找到有关 <code>milter</code> 标头的更多信息。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">use = [&#34;x-spamd-bar&#34;, &#34;x-spam-level&#34;, &#34;authentication-results&#34;];
+</code></pre></div><p>您可以在此处找到有关 <code>milter</code> 标头的更多信息。</p>
 <p>最后重启 Rspamd 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart rspamd
-</code></pre></div><h2 id="-nginx">配置 Nginx</h2>
+</code></pre></div><h2 id="配置-nginx">配置 Nginx</h2>
 <p>在本系列的第一部分中，我们为 PostfixAdmin 实例创建了一个 Nginx 服务器配置。</p>
 <p>打开Nginx配置文件并添加以下位置指令，以黄色突出显示：</p>
 <p>/etc/nginx/sites-enabled/mail.example.com.conf</p>
-<pre><code class="language-conf" data-lang="conf">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 location /rspamd {
     proxy_pass http://127.0.0.1:11334/;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
 ...
-</code></pre><p>重新加载Nginx服务以使更改生效：</p>
+</code></pre></div><p>重新加载Nginx服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
 </code></pre></div><p>转到https://mail.example.com/rspamd/，输入您之前使用该rspamadm pw命令生成的密码，您将看到Rspamd Web界面。</p>
-<h2 id="postfix">配置Postfix</h2>
+<h2 id="配置postfix">配置Postfix</h2>
 <p>我们需要配置 Postfix 才能使用 Rspamd milter。</p>
 <p>运行以下命令以更新Postfix主配置文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo postconf -e <span class="s2">&#34;milter_protocol = 6&#34;</span>
@@ -233,28 +233,28 @@ sudo postconf -e <span class="s2">&#34;smtpd_milters = inet:127.0.0.1:11332&#34;
 sudo postconf -e <span class="s2">&#34;non_smtpd_milters = inet:127.0.0.1:11332&#34;</span>
 </code></pre></div><p>重新启动 Postfix 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart postfix
-</code></pre></div><h2 id="-dovecot">配置 Dovecot</h2>
+</code></pre></div><h2 id="配置-dovecot">配置 Dovecot</h2>
 <p>我们已经在本系列的第二部分<a href="install-and-configure-postfix-and-dovecot">安装并配置了 Dovecot</a> ，现在我们将安装 <code>sieve</code> 过滤模块并将 Dovecot 与 Rspamd 集成。</p>
 <p>首先安装 Dovecot 过滤模块：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install dovecot-sieve dovecot-managesieved
 </code></pre></div><p>安装软件包后，打开以下文件并编辑。</p>
 <p>/etc/dovecot/conf.d/20-lmtp.conf</p>
-<pre><code class="language-conf" data-lang="conf">...
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 protocol lmtp {
   postmaster_address = postmaster@example.com
   mail_plugins = $mail_plugins sieve
 }
 ...
-</code></pre><p>/etc/dovecot/conf.d/20-imap.conf</p>
-<pre><code class="language-conf" data-lang="conf">...
+</code></pre></div><p>/etc/dovecot/conf.d/20-imap.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 protocol imap {
   ...
   mail_plugins = $mail_plugins imap_quota imap_sieve
   ...
 }
 ...
-</code></pre><p>/etc/dovecot/conf.d/20-managesieve.conf</p>
-<pre><code class="language-conf" data-lang="conf">...
+</code></pre></div><p>/etc/dovecot/conf.d/20-managesieve.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">...
 service managesieve-login {
   inet_listener sieve {
     port = 4190
@@ -266,8 +266,8 @@ service managesieve {
   process_limit = 1024
 }
 ...
-</code></pre><p>/etc/dovecot/conf.d/90-sieve.conf</p>
-<pre><code class="language-conf" data-lang="conf">plugin {
+</code></pre></div><p>/etc/dovecot/conf.d/90-sieve.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">plugin {
     ...
     # sieve = file:~/sieve;active=~/.dovecot.sieve
     sieve_plugins = sieve_imapsieve sieve_extprograms
@@ -287,37 +287,37 @@ service managesieve {
     sieve_global_extensions = +vnd.dovecot.pipe
     ....
 }
-</code></pre><p>保存并关闭文件。</p>
+</code></pre></div><p>保存并关闭文件。</p>
 <p>为 <code>sieve</code> 脚本创建目录：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /var/mail/vmail/sieve/global
 </code></pre></div><p>创建全局 <code>sieve</code> 筛选器以将标记为垃圾邮件的电子邮件移动到 <code>Spam</code> 目录：</p>
 <p>/var/mail/vmail/sieve/global/spam-global.sieve</p>
-<pre><code class="language-conf" data-lang="conf">require [&quot;fileinto&quot;,&quot;mailbox&quot;];
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">require [&#34;fileinto&#34;,&#34;mailbox&#34;];
 
 if anyof(
-    header :contains [&quot;X-Spam-Flag&quot;] &quot;YES&quot;,
-    header :contains [&quot;X-Spam&quot;] &quot;Yes&quot;,
-    header :contains [&quot;Subject&quot;] &quot;*** SPAM ***&quot;
+    header :contains [&#34;X-Spam-Flag&#34;] &#34;YES&#34;,
+    header :contains [&#34;X-Spam&#34;] &#34;Yes&#34;,
+    header :contains [&#34;Subject&#34;] &#34;*** SPAM ***&#34;
     )
 {
-    fileinto :create &quot;Spam&quot;;
+    fileinto :create &#34;Spam&#34;;
     stop;
 }
-</code></pre><p>每当您将电子邮件移入或移出 <code>Spam</code> 目录时，都会触发以下两个筛选脚本：</p>
+</code></pre></div><p>每当您将电子邮件移入或移出 <code>Spam</code> 目录时，都会触发以下两个筛选脚本：</p>
 <p>/var/mail/vmail/sieve/global/report-spam.sieve</p>
-<pre><code class="language-conf" data-lang="conf">require [&quot;vnd.dovecot.pipe&quot;, &quot;copy&quot;, &quot;imapsieve&quot;];
-pipe :copy &quot;rspamc&quot; [&quot;learn_spam&quot;];
-</code></pre><p>/var/mail/vmail/sieve/global/report-ham.sieve</p>
-<pre><code class="language-conf" data-lang="conf">require [&quot;vnd.dovecot.pipe&quot;, &quot;copy&quot;, &quot;imapsieve&quot;];
-pipe :copy &quot;rspamc&quot; [&quot;learn_ham&quot;];
-</code></pre><p>重新启动 Dovecot 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">require [&#34;vnd.dovecot.pipe&#34;, &#34;copy&#34;, &#34;imapsieve&#34;];
+pipe :copy &#34;rspamc&#34; [&#34;learn_spam&#34;];
+</code></pre></div><p>/var/mail/vmail/sieve/global/report-ham.sieve</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">require [&#34;vnd.dovecot.pipe&#34;, &#34;copy&#34;, &#34;imapsieve&#34;];
+pipe :copy &#34;rspamc&#34; [&#34;learn_ham&#34;];
+</code></pre></div><p>重新启动 Dovecot 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart dovecot
 </code></pre></div><p>编译筛选脚本并设置正确的权限：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sievec /var/mail/vmail/sieve/global/spam-global.sieve
 sievec /var/mail/vmail/sieve/global/report-spam.sieve
 sievec /var/mail/vmail/sieve/global/report-ham.sieve
 sudo chown -R vmail: /var/mail/vmail/sieve/
-</code></pre></div><h2 id="-dkim-">创建 DKIM 密钥</h2>
+</code></pre></div><h2 id="创建-dkim-密钥">创建 DKIM 密钥</h2>
 <p>DomainKeys Identified Mail（DKIM）是一种电子邮件身份认证方法，用于向出站邮件头添加加密签名。它允许接收方验证声称来自特定域的电子邮件确实是由该域的所有者授权的。这样做的主要目的是防止伪造的电子邮件。</p>
 <p>我们可以为所有域提供不同的 DKIM 密钥，甚至可以为单个域提供多个密钥，但为了简便，本文中我们将使用单个 DKIM 密钥，以后随时可以用于所有新域。</p>
 <p>创建一个新目录以存储 DKIM 密钥并使用 <code>rspamadm</code> 实用程序生成新的 DKIM 密钥对：</p>
@@ -330,15 +330,15 @@ rspamadm dkim_keygen -b <span class="m">2048</span> -s mail -k /var/lib/rspamd/d
 sudo chmod <span class="m">440</span> /var/lib/rspamd/dkim/*
 </code></pre></div><p>现在我们需要告诉 Rspamd 在哪里查找 DKIM 密钥，选择器的名称和最后一行将启用 DKIM 为别名发件人地址进行签名。为此，请创建一个包含以下内容的新文件：</p>
 <p>/etc/rspamd/local.d/dkim_signing.conf</p>
-<pre><code class="language-conf" data-lang="conf">selector = &quot;mail&quot;;
-path = &quot;/var/lib/rspamd/dkim/$selector.key&quot;;
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">selector = &#34;mail&#34;;
+path = &#34;/var/lib/rspamd/dkim/$selector.key&#34;;
 allow_username_mismatch = true;
-</code></pre><p>Rspamd 还支持为认证接收链（ARC）签名。您可以在此处找到有关 <a href="http://arc-spec.org/">ARC 规范</a>的更多信息。</p>
+</code></pre></div><p>Rspamd 还支持为认证接收链（ARC）签名。您可以在此处找到有关 <a href="http://arc-spec.org/">ARC 规范</a>的更多信息。</p>
 <p>Rspamd 使用 DKIM 模块处理 ARC 签名，因此我们可以简单地复制以前的配置：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo cp /etc/rspamd/local.d/dkim_signing.conf /etc/rspamd/local.d/arc.conf
 </code></pre></div><p>重新启动 Rspamd 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart rspamd
-</code></pre></div><h2 id="dns-">DNS 设置</h2>
+</code></pre></div><h2 id="dns-设置">DNS 设置</h2>
 <p>我们已经创建了一个DKIM密钥对，现在我们需要更新我们的 DNS 区域。DKIM 公钥存储在 <code>mail.pub</code> 文件中。该文件的内容应如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cat /var/lib/rspamd/dkim/mail.pub
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mail._domainkey IN TXT <span class="o">(</span> <span class="s2">&#34;v=DKIM1; k=rsa; &#34;</span>
@@ -364,7 +364,7 @@ allow_username_mismatch = true;
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">dig _dmarc.example.com TXT +short
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;v=DMARC1; p=none; adkim=r; aspf=r;&#34;</span>
 </code></pre></div><p>您还可以在<a href="https://dmarcian.com/dmarc-inspector/">此处</a>检查域当前的 DMARC 策略或创建自己的DMARC策略。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>这就是本教程的这一部分。在本系列的下一部分中，我们将继续RoundCube安装和配置。</p>
       </div><ul class="pa0">
   
@@ -455,17 +455,17 @@ allow_username_mismatch = true;
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-redis">安装 Redis</a></li>
-    <li><a href="#-unbound">安装 Unbound</a></li>
-    <li><a href="#-rspamd">安装 Rspamd</a></li>
-    <li><a href="#-rspamd1">配置 Rspamd</a></li>
-    <li><a href="#-nginx">配置 Nginx</a></li>
-    <li><a href="#postfix">配置Postfix</a></li>
-    <li><a href="#-dovecot">配置 Dovecot</a></li>
-    <li><a href="#-dkim-">创建 DKIM 密钥</a></li>
-    <li><a href="#dns-">DNS 设置</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-redis">安装 Redis</a></li>
+    <li><a href="#安装-unbound">安装 Unbound</a></li>
+    <li><a href="#安装-rspamd">安装 Rspamd</a></li>
+    <li><a href="#配置-rspamd">配置 Rspamd</a></li>
+    <li><a href="#配置-nginx">配置 Nginx</a></li>
+    <li><a href="#配置postfix">配置Postfix</a></li>
+    <li><a href="#配置-dovecot">配置 Dovecot</a></li>
+    <li><a href="#创建-dkim-密钥">创建 DKIM 密钥</a></li>
+    <li><a href="#dns-设置">DNS 设置</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -477,7 +477,7 @@ allow_username_mismatch = true;
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

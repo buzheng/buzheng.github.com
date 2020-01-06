@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,13 +146,13 @@
           <p>Cron是一个调度守护进程，它以指定的时间间隔执行任务。这些任务称为cron作业，主要用于自动化系统维护或管理。</p>
 <p>例如，您可以设置cron作业来备份数据库或数据，使用最新的安全修补程序更新系统，检查磁盘空间使用情况，发送电子邮件等。某些应用程序（如<a href="/linux/how-to-install-drupal-on-ubuntu-18-04/">Drupal</a>或<a href="/linux/install-magento-2-on-centos-7/">Magento）</a>需要cron作业才能执行某些功能。</p>
 <p>您可以安排cron作业按分钟，小时，月，日，星期几或这些的任意组合运行。</p>
-<h2 id="crontab">什么是Crontab文件</h2>
+<h2 id="什么是crontab文件">什么是Crontab文件</h2>
 <p>Crontab（cron表）是一个文本文件，用于指定cron作业的计划。有两种类型的crontab文件。系统范围的crontab文件和单个用户crontab文件。</p>
 <p>用户crontab文件按用户名存储，其位置因操作系统而异。在基于Red Hat的系统（如CentOS）中，crontab文件存储在<code>/var/spool/cron</code>目录中，而Debian和Ubuntu文件存储在<code>/var/spool/cron/crontabs</code>目录中。</p>
 <p>虽然您可以手动编辑用户crontab文件，但建议使用该<code>crontab</code>命令。</p>
 <p><code>/etc/crontab``/etc/cron.d</code>目录中的文件是系统范围的crontab文件，只能由系统管理员编辑。</p>
 <p>在大多数Linux发行版中，您还可以将脚本放在<code>/etc/cron.{hourly,daily,weekly,monthly}</code>目录中，并且每次都会执行脚本<code>hour/day/week/month</code>。</p>
-<h3 id="crontab1">Crontab语法和运算符</h3>
+<h3 id="crontab语法和运算符">Crontab语法和运算符</h3>
 <p>用户crontab文件中的每一行包含六个以空格分隔的字段，后跟要运行的命令。</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">* * * * * command(s)
 - - - - -
@@ -169,10 +169,10 @@
 <li><code>-</code> - 连字符运算符允许您指定一系列值。如果您<code>1-5</code>在星期几字段中，任务将在每个工作日（从星期一到星期五）运行。</li>
 <li><code>/</code> - 斜杠运算符允许您指定将在它们之间的特定间隔重复的值。例如，如果您<code>*/4</code>在“小时”字段中，则表示该操作将每四个小时执行一次。它与指定相同<code>0,4,8,12,16,20</code>。相反，星号斜线操作之前，你也可以使用一个范围值的，<code>1-30/10</code>意思是一样的<code>1,11,21</code>。</li>
 </ul>
-<h3 id="crontab2">系统范围的Crontab文件</h3>
+<h3 id="系统范围的crontab文件">系统范围的Crontab文件</h3>
 <p>系统范围的crontab文件的语法与用户crontabs略有不同。它包含一个额外的必需用户字段，用于指定在哪个用户下运行cron作业。</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">* * * * * &lt;username&gt; command(s)
-</code></pre></div><h3 id="heading">预定义的宏</h3>
+</code></pre></div><h3 id="预定义的宏">预定义的宏</h3>
 <p>有几个特殊的Cron调度宏用于指定公共间隔。您可以使用此快捷方式代替五列日期规范。</p>
 <ul>
 <li><code>@yearly</code> (or <code>@annually</code>) - Run the specified task once a year at midnight (12:00am) of 1st of January. Equivalent to <code>0 0 1 1 *</code>.</li>
@@ -193,7 +193,7 @@
 </ul>
 <p>crontab命令使用由环境变量<code>VISUAL</code>或<code>EDITOR</code>环境变量指定的编辑器打开crontab文件。</p>
 <p><img src="/images/linux/scheduling-cron-jobs-with-crontab/create-cron-job.jpg" alt=""></p>
-<h2 id="crontab3">Crontab变量</h2>
+<h2 id="crontab变量">Crontab变量</h2>
 <p>cron守护程序自动设置几个环境变量。</p>
 <ul>
 <li>默认路径设置为<code>PATH=/usr/bin:/bin</code>。如果要调用的命令存在于cron指定的路径中，则可以使用命令的绝对路径或更改cron <code>$PATH</code>变量。您不能<code>:$PATH</code>像使用普通脚本那样隐式添加。</li>
@@ -201,54 +201,54 @@
 <li>Cron从用户的主目录调用该命令。该<code>HOME</code>变量可以被crontab中的设置覆盖。</li>
 <li>电子邮件通知将发送给crontab的所有者。要覆盖默认行为，您可以使用<code>MAILTO</code>环境变量以及要接收电子邮件通知的所有电子邮件地址的列表（以逗号分隔）。如果<code>MAILTO</code>已定义但为空（<code>MAILTO=&quot;&quot;</code>），则不发送邮件。</li>
 </ul>
-<h2 id="crontab4">Crontab限制</h2>
+<h2 id="crontab限制">Crontab限制</h2>
 <p>系统管理员可以<code>crontab</code>使用<code>/etc/cron.deny</code>和<code>/etc/cron.allow</code>文件控制哪些用户可以访问该命令。这些文件包含一个用户名列表，每行一个用户名。</p>
 <p>默认情况下，只有<code>/etc/cron.deny</code> <a href="/linux/bash-check-if-file-exists/">文件存在</a>且为空，这意味着所有用户都可以使用crontab命令。如果要拒绝对特定用户访问crontab命令，请将用户名添加到此文件中。</p>
 <p>如果<code>/etc/cron.allow</code>文件存在，则只有此文件中列出的用户才能使用该<code>crontab</code>命令。</p>
 <p>如果两个文件都不存在，则只有具有管理权限的用户才能使用<code>crontab</code>命令。</p>
-<h2 id="cron-jobs">Cron Jobs的例子</h2>
+<h2 id="cron-jobs的例子">Cron Jobs的例子</h2>
 <p>下面是一些cron作业示例，它们将向您展示如何安排在不同时间段运行的任务。</p>
 <ul>
 <li>
 <p>从星期一到星期五每天15:00运行命令：</p>
-<pre><code class="language-cronjob" data-lang="cronjob">0 15 * * 1-5 command
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 15 * * 1-5 command
+</code></pre></div></li>
 <li>
 <p>每5分钟运行一次脚本并将标准输出重定向到<code>dev null</code>，只有标准错误才会发送到指定的电子邮件地址：</p>
-<pre><code class="language-cronjob" data-lang="cronjob">MAILTO=email@example.com
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">MAILTO=email@example.com
 */5 * * * * /path/to/script.sh &gt; /dev/null
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>每周一下午3点运行两个命令（<code>&amp;&amp;</code>在命令之间使用运算符）：</p>
-<pre><code class="language-cronjob" data-lang="cronjob">0 15 * * Mon command1 &amp;&amp; command2
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 15 * * Mon command1 &amp;&amp; command2
+</code></pre></div></li>
 <li>
 <p>每2分钟运行一次PHP脚本并将输出写入文件：</p>
-<pre><code class="language-cronjob" data-lang="cronjob">*/2 * * * * /usr/bin/php /path/to/script.php &gt;&gt; /var/log/script.log
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*/2 * * * * /usr/bin/php /path/to/script.php &gt;&gt; /var/log/script.log
+</code></pre></div></li>
 <li>
 <p>从上午8点到下午4点，每小时，每小时，每小时运行一个脚本：</p>
-<pre><code class="language-cronjob" data-lang="cronjob">00 08-16 * * * /path/to/script.sh
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">00 08-16 * * * /path/to/script.sh
+</code></pre></div></li>
 <li>
 <p>在每个月的第一个星期一早上7点运行脚本</p>
-<pre><code class="language-cronjob" data-lang="cronjob">0 7 1-7 * 1 /path/to/script.sh
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">0 7 1-7 * 1 /path/to/script.sh
+</code></pre></div></li>
 <li>
 <p>在每个月的1号和15号下午9:15运行脚本：</p>
-<pre><code class="language-cronjob" data-lang="cronjob">15 9 1,15 * * /path/to/script.sh
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">15 9 1,15 * * /path/to/script.sh
+</code></pre></div></li>
 <li>
 <p>设置自定义<code>HOME</code>，<code>PATH</code>，<code>SHELL</code>和<code>MAILTO</code>变量和运行一个命令的每一分钟。</p>
-<pre><code class="language-cronjob" data-lang="cronjob">HOME=/opt
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HOME=/opt
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 SHELL=/bin/zsh
 MAILTO=email@example.com
 
 */1 * * * * command
-</code></pre></li>
+</code></pre></div></li>
 </ul>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在特定日期和时间创建cron作业和计划任务。</p>
       </div><ul class="pa0">
   
@@ -327,18 +327,18 @@ MAILTO=email@example.com
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#crontab">什么是Crontab文件</a>
+    <li><a href="#什么是crontab文件">什么是Crontab文件</a>
       <ul>
-        <li><a href="#crontab1">Crontab语法和运算符</a></li>
-        <li><a href="#crontab2">系统范围的Crontab文件</a></li>
-        <li><a href="#heading">预定义的宏</a></li>
+        <li><a href="#crontab语法和运算符">Crontab语法和运算符</a></li>
+        <li><a href="#系统范围的crontab文件">系统范围的Crontab文件</a></li>
+        <li><a href="#预定义的宏">预定义的宏</a></li>
       </ul>
     </li>
     <li><a href="#linux-crontab-command">Linux Crontab Command</a></li>
-    <li><a href="#crontab3">Crontab变量</a></li>
-    <li><a href="#crontab4">Crontab限制</a></li>
-    <li><a href="#cron-jobs">Cron Jobs的例子</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#crontab变量">Crontab变量</a></li>
+    <li><a href="#crontab限制">Crontab限制</a></li>
+    <li><a href="#cron-jobs的例子">Cron Jobs的例子</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -350,7 +350,7 @@ MAILTO=email@example.com
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

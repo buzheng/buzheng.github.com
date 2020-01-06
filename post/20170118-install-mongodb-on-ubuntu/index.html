@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,7 +138,7 @@
           
   
           <p>今天参照 mongodb 的<a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/">官方文档</a>在 Unbuntu Server 16.04 上安装了 Mongodb 3.4，步骤很简单，就顺手翻译了一下这个文档，这个文档是讲述了 Mongodb 3.4 在 Ubuntu 12.04, 14.04, 16.04 上的安装步骤。</p>
-<h2 id="heading">概述</h2>
+<h2 id="概述">概述</h2>
 <p>这个教程讲述了在长期支持版 Ubuntu Linux 系统上从 <code>.deb</code> 包安装 Mongodb 社区版的步骤。虽然 Ubuntu 软件仓库中已经包含了 MongoDB 的包，但并不是最新的版本。</p>
 <blockquote>
 <p><strong>平台支持：</strong>
@@ -148,7 +148,7 @@ MongoDB 提供的包只支持 64 位长期支持版本的 Ubuntu 发行版。比
 <p><strong>注意事项：</strong>
 3.4 不兼容 IBM Power Systems 上的 Ubuntu 16.04</p>
 </blockquote>
-<h2 id="heading1">包</h2>
+<h2 id="包">包</h2>
 <p>MongoDB 在自己的仓库里提供了官方支持的安装包。仓库中包含了下面的包</p>
 <table>
 <thead>
@@ -183,12 +183,12 @@ MongoDB 提供的包只支持 64 位长期支持版本的 Ubuntu 发行版。比
 <p>包 mongodb-org-server 提供的初始化脚本来启动 mongod，配置文件为： <code>/etc/mongod.conf</code></p>
 <p>这些安装包与 Ubuntu 提供的 <code>mongodb</code>, <code>mongodb-server</code>, <code>mongodb-clients</code> 包冲突。</p>
 <p>安装包提供的配置文件 <code>/etc/mongod.conf</code> 默认配置 bind_ip 为 127.0.0.1 。在初始化一个<a href="https://docs.mongodb.com/manual/reference/glossary/#term-replica-set">复制集群(replica set)</a>之前根据你的需要修改这个设置。</p>
-<h2 id="-mongodb-">安装 MongoDB 社区版</h2>
+<h2 id="安装-mongodb-社区版">安装 MongoDB 社区版</h2>
 <p>MongoDB 提供的包只支持 64 位长期支持版本的 Ubuntu 发行版。比如 Ubuntu 12.04 LTS (precise), 14.04 LTS (trusty), 16.04 LTS (xenial) 等等。这些包可能在其他发行版上也能工作，但是并未被支持。</p>
-<h3 id="heading2">导入包管理系统使用的公钥</h3>
+<h3 id="导入包管理系统使用的公钥">导入包管理系统使用的公钥</h3>
 <p>Ubuntu 的软件包管理工具（即dpkg和APT）要求软件包的发布者通过GPG密钥签名来确保软件包的一致性和真实性。通过以下命令导入MongoDB公共GPG密钥：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
-</code></pre></div><h3 id="-mongodb--list-file">为 MongoDB 创建 list file</h3>
+</code></pre></div><h3 id="为-mongodb-创建-list-file">为 MongoDB 创建 list file</h3>
 <p>根据 Ubuntu 的版本使用适当的命令创建 list file: <code>/etc/apt/sources.list.d/mongodb-org-3.4.list</code></p>
 <h4 id="ubuntu-1204">Ubuntu 12.04</h4>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.4 multiverse&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
@@ -196,45 +196,45 @@ MongoDB 提供的包只支持 64 位长期支持版本的 Ubuntu 发行版。比
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 </code></pre></div><h4 id="ubuntu-1604">Ubuntu 16.04</h4>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
-</code></pre></div><h3 id="heading3">重新下载本地包数据库索引</h3>
+</code></pre></div><h3 id="重新下载本地包数据库索引">重新下载本地包数据库索引</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get update
-</code></pre></div><h3 id="-mongodb">安装 MongoDB</h3>
+</code></pre></div><h3 id="安装-mongodb">安装 MongoDB</h3>
 <p>通过以下命令安装最新的可靠版</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get install -y mongodb-org
-</code></pre></div><h2 id="-mongodb-1">运行 MongoDB 社区版</h2>
+</code></pre></div><h2 id="运行-mongodb-社区版">运行 MongoDB 社区版</h2>
 <p>默认情况下， MongoDB 实例的数据文件位于 <code>/var/lib/mongodb</code>，日志文件位于 <code>/var/log/mongodb</code>，并且通过用户 mongodb 来运行。你可以在配置文件 <code>/etc/mongod.conf</code> 指定不同的日志文件和数据文件目录，其对应的配置为：<code>systemLog.path</code> 和  <code>storage.dbPath</code> 。</p>
 <p>如果你更改了运行 MongoDB 进程的用户，必须修改 <code>/var/lib/mongodb</code> 和 <code>/var/log/mongodb</code> 的访问权限来让用户能访问这些目录。</p>
-<h3 id="-mongodb1">启动 MongoDB</h3>
+<h3 id="启动-mongodb">启动 MongoDB</h3>
 <p>执行如下命令来启动 <code>mongod</code> 进程</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service mongod start
 <span class="c1"># 或者</span>
 sudo systemctl start mongod
-</code></pre></div><h3 id="-mongodb-2">验证 MongoDB 启动成功</h3>
+</code></pre></div><h3 id="验证-mongodb-启动成功">验证 MongoDB 启动成功</h3>
 <p>通过检查日志文件 /var/log/mongodb/mongod.log 来验证 mongod 进程是否启动成功，日志文件中应包含下面的信息：</p>
-<pre><code>[initandlisten] waiting for connections on port &lt;port&gt;
-</code></pre><p><code>&lt;port&gt; </code> 与配置文件 /etc/mongod.conf 的配置一致， 默认值是 27017</p>
-<h3 id="-mongodb2">停止 MongoDB</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[initandlisten] waiting for connections on port &lt;port&gt;
+</code></pre></div><p><code>&lt;port&gt; </code> 与配置文件 /etc/mongod.conf 的配置一致， 默认值是 27017</p>
+<h3 id="停止-mongodb">停止 MongoDB</h3>
 <p>如果需要，你可通过下面的命令来停止 mongod 进程</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service mongod stop
 <span class="c1"># 或者</span>
 sudo systemctl stop mongod
-</code></pre></div><h3 id="-mongodb3">重启 MongoDB</h3>
+</code></pre></div><h3 id="重启-mongodb">重启 MongoDB</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service mongod status
 <span class="c1"># 或者</span>
 sudo systemctl status mongod
-</code></pre></div><h3 id="-mongodb-3">查看 MongoDB 状态</h3>
+</code></pre></div><h3 id="查看-mongodb-状态">查看 MongoDB 状态</h3>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service mongod status
 <span class="c1"># 或者</span>
 sudo systemctl status mongod
-</code></pre></div><h2 id="-mongodb-4">卸载 MongoDB 社区版</h2>
+</code></pre></div><h2 id="卸载-mongodb-社区版">卸载 MongoDB 社区版</h2>
 <p>为了彻底的从系统中移除 MongoDB，你需要移除 MongoDB 应用程序，配置文件，日志和数据文件目录。请参照下面的操作步骤进行：</p>
-<h3 id="-mongodb4">停止 MongoDB</h3>
+<h3 id="停止-mongodb-1">停止 MongoDB</h3>
 <p>通过以下命令停止 mongod 进程</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo service mongod stop
-</code></pre></div><h3 id="heading4">删除软件包</h3>
+</code></pre></div><h3 id="删除软件包">删除软件包</h3>
 <p>删除所有的 MongoDB 软件包</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt-get purge mongodb-org*
-</code></pre></div><h3 id="heading5">删除数据和日志目录</h3>
+</code></pre></div><h3 id="删除数据和日志目录">删除数据和日志目录</h3>
 <p>删除 MongoDB 数据和日志目录</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo rm -r /var/log/mongodb
 sudo rm -r /var/lib/mongodb
@@ -275,7 +275,7 @@ sudo rm -r /var/lib/mongodb
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

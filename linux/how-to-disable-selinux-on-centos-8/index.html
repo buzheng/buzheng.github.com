@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -151,12 +151,12 @@
 <li>Disabled: 未加载 SELinux 策略，并且不记录任何消息。</li>
 </ul>
 <p>默认情况下，在 CentOS 8 中，启用了 SELinux 并处于强制模式。强烈建议将 SELinux 保持为强制模式。但是，有时它可能会干扰某些应用程序的功能，因此您需要将其设置为许可模式或完全禁用它。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>只有 root 用户或具有 <a href="/linux/create-a-sudo-user-on-centos/">sudo 特权</a>的用户才能更改 SELinux 模式。</p>
-<h2 id="-selinux-">检查 SELinux 模式</h2>
+<h2 id="检查-selinux-模式">检查 SELinux 模式</h2>
 <p>使用以下 <code>sestatus</code> 命令检查 SELinux 的状态和运行方式：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sestatus
-</code></pre><pre><code class="language-output" data-lang="output">SELinux status:                 enabled
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sestatus
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">SELinux status:                 enabled
 SELinuxfs mount:                /sys/fs/selinux
 SELinux root directory:         /etc/selinux
 Loaded policy name:             targeted
@@ -166,16 +166,16 @@ Policy MLS status:              enabled
 Policy deny_unknown status:     allowed
 Memory protection checking:     actual (secure)
 Max kernel policy version:      31
-</code></pre><p>上面的输出显示 SELinux 已启用并将其设置为强制模式。</p>
-<h2 id="-selinux--permissive">将 SELinux 模式更改为 permissive</h2>
+</code></pre></div><p>上面的输出显示 SELinux 已启用并将其设置为强制模式。</p>
+<h2 id="将-selinux-模式更改为-permissive">将 SELinux 模式更改为 permissive</h2>
 <p>启用后， SELinux 可以处于强制模式或许可模式。您可以使用以下命令将模式临时更改：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo setenforce 0
-</code></pre><p>但是，此更改仅对当前运行时会话有效，并且不会在两次重新引导之间持续存在。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo setenforce 0
+</code></pre></div><p>但是，此更改仅对当前运行时会话有效，并且不会在两次重新引导之间持续存在。</p>
 <p>要将 SELinux 模式永久设置为 permissive，请执行以下步骤：</p>
 <ol>
 <li>
 <p>打开 <code>/etc/selinux/config</code> 文件并将 <code>SELINUX</code> 设置为 <code>permissive</code> ：</p>
-<pre><code class="language-config" data-lang="config"># This file controls the state of SELinux on the system.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># This file controls the state of SELinux on the system.
 # SELINUX= can take one of these three values:
 #     enforcing - SELinux security policy is enforced.
 #     permissive - SELinux prints warnings instead of enforcing.
@@ -186,19 +186,19 @@ SELINUX=permissive
 #     minimum - Modification of targeted policy. Only selected processes are protected. 
 #     mls - Multi Level Security protection.
 SELINUXTYPE=targeted
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>保存文件并运行 <code>setenforce 0</code> 命令以更改当前会话的 SELinux 模式：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo shutdown -r now
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo shutdown -r now
+</code></pre></div></li>
 </ol>
-<h2 id="-selinux">禁用 SELinux</h2>
+<h2 id="禁用-selinux">禁用 SELinux</h2>
 <p>强烈建议不要禁用 SELinux ，而应将模式更改为宽松模式。仅在需要使应用程序正常运行时才禁用 SELinux 。</p>
 <p>执行以下步骤永久禁用 CentOS 8 系统上的 SELinux ：</p>
 <ol>
 <li>
 <p>打开 <code>/etc/selinux/config</code> 文件并将其 <code>SELINUX</code> 值更改为 <code>disabled</code> ：</p>
-<pre><code class="language-config" data-lang="config"># This file controls the state of SELinux on the system.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># This file controls the state of SELinux on the system.
 # SELINUX= can take one of these three values:
 #       enforcing - SELinux security policy is enforced.
 #       permissive - SELinux prints warnings instead of enforcing.
@@ -209,20 +209,20 @@ SELINUX=disabled
 #     minimum - Modification of targeted policy. Only selected processes are protected. 
 #     mls - Multi Level Security protection.
 SELINUXTYPE=targeted
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>保存文件并<a href="/linux/reboot-linux-using-command-line/">重新启动</a>系统：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo shutdown -r now
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo shutdown -r now
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>引导系统后，使用以下 <code>sestatus</code> 命令来验证 SELinux 已被禁用：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sestatus
-</code></pre><p>输出应如下所示：</p>
-<pre><code class="language-output" data-lang="output">SELinux status:                 disabled
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sestatus
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">SELinux status:                 disabled
+</code></pre></div></li>
 </ol>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>SELinux 是一种通过实施强制访问控制 (MAC) 来保护系统安全的机制。 SELinux 在 CentOS 8 系统上默认为启用，但是可以通过编辑配置文件并重新引导系统来禁用 SELinux 。</p>
 <p>要了解有关 SELinux 强大功能的更多信息，请访问 <a href="https://wiki.centos.org/HowTos/SELinux">CentOS SELinux</a> 指南。</p>
       </div><ul class="pa0">
@@ -298,11 +298,11 @@ SELINUXTYPE=targeted
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-selinux-">检查 SELinux 模式</a></li>
-    <li><a href="#-selinux--permissive">将 SELinux 模式更改为 permissive</a></li>
-    <li><a href="#-selinux">禁用 SELinux</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#检查-selinux-模式">检查 SELinux 模式</a></li>
+    <li><a href="#将-selinux-模式更改为-permissive">将 SELinux 模式更改为 permissive</a></li>
+    <li><a href="#禁用-selinux">禁用 SELinux</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -314,7 +314,7 @@ SELINUXTYPE=targeted
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

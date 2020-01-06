@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,7 +146,7 @@ Magento 的具备功能包括愉悦的购物体验，灵活的模块化架构和
           <p>Magento 是一个领先的企业级电子商务平台，基于开源技术，结合了强大的功能，并具备非常好的灵活性和用户友好的界面。</p>
 <p>Magento 的具备功能包括愉悦的购物体验，灵活的模块化架构和企业级可扩展性和性能等，因此 Magento 成为了大多数在线商家的首选平台。</p>
 <p>这是系列如何在 CentOS 7 上安装和配置 Magento 2 的第一篇文章。在本教程中，我们将引导您按步骤完成在 CentOS 7 计算机上安装 Magento 2 。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>作为遵循本教程的先决条件，您将需要：</p>
 <ul>
 <li>根据官方 Magento 2 系统要求，你的 CentOS 7 服务器，需要至少 2G 的 RAM 。如果您使用的 RAM 小于 2GB 的服务器，则应创建交换文件。</li>
@@ -155,17 +155,17 @@ Magento 的具备功能包括愉悦的购物体验，灵活的模块化架构和
 <li>安装和配置 Nginx ， MySQL 和 PHP 7.1 。如果还没有，请参阅我们的指南：在 CentOS 7 上安装配置 LEMP 。</li>
 <li>有效的 SSL 证书。如果您没有，您可以跟随 <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let's Encrypt 保护 Nginx</a> 创建免费的 Let's Encrypt SSL 证书。</li>
 </ul>
-<h2 id="magento-">Magento 访问密钥对</h2>
+<h2 id="magento-访问密钥对">Magento 访问密钥对</h2>
 <p>我们需要生成访问密钥来验证对 Magento 2 代码库和第三方扩展和主题的访问。</p>
 <p>如果您没有 Magento Marketplace 帐户，可以在此处创建一个帐户。一旦创建了帐户，请按照<a href="http://devdocs.magento.com/guides/v2.2/install-gde/prereq/connect-auth.html">这些说明</a>来了解如何生成一组新的访问密钥。</p>
-<h2 id="-mysql-">创建 MySQL 数据库</h2>
+<h2 id="创建-mysql-数据库">创建 MySQL 数据库</h2>
 <p>Magento 2 兼容 MySQL 5.6 和 5.7 ， MariaDB 10.x 和 Percona 5.7 。如果您的服务器上没有安装 MySQL 或 MariaDB ，您可以查看<a href="/linux/install-mariadb-on-centos-7/">本指南</a>来完成安装。</p>
 <p>登录 MySQL shell ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p
 </code></pre></div><p>并运行以下命令以创建新数据库和用户，并把新创建的数据库授权给该用户：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE magento<span class="p">;</span>
 GRANT ALL ON magento.* TO magento@localhost IDENTIFIED BY <span class="s1">&#39;P4ssvv0rD&#39;</span><span class="p">;</span>
-</code></pre></div><h2 id="-php-">安装 PHP 扩展</h2>
+</code></pre></div><h2 id="安装-php-扩展">安装 PHP 扩展</h2>
 <p>我们假设您已经使用我们的指南启用了 <a href="/linux/install-php-7-on-centos-7/">PHP 7.1 Remi 存储库</a>。</p>
 <p>使用以下命令安装所有必需的 PHP 扩展：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install php-mysql php-opcache php-xml php-mcrypt php-gd php-soap php-redis php-bcmath php-intl php-mbstring php-json php-iconv php-fpm php-zip
@@ -176,22 +176,22 @@ sudo sed -i <span class="s2">&#34;s/zlib.output_compression = .*/zlib.output_com
 sudo sed -i <span class="s2">&#34;s/max_execution_time = .*/max_execution_time = 18000/&#34;</span> /etc/php.ini
 sudo sed -i <span class="s2">&#34;s/;date.timezone.*/date.timezone = UTC/&#34;</span> /etc/php.ini
 sudo sed -i <span class="s2">&#34;s/;opcache.save_comments.*/opcache.save_comments = 1/&#34;</span> /etc/php.d/10-opcache.ini
-</code></pre></div><h2 id="-composer">安装 Composer</h2>
+</code></pre></div><h2 id="安装-composer">安装 Composer</h2>
 <p>Composer 是 PHP 的依赖管理器，用于安装，更新和管理库。</p>
 <p>要全局安装 composer ，请使用 curl 下载 Composer 安装程序并将文件移动到以下 /usr/local/bin 目录：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -sS https://getcomposer.org/installer <span class="p">|</span> php
 sudo mv composer.phar /usr/local/bin/composer
-</code></pre></div><h2 id="heading1">创建一个新的系统用户</h2>
+</code></pre></div><h2 id="创建一个新的系统用户">创建一个新的系统用户</h2>
 <p>创建一个新用户和组，它将运行我们的 Magento 安装，为简单起见，我们将新用户为命名 magento ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -r -d /opt/magento magento
 </code></pre></div><p>将 <code>nginx</code> 用户添加到组 <code>magento</code> 并更改 <code>/opt/magento</code> 目录权限，以便 Nginx 可以访问我们的 Magento 安装：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo usermod -a -G magento nginx
 sudo chmod <span class="m">750</span> /opt/magento
-</code></pre></div><h2 id="-php-fpm">配置 PHP FPM</h2>
+</code></pre></div><h2 id="配置-php-fpm">配置 PHP FPM</h2>
 <p>接下来，我们需要配置 PHP 并为我们的 <code>magento</code> 用户创建 FPM 池。</p>
 <p>打开文本编辑器并创建以下文件：</p>
 <p>/etc/php-fpm.d/magento.conf</p>
-<pre><code class="language-conf" data-lang="conf">[magento]
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[magento]
 user = magento
 group = nginx
 listen.owner = magento
@@ -202,9 +202,9 @@ pm.max_children =  50
 pm.process_idle_timeout = 10s
 pm.max_requests = 500
 chdir = /
-</code></pre><p>保存文件并重新启动 PHP FPM 服务以使更改生效：</p>
+</code></pre></div><p>保存文件并重新启动 PHP FPM 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl restart php-fpm
-</code></pre></div><h2 id="-magento">安装 Magento</h2>
+</code></pre></div><h2 id="安装-magento">安装 Magento</h2>
 <p>有几种方法可以安装 Magento 。不要从 Github 存储库安装 Magento ，因为该版本用于开发而不是用于生产安装。在本教程中，我们将使用 composer 从其存储库安装 Magento 。</p>
 <p>切换到 magento 用户：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - magento
@@ -259,7 +259,7 @@ Do you want to store credentials <span class="k">for</span> repo.magento.com in 
 <span class="o">[</span>SUCCESS<span class="o">]</span>: Magento installation complete.
 <span class="o">[</span>SUCCESS<span class="o">]</span>: Magento Admin URI: /admin_1csalp
 Nothing to import.
-</code></pre></div><h2 id="-magento-crontab">创建 Magento crontab</h2>
+</code></pre></div><h2 id="创建-magento-crontab">创建 Magento crontab</h2>
 <p>Magento 使用 cron 作业来安排重新索引，通知，站点地图，电子邮件等任务。</p>
 <p>要创建 Magento crontab ，请以 <code>magento</code> 用户身份运行以下命令：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">php ~/public_html/bin/magento cron:install
@@ -270,7 +270,7 @@ Nothing to import.
 * * * * * /usr/bin/php /opt/magento/public_html/update/cron.php &gt;&gt; /opt/magento/public_html/var/log/update.cron.log
 * * * * * /usr/bin/php /opt/magento/public_html/bin/magento setup:cron:run &gt;&gt; /opt/magento/public_html/var/log/setup.cron.log
 <span class="c1">#~ MAGENTO END adc062915d7b30804a2b340095af072d</span>
-</code></pre></div><h2 id="-nginx">配置 Nginx</h2>
+</code></pre></div><h2 id="配置-nginx">配置 Nginx</h2>
 <p>如果你跟随了 CentOS 7 安装 LEMP 指南，你应该已经在你的机器上安装了 Nginx 。现在我们只需要为 Magento 安装创建一个新的服务器段。我们将包含 magento 附带的默认 Nginx 配置：</p>
 <p>/etc/nginx/conf.d/example.com.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">upstream fastcgi_backend <span class="o">{</span>
@@ -317,7 +317,7 @@ server <span class="o">{</span>
 </code></pre></div><p>重新加载 Nginx 服务以使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
 </code></pre></div><p>最后，您应该能够 <a href="https://example.com/admin_1csalp">https://example.com/admin_1csalp</a> 使用在运行 Magento 安装程序时指定的管理员用户登录 Magento 安装。</p>
-<h2 id="heading2">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您在 Centos 7 服务器上安装了 Magento 2 。您还生成了免费的 Let's Encrypt SSL 证书，并将 Nginx 设置为 SSL 终止代理。</p>
       </div><ul class="pa0">
   
@@ -400,17 +400,17 @@ server <span class="o">{</span>
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#magento-">Magento 访问密钥对</a></li>
-    <li><a href="#-mysql-">创建 MySQL 数据库</a></li>
-    <li><a href="#-php-">安装 PHP 扩展</a></li>
-    <li><a href="#-composer">安装 Composer</a></li>
-    <li><a href="#heading1">创建一个新的系统用户</a></li>
-    <li><a href="#-php-fpm">配置 PHP FPM</a></li>
-    <li><a href="#-magento">安装 Magento</a></li>
-    <li><a href="#-magento-crontab">创建 Magento crontab</a></li>
-    <li><a href="#-nginx">配置 Nginx</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#magento-访问密钥对">Magento 访问密钥对</a></li>
+    <li><a href="#创建-mysql-数据库">创建 MySQL 数据库</a></li>
+    <li><a href="#安装-php-扩展">安装 PHP 扩展</a></li>
+    <li><a href="#安装-composer">安装 Composer</a></li>
+    <li><a href="#创建一个新的系统用户">创建一个新的系统用户</a></li>
+    <li><a href="#配置-php-fpm">配置 PHP FPM</a></li>
+    <li><a href="#安装-magento">安装 Magento</a></li>
+    <li><a href="#创建-magento-crontab">创建 Magento crontab</a></li>
+    <li><a href="#配置-nginx">配置 Nginx</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -422,7 +422,7 @@ server <span class="o">{</span>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

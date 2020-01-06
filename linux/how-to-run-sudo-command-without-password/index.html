@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -141,20 +141,20 @@
 <p>通常，要授予 sudo 访问权限，请将用户添加到 <a href="https://www.sudo.ws/man/1.8.15/sudoers.man.html"><code>sudoers</code> 文件中</a>定义的 sudo 组。在 Debian ， Ubuntu 及其衍生产品上，该 <code>sudo</code> 组成员获得 sudo 权限，而基于 RedHat 的发行版如 CentOS 和 Fedora ， sudo 组的名称是 <code>wheel</code> 。</p>
 <p>在运行 <a href="/linux/sudo-command-in-linux/">sudo 命令</a>之前，系统将提示该组的每个成员输入密码。这增加了额外的安全层，是向用户授予 sudo 权限的首选方式。</p>
 <p>但是，在某些情况下，例如运行自动脚本，您可能需要配置 sudoers 文件并允许某些用户运行 sudo 命令而不要求输入密码。</p>
-<h2 id="-sudoers-">将用户添加到 Sudoers 文件</h2>
+<h2 id="将用户添加到-sudoers-文件">将用户添加到 Sudoers 文件</h2>
 <p>sudoers 文件包含确定用户和组的 sudo 权限的信息。</p>
 <p>您可以通过修改 sudoers 文件或将配置文件添加到 <code>/etc/sudoers.d</code> 目录来配置用户的 sudo 访问权限。此目录中的所有文件都会被导入到 sudoers 文件中。</p>
 <p>在进行任何更改之前，最好备份当前文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo cp /etc/sudoers{,.backup_$(date +%Y%m%d)}
-</code></pre><blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo cp /etc/sudoers{,.backup_$(date +%Y%m%d)}
+</code></pre></div><blockquote>
 <p><a href="/linux/linux-date-command/">日期</a>命令将追加当前日期到备份文件名。</p>
 </blockquote>
 <p>使用以下 <code>visudo</code> 命令打开文件 <code>/etc/sudoers</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo visudo
-</code></pre><p>更改 sudoers 文件时始终使用 <code>visudo</code>。 此命令检查编辑后的内容，如果语法错误，则不会保存更改。如果使用文本编辑器打开文件，语法错误将导致丢失 sudo 访问权限。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo visudo
+</code></pre></div><p>更改 sudoers 文件时始终使用 <code>visudo</code>。 此命令检查编辑后的内容，如果语法错误，则不会保存更改。如果使用文本编辑器打开文件，语法错误将导致丢失 sudo 访问权限。</p>
 <p>在大多数系统上，该 <code>visudo</code> 命令使用 vim 文本编辑器打开 <code>/etc/sudoers</code> 文件。如果您没有使用 vim 的经验，可以使用其他文本编辑器。例如，如果要将编辑器更改为 <code>nano</code> 请运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo EDITOR=nano visudo
-</code></pre><p>向下滚动到文件的末尾并添加以下行，该行允许用户 “buzheng” 使用 sudo 运行任何命令而无需开始询问密码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo EDITOR=nano visudo
+</code></pre></div><p>向下滚动到文件的末尾并添加以下行，该行允许用户 “buzheng” 使用 sudo 运行任何命令而无需开始询问密码：</p>
 <p>在 /etc/sudoers 文件</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">buzheng  ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:ALL</span>
 </code></pre></div><blockquote>
@@ -165,16 +165,16 @@
 <p>在 / etc/sudoers 文件</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">buzheng ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:/bin/mkdir,/bin/mv</span>
 </code></pre></div><p>完成后，<a href="/linux/how-to-save-file-in-vim-quit-editor/">保存文件并退出编辑器</a>。</p>
-<h2 id="-etcsudoersd">使用 <code>/etc/sudoers.d</code></h2>
+<h2 id="使用-etcsudoersd">使用 <code>/etc/sudoers.d</code></h2>
 <p>您可以将具有授权规则的新文件添加到 <code>/etc/sudoers.d</code> 目录，而不是编辑 sudoers 文件。这种方法将使 sudo 权限的管理更加可维护。</p>
 <p>打开文本编辑器并创建文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/sudoers.d/buzheng
-</code></pre><p>您可以根据需要命名文件，但通常最好使用用户名作为文件名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/sudoers.d/buzheng
+</code></pre></div><p>您可以根据需要命名文件，但通常最好使用用户名作为文件名。</p>
 <p>/etc/sudoers.d/buzheng</p>
 <p>添加与添加到 sudoers 文件中相同的规则：</p>
 <div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">buzheng  ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD:ALL</span>
 </code></pre></div><p>最后，保存文件并关闭编辑器。</p>
-<h2 id="heading">结论</h2>
+<h2 id="结论">结论</h2>
 <p>当您拥有非 root 用户需要执行管理任务的脚本时，运行不带密码的 sudo 非常有用。</p>
       </div><ul class="pa0">
   
@@ -249,9 +249,9 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-sudoers-">将用户添加到 Sudoers 文件</a></li>
-    <li><a href="#-etcsudoersd">使用 /etc/sudoers.d</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#将用户添加到-sudoers-文件">将用户添加到 Sudoers 文件</a></li>
+    <li><a href="#使用-etcsudoersd">使用 /etc/sudoers.d</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -263,7 +263,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

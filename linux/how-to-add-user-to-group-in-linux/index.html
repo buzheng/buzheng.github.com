@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,9 +138,9 @@
           
   
           <p>在本教程中，我们将介绍如何将用户添加到 Linux 系统中的组。我们还将向您展示如何从组中删除用户以及如何创建，删除和列表显示组。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>为了能够将用户添加到组，您需要以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 访问权限或 root 权限的用户身份</a>登录。</p>
-<h2 id="linux-">Linux 组</h2>
+<h2 id="linux-组">Linux 组</h2>
 <p>Linux 组是组织单位，用于在 Linux 中组织和管理用户帐户。组的主要目的是定义一组权限，例如读取，写入或执行等可以在组内用户之间共享的给定资源的权限。</p>
 <p>Linux 操作系统中有两种类型的组：</p>
 <ul>
@@ -152,45 +152,45 @@
 </li>
 </ul>
 <p>每个用户可以属于一个主要组和零个或多个辅助组。</p>
-<h2 id="heading1">如何将现有用户添加到组</h2>
+<h2 id="如何将现有用户添加到组">如何将现有用户添加到组</h2>
 <p>要将现有用户添加到辅助组，请使用 <code>usermod</code> 命令后跟 <code>-G</code> 选项和组名称：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G groupname username
-</code></pre><p>例如，要将用户添加 <code>buzheng</code> 到名为 sudo 的组，您需要运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G sudo buzheng
-</code></pre><p><code>-a</code> 将用户添加到新组时始终采用追加开关。如果省略该 <code>-a</code> 选项，则用户只属于 -G 列出的组。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -a -G groupname username
+</code></pre></div><p>例如，要将用户添加 <code>buzheng</code> 到名为 sudo 的组，您需要运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -a -G sudo buzheng
+</code></pre></div><p><code>-a</code> 将用户添加到新组时始终采用追加开关。如果省略该 <code>-a</code> 选项，则用户只属于 -G 列出的组。</p>
 <p>成功后， <code>usermod</code> 命令不会显示任何输出。仅当用户或组不存在时，它才会警告您。</p>
-<h2 id="heading2">如何在一个命令中将现有用户添加到多个组</h2>
+<h2 id="如何在一个命令中将现有用户添加到多个组">如何在一个命令中将现有用户添加到多个组</h2>
 <p>如果要在一个命令中将现有用户添加到多个辅助组，请使用 <code>usermod</code> 命令后跟的 <code>-G</code> 参数中的多个组由 <code>,</code> （逗号）分隔：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -a -G group1,group2 username
-</code></pre><h2 id="heading3">如何从组中删除用户</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -a -G group1,group2 username
+</code></pre></div><h2 id="如何从组中删除用户">如何从组中删除用户</h2>
 <p>要从组中删除用户，请使用以下 <code>gpasswd</code> 命令。在以下示例中，我们将从名为 <code>groupname</code> 的组中删除名为 <code>username</code> 的用户：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo gpasswd -d username groupname
-</code></pre><h2 id="heading4">如何创建组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo gpasswd -d username groupname
+</code></pre></div><h2 id="如何创建组">如何创建组</h2>
 <p>要创建新组，您可以使用 <code>groupadd</code> 命令后跟组名：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo groupadd groupname
-</code></pre><h2 id="heading5">如何删除组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo groupadd groupname
+</code></pre></div><h2 id="如何删除组">如何删除组</h2>
 <p>要删除现有组，请使用 <code>groupdel</code> 命令后跟组名：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo groupdel groupname
-</code></pre><h2 id="heading6">如何更改用户的主要组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo groupdel groupname
+</code></pre></div><h2 id="如何更改用户的主要组">如何更改用户的主要组</h2>
 <p>要更改用户主组，请使用 <code>usermod</code> 命令后跟 <code>-g</code> 选项：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -g groupname username
-</code></pre><p>在以下示例中，我们将用户 <code>buzheng</code> 的主要组更改为 <code>developers</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo usermod -g developers buzheng
-</code></pre><h2 id="heading7">如何在一个命令中创建新用户和分配组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -g groupname username
+</code></pre></div><p>在以下示例中，我们将用户 <code>buzheng</code> 的主要组更改为 <code>developers</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo usermod -g developers buzheng
+</code></pre></div><h2 id="如何在一个命令中创建新用户和分配组">如何在一个命令中创建新用户和分配组</h2>
 <p>以下 <!-- raw HTML omitted -->useradd 命令<!-- raw HTML omitted -->将创建一个名为 <code>nathan</code> 的新用户, 他的主要组是  <code>users</code>，次要组是 <code>wheel</code> 和 <code>developers</code>  。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo useradd -g users -G wheel,developers nathan
-</code></pre><h2 id="heading8">显示用户组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo useradd -g users -G wheel,developers nathan
+</code></pre></div><h2 id="显示用户组">显示用户组</h2>
 <p>要显示完整的用户信息（包括用户所属的所有组），请使用 <code>id</code> 命令后跟用户名：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">id username
-</code></pre><p>如果省略用户名，该命令将打印有关当前登录用户的信息。我们来检查用户 <code>buzheng</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">id buzheng
-</code></pre><pre><code class="language-output" data-lang="output">uid=1000(buzheng) gid=100(users) groups=100(users),10(wheel),95(storage),98(power),990(libvirt),993(docker),999(kvm)
-</code></pre><p>从上面的输出，我们看到，这个用户的主组是 <code>users</code>，并且它同时属于的 <code>wheel</code> ， <code>storage</code> ， <code>libvirt</code> ， <code>docker</code> 和 <code>kvm</code> 辅助组。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">id username
+</code></pre></div><p>如果省略用户名，该命令将打印有关当前登录用户的信息。我们来检查用户 <code>buzheng</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">id buzheng
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">uid=1000(buzheng) gid=100(users) groups=100(users),10(wheel),95(storage),98(power),990(libvirt),993(docker),999(kvm)
+</code></pre></div><p>从上面的输出，我们看到，这个用户的主组是 <code>users</code>，并且它同时属于的 <code>wheel</code> ， <code>storage</code> ， <code>libvirt</code> ， <code>docker</code> 和 <code>kvm</code> 辅助组。</p>
 <p>使用该 <code>groups</code> 命令显示用户的补充组：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">groups buzheng
-</code></pre><pre><code class="language-output" data-lang="output">wheel storage power users libvirt docker kvm
-</code></pre><p>与 <code>id</code> 命令相同，如果省略用户名， <code>groups</code> 命令将打印当前登录用户的组。</p>
-<h2 id="heading9">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">groups buzheng
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wheel storage power users libvirt docker kvm
+</code></pre></div><p>与 <code>id</code> 命令相同，如果省略用户名， <code>groups</code> 命令将打印当前登录用户的组。</p>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何将用户添加到组中。相同的命令适用于任何 Linux 发行版，包括 Ubuntu ， CentOS ， RHEL ， Debian 和 Linux Mint 。</p>
       </div><ul class="pa0">
   
@@ -269,17 +269,17 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#linux-">Linux 组</a></li>
-    <li><a href="#heading1">如何将现有用户添加到组</a></li>
-    <li><a href="#heading2">如何在一个命令中将现有用户添加到多个组</a></li>
-    <li><a href="#heading3">如何从组中删除用户</a></li>
-    <li><a href="#heading4">如何创建组</a></li>
-    <li><a href="#heading5">如何删除组</a></li>
-    <li><a href="#heading6">如何更改用户的主要组</a></li>
-    <li><a href="#heading7">如何在一个命令中创建新用户和分配组</a></li>
-    <li><a href="#heading8">显示用户组</a></li>
-    <li><a href="#heading9">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#linux-组">Linux 组</a></li>
+    <li><a href="#如何将现有用户添加到组">如何将现有用户添加到组</a></li>
+    <li><a href="#如何在一个命令中将现有用户添加到多个组">如何在一个命令中将现有用户添加到多个组</a></li>
+    <li><a href="#如何从组中删除用户">如何从组中删除用户</a></li>
+    <li><a href="#如何创建组">如何创建组</a></li>
+    <li><a href="#如何删除组">如何删除组</a></li>
+    <li><a href="#如何更改用户的主要组">如何更改用户的主要组</a></li>
+    <li><a href="#如何在一个命令中创建新用户和分配组">如何在一个命令中创建新用户和分配组</a></li>
+    <li><a href="#显示用户组">显示用户组</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -291,7 +291,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

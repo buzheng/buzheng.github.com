@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -143,31 +143,31 @@
           
           
   
-          <h2 id="-select-">不要使用 select *</h2>
+          <h2 id="不要使用-select-">不要使用 select *</h2>
 <p>这个很好理解，select * 至少会增加查询表字段这个过程。使用了 select *，可能会多查询出不用的字段，浪费系统资源；可能会导致无用的字段在网络中传输从而浪费带宽；在程序处理结果的时候，可能会处理无用的字段，浪费系统资源。</p>
 <p>另外，根据原则：明言胜于暗示。将字段写明，无论对于系统资源的节约，还是对于后来阅读程序的朋友，都有好处。</p>
-<h2 id="heading">使用别名</h2>
+<h2 id="使用别名">使用别名</h2>
 <p>查询时使用别名（尤其是在多表关联的时候），数据库能够直接确定字段所在的表，避免额外的查询开销。</p>
-<h2 id="heading1">避免一次删除大量数据</h2>
+<h2 id="避免一次删除大量数据">避免一次删除大量数据</h2>
 <p>delete from table_name where column = &lsquo;xxx&rsquo;        这是我们常用的删除记录命令。如果符合条件的数据量很大的话，则可能占用很多的系统资源。因为delete操作是能够回滚的，操作时会有日志产生，oracle回滚段内的信息可能很大，则很可能造成耗尽系统资源。此时一般分批删除，或这采用其他手段，如临时表等。</p>
 <p>如果是删除全表数据，则建议使用 truncate 代替 delete。因为 truncate 操作时不会产生回滚信息，是不可逆的。truncate 属于 DDL，而不是 DML。</p>
-<h2 id="heading2">使用索引字段的正确类型</h2>
+<h2 id="使用索引字段的正确类型">使用索引字段的正确类型</h2>
 <p>在where字句中对于索引列的赋值，如果使用了不正确的类型，虽然可能正确的查询出结果，但很可能不会走索引查询。</p>
-<h2 id="heading3">内连接、左联接、右连接</h2>
+<h2 id="内连接左联接右连接">内连接、左联接、右连接</h2>
 <p>内连接(inner join)，返回的是2个表中满足条件的记录的组合。</p>
 <p>左外连接(left join/left outer join)，以左表的记录为基础，右表符合条件便组合，不符合条件则以空字段留空。
 右外连接(right join/right outer join)，以右表的记录为基础，右表符合条件便组合，不符合条件则以空字段留空。
 全外连接(full join/full outer join)，相当于左外连接和右外连接的 union。
 交叉连接(cross join)，返回2个记录集的笛卡尔积。</p>
 <p>关于连接更详细的看这篇：<a href="../inner-outer-left-right-cross-join/">内连接、左联接、右连接、交叉连接</a></p>
-<h2 id="union-all--union">union all 来替换 union</h2>
+<h2 id="union-all-来替换-union">union all 来替换 union</h2>
 <p>union的作用是合并2个结果集，并删除其中的重复记录。删除重复记录的过程是低效的。union all 则不同，他不会删除重复记录，只是将2个结果集简单的合并。</p>
 <p>当然，是否删除重复记录，要看具体的业务需求。所以这并不是必须的规则。</p>
-<h2 id="-not">避免在索引字段使用 NOT</h2>
+<h2 id="避免在索引字段使用-not">避免在索引字段使用 NOT</h2>
 <p>NOT会使索引失效，从而全表扫描。应该将 NOT 转成同等的语句，比如 &lt;&gt; 3  转成  &lt;3 OR &gt; 3， NOT &gt; 转成 &lt;= 等。</p>
-<h2 id="gt--gt">&gt;= 替换 &gt;</h2>
+<h2 id="gt-替换-gt">&gt;= 替换 &gt;</h2>
 <p>条件中的 &gt; 3 应该用 &gt;= 4 替换。因为&gt;3 在查询索引的时候，会从值为3的记录开始比较，直到满足 &gt;3 的条件；而 &gt;= 4 则直接从值为4的记录开始比较。 如果值为3的记录很多的话，则差距是很明显的。</p>
-<h2 id="-is-null--is-not-null">索引列上不用使用 is null / is not null</h2>
+<h2 id="索引列上不用使用-is-null--is-not-null">索引列上不用使用 is null / is not null</h2>
 <p>这样会造成全表扫描，因为索引不会索引空值。 比较好的办法是给该字段加一个默认值，将 is null / is not null 转换为等价的其他条件。</p>
       </div><ul class="pa0">
   
@@ -198,7 +198,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

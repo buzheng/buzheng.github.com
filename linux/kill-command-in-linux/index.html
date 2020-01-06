@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,25 +142,25 @@
   
           <p>Linux 是一个很棒的高级操作系统，但并不是完美的。有时，某些应用程序可能会开始出现异常行为，并变得无响应或开始消耗大量系统资源。无法响应的应用程序无法重新启动，因为原始应用程序进程永远不会完全关闭。唯一的解决方案是重新启动系统或终止应用程序进程。</p>
 <p>有几种命令可让您终止最常使用的错误进程。</p>
-<h2 id="kill"><code>kill</code> 命令</h2>
+<h2 id="kill命令"><code>kill</code> 命令</h2>
 <p><code>kill</code> 是大多数 Bourne 衍生的 shell( 例如 Bash 和 Zsh) 中内置的 shell 。 Shell 中的 kill 和独立 <code>/bin/kill</code> 可执行文件之间的命令行为略有不同。</p>
 <p>使用 <a href="/linux/linux-type-command/"><code>type</code></a> 命令显示系统上的 <code>kill</code> 的所有位置，其中包括：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">type -a kill
-</code></pre><pre><code class="language-output" data-lang="output">kill is a shell builtin
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">type -a kill
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill is a shell builtin
 kill is /bin/kill
-</code></pre><p>上面的输出表明，内置的 shell 的 <code>kill</code> 优先于独立的可执行文件。如果要使用二进制文件，请输入文件的完整路径 <code>/bin/kill</code> 。在本文中，我们将使用内置的 Bash 。</p>
+</code></pre></div><p>上面的输出表明，内置的 shell 的 <code>kill</code> 优先于独立的可执行文件。如果要使用二进制文件，请输入文件的完整路径 <code>/bin/kill</code> 。在本文中，我们将使用内置的 Bash 。</p>
 <p>该 <code>kill</code> 命令的语法采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">kill</span> <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>PID<span class="o">]</span>..
 </code></pre></div><p>该 <code>kill</code> 命令将信号发送到指定的进程或进程组，使它们根据该信号进行操作。未指定信号时，默认为 <code>-15</code>(-TERM) 。</p>
 <p>最常用的信号是：</p>
 <ul>
-<li><code>1`(</code>HUP`) - 重新加载进程。</li>
-<li><code>9`(</code>KILL`) - 终止进程。</li>
-<li><code>15`(</code>TERM`) - 正常停止进程。</li>
+<li><code>1</code>(<code>HUP</code>) - 重新加载进程。</li>
+<li><code>9</code>(<code>KILL</code>) - 终止进程。</li>
+<li><code>15</code>(<code>TERM</code>) - 正常停止进程。</li>
 </ul>
 <p>要获取所有可用信号的列表，请使用 <code>-l</code> 选项调用命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">kill -l
-</code></pre><p><img src="kill-a-process-in-linux.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -l
+</code></pre></div><p><img src="kill-a-process-in-linux.jpg" alt=""></p>
 <p>可以用三种不同的方式指定信号：</p>
 <ol>
 <li>使用数字(例如 <code>-1</code> 或 <code>-s 1</code>) 。</li>
@@ -168,10 +168,10 @@ kill is /bin/kill
 <li>没有 “SIG” 前缀(例如 <code>-HUP</code> 或 <code>-s HUP</code>) 。</li>
 </ol>
 <p>以下命令的作用是相同的：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">kill -1 PID_NUMBER
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -1 PID_NUMBER
 kill -SIGHUP PID_NUMBER
 kill -HUP PID_NUMBER
-</code></pre><p>提供给 <code>kill</code> 命令的 PID  可以是以下之一：</p>
+</code></pre></div><p>提供给 <code>kill</code> 命令的 PID  可以是以下之一：</p>
 <ul>
 <li>如果 <code>PID</code> 大于零，则将信号发送到 ID 等于 <code>PID</code> 的进程。</li>
 <li>如果 <code>PID</code> 等于零，则将信号发送到当前进程组中的所有进程。换句话说，该信号将发送到属于调用 <code>kill</code> 命令的外壳程序的 GID 的所有进程。使用 <code>ps -efj</code> 命令查看进程组 ID(GID) 。</li>
@@ -179,26 +179,26 @@ kill -HUP PID_NUMBER
 <li>如果 <code>PID</code> 小于 <code>-1</code> ，则将信号发送到 GID 等于 <code>PID</code> 的绝对值的进程组中的所有进程。</li>
 </ul>
 <p>普通用户可以将信号发送到自己的进程，但不能发送信号给其他用户，而根用户可以将信号发送到其他用户的进程。</p>
-<h2 id="-kill-">使用 <code>kill</code> 命令终止进程</h2>
+<h2 id="使用-kill-命令终止进程">使用 <code>kill</code> 命令终止进程</h2>
 <p>要使用 <code>kill</code> 命令终止<a href="/linux/how-to-kill-a-process-in-linux/">进程</a>，首先需要找到进程 ID 号 (PID) 。为此，您可以使用不同的命令，例如 <code>top</code> ， <a href="/linux/ps-command-in-linux/"><code>ps</code></a> ， <code>pidof</code> 和 <code>pgrep</code> 。</p>
 <p>假设 Firefox 浏览器已无响应，并且您需要终止 Firefox 进程。要查找浏览器的 PID ，请使用以下 <code>pidof</code> 命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">pidof firefox
-</code></pre><p>该命令将打印所有 Firefox 进程的 ID ：</p>
-<pre><code class="language-output" data-lang="output">6263 6199 6142 6076
-</code></pre><p>一旦知道了进程号，就可以通过发送 <code>TERM</code> 信号来终止所有进程号：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">kill -9 6263 6199 6142 6076
-</code></pre><p>您可以将上述命令组合为一个命令，而不是先搜索 PID 然后终止进程。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">kill -9 $(pidof firefox)å
-</code></pre><h2 id="-kill-1">使用 <code>kill</code> 命令重新加载进程</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pidof firefox
+</code></pre></div><p>该命令将打印所有 Firefox 进程的 ID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">6263 6199 6142 6076
+</code></pre></div><p>一旦知道了进程号，就可以通过发送 <code>TERM</code> 信号来终止所有进程号：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -9 6263 6199 6142 6076
+</code></pre></div><p>您可以将上述命令组合为一个命令，而不是先搜索 PID 然后终止进程。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -9 $(pidof firefox)å
+</code></pre></div><h2 id="使用-kill-命令重新加载进程">使用 <code>kill</code> 命令重新加载进程</h2>
 <p>另一个常见用例 <code>kill</code> 是发送 <code>HUP</code> 信号，该信号告诉进程重新加载其设置。</p>
 <p>例如，要<a href="/linux/nginx-commands-you-should-know/">重新加载 Nginx</a> ，您需要向主进程发送一个信号。 Nginx 主进程的进程 ID 可以在 <code>nginx.pid</code> 文件中找到，该文件通常位于 <code>/var/run</code> 目录中。</p>
 <p>使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> 命令查找主 PID ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cat /var/run/nginx.pid
-</code></pre><pre><code class="language-output" data-lang="output">30251
-</code></pre><p>一旦找到主 PID ，请输入以下内容重新加载 Nginx 设置：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo kill -1 30251
-</code></pre><p>上面的命令必须以 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户身份运行。</p>
-<h2 id="heading">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cat /var/run/nginx.pid
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">30251
+</code></pre></div><p>一旦找到主 PID ，请输入以下内容重新加载 Nginx 设置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo kill -1 30251
+</code></pre></div><p>上面的命令必须以 root 用户或具有 <a href="/linux/sudo-command-in-linux/">sudo</a> 特权的用户身份运行。</p>
+<h2 id="结论">结论</h2>
 <p><code>kill</code> 命令用于向进程发送信号。最常用的信号是 <code>SIGKILL</code> 或 <code>-9</code> ，它直接结束给定的进程。</p>
 
       </div><ul class="pa0">
@@ -274,10 +274,10 @@ kill -HUP PID_NUMBER
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#kill">kill 命令</a></li>
-    <li><a href="#-kill-">使用 kill 命令终止进程</a></li>
-    <li><a href="#-kill-1">使用 kill 命令重新加载进程</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#kill命令">kill 命令</a></li>
+    <li><a href="#使用-kill-命令终止进程">使用 kill 命令终止进程</a></li>
+    <li><a href="#使用-kill-命令重新加载进程">使用 kill 命令重新加载进程</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -289,7 +289,7 @@ kill -HUP PID_NUMBER
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

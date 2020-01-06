@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -146,43 +146,43 @@
           <p>FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。</p>
 <p>在本教程中，我们将通过实际示例向您展示如何使用Linux ftp命令。</p>
 <p>在大多数情况下，您将使用桌面FTP客户端连接到远程服务器并下载或上载文件。但是，<code>ftp</code>当您在没有GUI的服务器上工作并且希望通过FTP将文件传输到远程服务器或从远程服务器传输文件时，该命令很有用。</p>
-<h2 id="heading">在你开始之前</h2>
+<h2 id="在你开始之前">在你开始之前</h2>
 <p>通过ftp传输数据时，连接未加密。要进行安全的数据传输，请使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/">SCP</a>。</p>
 <p>为了能够传输文件，您必须至少具有对源文件的读取权限和对目标系统的写入权限。</p>
 <p>传输大文件时，建议在<a href="/linux/how-to-use-linux-screen/">屏幕</a>或<a href="/linux/getting-started-with-tmux/">tmux</a>会话中运行ftp命令。</p>
 <p>运行该<code>ftp</code>命令的目录是本地工作目录。</p>
-<h2 id="ftp">建立FTP连接</h2>
+<h2 id="建立ftp连接">建立FTP连接</h2>
 <ol>
 <li>
 <p>要打开与远程系统的ftp连接，请使用<code>ftp</code>命令后跟远程服务器IP地址或域名：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ftp 192.168.42.77
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ftp 192.168.42.77
+</code></pre></div></li>
 <li>
 <p>如果建立连接，将显示确认消息，系统将提示您输入FTP用户名，在此示例中，FTP用户名为<code>linuxize</code>：</p>
-<pre><code class="language-output" data-lang="output">220---------- Welcome to Pure-FTPd [privsep] [TLS] ----------
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">220---------- Welcome to Pure-FTPd [privsep] [TLS] ----------
 220-You are user number 1 of 50 allowed.
 220-Local time is now 21:35\. Server port: 21.
 220-This is a private system - No anonymous login
 220-IPv6 connections are also welcome on this server.
 220 You will be disconnected after 15 minutes of inactivity.
 Name (192.168.42.77:localuser): linuxize
-</code></pre><pre><code>You may see a different confirmation message depending on the FTP service running on the remote server.
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">You may see a different confirmation message depending on the FTP service running on the remote server.
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>输入用户名后，系统将提示您输入密码：</p>
-<pre><code class="language-output" data-lang="output">Password:
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Password:
+</code></pre></div></li>
 <li>
 <p>如果密码正确，远程服务器将显示确认消息和<code>ftp&gt;</code>提示。</p>
-<pre><code class="language-output" data-lang="output">230 OK. Current restricted directory is /
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">230 OK. Current restricted directory is /
 Remote system type is UNIX.
 Using binary mode to transfer files.
 ftp&gt;
-</code></pre></li>
+</code></pre></div></li>
 </ol>
 <p>如果您访问的FTP服务器接受匿名ftp帐户，并且您想以匿名用户<code>anonymous</code>身份登录，请使用用户名和电子邮件地址作为密码。</p>
-<h2 id="ftp1">常用FTP命令</h2>
+<h2 id="常用ftp命令">常用FTP命令</h2>
 <p>许多FTP命令与您在Linux shell提示符中键入的命令类似或相同。</p>
 <p>以下是一些最常见的FTP命令</p>
 <ul>
@@ -199,25 +199,25 @@ ftp&gt;
 <li><code>put</code> - 将一个文件从本地复制到远程计算机。</li>
 <li><code>mput</code> - 将一个文件从本地复制到远程计算机。</li>
 </ul>
-<h2 id="ftp2">使用FTP命令下载文件</h2>
+<h2 id="使用ftp命令下载文件">使用FTP命令下载文件</h2>
 <p>登录后，您当前的工作目录是远程用户主目录。</p>
 <p>使用该<code>ftp</code>命令下载文件时，文件将下载到您键入<code>ftp</code>命令的目录中。</p>
 <p>如果要将文件下载到另一个本地目录，请使用该<code>lcd</code>命令切换到该目录。</p>
 <p>假设我们要将文件下载到<code>~/ftp_downloads</code>目录：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">lcd ~/ftp_downloads
-</code></pre><p>要从远程服务器下载单个文件，请使用该<code>get</code>命令。例如，要下载名为的文件，请<code>backup.zip</code>使用以下命令：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">get backup.zip
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">200 PORT command successful
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lcd ~/ftp_downloads
+</code></pre></div><p>要从远程服务器下载单个文件，请使用该<code>get</code>命令。例如，要下载名为的文件，请<code>backup.zip</code>使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">get backup.zip
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">200 PORT command successful
 150-Connecting to port 60609
 150 6516.9 kbytes to download
 226-File successfully transferred
 226 2.356 seconds (measured here), 2.70 Mbytes per second
 6673256 bytes received in 2.55 seconds (2.49 Mbytes/s)
-</code></pre><p>要一次下载多个文件，请使用该<code>mget</code>命令。您可以提供单个文件名列表或使用通配符。</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">mget backup1.zip backup2.zip
-</code></pre><p>下载多个文件时，系统将提示您确认每个文件。</p>
-<pre><code class="language-output" data-lang="output">mget backup1.zip? y
+</code></pre></div><p>要一次下载多个文件，请使用该<code>mget</code>命令。您可以提供单个文件名列表或使用通配符。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mget backup1.zip backup2.zip
+</code></pre></div><p>下载多个文件时，系统将提示您确认每个文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mget backup1.zip? y
 200 PORT command successful
 150 Connecting to port 52231
 226-File successfully transferred
@@ -230,23 +230,23 @@ mget backup2.zip? y
 226-File successfully transferred
 226 0.000 seconds (measured here), 16.68 Mbytes per second
 7415 bytes received in 0.011 seconds (661 kbytes/s)
-</code></pre><p>完成从远程FTP服务器下载文件后，用<code>bye</code>或关闭连接<code>quit</code>。</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">quit
-</code></pre><pre><code class="language-output" data-lang="output">221-Goodbye. You uploaded 0 and downloaded 6544 kbytes.
+</code></pre></div><p>完成从远程FTP服务器下载文件后，用<code>bye</code>或关闭连接<code>quit</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">quit
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">221-Goodbye. You uploaded 0 and downloaded 6544 kbytes.
 221 Logout.
-</code></pre><h2 id="ftp3">使用FTP命令上载文件</h2>
+</code></pre></div><h2 id="使用ftp命令上载文件">使用FTP命令上载文件</h2>
 <p>要将文件从本地目录上载到远程FTP服务器，请使用以下<code>put</code>命令：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">put image.jpg
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">200 PORT command successful
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">put image.jpg
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">200 PORT command successful
 150 Connecting to port 34583
 226-File successfully transferred
 226 0.849 seconds (measured here), 111.48 Kbytes per second
 96936 bytes sent in 0.421 seconds (225 kbytes/s)
-</code></pre><p>如果要上载不在当前工作目录中的文件，请使用该文件的绝对路径。</p>
+</code></pre></div><p>如果要上载不在当前工作目录中的文件，请使用该文件的绝对路径。</p>
 <p>要将多个文件从本地目录上载到远程FTP服务器，请使用以下<code>mput</code>命令：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">mput image1.jpg image2.jpg
-</code></pre><pre><code class="language-output" data-lang="output">mput image1.jpg? y
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mput image1.jpg image2.jpg
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mput image1.jpg? y
 200 PORT command successful
 150 Connecting to port 41075
 226-File successfully transferred
@@ -258,49 +258,49 @@ mput image2.jpg? y
 226-File successfully transferred
 226 1.727 seconds (measured here), 111.75 Kbytes per second
 197565 bytes sent in 1.39 seconds (138 kbytes/s)
-</code></pre><p>上传多个文件时，系统将提示您确认要上传的每个文件。</p>
+</code></pre></div><p>上传多个文件时，系统将提示您确认要上传的每个文件。</p>
 <p>完成上传文件到远程FTP服务器后，用<code>bye</code>或关闭连接<code>quit</code>。</p>
-<h2 id="heading1">结论</h2>
+<h2 id="结论">结论</h2>
 <p>在本教程中，您学习了如何使用ftp命令下载文件并将文件上载到远程FTP服务器。FTP（文件传输协议）是用于与远程网络之间传输文件的标准网络协议。</p>
 <p>在本教程中，我们将通过实际示例向您展示如何使用Linux ftp命令。</p>
 <p>在大多数情况下，您将使用桌面FTP客户端连接到远程服务器并下载或上载文件。但是，<code>ftp</code>当您在没有GUI的服务器上工作并且希望通过FTP将文件传输到远程服务器或从远程服务器传输文件时，该命令很有用。</p>
-<h2 id="heading2">在你开始之前</h2>
+<h2 id="在你开始之前-1">在你开始之前</h2>
 <p>通过ftp传输数据时，连接未加密。要进行安全的数据传输，请使用<a href="/linux/how-to-use-scp-command-to-securely-transfer-files/">SCP</a>。</p>
 <p>为了能够传输文件，您必须至少具有对源文件的读取权限和对目标系统的写入权限。</p>
 <p>传输大文件时，建议在<a href="/linux/how-to-use-linux-screen/">屏幕</a>或<a href="/linux/getting-started-with-tmux/">tmux</a>会话中运行ftp命令。</p>
 <p>运行该<code>ftp</code>命令的目录是本地工作目录。</p>
-<h2 id="ftp4">建立FTP连接</h2>
+<h2 id="建立ftp连接-1">建立FTP连接</h2>
 <ol>
 <li>
 <p>要打开与远程系统的ftp连接，请使用<code>ftp</code>命令后跟远程服务器IP地址或域名：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">ftp 192.168.42.77
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">ftp 192.168.42.77
+</code></pre></div></li>
 <li>
 <p>如果建立连接，将显示确认消息，系统将提示您输入FTP用户名，在此示例中，FTP用户名为<code>linuxize</code>：</p>
-<pre><code class="language-output" data-lang="output">220---------- Welcome to Pure-FTPd [privsep] [TLS] ----------
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">220---------- Welcome to Pure-FTPd [privsep] [TLS] ----------
 220-You are user number 1 of 50 allowed.
 220-Local time is now 21:35\. Server port: 21.
 220-This is a private system - No anonymous login
 220-IPv6 connections are also welcome on this server.
 220 You will be disconnected after 15 minutes of inactivity.
 Name (192.168.42.77:localuser): linuxize
-</code></pre><pre><code>You may see a different confirmation message depending on the FTP service running on the remote server.
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">You may see a different confirmation message depending on the FTP service running on the remote server.
 
-</code></pre></li>
+</code></pre></div></li>
 <li>
 <p>输入用户名后，系统将提示您输入密码：</p>
-<pre><code class="language-output" data-lang="output">Password:
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Password:
+</code></pre></div></li>
 <li>
 <p>如果密码正确，远程服务器将显示确认消息和<code>ftp&gt;</code>提示。</p>
-<pre><code class="language-output" data-lang="output">230 OK. Current restricted directory is /
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">230 OK. Current restricted directory is /
 Remote system type is UNIX.
 Using binary mode to transfer files.
 ftp&gt;
-</code></pre></li>
+</code></pre></div></li>
 </ol>
 <p>如果您访问的FTP服务器接受匿名ftp帐户，并且您想以匿名用户<code>anonymous</code>身份登录，请使用用户名和电子邮件地址作为密码。</p>
-<h2 id="ftp5">常用FTP命令</h2>
+<h2 id="常用ftp命令-1">常用FTP命令</h2>
 <p>许多FTP命令与您在Linux shell提示符中键入的命令类似或相同。</p>
 <p>以下是一些最常见的FTP命令</p>
 <ul>
@@ -317,25 +317,25 @@ ftp&gt;
 <li><code>put</code> - 将一个文件从本地复制到远程计算机。</li>
 <li><code>mput</code> - 将一个文件从本地复制到远程计算机。</li>
 </ul>
-<h2 id="ftp6">使用FTP命令下载文件</h2>
+<h2 id="使用ftp命令下载文件-1">使用FTP命令下载文件</h2>
 <p>登录后，您当前的工作目录是远程用户主目录。</p>
 <p>使用该<code>ftp</code>命令下载文件时，文件将下载到您键入<code>ftp</code>命令的目录中。</p>
 <p>如果要将文件下载到另一个本地目录，请使用该<code>lcd</code>命令切换到该目录。</p>
 <p>假设我们要将文件下载到<code>~/ftp_downloads</code>目录：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">lcd ~/ftp_downloads
-</code></pre><p>要从远程服务器下载单个文件，请使用该<code>get</code>命令。例如，要下载名为的文件，请<code>backup.zip</code>使用以下命令：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">get backup.zip
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">200 PORT command successful
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lcd ~/ftp_downloads
+</code></pre></div><p>要从远程服务器下载单个文件，请使用该<code>get</code>命令。例如，要下载名为的文件，请<code>backup.zip</code>使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">get backup.zip
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">200 PORT command successful
 150-Connecting to port 60609
 150 6516.9 kbytes to download
 226-File successfully transferred
 226 2.356 seconds (measured here), 2.70 Mbytes per second
 6673256 bytes received in 2.55 seconds (2.49 Mbytes/s)
-</code></pre><p>要一次下载多个文件，请使用该<code>mget</code>命令。您可以提供单个文件名列表或使用通配符。</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">mget backup1.zip backup2.zip
-</code></pre><p>下载多个文件时，系统将提示您确认每个文件。</p>
-<pre><code class="language-output" data-lang="output">mget backup1.zip? y
+</code></pre></div><p>要一次下载多个文件，请使用该<code>mget</code>命令。您可以提供单个文件名列表或使用通配符。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mget backup1.zip backup2.zip
+</code></pre></div><p>下载多个文件时，系统将提示您确认每个文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mget backup1.zip? y
 200 PORT command successful
 150 Connecting to port 52231
 226-File successfully transferred
@@ -348,23 +348,23 @@ mget backup2.zip? y
 226-File successfully transferred
 226 0.000 seconds (measured here), 16.68 Mbytes per second
 7415 bytes received in 0.011 seconds (661 kbytes/s)
-</code></pre><p>完成从远程FTP服务器下载文件后，用<code>bye</code>或关闭连接<code>quit</code>。</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">quit
-</code></pre><pre><code class="language-output" data-lang="output">221-Goodbye. You uploaded 0 and downloaded 6544 kbytes.
+</code></pre></div><p>完成从远程FTP服务器下载文件后，用<code>bye</code>或关闭连接<code>quit</code>。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">quit
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">221-Goodbye. You uploaded 0 and downloaded 6544 kbytes.
 221 Logout.
-</code></pre><h2 id="ftp7">使用FTP命令上载文件</h2>
+</code></pre></div><h2 id="使用ftp命令上载文件-1">使用FTP命令上载文件</h2>
 <p>要将文件从本地目录上载到远程FTP服务器，请使用以下<code>put</code>命令：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">put image.jpg
-</code></pre><p>输出应该如下所示：</p>
-<pre><code class="language-output" data-lang="output">200 PORT command successful
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">put image.jpg
+</code></pre></div><p>输出应该如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">200 PORT command successful
 150 Connecting to port 34583
 226-File successfully transferred
 226 0.849 seconds (measured here), 111.48 Kbytes per second
 96936 bytes sent in 0.421 seconds (225 kbytes/s)
-</code></pre><p>如果要上载不在当前工作目录中的文件，请使用该文件的绝对路径。</p>
+</code></pre></div><p>如果要上载不在当前工作目录中的文件，请使用该文件的绝对路径。</p>
 <p>要将多个文件从本地目录上载到远程FTP服务器，请使用以下<code>mput</code>命令：</p>
-<pre><code class="language-console-ftp" data-lang="console-ftp">mput image1.jpg image2.jpg
-</code></pre><pre><code class="language-output" data-lang="output">mput image1.jpg? y
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mput image1.jpg image2.jpg
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mput image1.jpg? y
 200 PORT command successful
 150 Connecting to port 41075
 226-File successfully transferred
@@ -376,9 +376,9 @@ mput image2.jpg? y
 226-File successfully transferred
 226 1.727 seconds (measured here), 111.75 Kbytes per second
 197565 bytes sent in 1.39 seconds (138 kbytes/s)
-</code></pre><p>上传多个文件时，系统将提示您确认要上传的每个文件。</p>
+</code></pre></div><p>上传多个文件时，系统将提示您确认要上传的每个文件。</p>
 <p>完成上传文件到远程FTP服务器后，用<code>bye</code>或关闭连接<code>quit</code>。</p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论-1">结论</h2>
 <p>在本教程中，您学习了如何使用ftp命令下载文件并将文件上载到远程FTP服务器。</p>
       </div><ul class="pa0">
   
@@ -453,18 +453,18 @@ mput image2.jpg? y
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">在你开始之前</a></li>
-    <li><a href="#ftp">建立FTP连接</a></li>
-    <li><a href="#ftp1">常用FTP命令</a></li>
-    <li><a href="#ftp2">使用FTP命令下载文件</a></li>
-    <li><a href="#ftp3">使用FTP命令上载文件</a></li>
-    <li><a href="#heading1">结论</a></li>
-    <li><a href="#heading2">在你开始之前</a></li>
-    <li><a href="#ftp4">建立FTP连接</a></li>
-    <li><a href="#ftp5">常用FTP命令</a></li>
-    <li><a href="#ftp6">使用FTP命令下载文件</a></li>
-    <li><a href="#ftp7">使用FTP命令上载文件</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#在你开始之前">在你开始之前</a></li>
+    <li><a href="#建立ftp连接">建立FTP连接</a></li>
+    <li><a href="#常用ftp命令">常用FTP命令</a></li>
+    <li><a href="#使用ftp命令下载文件">使用FTP命令下载文件</a></li>
+    <li><a href="#使用ftp命令上载文件">使用FTP命令上载文件</a></li>
+    <li><a href="#结论">结论</a></li>
+    <li><a href="#在你开始之前-1">在你开始之前</a></li>
+    <li><a href="#建立ftp连接-1">建立FTP连接</a></li>
+    <li><a href="#常用ftp命令-1">常用FTP命令</a></li>
+    <li><a href="#使用ftp命令下载文件-1">使用FTP命令下载文件</a></li>
+    <li><a href="#使用ftp命令上载文件-1">使用FTP命令上载文件</a></li>
+    <li><a href="#结论-1">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -476,7 +476,7 @@ mput image2.jpg? y
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,7 +142,7 @@
   
           <p>Rocket.Chat 是一个完整的团队沟通平台，是一个自我托管的 Slack 替代品。它由 Meteor 构建，提供包括服务台聊天，视频会议，文件共享，语音消息， API 等各种功能。</p>
 <p>在本教程中，我们将向您展示如何在 CentOS 7 服务器上安装和部署 Rocket.Chat，并使用 Nginx 作为基于 SSL 的反向代理。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保您已满足以下先决条件：</p>
 <ul>
 <li>CentOS 7 服务器，根据 Rocket.Chat 系统的官方要求，你需要至少 1G 的 RAM 。</li>
@@ -151,7 +151,7 @@
 <li>您已安装 Nginx ，如果没有，您可以按照<a href="/linux/how-to-install-nginx-on-centos-7/">本教程</a>安装它。</li>
 <li>SSL 证书。您可以<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">从 Let's Encrypt 生成一个免费证书</a>，或从另一个提供商处购买一个。</li>
 </ul>
-<h2 id="heading1">安装依赖项</h2>
+<h2 id="安装依赖项">安装依赖项</h2>
 <p>要构建所需的 <code>npm</code> 模块，需要先安装以下所依赖的软件包：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install epel-release curl GraphicsMagick gcc-c++
 </code></pre></div><p>接下来，运行以下命令来安装 <code>Node.js</code> 和 <code>npm</code>：</p>
@@ -177,13 +177,13 @@ sudo n 8.11.3
 </code></pre></div><p>安装完成后，启用随机自启动并启动 MongoDB 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl start mongod
 sudo systemctl <span class="nb">enable</span> mongod
-</code></pre></div><h2 id="heading2">创建新的系统用户</h2>
+</code></pre></div><h2 id="创建新的系统用户">创建新的系统用户</h2>
 <p>创建一个新用户和组来运行我们的 Rocket.Chat 实例。为简单起见，我们将用户命名为 <code>rocket</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo useradd -m -U -r -d /opt/rocket rocket
 </code></pre></div><p>将 <code>nginx</code>  用户添加到新用户组并更改 <code>/opt/rocket</code> 目录权限，以便 Nginx 可以访问它：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo usermod -a -G rocket nginx
 sudo chmod <span class="m">750</span> /opt/rocket
-</code></pre></div><h2 id="-rocketchat">安装 Rocket.Chat</h2>
+</code></pre></div><h2 id="安装-rocketchat">安装 Rocket.Chat</h2>
 <p>切换到用户 <code>rocket</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo su - rocket
 </code></pre></div><p>通过 curl 命令下载最新稳定版的 Rocket.Chat ：</p>
@@ -218,11 +218,11 @@ node main.js
 ➔ <span class="p">|</span>                                             <span class="p">|</span>
 ➔ +---------------------------------------------+
 </code></pre></div><p>看到这里， Rocket.Chat 已经安装在您的 CentOS 7 机器上，使用 <code>CTRL+C</code> 停止 Rocket.Chat 服务器并继续执行后续步骤。</p>
-<h2 id="-systemd-unit">创建一个 Systemd Unit</h2>
+<h2 id="创建一个-systemd-unit">创建一个 Systemd Unit</h2>
 <p>想要将 Rocket.Chat 作为服务运行，请在 <code>/etc/systemd/system/</code> 目录中创建一个单元文件 <code>rocketchat.service</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/systemd/system/rocketchat.service
 </code></pre></div><p>将以下内容粘贴到文件 <code>/etc/systemd/system/rocketchat.service</code>：</p>
-<pre><code class="language-conf" data-lang="conf">[Unit]
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[Unit]
 Description=Rocket.Chat server
 After=network.target nss-lookup.target mongod.target
 
@@ -236,7 +236,7 @@ ExecStart=/usr/local/bin/node /opt/rocket/Rocket.Chat/main.js
 
 [Install]
 WantedBy=multi-user.target
-</code></pre><p>保存并关闭文件。</p>
+</code></pre></div><p>保存并关闭文件。</p>
 <p>通知 systemd 创建了一个新的单元文件，并通过执行以下命令启动 Rocket.Chat 服务：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl daemon-reload
 sudo systemctl start rocketchat
@@ -251,7 +251,7 @@ sudo systemctl start rocketchat
            └─32356 /usr/local/bin/node /opt/rocket/Rocket.Chat/main.js
 </code></pre></div><p>如果没有错误，您可以启用 Rocket.Chat 服务在系统启动时自动启动：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl <span class="nb">enable</span> rocketchat
-</code></pre></div><h2 id="-nginx-">使用 Nginx 作为反向代理</h2>
+</code></pre></div><h2 id="使用-nginx-作为反向代理">使用 Nginx 作为反向代理</h2>
 <p>如果您按照看过我的教程: <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a> 以及<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">如何在 CentOS 7 使用 Let's Encrypt 来保护 Nginx</a> ，您应该已经安装了 Nginx 并配置了 SSL 证书。</p>
 <p>现在我们需要为刚安装的 Rocket.Chat 创建一个新的服务器块：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /etc/nginx/conf.d/example.com.conf
@@ -310,7 +310,7 @@ server <span class="o">{</span>
 <span class="o">}</span>
 </code></pre></div><p>重新加载 Nginx 服务使更改生效：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo systemctl reload nginx
-</code></pre></div><h2 id="-rocketchat1">配置 Rocket.Chat</h2>
+</code></pre></div><h2 id="配置-rocketchat">配置 Rocket.Chat</h2>
 <p>打开浏览器并输入：<code>http://chat.example.com</code> 。</p>
 <p>如果安装成功，您将看到 Rocket.Chat 安装向导，它将指导您设置第一个管理员用户，配置您的组织并注册您的服务器以接收免费推送通知等。</p>
 <p>初始设置向导的第一部分将要求您设置管理员用户：</p>
@@ -324,7 +324,7 @@ server <span class="o">{</span>
 <p>根据你的情况进行选择，完成后单击 <code>Continue</code> 按钮，您将被重定向到以下页面，表明您的工作区已准备就绪：</p>
 <p><img src="images/linux/how-to-deploy-rocket-chat-on-centos-7/rocket-chat-register-server.jpg" alt=""></p>
 <p>单击 <code>Go to your workspace</code> 按钮，您将被重定向到以 admin 用户身份登录的 Rocket.Chat 仪表板。</p>
-<h2 id="heading3">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已在 CentOS 7 服务器上成功安装了 Rocket.Chat 。您现在可以开始使用 Rocket.Chat 与您的团队进行协作，共享文件和实时聊天。</p>
 <!-- raw HTML omitted -->
       </div><ul class="pa0">
@@ -408,14 +408,14 @@ server <span class="o">{</span>
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#heading1">安装依赖项</a></li>
-    <li><a href="#heading2">创建新的系统用户</a></li>
-    <li><a href="#-rocketchat">安装 Rocket.Chat</a></li>
-    <li><a href="#-systemd-unit">创建一个 Systemd Unit</a></li>
-    <li><a href="#-nginx-">使用 Nginx 作为反向代理</a></li>
-    <li><a href="#-rocketchat1">配置 Rocket.Chat</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装依赖项">安装依赖项</a></li>
+    <li><a href="#创建新的系统用户">创建新的系统用户</a></li>
+    <li><a href="#安装-rocketchat">安装 Rocket.Chat</a></li>
+    <li><a href="#创建一个-systemd-unit">创建一个 Systemd Unit</a></li>
+    <li><a href="#使用-nginx-作为反向代理">使用 Nginx 作为反向代理</a></li>
+    <li><a href="#配置-rocketchat">配置 Rocket.Chat</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -427,7 +427,7 @@ server <span class="o">{</span>
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

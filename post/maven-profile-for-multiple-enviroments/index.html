@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -167,7 +167,7 @@
 	<span class="nt">&lt;/profile&gt;</span>
 <span class="nt">&lt;/profiles&gt;</span>
 </code></pre></div><p>以下的配置，都已此profile配置为基础。</p>
-<h2 id="profile--">profile + 资源过滤</h2>
+<h2 id="profile--资源过滤">profile + 资源过滤</h2>
 <p>什么是资源过滤？资源过滤，就是在运行maven的过程中，对指定目录下的资源文件（xml，properties文件等）进行变量替换，用指定的变量值替换掉文件中的变量。</p>
 <p>假设各个环境的数据库配置我们集中在jdbc.properties文件中配置， 以下是具体内容</p>
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text"># datasource properties
@@ -221,11 +221,11 @@ jdbc.db.url=jdbc:oracle:thin:@223.11.23.123:1521:onlinedb
 jdbc.db.username=onlinedb
 jdbc.db.password=onlinedb
 </code></pre></div><p>这种方式可以通过打包时指定profile来形成不同环境的程序包，但是也存在一个问题，由于必须需要运行 maven 命令来能生成包，而开发文件中是变量串，在开发的时候特别不方便，每次运行命令再部署调试给我们带来很大的麻烦。如何不通过变量替换，而只在打包的时候，动态的替换掉指定的变量？这样开发起来很方便了，打包也方便。 插件portable-config-maven-plugin提供了这种思路的实现，请继续。</p>
-<h2 id="-portableconfigmavenplugin">插件 portable-config-maven-plugin</h2>
+<h2 id="插件-portable-config-maven-plugin">插件 portable-config-maven-plugin</h2>
 <p>portable-config-maven-plugin 是由 Juven Xu 开发的一款配置替换插件，项目主页：https://github.com/juven/portable-config-maven-plugin，支持properties, xml 以及类 properties文件，具体使用方法从上面项目主页中有很明确的描述，这里不再赘述。</p>
 <p>如果你的文件是xml，要求你使用 xpath语法来进行定位元素节点，当然这也没有什么难度。但是由于对xpath的不了解，在替换 log4j.xml 中的内容时，总是不能成功。这让我有点郁闷，在尝试几次没有解决后，转向了下面的方法。</p>
 <p>另外还有一点，就是如果配置文件中有汉字的情况，替换后的配置文件中可能有乱码。</p>
-<h2 id="profile--mavenwarplugin">profile + maven-war-plugin</h2>
+<h2 id="profile--maven-war-plugin">profile + maven-war-plugin</h2>
 <p>原开发环境配置文件结构如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">src/main/resource
 	config
@@ -319,7 +319,7 @@ jdbc.db.password=onlinedb
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

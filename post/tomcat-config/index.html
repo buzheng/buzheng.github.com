@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -137,7 +137,7 @@
           
           
   
-          <h2 id="tomcat6-">Tomcat6 配置线程池</h2>
+          <h2 id="tomcat6-配置线程池">Tomcat6 配置线程池</h2>
 <p>打开 tomcat 的配置文件 server.xml, 去掉以下代码的注释：</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;executor</span>
         <span class="na">maxthreads=</span><span class="s">&#34;150&#34;</span>
@@ -154,13 +154,13 @@
 namePrefix 这个属性用来指定 线程名称的前缀，线程名称类似于：catalina-exec-1
 maxThreads 指定最大的线程数
 minSpareThreads 指定最少备用线程数</p>
-<p>更多参数可以参看tomcat官方文档：<a href="http://tomcat.apache.org/tomcat-6.0-doc/config/executor.html">&ldquo;<a href="http://tomcat.apache.org/tomcat-6.0-doc/config/executor.html">http://tomcat.apache.org/tomcat-6.0-doc/config/executor.html</a></a></p>
-<h2 id="eclipse-debug-tomcat">在Eclipse中远程 DEBUG Tomcat</h2>
+<p>更多参数可以参看tomcat官方文档：<a href="http://tomcat.apache.org/tomcat-6.0-doc/config/executor.html">&ldquo;http://tomcat.apache.org/tomcat-6.0-doc/config/executor.html</a></p>
+<h2 id="在eclipse中远程-debug-tomcat">在Eclipse中远程 DEBUG Tomcat</h2>
 <p>catalina.sh加入以下配置后重启tomcat：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=2010&#34;</span>
 </code></pre></div><p>其中address只指定远程连接的端口号，transport=dt_socket是指定远程debug（dt_shmem时为本机debug）。</p>
 <p>进入Eclipse，Run-&gt;Debug Configuration-&gt;Remote Java Application,双击或右键-&gt;New，Connect Type 选择 Socket Attach，输入Host和Port后，点击Debug 按钮就可以了</p>
-<h2 id="tomcat--jmx-">Tomcat 配置 JMX 实现远程监控</h2>
+<h2 id="tomcat-配置-jmx-实现远程监控">Tomcat 配置 JMX 实现远程监控</h2>
 <p>修改 setenv.sh (没有则添加), 添加下面一下配置行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Djava.rmi.server.hostname=192.168.80.168
 </span><span class="s2">    -Dcom.sun.management.jmxremote.port=8999
@@ -177,12 +177,12 @@ minSpareThreads 指定最少备用线程数</p>
 </ul>
 <p>jmxremote.authenticate=false时，不用配置最后两项。后面两项是密码文件和访问权限文件，默认位于bin目录下，2个文件的权限为400。</p>
 <p>the-password-file-path 格式为：</p>
-<pre><code>admin admin_password
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">admin admin_password
 master master_password
-</code></pre><p>the-access-file-path 格式为：</p>
-<pre><code>admin readwrite
+</code></pre></div><p>the-access-file-path 格式为：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">admin readwrite
 master readonly
-</code></pre><p>重启 tomcat 后，就可以使用 VisualVM进行远程监控了。</p>
+</code></pre></div><p>重启 tomcat 后，就可以使用 VisualVM进行远程监控了。</p>
 <p>由于 tomcat jmx 的远程通信接口是随机的，不便于通过防火墙，可采用下面的配置方式：</p>
 <p>1，setenv.sh 去掉行 -Dcom.sun.management.jmxremote.port=8999</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CATALINA_OPTS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CATALINA_OPTS</span><span class="s2"> -Djava.rmi.server.hostname=192.168.80.168
@@ -194,7 +194,7 @@ master readonly
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Listener</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.mbeans.JmxRemoteLifecycleListener&#34;</span> <span class="na">rmiRegistryPortPlatform=</span><span class="s">&#34;18085&#34;</span> <span class="na">rmiServerPortPlatform=</span><span class="s">&#34;28085&#34;</span> <span class="nt">/&gt;</span>
 </code></pre></div><p>注意：由于 org.apache.catalina.mbeans.JmxRemoteLifecycleListener 在 tomcat7 中已经独立出来，所以需要单独下载 catalina-jmx-remote.jar 放在 $CATALINA_HOME/lib 下。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wget http://mirrors.hust.edu.cn/apache/tomcat/tomcat-7/v7.0.63/bin/extras/catalina-jmx-remote.jar
-</code></pre></div><h2 id="windows-tomcat-">Windows 下tomcat 启动时，弹出窗口一闪就关了</h2>
+</code></pre></div><h2 id="windows-下tomcat-启动时弹出窗口一闪就关了">Windows 下tomcat 启动时，弹出窗口一闪就关了</h2>
 <p>有时候在修改了 tomcat 的一些参数后，启动时运行 startup.bat, 如果有错误，弹出窗口一闪就关掉了，不知道启动错误的原因，对文件 startup.bat 做如下修改：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rem call <span class="s2">&#34;%EXECUTABLE%&#34;</span> start %CMD_LINE_ARGS%
 call <span class="s2">&#34;%EXECUTABLE%&#34;</span> run %CMD_LINE_ARGS%
@@ -224,7 +224,7 @@ call <span class="s2">&#34;%EXECUTABLE%&#34;</span> run %CMD_LINE_ARGS%
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

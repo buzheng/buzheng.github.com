@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -143,35 +143,35 @@
           <p>在本教程中，我们将在用 Nginx 作为 Web 服务器的 CentOS 8 上安装免费的 Let's Encrypt SSL 证书的分步说明。我们还将展示如何配置 Nginx 以使用 SSL 证书并启用 HTTP/2 。</p>
 <p>Let's Encrypt 是由 Internet 安全研究组 (ISRG) 开发的免费，自动化和开放的证书颁发机构，它提供免费的 SSL 证书。</p>
 <p>Let's Encrypt 颁发的证书受到所有主要浏览器的信任，并且自颁发之日起有效期为 90 天。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续之前，请确保您满足以下先决条件：</p>
 <ul>
 <li>您有一个指向您的公共 IP 的域名。我们将使用 <code>example.com</code> 。</li>
 <li>您已在 CentOS 服务器上<a href="/linux/how-to-install-nginx-on-centos-8/">安装了 Nginx</a> 。</li>
 <li>您的<a href="/linux/how-to-configure-and-manage-firewall-on-centos-8/">防火墙</a>配置为接受端口 80 和 443 上的连接。</li>
 </ul>
-<h2 id="-certbot">安装 Certbot</h2>
+<h2 id="安装-certbot">安装 Certbot</h2>
 <p>Certbot 是一个免费的命令行工具，它简化了从服务器获取和续订 Let's Encrypt SSL 证书并自动启用 HTTPS 的过程。</p>
 <p>certbot 软件包不包含在标准 CentOS 8 存储库中，但可以从供应商的网站上下载。</p>
 <p>以 root 或 <a href="/linux/create-a-sudo-user-on-centos/">sudo 用户</a>身份运行以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令，将 certbot 脚本下载到该 <code>/usr/local/bin</code> 目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo wget -P /usr/local/bin https://dl.eff.org/certbot-auto
-</code></pre><p>下载完成后，<a href="/linux/chmod-command-in-linux/">授权使文件可执行</a>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo chmod +x /usr/local/bin/certbot-auto
-</code></pre><h2 id="-dhdiffiehellman-">产生强 Dh(Diffie-Hellman) 组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo wget -P /usr/local/bin https://dl.eff.org/certbot-auto
+</code></pre></div><p>下载完成后，<a href="/linux/chmod-command-in-linux/">授权使文件可执行</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chmod +x /usr/local/bin/certbot-auto
+</code></pre></div><h2 id="产生强-dhdiffie-hellman-组">产生强 Dh(Diffie-Hellman) 组</h2>
 <p>Diffie-Hellman 密钥交换 (DH) 是一种在不安全的通信通道上安全地交换加密密钥的方法。</p>
 <p>通过键入以下命令来生成一组新的 2048 位 DH 参数：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-</code></pre><p>如果需要，可以将密钥长度最多更改为 4096 位，但是生成时间可能会超过 30 分钟，具体取决于系统的配置。</p>
-<h2 id="-lets-encryptssl-">获取 “Let's EncryptSSL” 证书</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+</code></pre></div><p>如果需要，可以将密钥长度最多更改为 4096 位，但是生成时间可能会超过 30 分钟，具体取决于系统的配置。</p>
+<h2 id="获取-lets-encryptssl-证书">获取 “Let's EncryptSSL” 证书</h2>
 <p>为了获得域的 SSL 证书，我们将使用 Webroot 插件，该插件通过创建用于验证 <code>$ { webroot-path } /.well-known/acme-challenge</code> 目录中请求的域的临时文件来工作。 Let's Encrypt 服务器向临时文件发出 HTTP 请求，以验证请求的域是否解析为 certbot 运行的服务器。</p>
 <p>为了更简单，我们将对 <code>.well-known/acme-challenge</code> 所有 HTTP 请求映射都到一个目录 <code>/var/lib/letsencrypt</code> 。</p>
 <p>以下命令将创建目录，并使该目录可用于 Nginx 服务器。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir -p /var/lib/letsencrypt/.well-known
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/lib/letsencrypt/.well-known
 sudo chgrp nginx /var/lib/letsencrypt
 sudo chmod g+s /var/lib/letsencrypt
-</code></pre><p>为了避免重复代码，请创建以下两个片段，这些片段将包含在所有 Nginx 服务器块文件中：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mkdir /etc/nginx/snippets
-</code></pre><p>文件: <code>etc/nginx/snippets/letsencrypt.conf</code></p>
+</code></pre></div><p>为了避免重复代码，请创建以下两个片段，这些片段将包含在所有 Nginx 服务器块文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir /etc/nginx/snippets
+</code></pre></div><p>文件: <code>etc/nginx/snippets/letsencrypt.conf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">location</span> <span class="s">^~</span> <span class="s">/.well-known/acme-challenge/</span> <span class="p">{</span>
   <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
   <span class="kn">root</span> <span class="s">/var/lib/letsencrypt/</span><span class="p">;</span>
@@ -208,12 +208,12 @@ sudo chmod g+s /var/lib/letsencrypt
   <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div><p>重新加载 Nginx 配置以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload nginx
-</code></pre><p>使用 webroot 插件运行 certbot 工具，以获取您域的 SSL 证书文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo /usr/local/bin/certbot-auto certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
-</code></pre><p>如果这是您第一次调用 <code>certbot</code> ，该工具将安装缺少的依赖项。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload nginx
+</code></pre></div><p>使用 webroot 插件运行 certbot 工具，以获取您域的 SSL 证书文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo /usr/local/bin/certbot-auto certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
+</code></pre></div><p>如果这是您第一次调用 <code>certbot</code> ，该工具将安装缺少的依赖项。</p>
 <p>成功获得 SSL 证书后， certbot 将打印以下消息：</p>
-<pre><code class="language-output" data-lang="output">IMPORTANT NOTES:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/example.com/fullchain.pem
    Your key file has been saved at:
@@ -221,12 +221,12 @@ sudo chmod g+s /var/lib/letsencrypt
    Your cert will expire on 2020-03-12\. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot-auto
    again. To non-interactively renew *all* of your certificates, run
-   &quot;certbot-auto renew&quot;
+   &#34;certbot-auto renew&#34;
  - If you like Certbot, please consider supporting our work by:
 
-   Donating to ISRG/Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to ISRG/Let&#39;s Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
-</code></pre><p>现在已经有了证书文件，您可以按以下方式编辑<a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">域服务器块</a>：</p>
+</code></pre></div><p>现在已经有了证书文件，您可以按以下方式编辑<a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">域服务器块</a>：</p>
 <p>文件: <code>/etc/nginx/conf.d/example.com.conf</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
@@ -263,21 +263,21 @@ sudo chmod g+s /var/lib/letsencrypt
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>通过上述配置，我们将<a href="/linux/redirect-http-to-https-in-nginx/">强制使用 HTTPS</a> 并将 www 重定向到非 www 版本。</p>
 <p>最后，<a href="/linux/nginx-commands-you-should-know/">重新加载 Nginx 服务</a>以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload nginx
-</code></pre><p>现在，使用打开您的网站 <code>https://</code> ，您会注意到一个绿色的锁定图标。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload nginx
+</code></pre></div><p>现在，使用打开您的网站 <code>https://</code> ，您会注意到一个绿色的锁定图标。</p>
 <p>如果您使用 <a href="https://www.ssllabs.com/ssltest/">SSL Labs 服务器测试</a>来测试您的域，则会获得一个 <code>A+</code> 成绩，如下图所示：</p>
 <p><img src="ssllabs-test.jpg" alt=""></p>
-<h2 id="-lets-encryptssl-1">自动更新 Let's EncryptSSL 证书</h2>
+<h2 id="自动更新-lets-encryptssl-证书">自动更新 Let's EncryptSSL 证书</h2>
 <p>Let's Encrypt 的证书有效期为 90 天。要在证书过期之前自动更新证书，请<a href="/linux/scheduling-cron-jobs-with-crontab/">创建一个 cronjob</a>，每天运行两次的，并在过期前 30 天自动更新证书。</p>
 <p>使用 <code>crontab</code> 命令创建一个新的 cronjob ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo crontab -e
-</code></pre><p>粘贴以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo crontab -e
+</code></pre></div><p>粘贴以下行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/local/bin/certbot-auto -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> /usr/local/bin/certbot-auto -q renew --renew-hook <span class="s2">&#34;systemctl reload nginx&#34;</span>
 </code></pre></div><p>保存并关闭文件。</p>
 <p>要测试续订过程，可以使用 certbot 命令，后跟 <code>--dry-run</code> 开关：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo certbot renew --dry-run
-</code></pre><p>如果没有错误，则表示测试更新过程已成功。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo certbot renew --dry-run
+</code></pre></div><p>如果没有错误，则表示测试更新过程已成功。</p>
+<h2 id="结论">结论</h2>
 <p>在本教程中，我们向您展示了如何使用 Let's Encrypt 客户端 certbot 为您的域下载 SSL 证书。我们还创建了 Nginx 代码段以避免重复的代码，并将 Nginx 配置为使用证书。在本教程的最后，我们设置了一个 cronjob 来自动更新证书。</p>
 <p>要了解有关 Certbot 的更多信息，请访问<a href="https://certbot.eff.org/docs/">其文档</a>页面。</p>
       </div><ul class="pa0">
@@ -365,12 +365,12 @@ sudo chmod g+s /var/lib/letsencrypt
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-certbot">安装 Certbot</a></li>
-    <li><a href="#-dhdiffiehellman-">产生强 Dh(Diffie-Hellman) 组</a></li>
-    <li><a href="#-lets-encryptssl-">获取 “Let's EncryptSSL” 证书</a></li>
-    <li><a href="#-lets-encryptssl-1">自动更新 Let's EncryptSSL 证书</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-certbot">安装 Certbot</a></li>
+    <li><a href="#产生强-dhdiffie-hellman-组">产生强 Dh(Diffie-Hellman) 组</a></li>
+    <li><a href="#获取-lets-encryptssl-证书">获取 “Let's EncryptSSL” 证书</a></li>
+    <li><a href="#自动更新-lets-encryptssl-证书">自动更新 Let's EncryptSSL 证书</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -382,7 +382,7 @@ sudo chmod g+s /var/lib/letsencrypt
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

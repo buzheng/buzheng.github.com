@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Debian 10 上安装TensorFlow |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Debian 10 上安装TensorFlow" />
+<meta property="og:description" content="在本教程中，我们将说明如何在 Debian 10 的 Python 虚拟环境中安装 TensorFlow 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-tensorflow-on-debian-10/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-tensorflow-on-debian-10/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-06T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-06T12:00:00+08:00" />
+<meta itemprop="name" content="在 Debian 10 上安装TensorFlow">
+<meta itemprop="description" content="在本教程中，我们将说明如何在 Debian 10 的 Python 虚拟环境中安装 TensorFlow 。">
+<meta itemprop="datePublished" content="2020-01-06T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-06T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="954">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-tensorflow-on-debian-10/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="python,debian," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-tensorflow-on-debian-10/featured.jpg"/>
+<meta name="twitter:title" content="在 Debian 10 上安装TensorFlow"/>
+<meta name="twitter:description" content="在本教程中，我们将说明如何在 Debian 10 的 Python 虚拟环境中安装 TensorFlow 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Debian 10 上安装TensorFlow</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-06T12:00:00&#43;08:00">2020年1月6日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在本教程中，我们将说明如何在 Debian 10 的 Python 虚拟环境中安装 TensorFlow 。</p>
+<p><a href="https://www.tensorflow.org/">TensorFlow</a> 是 Google 构建的开放源代码的机器学习平台。它可以在不同设备上的 CPU 或 GPU 上运行。</p>
+<p>TensorFlow 可以在系统范围内， Python 虚拟环境中，作为 <a href="/linux/how-to-install-and-use-docker-on-debian-9/">Docker</a> 容器或与 Anaconda 一起安装。</p>
+<p>虚拟环境使您可以在一台计算机上拥有多个不同的隔离 Python 环境，并在每个项目的基础上安装模块的特定版本，而不必担心会影响您的其他项目。</p>
+<h2 id="在-debian-10-上安装-tensorflow">在 Debian 10 上安装 TensorFlow</h2>
+<p>以下各节提供了有关如何在 Debian 10 上的 Python 虚拟环境中安装 TensorFlow 的逐步说明。</p>
+<h3 id="1安装-python-3-和-venv">1.安装 Python 3 和 venv</h3>
+<p>Debian 10 Buster 已经默认安装了 Python 3.7 。</p>
+<p>要验证系统上是否安装了 Python 3 ，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">python3 --version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Python 3.7.3
+</code></pre></div><p>推荐的创建虚拟环境的方法是使用软件包 <code>venv</code> 提供的模块 <code>python3-venv</code> 。</p>
+<p>如果 <code>python3-venv</code> 您的系统上未安装该软件包，请输入以下内容进行安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div><h3 id="2创建虚拟环境">2.创建虚拟环境</h3>
+<p>导航到存储 Python 3 虚拟环境的目录。它可以是您的主目录，也可以是您的用户具有读写权限的任何其他目录。</p>
+<p>为 TensorFlow 项目<a href="/linux/how-to-create-directories-in-linux-with-the-mkdir-command/">创建一个新目录</a>并<a href="/linux/linux-cd-command/">切换</a>到该目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir my_tensorflow
+</code></pre></div><p>在目录内部，输入以下命令以创建虚拟环境：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">python3 -m venv venv
+</code></pre></div><p>上面的命令创建一个名为 <code>venv</code> 的目录，其中包含 Python 二进制文件， <a href="/linux/how-to-install-pip-on-debian-10/">Pip 程序包管理器</a>，标准 Python 库和其他支持文件的副本。</p>
+<p>您可以为虚拟环境使用任何喜欢的名称。</p>
+<p>要开始使用虚拟环境，您需要通过运行 <code>activate</code> 脚本将其激活：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">source venv/bin/activate
+</code></pre></div><p>激活后，虚拟环境的 bin 目录将添加到系统 <a href="/linux/how-to-set-and-list-environment-variables-in-linux/"><code>$PATH</code> 变量</a>的开头。另外， shell 的提示符将更改，并显示您当前所在的虚拟环境的名称。在此示例中，即 <code>(venv)</code> 。</p>
+<p>TensorFlow 安装需要 <code>pip</code> 19 或更高版本。运行以下命令以升级 <code>pip</code> 到最新版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install --upgrade pip
+</code></pre></div><h3 id="3安装-tensorflow">3.安装 TensorFlow</h3>
+<p>现在我们已经创建了虚拟环境，下一步是安装 TensorFlow 软件包。</p>
+<p>可以从 PyPI 安装多个 TensorFlow 软件包。 <code>tensorflow</code> 软件包仅支持 <a href="/linux/get-cpu-information-on-linux/">CPU</a> ，建议初学者使用。</p>
+<p>如果您拥有具有 CUDA 计算功能 3.5 或更高版本的专用 NVIDIA GPU ，并希望 <code>tensorflow</code> 利用其处理能力，请安装 <code>tensorflow-gpu</code> 包含 GPU 支持的软件包。</p>
+<p>输入以下命令以安装 TensorFlow ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">pip install --upgrade tensorflow
+</code></pre></div><p>在虚拟环境中，可以使用 <code>pip</code> 代替 <code>pip3</code> 和 <code>python</code> 代替 <code>python3</code> 。</p>
+<p>安装完成后，请使用以下命令进行验证，该命令将打印 TensorFlow 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">python -c <span class="s1">&#39;import tensorflow as tf; print(tf.__version__)&#39;</span>
+</code></pre></div><p>在撰写本文时， TensorFlow 的最新稳定版本是 <code>2.0.0</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">2.0.0
+</code></pre></div><p>终端上打印的版本可能与上面显示的版本不同。</p>
+<p>现在，TensorFlow 已安装在您的 Debian 系统上。</p>
+<p>如果您不熟悉 TensorFlow ，请访问 <a href="https://www.tensorflow.org/tutorials">TensorFlow 教程</a>页面并了解如何构建您的第一个 ML 应用程序。您还可以从 Github  克隆 <a href="https://github.com/tensorflow/models">TensorFlow 模型</a>或 <a href="https://github.com/aymericdamien/TensorFlow-Examples">TensorFlow-Examples</a> 存储库，并探索和测试 TensorFlow 示例。</p>
+<p>完成工作后，键入 <code>deactivate</code> 以停用环境并返回到正常的 shell 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">deactivate
+</code></pre></div><h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何在 Debian 10 上的 Python 虚拟环境中使用 <code>pip</code> 安装 TensorFlow  。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/python" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">python</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/debian" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-debian-10/">如何在 Debian 10 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-django-on-debian-9/">如何在Debian 9 Linux上安装Django</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-7-on-debian-9/">如何在 Debian 9 上安装 Python 3.7</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-debian-9/">如何在 Debian 9 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-10/">在 Debian 10 Linux 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-jenkins-on-debian-10/">在 Debian 10 Linux 上安装 Jenkins</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-docker-compose-on-debian-10/">在 Debian 10 Linux 上安装和使用 Docker Compose</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/replace-string-python/">Python 中的字符串替换</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-centos-8/">在 CentOS 8 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-debian-10/">在 Debian 10 Linux 上安装 MongoDB</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#在-debian-10-上安装-tensorflow">在 Debian 10 上安装 TensorFlow</a>
+      <ul>
+        <li><a href="#1安装-python-3-和-venv">1.安装 Python 3 和 venv</a></li>
+        <li><a href="#2创建虚拟环境">2.创建虚拟环境</a></li>
+        <li><a href="#3安装-tensorflow">3.安装 TensorFlow</a></li>
+      </ul>
+    </li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

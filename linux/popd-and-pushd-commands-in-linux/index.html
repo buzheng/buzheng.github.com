@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -145,58 +145,58 @@
   
           <p><code>pushd</code> 并且 <code>popd</code> 是允许您使用目录栈工作，改变 Linux 和其他类 Unix 操作系统的当前工作目录的命令。尽管 <code>pushd</code> 并且 <code>popd</code> 是非常强大和有用的命令，但它们却被低估并且很少使用。</p>
 <p>在本教程中，我们将向您展示如何使用 <code>pushd</code> 和 <code>popd</code> 命令浏览系统的目录树。</p>
-<h2 id="heading">目录堆栈</h2>
+<h2 id="目录堆栈">目录堆栈</h2>
 <p>目录堆栈是您先前导航到的目录的列表。使用该 <code>dirs</code> 命令可以查看目录堆栈的内容。使用 <code>pushd</code> 命令切换到目录时，目录将添加到堆栈中，然后使用 <code>popd</code> 命令将目录从堆栈中删除。</p>
 <p>当前的工作目录始终位于目录堆栈的顶部。<a href="/linux/current-working-directory/">当前的工作目录</a>就是您当前工作位于的目录（文件夹），就是你在命令行进行交互操作的时候进行工作的目录。</p>
 <p><code>pwd</code> 命令可以帮您找出当前所在的目录。</p>
 <p>在文件系统中导航时，请使用 <code>Tab</code> 键自动完成目录名称。在目录名称的末尾添加斜杠是可选的。</p>
 <p><code>pushd</code> ， <code>popd</code> 和 <code>dirs</code> 是 shell 内建的，其行为可能稍微根据不同的 shell 程序而不同。我们将介绍命令的 Bash 内置版本。</p>
-<h2 id="pushd"><code>pushd</code> 命令</h2>
+<h2 id="pushd命令"><code>pushd</code> 命令</h2>
 <p>该 <code>pushd</code> 命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">pushd</span> <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>DIRECTORY<span class="o">]</span>
 </code></pre></div><p>例如，将目录 <code>/var/www</code> 保存到目录堆栈的顶部并更改为当前目录，您将输入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">~$ <span class="nb">pushd</span> /var/www
 </code></pre></div><p>成功后，上面的命令将打印目录堆栈。 <code>~</code> 是我们执行 <code>pushd</code> 命令的时候位于的目录。<code>~</code> 表示主目录。</p>
-<pre><code class="language-output" data-lang="output">/var/www ~
-</code></pre><p><code>pushd</code> 首先将当前工作目录保存到堆栈的顶部，然后导航到给定目录。由于当前目录必须始终位于堆栈的顶部，因此更改后，新的当前目录将移至堆栈的顶部，但不会保存在堆栈中。要保存它，必须调用 <code>pushd</code> 。如果您 <code>cd</code> 用来切换到另一个目录，则堆栈的顶层项目将丢失，</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/var/www ~
+</code></pre></div><p><code>pushd</code> 首先将当前工作目录保存到堆栈的顶部，然后导航到给定目录。由于当前目录必须始终位于堆栈的顶部，因此更改后，新的当前目录将移至堆栈的顶部，但不会保存在堆栈中。要保存它，必须调用 <code>pushd</code> 。如果您 <code>cd</code> 用来切换到另一个目录，则堆栈的顶层项目将丢失，</p>
 <p>让我们向堆栈添加另一个目录：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/var/www$ <span class="nb">pushd</span> /opt
-</code></pre></div><pre><code class="language-output" data-lang="output">/opt /var/www ~
-</code></pre><p>要禁止默认更改目录，请使用该 <code>-n</code> 选项。例如，要将 <code>/usr/local</code> 目录添加到堆栈中但自动导航的该目录，请输入：</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/opt /var/www ~
+</code></pre></div><p>要禁止默认更改目录，请使用该 <code>-n</code> 选项。例如，要将 <code>/usr/local</code> 目录添加到堆栈中但自动导航的该目录，请输入：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/opt$ <span class="nb">pushd</span> -n /usr/local
 </code></pre></div><p>由于当前目录(始终位于顶部)没有更改，因此该 <code>/usr/local</code> 目录从堆栈的顶部开始添加：</p>
-<pre><code class="language-output" data-lang="output">/opt /usr/local /var/www ~
-</code></pre><p>在 <code>pushd</code> 接受两种选择， <code>+N</code> 并 <code>-N</code> 允许您导航到 <code>Nth</code> 堆栈的目录。该 <code>+N</code> 选项 <code>Nth</code> 从零开始从左到右跳转为堆栈列表的元素。当 <code>-N</code> 使用计数的方向是从右到左。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/opt /usr/local /var/www ~
+</code></pre></div><p>在 <code>pushd</code> 接受两种选择， <code>+N</code> 并 <code>-N</code> 允许您导航到 <code>Nth</code> 堆栈的目录。该 <code>+N</code> 选项 <code>Nth</code> 从零开始从左到右跳转为堆栈列表的元素。当 <code>-N</code> 使用计数的方向是从右到左。</p>
 <p>为了更好地说明这些选项，我们打印当前目录堆栈：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/opt$ <span class="nb">dirs</span> -l -v
 </code></pre></div><p>输出将显示目录堆栈的索引列表：</p>
-<pre><code class="language-output" data-lang="output"> 0  /opt
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"> 0  /opt
  1  /usr/local
  2  /var/www
  3  /home/linuxize
-</code></pre><p>如果要更改 <code>/var/www</code> 目录，并将其置于堆栈顶部，则将使用以下方法之一。</p>
+</code></pre></div><p>如果要更改 <code>/var/www</code> 目录，并将其置于堆栈顶部，则将使用以下方法之一。</p>
 <p>从上到下(或从左到右)计数时，目录的索引为 <code>2</code> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">pushd</span> +2
 </code></pre></div><p>从下到上计数时， <code>/var/www</code> 目录的索引为 <code>1</code> 。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">pushd</span> -1.
 </code></pre></div><p>不带任何参数使用时， <code>pushd</code> 将切换前两个目录并使新的前一个成为当前目录。这与使用 <code>cd -</code> 命令时相同。</p>
-<h2 id="popd"><code>popd</code> 命令</h2>
+<h2 id="popd命令"><code>popd</code> 命令</h2>
 <p>该 <code>popd</code> 命令采用以下形式：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">popd</span> <span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div><p>不带参数使用时， <code>popd</code> 从堆栈中删除顶层目录并导航到新的顶层目录。</p>
 <p>假设我们有以下目录堆栈：</p>
-<pre><code class="language-output" data-lang="output">/opt /usr/local /var/www /etc/nginx ~
-</code></pre><p>如果您运行 <code>popd</code> 命令，它将 <code>/opt</code> 从堆栈中删除并切换到 <code>/usr/local</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/opt /usr/local /var/www /etc/nginx ~
+</code></pre></div><p>如果您运行 <code>popd</code> 命令，它将 <code>/opt</code> 从堆栈中删除并切换到 <code>/usr/local</code> 目录：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/opt$ <span class="nb">popd</span>
 </code></pre></div><p>输出将显示新的目录堆栈：</p>
-<pre><code class="language-output" data-lang="output">/usr/local /var/www /etc/nginx ~
-</code></pre><p>该 <code>-n</code> 选项禁止默认目录更改，并从堆栈中删除第二项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local /var/www /etc/nginx ~
+</code></pre></div><p>该 <code>-n</code> 选项禁止默认目录更改，并从堆栈中删除第二项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/opt$ <span class="nb">popd</span> -n
-</code></pre></div><pre><code class="language-output" data-lang="output">/usr/local /etc/nginx ~
-</code></pre><p>与 <code>pushd</code> 相同， <code>popd</code> 也接受 <code>+N</code> 和 <code>-N</code> 选项，可用于删除 <code>Nth</code> 堆栈的目录。</p>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local /etc/nginx ~
+</code></pre></div><p>与 <code>pushd</code> 相同， <code>popd</code> 也接受 <code>+N</code> 和 <code>-N</code> 选项，可用于删除 <code>Nth</code> 堆栈的目录。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/opt$ <span class="nb">popd</span> +1
-</code></pre></div><pre><code class="language-output" data-lang="output">/usr/local ~
-</code></pre><h2 id="heading1">结论</h2>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/local ~
+</code></pre></div><h2 id="结论">结论</h2>
 <p>通常，您使用 <a href="/linux/linux-cd-command/"><code>cd</code></a> 命令从一个目录导航到另一个目录。但是，如果你花了很多时间在命令行上， <code>pushd</code> 并 <code>popd</code> 命令将提高你的生产力和效率。</p>
       </div><ul class="pa0">
   
@@ -271,10 +271,10 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">目录堆栈</a></li>
-    <li><a href="#pushd">pushd 命令</a></li>
-    <li><a href="#popd">popd 命令</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#目录堆栈">目录堆栈</a></li>
+    <li><a href="#pushd命令">pushd 命令</a></li>
+    <li><a href="#popd命令">popd 命令</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -286,7 +286,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

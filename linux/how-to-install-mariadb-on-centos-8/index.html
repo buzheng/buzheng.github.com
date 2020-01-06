@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,41 +142,41 @@
   
           <p>在本教程中，我们将说明如何在 CentOS 8 上安装和保护 MariaDB 10.3 。</p>
 <p>MariaDB 是一个开放源代码关系数据库管理系统，向后兼容，替代了 MySQL 。它由 MySQL 的某些原始开发人员和社区中的许多人开发。</p>
-<h2 id="-centos-8--mariadb">在 CentOS 8 上安装 MariaDB</h2>
+<h2 id="在-centos-8-上安装-mariadb">在 CentOS 8 上安装 MariaDB</h2>
 <p>在撰写本文时， CentOS 8 存储库中可用的 MariaDB 版本是 10.3 。</p>
 <p>以超级用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份运行以下命令，以在 CentOS 8 上安装 MariaDB 10.3 ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo dnf install @mariadb
-</code></pre><p>该 <code>@mariadb</code> 模块将安装 MariaDB 服务器和所有依赖项。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install @mariadb
+</code></pre></div><p>该 <code>@mariadb</code> 模块将安装 MariaDB 服务器和所有依赖项。</p>
 <p>安装完成后，通过键入以下命令启动 MariaDB 服务并使其在启动时自动启动：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl enable --now mariadb
-</code></pre><p>要验证 MariaDB 服务器是否正在运行，请键入：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl status mariadb
-</code></pre><p>输出应显示该服务处于活动状态并已启用：</p>
-<pre><code class="language-output" data-lang="output">● mariadb.service - MariaDB 10.3 database server
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl enable --now mariadb
+</code></pre></div><p>要验证 MariaDB 服务器是否正在运行，请键入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl status mariadb
+</code></pre></div><p>输出应显示该服务处于活动状态并已启用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">● mariadb.service - MariaDB 10.3 database server
    Loaded: loaded (/usr/lib/systemd/system/mariadb.service; enabled; vendor preset: disabled)
    Active: active (running) since Sun 2019-12-08 21:05:26 UTC; 15s ago
    ...
-</code></pre><h3 id="-mariadb">保护 MariaDB</h3>
+</code></pre></div><h3 id="保护-mariadb">保护 MariaDB</h3>
 <p>MariaDB 服务器软件包随附一个名为 <code>mysql_secure_installation</code> 的脚本，该脚本执行一些与安全性相关的操作，并设置 root 密码。</p>
 <p>通过键入以下命令来运行脚本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql_secure_installation
-</code></pre><p>系统将提示您设置 MariaDB 根用户的密码。完成此操作后，脚本还将要求您删除匿名用户，限制 root 用户对本地计算机的访问，并删除测试数据库。您应该对所有问题回答“是 ”( 是)。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql_secure_installation
+</code></pre></div><p>系统将提示您设置 MariaDB 根用户的密码。完成此操作后，脚本还将要求您删除匿名用户，限制 root 用户对本地计算机的访问，并删除测试数据库。您应该对所有问题回答“是 ”( 是)。</p>
 <p>现在，您已经在 CentOS 服务器上安装并保护了 MariaDB ，并准备使用它。</p>
-<h2 id="-mariadb-shell">连接到 MariaDB Shell</h2>
+<h2 id="连接到-mariadb-shell">连接到 MariaDB Shell</h2>
 <p>要通过终端作为根帐户类型连接到 MariaDB 服务器，请执行以下操作：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mysql -u root -p
-</code></pre><p>在出现提示时输入 <a href="/linux/how-to-reset-a-mysql-root-password/">root 密码</a>，然后将为您提供 MariaDB shell ，如下所示：</p>
-<pre><code class="language-output" data-lang="output">Welcome to the MariaDB monitor.  Commands end with ; or \g.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p
+</code></pre></div><p>在出现提示时输入 <a href="/linux/how-to-reset-a-mysql-root-password/">root 密码</a>，然后将为您提供 MariaDB shell ，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 18
 Server version: 10.3.11-MariaDB MariaDB Server
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
 
 MariaDB [(none)]&gt; 
 
-</code></pre><h2 id="heading">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在本教程中，我们向您展示了如何在 CentOS 8 上安装和保护 MariaDB ，以及如何从命令行连接到 MariaDB 服务器。</p>
 <p>现在您的 MariaDB 服务器已启动并正在运行，您可以连接到 MariaDB Shell ，并开始<a href="/linux/how-to-manage-mysql-databases-and-users-from-the-command-line/">创建新的数据库和用户</a>。</p>
 <p>CentOS 8 还提供了 MySQL 8.0 。如果要安装 MySQL 而不是 MariaDB ，请查看 <a href="/linux/how-to-install-mysql-on-centos-8/">如何在 CentOS 8 上安装 MySQL”</a> 指南。请注意，您不能在同一服务器上同时安装 MariaDB 和 MySQL 。</p>
@@ -257,13 +257,13 @@ MariaDB [(none)]&gt;
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#-centos-8--mariadb">在 CentOS 8 上安装 MariaDB</a>
+    <li><a href="#在-centos-8-上安装-mariadb">在 CentOS 8 上安装 MariaDB</a>
       <ul>
-        <li><a href="#-mariadb">保护 MariaDB</a></li>
+        <li><a href="#保护-mariadb">保护 MariaDB</a></li>
       </ul>
     </li>
-    <li><a href="#-mariadb-shell">连接到 MariaDB Shell</a></li>
-    <li><a href="#heading">结论</a></li>
+    <li><a href="#连接到-mariadb-shell">连接到 MariaDB Shell</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -275,7 +275,7 @@ MariaDB [(none)]&gt;
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

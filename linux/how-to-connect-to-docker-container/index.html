@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -41,7 +41,7 @@
 在本教程中，我们将说明如何附加到容器的主要运行过程以及如何将外壳获取到正在运行的容器。">
 <meta itemprop="datePublished" content="2019-10-22T13:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-22T13:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1053">
+<meta itemprop="wordCount" content="1052">
 <meta itemprop="image" content="https://buzheng.org/linux/how-to-connect-to-docker-container/featured.jpg">
 
 
@@ -145,43 +145,43 @@
   
           <p>当您想查看容器内部正在发生什么时，连接到正在运行的 Docker 容器会很有帮助。如果 Docker 容器无法按预期工作，则可以将其连接到该容器或将 Shell 获取到该容器，然后运行诸如 <a href="/linux/ps-command-in-linux/"><code>ps</code></a> 或 <code>top</code> 命令。您还可以输入容器，安装新软件包，并从中<a href="/linux/how-to-build-docker-images-with-dockerfile/">构建新的 Docker 映像</a>。</p>
 <p>在本教程中，我们将说明如何附加到容器的主要运行过程以及如何将外壳获取到正在运行的容器。</p>
-<h2 id="heading">附加到容器</h2>
+<h2 id="附加到容器">附加到容器</h2>
 <p>尽管可以在一个容器中运行多个进程，但是大多数 docker 容器仅运行一个进程。使用 <code>ENTRYPOINT</code> 或 <code>RUN</code> 指令指定启动容器时执行的命令。</p>
 <p>该 <a href="https://docs.docker.com/engine/reference/commandline/attach/"><code>docker attach</code> 命令</a>允许您将终端连接到正在运行的容器。当您想实时查看标准输出中写的内容或以交互方式控制过程时，此功能很有用。</p>
 <p>为了更好地理解该 <code>attach</code> 命令的工作原理，让我们使用官方的 Nginx 映像运行一个新的独立的 Nginx 容器。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container run --name my_nginx -d -p 8080:80 nginx
-</code></pre><p>该 <code>-p 8080:80</code> 选项告诉 Docker 将容器的端口 8080 绑定到主机上的端口 80 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container run --name my_nginx -d -p 8080:80 nginx
+</code></pre></div><p>该 <code>-p 8080:80</code> 选项告诉 Docker 将容器的端口 8080 绑定到主机上的端口 80 。</p>
 <p>查看容器列表以确保 “my_nginx” 容器运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container ls
-</code></pre><pre><code class="language-output" data-lang="output">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
-8e1c4974a8d8        nginx               &quot;nginx -g 'daemon of…&quot;   3 minutes ago       Up 2 seconds        0.0.0.0:8080-&gt;80/tcp   my_nginx
-</code></pre><p>使用容器的 ID 或名称附加到容器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container attach my_nginx
-</code></pre><p>运行容器时执行的 nginx 镜像的默认命令设置为 <code>CMD [ &quot; nginx &quot; ,  &quot; -g &quot; ,  &quot; daemon off; &quot;]</code>。运行 <code>attach</code> 命令时，终端将附加到该 <code>nginx</code> 进程。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+8e1c4974a8d8        nginx               &#34;nginx -g &#39;daemon of…&#34;   3 minutes ago       Up 2 seconds        0.0.0.0:8080-&gt;80/tcp   my_nginx
+</code></pre></div><p>使用容器的 ID 或名称附加到容器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container attach my_nginx
+</code></pre></div><p>运行容器时执行的 nginx 镜像的默认命令设置为 <code>CMD [ &quot; nginx &quot; ,  &quot; -g &quot; ,  &quot; daemon off; &quot;]</code>。运行 <code>attach</code> 命令时，终端将附加到该 <code>nginx</code> 进程。</p>
 <p>在<a href="/linux/how-to-install-google-chrome-web-browser-on-ubuntu-18-04/">浏览器中</a>打开 <code>127.0.0.1:8080</code> ，您可以实时观看 nginx 进程的输出。</p>
-<pre><code class="language-output" data-lang="output">192.168.33.1 - - [04/Oct/2019:21:12:28 +0000] &quot;GET/HTTP/1.1&quot; 200 612 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36&quot; &quot;-&quot;
-192.168.33.1 - - [04/Oct/2019:21:12:28 +0000] &quot;GET /favicon.ico HTTP/1.1&quot; 404 555 &quot;http://192.168.33.71:8080/&quot; &quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36&quot; &quot;-&quot;
-</code></pre><p>要访问容器日志，您应该首选使用该 <code>docker logs</code> 命令。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">192.168.33.1 - - [04/Oct/2019:21:12:28 +0000] &#34;GET/HTTP/1.1&#34; 200 612 &#34;-&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36&#34; &#34;-&#34;
+192.168.33.1 - - [04/Oct/2019:21:12:28 +0000] &#34;GET /favicon.ico HTTP/1.1&#34; 404 555 &#34;http://192.168.33.71:8080/&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36&#34; &#34;-&#34;
+</code></pre></div><p>要访问容器日志，您应该首选使用该 <code>docker logs</code> 命令。</p>
 <p>要从容器上卸下而不停止容器，请使用 <code>CTRL-p</code>   <code>CTRL-q</code> 组合键。按下 <code>CTRL-c</code> 停止容器。</p>
 <p>如果要附加的正在运行的进程接受输入，则可以向其发送指令。</p>
-<h2 id="heading1">将外壳带到容器</h2>
+<h2 id="将外壳带到容器">将外壳带到容器</h2>
 <p>该 <a href="https://docs.docker.com/engine/reference/commandline/exec/"><code>docker exec</code> 命令</a>允许您在正在运行的容器中运行命令。</p>
 <p>要查看该 <code>exec</code> 命令的工作方式以及如何使用该命令进入容器外壳，请首先启动一个新容器。我们将使用官方的 MySQL 映像：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container run --name my_mysql -d mysql
-</code></pre><p>这将创建一个名为 “ my_mysql” 的容器。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container run --name my_mysql -d mysql
+</code></pre></div><p>这将创建一个名为 “ my_mysql” 的容器。</p>
 <p>要在容器内执行命令，请运行以下命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container exec -it my_mysql ls /var
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container exec -it my_mysql ls /var
 
-</code></pre><p>该 <code>-i</code> 选项代表交互式，<code>-t</code> 选项告诉 Docker 分配一个伪 TTY 设备。该 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令将列出容器目录内的所有文件和 <code>/var</code> 目录：</p>
-<pre><code class="language-output" data-lang="output">backups  cache	lib  local  lock  log  mail  opt  run  spool  tmp
-</code></pre><p>要将 shell 放入容器，即进入容器内部，请通过执行 shell 二进制文件开始新的 shell 会话。您可以使用 <code>sh</code> ， <code>bash</code> 或镜像中包含的任何 shell 。</p>
+</code></pre></div><p>该 <code>-i</code> 选项代表交互式，<code>-t</code> 选项告诉 Docker 分配一个伪 TTY 设备。该 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令将列出容器目录内的所有文件和 <code>/var</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">backups  cache	lib  local  lock  log  mail  opt  run  spool  tmp
+</code></pre></div><p>要将 shell 放入容器，即进入容器内部，请通过执行 shell 二进制文件开始新的 shell 会话。您可以使用 <code>sh</code> ， <code>bash</code> 或镜像中包含的任何 shell 。</p>
 <p>下面的命令将在容器内创建一个新的 Bash 会话：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">docker container exec -it my_mysql /bin/bash
-</code></pre><p>您的命令提示符将更改，表明您正在使用容器外壳。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container exec -it my_mysql /bin/bash
+</code></pre></div><p>您的命令提示符将更改，表明您正在使用容器外壳。</p>
 <p>在这里，您可以像在任何其他 Linux 服务器上一样执行命令。例如，要获取当前<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>的列表，请输入 <code>env</code> ：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">env
-</code></pre><p>输出将如下所示：</p>
-<pre><code class="language-output" data-lang="output">HOSTNAME=e0214d97e0fe
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">env
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">HOSTNAME=e0214d97e0fe
 MYSQL_ROOT_PASSWORD=my-secret-pw
 PWD=/
 HOME=/root
@@ -192,7 +192,7 @@ TERM=xterm
 SHLVL=1
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 _=/usr/bin/env
-</code></pre><h2 id="heading2">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>使用 <code>docker exec</code> 和 <code>docker attach</code> 命令可以连接到正在运行的容器。要将交互式 Shell 放入容器，请使用 <code>exec</code> 命令启动新的 Shell 会话。而 <code>attach</code> 命令可以将您的终端附加到正在运行的容器。</p>
       </div><ul class="pa0">
   
@@ -263,9 +263,9 @@ _=/usr/bin/env
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">附加到容器</a></li>
-    <li><a href="#heading1">将外壳带到容器</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#附加到容器">附加到容器</a></li>
+    <li><a href="#将外壳带到容器">将外壳带到容器</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -277,7 +277,7 @@ _=/usr/bin/env
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

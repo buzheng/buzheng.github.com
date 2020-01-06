@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,9 +150,9 @@
 <li><strong>压缩</strong> - 如果代理服务器未发送压缩响应，则可以将Nginx配置为在将响应发送到客户端之前压缩响应。</li>
 </ul>
 <p>本教程概述了如何将Nginx配置为反向代理的步骤。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>我们假设您在<a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">Ubuntu</a>，<a href="/linux/how-to-install-nginx-on-centos-7/">CentOS</a>或<a href="/linux/how-to-install-nginx-on-debian-9/">Debian</a>服务器上安装了Nginx 。</p>
-<h2 id="nginx">使用Nginx作为反向代理</h2>
+<h2 id="使用nginx作为反向代理">使用Nginx作为反向代理</h2>
 <p>要将Nginx配置为HTTP服务器的反向代理，请打开域的服务器块配置文件，并在其中指定位置和代理服务器：</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
@@ -176,7 +176,7 @@
 <span class="p">}</span>
 </code></pre></div><p>如果访问者访问<code>http://example.com/blog/my-post</code>，Nginx将代理此请求<code>http://node1.com:8000/wordpress/my-post</code>。</p>
 <p>当代理服务器的地址包含URI时，<code>/wordpress/</code>传递给代理服务器的请求URI将被指令中指定的URI替换。如果在没有URI的情况下指定代理服务器的地址，则将完整请求URI传递给代理服务器。</p>
-<h2 id="heading1">传递请求标头</h2>
+<h2 id="传递请求标头">传递请求标头</h2>
 <p>当Nginx的代理的请求时，它自动定义在来自客户机的代理请求2的报头字段，<code>Host</code>并<code>Connection</code>和删除空头。<code>Host</code>设置为<code>$proxy_host</code>变量，并<code>Connection</code>设置为关闭。</p>
 <p>要调整或设置代理连接的标头，请使用该<code>proxy_set_header</code>指令后跟标头值。您可以<a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html">在此处</a>找到所有可用的请求标头及其允许值的列表。如果要阻止将标头传递给代理服务器，请将其设置为空字符串<code>&quot;&quot;</code>。</p>
 <p>在下面的示例中，我们通过将标头字段的值设置为空字符串来更改<code>Host</code>标头字段的值<code>$host</code>并删除<code>Accept-Encoding</code>标头字段。</p>
@@ -185,7 +185,7 @@
     <span class="kn">proxy_set_header</span> <span class="s">Accept-Encoding</span> <span class="s">&#34;&#34;</span><span class="p">;</span>
     <span class="kn">proxy_pass</span> <span class="s">http://localhost:3000</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div><h2 id="nginxhttp">将Nginx配置为非HTTP代理服务器的反向代理</h2>
+</code></pre></div><h2 id="将nginx配置为非http代理服务器的反向代理">将Nginx配置为非HTTP代理服务器的反向代理</h2>
 <p>要将Nginx配置为非HTTP代理服务器的反向代理，可以使用以下指令：</p>
 <ul>
 <li><code>fastcgi_pass</code> - 反向代理到FastCGI服务器。</li>
@@ -203,7 +203,7 @@
         <span class="kn">fastcgi_pass</span> <span class="s">unix:/run/php/php7.2-fpm.sock</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div><h2 id="nginx1">常见的Nginx反向代理选项</h2>
+</code></pre></div><h2 id="常见的nginx反向代理选项">常见的Nginx反向代理选项</h2>
 <p>通过HTTPS提供内容已成为当今的标准。在本节中，我们将为您提供HTTPS Nginx反向代理配置的示例，包括推荐的Nginx代理参数和标头。</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx">  <span class="k">location/</span> <span class="p">{</span>
     <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:3000</span><span class="p">;</span>
@@ -231,7 +231,7 @@
 <li><code>X-Forwarded-Port $server_port</code> - 定义客户端请求的原始端口。</li>
 </ul>
 <p>如果您没有现有的SSL / TLS证书，则可以使用certbot在<a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">Ubuntu 18.04</a>，<a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">CentOS 7</a>或<a href="/linux/secure-nginx-with-let-s-encrypt-on-debian-9/">Debian</a>服务器上获取免费的Let's Encrypt SSL证书。</p>
-<h2 id="heading2">结论</h2>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何使用Nginx作为反向代理。我们还向您展示了如何将其他参数传递给服务器，以及如何在代理请求中修改和设置不同的头字段。</p>
       </div><ul class="pa0">
   
@@ -302,12 +302,12 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#nginx">使用Nginx作为反向代理</a></li>
-    <li><a href="#heading1">传递请求标头</a></li>
-    <li><a href="#nginxhttp">将Nginx配置为非HTTP代理服务器的反向代理</a></li>
-    <li><a href="#nginx1">常见的Nginx反向代理选项</a></li>
-    <li><a href="#heading2">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#使用nginx作为反向代理">使用Nginx作为反向代理</a></li>
+    <li><a href="#传递请求标头">传递请求标头</a></li>
+    <li><a href="#将nginx配置为非http代理服务器的反向代理">将Nginx配置为非HTTP代理服务器的反向代理</a></li>
+    <li><a href="#常见的nginx反向代理选项">常见的Nginx反向代理选项</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -319,7 +319,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

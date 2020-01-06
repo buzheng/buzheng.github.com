@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -144,17 +144,17 @@
 <p>MySQL 支持几种复制拓扑，其中主/从拓扑是最著名的拓扑之一，其中一台数据库服务器充当主服务器，一台或多台服务器充当从属服务器。默认情况下，复制是异步的，其中主服务器向其二进制日志发送描述数据库修改的事件，而从服务器在事件准备就绪时请求事件。</p>
 <p>在本指南中，我们将向您展示如何在 Debian 10 上通过一台主服务器和一台从属服务器设置 MariaDB 主/从复制。 MariaDB 是 Debian 中 MySQL 的默认实现。相同的步骤适用于 Oracle MySQL 。</p>
 <p>这种类型的复制拓扑最适合于部署只读副本以进行规模扩展，实时数据库备份以进行灾难恢复以及分析作业。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>我们假设您有两台运行 Debian 10 的服务器，它们通过专用网络相互通信。如果您的托管服务提供商不支持私有 IP 地址，则可以使用公共 IP 地址并将防火墙配置为仅允许来自受信任源的端口 3306 上的流量。</p>
 <p>本示例中使用的服务器具有以下 IP 地址：</p>
 <div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Master IP: 10.10.8.12
 Slave IP:  10.10.8.164
-</code></pre></div><h2 id="-mariadb">安装 MariaDB</h2>
+</code></pre></div><h2 id="安装-mariadb">安装 MariaDB</h2>
 <p>默认的 Debian 10 存储库包括 MariaDB 版本 10.3 。最好在两台服务器上安装相同的 <a href="/linux/how-to-check-mysql-version/">MariaDB 版本</a>，以避免任何潜在的问题。</p>
 <p>通过以下命令，在主服务器和从服务器上<a href="/linux/how-to-install-mariadb-on-debian-10/">安装 MariaDB</a> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt-get update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-get update
 sudo apt-get install mariadb-server
-</code></pre><h2 id="heading1">配置主服务器</h2>
+</code></pre></div><h2 id="配置主服务器">配置主服务器</h2>
 <p>第一步是设置主服务器。我们将进行以下更改：</p>
 <ul>
 <li>设置 <a href="/linux/mysql-remote-access/">MariaDB 服务器以侦听专用 IP</a> 。</li>
@@ -162,30 +162,30 @@ sudo apt-get install mariadb-server
 <li>启用二进制日志记录。</li>
 </ul>
 <p>打开 MariaDB 配置文件并取消注释或设置以下行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
-</code></pre><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">10.10.8.12</span>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">10.10.8.12</span>
 <span class="na">server-id</span>              <span class="o">=</span> <span class="s">1</span>
 <span class="na">log_bin</span>                <span class="o">=</span> <span class="s">/var/log/mysql/mysql-bin.log</span>
 </code></pre></div><p>完成后，保存文件并重新启动 MySQL 服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart mariadb
-</code></pre><p>下一步是创建一个新的复制用户。以 root 用户身份登录 MariaDB 服务器：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><p>运行以下 SQL 查询以创建一个名为 <code>replica</code> 的用户并向该用户授予 <code>REPLICATION SLAVE</code> 特权：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">CREATE USER 'replica'@'10.10.8.164' IDENTIFIED BY 'replica_password';
-</code></pre><pre><code class="language-console-mysql" data-lang="console-mysql">GRANT REPLICATION SLAVE ON *.* TO 'replica'@'10.10.8.164';
-</code></pre><blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart mariadb
+</code></pre></div><p>下一步是创建一个新的复制用户。以 root 用户身份登录 MariaDB 服务器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>运行以下 SQL 查询以创建一个名为 <code>replica</code> 的用户并向该用户授予 <code>REPLICATION SLAVE</code> 特权：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE USER &#39;replica&#39;@&#39;10.10.8.164&#39; IDENTIFIED BY &#39;replica_password&#39;;
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT REPLICATION SLAVE ON *.* TO &#39;replica&#39;@&#39;10.10.8.164&#39;;
+</code></pre></div><blockquote>
 <p>确保使用从服务器的 IP 地址更改上面的 IP 。您可以根据需要命名用户。</p>
 </blockquote>
 <p>仍在 MySQL 提示符下时，执行以下命令，该命令将打印二进制文件名和位置。</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">SHOW MASTER STATUS\G
-</code></pre><pre><code class="language-output" data-lang="output">*************************** 1\. row ***************************
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">SHOW MASTER STATUS\G
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">*************************** 1\. row ***************************
             File: mysql-bin.000001
         Position: 328
     Binlog_Do_DB: 
 Binlog_Ignore_DB: 
 1 row in set (0.001 sec)
-</code></pre><p>注意文件名**&lsquo;mysql-bin.000001&rsquo;**和位置**&lsquo;328&rsquo;**。这些值在配置从属服务器时是必需的，并且在您的服务器上可能会有所不同。</p>
-<h2 id="heading2">配置从服务器</h2>
+</code></pre></div><p>注意文件名**&lsquo;mysql-bin.000001&rsquo;**和位置**&lsquo;328&rsquo;**。这些值在配置从属服务器时是必需的，并且在您的服务器上可能会有所不同。</p>
+<h2 id="配置从服务器">配置从服务器</h2>
 <p>我们将在从属服务器上进行与主服务器相同的更改：</p>
 <ul>
 <li>设置 MySQL 服务器以侦听专用 IP 。</li>
@@ -193,37 +193,37 @@ Binlog_Ignore_DB:
 <li>启用二进制日志记录。</li>
 </ul>
 <p>打开 MariaDB 配置文件并编辑以下行：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
-</code></pre><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">10.10.8.164</span>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">bind-address</span>           <span class="o">=</span> <span class="s">10.10.8.164</span>
 <span class="na">server-id</span>              <span class="o">=</span> <span class="s">2</span>
 <span class="na">log_bin</span>                <span class="o">=</span> <span class="s">/var/log/mysql/mysql-bin.log</span>
 </code></pre></div><p>重新启动 MariaDB 服务：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo systemctl restart mariadb
-</code></pre><p>下一步是配置从属服务器连接到主服务器的参数。登录到 MariaDB shell ：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo mysql
-</code></pre><p>首先停止从属线程：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">STOP SLAVE;
-</code></pre><p>运行以下查询以配置主/从复制：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">CHANGE MASTER TO
-MASTER_HOST='10.10.8.12',
-MASTER_USER='replica',
-MASTER_PASSWORD='replica_password',
-MASTER_LOG_FILE='mysql-bin.000001',
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart mariadb
+</code></pre></div><p>下一步是配置从属服务器连接到主服务器的参数。登录到 MariaDB shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>首先停止从属线程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">STOP SLAVE;
+</code></pre></div><p>运行以下查询以配置主/从复制：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CHANGE MASTER TO
+MASTER_HOST=&#39;10.10.8.12&#39;,
+MASTER_USER=&#39;replica&#39;,
+MASTER_PASSWORD=&#39;replica_password&#39;,
+MASTER_LOG_FILE=&#39;mysql-bin.000001&#39;,
 MASTER_LOG_POS=328;
-</code></pre><p>确保使用正确的 IP 地址，用户名和密码。日志文件的名称和位置必须与您从主服务器获得的值相同。</p>
+</code></pre></div><p>确保使用正确的 IP 地址，用户名和密码。日志文件的名称和位置必须与您从主服务器获得的值相同。</p>
 <p>完成后，启动从属线程。</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">START SLAVE;
-</code></pre><h2 id="heading3">测试配置</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">START SLAVE;
+</code></pre></div><h2 id="测试配置">测试配置</h2>
 <p>此时，您已经具备了有效的主/从复制设置。</p>
 <p>要验证所有设置是否正确，请在主服务器上创建一个新数据库：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo mysql
-</code></pre><pre><code class="language-console-mysql" data-lang="console-mysql">CREATE DATABASE replicatest;
-</code></pre><p>登录到从属 MySQL Shell ：</p>
-<pre><code class="language-console-bash-2" data-lang="console-bash-2">sudo mysql
-</code></pre><p>运行以下命令以<a href="/linux/how-to-show-databases-in-mysql/">列出所有数据库</a>：</p>
-<pre><code class="language-console-mysql" data-lang="console-mysql">SHOW DATABASES;
-</code></pre><p>您会注意到，您在主服务器上创建的数据库已在从服务器上复制：</p>
-<pre><code class="language-output" data-lang="output">+--------------------+
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE replicatest;
+</code></pre></div><p>登录到从属 MySQL Shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>运行以下命令以<a href="/linux/how-to-show-databases-in-mysql/">列出所有数据库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">SHOW DATABASES;
+</code></pre></div><p>您会注意到，您在主服务器上创建的数据库已在从服务器上复制：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">+--------------------+
 | Database           |
 +--------------------+
 | information_schema |
@@ -233,7 +233,7 @@ MASTER_LOG_POS=328;
 | sys                |
 +--------------------+
 5 rows in set (0.00 sec)
-</code></pre><h2 id="heading4">结论</h2>
+</code></pre></div><h2 id="结论">结论</h2>
 <p>在本教程中，我们显示了在 Debian 10 上创建 MariaDB 主/从复制。</p>
       </div><ul class="pa0">
   
@@ -312,12 +312,12 @@ MASTER_LOG_POS=328;
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-mariadb">安装 MariaDB</a></li>
-    <li><a href="#heading1">配置主服务器</a></li>
-    <li><a href="#heading2">配置从服务器</a></li>
-    <li><a href="#heading3">测试配置</a></li>
-    <li><a href="#heading4">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-mariadb">安装 MariaDB</a></li>
+    <li><a href="#配置主服务器">配置主服务器</a></li>
+    <li><a href="#配置从服务器">配置从服务器</a></li>
+    <li><a href="#测试配置">测试配置</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -329,7 +329,7 @@ MASTER_LOG_POS=328;
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

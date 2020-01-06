@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,38 +150,38 @@ watch实用程序是procps（或procps-ng）软件包的一部分，它几乎预
 <p>Watch用于定期运行任意命令，并在终端窗口上显示命令的输出。</p>
 <p>当您必须重复执行命令并观察命令输出随时间变化时，它非常有用。例如，您可以使用watch命令监视系统正常运行时间或磁盘使用情况。</p>
 <p>watch实用程序是<code>procps</code>（或<code>procps-ng</code>）软件包的一部分，它几乎预装在所有Linux发行版上。</p>
-<h2 id="watch">如何使用Watch命令</h2>
+<h2 id="如何使用watch命令">如何使用Watch命令</h2>
 <p>watch命令的语法如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">watch <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND
 </code></pre></div><p>为了最好地说明watch命令的工作原理，让我们运行<code>date</code>命令：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">watch date
-</code></pre><p><img src="/images/linux/linux-watch-command/watch-command.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">watch date
+</code></pre></div><p><img src="/images/linux/linux-watch-command/watch-command.jpg" alt=""></p>
 <p>如上图所示，watch命令将暂时清除所有终端内容，并定期开始运行提供的命令。在没有任何选项的情况下使用时，watch将每两秒运行一次指定的命令。</p>
 <p>在屏幕标题的左上角，您可以看到监视更新间隔和执行的命令（<code>Every 2.0s: date</code>），而在左上方的监视则显示当前时间和日期。如果要转动标题，请使用<code>-t</code>（<code>--no-title</code>）选项。</p>
 <p>指定命令的输出显示在屏幕上，并且每两秒定期更新一次。</p>
 <p>要退出监视，只需按下<code>Ctrl+C</code>组合键即可。您还可以通过使用<code>-g</code>（<code>--chgexit</code>）选项将命令输出更改时将手表设置为退出。</p>
 <p>在以下部分中，我们将介绍最常用的watch命令选项。</p>
-<h2 id="heading">如何更改时间间隔</h2>
+<h2 id="如何更改时间间隔">如何更改时间间隔</h2>
 <p>如果两秒的默认更新间隔不适合您的用例，该怎么办？</p>
 <p>在<code>-n</code>（<code>--interval</code>）选项，后跟秒的所需数量的允许更改的更新之间的时间间隔：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">watch -n INTERVAL_IN_SECONDS COMMAND
 </code></pre></div><p>例如，要使用<a href="/linux/how-to-check-disk-space-in-linux-using-the-df-command/">df命令</a>监视磁盘空间使用情况并每隔五秒刷新一次屏幕，您将运行：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">watch -n 5 df -h
-</code></pre><p><img src="/images/linux/linux-watch-command/watch-disk-space.jpg" alt=""></p>
-<h2 id="heading1">突出显示更新之间的差异</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">watch -n 5 df -h
+</code></pre></div><p><img src="/images/linux/linux-watch-command/watch-disk-space.jpg" alt=""></p>
+<h2 id="突出显示更新之间的差异">突出显示更新之间的差异</h2>
 <p>在<code>-d</code>（<code>--difference</code>），选项将导致手表突出连续更新之间的变化。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">watch -d COMMAND
 </code></pre></div><p>假设您希望通过运行<code>uptime</code>命令来监视系统正常运行时间并突出显示更改。命令是：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">watch -d uptime
-</code></pre><p><img src="/images/linux/linux-watch-command/watch-uptime.jpg" alt=""></p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">watch -d uptime
+</code></pre></div><p><img src="/images/linux/linux-watch-command/watch-uptime.jpg" alt=""></p>
 <p>如果您希望突出显示是粘滞的，请<code>=cumulative</code>转到该<code>-d</code>选项。这意味着所有已更改的值都将保持突出显示。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">watch -d<span class="o">=</span>cumulative COMMAND
-</code></pre></div><h2 id="heading2">带管道的命令</h2>
+</code></pre></div><h2 id="带管道的命令">带管道的命令</h2>
 <p>如果要执行包含管道的命令，则需要将命令括在单引号或双引号中。如果未附带完整命令，watch将仅运行第一个命令，然后将其输出通过管道传递给管道中的下一个命令。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">watch <span class="s1">&#39;COMMAND_1 | COMMAND_2&#39;</span>
 </code></pre></div><p>例如，以下命令将<code>80</code>使用<code>netstat</code>和<a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a>实用程序的组合监视端口上的活动连接数：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">watch &quot;netstat -anp | grep -c ':80\b.*LISTEN'&quot;
-</code></pre><h2 id="heading3">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">watch &#34;netstat -anp | grep -c &#39;:80\b.*LISTEN&#39;&#34;
+</code></pre></div><h2 id="结论">结论</h2>
 <p>到目前为止，您应该很好地理解如何使用Linux <code>watch</code>命令。您始终可以<code>watch</code>通过键入<code>man watch</code>终端来查看所有可用的命令选项。</p>
       </div><ul class="pa0">
   
@@ -256,11 +256,11 @@ watch实用程序是procps（或procps-ng）软件包的一部分，它几乎预
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#watch">如何使用Watch命令</a></li>
-    <li><a href="#heading">如何更改时间间隔</a></li>
-    <li><a href="#heading1">突出显示更新之间的差异</a></li>
-    <li><a href="#heading2">带管道的命令</a></li>
-    <li><a href="#heading3">结论</a></li>
+    <li><a href="#如何使用watch命令">如何使用Watch命令</a></li>
+    <li><a href="#如何更改时间间隔">如何更改时间间隔</a></li>
+    <li><a href="#突出显示更新之间的差异">突出显示更新之间的差异</a></li>
+    <li><a href="#带管道的命令">带管道的命令</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -272,7 +272,7 @@ watch实用程序是procps（或procps-ng）软件包的一部分，它几乎预
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,7 +142,7 @@
   
           <p>Let's Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let's Encrypt颁发的证书。</p>
 <p>在本教程中，我们将解释如何使用Certbot工具在Debian 9上获取Nginx的免费SSL证书。我们还将展示如何配置Nginx以使用SSL证书并启用HTTP / 2。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
 <li>以具有<a href="/linux/how-to-create-a-sudo-user-on-debian/">sudo权限</a>的用户身份登录。</li>
@@ -150,23 +150,23 @@
 <li>按照<a href="/linux/how-to-install-nginx-on-debian-9/">这些说明</a>安装Nginx[](/linux/how-to-install-nginx-on-debian-9/)</li>
 <li>您有一个适用于您的域的服务器块。您可以按照<a href="/linux/how-to-set-up-nginx-server-blocks-on-debian-9/">这些说明</a>获取有关如何创建一个的详细信息。</li>
 </ul>
-<h2 id="certbot">安装Certbot</h2>
+<h2 id="安装certbot">安装Certbot</h2>
 <p>Certbot是一个功能齐全且易于使用的工具，可以自动完成获取和更新Let的加密SSL证书和配置Web服务器以使用证书的任务。certbot包包含在默认的Ubuntu存储库中。</p>
 <p>更新软件包列表并安装certbot软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt updatesudo apt install certbot
-</code></pre><h2 id="dhdiffiehellman">生成强Dh（Diffie-Hellman）组</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt updatesudo apt install certbot
+</code></pre></div><h2 id="生成强dhdiffie-hellman组">生成强Dh（Diffie-Hellman）组</h2>
 <p>Diffie-Hellman密钥交换（DH）是一种在不安全的通信信道上安全地交换密码密钥的方法。我们将生成一组新的2048位DH参数以加强安全性：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-</code></pre><p>如果您愿意，可以将大小更改为4096位，但在这种情况下，生成可能需要超过30分钟，具体取决于系统熵。</p>
-<h2 id="letssl">获取Let的加密SSL证书</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+</code></pre></div><p>如果您愿意，可以将大小更改为4096位，但在这种情况下，生成可能需要超过30分钟，具体取决于系统熵。</p>
+<h2 id="获取let的加密ssl证书">获取Let的加密SSL证书</h2>
 <p>要获取我们域的SSL证书，我们将使用Webroot插件，该插件通过创建临时文件来验证<code>${webroot-path}/.well-known/acme-challenge</code>目录中的请求域。Let's Encrypt服务器向临时文件发出HTTP请求，以验证请求的域是否解析为运行certbot的服务器。</p>
 <p>我们将把所有HTTP请求映射<code>.well-known/acme-challenge</code>到一个目录，<code>/var/lib/letsencrypt</code>。</p>
 <p>以下命令将创建目录并使其可写入Nginx服务器。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">mkdir -p /var/lib/letsencrypt/.well-knownchgrp www-data /var/lib/letsencryptchmod g+s /var/lib/letsencrypt
-</code></pre><p>为避免重复代码，请创建以下两个片段，这些片段将包含在我们所有的Nginx服务器块文件中。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p /var/lib/letsencrypt/.well-knownchgrp www-data /var/lib/letsencryptchmod g+s /var/lib/letsencrypt
+</code></pre></div><p>为避免重复代码，请创建以下两个片段，这些片段将包含在我们所有的Nginx服务器块文件中。</p>
 <p>打开文本编辑器并创建第一个片段<code>letsencrypt.conf</code>：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/snippets/letsencrypt.conf
-</code></pre><p>/etc/nginx/snippets/letsencrypt.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/snippets/letsencrypt.conf
+</code></pre></div><p>/etc/nginx/snippets/letsencrypt.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">location</span> <span class="s">^~</span> <span class="s">/.well-known/acme-challenge/</span> <span class="p">{</span>
   <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
   <span class="kn">root</span> <span class="s">/var/lib/letsencrypt/</span><span class="p">;</span>
@@ -174,8 +174,8 @@
   <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div><p>创建<code>ssl.conf</code>包含<a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">Mozilla</a>推荐的削片机的第二个代码段，启用OCSP Stapling，HTTP严格传输安全性（HSTS），并强制执行一些以安全为中心的HTTP头。</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/snippets/ssl.conf
-</code></pre><p>/etc/nginx/snippets/ssl.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/snippets/ssl.conf
+</code></pre></div><p>/etc/nginx/snippets/ssl.conf</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">ssl_dhparam</span> <span class="s">/etc/ssl/certs/dhparam.pem</span><span class="p">;</span>
 
 <span class="k">ssl_session_timeout</span> <span class="s">1d</span><span class="p">;</span>
@@ -195,8 +195,8 @@
 <span class="k">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">SAMEORIGIN</span><span class="p">;</span>
 <span class="k">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">nosniff</span><span class="p">;</span>
 </code></pre></div><p>完成后，打开域服务器阻止文件并包含<code>letsencrypt.conf</code>如下所示的代码段：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/sites-available/example.com
-</code></pre><p>/etc/nginx/sites-available/example.com</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/sites-available/example.com
+</code></pre></div><p>/etc/nginx/sites-available/example.com</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
   <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
   <span class="kn">server_name</span> <span class="s">example.com</span> <span class="s">www.example.com</span><span class="p">;</span>
@@ -204,13 +204,13 @@
   <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div><p>通过为<code>sites-enabled</code>目录创建符号来启用新服务器块：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
-</code></pre><p>重新启动Nginx服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl restart nginx
-</code></pre><p>您现在可以使用webroot插件运行Certbot并通过发出以下命令获取SSL证书文件：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
-</code></pre><p>如果成功获得SSL证书，您的终端上将打印以下消息：</p>
-<pre><code class="language-output" data-lang="output">IMPORTANT NOTES:
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+</code></pre></div><p>重新启动Nginx服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><p>您现在可以使用webroot插件运行Certbot并通过发出以下命令获取SSL证书文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo certbot certonly --agree-tos --email admin@example.com --webroot -w /var/lib/letsencrypt/ -d example.com -d www.example.com
+</code></pre></div><p>如果成功获得SSL证书，您的终端上将打印以下消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
    /etc/letsencrypt/live/example.com/fullchain.pem
    Your key file has been saved at:
@@ -218,7 +218,7 @@
    Your cert will expire on 2018-07-28\. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot
    again. To non-interactively renew *all* of your certificates, run
-   &quot;certbot renew&quot;
+   &#34;certbot renew&#34;
  - Your account credentials have been saved in your Certbot
    configuration directory at /etc/letsencrypt. You should make a
    secure backup of this folder now. This configuration directory will
@@ -226,11 +226,11 @@
    making regular backups of this folder is ideal.
  - If you like Certbot, please consider supporting our work by:
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to ISRG / Let&#39;s Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
-</code></pre><p>接下来，编辑域服务器块，如下所示：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/nginx/sites-available/example.com
-</code></pre><p>/etc/nginx/sites-available/example.com</p>
+</code></pre></div><p>接下来，编辑域服务器块，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/sites-available/example.com
+</code></pre></div><p>/etc/nginx/sites-available/example.com</p>
 <div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
@@ -266,17 +266,17 @@
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>通过上面的配置，我们强制HTTPS并从www重定向到非www版本。</p>
 <p>重新加载Nginx服务以使更改生效：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo systemctl reload nginx
-</code></pre><h2 id="ssl">自动续订让我们加密SSL证书</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload nginx
+</code></pre></div><h2 id="自动续订让我们加密ssl证书">自动续订让我们加密SSL证书</h2>
 <p>我们的加密证书有效期为90天。要在证书过期之前自动续订证书，certbot包会创建一个cronjob，每天运行两次，并在到期前30天自动续订任何证书。</p>
 <p>由于我们在续订证书后使用certbot webroot插件，因此我们还必须重新加载nginx服务。附加<code>--renew-hook &quot;systemctl reload nginx&quot;</code>到<code>/etc/cron.d/certbot</code>文件，如下所示：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo nano /etc/cron.d/certbot
-</code></pre><p>/etc/cron.d/certbot</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/cron.d/certbot
+</code></pre></div><p>/etc/cron.d/certbot</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="m">0</span> */12 * * * root <span class="nb">test</span> -x /usr/bin/certbot -a <span class="se">\!</span> -d /run/systemd/system <span class="o">&amp;&amp;</span> perl -e <span class="s1">&#39;sleep int(rand(3600))&#39;</span> <span class="o">&amp;&amp;</span> certbot -q renew --renew-hook <span class="s2">&#34;systemctl reload nginx&#34;</span>
 </code></pre></div><p>通过运行以下命令测试自动续订过程：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo certbot renew --dry-run
-</code></pre><p>如果没有错误，则表示续订过程成功。</p>
-<h2 id="heading1">结论</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo certbot renew --dry-run
+</code></pre></div><p>如果没有错误，则表示续订过程成功。</p>
+<h2 id="结论">结论</h2>
 <p>现在必须拥有SSL证书。它可以保护您的网站，提高SERP排名位置，并允许您在Web服务器上启用HTTP / 2。</p>
 <p>在本教程中，您使用了Let的加密客户端certbot为您的域生成SSL证书。您还创建了Nginx代码段以避免重复代码并配置Nginx以使用证书。在本教程结束时，您已设置了一个用于自动证书续订的cronjob。</p>
       </div><ul class="pa0">
@@ -364,12 +364,12 @@
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#certbot">安装Certbot</a></li>
-    <li><a href="#dhdiffiehellman">生成强Dh（Diffie-Hellman）组</a></li>
-    <li><a href="#letssl">获取Let的加密SSL证书</a></li>
-    <li><a href="#ssl">自动续订让我们加密SSL证书</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装certbot">安装Certbot</a></li>
+    <li><a href="#生成强dhdiffie-hellman组">生成强Dh（Diffie-Hellman）组</a></li>
+    <li><a href="#获取let的加密ssl证书">获取Let的加密SSL证书</a></li>
+    <li><a href="#自动续订让我们加密ssl证书">自动续订让我们加密SSL证书</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -381,7 +381,7 @@
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 

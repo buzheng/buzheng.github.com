@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.62.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,65 +150,65 @@ Git 最初是由 Linux 内核的创建者 Linus Torvalds 开发的。
 <p>Git 是许多开源和商业项目使用的世界上最流行的分布式版本控制系统。它允许您跟踪代码更改，恢复到以前的阶段，创建分支以及与您的开发人员协作。</p>
 <p>Git 最初是由 Linux 内核的创建者 <a href="https://en.wikipedia.org/wiki/Linus_Torvalds">Linus Torvalds</a> 开发的。</p>
 <p>本教程在 Debian 9 上进行了测试，但它也适用于任何以前的 Debian 版本。</p>
-<h2 id="heading">先决条件</h2>
+<h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保以<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 权限的用户</a>身份登录。</p>
-<h2 id="-apt--git">用 apt 安装 Git</h2>
+<h2 id="用-apt-安装-git">用 apt 安装 Git</h2>
 <p>安装 Git 的最简单和推荐的方法是使用 Debian 默认存储库中的 apt 包管理工具。如果要安装最新的稳定版 Git ，请转到本教程 “从源代码安装 Git” 部分。</p>
 <p>以下步骤将向您展示如何在 Debian 系统上安装 Git ：</p>
 <ol>
 <li>
 <p>更新包索引。</p>
 <p>在安装新软件包之前，您应该始终更新 apt 软件包索引：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div></li>
 <li>
 <p>安装 Git 。</p>
 <p>更新列表后，请发出以下命令来安装 Git ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt install git
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install git
+</code></pre></div></li>
 <li>
 <p>验证 Git 安装。</p>
 <p>要验证安装类型，请使用以下命令打印 Git 版本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git --version
-</code></pre><pre><code class="language-output" data-lang="output">git version 2.11.0
-</code></pre></li>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git --version
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git version 2.11.0
+</code></pre></div></li>
 </ol>
 <p>从上面的输出中可以看出，您已经成功安装了 Git 版本 <code>2.11.0</code> 。您现在可以转到本教程的 “配置 Git” 部分来完成设置。</p>
-<h2 id="-git">从源代码安装 Git</h2>
+<h2 id="从源代码安装-git">从源代码安装 Git</h2>
 <p>另一个安装方法是从源代码编译 Git ，您将会安装最新的 Git 版本并自定义构建选项，但您将无法通过 <code>apt</code> 包管理器维护您的 Git 安装。</p>
 <p>在继续后续步骤之前，首先需要安装在 Debian 系统上构建 Git 所需的软件包：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo apt update
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
 sudo apt install make libssl-dev libghc-zlib-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
-</code></pre><p>一旦安装了依赖项，打开浏览器，转到 <a href="https://github.com/git/git/releases">GitHub 上的 Git 项目镜像</a>，并复制以 <code>.tar.gz</code> 结尾的最新版本链接地址：</p>
+</code></pre></div><p>一旦安装了依赖项，打开浏览器，转到 <a href="https://github.com/git/git/releases">GitHub 上的 Git 项目镜像</a>，并复制以 <code>.tar.gz</code> 结尾的最新版本链接地址：</p>
 <p><img src="/images/linux/how-to-install-git-on-debian-9/installing-git-from-source.jpg" alt=""></p>
 <p>在撰写本文时，最新的稳定 Git 版本是 <code>2.18.0</code> 。</p>
 <p>我们将在 <code>/usr/src</code> 目录中下载 Git 源代码，该目录是放置源文件的常用位置，首先跳转到目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">cd /usr/src/
-</code></pre><p>使用 <a href="/linux/wget-command-examples/">wget 命令</a>将存档文件下载为 <code>git.tar.gz</code> ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo wget https://github.com/git/git/archive/v2.18.0.tar.gz -O git.tar.gz
-</code></pre><p>下载完成后，解压缩下载的文件，然后输入以下命令切换到 git 源目录：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo tar -xf git.tar.gzcd git-*
-</code></pre><p>现在，您可以通过键入以下两个命令来编译和安装 Git ：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">sudo make prefix=/usr/local all
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /usr/src/
+</code></pre></div><p>使用 <a href="/linux/wget-command-examples/">wget 命令</a>将存档文件下载为 <code>git.tar.gz</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo wget https://github.com/git/git/archive/v2.18.0.tar.gz -O git.tar.gz
+</code></pre></div><p>下载完成后，解压缩下载的文件，然后输入以下命令切换到 git 源目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tar -xf git.tar.gzcd git-*
+</code></pre></div><p>现在，您可以通过键入以下两个命令来编译和安装 Git ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo make prefix=/usr/local all
 sudo make prefix=/usr/local install
-</code></pre><p>安装完成后，通过键入以下命令验证它，该命令将打印已安装的 Git 版本：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git --version
-</code></pre><pre><code class="language-output" data-lang="output">git version 2.18.0
-</code></pre><p>如果以后要升级到较新版本，则需要重复上面的安装过程。</p>
-<h2 id="-git1">配置 Git</h2>
+</code></pre></div><p>安装完成后，通过键入以下命令验证它，该命令将打印已安装的 Git 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git --version
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git version 2.18.0
+</code></pre></div><p>如果以后要升级到较新版本，则需要重复上面的安装过程。</p>
+<h2 id="配置-git">配置 Git</h2>
 <p>现在你已经安装了 Git ，建议你设置你的用于 Git 提交的电子邮件和用户名：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git config --global user.name &quot;Your Name&quot;
-git config --global user.email &quot;youremail@yourdomain.com&quot;
-</code></pre><p>您可以使用以下命令验证更改：</p>
-<pre><code class="language-console-bash" data-lang="console-bash">git config --list
-</code></pre><pre><code class="language-output" data-lang="output">user.name=Your Name
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git config --global user.name &#34;Your Name&#34;
+git config --global user.email &#34;youremail@yourdomain.com&#34;
+</code></pre></div><p>您可以使用以下命令验证更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git config --list
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">user.name=Your Name
 user.email=youremail@yourdomain.com
-</code></pre><p>配置设置存储在 <code>~/.gitconfig</code> 文件中：</p>
-<pre><code class="language-config" data-lang="config">[user]
+</code></pre></div><p>配置设置存储在 <code>~/.gitconfig</code> 文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[user]
     name = Your Name
     email = youremail@yourdomain.com
-</code></pre><p>如果要对 Git 配置进行其他更改，可以使用该 <code>git config</code> 命令或 <code>~/.gitconfig</code> 手动编辑文件。</p>
-<h2 id="heading1">结论</h2>
+</code></pre></div><p>如果要对 Git 配置进行其他更改，可以使用该 <code>git config</code> 命令或 <code>~/.gitconfig</code> 手动编辑文件。</p>
+<h2 id="结论">结论</h2>
 <p>您已经学习了如何在 Debian 系统上安装 Git 。您现在应该查看在线书籍 <a href="https://git-scm.com/book/en/v2">Pro Git</a>并了解有关如何使用 Git 的更多信息。</p>
       </div><ul class="pa0">
   
@@ -283,11 +283,11 @@ user.email=youremail@yourdomain.com
     <p class="f5 mb3 mt0">文章目录</p>
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">先决条件</a></li>
-    <li><a href="#-apt--git">用 apt 安装 Git</a></li>
-    <li><a href="#-git">从源代码安装 Git</a></li>
-    <li><a href="#-git1">配置 Git</a></li>
-    <li><a href="#heading1">结论</a></li>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#用-apt-安装-git">用 apt 安装 Git</a></li>
+    <li><a href="#从源代码安装-git">从源代码安装 Git</a></li>
+    <li><a href="#配置-git">配置 Git</a></li>
+    <li><a href="#结论">结论</a></li>
   </ul>
 </nav>
   </div>
@@ -299,7 +299,7 @@ user.email=youremail@yourdomain.com
     <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
-    &copy; 2019 不争笔记
+    &copy; 2020 不争笔记
   </a>
     <div>
 
