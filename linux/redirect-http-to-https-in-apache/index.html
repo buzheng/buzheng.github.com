@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Apache 中将 HTTP 重定向到 HTTPS |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Apache 中将 HTTP 重定向到 HTTPS" />
+<meta property="og:description" content="本指南介绍了如何在 Apache 中将 HTTP 流量重定向到 HTTPS 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/redirect-http-to-https-in-apache/" />
+<meta property="og:image" content="https://buzheng.org/linux/redirect-http-to-https-in-apache/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-09T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-09T12:00:00+08:00" />
+<meta itemprop="name" content="在 Apache 中将 HTTP 重定向到 HTTPS">
+<meta itemprop="description" content="本指南介绍了如何在 Apache 中将 HTTP 流量重定向到 HTTPS 。">
+<meta itemprop="datePublished" content="2020-01-09T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-09T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1429">
+<meta itemprop="image" content="https://buzheng.org/linux/redirect-http-to-https-in-apache/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="apache," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/redirect-http-to-https-in-apache/featured.jpg"/>
+<meta name="twitter:title" content="在 Apache 中将 HTTP 重定向到 HTTPS"/>
+<meta name="twitter:description" content="本指南介绍了如何在 Apache 中将 HTTP 流量重定向到 HTTPS 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Apache 中将 HTTP 重定向到 HTTPS</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-09T12:00:00&#43;08:00">2020年1月9日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1500 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本指南介绍了如何在 Apache 中将 HTTP 流量重定向到 HTTPS 。</p>
+<p>Apache HTTP 服务器是世界上最受欢迎的 Web 服务器之一。这是一个开放源代码和跨平台的 HTTP 服务器，为 Internet 的很大一部分网站提供支持。 Apache 提供了许多强大的功能，还可以通过其他模块进行扩展。</p>
+<p>如果您是网站所有者或系统管理员，则很可能会定期与 Apache 打交道。您可能要执行的最常见任务之一是将 HTTP 流量重定向到网站的安全 (HTTPS) 版本。</p>
+<p>HTTP 以纯文本形式发送和返回请求和响应，与 HTTP 不同，HTTPS 使用 TLS/SSL 加密客户端和服务器之间的通信。</p>
+<p>通过 HTTP 使用 HTTPS 有许多优点，例如：</p>
+<ul>
+<li>所有数据都是双向加密的。如果被拦截了敏感信息，则无法读取出来。</li>
+<li>Google Chrome 浏览器和所有其他流行的浏览器都会将您的网站标记为安全。</li>
+<li>HTTPS 允许您使用 HTTP/2 协议，这可以显着提高站点性能。</li>
+<li>Google 偏爱 HTTPS 网站。如果通过 HTTPS 提供服务，则您的网站排名将会更高。</li>
+</ul>
+<p>在 Apache 中，有几种方法可以重定向到 HTTPS 。如果您具有运行 Apache 的 Linux 服务器的超级用户访问权限，则首选方法是在域的虚拟主机配置文件中设置重定向。否则，您可以在域的 <code>.htaccess</code> 文件中设置重定向。</p>
+<p>某些控制面板(例如 cPanel) 使您可以通过单击几下鼠标来强制 HTTPS 重定向。</p>
+<h2 id="使用虚拟主机将-http-重定向到-https">使用虚拟主机将 HTTP 重定向到 HTTPS</h2>
+<p>Apache 虚拟主机定义服务器上托管的一个或多个域的设置。在虚拟主机指令中，您可以指定站点文档根目录(包含网站文件的目录)，为每个站点创建单独的安全策略，使用不同的 SSL 证书，配置重定向等等。</p>
+<p>通常，当在域上安装 SSL 证书时，您将对该域配置两个虚拟主机指令。第一个用于端口 80 的站点的 HTTP 版本，另一个用于端口 443 的 HTTPS 版本。</p>
+<p>在基于 Red Hat 的发行版(如 <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">CentOS</a> 和 Fedora) 中，虚拟主机文件存储在 <code>/etc/httpd/conf.d</code> 中。在 Debian 及其衍生版本(如 <a href="/linux/how-to-set-up-apache-virtual-hosts-on-ubuntu-18-04/">Ubuntu</a>) 上时，文件存储在 <code>/etc/apache2/sites-available</code> 目录中。</p>
+<p>要将网站重定向到 HTTPS ，请使用 <code>Redirect</code> 以下示例中所示的指令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span> 
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Redirect</span> permanent/https://example.com/
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Protocols</span> h2 http:/1.1
+
+  <span class="c"># SSL Configuration</span>
+
+  <span class="c"># Other Apache Configuration</span>
+
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+
+</code></pre></div><p>让我们解释一下代码。我们使用的是两个虚拟主机指令，一个用于 HTTP ，一个用于 HTTPS 版本的站点。</p>
+<ul>
+<li><code>VirtualHost *:80</code>  - Apache 服务器在端口 80(HTTP) 上侦听指定域的传入连接。</li>
+<li><code>VirtualHost *:443</code>  - Apache 服务器在端口 443(HTTPS) 上侦听指定域的传入连接。</li>
+</ul>
+<p><code>ServerName</code> 和 <code>ServerAlias</code> 指令都指定虚拟主机的域名。确保将其替换为您自己的域名。</p>
+<p><code>Redirect permanent/https://example.com/</code> HTTP 虚拟主机内部的突出显示的行将流量重定向到站点的 HTTPS 版本。</p>
+<p>通常，您还希望将站点的 HTTPS www 版本重定向到非 www ，反之亦然。这是一个示例配置：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span> 
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Redirect</span> permanent/https://example.com/
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Protocols</span> h2 http:/1.1
+
+  <span class="nt">&lt;If</span> <span class="s">&#34;%{HTTP_HOST} == &#39;www.example.com&#39;&#34;</span><span class="nt">&gt;</span>
+    <span class="nb">Redirect</span> permanent/https://example.com/
+  <span class="nt">&lt;/If</span><span class="s"></span><span class="nt">&gt;</span>
+
+  <span class="c"># SSL Configuration</span>
+
+  <span class="c"># Other Apache Configuration</span>
+
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+
+</code></pre></div><p>HTTPS 虚拟主机内的代码正在检查请求标头是否包含 www 域并重定向到非 www 版本。</p>
+<p>每当您对配置文件进行更改时，都需要重新启动或<a href="/linux/apache-commands-you-should-know/">重新加载 Apache 服务</a>，以使更改生效：</p>
+<ul>
+<li>
+<p>Debian和 Ubuntu ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload apache2 
+</code></pre></div></li>
+<li>
+<p>CentOS和 Fedora ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl reload httpd 
+</code></pre></div></li>
+</ul>
+<h2 id="使用-htaccess-重定向-http-到-https-">使用 <code>.htaccess</code> 重定向 HTTP 到 HTTPS  </h2>
+<p><code>.htaccess</code> 是 Apache Web 服务器按目录的配置文件。该文件可用于定义 Apache 如何从放置文件的目录中提供文件，以及启用/禁用其他功能。</p>
+<p>通常，该 <code>.htaccess</code> 文件位于域根目录中，但是您可以在子目录中包含其他的 <code>.htaccess</code> 文件。</p>
+<p>此方法要求将 <code>mod_rewrite</code> 模块加载到 Apache 服务器上。默认情况下，此模块在大多数服务器上加载。如果可能的话，最好在虚拟主机中创建重定向，因为它更简单，更安全。</p>
+<p>要将所有 HTTP 通信重定向到 HTTPS ，请打开根 <code>.htaccess</code> 文件，然后向其中添加以下代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://example.com/$1 [L,R=301]
+</code></pre></div><p>代码是什么意思：</p>
+<ul>
+<li><code>RewriteEngine On</code> - 启用重写功能。</li>
+<li><code>RewriteCond %{ HTTPS }  off</code>  - 检查 HTTP 连接，如果满足条件，则执行下一行。</li>
+<li><code>RewriteRule ^ (.*)$ https://example.com/$1 [L,R=301]</code> - 使用状态代码 301( 永久移动)将 HTTP 重定向到 HTTPS 。</li>
+</ul>
+<p>下面的示例还有一个附加条件，用于检查请求是否以开头 <code>www</code> 。使用它强制所有访问者使用网站的 HTTPS 非 www 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
+RewriteRule ^(.*)$ https://example.com/$1 [L,R=301]
+
+</code></pre></div><p>编辑 <code>.htaccess</code> 文件时，无需重新启动服务器，因为 Apache 会在每个请求中读取文件。</p>
+<h2 id="结论">结论</h2>
+<p>在 Apache 中，将 HTTP 重定向到 HTTPS 的首选方法是在域的虚拟主机中配置 301 重定向。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/start-stop-restart-apache/">如何启动，停止和重启 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 8 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-debian-10/">如何在 Debian 10 Linux 上安装 Apache Web Server</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-raspberry-pi/">如何在Raspberry Pi上安装Apache Web Server</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/apache-commands-you-should-know/">您应该知道的 Apache 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用 CentOS 7 上使用 Let&#39;s Encrypt 来保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和配置 Nextcloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-debian-9/">如何在 Debian 9 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#使用虚拟主机将-http-重定向到-https">使用虚拟主机将 HTTP 重定向到 HTTPS</a></li>
+    <li><a href="#使用-htaccess-重定向-http-到-https-">使用 .htaccess 重定向 HTTP 到 HTTPS  </a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
