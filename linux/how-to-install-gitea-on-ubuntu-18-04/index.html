@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Ubuntu 18.04 上安装 Gitea |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Ubuntu 18.04 上安装 Gitea" />
+<meta property="og:description" content="本教程说明了如何在 Ubuntu 18.04 上安装和配置 Gitea 。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Debian 的发行版。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-gitea-on-ubuntu-18-04/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-gitea-on-ubuntu-18-04/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-14T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-14T12:00:00+08:00" />
+<meta itemprop="name" content="在 Ubuntu 18.04 上安装 Gitea">
+<meta itemprop="description" content="本教程说明了如何在 Ubuntu 18.04 上安装和配置 Gitea 。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Debian 的发行版。">
+<meta itemprop="datePublished" content="2020-01-14T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-14T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1995">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-gitea-on-ubuntu-18-04/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="ubuntu,git,gitea," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-gitea-on-ubuntu-18-04/featured.jpg"/>
+<meta name="twitter:title" content="在 Ubuntu 18.04 上安装 Gitea"/>
+<meta name="twitter:description" content="本教程说明了如何在 Ubuntu 18.04 上安装和配置 Gitea 。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Debian 的发行版。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Ubuntu 18.04 上安装 Gitea</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-14T12:00:00&#43;08:00">2020年1月14日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 2000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本教程说明了如何在 Ubuntu 18.04 上安装和配置 Gitea 。相同的说明适用于 Ubuntu 16.04 和任何其他基于 Debian 的发行版。</p>
+<p>Gitea 是用 Go 语言编写的自托管开源 git 服务器。他 fork 自 <a href="/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/">Gogs.</a>。 Gitea 包括存储库文件编辑器，项目问题跟踪，用户管理，通知，内置 Wiki 等。</p>
+<p><a href="https://gitea.io/">Gitea</a> 是轻量级应用程序，可以安装在低功率系统上。如果您正在寻找内存占用量少得多的 Gitlab 替代产品，并且不需要 <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">Gitlab</a> 提供的所有功能，那么您绝对应该尝试 Gitea 。</p>
+<h2 id="先决条件">先决条件</h2>
+<p>Gitea 支持 SQLite ， <a href="/linux/how-to-install-postgresql-on-ubuntu-18-04/">PostgreSQL</a> 和 <a href="/linux/how-to-install-mysql-on-ubuntu-18-04/">MySQL</a>  /  <a href="/linux/how-to-install-mariadb-on-ubuntu-18-04/">MariaDB</a> 作为数据库后端。</p>
+<p>我们将使用 SQLite 作为 Gitea 的数据库。如果您的 Ubuntu 系统上未安装 SQLite ，则可以通过以输入以下 <a href="/linux/how-to-create-a-sudo-user-on-ubuntu/">sudo user</a> 命令来安装它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div><h2 id="安装-gitea">安装 Gitea</h2>
+<p>Gitea 提供了 Docker 映像，也可以从源代码，二进制文件或作为软件包安装。</p>
+<p>我们将从二进制文件安装 Gitea 。完成以下步骤，在 Ubuntu 上安装 Gitea 。</p>
+<h3 id="安装-git">安装 Git</h3>
+<p>第一步是在服务器上<a href="/linux/how-to-install-git-on-ubuntu-18-04/">安装 Git</a> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update
+</code></pre></div><p>通过显示 Git 版本来验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git --version
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">git version 2.17.1
+</code></pre></div><h3 id="创建一个-git-用户">创建一个 Git 用户</h3>
+<p>将通过键入以下内容来<a href="/linux/how-to-add-and-delete-users-on-ubuntu-18-04/">创建一个新的系统用户</a>，该用户将运行 Gitea 应用程序：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo adduser --system --group --disabled-password --shell /bin/bash --home /home/git --gecos &#39;Git Version Control&#39; git
+</code></pre></div><p>该命令将创建一个名为 <code>git</code> 的新用户和组，并将主目录设置为 <code>/home/git</code> 。输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Adding system user `git&#39; (UID 111) ...
+Adding new group `git&#39; (GID 116) ...
+Adding new user `git&#39; (UID 111) with group `git&#39; ...
+Creating home directory `/home/git&#39; ...
+</code></pre></div><h3 id="下载-gitea-二进制文件">下载 Gitea 二进制文件</h3>
+<p>访问 <a href="https://dl.gitea.io/gitea/">Gitea 下载页面</a>，并下载适用于您的体系结构的最新二进制文件。在撰写本文时，最新版本为 1.10.2 。如果有可用的新版本，请在下面的命令中更改 <code>VERSION</code> 变量。</p>
+<p>使用以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令将 Gitea 二进制文件下载到 <code>/tmp</code> 目录中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">VERSION=1.10.2
+sudo wget -O /tmp/gitea https://dl.gitea.io/gitea/${VERSION}/gitea-${VERSION}-linux-amd64
+</code></pre></div><p>该 <code>gitea</code> 的执行文件可以从任何位置运行。我们将遵循约定并将二进制文件移至 <code>/usr/local/bin</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mv /tmp/gitea /usr/local/bin
+</code></pre></div><p>使二进制文件可执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chmod +x /usr/local/bin/gitea
+</code></pre></div><p>运行以下命令以创建目录并设置所需的权限和<a href="/linux/linux-chown-command/">所有权</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/lib/gitea/{custom,data,indexers,public,log}
+</code></pre></div><p>上面的目录结构由官方的 Gitea 文档推荐。</p>
+<p>设置 <code>/etc/gitea</code> 目录的权限为， <code>770</code> 以便安装向导可以创建配置文件。安装完成后，我们将设置更多限制性权限。</p>
+<h3 id="创建系统单位文件">创建系统单位文件</h3>
+<p>Gitea 提供了匹配好的的 Systemd 单位文件并且已与我们的设置匹配。</p>
+<p>通过键入以下命令将文件 <code>/etc/systemd/system/</code> 下载到目录 <code>/etc/systemd/system/</code>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo wget https://raw.githubusercontent.com/go-gitea/gitea/master/contrib/systemd/gitea.service -P /etc/systemd/system/
+</code></pre></div><p>完成后，启用并启动 Gitea 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl daemon-reload
+</code></pre></div><p>验证服务是否成功启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">● gitea.service - Gitea (Git with a cup of tea)
+   Loaded: loaded (/etc/systemd/system/gitea.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2020-01-04 21:27:23 UTC; 3s ago
+ Main PID: 14804 (gitea)
+    Tasks: 9 (limit: 1152)
+   CGroup: /system.slice/gitea.service
+           └─14804 /usr/local/bin/gitea web --config /etc/gitea/app.ini
+...
+
+</code></pre></div><h3 id="配置-gitea">配置 Gitea</h3>
+<p>现在已经下载并运行了 Gitea ，是时候通过 Web 界面完成安装了。</p>
+<p>默认情况下， Gitea 会侦听 <code>3000</code> 所有网络接口上端口上的连接。</p>
+<p>如果您的服务器上运行着 <a href="/linux/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/">UFW 防火墙</a>，则需要打开 Gitea 端口：</p>
+<p>要允许  <code>3000</code> 端口上的流量，请输入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo ufw allow 3000/tcp
+</code></pre></div><p>打开浏览器，输入 <code>http://YOUR_DOMAIN_IR_IP:3000</code> ，然后会出现类似以下的屏幕：</p>
+<p><img src="gitea-install.jpg" alt=""></p>
+<p>数据库设置：</p>
+<ul>
+<li>数据库类型： SQLite3</li>
+<li>路径：使用绝对路径，  <code>/var/lib/gitea/data/gitea.db</code></li>
+</ul>
+<p>应用程序常规设置：</p>
+<ul>
+<li>站点标题：输入您的组织名称。</li>
+<li>存储库根路径：保留默认值 <code>/home/git/gitea-repositories</code> 。</li>
+<li>Git LFS根路径：保留默认值 <code>/var/lib/gitea/data/lfs</code> 。</li>
+<li>以用户名运行： git</li>
+<li>SSH服务器域：输入您的域或服务器 IP 地址。</li>
+<li>SSH端口： 22 ，如果 SSH 正在<a href="/linux/check-listening-ports-linux/">侦听其他端口</a>，请更改它 [](/linux/check-listening-ports-linux/)</li>
+<li>Gitea HTTP侦听端口： 3000</li>
+<li>Gitea基本 URL ：使用 http 和您的域或服务器 IP 地址。</li>
+<li>日志路径：保留默认值  <code>/var/lib/gitea/log</code></li>
+</ul>
+<p>您可以随时通过编辑 Gitea 配置文件来更改设置。</p>
+<p>完成后，点击“安装 Gitea” 按钮。安装是即时的。完成后，您将被重定向到登录页面。</p>
+<p>点击“立即注册”链接。第一个注册用户将自动添加到 Admin 组。</p>
+<p>使用以下命令将 Gitea 配置文件的<a href="/linux/chmod-command-in-linux/">权限</a>更改为只读：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chmod 750 /etc/gitea
+</code></pre></div><p>现在，Gitea 已安装在您的 Ubuntu 计算机上。</p>
+<h2 id="为-nginx-配置-ssl">为 Nginx 配置 SSL</h2>
+<p>此步骤是可选的，但强烈建议这样做。要将 <a href="/linux/nginx-reverse-proxy/">Nginx 用作反向代理</a>，您需要具有一个指向服务器公共 IP 的域或子域。在本教程中，我们将使用 <code>git.example.com</code> 。</p>
+<p>首先，安装 Nginx 并使用以下指南生成免费的“Let's Encrypt SSL” 证书：</p>
+<ul>
+<li><a href="/linux/how-to-install-nginx-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Nginx</a></li>
+<li><a href="/linux/secure-nginx-with-let-s-encrypt-on-ubuntu-18-04/">让我们在 Ubuntu 18.04 上加密来保护 Nginx</a></li>
+</ul>
+<p>完成后，打开文本编辑器并编辑域<a href="/linux/how-to-set-up-nginx-server-blocks-on-ubuntu-18-04/">服务器块文件</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/sites-enabled/git.example.com
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">git.example.com</span><span class="p">;</span>
+
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://git.example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">git.example.com</span><span class="p">;</span>
+
+    <span class="kn">proxy_read_timeout</span> <span class="s">720s</span><span class="p">;</span>
+    <span class="kn">proxy_connect_timeout</span> <span class="s">720s</span><span class="p">;</span>
+    <span class="kn">proxy_send_timeout</span> <span class="s">720s</span><span class="p">;</span>
+
+    <span class="kn">client_max_body_size</span> <span class="mi">50m</span><span class="p">;</span>
+
+    <span class="c1"># Proxy headers
+</span><span class="c1"></span>    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Host</span> <span class="nv">$host</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+    <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+
+    <span class="c1"># SSL parameters
+</span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/git.example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/git.example.com/privkey.pem</span><span class="p">;</span>
+    <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/git.example.com/chain.pem</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
+
+    <span class="c1"># log files
+</span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/git.example.com.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/git.example.com.error.log</span><span class="p">;</span>
+
+    <span class="c1"># Handle/requests
+</span><span class="c1"></span>    <span class="kn">location/{</span>
+       <span class="s">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+       <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:3000</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="k">}</span>
+
+</code></pre></div><p>不要忘记用您的 Gitea 域替换 git.example.com 并为 SSL 证书文件设置正确的路径。现在， <a href="/linux/redirect-http-to-https-in-nginx/">HTTP 流量已经重定向到 HTTPS</a></p>
+<p><a href="/linux/nginx-commands-you-should-know/">重新启动 Nginx 服务</a>以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><p>接下来，更改 Gitea 域和根 URL 。为此，请打开配置文件并编辑以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/gitea/app.ini
+</code></pre></div><p>文件 <code>/etc/gitea/app.ini</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[server]</span>
+<span class="na">DOMAIN</span>           <span class="o">=</span> <span class="s">git.example.com</span>
+<span class="na">ROOT_URL</span>         <span class="o">=</span> <span class="s">https://git.example.com/</span>
+
+</code></pre></div><p>通过键入以下命令重新启动 Gitea 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart gitea
+</code></pre></div><p>至此，已经配置了 Gitea 代理，您可以在以下位置访问它：  <code>https://git.example.com</code></p>
+<h2 id="配置电子邮件通知">配置电子邮件通知</h2>
+<p>为了使 Gitea 能够发送通知电子邮件，您可以安装 Postfix 或使用某些事务性邮件服务，例如 SendGrid ， MailChimp ， MailGun 或 SES 。</p>
+<p>要启用电子邮件通知，请打开配置文件并编辑以下行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/gitea/app.ini
+</code></pre></div><p>文件 <code>/etc/gitea/app.ini </code></p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[mailer]</span>
+<span class="na">ENABLED</span> <span class="o">=</span> <span class="s">true</span>
+<span class="na">HOST</span>    <span class="o">=</span> <span class="s">SMTP_SERVER:SMTP_PORT</span>
+<span class="na">FROM</span>    <span class="o">=</span> <span class="s">SENDER_EMAIL</span>
+<span class="na">USER</span>    <span class="o">=</span> <span class="s">SMTP_USER</span>
+<span class="na">PASSWD</span>  <span class="o">=</span> <span class="s">YOUR_SMTP_PASSWORD</span>
+
+</code></pre></div><p>确保您输入了正确的 SMTP 服务器信息。</p>
+<p>重新启动 Gitea 服务以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart gitea
+</code></pre></div><p>要验证设置并发送测试电子邮件，请登录 Gitea ，然后转到：站点管理&gt;配置 &gt; SMTP 邮件程序配置。</p>
+<p>Gitea 还允许您通过创建 <a href="https://docs.gitea.io/en-us/webhooks/">Web Webhook</a> 连接到 Slack  并将通知发送到您的 <a href="/linux/how-to-install-slack-on-ubuntu-18-04/">Slack 频道</a>。</p>
+<h2 id="升级-gitea">升级 Gitea</h2>
+<p>要升级到最新的 Gitea 版本，只需下载并替换二进制文件即可。</p>
+<ol>
+<li>
+<p>停止 Gitea 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl stop gitea
+</code></pre></div></li>
+<li>
+<p>下载最新的 Gitea 版本并将其移至 <code>/home/git</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">VERSION=&lt;THE_LATEST_GITEA_VERSION&gt;
+</code></pre></div></li>
+<li>
+<p>使二进制文件可执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chmod +x /usr/local/bin/gitea
+</code></pre></div></li>
+<li>
+<p>启动 Gitea 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart gitea
+</code></pre></div></li>
+</ol>
+<h2 id="结论">结论</h2>
+<p>本教程将引导您完成在 Ubuntu 18.04 上安装 Gitea 的过程。</p>
+<p>现在，您可以访问 <a href="https://docs.gitea.io/en-us/">Gitea 文档页面</a>，并学习如何配置 Gitea 实例并创建第一个项目。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/ubuntu" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">ubuntu</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/git" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">git</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/gitea" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">gitea</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gogs-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 Gogs</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装和配置 GitLab</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mono-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 Mono</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-8-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Python 3.8</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-change-git-remote-url/">如何更改 git 远程仓库地址</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/gitignore-ignoring-files-in-git/">使用 .gitignore 忽略 Git 中的文件和目录</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-change-root-password-in-ubuntu/">如何更改 Ubuntu 的 root 密码</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-centos-8/">如何在 CentOS 8 上安装 git</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#安装-gitea">安装 Gitea</a>
+      <ul>
+        <li><a href="#安装-git">安装 Git</a></li>
+        <li><a href="#创建一个-git-用户">创建一个 Git 用户</a></li>
+        <li><a href="#下载-gitea-二进制文件">下载 Gitea 二进制文件</a></li>
+        <li><a href="#创建系统单位文件">创建系统单位文件</a></li>
+        <li><a href="#配置-gitea">配置 Gitea</a></li>
+      </ul>
+    </li>
+    <li><a href="#为-nginx-配置-ssl">为 Nginx 配置 SSL</a></li>
+    <li><a href="#配置电子邮件通知">配置电子邮件通知</a></li>
+    <li><a href="#升级-gitea">升级 Gitea</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

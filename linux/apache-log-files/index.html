@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>为 Apache 配置错误日志和访问日志 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="为 Apache 配置错误日志和访问日志" />
+<meta property="og:description" content="本文介绍了如何配置和读取 Apache 访问和错误日​​志。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/apache-log-files/" />
+<meta property="og:image" content="https://buzheng.org/linux/apache-log-files/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-14T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-14T12:00:00+08:00" />
+<meta itemprop="name" content="为 Apache 配置错误日志和访问日志">
+<meta itemprop="description" content="本文介绍了如何配置和读取 Apache 访问和错误日​​志。">
+<meta itemprop="datePublished" content="2020-01-14T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-14T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1962">
+<meta itemprop="image" content="https://buzheng.org/linux/apache-log-files/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="apache," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/apache-log-files/featured.jpg"/>
+<meta name="twitter:title" content="为 Apache 配置错误日志和访问日志"/>
+<meta name="twitter:description" content="本文介绍了如何配置和读取 Apache 访问和错误日​​志。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">为 Apache 配置错误日志和访问日志</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-14T12:00:00&#43;08:00">2020年1月14日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 2000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本文介绍了如何配置和读取 Apache 访问和错误日​​志。</p>
+<p>Apache 是​​开放源代码和跨平台的 HTTP 服务器。它具有许多强大的功能，可以通过各种模块进行扩展。在管理 <a href="https://httpd.apache.org/">Apache</a>   Web 服务器时，您将执行的最常见任务之一是检查日志文件。</p>
+<p>在对服务器或应用程序问题进行故障排除时，知道如何配置和读取日志非常有用，因为它们提供了详细的调试信息。</p>
+<p>Apache 用两种类型的日志记录其事件记录：访问日志和错误日志。访问日志包括有关客户端请求的信息，错误日志则保存了有关服务器和应用程序问题的信息。</p>
+<h2 id="配置访问日志">配置访问日志</h2>
+<p>Apache Web 服务器会在访问日志中为所有已处理的请求生成一个新事件。每个事件记录都包含一个时间戳，并包含有关客户端和所请求资源的各种信息。访问日志显示访问者的位置，他们访问的页面，加载页面上花费的时间等等。</p>
+<p>该 <a href="https://httpd.apache.org/docs/2.4/mod/mod_log_config.html#customlog"><code>CustomLog</code></a> 伪指令定义了日志文件的位置以及所记录消息的格式。</p>
+<p><code>CustomLog</code> 指令的最基本语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">CustomLog</span> log_file format [condition];
+</code></pre></div><p>该 <code>log_file</code> 可以是相对 <code>ServerRoot</code> 或完整路径的日志文件。日志消息也可以使用管道符号 <code>|</code> 传输到另一个程序。</p>
+<p>第二个参数 <code>format</code> 指定日志消息的格式。它可以是显式格式定义或 <code>LogFormat</code> 指令定义别名。</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">LogFormat</span> <span class="s2">&#34;%h %l %u %t \&#34;%r\&#34; %&gt;s %O \&#34;%{Referer}i\&#34; \&#34;%{User-Agent}i\&#34;&#34;</span> combined
+<span class="nb">CustomLog</span> logs/access.log combined
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">CustomLog</span> logs/access.log <span class="s2">&#34;%h %l %u %t \&#34;%r\&#34; %&gt;s %O \&#34;%{Referer}i\&#34; \&#34;%{User-Agent}i\&#34;&#34;</span>
+</code></pre></div><p>为避免多次重复相同的代码，建议定义 <code>LogFormat</code> 指令并将其用作指令中的昵称 <code>CustomLog</code> 。</p>
+<p>有关所有格式字符串和修饰符的完整列表，请查看 <a href="https://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats">“mod_log_config”</a> 模块文档。</p>
+<p>第三个参数 <code>[condition]</code> 是可选的，它允许您仅在满足特定条件时编写日志消息。通常，这是使用环境变量完成的。该条件可以用 <code>!</code> 符号取反。</p>
+<p>例如，如果要排除对要写入日志文件的 css 文件的请求，则可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">SetEnvIf</span> Request_URI \.css$ css-file
+<span class="nb">CustomLog</span> logs/access.log custom env=!css-file
+</code></pre></div><p>要更改日志记录格式，您可以定义新 <code>LogFormat</code> 指令或覆盖默认格式。通常，最好定义一种新格式。</p>
+<p>虽然访问日志提供了非常有用的信息，但它占用了磁盘空间，并可能影响服务器性能。如果服务器资源不足，并且网站繁忙，则可能要禁用访问日志。</p>
+<p>为此，只需注释掉该 <code>CustomLog</code> 指令或从主服务器配置和虚拟服务器部分中删除该指令。</p>
+<p>如果只想关闭一个虚拟主机的访问日志，请将 <code>CustomLog</code> 指令的第一个参数设置为 <code>/dev/null</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">CustomLog</span> <span class="sx">/dev/null</span> combined
+</code></pre></div><h2 id="配置错误日志">配置错误日志</h2>
+<p>Apache 将有关应用程序和常规服务器错误的消息写入错误日志文件。如果您在 Web 应用程序中遇到错误，则错误日志是开始进行故障排除的第一个位置。</p>
+<p>该 <code>ErrorLog</code> 指令定义错误日志的名称位置。它采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">ErrorLog</span> log_file
+</code></pre></div><p>如果 <code>log_file</code> 的路径不是绝对路径，则将其设置为相对于 <code>ServerRoot</code> 的路径。错误消息也可以使用管道符号 <code>|</code> 传递到另一个程序。</p>
+<p>该 <code>LogLevel</code> 参数设置日志记录级别。以下是按严重性(从低到高)列出的级别：</p>
+<ul>
+<li><code>trace1</code> - <code>trace8</code>- 跟踪消息。</li>
+<li><code>debug</code> - 调试消息。</li>
+<li><code>info</code> - 信息性消息。</li>
+<li><code>notice</code> - 公告。</li>
+<li><code>warn</code> - 警告。</li>
+<li><code>error</code> - 处理请求时出错。</li>
+<li><code>crit</code>- 关键问题。需要迅速采取行动。</li>
+<li><code>alert</code>- 警报。必须立即采取行动。</li>
+<li><code>emerg</code>- 紧急情况。系统处于无法使用状态。</li>
+</ul>
+<p>每个日志级别包括更高级别。例如，如果你的日志级别设置为 <code>warn</code> ，阿帕奇也写了 <code>error</code> ， <code>crit</code> ， <code>alert</code> ，和 <code>emerg</code> 消息。</p>
+<p>当 <code>LogLevel</code> 不指定参数，则默认为 <code>warn</code> 。建议将级别至少设置为 <code>crit</code> 。</p>
+<p>该 <code>ErrorLogFormat</code> 指令指定错误日志的格式。在大多数 Linux 发行版中， Apache 服务器使用默认格式，这在大多数情况下已足够。</p>
+<h2 id="虚拟主机和全局日志">虚拟主机和全局日志</h2>
+<p>可以在全局或每个虚拟主机的基础上设置日志记录行为和文件位置。</p>
+<p>然后在主服务器上下文中设置 <code>CustomLog</code> 或者 <code>ErrorLog</code> 指令，服务器将所有日志消息写入相同的访问和错误日​​志文件。否则，如果将指令放置在 <code>&lt;VirtualHost&gt;</code> 块内，则仅将该虚拟主机的日志消息写入指定的文件。</p>
+<p>在该 <code>&lt;VirtualHost&gt;</code> 块中设置的 <code>log</code> 指令将覆盖服务器上下文中的一个。</p>
+<p>没有 <code>CustomLog</code> 或没有 <code>ErrorLog</code> 指令的虚拟主机会将其日志消息写入全局服务器日志。</p>
+<p>为了提高可读性，建议为每个虚拟主机设置单独的访问和错误日​​志文件。这是一个例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+     <span class="nb">ServerName</span> example.com
+     <span class="nb">ServerAlias</span> www.example.com
+     <span class="nb">ServerAdmin</span> webmaster@example.com
+     <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com/public</span>
+     <span class="nb">LogLevel</span> <span class="k">warn</span>
+     <span class="nb">ErrorLog</span> <span class="sx">/var/www/example.com/logs/error.log</span>
+     <span class="nb">CustomLog</span> <span class="sx">/var/www/example.com/logs/access.log</span> combined
+<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+
+</code></pre></div><p>每当您修改配置文件时，都必须<a href="/linux/apache-commands-you-should-know/">重新启动 Apache 服务</a>才能使更改生效。</p>
+<h2 id="日志文件的位置">日志文件的位置</h2>
+<p>默认情况下，在<a href="/linux/how-to-install-apache-on-debian-10/">基于 Debian 的</a>发行版(如 <a href="/linux/how-to-install-apache-on-ubuntu-18-04/">Ubuntu) 上</a>，访问和错误日​​志位于 <code>/var/log/apache2</code> 目录中。在 <a href="/linux/how-to-install-apache-on-centos-8/">CentOS 上</a>，日志文件位于 <code>/var/log/httpd</code> 目录中。</p>
+<h2 id="阅读和了解-apache-日志文件">阅读和了解 Apache 日志文件</h2>
+<p>日志文件可以使用像 <a href="/linux/linux-cat-command/"><code>cat</code></a> ， <a href="/linux/less-command-in-linux/"><code>less</code></a> ， <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/"><code>grep</code></a> ， <a href="/linux/linux-cut-command/"><code>cut</code></a> ， <code>awk</code> ，等标准命令来打开并分析。</p>
+<p>以下是使用 Debian   <code>combine</code> 日志格式的访问日志文件中的示例记录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">192.168.33.1 - - [08/Jan/2020:21:39:03 +0000] &#34;GET/HTTP/1.1&#34; 200 6169 &#34;-&#34; &#34;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36&#34;
+</code></pre></div><p>让我们分解一下记录的每个字段的含义：</p>
+<ul>
+<li><code>%h</code> - <code>192.168.33.1</code> 发出请求的客户端的主机名或 IP 地址。</li>
+<li><code>%l</code> - <code>-</code>- 远程登录名字。未设置用户名时，显示 <code>-</code> 。</li>
+<li><code>%u</code> - <code>-</code> 如果请求已通过身份验证，则显示远程用户名。</li>
+<li><code>%t</code> - <code>[08/Jan/2020:21:39:03 +0000]</code>- 本地服务器时间。</li>
+<li><code>\&quot; %r\ &quot; </code> -  <code>&quot; GET/HTTP/1.1 &quot;</code> 请求的第一行。请求类型，路径和协议。</li>
+<li><code>%&gt;s</code> -  <code>200</code> 最终服务器响应代码。如果 <code>&gt;</code> 未使用该符号，并且请求已在内部重定向，它将显示原始请求的状态。</li>
+<li><code>%O</code> -  <code>396</code> 服务器响应的大小(以字节为单位)。</li>
+<li><code>\&quot;%{ Referer } i\ &quot; </code> -  <code>&quot;-&quot;</code>引荐网址。</li>
+<li><code>\&quot;%{ User-Agent } i\ &quot; </code> -  <code>Mozilla/5.0 ...</code> 客户端的用户代理 (Web 浏览器)。</li>
+</ul>
+<p>使用以下 <a href="/linux/linux-tail-command/"><code>tail</code></a> 命令实时查看日志文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tail -f access.log 
+</code></pre></div><h2 id="结论">结论</h2>
+<p>日志文件为您提供有关服务器问题以及访问者如何与您的网站进行交互的有用信息。</p>
+<p>Apache 有一个非常可配置的日志记录系统，该系统允许您根据需要自定义访问和错误日​​志。</p>
+<p>如果您有任何问题或反馈，请随时发表评论。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-debian-10/">在 Debian 10 上使用 Let&#39;s Encrypt 免费证书为 Apache 配置 HTTPS</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/redirect-http-to-https-in-apache/">在 Apache 中将 HTTP 重定向到 HTTPS</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/start-stop-restart-apache/">如何启动，停止和重启 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 8 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-debian-10/">如何在 Debian 10 Linux 上安装 Apache Web Server</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-raspberry-pi/">如何在Raspberry Pi上安装Apache Web Server</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/apache-commands-you-should-know/">您应该知道的 Apache 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用 CentOS 7 上使用 Let&#39;s Encrypt 来保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和配置 Nextcloud</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#配置访问日志">配置访问日志</a></li>
+    <li><a href="#配置错误日志">配置错误日志</a></li>
+    <li><a href="#虚拟主机和全局日志">虚拟主机和全局日志</a></li>
+    <li><a href="#日志文件的位置">日志文件的位置</a></li>
+    <li><a href="#阅读和了解-apache-日志文件">阅读和了解 Apache 日志文件</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
