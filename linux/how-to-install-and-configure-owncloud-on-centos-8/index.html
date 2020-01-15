@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装和配置 OwnCloud |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装和配置 OwnCloud" />
+<meta property="og:description" content="本教程说明了如何在 CentOS 8 上使用 Apache 安装和配置 ownCloud 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-and-configure-owncloud-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-and-configure-owncloud-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-15T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-15T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装和配置 OwnCloud">
+<meta itemprop="description" content="本教程说明了如何在 CentOS 8 上使用 Apache 安装和配置 ownCloud 。">
+<meta itemprop="datePublished" content="2020-01-15T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-15T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="873">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-and-configure-owncloud-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="owncloud,centos,apache," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-and-configure-owncloud-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装和配置 OwnCloud"/>
+<meta name="twitter:description" content="本教程说明了如何在 CentOS 8 上使用 Apache 安装和配置 ownCloud 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装和配置 OwnCloud</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-15T12:00:00&#43;08:00">2020年1月15日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本教程说明了如何在 CentOS 8 上使用 Apache 安装和配置 ownCloud 。</p>
+<p><a href="https://owncloud.org/">ownCloud</a> 是一个开放源代码，自托管的云平台，用于管理和共享文件。它可以替代 Dropbox ， Microsoft OneDrive 和 Google Drive 。 ownCloud 可通过应用程序进行扩展，并具有适用于所有主要平台的桌面和移动客户端。</p>
+<h2 id="先决条件">先决条件</h2>
+<p>在继续执行以下步骤之前，请确保满足以下先决条件：</p>
+<ul>
+<li>以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 访问权限的用户</a>身份登录。</li>
+<li>您已经在系统上安装了 <a href="/linux/how-to-install-mariadb-on-centos-8/">MariaDB</a> ， <a href="/linux/how-to-install-apache-on-centos-8/">Apache</a> 和 <a href="/linux/how-to-install-php-on-centos-8/">PHP 7.2 或 7.3</a> 。</li>
+</ul>
+<h2 id="创建数据库">创建数据库</h2>
+<p>ownCloud 支持 SQLite ， Oracle 12g ， <a href="/linux/how-to-install-postgresql-on-centos-8/">PostgreSQL 9</a> ， MariaDB 和 <a href="/linux/how-to-install-mysql-on-centos-8/">MySQL</a> 。我们将使用 MariaDB 作为数据库后端。</p>
+<p>通过键入以下内容登录到 MariaDB Shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mysql
+</code></pre></div><p>运行以下 SQL 语句<a href="/linux/how-to-create-a-mysql-database/">创建一个新数据库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE owncloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</code></pre></div><p>创建一个<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">新的数据库用户并授予访问权限</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">GRANT ALL ON owncloud.* TO &#39;ownclouduser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;change-with-strong-password&#39;;
+</code></pre></div><p>完成后，通过键入以下命令退出 MariaDB 控制台：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">EXIT;
+</code></pre></div><h2 id="安装-apache-和-php-模块">安装 Apache 和 PHP 模块</h2>
+<p>ownCloud 是一个 PHP 应用程序。 CentOS 8 附带了 ownCloud 支持的 PHP 7.2 ，但其官方文档建议使用 PHP 7.3 。</p>
+<p>运行以下命令以安装所有必需的 PHP 扩展：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install php php-curl php-gd php-intl php-json php-ldap php-mbstring php-mysqlnd php-xml php-zip php-opcache 
+</code></pre></div><p>通过重新启动 FPM 服务来加载新模块：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart php-fpm
+</code></pre></div><h2 id="下载-owncloud">下载 ownCloud</h2>
+<p>在撰写本文时， ownCloud 的最新稳定版本是 10.3.2 版。在继续下一步之前，请访问 <a href="https://owncloud.org/download/">ownCloud 下载页面</a>并检查是否有新版本的 ownCloud 。</p>
+<p>使用以下 <a href="/linux/wget-command-examples/">wget 命令</a>下载 ownCloud zip 存档：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget https://download.owncloud.org/community/owncloud-10.3.2.tar.bz2 -P /tmp
+</code></pre></div><p>下载完成后，<a href="/linux/how-to-extract-unzip-tar-bz2-file/">将存档解压缩</a>到以下 <code>/var/www</code> 目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tar jxf /tmp/owncloud-10.3.2.tar.bz2 -C /var/www
+</code></pre></div><p><a href="/linux/linux-chown-command/">设置正确的所有权</a>，以便 Apache Web 服务器可以完全访问 ownCloud 的文件和目录。</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">sudo chown -R apache: /var/www/owncloud
+</code></pre></div><p>如果 <a href="/linux/how-to-disable-selinux-on-centos-8/">SELinux</a> 在您的系统上<a href="/linux/how-to-disable-selinux-on-centos-8/">运行</a>，则需要更新 SELinux 安全上下文：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chcon -tR httpd_sys_rw_content_t /var/www/owncloud
+</code></pre></div><h2 id="配置-apache">配置 Apache</h2>
+<p>打开文本编辑器并创建以下 Apache 配置文件。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/httpd/conf.d/owncloud.conf
+</code></pre></div><p>文件 <code>/etc/httpd/conf.d/owncloud.conf </code></p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nb">Alias</span> <span class="sx">/owncloud</span> <span class="s2">&#34;/var/www/owncloud/&#34;</span>
+
+<span class="nt">&lt;Directory</span> <span class="s">/var/www/owncloud/</span><span class="nt">&gt;</span>
+  <span class="nb">Options</span> +FollowSymlinks
+  <span class="nb">AllowOverride</span> <span class="k">All</span>
+
+ <span class="nt">&lt;IfModule</span> <span class="s">mod_dav.c</span><span class="nt">&gt;</span>
+  <span class="nb">Dav</span> <span class="k">off</span>
+ <span class="nt">&lt;/IfModule</span><span class="s"></span><span class="nt">&gt;</span>
+
+ <span class="nb">SetEnv</span> HOME <span class="sx">/var/www/owncloud</span>
+ <span class="nb">SetEnv</span> HTTP_HOME <span class="sx">/var/www/owncloud</span>
+
+<span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
+</code></pre></div><p><a href="/linux/start-stop-restart-apache/">重新启动 Apache 服务</a>以激活更改：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart httpd
+</code></pre></div><h2 id="安装-owncloud">安装 ownCloud</h2>
+<p>既然已经下载了 ownCloud ，并且已经配置了服务，请打开浏览器并通过访问服务器的域名或 IP 地址，然后通过 <code>/owncloud</code> 以下命令开始 ownCloud 安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">https://domain_name_or_ip_address/owncloud
+
+</code></pre></div><p>您将看到 ownCloud 设置页面。</p>
+<p><img src="install-owncloud-centos.jpg" alt=""></p>
+<p>如果您无法访问该页面，则可能是<a href="/linux/how-to-configure-and-manage-firewall-on-centos-8/">防火墙</a>阻止了端口 <code>80</code> 或 <code>443</code> 。</p>
+<p>使用以下命令打开必要的端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --zone=public --add-port=80/tcp
+</code></pre></div><p>输入所需的管理员用户名和密码以及先前创建的 MySQL 用户和数据库详细信息。</p>
+<p>点击 <code>Finish setup</code> 按钮。安装过程完成后，您将被重定向到以 admin 用户身份登录的 ownCloud 仪表板。</p>
+<p><img src="owncloud-dashboard.jpg" alt=""></p>
+<h2 id="结论">结论</h2>
+<p>您已经了解了如何在 CentOS 8 计算机上安装和配置 ownCloud 。如果您的域名与您自己的 Cloud 服务器相关联，则应<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">使用免费的 Let's Encrypt SSL 证书来保护 Apache</a> 。</p>
+<p>要查找有关如何管理 ownCloud 实例的更多信息，请访问 <a href="https://doc.owncloud.com/server/index.html">ownCloud 文档</a>页面。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/owncloud" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">owncloud</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 8 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用 CentOS 7 上使用 Let&#39;s Encrypt 来保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-owncloud-on-ubuntu-18-04/">如何在Ubuntu 18.04上使用Apache安装和配置ownCloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/apache-log-files/">为 Apache 配置错误日志和访问日志</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建数据库">创建数据库</a></li>
+    <li><a href="#安装-apache-和-php-模块">安装 Apache 和 PHP 模块</a></li>
+    <li><a href="#下载-owncloud">下载 ownCloud</a></li>
+    <li><a href="#配置-apache">配置 Apache</a></li>
+    <li><a href="#安装-owncloud">安装 ownCloud</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
