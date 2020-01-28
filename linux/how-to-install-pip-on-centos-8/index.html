@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 安装 pip |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 安装 pip" />
+<meta property="og:description" content="pip 是一个软件包管理系统，可让您安装，删除和管理以 Python 编写的软件包。它可用于从 Python 软件包索引 (PyPI) 和其他索引安装软件包。
+在本教程中，我们将阐述如何在 CentOS 8 上为 Python 2 和 3 安装 pip ，并介绍如何使用 pip 管理 Python 软件包的基础知识。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-pip-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-pip-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-28T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-28T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 安装 pip">
+<meta itemprop="description" content="pip 是一个软件包管理系统，可让您安装，删除和管理以 Python 编写的软件包。它可用于从 Python 软件包索引 (PyPI) 和其他索引安装软件包。
+在本教程中，我们将阐述如何在 CentOS 8 上为 Python 2 和 3 安装 pip ，并介绍如何使用 pip 管理 Python 软件包的基础知识。">
+<meta itemprop="datePublished" content="2020-01-28T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-28T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="930">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-pip-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="python,pip,centos," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-pip-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 安装 pip"/>
+<meta name="twitter:description" content="pip 是一个软件包管理系统，可让您安装，删除和管理以 Python 编写的软件包。它可用于从 Python 软件包索引 (PyPI) 和其他索引安装软件包。
+在本教程中，我们将阐述如何在 CentOS 8 上为 Python 2 和 3 安装 pip ，并介绍如何使用 pip 管理 Python 软件包的基础知识。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 安装 pip</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-28T12:00:00&#43;08:00">2020年1月28日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>pip 是一个软件包管理系统，可让您安装，删除和管理以 Python 编写的软件包。它可用于从 Python 软件包索引 (PyPI) 和其他索引安装软件包。</p>
+<p>在本教程中，我们将阐述如何在 CentOS 8 上为 Python 2 和 3 安装 pip ，并介绍如何使用 pip 管理 Python 软件包的基础知识。</p>
+<h2 id="在-centos-8-上安装-pip">在 CentOS 8 上安装 pip</h2>
+<p>如您所知，Python 2 和 Python3 两个都是正在积极开发的 Python 版本。默认情况下， RHEL/CentOS 8 没有完整的系统范围 <code>python</code> 命令，以避免将用户锁定到特定版本的 Python 。相反，它使用户可以选择安装，配置和运行特定的 <a href="/linux/how-to-check-python-version/">Python 版本</a>。</p>
+<p>在全局安装 python 模块时，您应该首选使用 <code>dnf</code> 或 <code>yum</code> 安装发行版存储库中的 python 模块，因为经过测试它们可以在 CentOS 8 上正常工作。仅当 python 模块没有 <a href="/linux/how-to-install-rpm-packages-on-centos/">rpm 软件包</a>时，才使用 pip 全局安装 python 模块。</p>
+<p>Python 模块软件包的名称以 “python2” 为前缀， Python 3 模块以 “ python3”为前缀。例如，要为 Python 3  安装 <a href="http://www.paramiko.org/">paramiko</a> 模块，应运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install python3-paramiko
+</code></pre></div><h3 id="为-python-3-安装-pippip3">为 Python 3 安装 pip(pip3)</h3>
+<p>要在 CentOS 8 上为 Python 3 安装 pip ，请以 root 或 <a href="/linux/how-to-add-user-to-sudoers-in-centos/">sudo 用户</a>身份在终端中运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install python3
+</code></pre></div><p>该命令将<a href="/linux/how-to-install-python-on-centos-8/">安装 Python</a> 3.6 和 pip 。</p>
+<p>要运行 Python 3 ，您需要显式输入 <code>python3</code>，同样，要运行 pip 3，请显示的输入 <code>pip3</code> 。</p>
+<p>通过运行以下命令来打印 pip 版本，以验证是否正确安装了 pip ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip3 --version
+</code></pre></div><p>版本号可能会有所不同，但是应该是这样的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">pip 9.0.3 from /usr/lib/python3.6/site-packages (python 3.6)
+</code></pre></div><p>为了能够使用 pip 安装和构建 Python 模块，您需要安装开发工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install python3-devel
+</code></pre></div><h3 id="为-python-2-安装-pippip2">为 Python 2 安装 pip(pip2)</h3>
+<p>要安装 Python 2 和 pip ，请输入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install python2
+</code></pre></div><p>通过输入以下命令验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip2 --version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Python 2.7.15
+</code></pre></div><p>要执行 Python 2 ，请输入 <code>python2</code> ，同样，要运行 pip2 请输入   <code>pip2</code> 。</p>
+<p>安装开发工具：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo yum install python2-devel
+</code></pre></div><h2 id="使用-pip-管理-python-软件包">使用 pip 管理 Python 软件包</h2>
+<p>通常，您应该仅在虚拟环境中使用 pip 。 Python 虚拟环境允许您将 Python 模块安装在特定项目的隔离位置，而不必全局安装。这样，您不必担心会影响其他 Python 项目。</p>
+<p>在本节中，我们将介绍几个基本的 pip 命令。</p>
+<p>要使用 pip 安装 python 模块， <code>pip install</code> 后跟软件包名称。例如，要安装名为 <code>twisted</code> 的软件包，您将运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install twisted
+</code></pre></div><blockquote>
+<p>twisted 是一个用 Python 编写的异步网络框架。</p>
+</blockquote>
+<p>如果要安装软件包的特定版本，请使用以下格式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install twisted==19.10.0
+</code></pre></div><p>要卸载软件包，请使用 <code>pip uninstall</code> 后跟软件包名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip uninstall package_name
+</code></pre></div><p>要从 PyPI 搜索软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip search &#34;package_name&#34;
+</code></pre></div><p>已安装的软件包可以列出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip list
+</code></pre></div><p>列出过时的软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip list --outdated
+</code></pre></div><p>要将已安装的软件包升级到最新版本，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pip3 install --upgrade package_name
+</code></pre></div><h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何在 CentOS 8 上安装 pip ，以及如何使用 pip 轻松安装和卸载 Python 模块。</p>
+<p>有关 pip 的更多信息，请参阅 <a href="https://pip.pypa.io/en/stable/user_guide">pip 用户指南</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/python" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">python</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/pip" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">pip</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-centos-8/">在 CentOS 8 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-on-centos-8/">如何在 CentOS 8 上安装 Python</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-centos-7/">如何在 CentOS 7 上安装 Pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-on-centos-7/">如何在 CentOS 7 上安装 Python 3</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-debian-10/">如何在 Debian 10 上安装 pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-deploy-odoo-12-on-ubuntu-18-04/">如何在Ubuntu 18.04上部署Odoo 12</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#在-centos-8-上安装-pip">在 CentOS 8 上安装 pip</a>
+      <ul>
+        <li><a href="#为-python-3-安装-pippip3">为 Python 3 安装 pip(pip3)</a></li>
+        <li><a href="#为-python-2-安装-pippip2">为 Python 2 安装 pip(pip2)</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用-pip-管理-python-软件包">使用 pip 管理 Python 软件包</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
