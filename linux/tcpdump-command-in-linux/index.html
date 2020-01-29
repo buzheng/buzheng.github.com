@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux 中 tcpdump 命令用法实例 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux 中 tcpdump 命令用法实例" />
+<meta property="og:description" content="tcpdump 是一个命令行实用程序，可用于捕获和检查进出系统的网络流量。它是网络管理员中用于排除网络问题和安全测试的最常用工具。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/tcpdump-command-in-linux/" />
+<meta property="og:image" content="https://buzheng.org/linux/tcpdump-command-in-linux/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-29T08:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-29T08:00:00+08:00" />
+<meta itemprop="name" content="Linux 中 tcpdump 命令用法实例">
+<meta itemprop="description" content="tcpdump 是一个命令行实用程序，可用于捕获和检查进出系统的网络流量。它是网络管理员中用于排除网络问题和安全测试的最常用工具。">
+<meta itemprop="datePublished" content="2020-01-29T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-29T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="3222">
+<meta itemprop="image" content="https://buzheng.org/linux/tcpdump-command-in-linux/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="tcpdump,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/tcpdump-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux 中 tcpdump 命令用法实例"/>
+<meta name="twitter:description" content="tcpdump 是一个命令行实用程序，可用于捕获和检查进出系统的网络流量。它是网络管理员中用于排除网络问题和安全测试的最常用工具。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux 中 tcpdump 命令用法实例</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-29T08:00:00&#43;08:00">2020年1月29日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 3300 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 9 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>tcpdump</code> 是一个命令行实用程序，可用于捕获和检查进出系统的网络流量。它是网络管理员中用于排除网络问题和安全测试的最常用工具。</p>
+<p>尽管名称为 <code>tcpdump</code> ，但您也可以使用来捕获非 TCP 流量，例如 UDP ， ARP 或 ICMP 。捕获的数据包可以写入文件或标准输出。 <code>tcpdump</code> 命令最强大的功能之一是它能够使用过滤器并仅捕获要分析的数据。</p>
+<p>在本文中，我们将介绍如何在 Linux 中使用 <code>tcpdump</code> 命令的基础知识。</p>
+<h2 id="安装-tcpdump">安装  <code>tcpdump</code></h2>
+<p><code>tcpdump</code> 已经默认预装在大多数 Linux 发行版和 macOS 上。要检查 <code>tcpdump</code> 命令在您的系统上是否可用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tcpdump --version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">tcpdump version 4.9.2
+libpcap version 1.8.1
+OpenSSL 1.1.1b  26 Feb 2019
+</code></pre></div><p>如果您的系统上没有 <code>tcpdump</code> 命令，则上面的命令将输出 “tcpdump: command not found”。您可以使用发行版的软件包管理器轻松安装 <code>tcpdump</code> 。</p>
+<h3 id="在-ubuntu-和-debian-上安装-tcpdump">在 Ubuntu 和 Debian 上安装 <code>tcpdump</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt update <span class="o">&amp;&amp;</span> sudo apt install tcpdump
+</code></pre></div><h3 id="在-centos-和-fedora-上安装-tcpdump">在 CentOS 和 Fedora 上安装 <code>tcpdump</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo yum install tcpdump
+</code></pre></div><h3 id="在-arch-linux-上安装-tcpdump">在 Arch Linux 上安装 <code>tcpdump</code></h3>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo pacman -S tcpdump
+</code></pre></div><h2 id="使用-tcpdump-捕获数据包">使用 <code>tcpdump</code> 捕获数据包 </h2>
+<p><code>tcpdump</code> 命令的常规语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tcpdump <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>expression<span class="o">]</span>
+</code></pre></div><ul>
+<li><code>options</code> 允许您控制命令的行为。</li>
+<li>过滤器 <code>expression</code> 定义将捕获哪些数据包。</li>
+</ul>
+<p>只有 root 或具有 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 特权的用户才能运行 <code>tcpdump</code> 。如果尝试以非特权用户身份运行该命令，则会收到一条错误消息：“You don’t have permission to capture on that device”。</p>
+<p><code>tcpdump</code> 最简单的用例是不带任何选项和过滤器的调用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo tcpdump
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on ens3, link-type EN10MB (Ethernet), capture size 262144 bytes
+15:47:24.248737 IP linuxize-host.ssh &gt; desktop-machine.39196: Flags [P.], seq 201747193:201747301, ack 1226568763, win 402, options [nop,nop,TS val 1051794587 ecr 2679218230], length 108
+15:47:24.248785 IP linuxize-host.ssh &gt; desktop-machine.39196: Flags [P.], seq 108:144, ack 1, win 402, options [nop,nop,TS val 1051794587 ecr 2679218230], length 36
+15:47:24.248828 IP linuxize-host.ssh &gt; desktop-machine.39196: Flags [P.], seq 144:252, ack 1, win 402, options [nop,nop,TS val 1051794587 ecr 2679218230], length 108
+
+... Long output suppressed
+
+23116 packets captured
+23300 packets received by filter
+184 packets dropped by kernel
+</code></pre></div><p><code>tcpdump</code> 将继续捕获数据包并写入标准输出，直到接收到中断信号为止。使用 <code>Ctrl+C</code> 组合键发送中断信号并停止命令。</p>
+<p>对于更详细的输出，请传递 <code>-v</code> 选项，或者 <code>-vv</code> 输出更更详细的信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo tcpdump -vv
+</code></pre></div><p>您可以使用 <code>-c</code> 选项指定要捕获的数据包数量。例如，要仅捕获 10 个数据包，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo tcpdump -c <span class="m">10</span>
+</code></pre></div><p>捕获数据包后， <code>tcpdump</code> 将停止。</p>
+<p>如果未指定任何接口，则 <code>tcpdump</code> 使用第一个接口查找并转储通过该接口的所有数据包。</p>
+<p>使用 <code>-D</code> 选项可以打印 tcpdump 可以从中收集数据包的所有可用网络接口的列表：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -D
+</code></pre></div><p>对于每个接口，该命令将打印接口名称，简短描述以及关联的索引(数字)：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1.ens3 [Up, Running]
+2.any (Pseudo-device that captures on all interfaces) [Up, Running]
+3.lo [Up, Running, Loopback]
+
+</code></pre></div><p>上面的输出显示，这 <code>ens3</code> 是 <code>tcpdump</code> 命令没有提供接口时找到的第一个接口。第二个接口 <code>any</code> 是一种特殊的设备，可让您捕获所有活动的接口。</p>
+<p>要指定要在其上捕获流量的接口，请使用 <code>tcpdump</code> 命令，后跟 <code>-i</code> 选项和带有接口名称。例如，要捕获来自所有接口的所有数据包，您可以指定 <code>any</code> 接口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -i any
+</code></pre></div><p>默认情况下， <code>tcpdump</code> 对 IP 地址执行反向 DNS 解析，并将端口号转换为名称。使用 <code>-n</code> 选项可禁用翻译：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n
+</code></pre></div><p>跳过 DNS 查找可避免生成 DNS 流量，并使输出更具可读性。建议您在每次调用 <code>tcpdump</code> 时都使用此选项。</p>
+<p>除了将输出显示在屏幕上之外，您还可以使用重定向操作符 <code>&gt;</code> 和将其重定向到文件 <code>&gt;&gt;</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n -i any &gt; file.out
+</code></pre></div><p>您还可以使用以下 <a href="/linux/linux-tee-command/"><code>tee</code></a> 命令在保存到文件的同时查看数据：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n -l | tee file.out
+</code></pre></div><p><code>-l</code> 上面命令中的选项告诉 <code>tcpdump</code> 缓冲输出。不使用此选项时，生成新行时，输出不会写在屏幕上。</p>
+<h2 id="了解-tcpdump-输出">了解 <code>tcpdump</code> 输出</h2>
+<p><code>tcpdump</code> 在新行上输出每个捕获的数据包的信息。每行包括一个时间戳和有关该数据包的信息，具体取决于协议。</p>
+<p>TCP 协议行的典型格式如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">[Timestamp] [Protocol] [Src IP].[Src Port] &gt; [Dst IP].[Dst Port]: [Flags], [Seq], [Ack], [Win Size], [Options], [Data Length]
+</code></pre></div><p>让我们逐个字段进行说明，并解释以下内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">15:47:24.248737 IP 192.168.1.185.22 &gt; 192.168.1.150.37445: Flags [P.], seq 201747193:201747301, ack 1226568763, win 402, options [nop,nop,TS val 1051794587 ecr 2679218230], length 108
+</code></pre></div><ul>
+<li>
+<p><code>15:47:24.248737</code> - 捕获的数据包的时间戳记为本地时间，并使用以下格式： <code>hours:minutes:seconds.frac</code> ，其中 <code>frac</code> 是自零点以来的几分之一秒。</p>
+</li>
+<li>
+<p><code>IP</code> - 分组协议。在这种情况下， IP 表示 Internet 协议版本 4(IPv4) 。</p>
+</li>
+<li>
+<p><code>192.168.1.185.22</code> - 源 IP 地址和端口，以点 (<code>.</code>) 分隔。</p>
+</li>
+<li>
+<p><code>192.168.1.150.37445</code> - 目标 IP 地址和端口，以点 (<code>.</code>) 分隔。</p>
+</li>
+<li>
+<p><code>Flags [P.]</code> - TCP标志字段。在此示例中， <code>[P.]</code> 是指“推送确认”数据包，用于确认先前的数据包并发送数据。其他典型标志字段值如下：</p>
+<ul>
+<li><code>[.]</code> - ACK(确认)</li>
+<li><code>[S]</code> - SYN(开始连接)</li>
+<li><code>[P]</code> - PSH(推送数据)</li>
+<li><code>[F]</code> - FIN(完成连接)</li>
+<li><code>[R]</code> - RST(重置连接)</li>
+<li><code>[S.]</code> - SYN-ACK(SynAcK数据包)</li>
+</ul>
+</li>
+<li>
+<p><code>seq 201747193:201747301</code> - 序列号在 <code>first:last</code> 符号中。它显示了数据包中包含的数据数量。除了数据流中的第一个数据包(其中这些数字是绝对的)以外，所有后续数据包均用作相对字节位置。在此示例中，数字为 <code>201747193:201747301</code> ，表示此数据包包含数据流的字节 201747193 至 201747301 。使用 <code>-S</code> 选项可打印绝对序列号。</p>
+</li>
+<li>
+<p><code>ack 1226568763</code> - 确认号是此连接另一端期望的下一个数据的序列号。</p>
+</li>
+<li>
+<p><code>win 402</code> - 窗口号是接收缓冲区中的可用字节数。</p>
+</li>
+<li>
+<p><code>options [nop,nop,TS val 1051794587 ecr 2679218230]</code> - TCP选项。 <code>nop</code> ，或使用 “no operation” 填充，以使 TCP 标头为4字节的倍数。 <code>TS val</code> 是 TCP 时间戳， <code>ecr</code> 代表回显应答。请访问 <a href="https://www.iana.org/assignments/tcp-parameters/tcp-parameters.xhtml">IANA 文档</a>以获取有关 TCP 选项的更多信息。</p>
+</li>
+<li>
+<p><code>length 108</code> -有效载荷数据的长度</p>
+</li>
+</ul>
+<h2 id="tcpdump筛选器"><code>tcpdump</code> 筛选器</h2>
+<p>如果 <code>tcpdump</code> 在没有过滤器的情况下调用它，它将捕获所有流量并产生大量输出，这使得查找和分析目标数据包变得非常困难。</p>
+<p>过滤器是 <code>tcpdump</code> 命令最强大的功能之一。因为它们允许您仅捕获与表达式匹配的那些数据包。例如，在对与 Web 服务器有关的问题进行故障排除时，可以使用过滤器仅获取 HTTP 通信。</p>
+<p><code>tcpdump</code> 使用 <a href="https://en.wikipedia.org/wiki/Berkeley_Packet_Filter">Berkeley 数据包筛选器 (BPF)</a> 语法使用各种加工参数(例如协议，源和目标 IP 地址和端口等 <a href="https://en.wikipedia.org/wiki/Berkeley_Packet_Filter">)</a> 过滤捕获的数据包。</p>
+<p>在本文中，我们将介绍一些最常见的过滤器。有关所有可用过滤器的列表，请查看 <a href="https://www.tcpdump.org/manpages/pcap-filter.7.html">pcap-filter</a> 联机帮助页。</p>
+<h3 id="按协议过滤">按协议过滤</h3>
+<p>要将捕获限制为特定协议，请将该协议指定为过滤器。例如，要仅捕获 UDP 流量，可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n udp
+</code></pre></div><p>定义协议的另一种方法是使用 <code>proto</code> 限定符，后跟协议编号。以下命令将过滤协议编号 17 ，并产生与上述相同的结果：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n proto 17
+</code></pre></div><p>有关编号的更多信息，请检查 <a href="https://en.wikipedia.org/wiki/List_of_IP_protocol_numbers">IP 协议编号</a>列表。</p>
+<h3 id="主机过滤">主机过滤</h3>
+<p>要仅捕获与特定主机有关的数据包，请使用 <code>host</code> 限定符：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n host 192.168.1.185
+</code></pre></div><p>主机可以是 IP 地址或名称。</p>
+<p>您还可以使用 <code>net</code> 限定符将输出过滤到给定的 IP 范围。例如，仅转储与 <code>10.10.0.0/16</code> 您相关的数据包，可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n net 10.10.0.0/16
+</code></pre></div><h2 id="按端口过滤">按端口过滤</h2>
+<p>若要仅将捕获限制为来自特定端口或特定端口的数据包，请使用 <code>port</code> 限定符。以下命令使用以下命令捕获与 SSH( 端口 22) 服务相关的数据包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n port 22
+</code></pre></div><p>而使用 <code>portrange</code> 限定符，您可以捕捉到流量的端口范围：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n portrange 110-150
+</code></pre></div><h2 id="按来源和目的地过滤">按来源和目的地过滤</h2>
+<p>您还可以使用 <code>src</code> ， <code>dst</code> ， <code>src and dst</code> ，和 <code>src or dst</code> 限定符过滤基于源或目标端口或主机上的数据包。</p>
+<p>以下命令捕获来自 IP 为 192.168.1.185 的主机的传入数据包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n src host 192.168.1.185
+</code></pre></div><p>要查找从任何来源到端口 80 的流量，请使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n dst port 80
+</code></pre></div><h3 id="复合过滤器">复合过滤器</h3>
+<p>可以使用 <code>and</code>(<code>&amp;&amp;</code>) ， <code>or</code>(<code>||</code>) 和 <code>not</code>(<code>!</code>) 运算符组合过滤器。</p>
+<p>例如，要捕获来自源 IP 地址 192.168.1.185 的所有 HTTP 通信，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n src 192.168.1.185 and tcp port 80
+</code></pre></div><p>您还可以使用括号来分组和创建更复杂的过滤器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n &#39;host 192.168.1.185 and (tcp port 80 or tcp port 443)&#39;
+</code></pre></div><blockquote>
+<p>为避免在使用特殊字符时解析错误，请将过滤器括在单引号内。</p>
+</blockquote>
+<p>这是另一个示例命令，用于从源 IP 地址 192.168.1.185 捕获除 SSH 以外的所有流量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n src 192.168.1.185 and not dst port 22
+</code></pre></div><h2 id="包检查">包检查</h2>
+<p>默认情况下， <code>tcpdump</code> 仅捕获数据包头。但是，有时您可能需要检查数据包的内容。</p>
+<p><code>tcpdump</code>  允许您以 ASCII 和十六进制格式打印数据包的内容。</p>
+<p><code>-A</code> 选项指示 <code>tcpdump</code> 以 ASCII 打印每个数据包，而 <code>-x</code> 选项则以十六进制格式打印每个数据包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n -A
+</code></pre></div><p>要以十六进制和 ASCII 格式显示数据包的内容，请使用以下 <code>-X</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n -X
+</code></pre></div><h2 id="读取和写入捕获到文件">读取和写入捕获到文件</h2>
+<p><code>tcpdump</code> 的另一个有用功能是将数据包写入文件。当您捕获大量数据包或要捕获数据包以供以后分析时，这非常方便。</p>
+<p>要开始写入文件，请使用 <code>-w</code> 选项，后跟输出捕获文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n -w data.pcap
+</code></pre></div><p>上面的命令将捕获的内容保存到名为 <code>data.pcap</code> 的文件中。您可以根据需要命名文件，但是使用 <code>.pcap</code> 扩展名(数据包捕获)是一种常见的约定。</p>
+<p>使用 <code>-w</code> 选项时，输出不会显示在屏幕上。 <code>tcpdump</code> 写入原始数据包并创建一个二进制文件，该文件无法用常规文本编辑器读取。</p>
+<p>要检查文件的内容，请使用以下 <code>-r</code> 选项调用 <code>tcpdump</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -r data.pcap
+</code></pre></div><p>如果要 <code>tcpdump</code> 在<a href="/linux/how-to-run-linux-commands-in-background/">后台运行</a>，请在命令末尾添加  <code>&amp;</code> 符号。</p>
+<p>也可以使用其他数据包分析器工具(例如 Wireshark) 检查捕获文件。</p>
+<p>长时间捕获数据包时，可以启用文件轮换。 <code>tcpdump</code> 允许您创建的新文件或以指定的时间间隔或固定大小转储文件。以下命令将创建多达十个 200MB 文件，名为 <code>file.pcap0</code> ， <code>file.pcap1</code> 等等，以此类推。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo tcpdump -n -W 10 -C 200 -w /tmp/file.pcap
+</code></pre></div><p>生成十个文件后，较旧的文件将被覆盖。</p>
+<p>请注意，您仅应在排除故障期间运行 <code>tcpdump</code> 。</p>
+<p>如果要 <code>tcpdump</code> 在特定时间开始，可以使用 <a href="/linux/scheduling-cron-jobs-with-crontab/">cronjob</a> 。 <code>tcpdump</code> 在给定时间后没有退出选项。您可以在一段时间后使用 <a href="/linux/timeout-command-in-linux/"><code>timeout</code></a> 命令停止 <code>tcpdump</code> 。例如，要在5分钟后退出，您可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo timeout 300 tcpdump -n -w data.pcap
+</code></pre></div><h2 id="结论">结论</h2>
+<p><code>tcpdump</code> 是用于分析和解决网络相关问题的命令行工具。</p>
+<p>本文向您介绍了 <code>tcpdump</code> 用法和语法的基础。有关更深入的文档，请访问 <a href="https://www.tcpdump.org/index.html">tcpdump</a> 网站。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/tcpdump" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">tcpdump</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/id-command-in-linux/">在 Linux 中 id 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/etc-shadow-file/">了解 /etc/shadow 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-append-to-file/">在 bash 中追加内容到文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/basic-linux-commands/">最基本最常用的 Linux 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/chmod-recursive/">在 Linux 中递归更改文件的权限</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/ssh-command-in-linux/">SSH 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/uname-command-in-linux/">Linux 中 uname 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/start-stop-restart-nginx/">如何启动，停止或重新启动 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/kill-command-in-linux/">Linux中的 Kill 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/etc-passwd-file/">深入理解 /etc/passwd 文件</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-tcpdump">安装  tcpdump</a>
+      <ul>
+        <li><a href="#在-ubuntu-和-debian-上安装-tcpdump">在 Ubuntu 和 Debian 上安装 tcpdump</a></li>
+        <li><a href="#在-centos-和-fedora-上安装-tcpdump">在 CentOS 和 Fedora 上安装 tcpdump</a></li>
+        <li><a href="#在-arch-linux-上安装-tcpdump">在 Arch Linux 上安装 tcpdump</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用-tcpdump-捕获数据包">使用 tcpdump 捕获数据包 </a></li>
+    <li><a href="#了解-tcpdump-输出">了解 tcpdump 输出</a></li>
+    <li><a href="#tcpdump筛选器">tcpdump 筛选器</a>
+      <ul>
+        <li><a href="#按协议过滤">按协议过滤</a></li>
+        <li><a href="#主机过滤">主机过滤</a></li>
+      </ul>
+    </li>
+    <li><a href="#按端口过滤">按端口过滤</a></li>
+    <li><a href="#按来源和目的地过滤">按来源和目的地过滤</a>
+      <ul>
+        <li><a href="#复合过滤器">复合过滤器</a></li>
+      </ul>
+    </li>
+    <li><a href="#包检查">包检查</a></li>
+    <li><a href="#读取和写入捕获到文件">读取和写入捕获到文件</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
