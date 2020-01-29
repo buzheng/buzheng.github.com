@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux中的 timeout 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux中的 timeout 命令" />
+<meta property="og:description" content="timeout 是一个命令行实用程序，它运行指定的命令，如果在给定的时间段后仍在运行，则终止该命令。换句话说， timeout 允许您在有时间限制的情况下运行命令。timeout 命令是 GNU 核心实用程序软件包的一部分，该软件包几乎安装在所有 Linux 发行版中。
+当您要运行没有内置超时选项的命令时，它非常方便。在本文中，我们将解释如何使用 Linux 中的 timeout 命令。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/timeout-command-in-linux/" />
+<meta property="og:image" content="https://buzheng.org/linux/timeout-command-in-linux/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-29T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-29T12:00:00+08:00" />
+<meta itemprop="name" content="Linux中的 timeout 命令">
+<meta itemprop="description" content="timeout 是一个命令行实用程序，它运行指定的命令，如果在给定的时间段后仍在运行，则终止该命令。换句话说， timeout 允许您在有时间限制的情况下运行命令。timeout 命令是 GNU 核心实用程序软件包的一部分，该软件包几乎安装在所有 Linux 发行版中。
+当您要运行没有内置超时选项的命令时，它非常方便。在本文中，我们将解释如何使用 Linux 中的 timeout 命令。">
+<meta itemprop="datePublished" content="2020-01-29T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-29T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="911">
+<meta itemprop="image" content="https://buzheng.org/linux/timeout-command-in-linux/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="timeout,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/timeout-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux中的 timeout 命令"/>
+<meta name="twitter:description" content="timeout 是一个命令行实用程序，它运行指定的命令，如果在给定的时间段后仍在运行，则终止该命令。换句话说， timeout 允许您在有时间限制的情况下运行命令。timeout 命令是 GNU 核心实用程序软件包的一部分，该软件包几乎安装在所有 Linux 发行版中。
+当您要运行没有内置超时选项的命令时，它非常方便。在本文中，我们将解释如何使用 Linux 中的 timeout 命令。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux中的 timeout 命令</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-29T12:00:00&#43;08:00">2020年1月29日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>timeout</code> 是一个命令行实用程序，它运行指定的命令，如果在给定的时间段后仍在运行，则终止该命令。换句话说， <code>timeout</code> 允许您在有时间限制的情况下运行命令。<code>timeout</code> 命令是 GNU 核心实用程序软件包的一部分，该软件包几乎安装在所有 Linux 发行版中。</p>
+<p>当您要运行没有内置超时选项的命令时，它非常方便。在本文中，我们将解释如何使用 Linux 中的 <code>timeout</code> 命令。</p>
+<h2 id="如何使用-timeout-命令">如何使用 <code>timeout</code> 命令</h2>
+<p><code>timeout</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">timeout <span class="o">[</span>OPTIONS<span class="o">]</span> DURATION COMMAND <span class="o">[</span>ARG<span class="o">]</span>…
+</code></pre></div><p>的 <code>DURATION</code> 可以是一个正整数或浮点数，接着任选的单元后缀：</p>
+<ul>
+<li><code>s</code> - 秒(默认)</li>
+<li><code>m</code> - 分钟</li>
+<li><code>h</code> - 小时</li>
+<li><code>d</code> - 天</li>
+</ul>
+<p>如果不使用任何单位，则默认为秒。如果持续时间设置为零，则禁用关联的超时。</p>
+<p>必须在参数之前提供命令选项。</p>
+<p>以下是一些基本示例，演示了如何使用<code>timeout</code> 命令：</p>
+<ul>
+<li>
+<p>五秒钟后终止命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">timeout 5 ping 8.8.8.8
+</code></pre></div></li>
+<li>
+<p>五分钟后终止命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">timeout 5m ping 8.8.8.8
+</code></pre></div></li>
+<li>
+<p>一分钟六秒钟后终止命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">timeout 1.1m ping 8.8.8.8
+</code></pre></div></li>
+</ul>
+<p>如果要运行需要提升权限的命令，例如 <a href="/linux/tcpdump-command-in-linux/"><code>tcpdump</code></a> ，请在 <code>timeout</code> 命令之前添加 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo timeout 300 tcpdump -n -w data.pcap
+</code></pre></div><h2 id="发送特定信号">发送特定信号</h2>
+<p>如果未给出信号，则在达到时间限制时 <code>timeout</code> 将 <code>SIGTERM</code> 信号发送到托管命令。您可以使用 <code>-s</code>(<code>--signal</code>) 选项指定要发送的信号。</p>
+<p>例如，要在一分钟后发送 <code>SIGKILL</code> 给 <a href="/linux/linux-ping-command/"><code>ping</code></a> 命令，您可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo timeout -s SIGKILL ping 8.8.8.8
+</code></pre></div><p>可以通过信号名称 <code>SIGKILL</code> 或编号 <code>9</code> 来指定信号。以下命令与上一个命令相同：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo timeout -s 9 ping 8.8.8.8
+</code></pre></div><p>要获取所有可用信号的列表，请使用以下 <a href="/linux/sudo-command-in-linux/"><code>kill -l</code></a> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -l
+</code></pre></div><h2 id="消除卡住的进程">消除卡住的进程</h2>
+<p><code>SIGTERM</code> ，超过某些时间限制时发送的默认信号可能会被某些进程捕获或忽略。在那种情况下，该过程在发送终止信号后继续运行。</p>
+<p>为确保监视的命令被终止，请在一段时间后使用 <code>-k</code>(<code>--kill-after</code>) 选项。在达到给定的时间限制后使用此选项时，<code>timeout</code> 命令会将 <code>SIGKILL</code> 信号捕获到托管程序，该信号无法捕获或忽略。</p>
+<p>在以下示例中， <code>timeout</code> 将命令运行一分钟，如果未终止，它将在十秒钟后将其杀死：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo timeout -k 10 1m ping 8.8.8.8
+</code></pre></div><h2 id="保留退出状态">保留退出状态</h2>
+<p>达到时间限制时 <code>timeout</code> 返回<code>124</code> 。否则，它将返回托管命令的退出状态。</p>
+<p>即使在达到时间限制时也要返回命令的退出状态，请使用以下 <code>--preserve-status</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">timeout --preserve-status 5 ping 8.8.8.8
+</code></pre></div><h2 id="在前台运行">在前台运行</h2>
+<p>默认情况下， <code>timeout</code> 在后台运行托管命令。如果要在前台运行命令，请使用以下 <code>--foreground</code> 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">timeout --foreground 5m ./script.sh
+</code></pre></div><p>当您要运行需要用户输入的交互式命令时，此选项很有用。</p>
+<h2 id="结论">结论</h2>
+<p><code>timeout</code> 命令用于运行有时间限制的给定命令。</p>
+<p><code>timeout</code> 是一个简单的命令，没有太多选项。通常， <code>timeout</code> 仅使用两个参数: 持续时间和托管命令。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/timeout" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">timeout</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/pidof-command-in-linux/">Linux 中的 pidof 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/tcpdump-command-in-linux/">Linux 中 tcpdump 命令用法实例</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/id-command-in-linux/">在 Linux 中 id 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/etc-shadow-file/">了解 /etc/shadow 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-append-to-file/">在 bash 中追加内容到文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/basic-linux-commands/">最基本最常用的 Linux 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/chmod-recursive/">在 Linux 中递归更改文件的权限</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/ssh-command-in-linux/">SSH 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/uname-command-in-linux/">Linux 中 uname 命令的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/start-stop-restart-nginx/">如何启动，停止或重新启动 Nginx</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#如何使用-timeout-命令">如何使用 timeout 命令</a></li>
+    <li><a href="#发送特定信号">发送特定信号</a></li>
+    <li><a href="#消除卡住的进程">消除卡住的进程</a></li>
+    <li><a href="#保留退出状态">保留退出状态</a></li>
+    <li><a href="#在前台运行">在前台运行</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

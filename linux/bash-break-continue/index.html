@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Bash 中的 break 和 continue |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash 中的 break 和 continue" />
+<meta property="og:description" content="循环使您可以多次运行一个或多个命令，直到满足特定条件为止。但是，有时您可能需要更改循环流程并终止循环或仅终止当前迭代。
+在 bash 中， break 和 continue 语句允许您控制循环执行。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/bash-break-continue/" />
+<meta property="og:image" content="https://buzheng.org/linux/bash-break-continue/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-29T14:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-29T14:00:00+08:00" />
+<meta itemprop="name" content="Bash 中的 break 和 continue">
+<meta itemprop="description" content="循环使您可以多次运行一个或多个命令，直到满足特定条件为止。但是，有时您可能需要更改循环流程并终止循环或仅终止当前迭代。
+在 bash 中， break 和 continue 语句允许您控制循环执行。">
+<meta itemprop="datePublished" content="2020-01-29T14:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-29T14:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="798">
+<meta itemprop="image" content="https://buzheng.org/linux/bash-break-continue/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="bash,loop,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/bash-break-continue/featured.jpg"/>
+<meta name="twitter:title" content="Bash 中的 break 和 continue"/>
+<meta name="twitter:description" content="循环使您可以多次运行一个或多个命令，直到满足特定条件为止。但是，有时您可能需要更改循环流程并终止循环或仅终止当前迭代。
+在 bash 中， break 和 continue 语句允许您控制循环执行。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Bash 中的 break 和 continue</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-29T14:00:00&#43;08:00">2020年1月29日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>循环使您可以多次运行一个或多个命令，直到满足特定条件为止。但是，有时您可能需要更改循环流程并终止循环或仅终止当前迭代。</p>
+<p>在 bash 中， <code>break</code> 和 <code>continue</code> 语句允许您控制循环执行。</p>
+<h2 id="break-语句"><code>break</code> 语句</h2>
+<p><code>break</code> 语句终止当前循环，并将程序控制传递给终止循环之后的命令。它用于从 <code>for</code> ， <code>while</code> ， <a href="/linux/bash-until-loop/"><code>until</code></a> ，或 <code>select</code> 循环中跳出。 <code>break</code> 语句的语法采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">break</span> <span class="o">[</span>n<span class="o">]</span>
+</code></pre></div><p><code>[n]</code> 是一个可选参数，并且必须大于或等于1。 <code>[n]</code> 提供时，将退出第n个封闭循环。 <code>break 1</code> 等同于 <code>break</code> 。</p>
+<p>为了更好地理解如何使用 <code>break</code> 语句，让我们看一下以下示例。</p>
+<p>在下面的脚本中，一旦当前迭代的项目等于 <code>2</code> ， <a href="/linux/bash-while-loop/"><code>while</code> 循环</a>的执行将被中断：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
+
+<span class="k">while</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$i</span> -lt <span class="m">5</span> <span class="o">]</span><span class="o">]</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+  <span class="o">(</span><span class="o">(</span>i++<span class="o">)</span><span class="o">)</span>
+  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$i</span> -eq <span class="m">2</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">break</span>
+  <span class="k">fi</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Number: 0
+Number: 1
+All Done!
+
+</code></pre></div><p>下面是 <code>break</code> 在嵌套 <a href="/linux/bash-for-loop/"><code>for</code> 循环</a>中使用语句的示例。</p>
+<p>如果 <code>[n]</code> 未提供参数，则 <code>break</code> 终止最里面的封闭循环。外循环不终止：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+  <span class="k">for</span> j in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$j</span> -eq <span class="m">2</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="nb">break</span>
+    <span class="k">fi</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">j: </span><span class="nv">$j</span><span class="s2">&#34;</span>
+  <span class="k">done</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">i: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">j: 1
+i: 1
+j: 1
+i: 2
+j: 1
+i: 3
+All Done!
+</code></pre></div><p>如果要退出外循环，请使用 <code>break 2</code> 。参数 <code>2</code> 告诉 <code>break</code> 终止第二个封闭循环：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+  <span class="k">for</span> j in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$j</span> -eq <span class="m">2</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="nb">break</span> <span class="m">2</span>
+    <span class="k">fi</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">j: </span><span class="nv">$j</span><span class="s2">&#34;</span>
+  <span class="k">done</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">i: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">j: 1
+All Done!
+
+</code></pre></div><h2 id="continue-语句"><code>continue</code> 语句</h2>
+<p><code>continue</code> 语句为当前迭代跳过封闭循环体内的其余命令，并将程序控制传递给循环的下一次迭代。</p>
+<p><code>continue</code> 语句的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">continue</span> <span class="o">[</span>n<span class="o">]</span>
+</code></pre></div><p><code>[n]</code> 参数是可选的，并且可以大于或等于1。 <code>[n]</code> 给出该参数时，将恢复第n个封闭循环。 <code>continue 1</code> 等同于 <code>continue</code> 。</p>
+<p>在下面的例子中，一旦当前迭代的项<a href="/linux/bash-if-else-statement/">等于</a>到 <code>2</code> ， <code>continue</code> 语句将导致执行返回到循环的开始，继续进行下一次迭代。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
+
+<span class="k">while</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$i</span> -lt <span class="m">5</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+  <span class="o">(</span><span class="o">(</span>i++<span class="o">)</span><span class="o">)</span>
+  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="o">=</span><span class="o">=</span> <span class="s1">&#39;2&#39;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">continue</span>
+  <span class="k">fi</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
+
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Number: 1
+Number: 3
+Number: 4
+Number: 5
+All Done!
+</code></pre></div><p>以下脚本打印从 <code>1</code> 到 <code>50</code> 可以被整除的数字 <code>9</code> 。</p>
+<p>如果一个数字不能被整除 <code>9</code> ，则 <code>continue</code> 语句将跳过 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo</code></a> 命令，并将控制权传递给循环的下一个迭代。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>1..50<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="k">$((</span> <span class="nv">$i</span> <span class="o">%</span> <span class="m">9</span> <span class="k">))</span> -ne <span class="m">0</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">continue</span>
+  <span class="k">fi</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Divisible by 9: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Divisible by 9: 9
+Divisible by 9: 18
+Divisible by 9: 27
+Divisible by 9: 36
+Divisible by 9: 45
+</code></pre></div><h2 id="结论">结论</h2>
+<p>循环是编程语言的基本概念之一。在 Bash 等脚本语言中，循环对于自动执行重复性任务很有用。</p>
+<p><code>break</code> 语句用于退出当前循环。 <code>continue</code> 语句用于退出循环的当前迭代并开始下一个迭代。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/bash" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">bash</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/loop" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">loop</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-increment-decrement-variable/">如何在 Bash 中对变量递增或者递减</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-for-loop/">Bash 中的 For 循环</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-append-to-file/">在 bash 中追加内容到文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-comments/">在 bash 脚本中使用注释</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/popd-and-pushd-commands-in-linux/">Linux中的 pushd 和 popd 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-shebang/">Bash Shebang</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-if-string-contains-substring-in-bash/">在 Bash 中如何检查字符串是否包含的子串</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-source-command/">Bash Source 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-if-else-statement/">Bash if..else 语句</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#break-语句">break 语句</a></li>
+    <li><a href="#continue-语句">continue 语句</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 CentOS 8 上设置 nginx 服务器块（虚拟主机） |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 CentOS 8 上设置 nginx 服务器块（虚拟主机）" />
+<meta property="og:description" content="服务器块是 Nginx 指令，用于定义独立网站的设置，从而使您可以在一台服务器上运行多个网站。对于每个网站，您可以设置站点文档根目录(包含网站文件的目录)，创建单独的安全策略，使用不同的 SSL 证书等等。
+本文介绍如何在 CentOS 8 上设置 Nginx 服务器块。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-set-up-nginx-server-blocks-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-set-up-nginx-server-blocks-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-07T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-07T12:00:00+08:00" />
+<meta itemprop="name" content="如何在 CentOS 8 上设置 nginx 服务器块（虚拟主机）">
+<meta itemprop="description" content="服务器块是 Nginx 指令，用于定义独立网站的设置，从而使您可以在一台服务器上运行多个网站。对于每个网站，您可以设置站点文档根目录(包含网站文件的目录)，创建单独的安全策略，使用不同的 SSL 证书等等。
+本文介绍如何在 CentOS 8 上设置 Nginx 服务器块。">
+<meta itemprop="datePublished" content="2020-01-07T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-07T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="843">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-set-up-nginx-server-blocks-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="nginx,centos," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-set-up-nginx-server-blocks-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="如何在 CentOS 8 上设置 nginx 服务器块（虚拟主机）"/>
+<meta name="twitter:description" content="服务器块是 Nginx 指令，用于定义独立网站的设置，从而使您可以在一台服务器上运行多个网站。对于每个网站，您可以设置站点文档根目录(包含网站文件的目录)，创建单独的安全策略，使用不同的 SSL 证书等等。
+本文介绍如何在 CentOS 8 上设置 Nginx 服务器块。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 CentOS 8 上设置 nginx 服务器块（虚拟主机）</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-07T12:00:00&#43;08:00">2020年1月7日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>服务器块是 Nginx 指令，用于定义独立网站的设置，从而使您可以在一台服务器上运行多个网站。对于每个网站，您可以设置站点文档根目录(包含网站文件的目录)，创建单独的安全策略，使用不同的 SSL 证书等等。</p>
+<p>本文介绍如何在 CentOS 8 上设置 Nginx 服务器块。</p>
+<h2 id="先决条件">先决条件</h2>
+<p>在继续本教程之前，请确保满足以下要求：</p>
+<ul>
+<li>指向您的公共服务器 IP 的域名。</li>
+<li><a href="/linux/how-to-install-nginx-on-centos-8/">在您的 CentOS系统上安装了 Nginx</a> 。</li>
+<li>您以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录。</li>
+</ul>
+<p>在某些文档中，该术语 <code>Server Blocks</code> 称为 <code>Virtual host</code> 。<a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">虚拟主机（Virtual host）</a>是 Apache 术语。</p>
+<h2 id="创建目录结构">创建目录结构</h2>
+<p>文档根目录是用于存储域名网站文件并响应请求提供服务的目录。可以将文档根目录设置为所需的任何位置。</p>
+<p>我们将使用以下目录结构：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/var/www/
+├── example.com
+│   └── public_html
+├── example2.com
+│   └── public_html
+├── example3.com
+│   └── public_html
+</code></pre></div><p>对于将在服务器上托管的每个网站，我们将在中创建一个单独的目录 <code>/var/www</code> 。在网站目录中，我们将创建一个 <code>public_html</code> 目录，该目录将成为网站文档的根目录，并将存储网站文件。</p>
+<p>让我们从创建网站的根目录开始 <code>example.com</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/www/example.com/public_html
+</code></pre></div><p>为了进行测试，请在网站的文档根目录内创建一个 <code>index.html</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /var/www/example.com/public_html/index.html
+</code></pre></div><p>将以下代码复制并粘贴到文件中：</p>
+<p>/var/www/example.com/public_html/index.html</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><p>为了避免任何权限问题，请<a href="/linux/linux-chown-command/">更改网站文档根目录所有权用户</a>为  <code>nginx</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chown -R nginx: /var/www/example.com
+</code></pre></div><h2 id="创建服务器块">创建服务器块</h2>
+<p>在 CentOS 上，默认情况下， Nginx 服务器块配置文件必须以 <code>.conf</code> 结尾并存储在 <code>/etc/nginx/conf.d</code> 目录中。</p>
+<p>打开文本编辑器并为网站创建配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/nginx/conf.d/example.com.conf
+</code></pre></div><p>可以将配置文件命名为任意名称，但是通常最好使用域名。</p>
+<p>将以下代码复制并粘贴到文件中：</p>
+<p>/etc/nginx/conf.d/example.com.conf</p>
+<div class="highlight"><pre class="chroma"><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
+
+    <span class="kn">root</span> <span class="s">/var/www/example.com/public_html</span><span class="p">;</span>
+
+    <span class="kn">index</span> <span class="s">index.html</span><span class="p">;</span>
+
+    <span class="kn">server_name</span> <span class="s">example.com</span> <span class="s">www.example.com</span><span class="p">;</span>
+
+    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="s">/var/log/nginx/example.com.error.log</span><span class="p">;</span>
+
+    <span class="kn">location/{</span>
+        <span class="s">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="k">}</span>
+
+</code></pre></div><p>保存文件并<a href="/linux/nginx-commands-you-should-know/">检查 Nginx 配置</a>是否存在语法错误：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nginx -t
+</code></pre></div><p>如果没有错误，输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+</code></pre></div><p><a href="/linux/start-stop-restart-nginx/">重新启动 Nginx 服务，</a>以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl restart nginx
+</code></pre></div><p>最后，要验证服务器块是否按预期工作，请在您选择的浏览器中打开 <code>http://example.com</code> ，您将看到类似以下内容：</p>
+<p><img src="nginx-welcome-page.jpg" alt=""></p>
+<h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何创建 Nginx 服务器块并在一台 CentOS 服务器上托管多个网站。您可以重复上述步骤，并为所有网站创建其他服务器块。</p>
+<p>如果要使用 SSL 证书保护网站的安全，可以生成并安装免费的 <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">Let's encrypt SSL 证书</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/nginx" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">nginx</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-8/">在 CentOS 8 上使用 Let&#39;s Encrypt 为 nginx 配置 SSL</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-nginx-on-centos-8/">如何在 CentOS 8 上安装 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-nginx-server-blocks-on-centos-7/">如何在 CentOS 7 上设置 Nginx 服务器块</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-7/">如何在CentOS 7上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/">如何在CentOS 7上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-drupal-on-centos-7/">如何在 CentOS 7 上安装 Drupal</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-magento-2-on-centos-7/">在 CentOS 7 上安装 Magento 2</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-nginx-with-let-s-encrypt-on-centos-7/">在 CentOS 7 上使用 Let&#39;s Encrypt 保护 Nginx</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-nginx-on-centos-7/">如何在 CentOS 7 上安装 Nginx</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建目录结构">创建目录结构</a></li>
+    <li><a href="#创建服务器块">创建服务器块</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
