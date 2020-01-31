@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Bash 中使用 select 制作菜单 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.62.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash 中使用 select 制作菜单" />
+<meta property="og:description" content="在本教程中，我们将介绍 Bash 中的 select 结构的基础知识。
+select 结构允许您生成菜单。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/bash-select/" />
+<meta property="og:image" content="https://buzheng.org/linux/bash-select/featured.jpg"/>
+<meta property="article:published_time" content="2020-01-30T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-01-30T12:00:00+08:00" />
+<meta itemprop="name" content="Bash 中使用 select 制作菜单">
+<meta itemprop="description" content="在本教程中，我们将介绍 Bash 中的 select 结构的基础知识。
+select 结构允许您生成菜单。">
+<meta itemprop="datePublished" content="2020-01-30T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-30T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="934">
+<meta itemprop="image" content="https://buzheng.org/linux/bash-select/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="bash,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/bash-select/featured.jpg"/>
+<meta name="twitter:title" content="Bash 中使用 select 制作菜单"/>
+<meta name="twitter:description" content="在本教程中，我们将介绍 Bash 中的 select 结构的基础知识。
+select 结构允许您生成菜单。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Bash 中使用 select 制作菜单</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-01-30T12:00:00&#43;08:00">2020年1月30日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在本教程中，我们将介绍 Bash 中的 <code>select</code> 结构的基础知识。</p>
+<p><code>select</code> 结构允许您生成菜单。</p>
+<h2 id="select-的用法"><code>select</code> 的用法</h2>
+<p><code>select</code> 结构从条目列表中生成菜单。它与 <a href="/linux/bash-for-loop/"><code>for</code></a> 循环的语法几乎相同：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">select</span> ITEM in <span class="o">[</span>LIST<span class="o">]</span>
+<span class="k">do</span>
+  <span class="o">[</span>COMMANDS<span class="o">]</span>
+<span class="k">done</span>
+
+</code></pre></div><p>其中 <code>[LIST]</code> 可以是一系列由空格隔开字符串序列，数字序列，一个命令的输出，一个数组等等。 <code>select</code> 使用 <code>PS3</code> <a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>设置自定义提示信息。</p>
+<p>调用 <code>select</code> 时，列表中的每个条目都会打印在屏幕上，并带有数字编号。</p>
+<p>如果用户输入的数字与显示的条目之一的编号相对应，则将 <code>[ITEM]</code> 的值设置为数字编号对应的条目。所选条目的编号值存储在 <code>REPLY</code> 变量中。否则，如果用户输入为空，则再次显示提示和菜单列表。</p>
+<p><code>select</code> 循环会一直继续运行，并对用户输入作出提示， 除非遇到 <a href="/linux/bash-break-continue/"><code>break</code></a> 。</p>
+<p>为了演示 <code>select</code> 结构如何工作，让我们看下面的简单示例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">PS3</span><span class="o">=</span><span class="s2">&#34;Enter a number: &#34;</span>
+
+<span class="k">select</span> character in Sheldon Leonard Penny Howard Raj
+<span class="k">do</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Selected character: </span><span class="nv">$character</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Selected number: </span><span class="nv">$REPLY</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+</code></pre></div><p>该脚本将显示一个菜单，该菜单由带有附加编号的列表项和存储在 <code>PS3</code> 中的提示组成。当用户输入数字时，脚本将<a href="/linux/echo-command-in-linux-with-examples/">打印</a>选定的字符和数字：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1) Sheldon
+2) Leonard
+3) Penny
+4) Howard
+5) Raj
+Enter a number: 3
+Selected character: Penny
+Selected number: 3
+Enter a number:
+
+</code></pre></div><h2 id="select-示例"><code>select</code> 示例</h2>
+<p>通常情况下， <code>select</code> 会结合使用 <a href="/linux/bash-case-statement/"><code>case</code></a> 或者 <a href="/linux/bash-if-else-statement/"><code>if</code></a> 语句。</p>
+<p>让我们看一个更实际的例子。它是一个简单的计算器，可以提示用户输入并执行基本的算术运算，例如加法，减法，乘法和除法。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">PS3</span><span class="o">=</span><span class="s2">&#34;Select the operation: &#34;</span>
+
+<span class="k">select</span> opt in add subtract multiply divide quit<span class="p">;</span> <span class="k">do</span>
+
+  <span class="k">case</span> <span class="nv">$opt</span> in
+    add<span class="o">)</span>
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the first number: &#34;</span> n1
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the second number: &#34;</span> n2
+      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$n1</span><span class="s2"> + </span><span class="nv">$n2</span><span class="s2"> = </span><span class="k">$((</span><span class="nv">$n1</span><span class="o">+</span><span class="nv">$n2</span><span class="k">))</span><span class="s2">&#34;</span>
+      <span class="p">;</span><span class="p">;</span>
+    subtract<span class="o">)</span>
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the first number: &#34;</span> n1
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the second number: &#34;</span> n2
+      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$n1</span><span class="s2"> - </span><span class="nv">$n2</span><span class="s2"> = </span><span class="k">$((</span><span class="nv">$n1</span><span class="o">-</span><span class="nv">$n2</span><span class="k">))</span><span class="s2">&#34;</span>
+      <span class="p">;</span><span class="p">;</span>
+    multiply<span class="o">)</span>
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the first number: &#34;</span> n1
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the second number: &#34;</span> n2
+      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$n1</span><span class="s2"> * </span><span class="nv">$n2</span><span class="s2"> = </span><span class="k">$((</span><span class="nv">$n1</span><span class="o">*</span><span class="nv">$n2</span><span class="k">))</span><span class="s2">&#34;</span>
+      <span class="p">;</span><span class="p">;</span>
+    divide<span class="o">)</span>
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the first number: &#34;</span> n1
+      <span class="nb">read</span> -p <span class="s2">&#34;Enter the second number: &#34;</span> n2
+      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$n1</span><span class="s2">/</span><span class="nv">$n2</span><span class="s2"> = </span><span class="k">$((</span><span class="nv">$n1</span><span class="o">/</span><span class="nv">$n2</span><span class="k">))</span><span class="s2">&#34;</span>
+      <span class="p">;</span><span class="p">;</span>
+    quit<span class="o">)</span>
+      <span class="nb">break</span>
+      <span class="p">;</span><span class="p">;</span>
+    *<span class="o">)</span> 
+      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Invalid option </span><span class="nv">$REPLY</span><span class="s2">&#34;</span>
+      <span class="p">;</span><span class="p">;</span>
+  <span class="k">esac</span>
+<span class="k">done</span>
+
+</code></pre></div><p>执行脚本后，它将显示菜单和 <code>PS3</code> 提示。提示用户选择操作，然后输入两个数字。根据用户的输入，脚本将打印结果。在每次选择之后，都将要求用户执行新操作，直到 <code>break</code> 执行命令为止。</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1) add
+2) subtract
+3) multiply
+4) divide
+5) quit
+Select the operation: 1
+Enter the first number: 4
+Enter the second number: 5
+4 + 5 = 9
+Select the operation: 2
+Enter the first number: 4
+Enter the second number: 5
+4 - 5 = -1
+Select the operation: 9
+Invalid option 9
+Select the operation: 5
+
+</code></pre></div><p>该脚本的一个缺点是它只能与整数一起使用。</p>
+<p>这是更高级的版本。我们正在使用支持浮点数的 <code>bc</code> 工具来执行数学计算。同样，重复代码是现在一个 <a href="/linux/bash-functions/">function</a> 中。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">calculate <span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nb">read</span> -p <span class="s2">&#34;Enter the first number: &#34;</span> n1
+  <span class="nb">read</span> -p <span class="s2">&#34;Enter the second number: &#34;</span> n2
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$n1</span><span class="s2"> </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$n2</span><span class="s2"> = </span><span class="s2">&#34;</span> <span class="k">$(</span>bc -l <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;</span><span class="nv">$n1</span><span class="nv">$1</span><span class="nv">$n2</span><span class="s2">&#34;</span><span class="k">)</span>
+<span class="o">}</span>
+
+<span class="nv">PS3</span><span class="o">=</span><span class="s2">&#34;Select the operation: &#34;</span>
+
+<span class="k">select</span> opt in add subtract multiply divide quit<span class="p">;</span> <span class="k">do</span>
+
+  <span class="k">case</span> <span class="nv">$opt</span> in
+    add<span class="o">)</span>
+      calculate <span class="s2">&#34;+&#34;</span><span class="p">;</span><span class="p">;</span>
+    subtract<span class="o">)</span>
+      calculate <span class="s2">&#34;-&#34;</span><span class="p">;</span><span class="p">;</span>
+    multiply<span class="o">)</span>
+      calculate <span class="s2">&#34;*&#34;</span><span class="p">;</span><span class="p">;</span>
+    divide<span class="o">)</span>
+      calculate <span class="s2">&#34;/&#34;</span><span class="p">;</span><span class="p">;</span>
+    quit<span class="o">)</span>
+      break<span class="p">;</span><span class="p">;</span>
+    *<span class="o">)</span> 
+      <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Invalid option </span><span class="nv">$REPLY</span><span class="s2">&#34;</span><span class="p">;</span><span class="p">;</span>
+  <span class="k">esac</span>
+<span class="k">done</span>
+
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1) add
+2) subtract
+3) multiply
+4) divide
+5) quit
+Select the operation: 4
+Enter the first number: 8
+Enter the second number: 9
+8/9 =  .88888888888888888888
+Select the operation: 5   
+
+</code></pre></div><h2 id="结论">结论</h2>
+<p><code>select</code> 结构使您可以轻松生成菜单。在编写需要用户选择输入的 shell 脚本时，它特别有用。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/bash" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">bash</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-break-continue/">Bash 中的 break 和 continue</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-append-to-file/">在 bash 中追加内容到文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-comments/">在 bash 脚本中使用注释</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/popd-and-pushd-commands-in-linux/">Linux中的 pushd 和 popd 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-increment-decrement-variable/">如何在 Bash 中对变量递增或者递减</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-shebang/">Bash Shebang</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-if-string-contains-substring-in-bash/">在 Bash 中如何检查字符串是否包含的子串</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-for-loop/">Bash 中的 For 循环</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-source-command/">Bash Source 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-if-else-statement/">Bash if..else 语句</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#select-的用法">select 的用法</a></li>
+    <li><a href="#select-示例">select 示例</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
