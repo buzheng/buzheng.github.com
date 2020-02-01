@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.62.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -29,24 +29,24 @@
     
 
     <meta property="og:title" content="在Debian 9上使用Let&#39;s Encrypt来保护Nginx" />
-<meta property="og:description" content="Let&#39;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&#39;s Encrypt颁发的证书。
+<meta property="og:description" content="Let&rsquo;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&rsquo;s Encrypt颁发的证书。
 在本教程中，我们将解释如何使用Certbot工具在Debian 9上获取Nginx的免费SSL证书。我们还将展示如何配置Nginx以使用SSL证书并启用HTTP / 2。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://buzheng.org/linux/secure-nginx-with-let-s-encrypt-on-debian-9/" />
 <meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="在Debian 9上使用Let&#39;s Encrypt来保护Nginx">
-<meta itemprop="description" content="Let&#39;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&#39;s Encrypt颁发的证书。
+<meta itemprop="description" content="Let&rsquo;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&rsquo;s Encrypt颁发的证书。
 在本教程中，我们将解释如何使用Certbot工具在Debian 9上获取Nginx的免费SSL证书。我们还将展示如何配置Nginx以使用SSL证书并启用HTTP / 2。">
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1960">
+<meta itemprop="wordCount" content="1972">
 
 
 
 <meta itemprop="keywords" content="nginx,debian,let&#39;s encrypt,certbot,ssl," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在Debian 9上使用Let&#39;s Encrypt来保护Nginx"/>
-<meta name="twitter:description" content="Let&#39;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&#39;s Encrypt颁发的证书。
+<meta name="twitter:description" content="Let&rsquo;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&rsquo;s Encrypt颁发的证书。
 在本教程中，我们将解释如何使用Certbot工具在Debian 9上获取Nginx的免费SSL证书。我们还将展示如何配置Nginx以使用SSL证书并启用HTTP / 2。"/>
 
   </head>
@@ -140,7 +140,7 @@
           
           
   
-          <p>Let's Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let's Encrypt颁发的证书。</p>
+          <p>Let&rsquo;s Encrypt是由Internet Security Research Group（ISRG）开发的免费开放证书颁发机构。今天几乎所有浏览器都信任Let&rsquo;s Encrypt颁发的证书。</p>
 <p>在本教程中，我们将解释如何使用Certbot工具在Debian 9上获取Nginx的免费SSL证书。我们还将展示如何配置Nginx以使用SSL证书并启用HTTP / 2。</p>
 <h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
@@ -159,7 +159,7 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 </code></pre></div><p>如果您愿意，可以将大小更改为4096位，但在这种情况下，生成可能需要超过30分钟，具体取决于系统熵。</p>
 <h2 id="获取let的加密ssl证书">获取Let的加密SSL证书</h2>
-<p>要获取我们域的SSL证书，我们将使用Webroot插件，该插件通过创建临时文件来验证<code>${webroot-path}/.well-known/acme-challenge</code>目录中的请求域。Let's Encrypt服务器向临时文件发出HTTP请求，以验证请求的域是否解析为运行certbot的服务器。</p>
+<p>要获取我们域的SSL证书，我们将使用Webroot插件，该插件通过创建临时文件来验证<code>${webroot-path}/.well-known/acme-challenge</code>目录中的请求域。Let&rsquo;s Encrypt服务器向临时文件发出HTTP请求，以验证请求的域是否解析为运行certbot的服务器。</p>
 <p>我们将把所有HTTP请求映射<code>.well-known/acme-challenge</code>到一个目录，<code>/var/lib/letsencrypt</code>。</p>
 <p>以下命令将创建目录并使其可写入Nginx服务器。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p /var/lib/letsencrypt/.well-knownchgrp www-data /var/lib/letsencryptchmod g+s /var/lib/letsencrypt

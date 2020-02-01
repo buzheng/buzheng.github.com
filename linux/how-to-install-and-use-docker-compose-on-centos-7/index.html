@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.62.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -44,7 +44,7 @@ Compose可用于不同目的，例如单主机应用程序部署，自动化测�
 本教程将指导您在CentOS 7上安装最新版本的Docker Compose。我们还将介绍基本的Docker Compose概念和命令。">
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2062">
+<meta itemprop="wordCount" content="1686">
 
 
 
@@ -130,8 +130,8 @@ Compose可用于不同目的，例如单主机应用程序部署，自动化测�
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 2100 字</span>
-          <span class="f6 dib tracked">, 预计阅读时间 7 分钟</span>
+          <span class="f6 dib tracked">约 1700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
         
       </div>
     </header>
@@ -184,36 +184,36 @@ Compose可用于不同目的，例如单主机应用程序部署，自动化测�
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">nano docker-compose.yml
 </code></pre></div><p>粘贴以下内容：</p>
 <p>泊坞窗，compose.yml</p>
-<div class="highlight"><pre class="chroma"><code class="language-YAML" data-lang="YAML">version<span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.3&#39;</span><span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-YAML" data-lang="YAML"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.3&#39;</span><span class="w">
 </span><span class="w">
-</span><span class="w"></span>services<span class="p">:</span><span class="w">
-</span><span class="w">  </span>db<span class="p">:</span><span class="w">
-</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>mysql<span class="p">:</span><span class="m">5.7</span><span class="w">
-</span><span class="w">    </span>restart<span class="p">:</span><span class="w"> </span>always<span class="w">
-</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
-</span><span class="w">      </span>-<span class="w"> </span>db_data<span class="p">:</span>/var/lib/mysql<span class="w">
-</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
-</span><span class="w">      </span>MYSQL_ROOT_PASSWORD<span class="p">:</span><span class="w"> </span>password<span class="w">
-</span><span class="w">      </span>MYSQL_DATABASE<span class="p">:</span><span class="w"> </span>wordpress<span class="w">
+</span><span class="w"></span><span class="k">services</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">  </span><span class="k">db</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>mysql<span class="p">:</span><span class="m">5.7</span><span class="w">
+</span><span class="w">    </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- db_data<span class="p">:</span>/var/lib/mysql<span class="w">
+</span><span class="w">    </span><span class="k">environment</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span><span class="k">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span>password<span class="w">
+</span><span class="w">      </span><span class="k">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span>wordpress<span class="w">
 </span><span class="w">
-</span><span class="w">  </span>wordpress<span class="p">:</span><span class="w">
-</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>wordpress<span class="w">
-</span><span class="w">    </span>restart<span class="p">:</span><span class="w"> </span>always<span class="w">
-</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
-</span><span class="w">      </span>-<span class="w"> </span>./wp_data<span class="p">:</span>/var/www/html<span class="w">
-</span><span class="w">    </span>ports<span class="p">:</span><span class="w">
-</span><span class="w">      </span>-<span class="w"> </span><span class="s2">&#34;8080:80&#34;</span><span class="w">
-</span><span class="w">    </span>environment<span class="p">:</span><span class="w">
-</span><span class="w">      </span>WORDPRESS_DB_HOST<span class="p">:</span><span class="w"> </span>db<span class="p">:</span><span class="m">3306</span><span class="w">
-</span><span class="w">      </span>WORDPRESS_DB_NAME<span class="p">:</span><span class="w"> </span>wordpress<span class="w">
-</span><span class="w">      </span>WORDPRESS_DB_USER<span class="p">:</span><span class="w"> </span>root<span class="w">
-</span><span class="w">      </span>WORDPRESS_DB_PASSWORD<span class="p">:</span><span class="w"> </span>password<span class="w">
-</span><span class="w">    </span>depends_on<span class="p">:</span><span class="w">
-</span><span class="w">       </span>-<span class="w"> </span>db<span class="w">
+</span><span class="w">  </span><span class="k">wordpress</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">image</span><span class="p">:</span><span class="w"> </span>wordpress<span class="w">
+</span><span class="w">    </span><span class="k">restart</span><span class="p">:</span><span class="w"> </span>always<span class="w">
+</span><span class="w">    </span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- ./wp_data<span class="p">:</span>/var/www/html<span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span>- <span class="s2">&#34;8080:80&#34;</span><span class="w">
+</span><span class="w">    </span><span class="k">environment</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">      </span><span class="k">WORDPRESS_DB_HOST</span><span class="p">:</span><span class="w"> </span>db<span class="p">:</span><span class="m">3306</span><span class="w">
+</span><span class="w">      </span><span class="k">WORDPRESS_DB_NAME</span><span class="p">:</span><span class="w"> </span>wordpress<span class="w">
+</span><span class="w">      </span><span class="k">WORDPRESS_DB_USER</span><span class="p">:</span><span class="w"> </span>root<span class="w">
+</span><span class="w">      </span><span class="k">WORDPRESS_DB_PASSWORD</span><span class="p">:</span><span class="w"> </span>password<span class="w">
+</span><span class="w">    </span><span class="k">depends_on</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">       </span>- db<span class="w">
 </span><span class="w">
-</span><span class="w"></span>volumes<span class="p">:</span><span class="w">
-</span><span class="w">    </span>db_data<span class="p">:</span><span class="w">
-</span><span class="w">    </span>wp_data<span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="k">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">db_data</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="w">    </span><span class="k">wp_data</span><span class="p">:</span><span class="w">
 </span></code></pre></div><p>让我们逐行分析代码。</p>
 <p>在第一行中，我们指定了<a href="https://docs.docker.com/compose/compose-file/compose-versioning/">Compose文件版本</a>。有几种不同版本的Compose文件格式，支持特定的Docker版本。</p>
 <p>接下来我们定义两个服务，<code>db</code>和<code>wordpress</code>。每个服务都运行一个映像，并在运行docker-compose时创建一个单独的容器。</p>

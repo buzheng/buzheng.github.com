@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.62.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -30,27 +30,27 @@
 
     <meta property="og:title" content="使用Debian 9上的Let加密来保护Apache" />
 <meta property="og:description" content="我们的加密是由Internet Security Research Group（ISRG）创建的证书颁发机构。它通过全自动流程提供免费的SSL证书，旨在消除手动证书创建，验证，安装和续订。
-Let&#39;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。
-本教程将指导您使用Debian 9上的certbot工具获取免费的Let&#39;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。" />
+Let&rsquo;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。
+本教程将指导您使用Debian 9上的certbot工具获取免费的Let&rsquo;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://buzheng.org/linux/secure-apache-with-let-s-encrypt-on-debian-9/" />
 <meta property="article:published_time" content="2019-05-09T05:00:00+08:00" />
 <meta property="article:modified_time" content="2019-05-09T05:00:00+08:00" />
 <meta itemprop="name" content="使用Debian 9上的Let加密来保护Apache">
 <meta itemprop="description" content="我们的加密是由Internet Security Research Group（ISRG）创建的证书颁发机构。它通过全自动流程提供免费的SSL证书，旨在消除手动证书创建，验证，安装和续订。
-Let&#39;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。
-本教程将指导您使用Debian 9上的certbot工具获取免费的Let&#39;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。">
+Let&rsquo;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。
+本教程将指导您使用Debian 9上的certbot工具获取免费的Let&rsquo;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。">
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2007">
+<meta itemprop="wordCount" content="2019">
 
 
 
 <meta itemprop="keywords" content="apache,debian,let&#39;s encrypt,certbot,ssl," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用Debian 9上的Let加密来保护Apache"/>
 <meta name="twitter:description" content="我们的加密是由Internet Security Research Group（ISRG）创建的证书颁发机构。它通过全自动流程提供免费的SSL证书，旨在消除手动证书创建，验证，安装和续订。
-Let&#39;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。
-本教程将指导您使用Debian 9上的certbot工具获取免费的Let&#39;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。"/>
+Let&rsquo;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。
+本教程将指导您使用Debian 9上的certbot工具获取免费的Let&rsquo;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。"/>
 
   </head>
 
@@ -144,8 +144,8 @@ Let&#39;s Encrypt颁发的证书自发布之日起90天内有效，并且今天�
           
   
           <p>我们的加密是由Internet Security Research Group（ISRG）创建的证书颁发机构。它通过全自动流程提供免费的SSL证书，旨在消除手动证书创建，验证，安装和续订。</p>
-<p>Let's Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。</p>
-<p>本教程将指导您使用Debian 9上的certbot工具获取免费的Let's Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。</p>
+<p>Let&rsquo;s Encrypt颁发的证书自发布之日起90天内有效，并且今天受到所有主要浏览器的信任。</p>
+<p>本教程将指导您使用Debian 9上的certbot工具获取免费的Let&rsquo;s Encrypt。我们还将展示如何配置Apache以使用新的SSL证书并启用HTTP / 2。</p>
 <h2 id="先决条件">先决条件</h2>
 <p>在继续本教程之前，请确保满足以下先决条件：</p>
 <ul>
@@ -164,7 +164,7 @@ Let&#39;s Encrypt颁发的证书自发布之日起90天内有效，并且今天�
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 </code></pre></div><p>如果您愿意，可以将大小更改为4096位，但在这种情况下，生成可能需要超过30分钟，具体取决于系统熵。</p>
 <h2 id="获取let的加密ssl证书">获取Let的加密SSL证书</h2>
-<p>要获取我们域的SSL证书，我们将使用Webroot插件，该插件通过创建临时文件来验证<code>${webroot-path}/.well-known/acme-challenge</code>目录中的请求域。Let's Encrypt服务器向临时文件发出HTTP请求，以验证请求的域是否解析为运行certbot的服务器。</p>
+<p>要获取我们域的SSL证书，我们将使用Webroot插件，该插件通过创建临时文件来验证<code>${webroot-path}/.well-known/acme-challenge</code>目录中的请求域。Let&rsquo;s Encrypt服务器向临时文件发出HTTP请求，以验证请求的域是否解析为运行certbot的服务器。</p>
 <p>为了使它更简单，我们将把所有HTTP请求映射<code>.well-known/acme-challenge</code>到单个目录，<code>/var/lib/letsencrypt</code>。</p>
 <p>以下命令将创建目录并使其可供Apache服务器写入。</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/lib/letsencrypt/.well-knownsudo chgrp www-data /var/lib/letsencryptsudo chmod g+s /var/lib/letsencrypt
