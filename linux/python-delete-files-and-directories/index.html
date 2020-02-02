@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Python 中删除文件和目录 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Python 中删除文件和目录" />
+<meta property="og:description" content="本教程介绍了如何使用 Python 内置的 os ， pathlib 以及 shutil 模块中的函数删除文件和目录。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/python-delete-files-and-directories/" />
+<meta property="og:image" content="https://buzheng.org/linux/python-delete-files-and-directories/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-02T18:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-02T18:00:00+08:00" />
+<meta itemprop="name" content="在 Python 中删除文件和目录">
+<meta itemprop="description" content="本教程介绍了如何使用 Python 内置的 os ， pathlib 以及 shutil 模块中的函数删除文件和目录。">
+<meta itemprop="datePublished" content="2020-02-02T18:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-02T18:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="980">
+<meta itemprop="image" content="https://buzheng.org/linux/python-delete-files-and-directories/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="python," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/python-delete-files-and-directories/featured.jpg"/>
+<meta name="twitter:title" content="在 Python 中删除文件和目录"/>
+<meta name="twitter:description" content="本教程介绍了如何使用 Python 内置的 os ， pathlib 以及 shutil 模块中的函数删除文件和目录。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Python 中删除文件和目录</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-02T18:00:00&#43;08:00">2020年2月2日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>本教程介绍了如何使用 Python 内置的 <code>os</code> ， <code>pathlib</code> 以及 <code>shutil</code> 模块中的函数删除文件和目录。</p>
+<h2 id="删除文件">删除文件</h2>
+<p>在 Python 中你可以使用 <code>os.remove()</code> ， <code>os.unlink()</code> ， <code>pathlib.Path.unlink()</code> 删除一个文件。</p>
+<p><a href="https://docs.python.org/3/library/os.html"><code>os</code></a> 模块提供了一种与操作系统交互的简便方法。该模块在 Python 2 和 3 中都可使用。</p>
+<p>要使用 <code>os.remove()</code> 删除单个文件，请将文件路径作为参数传递：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">file_path</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/file.txt</span><span class="s1">&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</code></pre></div><p><code>os.remove()</code> 和 <code>os.unlink()</code> 功能在语义上是相同的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">file_path</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/file.txt</span><span class="s1">&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</code></pre></div><p>如果指定的<a href="/linux/python-check-if-file-exists/">文件不存在</a>则会抛出一个 <code>FileNotFoundError</code> 错误。 <code>os.remove()</code> 和 <code>os.unlink()</code> 只能删除文件，不能删除目录。如果给定的路径指向目录，则将引发 <code>IsADirectoryError</code> 错误。</p>
+<p>删除文件需要在包含文件的目录上具有写和执行权限。否则，您将获得 <code>PermissionError</code> 错误。</p>
+<p>为避免在删除文件时出错，您可以使用异常处理来捕获异常并发送适当的错误消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">file_path</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/file.txt</span><span class="s1">&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><p><a href="https://docs.python.org/3/library/pathlib.html"><code>pathlib</code></a> 模块在 Python 3.4 及更高版本中可用。如果要在 Python 2 中使用此模块，可以使用 pip 进行安装。 <code>pathlib</code> 提供了一个面向对象的接口，用于处理不同操作系统的文件系统路径。</p>
+<p>要使用 <code>pathlib</code> 模块删除文件，请创建一个 <code>Path</code> 指向该文件的对象，然后在该对象上调用 <code>unlink()</code> 方法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/file.txt</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">file_path</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><p><code>pathlib.Path.unlink()</code> ， <code>os.remove()</code> 和 <code>os.unlink()</code> 也可以用来<a href="/linux/how-to-remove-symbolic-links-in-linux/">删除符号链接</a>。</p>
+<h3 id="模式匹配">模式匹配</h3>
+<p>您可以使用 <a href="https://docs.python.org/3/library/glob.html">glob</a> 模块根据模式匹配多个文件。例如，要删除 <code>/tmp</code> 目录中的所有 <code>.txt</code> 文件，可以使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/*.txt</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><p>要递归删除 <code>/tmp</code> 目录及其下所有子目录中的所有 <code>.txt</code> 文件，请将 <code>recursive=True</code> 参数传递给 <code>glob()</code> 函数并使用**模式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/**/*.txt</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><p>该 <code>pathlib</code> 模块包含了两个 glob 函数在给定目录中匹配的文件： <code>glob()</code> 以及 <code>rglob()</code>。 <code>glob()</code> 仅匹配顶级目录中的文件。 <code>rglob()</code> 递归匹配目录和所有子目录中的所有文件。以下示例代码删除 <code>/tmp</code> 目录中的所有 <code>.txt</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">*.txt</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><h2 id="删除目录文件夹">删除目录(文件夹)</h2>
+<p>在 Python 中，您可以使用 <code>os.rmdir()</code> 和 <code>pathlib.Path.rmdir()</code> 删除空目录以及 <code>shutil.rmtree()</code> 删除非空目录。</p>
+<p>以下示例显示如何删除<em>空目录</em>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">dir_path</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/img</span><span class="s1">&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><p>另外，您可以使用以下 <code>pathlib</code> 模块删除<em>空目录</em>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">dir_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/img</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">dir_path</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><p><a href="https://docs.python.org/3/library/shutil.html"><code>shutil</code></a> 模块使您可以对文件和目录执行许多高级操作。</p>
+<p>使用此 <code>shutil.rmtree()</code> 功能，您可以删除给定目录和目录中的文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-py" data-lang="py"><span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="n">dir_path</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">/tmp/img</span><span class="s1">&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Error: </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">strerror</span><span class="p">)</span><span class="p">)</span>
+</code></pre></div><blockquote>
+<p>传递给 <code>shutil.rmtree()</code> 的参数不能是指向目录的符号链接。</p>
+</blockquote>
+<h2 id="结论">结论</h2>
+<p>Python 提供了几个用于处理文件的模块： <code>os</code> ， <code>pathlib</code> 以及 <code>shutil</code> 。</p>
+<p>我们已经向您展示如何使用 <code>os.remove()</code> ， <code>os.unlink()</code> ， <code>pathlib.Path.unlink()</code> 删除一个文件，使用 <code>os.rmdir()</code> 和 <code>pathlib.Path.rmdir()</code> 删除一个空目录，使用 <code>shutil.rmtree()</code> 递归删除目录和它的所有的内容。</p>
+<p>删除文件或目录时要格外小心，因为一旦删除文件，就无法轻松恢复它。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/python" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">python</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-centos-8/">在 CentOS 8 安装 pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-opencv-on-debian-10/">在 Debian 10 Linux 上安装 OpenCV 教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tensorflow-on-debian-10/">在 Debian 10 上安装TensorFlow</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/replace-string-python/">Python 中的字符串替换</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-centos-8/">在 CentOS 8 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-8-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Python 3.8</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-on-centos-8/">如何在 CentOS 8 上安装 Python</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-enumerate/">Python 枚举的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/convert-strings-into-integers-in-python/">在 Python 中将字符串转换为整数</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#删除文件">删除文件</a>
+      <ul>
+        <li><a href="#模式匹配">模式匹配</a></li>
+      </ul>
+    </li>
+    <li><a href="#删除目录文件夹">删除目录(文件夹)</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
