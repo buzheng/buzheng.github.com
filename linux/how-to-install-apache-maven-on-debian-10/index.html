@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Debian 10 上安装 Maven |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 10 上安装 Maven" />
+<meta property="og:description" content="Maven 是主要用于 Java 项目的开源项目管理和理解工具。本文介绍了在 Debian 10 上安装 Maven 的两种方法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-apache-maven-on-debian-10/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-apache-maven-on-debian-10/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-06T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-06T12:00:00+08:00" />
+<meta itemprop="name" content="如何在 Debian 10 上安装 Maven">
+<meta itemprop="description" content="Maven 是主要用于 Java 项目的开源项目管理和理解工具。本文介绍了在 Debian 10 上安装 Maven 的两种方法。">
+<meta itemprop="datePublished" content="2020-02-06T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-06T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="947">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-apache-maven-on-debian-10/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="java,maven,debian," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-apache-maven-on-debian-10/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Debian 10 上安装 Maven"/>
+<meta name="twitter:description" content="Maven 是主要用于 Java 项目的开源项目管理和理解工具。本文介绍了在 Debian 10 上安装 Maven 的两种方法。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Debian 10 上安装 Maven</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-06T12:00:00&#43;08:00">2020年2月6日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Maven 是主要用于 Java 项目的开源项目管理和理解工具。 Maven 使用项目对象模型 (POM) ，该对象本质上是一个 XML 文件，其中包含有关项目，配置详细信息，项目的依存关系等的信息。</p>
+<p>本文介绍了在 Debian 10 上安装 Maven 的两种方法。</p>
+<p>标准的 Debian 存储库包含可以使用 <code>apt</code> 软件包管理器一起安装的 Maven 软件包。这是在 Debian 上安装 Maven 的最简单方法。但是，存储库中包含的版本可能落后于最新版本的 Maven 。要安装最新版本的 Maven ，请按照本文第二部分提供的说明进行操作。</p>
+<p>您可以根据自己的实际情况选择最适合您的安装方法。</p>
+<h2 id="先决条件">先决条件</h2>
+<p>这些说明假定您以 root 用户或<a href="/linux/how-to-create-a-sudo-user-on-debian/">具有 sudo 特权的用户</a>身份登录。</p>
+<h2 id="在-debian-上使用-apt-命令安装-maven-">在 Debian 上使用 <code>apt</code> 命令安装 Maven  </h2>
+<p>在 Debian 使用 <a href="/linux/how-to-use-apt-command/"><code>apt</code></a> 安装 Maven 是一个简单，直接的过程。</p>
+<ol>
+<li>
+<p>通过运行以下命令来更新软件包索引并安装 Maven ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt update
+sudo apt install maven
+</code></pre></div></li>
+<li>
+<p>运行 <code>mvn -version</code> 命令以验证安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mvn -version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Maven home: /usr/share/maven
+Java version: 11.0.6, vendor: Debian, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: &#34; linux &#34; , version:  &#34; 4.19.0-6-amd64 &#34; , arch:  &#34; amd64 &#34; , family:  &#34; unix &#34;
+</code></pre></div></li>
+</ol>
+<p>现在，Maven 已安装在您的 Debian 系统上，您可以开始使用它了。</p>
+<h2 id="安装最新版本的-maven">安装最新版本的 Maven</h2>
+<p>在本节中，我们将提供有关如何在 Debian 10 上安装最新版本的 Maven 分步说明。</p>
+<h3 id="1安装-openjdk">1.安装 OpenJDK</h3>
+<p>Maven 3.3+ 需要在系统上安装 JDK 1.7 或更高版本。</p>
+<p>通过键入以下命令<a href="/linux/install-java-on-debian-10/">安装 OpenJDK 11</a> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt update
+sudo apt install default-jdk
+</code></pre></div><p>通过检查 Java 版本来验证 Java 是否已成功安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">java -version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">openjdk version &#34;1.8.0_181&#34;
+OpenJDK Runtime Environment (build 1.8.0_181-8u181-b13-2~deb9u1-b13)
+OpenJDK 64-Bit Server VM (build 25.181-b13, mixed mode)
+</code></pre></div><h3 id="2下载-maven">2.下载 Maven</h3>
+<p>在撰写本文时， Maven 的最新版本是 <code>3.6.3</code> 。在继续下一步之前，请到 <a href="https://maven.apache.org/download.cgi">Maven 下载页面</a>查看是否有较新的版本。</p>
+<p>使用 <a href="/linux/wget-command-examples/"><code>wget</code></a> 下载 Maven 归档文件到 <code>/tmp</code> 目录中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
+</code></pre></div><p>下载完成后，<a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">将存档解压缩</a>到 <code>/opt</code> 目录中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo tar xf /tmp/apache-maven-*.tar.gz -C /opt
+</code></pre></div><p>为了更好地控制 Maven 版本和更新，我们将<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">创建一个符号链接</a>  <code>maven</code> 指向 Maven 安装目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo ln -s /opt/apache-maven-3.6.3 /opt/maven
+</code></pre></div><p>以后，要升级安装 Maven，只需解压缩较新的版本并更改符号链接以指向最新版本即可。</p>
+<h3 id="3设置环境变量">3.设置环境变量</h3>
+<p>接下来，我们需要设置<a href="/linux/how-to-set-and-list-environment-variables-in-linux/">环境变量</a>。为此，请打开文本编辑器并在 <code>/etc/profile.d/</code> 目录中创建一个新文件 <code>mavenenv.sh</code> 。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo nano /etc/profile.d/maven.sh
+</code></pre></div><p>粘贴以下行到 <code>/etc/profile.d/maven.sh </code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/usr/lib/jvm/default-java
+<span class="nb">export</span> <span class="nv">M2_HOME</span><span class="o">=</span>/opt/maven
+<span class="nb">export</span> <span class="nv">MAVEN_HOME</span><span class="o">=</span>/opt/maven
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="si">${</span><span class="nv">M2_HOME</span><span class="si">}</span>/bin:<span class="si">${</span><span class="nv">PATH</span><span class="si">}</span>
+</code></pre></div><p>保存并关闭文件。</p>
+<p>通过以下 <a href="/linux/chmod-command-in-linux/"><code>chmod</code></a> 命令使脚本可执行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo chmod +x /etc/profile.d/maven.sh
+</code></pre></div><p>使用以下 <a href="/linux/bash-source-command/"><code>source</code></a> 命令在当前会话中加载环境变量：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">source</span> /etc/profile.d/maven.sh
+</code></pre></div><h3 id="4验证安装">4.验证安装</h3>
+<p>要验证是否正确安装了 Maven ，请使用 <code>mvn -version</code> 将打印 Maven 版本的命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mvn -version
+</code></pre></div><p>您应该看到类似以下的内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+Maven home: /opt/maven
+Java version: 11.0.6, vendor: Debian, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: &#34;linux&#34;, version: &#34;4.19.0-6-amd64&#34;, arch: &#34;amd64&#34;, family: &#34;unix&#34;
+</code></pre></div><p>现在，最新版本的 Maven 已安装在您的 Debian 系统上。</p>
+<h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何在 Debian 10 上安装 Maven 。您现在可以访问 <a href="https://maven.apache.org/guides/index.html">Maven</a> 官方<a href="https://maven.apache.org/guides/index.html">文档</a>页面，并学习如何开始使用 Maven 。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/java" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">java</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/maven" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">maven</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/debian" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-maven-on-debian-9/">如何在Debian 9上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-maven-on-centos-8/">在 CentOS 8 上安装 Maven</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-10/">在 Debian 10 Linux 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-10/">如何在 Debian 10 Linux 上安装 Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-java-on-debian-10/">如何在 Debian 10 Linux 上安装 Java</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-maven-on-centos-7/">如何在CentOS 7上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-9/">如何在Debian 9上安装Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-maven-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Apache Maven</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-debian-9/">如何在 Debian 9 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#在-debian-上使用-apt-命令安装-maven-">在 Debian 上使用 apt 命令安装 Maven  </a></li>
+    <li><a href="#安装最新版本的-maven">安装最新版本的 Maven</a>
+      <ul>
+        <li><a href="#1安装-openjdk">1.安装 OpenJDK</a></li>
+        <li><a href="#2下载-maven">2.下载 Maven</a></li>
+        <li><a href="#3设置环境变量">3.设置环境变量</a></li>
+        <li><a href="#4验证安装">4.验证安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
