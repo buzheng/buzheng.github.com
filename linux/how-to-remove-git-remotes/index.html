@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何删除 Git remote |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何删除 Git remote" />
+<meta property="og:description" content="Git remote 是一个指针，它指向通常托管在远程服务器上的存储库的另一个副本。本指南说明了如何删除 Git remote。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-remove-git-remotes/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-remove-git-remotes/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-08T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-08T12:00:00+08:00" />
+<meta itemprop="name" content="如何删除 Git remote">
+<meta itemprop="description" content="Git remote 是一个指针，它指向通常托管在远程服务器上的存储库的另一个副本。本指南说明了如何删除 Git remote。">
+<meta itemprop="datePublished" content="2020-02-08T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-08T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="568">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-remove-git-remotes/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="git," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-remove-git-remotes/featured.jpg"/>
+<meta name="twitter:title" content="如何删除 Git remote"/>
+<meta name="twitter:description" content="Git remote 是一个指针，它指向通常托管在远程服务器上的存储库的另一个副本。本指南说明了如何删除 Git remote。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何删除 Git remote</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-08T12:00:00&#43;08:00">2020年2月8日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 600 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Git remote 是一个指针，它通常指向托管在远程服务器上的存储库的另一个副本。本指南说明了如何删除 Git remote。</p>
+<p>通常，使用 Git 时，您一般只有一个指向远程仓库的指针，名称一般是 origin，以及针对不同功能和环境的不同分支。 Origin 是在克隆存储库并指向克隆的存储库时自动创建的远程服务器的名称。</p>
+<p>但是，当与一群人进行项目协作时，您可能会发现使用多个 Git remote 非常方便。远程存储库可以托管在 Git 托管服务(例如 GitHub ， GitLab 和 BitBucket) 上，也可以托管在您的<a href="/linux/how-to-setup-a-git-server/">私有 Git 服务器上</a>。</p>
+<p>如果远程存储库已迁移到另一台主机，或者贡献者停止了贡献，则可能要从存储库中删除远程 URL 。</p>
+<h2 id="卸下-git-remote">卸下 Git remote</h2>
+<p>要删除远程服务器，请<a href="/linux/linux-cd-command/">导航至存储库所在的目录</a>，然后使用 <code>git remote rm</code>  或 <code>git remote remove</code> 命令以及远程名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">git remote rm &lt;remote-name&gt;
+</code></pre></div><p>例如，要删除名为<code>testing</code> 的 remote ，您可以输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git remote rm testing
+</code></pre></div><p><code>git remote rm</code> 只是删除指向远程存储库的所有指针而已，它不会从远程服务器中删除存储库。</p>
+<p>要验证远程已成功删除，请使用以下 <code>git remote</code> 命令列出远程连接：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git remote -v  
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">origin	https://github.com/user/repo_name.git (fetch)
+origin	https://github.com/user/repo_name.git (push)
+</code></pre></div><p><code>git remote rm</code> 命令的作用是从 <code>.git/config</code> 文件中删除有关远程存储库的条目。</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">...</span>
+<span class="k">[remote &#34;testing&#34;]</span>
+        <span class="na">url</span> <span class="o">=</span> <span class="s">git@gitserver.com:user/repo_name.git
+</span><span class="s">        fetch = +refs/heads/*:refs/remotes/testing/*</span>
+</code></pre></div><p>您也可以通过使用<a href="/linux/how-to-use-nano-text-editor/">文本编辑器</a>编辑 <code>.git/config</code> 文件来删除 remote。但是，建议使用该 <code>git remote rm</code> 命令。</p>
+<p>如果您要删除的 remote 不存在， Git 将显示一条错误消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">fatal: No such remote: &#39;&lt;remote-name&gt;&#39;
+</code></pre></div><p>也许您输入了错误的名称，或者 remote 已被删除。</p>
+<h2 id="结论">结论</h2>
+<p>使用 <code>git remote rm &lt;remote-name&gt;</code> 命令从存储库中删除指向远程服务器的指针。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/git" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">git</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-raspberry-pi/">在 Raspberry Pi 上安装 git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-gitea-on-ubuntu-18-04/">在 Ubuntu 18.04 上安装 Gitea</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-change-git-remote-url/">如何更改 git 远程仓库地址</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/gitignore-ignoring-files-in-git/">使用 .gitignore 忽略 Git 中的文件和目录</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-centos-8/">如何在 CentOS 8 上安装 git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/change-git-commit-message/">如何更改 git 的提交消息</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-setup-a-git-server/">如何设置 git 服务器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-remove-untracked-files-in-git/">如何在 Git 中删除未被跟踪的文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-debian-10/">如何在 Debian 10 Linux 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-and-list-git-branches/">在 Git 中创建和列出本地和远程分支</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#卸下-git-remote">卸下 Git remote</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
