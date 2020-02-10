@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Bash 序列表达式的用法 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Bash 序列表达式的用法" />
+<meta property="og:description" content="在本文中，我们将介绍 Bash 中序列表达式的基础。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/bash-sequence-expression/" />
+<meta property="og:image" content="https://buzheng.org/linux/bash-sequence-expression/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-10T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-10T12:00:00+08:00" />
+<meta itemprop="name" content="Bash 序列表达式的用法">
+<meta itemprop="description" content="在本文中，我们将介绍 Bash 中序列表达式的基础。">
+<meta itemprop="datePublished" content="2020-02-10T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-10T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="543">
+<meta itemprop="image" content="https://buzheng.org/linux/bash-sequence-expression/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="bash,loop,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/bash-sequence-expression/featured.jpg"/>
+<meta name="twitter:title" content="Bash 序列表达式的用法"/>
+<meta name="twitter:description" content="在本文中，我们将介绍 Bash 中序列表达式的基础。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Bash 序列表达式的用法</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-10T12:00:00&#43;08:00">2020年2月10日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 600 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>在本文中，我们将介绍 Bash 中序列表达式的基础。</p>
+<p>Bash 序列表达式通过定义范围的起点和终点来生成整数或字符范围。它通常与 <a href="https://www.gobeta.net/linux/bash-until-loop/"><code>for</code></a> 循环结合使用。</p>
+<h2 id="bash-序列表达式">Bash 序列表达式</h2>
+<p>序列表达式采用以下形式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">{</span>START..END<span class="o">[</span>..INCREMENT<span class="o">]</span><span class="o">}</span>
+</code></pre></div><ul>
+<li>表达式以一个大括号开始，以一个大括号结束。</li>
+<li><code>START</code> 和 <code>END</code> 可以是正整数或单个字符。</li>
+<li><code>START</code> 和 <code>END</code> 值是必须的，并且要用两个点分隔 <code>..</code> ，在它们之间没有空间。</li>
+<li><code>INCREMENT</code> 值是可选的。如果存在，则必须使用两个点将其 <code>..</code> 与 <code>END</code> 值分开，两个点之间没有空格。给定字符后，将按字典顺序扩展表达式。</li>
+<li>表达式扩展到每个 <code>START</code> 和 <code>END</code> 之间的数字或字符，包括所提供的值。</li>
+<li>格式错误的表达式将保持不变。</li>
+</ul>
+<p>这是实际的表达式方式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="o">{</span>0..3<span class="o">}</span>
+</code></pre></div><p>如果未提供 <code>INCREMENT</code> ，则默认增量为1：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">0 1 2 3
+</code></pre></div><p>您也可以使用其他字符。下面的示例打印字母：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="o">{</span>a..z<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">a b c d e f g h i j k l m n o p q r s t u v w x y z
+</code></pre></div><p>如果 <code>START</code> 值大于 <code>END</code> ，则表达式将创建一个递减的范围：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>3..0<span class="o">}</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Number: 3
+Number: 2
+Number: 1
+Number: 0
+
+</code></pre></div><p>给定 <code>INCREMENT</code> 时，它用作每个生成的项目之间的步长：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>0..20..5<span class="o">}</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+
+</code></pre></div><p>每个生成的数字比前一个数字大5：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Number: 0
+Number: 5
+Number: 10
+Number: 15
+Number: 20
+</code></pre></div><p>使用整数生成范围时，可以添加前导 <code>0</code> 以强制每个数字具有相同的长度。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>00..3<span class="o">}</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+<span class="k">done</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Number: 00
+Number: 01
+Number: 02
+Number: 03
+</code></pre></div><p>表达式可以使用其他字符作为前缀或后缀：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> A<span class="o">{</span>00..3<span class="o">}</span>B
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">A00B A01B A02B A03B
+</code></pre></div><p>如果表达式的构造不正确，则将其保持不变：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="o">{</span>0..<span class="o">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">0..
+</code></pre></div><h2 id="结论">结论</h2>
+<p>Bash 序列表达式使您可以生成一系列整数或字符。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/bash" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">bash</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/loop" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">loop</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-break-continue/">Bash 中的 break 和 continue</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-increment-decrement-variable/">如何在 Bash 中对变量递增或者递减</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-for-loop/">Bash 中的 For 循环</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-while-loop/">Bash while Loop</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-select/">Bash 中使用 select 制作菜单</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-append-to-file/">在 bash 中追加内容到文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-comments/">在 bash 脚本中使用注释</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/popd-and-pushd-commands-in-linux/">Linux中的 pushd 和 popd 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-shebang/">Bash Shebang</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-check-if-string-contains-substring-in-bash/">在 Bash 中如何检查字符串是否包含的子串</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#bash-序列表达式">Bash 序列表达式</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
