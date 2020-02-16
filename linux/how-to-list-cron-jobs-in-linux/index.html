@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 Linux 中查看 cron 作业 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 Linux 中查看 cron 作业" />
+<meta property="og:description" content="Cron 是一个调度守护程序，可让您按指定的时间间隔调度任务的执行，本文介绍了如何查看 cron 作业列表。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-list-cron-jobs-in-linux/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-list-cron-jobs-in-linux/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-16T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-16T12:00:00+08:00" />
+<meta itemprop="name" content="在 Linux 中查看 cron 作业">
+<meta itemprop="description" content="Cron 是一个调度守护程序，可让您按指定的时间间隔调度任务的执行，本文介绍了如何查看 cron 作业列表。">
+<meta itemprop="datePublished" content="2020-02-16T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-16T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="888">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-list-cron-jobs-in-linux/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="cron,crontab,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-list-cron-jobs-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="在 Linux 中查看 cron 作业"/>
+<meta name="twitter:description" content="Cron 是一个调度守护程序，可让您按指定的时间间隔调度任务的执行，本文介绍了如何查看 cron 作业列表。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 Linux 中查看 cron 作业</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-16T12:00:00&#43;08:00">2020年2月16日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Cron 是一个调度守护程序，可让您按指定的时间间隔调度任务的执行。这些任务称为 cron 作业，可以计划按分钟，小时，每月的某天，每月，一周的某天或它们的任意组合运行。</p>
+<p>Cron 作业通常用于执行系统维护操作。例如，可以将 cron 作业设置为自动执行重复性任务，例如<a href="/linux/how-to-back-up-and-restore-mysql-databases-with-mysqldump/">备份数据库</a>，使用最新的安全补丁更新系统，清除缓存，发送电子邮件等。</p>
+<p>本文介绍了如何查看 cron 作业列表。</p>
+<h2 id="查看-cron-作业列表">查看 Cron 作业列表</h2>
+<p>用户的 crontab 文件是根据用户名命名的，其位置因操作系统而异。在基于 Red Hat 的发行版(例如 CentOS) 中， crontab 文件存储在 <code>/var/spool/cron</code> 目录中，而在 Debian 和 Ubuntu 中，文件存储在 <code>/var/spool/cron/crontabs</code> 目录中。</p>
+<p>要获取当前登录用户的所有 cron 作业的列表，请使用以下 <a href="/linux/scheduling-cron-jobs-with-crontab/"><code>crontab</code></a> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">crontab -l
+</code></pre></div><p>如果用户设置了 cron 作业，则用户的 crontab 内容将显示在屏幕上。否则，将打印输出 <code>no crontab for &lt;username&gt;</code> 。</p>
+<p>要列出其他用户的 cron 作业，请使用 <code>-u</code> 选项在命令末尾指定用户名。例如，要列出名为 “mark” 的用户的 cron 作业，可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo crontab -u mark -l
+</code></pre></div><p>每个用户 crontab 文件均具有 <code>600</code> 权限并由用户拥有。只有 root 用户和具有 <a href="/linux/sudo-command-in-linux/"><code>sudo</code></a> 特权的用户才能查看其他用户的 cron 作业。</p>
+<p>要找出哪些用户创建了 cron 作业，请以 root 或 sudo 用户身份<a href="/linux/how-to-list-files-in-linux-using-the-ls-command/">列出 <code>spool</code> 目录</a>的内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo ls -1 /var/spool/cron/crontabs
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">root
+mark
+</code></pre></div><h2 id="查看系统的-cron-作业">查看系统的 Cron 作业</h2>
+<p><code>/etc/crontab</code> 和 <code>/etc/cron.d</code> 目录中的文件是系统范围的 crontab 文件，只能由系统管理员编辑。</p>
+<p>使用 <a href="/linux/linux-cat-command/"><code>cat</code></a> ， <a href="/linux/less-command-in-linux/"><code>less</code></a> 或任何文本编辑器来查看文件的内容：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cat /etc/crontab /etc/cron.d/*
+</code></pre></div><p>在大多数 Linux 发行版中，您还可以将脚本放入 <code>/etc/cron.{hourly,daily,weekly,monthly}</code>目录中，并且脚本每 <code>hour/day/week/month</code> 都会执行一次。</p>
+<p>这些目录中的每个脚本都必须具有执行<a href="/linux/chmod-command-in-linux/">权限</a>。否则，将不执行 cron 作业。</p>
+<p>例如，要查看所有每周的 cron 作业，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ls -l /etc/cron.weekly/
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">-rwxr-xr-x 1 root root 813 Feb 10  2019 man-db
+</code></pre></div><p>如果输出为空，则意味着没有每周的 cron 作业。</p>
+<h2 id="系统计时器">系统计时器</h2>
+<p><a href="https://www.freedesktop.org/software/systemd/man/systemd.timer.html">Systemd 计时器</a>是以 <code>*.timer</code> 后缀结尾的单位文件，可让您根据时间运行服务单位。</p>
+<p>在使用 systemd 作为初始化系统的发行版中，计时器用作标准 cron 守护程序的替代方法。</p>
+<p>要查看计算机上所有 systemd 计时器的列表，请运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl list-timers
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">NEXT                         LEFT          LAST                         PASSED       UNIT                         ACTIVATES
+Sun 2020-02-16 00:00:00 UTC  1h 53min left Sat 2020-02-15 17:04:11 UTC  5h 2min ago  logrotate.timer              logrotate.service
+Sun 2020-02-16 00:00:00 UTC  1h 53min left Sat 2020-02-15 17:04:11 UTC  5h 2min ago  man-db.timer                 man-db.service
+Sun 2020-02-16 03:50:52 UTC  5h 44min left Sat 2020-02-15 17:04:11 UTC  5h 2min ago  apt-daily.timer              apt-daily.service
+Sun 2020-02-16 06:12:38 UTC  8h left       Sat 2020-02-15 17:04:11 UTC  5h 2min ago  apt-daily-upgrade.timer      apt-daily-upgrade.service
+Sun 2020-02-16 18:44:56 UTC  20h left      Sat 2020-02-15 17:16:10 UTC  4h 50min ago systemd-tmpfiles-clean.timer systemd-tmpfiles-clean.service
+</code></pre></div><h2 id="结论">结论</h2>
+<p>我们向您展示了如何列出 cron 作业和 systemd 计时器。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/cron" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">cron</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/crontab" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">crontab</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/scheduling-cron-jobs-with-crontab/">使用Crontab安排Cron作业</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-if-else-statement/">Python if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-sequence-expression/">Bash 序列表达式的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/vim-undo-redo/">在 Vim/Vi 中撤消和重做操作</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/lsmod-command-in-linux/">Linux中使用 lsmod 命令列出内核模块</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-select/">Bash 中使用 select 制作菜单</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-break-continue/">Bash 中的 break 和 continue</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pidof-command-in-linux/">Linux 中的 pidof 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/timeout-command-in-linux/">Linux中的 timeout 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#查看-cron-作业列表">查看 Cron 作业列表</a></li>
+    <li><a href="#查看系统的-cron-作业">查看系统的 Cron 作业</a></li>
+    <li><a href="#系统计时器">系统计时器</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
