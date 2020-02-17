@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Git 用户名和电子邮件配置教程 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Git 用户名和电子邮件配置教程" />
+<meta property="og:description" content="Git 是一个分布式版本控制系统，当今大多数软件团队都在使用它。在系统上安装 Git 之后，您应该做的第一件事就是配置 git 用户名和电子邮件地址。 您所做的每次" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-configure-git-username-and-email/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-configure-git-username-and-email/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-17T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-17T12:00:00+08:00" />
+<meta itemprop="name" content="Git 用户名和电子邮件配置教程">
+<meta itemprop="description" content="Git 是一个分布式版本控制系统，当今大多数软件团队都在使用它。在系统上安装 Git 之后，您应该做的第一件事就是配置 git 用户名和电子邮件地址。 您所做的每次">
+<meta itemprop="datePublished" content="2020-02-17T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-17T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="602">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-configure-git-username-and-email/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="centos,git," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-configure-git-username-and-email/featured.jpg"/>
+<meta name="twitter:title" content="Git 用户名和电子邮件配置教程"/>
+<meta name="twitter:description" content="Git 是一个分布式版本控制系统，当今大多数软件团队都在使用它。在系统上安装 Git 之后，您应该做的第一件事就是配置 git 用户名和电子邮件地址。 您所做的每次"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Git 用户名和电子邮件配置教程</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-17T12:00:00&#43;08:00">2020年2月17日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Git 是一个分布式版本控制系统，当今大多数软件团队都在使用它。在系统上安装 Git 之后，您应该做的第一件事就是配置 git 用户名和电子邮件地址。 您所做的每次提交相关联，Git 都会与您的身份关联起来。</p>
+<p>Git 允许您设置全局和每个项目的用户名和电子邮件地址。您可以使用以下 <code>git config</code> 命令设置或更改 git 身份。更改仅影响将来的提交。更改之前所做的提交相关联的名称和电子邮件不会受到影响。</p>
+<h2 id="设置全局-git-用户名和密码">设置全局 Git 用户名和密码</h2>
+<p>如果您的存储库上没有进行特定的设定，存储库上所做的提交相都会关联全局 git 配置的用户名和密码。</p>
+<p>要设置全局提交名称和电子邮件地址，请运行 <code>git config</code> 命令并带上 <code>--global</code> 选项的=：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">git config --global user.name <span class="s2">&#34;Your Name&#34;</span>
+git config --global user.email <span class="s2">&#34;youremail@yourdomain.com&#34;</span>
+</code></pre></div><p>完成后，您可以通过运行以下命令确认已设置信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">git config --list
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">user.name=Your Name
+user.email=youremail@yourdomain.com
+</code></pre></div><p><code>git config</code> 命令将值保存在全局配置文件中 <code>~/.gitconfig</code>, 文件的内容如下 ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">[user]
+    name = Your Name
+    email = youremail@yourdomain.com
+</code></pre></div><p>您也可以使用文本编辑器编辑文件，但是建议使用 <code>git config</code> 命令。</p>
+<h2 id="为单个存储库设置-git-用户名和密码">为单个存储库设置 Git 用户名和密码</h2>
+<p>如果要为特定存储库使用其他用户名或电子邮件地址，请从存储库目录中运行 <code>git config</code> 命令， 不要带 <code>--global</code> 选项。</p>
+<p>假设您要为 <code>~/Code/myapp</code> 目录中存储库设置用户名和电子邮件地址。首先，切换存储库的根目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">cd</span> ~/Code/myapp
+</code></pre></div><p>设置一个 Git 用户名和电子邮件地址：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">git config user.name <span class="s2">&#34;Your Name&#34;</span>
+git config user.email <span class="s2">&#34;youremail@yourdomain.com&#34;</span>
+</code></pre></div><p>验证更改是否正确进行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">git config --list
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">user.name=Your Name
+user.email=youremail@yourdomain.com
+</code></pre></div><p>特定于存储库的设置保存在存储库根目录下的 <code>.git/config</code> 文件中。</p>
+<h2 id="结论">结论</h2>
+<p>可以使用以下 <code>git config</code> 命令设置 Git 用户名和电子邮件地址。这些值与您的每次提交相关联。</p>
+<p>如果您不熟悉 Git ，请阅读 <a href="https://www.gobeta.net/books/pro-git/">Pro Git 书籍</a>，这是学习如何使用 Git 的绝佳资源。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/git" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">git</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-centos-8/">如何在 CentOS 8 上安装 git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-gitlab-on-centos-7/">如何在CentOS 7上安装和配置GitLab</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-git-on-centos-7/">如何在 CentOS 7 上安装 Git</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-8/">如何在 CentOS 8 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-8-on-centos-8/">如何在 CentOS 8 上安装 Python 3.8</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redis-on-centos-8/">在 CentOS 8 上安装和配置 Redis</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-remove-git-remotes/">如何删除 Git remote</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-xrdp-on-centos-8/">CentOS 8 上 Xrdp 服务器安装教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-vnc-on-centos-8/">在 CentOS 8 上安装和配置 VNC</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#设置全局-git-用户名和密码">设置全局 Git 用户名和密码</a></li>
+    <li><a href="#为单个存储库设置-git-用户名和密码">为单个存储库设置 Git 用户名和密码</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
