@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux中的 pgrep 命令 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux中的 pgrep 命令" />
+<meta property="og:description" content="本文介绍了 Linux 中的 `pgrep` 命令的基本用法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/pgrep-command-in-linux/" />
+<meta property="og:image" content="https://buzheng.org/linux/pgrep-command-in-linux/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-19T21:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-19T21:00:00+08:00" />
+<meta itemprop="name" content="Linux中的 pgrep 命令">
+<meta itemprop="description" content="本文介绍了 Linux 中的 `pgrep` 命令的基本用法。">
+<meta itemprop="datePublished" content="2020-02-19T21:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-19T21:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="927">
+<meta itemprop="image" content="https://buzheng.org/linux/pgrep-command-in-linux/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="pgrep,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/pgrep-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux中的 pgrep 命令"/>
+<meta name="twitter:description" content="本文介绍了 Linux 中的 `pgrep` 命令的基本用法。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux中的 pgrep 命令</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-19T21:00:00&#43;08:00">2020年2月19日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>pgrep</code> 是一个命令行实用程序，使您可以根据给定条件查找正在运行的程序的进程 ID，完整或部分的进程名称，运行该进程的用户或其他属性。</p>
+<p>本文介绍了 Linux 中的 <code>pgrep</code> 命令的基本用法。</p>
+<p><code>pgrep</code> 命令是 <code>procps</code>( 或 <code>procps-ng</code>) 软件包的一部分，该软件包已预装在几乎所有 Linux 发行版中。</p>
+<h2 id="如何使用-pgrep-命令">如何使用 <code>pgrep</code> 命令</h2>
+<p>该 <code>pgrep</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pgrep <span class="o">[</span>OPTIONS<span class="o">]</span> &lt;PATTERN&gt;
+</code></pre></div><p><code>&lt;PATTERN&gt;</code> 使用扩展的正则表达式来指定匹配条件。</p>
+<p>不带任何选项调用时， <code>pgrep</code> 输出与指定名称匹配的所有正在运行的程序的 PID 。例如，要查找 SSH 服务器的 PID ，应运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pgrep ssh
+</code></pre></div><p>如果存在名称与 “ssh” 匹配的且正在运行的进程，则其 PID 将显示在屏幕上。如果未找到匹配项，则输出为空。</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1039
+2257
+6850
+31279
+</code></pre></div><p>当至少一个正在运行的进程与请求的名称匹配时，该命令返回 <code>0</code> 。否则，退出代码为 <code>1</code> 。在 shell 脚本中使用时，这很有用。</p>
+<p><code>pgrep</code> 在每行上打印每个匹配的进程 ID 。而使用 <code>-d</code> 选项允许您指定其他定界符。例如，如果要使用空格作为定界符，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep ssh -d&#39; &#39;
+</code></pre></div><p>输出</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1039 2257 6850 31279
+</code></pre></div><p>选项 <code>-l</code> 告诉 <code>pgrep</code> 需要显示进程名称和 ID ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep ssh -l
+</code></pre></div><p><code>pgrep</code>  使用正则表达式执行搜索操作，并将列出名称中包含 “ssh” 的所有进程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">1039 sshd
+2257 ssh-agent
+6850 ssh
+31279 ssh-agent
+</code></pre></div><p>如果只想匹配名称与搜索模式完全相同的进程，则可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep &#39;^ssh$&#39; -l
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">6850 ssh
+</code></pre></div><p>尖号字符 (<code>^</code>) 匹配字符串的开头，美元 <code>$</code> 则匹配字符串的结尾。</p>
+<p>默认情况下， <code>pgrep</code> 仅与进程名称匹配。使用 <code>-f</code> 选项时，命令将与完整的参数列表匹配。</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep -f ssh
+</code></pre></div><p>使用 <code>-u</code> 选项告诉 <code>pgrep</code> 显示给定的用户正在运行的进程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep -u root
+</code></pre></div><p>要指定多个用户，请用逗号分隔其名称：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pgrep -u root,mark
+</code></pre></div><p>您还可以组合选项和搜索模式。例如，要打印所有在用户 “mark” 下运行并且名称中包含 “gnome” 的进程及其名称，您可以输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pgrep -l -u mark gnome
+</code></pre></div><p>要仅显示最近(最旧)或最近(最新)启动的进程，请使用 <code>-n</code>(最新)或 <code>-o</code>(最旧)选项。</p>
+<p>例如，要查找由用户 “mark” 最近启动的过程，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep -lnu mark
+</code></pre></div><p>从上面的示例中可以看到，您还可以组合选项，而选项之间不能有空格，并且可以用一个短划线隔开。</p>
+<p>要反转匹配，即仅显示不符合给定条件的过程，请使用 <code>-v</code> 选项。以下命令将打印所有不是由 “mark” 用户运行的进程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep -v -u mark
+</code></pre></div><p><code>-c</code> 选项指示 <code>pgrep</code> 仅打印匹配进程的数量。例如，要查找以 “mark” 用户身份运行的进程数，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">pgrep -c -u mark
+</code></pre></div><h2 id="结论">结论</h2>
+<p><code>pgrep</code> 命令用于根据不同的标准找出正在运行的程序的 PID 。</p>
+<p>有关 <code>pgrep</code> 命令的更多信息，请访问 <a href="http://man7.org/linux/man-pages/man1/pgrep.1.html">pgrep 手册</a>页或 <code>man pgrep</code> 在终端中键入。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/pgrep" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">pgrep</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-cron-jobs-in-linux/">在 Linux 中查看 cron 作业</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-if-else-statement/">Python if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-sequence-expression/">Bash 序列表达式的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/vim-undo-redo/">在 Vim/Vi 中撤消和重做操作</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/lsmod-command-in-linux/">Linux中使用 lsmod 命令列出内核模块</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-select/">Bash 中使用 select 制作菜单</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-break-continue/">Bash 中的 break 和 continue</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pidof-command-in-linux/">Linux 中的 pidof 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/timeout-command-in-linux/">Linux中的 timeout 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#如何使用-pgrep-命令">如何使用 pgrep 命令</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
