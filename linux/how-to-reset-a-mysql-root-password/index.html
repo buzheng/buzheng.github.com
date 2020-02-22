@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -168,14 +168,14 @@
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root
 </code></pre></div><h3 id="4设置新的-root-密码">4.设置新的 root 密码</h3>
 <p>如果您有 MySQL 5.7.6 及更高版本或 MariaDB 10.1.20 及更高版本，请运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;</span><span class="s1">root</span><span class="s1">&#39;</span><span class="o">@</span><span class="s1">&#39;</span><span class="s1">localhost</span><span class="s1">&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;</span><span class="s1">MY_NEW_PASSWORD</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;MY_NEW_PASSWORD&#39;</span><span class="p">;</span>
 <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
 </code></pre></div><p>如果 ALTER USER 语句不适合您，请尝试直接修改用户表：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">UPDATE</span> <span class="n">mysql</span><span class="p">.</span><span class="k">user</span> <span class="k">SET</span> <span class="n">authentication_string</span> <span class="o">=</span> <span class="n">PASSWORD</span><span class="p">(</span><span class="s1">&#39;</span><span class="s1">MY_NEW_PASSWORD</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">WHERE</span> <span class="k">User</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s1">root</span><span class="s1">&#39;</span> <span class="k">AND</span> <span class="k">Host</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s1">localhost</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">UPDATE</span> <span class="n">mysql</span><span class="p">.</span><span class="k">user</span> <span class="k">SET</span> <span class="n">authentication_string</span> <span class="o">=</span> <span class="n">PASSWORD</span><span class="p">(</span><span class="s1">&#39;MY_NEW_PASSWORD&#39;</span><span class="p">)</span>
+<span class="k">WHERE</span> <span class="k">User</span> <span class="o">=</span> <span class="s1">&#39;root&#39;</span> <span class="k">AND</span> <span class="k">Host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
 <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
 </code></pre></div><p>如果您有 MySQL 5.7.5 及更早版本或 MariaDB 10.1.20 及更早版本，请运行以下命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SET</span> <span class="n">PASSWORD</span> <span class="k">FOR</span> <span class="s1">&#39;</span><span class="s1">root</span><span class="s1">&#39;</span><span class="o">@</span><span class="s1">&#39;</span><span class="s1">localhost</span><span class="s1">&#39;</span> <span class="o">=</span> <span class="n">PASSWORD</span><span class="p">(</span><span class="s1">&#39;</span><span class="s1">MY_NEW_PASSWORD</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SET</span> <span class="n">PASSWORD</span> <span class="k">FOR</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="o">=</span> <span class="n">PASSWORD</span><span class="p">(</span><span class="s1">&#39;MY_NEW_PASSWORD&#39;</span><span class="p">);</span>
 <span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
 </code></pre></div><p>在这两种情况下，如果一切顺利，您应该看到以下输出：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>

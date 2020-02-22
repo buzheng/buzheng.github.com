@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -160,72 +160,72 @@ test EXPRESSION
 <p><code>test</code> 命令采用以下语法形式之一：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">test</span> EXPRESSION
 <span class="o">[</span> EXPRESSION <span class="o">]</span>
-<span class="o">[</span><span class="o">[</span> EXPRESSION <span class="o">]</span><span class="o">]</span>
+<span class="o">[[</span> EXPRESSION <span class="o">]]</span>
 </code></pre></div><p>如果您希望脚本可移植，则应该使用 <code>test</code> 命令的旧语法形式 <code>[</code>，因为这种形式在所有 POSIX shell 上都可用的。<code>test</code> 命令的新语法版本 <code>[[</code> (双括号) 被大多数使用 Bash ， Zsh 和 Ksh 作为默认 shell 的现代系统支持。</p>
 <h2 id="检查文件是否存在">检查文件是否存在</h2>
 <p>检查文件是否存在时，最常用的文件运算符是 <code>-e</code> 和 <code>-f</code> 。第一个将检查文件是否存在而不管类型如何，而第二个将仅在文件是常规文件 (不是目录或设备)时返回 <code>true</code> 。</p>
 <p>检查文件时最好的一个方法是将 <code>test</code> 命令与 <code>if</code> 语句结合使用。下面的任何片段都是检查 <code>/etc/resolv.conf</code> 文件是否存在：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/resolv.conf
 <span class="k">if</span> <span class="nb">test</span> -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/resolv.conf
 <span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/resolv.conf
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
+<span class="k">if</span> <span class="o">[[</span> -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><p>如果要根据文件是否存在执行不同的操作，只需使用 <code>if/else</code> 结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/resolv.conf
 
 <span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
 <span class="k">else</span> 
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><blockquote>
 <p>在处理名称中包含空格的文件时，请始终使用双引号以避免出现问题。</p>
 </blockquote>
 <p>您也可以使用不带 <code>if</code> 语句的 <code>test</code> 命令。只有在 <code>test</code> 命令的退出状态为真时才执行操作符 <code>&amp;&amp;</code> 后的命令，</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">test</span> -f /etc/resolv.conf <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">test</span> -f /etc/resolv.conf <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span>
 </code></pre></div><p>如果要在 <code>&amp;&amp;</code> 运算符后运行一系列命令，简单地将所有命令括在大括号中并用 <code>;</code> 或 <code>&amp;&amp;</code> 分隔的：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span><span class="p">;</span> cp <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> /tmp/<span class="p">;</span> <span class="o">}</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span><span class="p">;</span> cp <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> /tmp/<span class="p">;</span> <span class="o">}</span>
 </code></pre></div><p>与 <code>&amp;&amp;</code> 相反，操作符 <code>||</code> 后的语句只有在 <code>test</code> 命令的退出状态为 <code>false</code> 的情况下才会执行。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist</span><span class="s2">&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist&#34;</span>
 </code></pre></div><h2 id="检查目录是否存在">检查目录是否存在</h2>
 <p>使用运算符 <code>-d</code> 来测试文件是否是目录。</p>
 <p>例如，要检查 <code>/etc/docker</code> 目录是否存在，您将使用：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
 <span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory&#34;</span>
 <span class="k">fi</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -d /etc/docker <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory</span><span class="s2">&#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -d /etc/docker <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory&#34;</span>
 </code></pre></div><p>您也可以使用双括号 <code>[[</code> 而不是单个括号 <code>[</code>。</p>
 <h2 id="检查文件是否不存在">检查文件是否不存在</h2>
 <p>与许多其他语言类似， <code>test</code> 表达式可以使用 <code>!</code> (感叹号)作为逻辑非运算符：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
 <span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist and it is a directory</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> exist and it is a directory&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><p>与上述相同：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> ! -f /etc/docker <span class="o">]</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist</span><span class="s2">&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> ! -f /etc/docker <span class="o">]</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> does not exist&#34;</span>
 </code></pre></div><h2 id="检查多个文件是否存在">检查多个文件是否存在</h2>
 <p>您可以使用 <code>-a</code> (或 <code>&amp;&amp;</code>)测试是否存在多个文件，而不是使用复杂的嵌套 <code>if/else</code> 结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
 <span class="k">if</span> <span class="o">[</span> -f /etc/resolv.conf -a -f /etc/hosts <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">FILE</span><span class="o">=</span>/etc/docker
 <span class="k">if</span> <span class="o">[</span> -f /etc/resolv.conf <span class="o">&amp;&amp;</span> -f /etc/hosts <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FILE</span><span class="s2"> is a directory&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><p>不使用 IF 语句的等效变体：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span> -f /etc/resolv.conf -a -f /etc/hosts <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;both files exist&#34;</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span><span class="o">[</span> -f /etc/resolv.conf <span class="o">&amp;&amp;</span> -f /etc/hosts <span class="o">]</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;both files exist&#34;</span> 
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[[</span> -f /etc/resolv.conf <span class="o">&amp;&amp;</span> -f /etc/hosts <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;both files exist&#34;</span> 
 </code></pre></div><h2 id="test-命令的运算符"><code>test</code> 命令的运算符</h2>
 <p><code>test</code> 命令包括以下 文件 运算符，允许您测试特定类型的文件：</p>
 <ul>

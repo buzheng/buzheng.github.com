@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -143,13 +143,13 @@
         <span class="na">maxthreads=</span><span class="s">&#34;150&#34;</span>
         <span class="na">minsparethreads=</span><span class="s">&#34;4&#34;</span>
         <span class="na">name=</span><span class="s">&#34;tomcatThreadPool&#34;</span>
-        <span class="na">nameprefix=</span><span class="s">&#34;catalina-exec-&#34;</span><span class="nt">&gt;</span><span class="nt">&lt;/executor&gt;</span>
+        <span class="na">nameprefix=</span><span class="s">&#34;catalina-exec-&#34;</span><span class="nt">&gt;&lt;/executor&gt;</span>
 </code></pre></div><p>然后在Connector中加入如下executor参数，如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;connector</span>
         <span class="na">connectiontimeout=</span><span class="s">&#34;20000&#34;</span>
         <span class="na">executor=</span><span class="s">&#34;tomcatThreadPool&#34;</span>
         <span class="na">port=</span><span class="s">&#34;8080&#34;</span> <span class="na">protocol=</span><span class="s">&#34;HTTP/1.1&#34;</span>
-        <span class="na">redirectport=</span><span class="s">&#34;8443&#34;</span><span class="nt">&gt;</span><span class="nt">&lt;/connector&gt;</span>
+        <span class="na">redirectport=</span><span class="s">&#34;8443&#34;</span><span class="nt">&gt;&lt;/connector&gt;</span>
 </code></pre></div><p>name 指定线程池的名称，以供Connector使用
 namePrefix 这个属性用来指定 线程名称的前缀，线程名称类似于：catalina-exec-1
 maxThreads 指定最大的线程数
@@ -167,7 +167,7 @@ minSpareThreads 指定最少备用线程数</p>
 </span><span class="s2">    -Dcom.sun.management.jmxremote.ssl=false
 </span><span class="s2">    -Dcom.sun.management.jmxremote.authenticate=true
 </span><span class="s2">    -Dcom.sun.management.jmxremote.password.file=the-password-file-path
-</span><span class="s2">    -Dcom.sun.management.jmxremote.access.file=the-access-file-path</span><span class="s2">&#34;</span><span class="p">;</span>
+</span><span class="s2">    -Dcom.sun.management.jmxremote.access.file=the-access-file-path&#34;</span><span class="p">;</span>
 </code></pre></div><ul>
 <li>-Djava.rmi.server.hostname 的值为当前主机的IP即可。</li>
 <li>-Dcom.sun.management.jmxremote.port=8999 为端口号</li>
@@ -189,7 +189,7 @@ master readonly
 </span><span class="s2">    -Dcom.sun.management.jmxremote.ssl=false
 </span><span class="s2">    -Dcom.sun.management.jmxremote.authenticate=true
 </span><span class="s2">    -Dcom.sun.management.jmxremote.password.file=the-password-file-path
-</span><span class="s2">    -Dcom.sun.management.jmxremote.access.file=the-access-file-path</span><span class="s2">&#34;</span><span class="p">;</span>
+</span><span class="s2">    -Dcom.sun.management.jmxremote.access.file=the-access-file-path&#34;</span><span class="p">;</span>
 </code></pre></div><p>2，server.xml 添加</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Listener</span> <span class="na">className=</span><span class="s">&#34;org.apache.catalina.mbeans.JmxRemoteLifecycleListener&#34;</span> <span class="na">rmiRegistryPortPlatform=</span><span class="s">&#34;18085&#34;</span> <span class="na">rmiServerPortPlatform=</span><span class="s">&#34;28085&#34;</span> <span class="nt">/&gt;</span>
 </code></pre></div><p>注意：由于 org.apache.catalina.mbeans.JmxRemoteLifecycleListener 在 tomcat7 中已经独立出来，所以需要单独下载 catalina-jmx-remote.jar 放在 $CATALINA_HOME/lib 下。</p>

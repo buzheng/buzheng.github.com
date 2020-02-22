@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -41,7 +41,7 @@
 本教程说明了如何在 CentOS 8 上安装 Tomcat 9.0 。">
 <meta itemprop="datePublished" content="2020-01-20T09:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-20T09:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1444">
+<meta itemprop="wordCount" content="1447">
 <meta itemprop="image" content="https://buzheng.org/linux/how-to-install-tomcat-9-on-centos-8/featured.jpg">
 
 
@@ -225,10 +225,10 @@ wget https://www-eu.apache.org/dist/tomcat/tomcat-9/v${VERSION}/bin/apache-tomca
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml
 </code></pre></div><p>Tomcat 用户是在 <code>tomcat-users.xml</code> 文件中定义的用户。要创建可以访问 tomcat Web 界面 (manager-gui 和 admin-gui) 的新用户，请编辑文件，如下所示。确保将用户名和密码更改为更安全的名称：</p>
 <p>/opt/tomcat/latest/conf/tomcat-users.xml</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users</span><span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users&gt;</span>
+<span class="c">&lt;!--
 </span><span class="c">    Comments
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
    <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;admin-gui&#34;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;admin_password&#34;</span> <span class="na">roles=</span><span class="s">&#34;admin-gui,manager-gui&#34;</span><span class="nt">/&gt;</span>
@@ -237,17 +237,17 @@ wget https://www-eu.apache.org/dist/tomcat/tomcat-9/v${VERSION}/bin/apache-tomca
 <p>如果您需要从任何地方访问 Web 界面，请打开以下文件并注释或删除以黄色突出显示的行：</p>
 <p>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<span class="c">&lt;!--
 </span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
 </span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1&#34; /&gt;
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
 <span class="nt">&lt;/Context&gt;</span>
 </code></pre></div><p>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<span class="c">&lt;!--
 </span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
 </span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1&#34; /&gt;
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
 <span class="nt">&lt;/Context&gt;</span>
 </code></pre></div><p>请注意，不建议允许从任何地方访问，因为这存在安全风险。</p>
 <p>如果您只想从特定 IP 访问 Web 界面，而不是注释这些块，则将您的公共 IP 添加到列表中。</p>

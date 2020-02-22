@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -173,9 +173,9 @@
 </code></pre></div><h3 id="删除权限">删除权限</h3>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">revoke</span> <span class="k">connect</span><span class="p">,</span> <span class="n">resource</span> <span class="k">from</span> <span class="n">username</span><span class="p">;</span> 
 </code></pre></div><h3 id="授权给其他用户">授权给其他用户</h3>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">select</span><span class="p">,</span><span class="k">update</span> <span class="k">on</span> <span class="k">table_name</span> <span class="k">to</span> <span class="n">user2</span> <span class="p">[</span><span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">]</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">select</span><span class="p">,</span><span class="k">update</span> <span class="k">on</span> <span class="k">table_name</span> <span class="k">to</span> <span class="n">user2</span> <span class="p">[</span><span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">];</span>
 </code></pre></div><p>只有更新某个字段的权限</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">update</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">on</span> <span class="k">table_name</span> <span class="k">to</span> <span class="n">user2</span> <span class="p">[</span><span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">]</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">grant</span> <span class="k">update</span><span class="p">(</span><span class="k">column_name</span><span class="p">)</span> <span class="k">on</span> <span class="k">table_name</span> <span class="k">to</span> <span class="n">user2</span> <span class="p">[</span><span class="k">with</span> <span class="k">grant</span> <span class="k">option</span><span class="p">];</span>
 </code></pre></div><p><strong><!-- raw HTML omitted -->with grant option<!-- raw HTML omitted --></strong></p>
 <p><!-- raw HTML omitted -->with grant option<!-- raw HTML omitted --> 的作用是权限传递，就是使被授权的人，同样可以授权给别人。打个比方，就是你传球给我，我接到球后同样可以把球传给别人。</p>
 <p>上面的例子中，如果带了 <!-- raw HTML omitted -->with grant option<!-- raw HTML omitted -->, user2 就可以把 select, update 权限授权给其他人。否则不能给其他用户授权.</p>
@@ -186,13 +186,13 @@
 <h3 id="创建表空间">创建表空间</h3>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="n">tablespace</span> <span class="n">TABLESPACE_NAME</span> 
 <span class="n">logging</span> 
-<span class="n">datafile</span> <span class="s1">&#39;</span><span class="s1">/u01/app/oracle/oradata/orcl/TABLESPACE_FILENAME.dbf</span><span class="s1">&#39;</span>
+<span class="n">datafile</span> <span class="s1">&#39;/u01/app/oracle/oradata/orcl/TABLESPACE_FILENAME.dbf&#39;</span>
 <span class="k">size</span> <span class="mi">100</span><span class="n">m</span> 
 <span class="n">autoextend</span> <span class="k">on</span> 
 <span class="k">next</span> <span class="mi">100</span><span class="n">m</span> <span class="n">maxsize</span> <span class="n">unlimited</span> 
 <span class="n">extent</span> <span class="n">management</span> <span class="k">local</span><span class="p">;</span> 
 </code></pre></div><h3 id="给表空间添加数据文件">给表空间添加数据文件</h3>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="n">tablespace</span> <span class="n">USERS</span> <span class="k">add</span> <span class="n">datafile</span> <span class="s1">&#39;</span><span class="s1">/u01/app/oracle/oradata/orcl/users02.dbf</span><span class="s1">&#39;</span> <span class="k">size</span> <span class="mi">100</span><span class="n">M</span> <span class="n">autoextend</span> <span class="k">on</span> <span class="k">next</span> <span class="mi">100</span><span class="n">M</span> <span class="n">maxsize</span> <span class="n">unlimited</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="n">tablespace</span> <span class="n">USERS</span> <span class="k">add</span> <span class="n">datafile</span> <span class="s1">&#39;/u01/app/oracle/oradata/orcl/users02.dbf&#39;</span> <span class="k">size</span> <span class="mi">100</span><span class="n">M</span> <span class="n">autoextend</span> <span class="k">on</span> <span class="k">next</span> <span class="mi">100</span><span class="n">M</span> <span class="n">maxsize</span> <span class="n">unlimited</span><span class="p">;</span>
 </code></pre></div><h3 id="分配表空间给用户">分配表空间给用户</h3>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">alert</span> <span class="k">user</span> <span class="n">username</span> <span class="k">default</span> <span class="n">tablespace</span> <span class="n">tablespace_name</span><span class="p">;</span> 
 </code></pre></div><h3 id="修改表的表空间">修改表的表空间</h3>

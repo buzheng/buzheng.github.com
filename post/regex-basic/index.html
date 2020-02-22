@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -152,20 +152,20 @@
 <h2 id="分组">分组</h2>
 <p>在一个正则表达式中，将局部用()包含成子表达式，目的是对子表达式进行重复匹配等操作，每个()就是一个组。在匹配的过程中，会将匹配每个子表达式字符按顺序保存在临时变量中，最多可保存9个分组，可以使用1到9来引用。</p>
 <p>例如有这样文本，要求匹配出网站名称和链接：</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#34;http://www.google.com&#34;</span><span class="nt">&gt;</span>谷歌<span class="nt">&lt;/a&gt;</span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#34;http://www.baidu.com&#34;</span><span class="nt">&gt;</span>百度<span class="nt">&lt;/a&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#34;http://www.google.com&#34;</span><span class="nt">&gt;</span>谷歌<span class="nt">&lt;/a&gt;&lt;a</span> <span class="na">href=</span><span class="s">&#34;http://www.baidu.com&#34;</span><span class="nt">&gt;</span>百度<span class="nt">&lt;/a&gt;</span>
 </code></pre></div><p>就可以使用分组，正则为：<!-- raw HTML omitted -->([^&lt;]+)  ，每个括号为一组，共2个分组。</p>
 <p>看下面的Java的测试用例：</p>
 <div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.util.regex.Matcher</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
  
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span> 
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
         <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;&lt;a href=&#34;</span><span class="n">http</span><span class="o">:</span><span class="c1">//www.google.com&#34;&gt;谷歌&lt;/a&gt;&lt;a href=&#34;http://www.baidu.com&#34;&gt;百度&lt;/a&gt;&#34;;
-</span><span class="c1"></span>        <span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;href=&#34;</span><span class="o">(</span><span class="o">[</span><span class="o">^</span><span class="s">&#34;]+)&#34;</span><span class="o">&gt;</span><span class="o">(</span><span class="o">[</span><span class="o">^</span><span class="o">&lt;</span><span class="o">]</span><span class="o">+</span><span class="o">)</span><span class="s">&#34;);
+</span><span class="c1"></span>        <span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;href=&#34;</span><span class="o">([^</span><span class="s">&#34;]+)&#34;</span><span class="o">&gt;([^&lt;]+)</span><span class="s">&#34;);
 </span><span class="s">        Matcher matcher = pattern.matcher(value);
 </span><span class="s"> 
 </span><span class="s">        while (matcher.find()) {
-</span><span class="s">            System.out.println(matcher.group(2) + &#34;</span> <span class="o">-</span> <span class="err">&#34;</span> <span class="o">+</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">1</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+</span><span class="s">            System.out.println(matcher.group(2) + &#34;</span> <span class="o">-</span> <span class="err">&#34;</span> <span class="o">+</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">1</span><span class="o">));</span>
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>

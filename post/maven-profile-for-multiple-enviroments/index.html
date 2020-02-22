@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -38,7 +38,7 @@
 <meta itemprop="description" content="开发环境、测试环境、生成环境…… 在开发中，我们需要面对各种各样的环境，并且，各个环境的参数和配置各不相同，比如数据库连接，服务器配置等。Maven作为一个项目管理和自动化构建工具，当然也给了我们解决方案，但是项目中的情况较多，这里列举几种常用的多环境的配置管理方案。">
 <meta itemprop="datePublished" content="2014-06-25T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2014-06-25T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1721">
+<meta itemprop="wordCount" content="1646">
 
 
 
@@ -121,7 +121,7 @@
         
         
           <span class="mh2 f7">•</span>
-          <span class="f6 dib tracked">约 1800 字</span>
+          <span class="f6 dib tracked">约 1700 字</span>
           <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
         
       </div>
@@ -140,29 +140,29 @@
           <p>开发环境、测试环境、生成环境…… 在开发中，我们需要面对各种各样的环境，并且，各个环境的参数和配置各不相同，比如数据库连接，服务器配置等。Maven作为一个项目管理和自动化构建工具，当然也给了我们解决方案，但是项目中的情况较多，这里列举几种常用的多环境的配置管理方案。</p>
 <h2 id="profile">profile</h2>
 <p>Profile 是maven中的一个重要概念，他可以定义maven的一次运行环境档案。在 pom.xml 中我们可以定义多个profile，并可以在运行时通过参数将其中某个激活。一般 pom.xml 中的 profiles 节点定义如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;profiles</span><span class="nt">&gt;</span>
-	<span class="c">&lt;!--</span><span class="c"> 开发环境，默认激活 </span><span class="c">--&gt;</span>
-	<span class="nt">&lt;profile</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;id</span><span class="nt">&gt;</span>dev<span class="nt">&lt;/id&gt;</span>
-		<span class="nt">&lt;properties</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;running.env</span><span class="nt">&gt;</span>dev<span class="nt">&lt;/running.env&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;profiles&gt;</span>
+	<span class="c">&lt;!-- 开发环境，默认激活 --&gt;</span>
+	<span class="nt">&lt;profile&gt;</span>
+		<span class="nt">&lt;id&gt;</span>dev<span class="nt">&lt;/id&gt;</span>
+		<span class="nt">&lt;properties&gt;</span>
+			<span class="nt">&lt;running.env&gt;</span>dev<span class="nt">&lt;/running.env&gt;</span>
 		<span class="nt">&lt;/properties&gt;</span>
-		<span class="nt">&lt;activation</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;activeByDefault</span><span class="nt">&gt;</span>true<span class="nt">&lt;/activeByDefault&gt;</span><span class="c">&lt;!--</span><span class="c"> 这里表示默认环境 </span><span class="c">--&gt;</span>
+		<span class="nt">&lt;activation&gt;</span>
+			<span class="nt">&lt;activeByDefault&gt;</span>true<span class="nt">&lt;/activeByDefault&gt;</span><span class="c">&lt;!-- 这里表示默认环境 --&gt;</span>
 		<span class="nt">&lt;/activation&gt;</span>
 	<span class="nt">&lt;/profile&gt;</span>
-	<span class="c">&lt;!--</span><span class="c"> 测试环境 </span><span class="c">--&gt;</span>
-	<span class="nt">&lt;profile</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;id</span><span class="nt">&gt;</span>test<span class="nt">&lt;/id&gt;</span>
-		<span class="nt">&lt;properties</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;running.env</span><span class="nt">&gt;</span>test<span class="nt">&lt;/running.env&gt;</span>
+	<span class="c">&lt;!-- 测试环境 --&gt;</span>
+	<span class="nt">&lt;profile&gt;</span>
+		<span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
+		<span class="nt">&lt;properties&gt;</span>
+			<span class="nt">&lt;running.env&gt;</span>test<span class="nt">&lt;/running.env&gt;</span>
 		<span class="nt">&lt;/properties&gt;</span>
 	<span class="nt">&lt;/profile&gt;</span>
-	<span class="c">&lt;!--</span><span class="c"> 生产环境 </span><span class="c">--&gt;</span>
-	<span class="nt">&lt;profile</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;id</span><span class="nt">&gt;</span>prd<span class="nt">&lt;/id&gt;</span>
-		<span class="nt">&lt;properties</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;running.env</span><span class="nt">&gt;</span>prd<span class="nt">&lt;/running.env&gt;</span>
+	<span class="c">&lt;!-- 生产环境 --&gt;</span>
+	<span class="nt">&lt;profile&gt;</span>
+		<span class="nt">&lt;id&gt;</span>prd<span class="nt">&lt;/id&gt;</span>
+		<span class="nt">&lt;properties&gt;</span>
+			<span class="nt">&lt;running.env&gt;</span>prd<span class="nt">&lt;/running.env&gt;</span>
 		<span class="nt">&lt;/properties&gt;</span>
 	<span class="nt">&lt;/profile&gt;</span>
 <span class="nt">&lt;/profiles&gt;</span>
@@ -189,15 +189,15 @@ jdbc.db.password=testdb
 jdbc.db.username=onlinedb
 jdbc.db.password=onlinedb
 </code></pre></div><p>启动资源过滤和指定配置来源</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;build</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;resources</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;resource</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;directory</span><span class="nt">&gt;</span>src/main/resources<span class="nt">&lt;/directory&gt;</span>
-			<span class="nt">&lt;filtering</span><span class="nt">&gt;</span>true<span class="nt">&lt;/filtering&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;build&gt;</span>
+	<span class="nt">&lt;resources&gt;</span>
+		<span class="nt">&lt;resource&gt;</span>
+			<span class="nt">&lt;directory&gt;</span>src/main/resources<span class="nt">&lt;/directory&gt;</span>
+			<span class="nt">&lt;filtering&gt;</span>true<span class="nt">&lt;/filtering&gt;</span>
 		<span class="nt">&lt;/resource&gt;</span>
 	<span class="nt">&lt;/resources&gt;</span>
-	<span class="nt">&lt;filters</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;filter</span><span class="nt">&gt;</span>src/main/resources/config-${running.env}.properties<span class="nt">&lt;/filter&gt;</span>
+	<span class="nt">&lt;filters&gt;</span>
+		<span class="nt">&lt;filter&gt;</span>src/main/resources/config-${running.env}.properties<span class="nt">&lt;/filter&gt;</span>
 	<span class="nt">&lt;/filters&gt;</span>
 <span class="nt">&lt;/build&gt;</span>
 </code></pre></div><p>resource节点指明目录，filtering节点为true，表示要过滤此目录。filters节点指明配置属性的来源，注意其中的路径中 ${running.env} 由 profile 中定义，就是在maven运行时能动态的根据当前的profile来获取 config 文件。</p>
@@ -251,14 +251,14 @@ jdbc.db.password=onlinedb
 		log4j.xml
 </code></pre></div><p>这样 dev, test, prd 目录下分别是配置文件的拷贝，但是内容中配置的值却匹配各自的环境。</p>
 <p>profile的配置和最上面的保持一致，下面是 maven-war-plugin 的配置</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin</span><span class="nt">&gt;</span>
-	<span class="nt">&lt;groupId</span><span class="nt">&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
-	<span class="nt">&lt;artifactId</span><span class="nt">&gt;</span>maven-war-plugin<span class="nt">&lt;/artifactId&gt;</span>
-	<span class="nt">&lt;configuration</span><span class="nt">&gt;</span>
-		<span class="nt">&lt;webResources</span><span class="nt">&gt;</span>
-			<span class="nt">&lt;resource</span><span class="nt">&gt;</span>
-				<span class="nt">&lt;directory</span><span class="nt">&gt;</span>src/main/config/${runing.env}<span class="nt">&lt;/directory&gt;</span>
-				<span class="nt">&lt;targetPath</span><span class="nt">&gt;</span>WEB-INF/classes<span class="nt">&lt;/targetPath&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>maven-war-plugin<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;configuration&gt;</span>
+		<span class="nt">&lt;webResources&gt;</span>
+			<span class="nt">&lt;resource&gt;</span>
+				<span class="nt">&lt;directory&gt;</span>src/main/config/${runing.env}<span class="nt">&lt;/directory&gt;</span>
+				<span class="nt">&lt;targetPath&gt;</span>WEB-INF/classes<span class="nt">&lt;/targetPath&gt;</span>
 			<span class="nt">&lt;/resource&gt;</span>
 		<span class="nt">&lt;/webResources&gt;</span>
 	<span class="nt">&lt;/configuration&gt;</span>

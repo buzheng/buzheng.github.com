@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -160,11 +160,11 @@
 <p>通常，文件和目录不应具有相同的权限。大多数文件不需要执行权限，但是您必须在目录上设置执行权限才能<a href="/linux/linux-cd-command/">进入目录</a>之内。</p>
 <p>最常见的情况是将网站文件的权限递归更改为 <code>644</code> ，将目录文件的权限递归更改为 <code>755</code> 。</p>
 <p>使用数值方法：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -type d -exec chmod <span class="m">755</span> <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
-find /var/www/html -type f -exec chmod <span class="m">644</span> <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -type d -exec chmod <span class="m">755</span> <span class="o">{}</span> <span class="se">\;</span>
+find /var/www/html -type f -exec chmod <span class="m">644</span> <span class="o">{}</span> <span class="se">\;</span>
 </code></pre></div><p>使用符号方法：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -type d -exec chmod <span class="nv">u</span><span class="o">=</span>rwx,go<span class="o">=</span>rx <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
-find /var/www/html -type f -exec chmod <span class="nv">u</span><span class="o">=</span>rw,go<span class="o">=</span>r <span class="o">{</span><span class="o">}</span> <span class="se">\;</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -type d -exec chmod <span class="nv">u</span><span class="o">=</span>rwx,go<span class="o">=</span>rx <span class="o">{}</span> <span class="se">\;</span>
+find /var/www/html -type f -exec chmod <span class="nv">u</span><span class="o">=</span>rw,go<span class="o">=</span>r <span class="o">{}</span> <span class="se">\;</span>
 </code></pre></div><p>该 <a href="/linux/how-to-find-files-in-linux-using-the-command-line/"><code>find</code></a> 命令在 <code>/var/www/html</code> 下面搜索文件或目录，并将找到的每个文件或目录传递给 <code>chmod</code> 命令以设置权限。</p>
 <p><code>find</code> 与 <code>-exec</code> 一起使用时， <code>chmod</code> 将为找到的每个条目运行命令。而使用 <a href="/linux/linux-xargs-command/"><code>xargs</code></a> 则是命令通过一次传递多个条目来加速操作：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find /var/www/html -type d -print0 <span class="p">|</span> xargs -0 chmod <span class="m">755</span>

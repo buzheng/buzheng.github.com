@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -185,7 +185,7 @@
 <span class="nb">read</span> -p <span class="s2">&#34;Enter first string: &#34;</span> VAR1
 <span class="nb">read</span> -p <span class="s2">&#34;Enter second string: &#34;</span> VAR2
 
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">=</span><span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are equal.&#34;</span>
 <span class="k">else</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are not equal.&#34;</span>
@@ -195,7 +195,7 @@
 Enter second string: Ubuntu
 Strings are not equal.
 </code></pre></div><p>您还可以使用逻辑与 <code>&amp;&amp;</code> 和或 <code>||</code> 来比较字符串：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[</span><span class="o">[</span> <span class="s2">&#34;string1&#34;</span> <span class="o">=</span><span class="o">=</span> <span class="s2">&#34;string2&#34;</span> <span class="o">]</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;Equal&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;Not equal&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="o">[[</span> <span class="s2">&#34;string1&#34;</span> <span class="o">==</span> <span class="s2">&#34;string2&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;Equal&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;Not equal&#34;</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Not equal
 </code></pre></div><h2 id="检查-string-是否包含子字符串">检查 String 是否包含子字符串</h2>
 <p>有多种方法可以检查字符串是否包含子字符串。</p>
@@ -203,7 +203,7 @@ Strings are not equal.
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="nv">VAR</span><span class="o">=</span><span class="s1">&#39;GNU/Linux is an operating system&#39;</span>
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$VAR</span> <span class="o">=</span><span class="o">=</span> *<span class="s2">&#34;Linux&#34;</span>* <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$VAR</span> <span class="o">==</span> *<span class="s2">&#34;Linux&#34;</span>* <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">echo</span> <span class="s2">&#34;It&#39;s there.&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><p>该脚本将回显以下内容：</p>
@@ -212,7 +212,7 @@ Strings are not equal.
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="nv">VAR</span><span class="o">=</span><span class="s1">&#39;GNU/Linux is an operating system&#39;</span>
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$VAR</span> <span class="o">=</span>~ .*Linux.* <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$VAR</span> <span class="o">=</span>~ .*Linux.* <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">echo</span> <span class="s2">&#34;It&#39;s there.&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><p><code>.*</code> 是除了换行符之外的任何字符出现零或多次。</p>
@@ -221,14 +221,14 @@ Strings are not equal.
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
 <span class="nv">VAR</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> -z <span class="nv">$VAR</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> -z <span class="nv">$VAR</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">echo</span> <span class="s2">&#34;String is empty.&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">String is empty.
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="cp">#!/bin/bash
 </span><span class="cp"></span>
-<span class="nv">VAR</span><span class="o">=</span><span class="o">=</span><span class="s1">&#39;buzheng&#39;</span>
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> -n <span class="nv">$VAR</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="nv">VAR</span><span class="o">==</span><span class="s1">&#39;buzheng&#39;</span>
+<span class="k">if</span> <span class="o">[[</span> -n <span class="nv">$VAR</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">echo</span> <span class="s2">&#34;String is not empty.&#34;</span>
 <span class="k">fi</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">String is not empty.
@@ -242,11 +242,11 @@ Strings are not equal.
 
   <span class="s2">&#34;Arch Linux&#34;</span><span class="o">)</span>
     <span class="nb">echo</span> -n <span class="s2">&#34;matched&#34;</span>
-    <span class="p">;</span><span class="p">;</span>
+    <span class="p">;;</span>
 
   Fedora <span class="p">|</span> CentOS<span class="o">)</span>
     <span class="nb">echo</span> -n <span class="s2">&#34;Red Hat&#34;</span>
-    <span class="p">;</span><span class="p">;</span>
+    <span class="p">;;</span>
 <span class="k">esac</span>
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">matched.
 </code></pre></div><h2 id="词典比较">词典比较</h2>
@@ -257,10 +257,10 @@ Strings are not equal.
 <span class="nv">VAR1</span><span class="o">=</span><span class="s2">&#34;buzheng&#34;</span>
 <span class="nv">VAR2</span><span class="o">=</span><span class="s2">&#34;Ubuntu&#34;</span>
 
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> &gt; <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">VAR1</span><span class="si">}</span><span class="s2"> is lexicographically greater then </span><span class="si">${</span><span class="nv">VAR2</span><span class="si">}</span><span class="s2">.</span><span class="s2">&#34;</span>
-<span class="k">elif</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> &lt; <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">VAR2</span><span class="si">}</span><span class="s2"> is lexicographically greater than </span><span class="si">${</span><span class="nv">VAR1</span><span class="si">}</span><span class="s2">.</span><span class="s2">&#34;</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> &gt; <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">VAR1</span><span class="si">}</span><span class="s2"> is lexicographically greater then </span><span class="si">${</span><span class="nv">VAR2</span><span class="si">}</span><span class="s2">.&#34;</span>
+<span class="k">elif</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> &lt; <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">VAR2</span><span class="si">}</span><span class="s2"> is lexicographically greater than </span><span class="si">${</span><span class="nv">VAR1</span><span class="si">}</span><span class="s2">.&#34;</span>
 <span class="k">else</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are equal&#34;</span>
 <span class="k">fi</span>

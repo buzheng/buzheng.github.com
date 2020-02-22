@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -150,21 +150,21 @@
 <span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">QueryOrder</span> <span class="o">{</span>
 
 	<span class="kd">public</span> <span class="n">String</span> <span class="nf">queryOrder</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getOrderInfo</span><span class="o">(</span><span class="n">orderId</span><span class="o">)</span><span class="o">;</span>
-		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">formatOrderInfo</span><span class="o">(</span><span class="n">order</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getOrderInfo</span><span class="o">(</span><span class="n">orderId</span><span class="o">);</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">formatOrderInfo</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
 	<span class="o">}</span>
 
 	<span class="kd">private</span> <span class="n">Order</span> <span class="nf">getOrderInfo</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
 
-		<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
-		<span class="n">order</span><span class="o">.</span><span class="na">setOrderId</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">)</span><span class="o">;</span>
-		<span class="n">order</span><span class="o">.</span><span class="na">setAmount</span><span class="o">(</span><span class="n">1000</span><span class="o">.</span><span class="na">0</span><span class="o">)</span><span class="o">;</span>
+		<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">();</span>
+		<span class="n">order</span><span class="o">.</span><span class="na">setOrderId</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">);</span>
+		<span class="n">order</span><span class="o">.</span><span class="na">setAmount</span><span class="o">(</span><span class="n">1000</span><span class="o">.</span><span class="na">0</span><span class="o">);</span>
 
 		<span class="k">return</span> <span class="n">order</span><span class="o">;</span>
 	<span class="o">}</span>
 
 	<span class="c1">// 只留给子类来实现
-</span><span class="c1"></span>	<span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">String</span> <span class="nf">formatOrderInfo</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span><span class="o">;</span>
+</span><span class="c1"></span>	<span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">String</span> <span class="nf">formatOrderInfo</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">);</span>
 
 <span class="o">}</span>
 </code></pre></div><p>QueryOrderHtmlImpl 类 就是 HTML 输出的实现了。</p>
@@ -175,7 +175,7 @@
 	<span class="nd">@Override</span>
 	<span class="kd">protected</span> <span class="n">String</span> <span class="nf">formatOrderInfo</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;&lt;table&gt;&lt;tr&gt;&lt;td&gt;OrderId&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Amount&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#34;</span><span class="o">,</span> 
-				<span class="n">order</span><span class="o">.</span><span class="na">getOrderId</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getAmount</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+				<span class="n">order</span><span class="o">.</span><span class="na">getOrderId</span><span class="o">(),</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getAmount</span><span class="o">()));</span>
 	<span class="o">}</span>
 
 <span class="o">}</span>
@@ -186,7 +186,7 @@
 
 	<span class="nd">@Override</span>
 	<span class="kd">protected</span> <span class="n">String</span> <span class="nf">formatOrderInfo</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
-		<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;{userId:%s, amount:%s}&#34;</span><span class="o">,</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderId</span><span class="o">(</span><span class="o">)</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getAmount</span><span class="o">(</span><span class="o">)</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+		<span class="k">return</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&#34;{userId:%s, amount:%s}&#34;</span><span class="o">,</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderId</span><span class="o">(),</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getAmount</span><span class="o">()));</span>
 	<span class="o">}</span>
 
 <span class="o">}</span>
@@ -197,13 +197,13 @@
 	<span class="kd">private</span> <span class="n">String</span> <span class="n">orderId</span><span class="o">;</span>
 	<span class="kd">private</span> <span class="n">Double</span> <span class="n">amount</span><span class="o">;</span>
 
-	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getOrderId</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getOrderId</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">return</span> <span class="n">orderId</span><span class="o">;</span>
 	<span class="o">}</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrderId</span><span class="o">(</span><span class="n">String</span> <span class="n">orderId</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">orderId</span> <span class="o">=</span> <span class="n">orderId</span><span class="o">;</span>
 	<span class="o">}</span>
-	<span class="kd">public</span> <span class="n">Double</span> <span class="nf">getAmount</span><span class="o">(</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="n">Double</span> <span class="nf">getAmount</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">return</span> <span class="n">amount</span><span class="o">;</span>
 	<span class="o">}</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAmount</span><span class="o">(</span><span class="n">Double</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
@@ -214,18 +214,18 @@
 <div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.buzheng.study.pattern.templatemethod</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 		<span class="c1">// 默认格式输出
-</span><span class="c1"></span>		<span class="n">QueryOrder</span> <span class="n">qo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QueryOrderImpl</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">qo</span><span class="o">.</span><span class="na">queryOrder</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+</span><span class="c1"></span>		<span class="n">QueryOrder</span> <span class="n">qo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QueryOrderImpl</span><span class="o">();</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">qo</span><span class="o">.</span><span class="na">queryOrder</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">));</span>
 
 		<span class="c1">// json格式输出
-</span><span class="c1"></span>		<span class="n">qo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QueryOrderJsonImpl</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">qo</span><span class="o">.</span><span class="na">queryOrder</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+</span><span class="c1"></span>		<span class="n">qo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QueryOrderJsonImpl</span><span class="o">();</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">qo</span><span class="o">.</span><span class="na">queryOrder</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">));</span>
 
 		<span class="c1">// html格式输出
-</span><span class="c1"></span>		<span class="n">qo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QueryOrderHtmlImpl</span><span class="o">(</span><span class="o">)</span><span class="o">;</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">qo</span><span class="o">.</span><span class="na">queryOrder</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+</span><span class="c1"></span>		<span class="n">qo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QueryOrderHtmlImpl</span><span class="o">();</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">qo</span><span class="o">.</span><span class="na">queryOrder</span><span class="o">(</span><span class="s">&#34;123456&#34;</span><span class="o">));</span>
 
 	<span class="o">}</span>
 <span class="o">}</span>

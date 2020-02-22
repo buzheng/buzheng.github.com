@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -168,15 +168,15 @@ Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚�
 </code></pre></div><p>我们还将在域文档根目录中创建一个文件 <code>index.html</code> ，该文件将在您浏览器中访问域时显示。</p>
 <p>打开您喜欢的文本编辑器，创建一个新文件 <code>/var/www/example.com/public_html/index.html</code> 并将以下内容粘贴到其中：</p>
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p"></span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div><p>我们以 sudo 用户身份运行命令，新创建的文件和目录由 root 用户拥有。</p>
 <p>为了避免任何权限问题，我们将域文档根目录和该目录中的所有文件的所有权更改为 apache 服务器用户<code>www-data</code>）：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chown -R www-data: /var/www/example.com
@@ -192,11 +192,11 @@ Apache 虚拟主机允许您在一台计算机上托管多个网站。使用虚�
     <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com/public_html</span><span class="nt">&gt;</span>
         <span class="nb">Options</span> -Indexes +FollowSymLinks
         <span class="nb">AllowOverride</span> <span class="k">All</span>
-    <span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/Directory&gt;</span>
 
     <span class="nb">ErrorLog</span> ${APACHE_LOG_DIR}/example.com-error.log
     <span class="nb">CustomLog</span> ${APACHE_LOG_DIR}/example.com-access.log combined
-<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
 </code></pre></div><ul>
 <li><code>ServerName</code>：应与此虚拟主机配置匹配的域。这应该是您的域名。</li>
 <li><code>ServerAlias</code>：所有其他域或子域也应与此虚拟主机匹配，通常是 <code>www</code> 子域。</li>

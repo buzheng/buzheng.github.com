@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -138,7 +138,7 @@
           
   
           <p>了解了正则表达式基础知识已经能够能应付大多数情况，像字符串匹配、正则替换、校验等；但是再使用的过程中你可能发现一个问题，就是当使用重复元字符匹配数量时，总是会尽可能长的去匹配，而有时这恰恰不是你想要的。看下面的例子：</p>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">”http://www.google.com”</span><span class="p"></span><span class="p">&gt;</span>谷歌<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">”http://www.baidu.com”</span><span class="p"></span><span class="p">&gt;</span>百度<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">”http://www.google.com”</span><span class="p">&gt;</span>谷歌<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">”http://www.baidu.com”</span><span class="p">&gt;</span>百度<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
 </code></pre></div><p>你希望匹配出每个链接的html内容。如果你用 &lt;a (.*)&lt;/a&gt;会首先匹配到整个字符串，而不是你希望的&lt;a href=”http://www.google.com”&gt;谷歌&lt;/a&gt;和&lt;a href=”http://www.baidu.com”&gt;百度&lt;/a&gt;。</p>
 <p>为什么会出现这种情况呢？这就是正则表达式的贪婪模式。当出现重复数量的时候，会尽可能的多匹配。上述的正则表达式中 . 表示任意字符，* 代表可以重复出现任意个，根据正则表达式的贪婪个性，不匹配到最后才怪呢。就像人一样，有贪婪就有懒惰，一个?就可以让正则立刻改变本性，这时的正则就表现懒惰模式的本性了。</p>
 <p>修改后的正则表达式为：&lt;a (.*?)&lt;/a&gt;，这时就可以匹配出每个链接的html了。</p>
@@ -147,21 +147,21 @@
 <span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
  
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[</span><span class="o">]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
         <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;&lt;a href=&#34;</span><span class="n">http</span><span class="o">:</span><span class="c1">//www.google.com&#34;&gt;谷歌&lt;/a&gt;&lt;a href=&#34;http://www.baidu.com&#34;&gt;百度&lt;/a&gt;&#34;;
 </span><span class="c1"></span> 
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;贪婪模式：&#34;</span><span class="o">)</span><span class="o">;</span>
-        <span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;&lt;a (.*)&lt;/a&gt;&#34;</span><span class="o">)</span><span class="o">;</span>
-        <span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">value</span><span class="o">)</span><span class="o">;</span>
-        <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">0</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;贪婪模式：&#34;</span><span class="o">);</span>
+        <span class="n">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;&lt;a (.*)&lt;/a&gt;&#34;</span><span class="o">);</span>
+        <span class="n">Matcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
         <span class="o">}</span>
  
-        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;贪婪模式：&#34;</span><span class="o">)</span><span class="o">;</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;&lt;a (.*?)&lt;/a&gt;&#34;</span><span class="o">)</span><span class="o">;</span>
-        <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">value</span><span class="o">)</span><span class="o">;</span>
-        <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="o">)</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">0</span><span class="o">)</span><span class="o">)</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;贪婪模式：&#34;</span><span class="o">);</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="s">&#34;&lt;a (.*?)&lt;/a&gt;&#34;</span><span class="o">);</span>
+        <span class="n">matcher</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="n">0</span><span class="o">));</span>
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>

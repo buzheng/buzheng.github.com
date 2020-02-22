@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -143,13 +143,13 @@
           <p>Mongodb 数据库默认情况下是没有访问控制的，整个数据库对外是开发的，只要能连上数据库，则可以进行任何操作，这会对数据带来很大的风险。当然，我们可以启用mongodb的访问控制，只让通过认证的用户才能对数据库进行角色范围内的操作。</p>
 <p>启用访问控制可以通过在启动 mongodb 时指定 <code>--auth</code> 参数来设置，另外还涉及到创建用户 db.createUser 操作以及一些角色的定义，我们先来看这部分内容。</p>
 <h2 id="dbcreateuser-用法">db.createUser() 用法</h2>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">db</span><span class="p">.</span><span class="nx">createUser</span><span class="p">(</span><span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">db</span><span class="p">.</span><span class="nx">createUser</span><span class="p">({</span>
 	<span class="nx">user</span><span class="o">:</span> <span class="s2">&#34;$USERNAME&#34;</span><span class="p">,</span>
 	<span class="nx">pwd</span><span class="o">:</span> <span class="s2">&#34;$PASSWROD&#34;</span><span class="p">,</span>
 	<span class="nx">roles</span><span class="o">:</span> <span class="p">[</span>
 		<span class="p">{</span> <span class="nx">role</span><span class="o">:</span> <span class="s2">&#34;$ROLE_NAME&#34;</span><span class="p">,</span> <span class="nx">db</span><span class="o">:</span> <span class="s2">&#34;$DBNAME&#34;</span><span class="p">}</span>
 	<span class="p">]</span>
-<span class="p">}</span><span class="p">)</span>
+<span class="p">})</span>
 </code></pre></div><p>参数说明：</p>
 <ul>
 <li>user 是用户名</li>
@@ -218,13 +218,13 @@
 <p>在 admin 数据库中添加一个 具有 <code>userAdminAnyDatabase</code> 角色的用户作为用户管理用户。下面的例子中创建了 admin 为用户管理员。</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; use admin
 switched to db admin
-&gt; db.createUser<span class="o">(</span><span class="o">{</span>
+&gt; db.createUser<span class="o">({</span>
 ... user: <span class="s2">&#34;admin&#34;</span>,
 ... pwd: <span class="s2">&#34;admin&#34;</span>,
 ... roles: <span class="o">[</span>
 ... <span class="o">{</span> role: <span class="s2">&#34;userAdminAnyDatabase&#34;</span>, db: <span class="s2">&#34;admin&#34;</span><span class="o">}</span>
 ... <span class="o">]</span>
-... <span class="o">}</span><span class="o">)</span>
+... <span class="o">})</span>
 Successfully added user: <span class="o">{</span>
 	<span class="s2">&#34;user&#34;</span> : <span class="s2">&#34;admin&#34;</span>,
 	<span class="s2">&#34;roles&#34;</span> : <span class="o">[</span>
@@ -272,13 +272,13 @@ Successfully added user: <span class="o">{</span>
 </code></pre></div><p>我们直接使用  <code>show collections</code> , 则报错：<code>not authorized on test to execute command</code> ，意思是没有权限。</p>
 <div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="o">&gt;</span> <span class="nx">use</span> <span class="nx">test</span>
 <span class="nx">switched</span> <span class="nx">to</span> <span class="nx">db</span> <span class="nx">test</span>
-<span class="o">&gt;</span> <span class="nx">db</span><span class="p">.</span><span class="nx">createUser</span><span class="p">(</span><span class="p">{</span>
+<span class="o">&gt;</span> <span class="nx">db</span><span class="p">.</span><span class="nx">createUser</span><span class="p">({</span>
 <span class="p">...</span> <span class="nx">user</span><span class="o">:</span> <span class="s2">&#34;test&#34;</span><span class="p">,</span>
 <span class="p">...</span> <span class="nx">pwd</span><span class="o">:</span> <span class="s2">&#34;test&#34;</span><span class="p">,</span>
 <span class="p">...</span> <span class="nx">roles</span><span class="o">:</span> <span class="p">[</span>
 <span class="p">...</span> <span class="p">{</span> <span class="nx">role</span><span class="o">:</span> <span class="s2">&#34;readWrite&#34;</span><span class="p">,</span> <span class="nx">db</span><span class="o">:</span> <span class="s2">&#34;test&#34;</span><span class="p">}</span>
 <span class="p">...</span> <span class="p">]</span>
-<span class="p">...</span> <span class="p">}</span><span class="p">)</span>
+<span class="p">...</span> <span class="p">})</span>
 <span class="nx">Successfully</span> <span class="nx">added</span> <span class="nx">user</span><span class="o">:</span> <span class="p">{</span>
 	<span class="s2">&#34;user&#34;</span> <span class="o">:</span> <span class="s2">&#34;test&#34;</span><span class="p">,</span>
 	<span class="s2">&#34;roles&#34;</span> <span class="o">:</span> <span class="p">[</span>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -142,65 +142,65 @@
 <h2 id="代码片段1">代码片段1</h2>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">validator</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">//fix: when several input elements shares the same name, but has different id-ies....
-</span><span class="c1"></span>    <span class="nx">$</span><span class="p">.</span><span class="nx">validator</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">elements</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="c1"></span>    <span class="nx">$</span><span class="p">.</span><span class="nx">validator</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">elements</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
         <span class="kd">var</span> <span class="nx">validator</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
-            <span class="nx">rulesCache</span> <span class="o">=</span> <span class="p">{</span><span class="p">}</span><span class="p">;</span>
+            <span class="nx">rulesCache</span> <span class="o">=</span> <span class="p">{};</span>
 
         <span class="c1">// select all valid inputs inside the form (no submit or reset buttons)
 </span><span class="c1"></span>        <span class="c1">// workaround $Query([]).add until http://dev.jquery.com/ticket/2114 is solved
-</span><span class="c1"></span>        <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentForm</span><span class="p">.</span><span class="nx">elements</span><span class="p">)</span>
+</span><span class="c1"></span>        <span class="k">return</span> <span class="nx">$</span><span class="p">([]).</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentForm</span><span class="p">.</span><span class="nx">elements</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s2">&#34;:input&#34;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="s2">&#34;:submit, :reset, :image, [disabled]&#34;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">ignore</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">elementIdentification</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
 
-            <span class="o">!</span><span class="nx">elementIdentification</span> <span class="o">&amp;&amp;</span> <span class="nx">validator</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">debug</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">&amp;&amp;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;%o has no id nor name assigned&#34;</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span><span class="p">;</span>
+            <span class="o">!</span><span class="nx">elementIdentification</span> <span class="o">&amp;&amp;</span> <span class="nx">validator</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">debug</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">&amp;&amp;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;%o has no id nor name assigned&#34;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
             <span class="c1">// select only the first element for each name, and only those with rules specified
-</span><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">elementIdentification</span> <span class="k">in</span> <span class="nx">rulesCache</span> <span class="o">||</span> <span class="o">!</span><span class="nx">validator</span><span class="p">.</span><span class="nx">objectLength</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="p">.</span><span class="nx">rules</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">)</span>
+</span><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">elementIdentification</span> <span class="k">in</span> <span class="nx">rulesCache</span> <span class="o">||</span> <span class="o">!</span><span class="nx">validator</span><span class="p">.</span><span class="nx">objectLength</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">rules</span><span class="p">()))</span>
                 <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 
             <span class="nx">rulesCache</span><span class="p">[</span><span class="nx">elementIdentification</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span><span class="p">)</span><span class="p">;</span>
-    <span class="p">}</span><span class="p">;</span>
+        <span class="p">});</span>
+    <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div><h2 id="代码片段2">代码片段2</h2>
 <div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">validator</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">$</span><span class="p">.</span><span class="nx">validator</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">elements</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">$</span><span class="p">.</span><span class="nx">validator</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">elements</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">validator</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
-			<span class="nx">rulesCache</span> <span class="o">=</span> <span class="p">{</span><span class="p">}</span><span class="p">;</span>
+			<span class="nx">rulesCache</span> <span class="o">=</span> <span class="p">{};</span>
 
 		<span class="c1">// select all valid inputs inside the form (no submit or reset buttons)
 </span><span class="c1"></span>		<span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">currentForm</span><span class="p">)</span>
 		<span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s2">&#34;input, select, textarea&#34;</span><span class="p">)</span>
 		<span class="p">.</span><span class="nx">not</span><span class="p">(</span><span class="s2">&#34;:submit, :reset, :image, [disabled]&#34;</span><span class="p">)</span>
 		<span class="p">.</span><span class="nx">not</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">ignore</span> <span class="p">)</span>
-		<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+		<span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">&amp;&amp;</span> <span class="nx">validator</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">debug</span> <span class="o">&amp;&amp;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="p">)</span> <span class="p">{</span>
-				<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span> <span class="s2">&#34;%o has no name assigned&#34;</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span><span class="p">;</span>
+				<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span> <span class="s2">&#34;%o has no name assigned&#34;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 			<span class="p">}</span>
 
 			<span class="c1">// select this element if this has the same name as one in cache (may be was dynamically added)
 </span><span class="c1"></span>			<span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="k">in</span> <span class="nx">rulesCache</span> <span class="p">)</span> <span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">validator</span><span class="p">.</span><span class="nx">objectLength</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="p">.</span><span class="nx">rules</span><span class="p">(</span><span class="p">)</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
-					<span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="p">.</span><span class="nx">rules</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="nx">rulesCache</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">validator</span><span class="p">.</span><span class="nx">objectLength</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">rules</span><span class="p">())</span> <span class="p">)</span> <span class="p">{</span>
+					<span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">rules</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="nx">rulesCache</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">]);</span>
 				<span class="p">}</span>
 				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
 
 			<span class="c1">// select only the element with rules specified
-</span><span class="c1"></span>			<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">validator</span><span class="p">.</span><span class="nx">objectLength</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="p">.</span><span class="nx">rules</span><span class="p">(</span><span class="p">)</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="c1"></span>			<span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">validator</span><span class="p">.</span><span class="nx">objectLength</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">rules</span><span class="p">())</span> <span class="p">)</span> <span class="p">{</span>
 				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 			<span class="p">}</span>
 
 			<span class="c1">// Add rules to the cache
-</span><span class="c1"></span>			<span class="nx">rulesCache</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span><span class="p">.</span><span class="nx">rules</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+</span><span class="c1"></span>			<span class="nx">rulesCache</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">rules</span><span class="p">();</span>
 			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-		<span class="p">}</span><span class="p">)</span><span class="p">;</span>
-	<span class="p">}</span><span class="p">;</span>
+		<span class="p">});</span>
+	<span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
       </div><ul class="pa0">

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -153,7 +153,7 @@
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">mysql -u root -p
 </code></pre></div><p>并运行以下命令为 Mattermost 安装创建新数据库和用户：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">create</span> <span class="k">database</span> <span class="n">mattermost</span><span class="p">;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">mattermost</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">mattermost</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;</span><span class="s1">P4ssvv0rD</span><span class="s1">&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">mattermost</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">mattermost</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;P4ssvv0rD&#39;</span><span class="p">;</span>
 </code></pre></div><p>通过上面的命令我们创了一个数据库 <code>mattermost</code>, 并为这个数据库创建了一个用户 <code>mattermost</code> ， 这个用户的密码是 <code>P4ssvv0rD</code> 。</p>
 <h2 id="创建系统用户">创建系统用户</h2>
 <p>运行以下命令创建运行 Mattermost 的用户和组 <code>mattermost</code> ：</p>
@@ -171,12 +171,12 @@
 </code></pre></div><p>使用您喜欢的文本编辑器打开文件 <code>config.json</code> ：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo nano /opt/mattermost/config/config.json
 </code></pre></div><p>将数据库驱动程序设置为 <code>mysql</code> ，输入数据库名称和数据库用户密码：</p>
-<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">.</span><span class="err">.</span><span class="err">.</span>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">...</span>
 <span class="s2">&#34;SqlSettings&#34;</span><span class="err">:</span> <span class="p">{</span>
     <span class="nt">&#34;DriverName&#34;</span><span class="p">:</span> <span class="s2">&#34;mysql&#34;</span><span class="p">,</span>
     <span class="nt">&#34;DataSource&#34;</span><span class="p">:</span> <span class="s2">&#34;mattermost:P4ssvv0rD@tcp(localhost:3306)/mattermost?charset=utf8mb4,utf8&amp;readTimeout=30s&amp;writeTimeout=30s&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;DataSourceReplicas&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="p">,</span>
-<span class="err">.</span><span class="err">.</span><span class="err">.</span>
+    <span class="nt">&#34;DataSourceReplicas&#34;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="err">...</span>
 </code></pre></div><p>在创建 systemd 单元和设置 Nginx 反向代理之前，为了确保我们的安装一切正常，我们将启动 Mattermost 服务器。</p>
 <p>切换到 <code>/opt/mattermost</code> 目录并启动服务器：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/mattermost

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -192,29 +192,29 @@ select *
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span>
   <span class="k">from</span> <span class="p">(</span><span class="k">select</span> <span class="n">sa</span><span class="p">.</span><span class="n">SQL_TEXT</span><span class="p">,</span>
                <span class="n">sa</span><span class="p">.</span><span class="n">SQL_FULLTEXT</span><span class="p">,</span>
-               <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="s2">&#34;</span><span class="s2">执行次数</span><span class="s2">&#34;</span><span class="p">,</span>
-               <span class="n">round</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">总执行时间</span><span class="s2">&#34;</span><span class="p">,</span>
-               <span class="n">round</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="mi">1000000</span> <span class="o">/</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">平均执行时间</span><span class="s2">&#34;</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="s2">&#34;执行次数&#34;</span><span class="p">,</span>
+               <span class="n">round</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;总执行时间&#34;</span><span class="p">,</span>
+               <span class="n">round</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="mi">1000000</span> <span class="o">/</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="s2">&#34;平均执行时间&#34;</span><span class="p">,</span>
                <span class="n">sa</span><span class="p">.</span><span class="n">COMMAND_TYPE</span><span class="p">,</span>
-               <span class="n">sa</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="s2">&#34;</span><span class="s2">用户ID</span><span class="s2">&#34;</span><span class="p">,</span>
-               <span class="n">u</span><span class="p">.</span><span class="n">username</span> <span class="s2">&#34;</span><span class="s2">用户名</span><span class="s2">&#34;</span><span class="p">,</span>
+               <span class="n">sa</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="s2">&#34;用户ID&#34;</span><span class="p">,</span>
+               <span class="n">u</span><span class="p">.</span><span class="n">username</span> <span class="s2">&#34;用户名&#34;</span><span class="p">,</span>
                <span class="n">sa</span><span class="p">.</span><span class="n">HASH_VALUE</span>
           <span class="k">from</span> <span class="n">v$sqlarea</span> <span class="n">sa</span>
           <span class="k">left</span> <span class="k">join</span> <span class="n">all_users</span> <span class="n">u</span>
             <span class="k">on</span> <span class="n">sa</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="o">=</span> <span class="n">u</span><span class="p">.</span><span class="n">user_id</span>
          <span class="k">where</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="o">&gt;</span> <span class="mi">0</span>
          <span class="k">order</span> <span class="k">by</span> <span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">ELAPSED_TIME</span> <span class="o">/</span> <span class="n">sa</span><span class="p">.</span><span class="n">EXECUTIONS</span><span class="p">)</span> <span class="k">desc</span><span class="p">)</span>
- <span class="k">where</span> <span class="n">rownum</span> <span class="o">&lt;</span><span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+ <span class="k">where</span> <span class="n">rownum</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">;</span>
 </code></pre></div><p><strong>查询次数最多的 sql</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="o">*</span>
   <span class="k">from</span> <span class="p">(</span><span class="k">select</span> <span class="n">s</span><span class="p">.</span><span class="n">SQL_TEXT</span><span class="p">,</span>
-               <span class="n">s</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="s2">&#34;</span><span class="s2">执行次数</span><span class="s2">&#34;</span><span class="p">,</span>
-               <span class="n">s</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="s2">&#34;</span><span class="s2">用户名</span><span class="s2">&#34;</span><span class="p">,</span>
-               <span class="n">rank</span><span class="p">(</span><span class="p">)</span> <span class="n">over</span><span class="p">(</span><span class="k">order</span> <span class="k">by</span> <span class="n">EXECUTIONS</span> <span class="k">desc</span><span class="p">)</span> <span class="n">EXEC_RANK</span>
+               <span class="n">s</span><span class="p">.</span><span class="n">EXECUTIONS</span> <span class="s2">&#34;执行次数&#34;</span><span class="p">,</span>
+               <span class="n">s</span><span class="p">.</span><span class="n">PARSING_USER_ID</span> <span class="s2">&#34;用户名&#34;</span><span class="p">,</span>
+               <span class="n">rank</span><span class="p">()</span> <span class="n">over</span><span class="p">(</span><span class="k">order</span> <span class="k">by</span> <span class="n">EXECUTIONS</span> <span class="k">desc</span><span class="p">)</span> <span class="n">EXEC_RANK</span>
           <span class="k">from</span> <span class="n">v$sql</span> <span class="n">s</span>
           <span class="k">left</span> <span class="k">join</span> <span class="n">all_users</span> <span class="n">u</span>
             <span class="k">on</span> <span class="n">u</span><span class="p">.</span><span class="n">USER_ID</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">PARSING_USER_ID</span><span class="p">)</span> <span class="n">t</span>
- <span class="k">where</span> <span class="n">exec_rank</span> <span class="o">&lt;</span><span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+ <span class="k">where</span> <span class="n">exec_rank</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span>
 </code></pre></div><p>参考资料</p>
 <ul>
 <li><a href="http://loversoul.blog.163.com/blog/static/161447251201183002327124">http://loversoul.blog.163.com/blog/static/161447251201183002327124</a></li>

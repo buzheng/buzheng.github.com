@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -151,13 +151,13 @@
 <p>本教程介绍如何删除 MySQL/MariaDB 用户帐户。</p>
 <h2 id="drop-user语句"><code>DROP USER</code> 语句</h2>
 <p>在 MySQL 中，您可以使用该 <code>DROP USER</code> 语句删除一个或多个用户以及分配给他们的权限。该语句的一般语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span> <span class="k">USER</span> <span class="p">[</span><span class="k">IF</span> <span class="k">EXISTS</span><span class="p">]</span> <span class="n">USER_ACCOUNT</span> <span class="p">[</span><span class="p">,</span> <span class="n">USER_ACCOUNT</span><span class="p">]</span> <span class="p">.</span><span class="p">.</span><span class="p">.</span>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span> <span class="k">USER</span> <span class="p">[</span><span class="k">IF</span> <span class="k">EXISTS</span><span class="p">]</span> <span class="n">USER_ACCOUNT</span> <span class="p">[,</span> <span class="n">USER_ACCOUNT</span><span class="p">]</span> <span class="p">...</span>
 </code></pre></div><p>例如，要删除 <code>brian@localhost</code> 用户帐户，请登录到 MYSQL shell 并运行：</p>
-<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span> <span class="k">USER</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">brian@localhost</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span> <span class="k">USER</span> <span class="s1">&#39;brian@localhost&#39;</span><span class="p">;</span>
 </code></pre></div><p>成功后，命令将返回：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Query OK, 0 rows affected (0.00 sec)
 </code></pre></div><p>要在单个命令中删除多个用户帐户，请在 <code>DROP USER</code> 语句后以空格分隔要删除的用户：</p>
-<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span> <span class="k">USER</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">brian@localhost</span><span class="s1">&#39;</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">any@localhost</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span> <span class="k">USER</span> <span class="s1">&#39;brian@localhost&#39;</span> <span class="s1">&#39;any@localhost&#39;</span><span class="p">;</span>
 </code></pre></div><p>如果您在未使用 <code>IF EXISTS</code> 子句的情况下尝试删除不存在的用户帐户，则该命令将返回错误。</p>
 <p>如果您尝试删除的用户当前已登录，则不会关闭用户会话，并且用户将能够运行查询，直到会话结束。会话关闭后，用户将被删除，它将无法再登录 MySQL 服务器。</p>
 <p>不会自动删除用户创建的数据库和对象。</p>

@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -163,15 +163,15 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo mkdir -p /var/www/example.com/public_html
 </code></pre></div><p>出于测试目的，我们将在网站文档根目录中创建一个文件 <code>index.html</code>。打开编辑器并创建一个包含以下内容的 HTML 文件 <code>/var/www/example.com/public_html/index.html</code>：</p>
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p"></span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">head</span><span class="p"></span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p"></span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p"></span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;</span><span class="p">/</span><span class="nt">title</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="p">/</span><span class="nt">head</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="nt">body</span><span class="p"></span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="p">/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="p">/</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div><p>所有命令都以 sudo 用户身份执行，因此新创建的文件和目录归 root 用户所有。为了保没有权限问题，需要将域文档根目录的所有权更改为 <code>apache</code> 用户：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo chown -R apache: /var/www/example.com
 </code></pre></div><h2 id="创建虚拟主机文件">创建虚拟主机文件</h2>
@@ -187,11 +187,11 @@
     <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com/public_html</span><span class="nt">&gt;</span>
         <span class="nb">Options</span> -Indexes +FollowSymLinks
         <span class="nb">AllowOverride</span> <span class="k">All</span>
-    <span class="nt">&lt;/Directory</span><span class="s"></span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/Directory&gt;</span>
 
     <span class="nb">ErrorLog</span> <span class="sx">/var/log/httpd/example.com-error.log</span>
     <span class="nb">CustomLog</span> <span class="sx">/var/log/httpd/example.com-access.log</span> combined
-<span class="nt">&lt;/VirtualHost</span><span class="s"></span><span class="nt">&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
 </code></pre></div><ul>
 <li><code>ServerName</code>：应与此虚拟主机配置匹配的域名。这应该是您的域名。</li>
 <li><code>ServerAlias</code>：所有其他应与此虚拟主机匹配的域，例如 <code>www</code> 子域名。</li>

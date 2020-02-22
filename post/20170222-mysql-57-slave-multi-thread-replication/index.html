@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -175,7 +175,7 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
 </span><span class="c1"></span><span class="mi">3</span> <span class="k">rows</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 </code></pre></div><p>从上面看出只有一个主进程在等待同步。</p>
 <p><strong>下面查看复制类型和并行数量配置</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;</span><span class="s1">slave_parallel_type</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_type&#39;</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">---------------------+----------+
 </span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>       <span class="o">|</span> <span class="n">Value</span>    <span class="o">|</span>
 <span class="o">+</span><span class="c1">---------------------+----------+
@@ -183,7 +183,7 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
 <span class="o">+</span><span class="c1">---------------------+----------+
 </span><span class="c1"></span><span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 </code></pre></div><p>当前的复制类型是 DATABASE，也就是统一数据库下只有一个线程进行复制，不能并行复制。</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;</span><span class="s1">slave_parallel_workers</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_workers&#39;</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------------------------+-------+
 </span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>          <span class="o">|</span> <span class="n">Value</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">------------------------+-------+
@@ -196,10 +196,10 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">stop</span> <span class="n">slave</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span>
 </code></pre></div><p>2、设置复制类型为 LOGICAL_CLOCK</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">set</span> <span class="k">global</span> <span class="n">slave_parallel_type</span><span class="o">=</span><span class="s1">&#39;</span><span class="s1">logical_clock</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">set</span> <span class="k">global</span> <span class="n">slave_parallel_type</span><span class="o">=</span><span class="s1">&#39;logical_clock&#39;</span><span class="p">;</span>
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
-<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;</span><span class="s1">slave_parallel_type</span><span class="s1">&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_type&#39;</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">---------------------+---------------+
 </span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>       <span class="o">|</span> <span class="n">Value</span>         <span class="o">|</span>
 <span class="o">+</span><span class="c1">---------------------+---------------+
@@ -211,7 +211,7 @@ LOGICAL_CLOCK  基于组提交的并行复制方式，同一个数据库下可�
 <span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
 
 
-<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;</span><span class="s1">slave_parallel_workers</span><span class="s1">&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;slave_parallel_workers&#39;</span><span class="p">;</span>
 <span class="o">+</span><span class="c1">------------------------+-------+
 </span><span class="c1"></span><span class="o">|</span> <span class="n">Variable_name</span>          <span class="o">|</span> <span class="n">Value</span> <span class="o">|</span>
 <span class="o">+</span><span class="c1">------------------------+-------+

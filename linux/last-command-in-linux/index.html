@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Linux 中的 last 命令用法 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Linux 中的 last 命令用法" />
+<meta property="og:description" content="本文介绍了如何使用 `last` 命令的基本用法，以及如何查看登录系统的人员。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/last-command-in-linux/" />
+<meta property="og:image" content="https://buzheng.org/linux/last-command-in-linux/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-22T14:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-22T14:00:00+08:00" />
+<meta itemprop="name" content="Linux 中的 last 命令用法">
+<meta itemprop="description" content="本文介绍了如何使用 `last` 命令的基本用法，以及如何查看登录系统的人员。">
+<meta itemprop="datePublished" content="2020-02-22T14:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-22T14:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="891">
+<meta itemprop="image" content="https://buzheng.org/linux/last-command-in-linux/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="last,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/last-command-in-linux/featured.jpg"/>
+<meta name="twitter:title" content="Linux 中的 last 命令用法"/>
+<meta name="twitter:description" content="本文介绍了如何使用 `last` 命令的基本用法，以及如何查看登录系统的人员。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Linux 中的 last 命令用法</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-22T14:00:00&#43;08:00">2020年2月22日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 900 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>如果要管理多用户系统，有时候会需要知道谁、何时以及从何处登录到计算机。</p>
+<p><code>last</code> 是一个命令行实用程序，用于显示有关系统用户的最后登录会话的信息。当您需要跟踪用户活动或调查可能的安全漏洞时，此功能非常有用。</p>
+<p>本文介绍了如何使用 <code>last</code> 命令查看登录系统的人员。</p>
+<h2 id="如何使用-last-命令">如何使用 <code>last</code> 命令</h2>
+<p>该 <code>last</code> 命令的语法如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>USER<span class="o">]</span> <span class="o">[</span>&lt;TTY&gt;...<span class="o">]</span>
+</code></pre></div><p>每次用户登录系统时，该会话的记录都会写入 <code>/var/log/wtmp</code> 文件中。 <code>last</code> 读取文件 <code>wtmp</code> 文件并打印有关用户登录和注销的信息。从最近的记录开始，记录以相反的时间顺序打印。</p>
+<p>在没有任何选项或参数的情况下调用 <code>last</code> 时，输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">mark     pts/0        10.10.0.7   Fri Feb 21 21:23   still logged in
+mark     pts/0        10.10.0.7   Tue Feb 18 22:34 - 00:05  (01:31)
+lisa     :0           :0          Thu Feb 13 09:19   gone - no logout
+reboot   system boot  4.15.0-74-g Fri Jan 24 08:03 - 08:03  (00:00)
+...
+</code></pre></div><p>输出的每一行从左到右包含以下几列：</p>
+<ul>
+<li>用户名。系统重新引导或关闭时， <code>last</code> 显示特殊用户 <code>reboot</code> 和 <code>shutdown</code> 。</li>
+<li>会话所在的 tty 。 <code>:0</code> 通常表示用户正在登录桌面环境。</li>
+<li>用户登录的 IP 地址或主机名。</li>
+<li>会话的开始和结束时间。</li>
+<li>会话持续时间。如果会话仍处于活动状态或用户未注销，则 last 将显示有关该会话的信息，而不是持续时间。</li>
+</ul>
+<p>要将输出限制为特定用户或 tty ，请将用户名或 tty 作为参数传递给 <code>last</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last mark
+</code></pre></div><p>您还可以指定多个用户名和 ttys 作为参数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last mark root pts/0
+</code></pre></div><h2 id="last命令选项"><code>last</code> 命令选项</h2>
+<p><code>last</code> 接受几个选项，这些选项使您可以限制，格式化和过滤输出。在本节中，我们将介绍最常见的内容。</p>
+<p>要指定您希望在命令行上打印的行数，请将数字前面加一个连字符传递给 <code>last</code> 。例如，要仅打印最后十个登录会话，请输入：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last -10
+</code></pre></div><p>使用 <code>-p</code>(<code>--present</code>) 选项，您可以找出在特定日期登录系统的人员。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last -p 2020-01-15
+</code></pre></div><p>使用 <code>-s</code>(<code>--since</code>) 和 <code>-t</code>(<code>--until</code>) 选项指示 <code>last</code> 显示自指定时间以来或直到指定时间为止的行。这两个选项通常一起使用，以定义您要检索信息的时间间隔。例如，要显示 2 月 13 日至 2 月 18 日的登录记录，可以运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last -s 2020-02-13 -u 2020-02-18
+</code></pre></div><p>传递给 <code>-p</code> ， <code>-s</code> 的时间可以通过 <code>-t</code> 选项可以按以下格式指定：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">YYYYMMDDhhmmss
+YYYY-MM-DD hh:mm:ss
+YYYY-MM-DD hh:mm     (seconds will be set to 00)
+YYYY-MM-DD           (time will be set to 00:00:00)
+hh:mm:ss             (date will be set to today)
+hh:mm                (date will be set to today, seconds to 00)
+now
+yesterday            (time is set to 00:00:00)
+today                (time is set to 00:00:00)
+tomorrow             (time is set to 00:00:00)
++5min
+-5days
+</code></pre></div><p>默认情况下， <code>last</code> 不显示秒和年。使用 <code>-F</code>(<code>--fulltimes</code>) 选项查看完整的登录和注销时间和日期：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last -F
+</code></pre></div><p>如果想显示 IP 地址，可以使用 <code>-i</code>(<code>--ip</code>) 选项，使用 <code>-d</code>(<code>--dns</code>) 来显示主机名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">last -i
+</code></pre></div><h2 id="结论">结论</h2>
+<p>该 <code>last</code> 命令显示有关用户登录和注销时间的信息。有关命令的更多信息，请在终端中键入 <code>man last</code> 查看。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/last" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">last</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/pgrep-command-in-linux/">Linux中的 pgrep 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-cron-jobs-in-linux/">在 Linux 中查看 cron 作业</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-if-else-statement/">Python if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-sequence-expression/">Bash 序列表达式的用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/vim-undo-redo/">在 Vim/Vi 中撤消和重做操作</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/lsmod-command-in-linux/">Linux中使用 lsmod 命令列出内核模块</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-select/">Bash 中使用 select 制作菜单</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-break-continue/">Bash 中的 break 和 continue</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pidof-command-in-linux/">Linux 中的 pidof 命令</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#如何使用-last-命令">如何使用 last 命令</a></li>
+    <li><a href="#last命令选项">last 命令选项</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

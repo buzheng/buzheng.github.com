@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -194,7 +194,7 @@ sudo systemctl enable squid
 <p>Squid 可以对经过身份验证的用户使用不同的后端，包括 <a href="/linux/how-to-install-and-configure-samba-on-centos-7/">Samba</a> ， LDAP 和 HTTP 基本身份验证。</p>
 <p>在这个例子中，我们将配置 Squid 使用基本身份验证。它是 HTTP 协议中内置的简单身份验证方法。</p>
 <p>我们将使用 <code>openssl</code> 生成密码并使用命令将该 <code>username:password</code> 对附加到 <code>/etc/squid/htpasswd</code> 文件，如下所示的  <a href="/linux/linux-tee-command/"><code>tee</code></a> 命令：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">printf</span> <span class="s2">&#34;</span><span class="s2">USERNAME:</span><span class="k">$(</span>openssl passwd -crypt PASSWORD<span class="k">)</span><span class="s2">\n</span><span class="s2">&#34;</span> <span class="p">|</span> sudo tee -a /etc/squid/htpasswd
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">printf</span> <span class="s2">&#34;USERNAME:</span><span class="k">$(</span>openssl passwd -crypt PASSWORD<span class="k">)</span><span class="s2">\n&#34;</span> <span class="p">|</span> sudo tee -a /etc/squid/htpasswd
 </code></pre></div><p>例如，要使用密码“  <code>Pz$lPk76</code>”  创建名为 “mike” 的用户，您将运行：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">printf &#34;mike:$(openssl passwd -crypt &#39;Pz$lPk76&#39;)\n&#34; | sudo tee -a /etc/squid/htpasswd
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">mike:2nkgQsTSPCsIo
@@ -251,11 +251,11 @@ sudo systemctl enable squid
 <p>要使用新配置文件启动 Chrome 并连接到 Squid 服务器，请使用以下命令：</p>
 <p><strong>Linux：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/usr/bin/google-chrome <span class="se">\
-</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile&#34;</span> <span class="se">\
 </span><span class="se"></span>    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span>
 </code></pre></div><p><strong>苹果系统 ：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="s2">&#34;/Applications/Google Chrome.app/Contents/MacOS/Google Chrome&#34;</span> <span class="se">\
-</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    --user-data-dir<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/proxy-profile&#34;</span> <span class="se">\
 </span><span class="se"></span>    --proxy-server<span class="o">=</span><span class="s2">&#34;http://SQUID_IP:3128&#34;</span>
 </code></pre></div><p><strong>Windows：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="s2">&#34;C:\Program Files (x86)\Google\Chrome\Application\chrome.exe&#34;</span> ^

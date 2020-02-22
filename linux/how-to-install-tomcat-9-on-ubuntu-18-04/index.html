@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -40,7 +40,7 @@
 本教程将向您展示如何在 Ubuntu 18.04 上安装和配置 Tomcat 9 。相同的说明适用于 Ubuntu 16.04 和任何基于 Ubuntu 的发行版，包括 Linux Mint 和 Elementary OS 。">
 <meta itemprop="datePublished" content="2019-05-13T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-13T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="1710">
+<meta itemprop="wordCount" content="1712">
 
 
 
@@ -225,10 +225,10 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /opt/tomcat/latest/conf/tomcat-users.xml
 </code></pre></div><p>要添加能够访问 Tomcat Web 界面 (manager-gui和admin-gui) 的新用户，我们需要在 <code>tomcat-users.xml</code> 文件中定义用户，如下所示。请务必将用户名和密码更改为更安全的内容：</p>
 <p>编辑文件: <code>/opt/tomcat/latest/conf/tomcat-users.xml</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users</span><span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users&gt;</span>
+<span class="c">&lt;!--
 </span><span class="c">    Comments
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
    <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;admin-gui&#34;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;admin_password&#34;</span> <span class="na">roles=</span><span class="s">&#34;admin-gui,manager-gui&#34;</span><span class="nt">/&gt;</span>
@@ -241,10 +241,10 @@
 </code></pre></div><p>对于 Host Manager 应用程序，请打开以下文件：</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<span class="c">&lt;!--
 </span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
 </span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
 <span class="nt">&lt;/Context&gt;</span>
 </code></pre></div><p>另一种选择是仅允许从特定 IP 访问 Manager 和 Host Manager 应用程序。您可以直接将 IP 地址添加到列表中，而不是对块进行注释。</p>
 <p>例如，如果您的公共 IP 是 <code>45.45.45.45</code> 您将进行以下更改：</p>

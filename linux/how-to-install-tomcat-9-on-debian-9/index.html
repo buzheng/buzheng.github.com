@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -40,7 +40,7 @@
 本教程将向您展示如何在Debian 9上安装Apache Tomcat 9.0并配置Tomcat Web管理界面。">
 <meta itemprop="datePublished" content="2019-05-09T05:00:00&#43;08:00" />
 <meta itemprop="dateModified" content="2019-05-09T05:00:00&#43;08:00" />
-<meta itemprop="wordCount" content="2141">
+<meta itemprop="wordCount" content="2144">
 
 
 
@@ -222,10 +222,10 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo vim /opt/tomcat/latest/conf/tomcat-users.xml
 </code></pre></div><p>我们将定义我们的新用户，访问文件中的tomcat web界面（manager-gui和admin-gui），<code>tomcat-users.xml</code>如下所示。请务必将用户名和密码更改为更安全的内容：</p>
 <p>/opt/tomcat/latest/conf/tomcat-users.xml</p>
-<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users</span><span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;tomcat-users&gt;</span>
+<span class="c">&lt;!--
 </span><span class="c">    Comments
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
    <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;admin-gui&#34;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;role</span> <span class="na">rolename=</span><span class="s">&#34;manager-gui&#34;</span><span class="nt">/&gt;</span>
    <span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">&#34;admin&#34;</span> <span class="na">password=</span><span class="s">&#34;admin_password&#34;</span> <span class="na">roles=</span><span class="s">&#34;admin-gui,manager-gui&#34;</span><span class="nt">/&gt;</span>
@@ -234,17 +234,17 @@
 <p>如果您需要从任何地方访问Web界面，请打开以下文件并注释或删除以黄色突出显示的行：</p>
 <p>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<span class="c">&lt;!--
 </span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
 </span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
 <span class="nt">&lt;/Context&gt;</span>
 </code></pre></div><p>/opt/tomcat/latest/webapps/host-manager/META-INF/context.xml</p>
 <div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;Context</span> <span class="na">antiResourceLocking=</span><span class="s">&#34;false&#34;</span> <span class="na">privileged=</span><span class="s">&#34;true&#34;</span> <span class="nt">&gt;</span>
-<span class="c">&lt;!--</span><span class="c">
+<span class="c">&lt;!--
 </span><span class="c">  &lt;Valve className=&#34;org.apache.catalina.valves.RemoteAddrValve&#34;
 </span><span class="c">         allow=&#34;127\.\d+\.\d+\.\d+|::1|0000:1&#34; /&gt;
-</span><span class="c"></span><span class="c">--&gt;</span>
+</span><span class="c">--&gt;</span>
 <span class="nt">&lt;/Context&gt;</span>
 </code></pre></div><p>如果您只需要从特定IP访问Web界面，而不是注释块，请将您的公共IP添加到列表中。假设您的公共IP是，<code>32.32.32.32</code>并且您希望仅允许来自该IP的访问：</p>
 <p>/opt/tomcat/latest/webapps/manager/META-INF/context.xml</p>

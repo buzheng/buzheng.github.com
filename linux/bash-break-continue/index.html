@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -153,11 +153,11 @@
 <p>在下面的脚本中，一旦当前迭代的项目等于 <code>2</code> ， <a href="/linux/bash-while-loop/"><code>while</code> 循环</a>的执行将被中断：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
 
-<span class="k">while</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$i</span> -lt <span class="m">5</span> <span class="o">]</span><span class="o">]</span>
+<span class="k">while</span> <span class="o">[[</span> <span class="nv">$i</span> -lt <span class="m">5</span> <span class="o">]]</span>
 <span class="k">do</span>
-  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
-  <span class="o">(</span><span class="o">(</span>i++<span class="o">)</span><span class="o">)</span>
-  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$i</span> -eq <span class="m">2</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+  <span class="o">((</span>i++<span class="o">))</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="nv">$i</span> -eq <span class="m">2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">break</span>
   <span class="k">fi</span>
 <span class="k">done</span>
@@ -171,12 +171,12 @@ All Done!
 <p>如果 <code>[n]</code> 未提供参数，则 <code>break</code> 终止最里面的封闭循环。外循环不终止：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
   <span class="k">for</span> j in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
-    <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$j</span> -eq <span class="m">2</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$j</span> -eq <span class="m">2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
       <span class="nb">break</span>
     <span class="k">fi</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">j: </span><span class="nv">$j</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;j: </span><span class="nv">$j</span><span class="s2">&#34;</span>
   <span class="k">done</span>
-  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">i: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+  <span class="nb">echo</span> <span class="s2">&#34;i: </span><span class="nv">$i</span><span class="s2">&#34;</span>
 <span class="k">done</span>
 
 <span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
@@ -190,12 +190,12 @@ All Done!
 </code></pre></div><p>如果要退出外循环，请使用 <code>break 2</code> 。参数 <code>2</code> 告诉 <code>break</code> 终止第二个封闭循环：</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
   <span class="k">for</span> j in <span class="o">{</span>1..3<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
-    <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$j</span> -eq <span class="m">2</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$j</span> -eq <span class="m">2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
       <span class="nb">break</span> <span class="m">2</span>
     <span class="k">fi</span>
-    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">j: </span><span class="nv">$j</span><span class="s2">&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;j: </span><span class="nv">$j</span><span class="s2">&#34;</span>
   <span class="k">done</span>
-  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">i: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+  <span class="nb">echo</span> <span class="s2">&#34;i: </span><span class="nv">$i</span><span class="s2">&#34;</span>
 <span class="k">done</span>
 
 <span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
@@ -210,12 +210,12 @@ All Done!
 <p>在下面的例子中，一旦当前迭代的项<a href="/linux/bash-if-else-statement/">等于</a>到 <code>2</code> ， <code>continue</code> 语句将导致执行返回到循环的开始，继续进行下一次迭代。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">i</span><span class="o">=</span><span class="m">0</span>
 
-<span class="k">while</span> <span class="o">[</span><span class="o">[</span> <span class="nv">$i</span> -lt <span class="m">5</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">do</span>
-  <span class="o">(</span><span class="o">(</span>i++<span class="o">)</span><span class="o">)</span>
-  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="o">=</span><span class="o">=</span> <span class="s1">&#39;2&#39;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">while</span> <span class="o">[[</span> <span class="nv">$i</span> -lt <span class="m">5</span> <span class="o">]]</span><span class="p">;</span> <span class="k">do</span>
+  <span class="o">((</span>i++<span class="o">))</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="k">continue</span>
   <span class="k">fi</span>
-  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Number: </span><span class="nv">$i</span><span class="s2">&#34;</span>
 <span class="k">done</span>
 
 <span class="nb">echo</span> <span class="s1">&#39;All Done!&#39;</span>
@@ -228,10 +228,10 @@ All Done!
 </code></pre></div><p>以下脚本打印从 <code>1</code> 到 <code>50</code> 可以被整除的数字 <code>9</code> 。</p>
 <p>如果一个数字不能被整除 <code>9</code> ，则 <code>continue</code> 语句将跳过 <a href="/linux/echo-command-in-linux-with-examples/"><code>echo</code></a> 命令，并将控制权传递给循环的下一个迭代。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="k">for</span> i in <span class="o">{</span>1..50<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
-  <span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="k">$((</span> <span class="nv">$i</span> <span class="o">%</span> <span class="m">9</span> <span class="k">))</span> -ne <span class="m">0</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="k">$((</span> <span class="nv">$i</span> <span class="o">%</span> <span class="m">9</span> <span class="k">))</span> -ne <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="k">continue</span>
   <span class="k">fi</span>
-  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="s2">Divisible by 9: </span><span class="nv">$i</span><span class="s2">&#34;</span>
+  <span class="nb">echo</span> <span class="s2">&#34;Divisible by 9: </span><span class="nv">$i</span><span class="s2">&#34;</span>
 <span class="k">done</span>
 
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Divisible by 9: 9

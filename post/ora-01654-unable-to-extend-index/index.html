@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -139,7 +139,7 @@
   
           <p>今早系统突然报错：ORA-01654,索引无法通过128(在表空间USERS中) 扩展，究其原因是由于表空间不足引起的。查了表空间以及数据文件的使用情况，发现表空间数据文件 /u01/app/oracle/oradata/orcl/users01.dbf 已经达到最大32G了，所以只能对表空间再添加一个数据文件解决（一个表空间可以对应多个数据文件）。</p>
 <p>解决方案：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="n">tablespace</span> <span class="n">USERS</span> <span class="k">add</span> <span class="n">datafile</span> <span class="s1">&#39;</span><span class="s1">/u01/app/oracle/oradata/orcl/users02.dbf</span><span class="s1">&#39;</span> <span class="k">size</span> <span class="mi">100</span><span class="n">M</span> <span class="n">autoextend</span> <span class="k">on</span> <span class="k">next</span> <span class="mi">100</span><span class="n">M</span> <span class="n">maxsize</span> <span class="n">unlimited</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="n">tablespace</span> <span class="n">USERS</span> <span class="k">add</span> <span class="n">datafile</span> <span class="s1">&#39;/u01/app/oracle/oradata/orcl/users02.dbf&#39;</span> <span class="k">size</span> <span class="mi">100</span><span class="n">M</span> <span class="n">autoextend</span> <span class="k">on</span> <span class="k">next</span> <span class="mi">100</span><span class="n">M</span> <span class="n">maxsize</span> <span class="n">unlimited</span><span class="p">;</span>
 </code></pre></div><h2 id="数据库文件为什么增长这么快">数据库文件为什么增长这么快？</h2>
 <p>这是由于项目前期没有对表空间进行足够的规划和设计，导致所有的表都放在默认表空间 USERS 上，表空间 USERS 默认的对应的数据文件为
 /u01/app/oracle/oradata/orcl/users01.dbf, 因此该数据文件增长很快。</p>
@@ -147,7 +147,7 @@
 <h2 id="为什么数据文件最大是-32g-">为什么数据文件最大是 32G ？</h2>
 <p>Oracle的 rowid 中使用 22 位来代表Block号，这 22 位最多只能代表 2^22-1=4194303 个数据块。因此 db_block_size=8K 的数据文件最大为  8K * 4194304 = 32G.</p>
 <h2 id="如何给表空间增加数据文件">如何给表空间增加数据文件？</h2>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="n">tablespace</span> <span class="n">USERS</span> <span class="k">add</span> <span class="n">datafile</span> <span class="s1">&#39;</span><span class="s1">/u01/app/oracle/oradata/orcl/users02.dbf</span><span class="s1">&#39;</span> <span class="k">size</span> <span class="mi">100</span><span class="n">M</span> <span class="n">autoextend</span> <span class="k">on</span> <span class="k">next</span> <span class="mi">100</span><span class="n">M</span> <span class="n">maxsize</span> <span class="n">unlimited</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">alter</span> <span class="n">tablespace</span> <span class="n">USERS</span> <span class="k">add</span> <span class="n">datafile</span> <span class="s1">&#39;/u01/app/oracle/oradata/orcl/users02.dbf&#39;</span> <span class="k">size</span> <span class="mi">100</span><span class="n">M</span> <span class="n">autoextend</span> <span class="k">on</span> <span class="k">next</span> <span class="mi">100</span><span class="n">M</span> <span class="n">maxsize</span> <span class="n">unlimited</span><span class="p">;</span>
 </code></pre></div><h2 id="如何查看表空间和数据文件">如何查看表空间和数据文件？</h2>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- 所有表空间
 </span><span class="c1"></span><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dba_tablespaces</span><span class="p">;</span>
@@ -159,21 +159,21 @@
        <span class="n">a</span><span class="p">.</span><span class="n">bytes</span> <span class="n">total</span><span class="p">,</span>
        <span class="n">b</span><span class="p">.</span><span class="n">bytes</span> <span class="n">used</span><span class="p">,</span>
        <span class="k">c</span><span class="p">.</span><span class="n">bytes</span> <span class="k">free</span><span class="p">,</span>
-       <span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">bytes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">.</span><span class="n">bytes</span> <span class="s2">&#34;</span><span class="s2">% USED </span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">bytes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">.</span><span class="n">bytes</span> <span class="s2">&#34;</span><span class="s2">% FREE </span><span class="s2">&#34;</span>
+       <span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">bytes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">.</span><span class="n">bytes</span> <span class="s2">&#34;% USED &#34;</span><span class="p">,</span>
+       <span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">bytes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span><span class="p">.</span><span class="n">bytes</span> <span class="s2">&#34;% FREE &#34;</span>
   <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">sm$ts_avail</span> <span class="n">a</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">sm$ts_used</span> <span class="n">b</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">sm$ts_free</span> <span class="k">c</span>
  <span class="k">WHERE</span> <span class="n">a</span><span class="p">.</span><span class="n">tablespace_name</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">tablespace_name</span>
    <span class="k">AND</span> <span class="n">a</span><span class="p">.</span><span class="n">tablespace_name</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="n">tablespace_name</span><span class="p">;</span>
 
 <span class="c1">-- 查看表空间使用情况 2
-</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">tablespace_name</span> <span class="s2">&#34;</span><span class="s2">表空间名</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="n">total</span> <span class="s2">&#34;</span><span class="s2">表空间大小</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="k">free</span> <span class="s2">&#34;</span><span class="s2">表空间剩余大小</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="k">free</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">表空间使用大小</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="n">total</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">表空间大小(G)</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="k">free</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">表空间剩余大小(G)</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="k">free</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="s2">&#34;</span><span class="s2">表空间使用大小(G)</span><span class="s2">&#34;</span><span class="p">,</span>
-       <span class="n">round</span><span class="p">(</span><span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="k">free</span><span class="p">)</span> <span class="o">/</span> <span class="n">total</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="s2">&#34;</span><span class="s2">使用率 %</span><span class="s2">&#34;</span>
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">tablespace_name</span> <span class="s2">&#34;表空间名&#34;</span><span class="p">,</span>
+       <span class="n">total</span> <span class="s2">&#34;表空间大小&#34;</span><span class="p">,</span>
+       <span class="k">free</span> <span class="s2">&#34;表空间剩余大小&#34;</span><span class="p">,</span>
+       <span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="k">free</span><span class="p">)</span> <span class="s2">&#34;表空间使用大小&#34;</span><span class="p">,</span>
+       <span class="n">total</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="s2">&#34;表空间大小(G)&#34;</span><span class="p">,</span>
+       <span class="k">free</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="s2">&#34;表空间剩余大小(G)&#34;</span><span class="p">,</span>
+       <span class="p">(</span><span class="n">total</span> <span class="o">-</span> <span class="k">free</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="s2">&#34;表空间使用大小(G)&#34;</span><span class="p">,</span>
+       <span class="n">round</span><span class="p">((</span><span class="n">total</span> <span class="o">-</span> <span class="k">free</span><span class="p">)</span> <span class="o">/</span> <span class="n">total</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="s2">&#34;使用率 %&#34;</span>
   <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">tablespace_name</span><span class="p">,</span> <span class="k">SUM</span><span class="p">(</span><span class="n">bytes</span><span class="p">)</span> <span class="k">free</span>
           <span class="k">FROM</span> <span class="n">dba_free_space</span>
          <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">tablespace_name</span><span class="p">)</span> <span class="n">a</span><span class="p">,</span>
@@ -185,7 +185,7 @@
 <p>Oracle 数据库由一个或多个逻辑存储单元组成，这个逻辑存储单元就是表空间 tablespace, 表空间内的逻辑存储单位为段 segment, 段又可以继续划分为数据扩展 extent, 而数据扩展是由一组连续的数据块 datablock 构成。</p>
 <p>tablespace 又分为 smallfile tablespace 和 bigfile tablespace; database 默认创建的是 smallfile tablespace; smallfile tablespace 的 db_block_size 为 8K, 这就决定了 smallfile tablespace 的数据文件最大为 32G, 因此smallfile tablespace 需要对应多个数据文件, 这就给维护带来了一定的工作量。 在 bigfile tablespace 中，表空间可以由一个单一的大文件组成，但是所有的数据都集中在一个数据文件中，也有一定的弊端，不符合 I/O 分散的原则，所以 bigfile tablespace 一般需要合适的存储支持。</p>
 <p>创建 bigfile tablespace 的语法</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="n">BIGFILE</span> <span class="n">TABLESPACE</span> <span class="n">bigfile</span> <span class="n">DATAFILE</span> <span class="s1">&#39;</span><span class="s1">/u01/app/oracle/oradata/orcl/bigfile.dbf</span><span class="s1">&#39;</span> <span class="k">SIZE</span> <span class="mi">10</span><span class="n">M</span> <span class="n">AUTOEXTEND</span> <span class="k">OFF</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="n">BIGFILE</span> <span class="n">TABLESPACE</span> <span class="n">bigfile</span> <span class="n">DATAFILE</span> <span class="s1">&#39;/u01/app/oracle/oradata/orcl/bigfile.dbf&#39;</span> <span class="k">SIZE</span> <span class="mi">10</span><span class="n">M</span> <span class="n">AUTOEXTEND</span> <span class="k">OFF</span><span class="p">;</span>
 </code></pre></div>
       </div><ul class="pa0">
   

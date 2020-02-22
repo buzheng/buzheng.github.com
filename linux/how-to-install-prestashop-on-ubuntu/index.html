@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -168,7 +168,7 @@ sudo apt install unzip
 </code></pre></div><p>在 mysql 控制台内部，运行以下 SQL 语句以<!-- raw HTML omitted -->创建名为的新数据库<!-- raw HTML omitted --> <code>prestashop：</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">prestashop</span><span class="p">;</span>
 </code></pre></div><p>接下来，通过运行以下命令创建一个名为 <code>prestashop</code> 的 MySQL 用户帐户，并<!-- raw HTML omitted -->向用户授予必要的权限<!-- raw HTML omitted -->：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">prestashop</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;</span><span class="s1">prestashop</span><span class="s1">&#39;</span><span class="o">@</span><span class="s1">&#39;</span><span class="s1">localhost</span><span class="s1">&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;</span><span class="s1">change-with-strong-password</span><span class="s1">&#39;</span><span class="p">;</span>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">prestashop</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;prestashop&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;change-with-strong-password&#39;</span><span class="p">;</span>
 </code></pre></div><blockquote>
 <p>不要忘记把 <code>change-with-strong-password</code> 更改为强密码。</p>
 </blockquote>
@@ -216,7 +216,7 @@ wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip
     <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
     <span class="kn">server_name</span> <span class="s">www.example.com</span> <span class="s">example.com</span><span class="p">;</span>
 
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -228,7 +228,7 @@ wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip
     <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
 
     <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://example.com</span><span class="nv">$request_uri</span><span class="p">;</span>
 <span class="p">}</span>
@@ -244,8 +244,8 @@ wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip
 </span><span class="c1"></span>    <span class="kn">ssl_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/fullchain.pem</span><span class="p">;</span>
     <span class="kn">ssl_certificate_key</span> <span class="s">/etc/letsencrypt/live/example.com/privkey.pem</span><span class="p">;</span>
     <span class="kn">ssl_trusted_certificate</span> <span class="s">/etc/letsencrypt/live/example.com/chain.pem</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/ssl</span><span class="s">.conf</span><span class="p">;</span>
-    <span class="kn">include</span> <span class="s">snippets/letsencrypt</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/ssl.conf</span><span class="p">;</span>
+    <span class="kn">include</span> <span class="s">snippets/letsencrypt.conf</span><span class="p">;</span>
 
     <span class="c1"># log files
 </span><span class="c1"></span>    <span class="kn">access_log</span> <span class="s">/var/log/nginx/example.com.access.log</span><span class="p">;</span>
@@ -267,7 +267,7 @@ wget https://download.prestashop.com/download/releases/prestashop_1.7.5.1.zip
     <span class="p">}</span>
 
     <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
-        <span class="kn">include</span> <span class="s">snippets/fastcgi-php</span><span class="s">.conf</span><span class="p">;</span>
+        <span class="kn">include</span> <span class="s">snippets/fastcgi-php.conf</span><span class="p">;</span>
         <span class="kn">fastcgi_pass</span> <span class="s">unix:/run/php/php7.2-fpm.sock</span><span class="p">;</span>
     <span class="p">}</span>
 

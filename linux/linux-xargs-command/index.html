@@ -9,7 +9,7 @@
     <meta name="MobileOptimized" content="320">
 
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.63.2" />
+    <meta name="generator" content="Hugo 0.65.1" />
     
     
       <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -152,7 +152,7 @@ Xargs 通常通过管道与其他命令结合使用。使用 xargs 可以将标�
 <h2 id="如何使用-linux-xargs-命令">如何使用 Linux xargs 命令</h2>
 <p>Xargs 从标准输入读取参数，用空格或换行符分隔，并使用输入作为命令的参数执行指定的命令。如果未提供命令，则默认为 <a href="/linux/echo-command-in-linux-with-examples/">/bin/echo</a> 。</p>
 <p>xargs 命令的语法如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">xargs <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>COMMAND <span class="o">[</span>initial-arguments<span class="o">]</span><span class="o">]</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">xargs <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>COMMAND <span class="o">[</span>initial-arguments<span class="o">]]</span>
 </code></pre></div><p>使用 xargs 的最基本的例子是使用管道传递几个用空格分隔的字符串到 xargs 并运行一个命令，将这些字符串用作参数。</p>
 <div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">echo</span> <span class="s2">&#34;file1 file2 file3&#34;</span> <span class="p">|</span> xargs touch
 </code></pre></div><p>在上面的示例中，我们将标准输入传递给 xargs ，并为每个参数运行 <a href="/linux/linux-touch-command/">touch 命令</a>，创建三个文件。这与运行时相同：</p>
@@ -221,14 +221,14 @@ PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 <span class="nv">VAR1</span><span class="o">=</span><span class="s2">&#34; buzheng &#34;</span>
 <span class="nv">VAR2</span><span class="o">=</span><span class="s2">&#34;buzheng&#34;</span>
 
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">=</span><span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are equal.&#34;</span>
 <span class="k">else</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are not equal.&#34;</span>
 <span class="k">fi</span>
 
 <span class="c1">## Using xargs to trim VAR1</span>
-<span class="k">if</span> <span class="o">[</span><span class="o">[</span> <span class="k">$(</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="p">|</span> xargs<span class="k">)</span> <span class="o">=</span><span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="k">$(</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$VAR1</span><span class="s2">&#34;</span> <span class="p">|</span> xargs<span class="k">)</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$VAR2</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are equal.&#34;</span>
 <span class="k">else</span>
     <span class="nb">echo</span> <span class="s2">&#34;Strings are not equal.&#34;</span>
