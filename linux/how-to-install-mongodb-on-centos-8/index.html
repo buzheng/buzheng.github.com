@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>CentOS 8 上 MongoDB 4.2 安装教程 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="CentOS 8 上 MongoDB 4.2 安装教程" />
+<meta property="og:description" content="本教程说明了如何在 CentOS 8 服务器上安装和配置 MongoDB 4.2 社区版。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-mongodb-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-mongodb-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-03T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-03T12:00:00+08:00" />
+<meta itemprop="name" content="CentOS 8 上 MongoDB 4.2 安装教程">
+<meta itemprop="description" content="本教程说明了如何在 CentOS 8 服务器上安装和配置 MongoDB 4.2 社区版。">
+<meta itemprop="datePublished" content="2020-03-03T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-03T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1190">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-mongodb-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="centos,mongodb,database," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-mongodb-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="CentOS 8 上 MongoDB 4.2 安装教程"/>
+<meta name="twitter:description" content="本教程说明了如何在 CentOS 8 服务器上安装和配置 MongoDB 4.2 社区版。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">CentOS 8 上 MongoDB 4.2 安装教程</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-03T12:00:00&#43;08:00">2020年3月3日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1200 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>MongoDB 是一个免费的开源文档数据库。它属于 NoSQL 数据库家族，与传统的基于表的 SQL 数据库(如 MySQL 和 PostgreSQL) 不同。</p>
+<p>在 MongoDB 中，数据存储在灵活的，<a href="https://www.json.org/">类似于 JSON 的</a>文档中，其中文档之间的字段可能会有所不同。它不需要预定义的架构，并且数据结构可以随时间更改。</p>
+<p>本教程说明了如何在 CentOS 8 服务器上安装和配置 MongoDB 4.2 社区版。</p>
+<h2 id="安装-mongodb">安装 MongoDB</h2>
+<p>MongoDB 在 CentOS 8 核心存储库中不可用。我们将启用官方的 MongoDB 存储库并安装软件包。</p>
+<p>在撰写本文时，可从官方 MongoDB 存储库获得的 MongoDB 的最新版本是 4.2 版。在开始安装之前，请访问 MongoDB 文档的“[在 Red Hat 上安装]”(<a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/#configure-the-package-management-system-yum">https://docs.mongodb.com/manual/tutorial/install-mongodb-on-red-hat/#configure-the-package-management-system-yum</a>) 部分，并检查是否有可用的新版本。</p>
+<p>以 root 或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>执行以下步骤，以在 CentOS 8 系统上安装 MongoDB ：</p>
+<ol>
+<li>
+<p>通过 <code>mongodb-org.repo</code> 在 <code>/etc/yum.repos.d/</code> 目录内创建一个新的存储库文件 <code>/etc/yum.repos.d/mongodb-org.repo</code> 来启用 MongoDB 存储库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo nano /etc/yum.repos.d/mongodb-org.repo
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="k">[mongodb-org-4.2]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">MongoDB Repository</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">https://www.mongodb.org/static/pgp/server-4.2.asc</span>
+</code></pre></div><p>如果要安装旧版本的 MongoDB ，请使用您的首选版本替换上面文件内容中的 <code>4.2</code> 。</p>
+</li>
+<li>
+<p>安装 <code>mongodb-org</code> 元软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf install mongodb-org
+</code></pre></div><p>在安装过程中，您将提示您导入 MongoDB GPG 密钥。输入 <code>y</code> 并点击 <code>Enter</code> 。</p>
+<p>以下软件包将作为 <code>mongodb-org</code> 软件包的一部分安装在您的系统上：</p>
+<ul>
+<li><code>mongodb-org-server</code> -  <code>mongod</code> 守护程序以及相应的初始化脚本和配置。</li>
+<li><code>mongodb-org-mongos</code> -  <code>mongos</code> 守护进程。</li>
+<li><code>mongodb-org-shell</code>  - mongo shell ，它是 MongoDB 的交互式 JavaScript 接口，用于执行命令行中的管理任务。</li>
+<li><code>mongodb-org-tools</code> - 包含几个用于导入和导出数据，统计信息以及其他实用程序的 MongoDB 工具。</li>
+</ul>
+</li>
+<li>
+<p>安装完成后，启用并启动 MongoDB 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl <span class="nb">enable</span> mongod --now
+</code></pre></div></li>
+<li>
+<p>要验证安装，请连接到 MongoDB 数据库服务器并打印服务器版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mongo
+</code></pre></div><p>运行以下命令以显示 MongoDB 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">db.version()</span>
+</code></pre></div><p>输出看起来像这样：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">4.2.3
+</code></pre></div></li>
+</ol>
+<h2 id="配置-mongodb">配置 MongoDB</h2>
+<p>MongoDB 配置文件位于 <code>/etc</code> 目录中 <code>mongod.conf</code> 。该文件为 <a href="http://yaml.org/">YAML</a> 格式。</p>
+<p>在大多数情况下，默认配置设置已足够。但是，对于生产环境，我们建议取消对安全性部分的注释并启用授权，如下所示：</p>
+<p>文件 <code>/etc/mongod.conf</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">security</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">authorization</span><span class="p">:</span><span class="w"> </span>enabled<span class="w">
+</span></code></pre></div><p>该 <code>authorization</code> 选项启用了<a href="https://docs.mongodb.com/manual/core/authorization/">基于角色的访问控制 (RBAC)</a> ，它可以控制用户对数据库资源和操作的访问。如果禁用此选项，则每个用户将有权访问任何数据库并执行任何操作。</p>
+<p>对 MongoDB 配置文件进行更改后，重新启动 mongod 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl restart mongod
+</code></pre></div><p>有关 MongoDB 配置选项的更多信息，请访问“<a href="https://docs.mongodb.com/manual/reference/configuration-options/">配置文件选项</a>” 文档页面。</p>
+<h2 id="创建管理-mongodb-用户">创建管理 MongoDB 用户</h2>
+<p>如果启用了 MongoDB 身份验证，则需要创建一个可以访问和管理 MongoDB 实例的管理用户。</p>
+<p>首先，使用以下命令访问 MongoDB shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mongo
+</code></pre></div><p>键入以下命令以连接到 <code>admin</code> 数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">use admin
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">switched to db admin
+</code></pre></div><p>创建一个具有以下 <code>userAdminAnyDatabase</code> 角色的新用户 <code>mongoAdmin</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">db.createUser<span class="o">(</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Successfully added user: {
+	&#34;user&#34; : &#34;mongoAdmin&#34;,
+	&#34;roles&#34; : [
+		{
+			&#34;role&#34; : &#34;userAdminAnyDatabase&#34;,
+			&#34;db&#34; : &#34;admin&#34;
+		}
+	]
+}
+</code></pre></div><p>您可以根据需要命名 MongoDB 管理用户。</p>
+<p>使用以下命令退出 mongo shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">quit()
+</code></pre></div><p>要测试更改，请使用先前创建的管理用户访问 mongo shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mongo -u mongoAdmin -p --authenticationDatabase admin
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">MongoDB shell version v4.2.3
+Enter password:
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">use admin
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">switched to db admin
+
+</code></pre></div><p>现在，使用以下命令打印用户：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">show users
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">{
+	&#34;_id&#34; : &#34;admin.mongoAdmin&#34;,
+	&#34;user&#34; : &#34;mongoAdmin&#34;,
+	&#34;db&#34; : &#34;admin&#34;,
+	&#34;roles&#34; : [
+		{
+			&#34;role&#34; : &#34;userAdminAnyDatabase&#34;,
+			&#34;db&#34; : &#34;admin&#34;
+		}
+	],
+	&#34;mechanisms&#34; : [
+		&#34;SCRAM-SHA-1&#34;,
+		&#34;SCRAM-SHA-256&#34;
+	]
+}
+
+</code></pre></div><h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何在 CentOS 8 服务器上安装和配置 MongoDB 4.2 。</p>
+<p>有关此主题的更多信息，请查阅<a href="https://docs.mongodb.com/manual/">《  MongoDB 4.2 手册</a>》。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/mongodb" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mongodb</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/database" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">database</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-centos-7/">如何在 CentOS 7 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-8/">如何在 CentOS 8 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-couchdb-on-centos-8/">在 CentOS 8 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-debian-10/">在 Debian 10 Linux 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-postgresql-on-centos-8/">在 CentOS 8 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-debian-9/">如何在 Debian 9 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-postgresql-on-centos-7/">如何在 CentOS 7 上安装 PostgreSQL</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-couchdb-on-centos-7/">如何在 CentOS 7 上安装 CouchDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-7/">如何在 CentOS 7 上安装 Elasticsearch</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-mongodb">安装 MongoDB</a></li>
+    <li><a href="#配置-mongodb">配置 MongoDB</a></li>
+    <li><a href="#创建管理-mongodb-用户">创建管理 MongoDB 用户</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
