@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装和配置 Redmine |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装和配置 Redmine" />
+<meta property="og:description" content="本教程说明了如何在 CentOS 8 上安装和配置 Redmine 的最新版本。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-and-configure-redmine-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-and-configure-redmine-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-02-25T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-02-25T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装和配置 Redmine">
+<meta itemprop="description" content="本教程说明了如何在 CentOS 8 上安装和配置 Redmine 的最新版本。">
+<meta itemprop="datePublished" content="2020-02-25T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-02-25T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1326">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-and-configure-redmine-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="centos,redmine,ruby,mysql,mariadb,apache," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-and-configure-redmine-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装和配置 Redmine"/>
+<meta name="twitter:description" content="本教程说明了如何在 CentOS 8 上安装和配置 Redmine 的最新版本。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装和配置 Redmine</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-02-25T12:00:00&#43;08:00">2020年2月25日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1400 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Redmine 是一个免费的开源项目管理和问题跟踪应用程序。它是跨平台和跨数据库的，建立在 Ruby on Rails 框架之上。</p>
+<p><a href="https://www.redmine.org/">Redmine</a> 能够支持对多个项目进行支持，包括 Wiki ，问题跟踪，论坛，日历，电子邮件通知等。</p>
+<p>本教程说明了如何在 CentOS 8 上安装和配置 Redmine 的最新版本。我们将使用 MariaDB 作为数据库后端，而使用 Passenger + Apache 作为 Ruby 应用程序服务器。</p>
+<h2 id="先决条件">先决条件</h2>
+<p>确保满足以下先决条件：</p>
+<ul>
+<li>指向公共服务器 IP 的域名。</li>
+<li>以 root  <a href="/linux/create-a-sudo-user-on-centos/">用户</a>或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录。</li>
+</ul>
+<h2 id="创建一个-mysql-数据库">创建一个 MySQL 数据库</h2>
+<p>Redmine 支持 MySQL/MariaDB ， Microsoft SQL Server ， SQLite 3 和 <a href="/linux/how-to-install-postgresql-on-centos-8/">PostgreSQL</a> 。我们将使用 MariaDB 作为数据库后端。</p>
+<p>如果您的 CentOS 服务器上没有安装 MariaDB 或 MySQL ，则可以按照以下说明<a href="/linux/how-to-install-mariadb-on-centos-8/">安装 MariaDB</a>。</p>
+<p>使用以下命令登录到 MySQL Shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo mysql
+</code></pre></div><p>在 MySQL Shell 中，运行以下 SQL 语句<a href="/linux/how-to-create-a-mysql-database/">创建一个新数据库</a>，一个新用户，并<a href="/linux/how-to-create-mysql-user-accounts-and-grant-privileges/">授予该用户对该数据库的访问权限</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">redmine</span> <span class="nb">CHARACTER</span> <span class="k">SET</span> <span class="n">utf8</span><span class="p">;</span>
+<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">redmine</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;redmine&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;change-with-strong-password&#39;</span><span class="p">;</span>
+</code></pre></div><p>确保使用您自己的密码更改 <code>change-with-strong-password</code> 。</p>
+<p>完成后，退出 MySQL Shell ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">EXIT;
+</code></pre></div><h2 id="安装-passenger--apache-和-ruby">安装 Passenger ， Apache 和 Ruby</h2>
+<p><a href="https://www.phusionpassenger.com/">Passenger</a> 是一款适用于 Ruby ， Node.js 和 Python 的快速，轻量级的 Web 应用程序服务器，可以与 <a href="/linux/how-to-install-apache-on-centos-8/">Apache</a> 和 Nginx  集成。我们将 Passenger 安装为 Apache 模块。</p>
+<p>启用 <a href="/linux/how-to-enable-epel-repository-on-centos/">EPEL 存储库</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf install epel-release
+sudo dnf config-manager --enable epel
+</code></pre></div><p>启用存储库后，更新软件包列表并安装 Ruby ， Apache 和 Passenger ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo dnf install httpd mod_passenger passenger passenger-devel ruby
+</code></pre></div><p>启动 Apache 服务并启用随服务器自启动：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo systemctl enable httpd --now
+</code></pre></div><h2 id="创建新的系统用户">创建新的系统用户</h2>
+<p>创建一个主目录为 <code>/opt/redmine</code> 的新用户和组，该目录将运行 Redmine 实例：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo useradd -m -U -r -d /opt/redmine redmine
+</code></pre></div><p>将 <code>apache</code> <a href="/linux/how-to-add-user-to-group-in-linux/">用户添加组</a><code>redmine</code> 并更改 <code>/opt/redmine</code> 目录权限以便 Apache 可以访问它：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo usermod -a -G redmine apache
+sudo chmod <span class="m">750</span> /opt/redmine
+</code></pre></div><h2 id="安装-redmine">安装 Redmine</h2>
+<p>在撰写本文时， Redmine 的最新稳定版本是版本 4.1.0 。</p>
+<p>在继续下一步之前，请访问 <a href="https://www.redmine.org/projects/redmine/wiki/Download">Redmine 下载页面</a>以查看是否有较新版本。</p>
+<p>安装构建 Redmine 所需的 GCC 编译器和库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf group install <span class="s2">&#34;Development Tools&#34;</span>
+sudo dnf install zlib-devel curl-devel openssl-devel mariadb-devel ruby-devel
+</code></pre></div><p>确保您以 <code>redmine</code> 用户身份运行以下步骤：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo su - redmine
+</code></pre></div><h3 id="1下载-redmine">1.下载 Redmine</h3>
+<p>使用 <a href="/linux/curl-command-examples/"><code>curl</code></a> 下载 Redmine 压缩文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">curl -L http://www.redmine.org/releases/redmine-4.1.0.tar.gz -o redmine.tar.gz
+</code></pre></div><p>下载完成后，解压缩存档：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xvf redmine.tar.gz
+</code></pre></div><h3 id="2配置-redmine-数据库">2.配置 Redmine 数据库</h3>
+<p><a href="/linux/cp-command-in-linux/">复制</a>  Redmine 自带的示例数据库配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cp /opt/redmine/redmine-4.1.0/config/database.yml.example /opt/redmine/redmine-4.1.0/config/database.yml
+</code></pre></div><p>使用文本编辑器打开 <code>/opt/redmine/redmine-4.1.0/config/database.yml</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">nano /opt/redmine/redmine-4.1.0/config/database.yml
+</code></pre></div><p>搜索 <code>production</code> 部分，然后输入我们之前创建的 MySQL 数据库和用户信息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">production:</span>
+  <span class="na">adapter: mysql2</span>
+  <span class="na">database: redmine</span>
+  <span class="na">host: localhost</span>
+  <span class="na">username: redmine</span>
+  <span class="na">password: &#34;change-with-strong-password&#34;</span>
+  <span class="na">encoding: utf8mb4</span>
+</code></pre></div><p>完成后，保存文件并退出编辑器。</p>
+<h3 id="3安装-ruby-依赖项">3.安装 Ruby 依赖项</h3>
+<p><a href="/linux/linux-cd-command/">切换</a>到 <code>redmine-4.1.0</code> 目录并安装 Ruby 依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">cd</span> ~/redmine-4.1.0
+gem install bundler --no-rdoc --no-ri
+bundle install --without development <span class="nb">test</span> postgresql sqlite --path vendor/bundle
+</code></pre></div><h3 id="4生成密钥并迁移数据库">4.生成密钥并迁移数据库</h3>
+<p>运行以下命令以生成密钥并迁移数据库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">bundle <span class="nb">exec</span> rake generate_secret_token
+<span class="nv">RAILS_ENV</span><span class="o">=</span>production bundle <span class="nb">exec</span> rake db:migrate
+</code></pre></div><h2 id="配置-apache">配置 Apache</h2>
+<p>切换回您的 sudo 用户并创建以下 <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">Apache 虚拟主机</a> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">exit</span>
+sudo nano /etc/httpd/conf.d/example.com.conf
+</code></pre></div><p>文件 <code>/etc/httpd/conf.d/example.com.conf</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> example.com
+    <span class="nb">ServerAlias</span> www.example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/opt/redmine/redmine-4.1.0/public</span>
+
+    <span class="nt">&lt;Directory</span> <span class="s">/opt/redmine/redmine-4.1.0/public</span><span class="nt">&gt;</span>
+        <span class="nb">Options</span> Indexes ExecCGI FollowSymLinks
+        <span class="nb">Require</span> <span class="k">all</span> granted
+        <span class="nb">AllowOverride</span> <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+    <span class="nb">ErrorLog</span> <span class="sx">/var/log/httpd/example.com-error.log</span>
+    <span class="nb">CustomLog</span> <span class="sx">/var/log/httpd/example.com-access.log</span> combined
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre></div><p>不要忘记用您的域名替换 example.com 。</p>
+<p>通过键入以下命令<a href="/linux/start-stop-restart-apache/">重新启动 Apache 服务</a>：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl restart httpd
+</code></pre></div><h3 id="使用-ssl-配置-apache">使用 SSL 配置 Apache</h3>
+<p>如果您的域没有受信任的 SSL 证书，则可以按照<a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">以下说明</a>生成免费的 “Let’s Encrypt SSL” 证书。</p>
+<p>生成证书后，按如下所示编辑 Apache 配置 <code>/etc/httpd/conf.d/example.com.conf</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/httpd/conf.d/example.com.conf
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Redirect</span> permanent/https://example.com/
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+  <span class="nb">ServerName</span> example.com
+  <span class="nb">ServerAlias</span> www.example.com
+
+  <span class="nb">Protocols</span> h2 http:/1.1
+
+  <span class="nt">&lt;If</span> <span class="s">&#34;%{HTTP_HOST} == &#39;www.example.com&#39;&#34;</span><span class="nt">&gt;</span>
+    <span class="nb">Redirect</span> permanent/https://example.com/
+  <span class="nt">&lt;/If&gt;</span>
+
+  <span class="nb">DocumentRoot</span> <span class="sx">/opt/redmine/redmine-4.1.0/public</span>
+  <span class="nb">ErrorLog</span> <span class="sx">/var/log/httpd/example.com-error.log</span>
+  <span class="nb">CustomLog</span> <span class="sx">/var/log/httpd/example.com-access.log</span> combined
+
+  <span class="nb">SSLEngine</span> <span class="k">On</span>
+  <span class="nb">SSLCertificateFile</span> <span class="sx">/etc/letsencrypt/live/example.com/fullchain.pem</span>
+  <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/etc/letsencrypt/live/example.com/privkey.pem</span>
+
+  <span class="nt">&lt;Directory</span> <span class="s">/opt/redmine/redmine-4.1.0/public</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> Indexes ExecCGI FollowSymLinks
+    <span class="nb">Require</span> <span class="k">all</span> granted
+    <span class="nb">AllowOverride</span> <span class="k">all</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre></div><p>不要忘记用您自己的域名域替换 example.com 并为 SSL 证书文件设置正确的路径。在上面的配置中，所有的 <a href="/linux/redirect-http-to-https-in-apache/">HTTP 请求都将重定向到 HTTPS</a> 。</p>
+<h2 id="访问-redmine">访问 Redmine</h2>
+<p>打开浏览器，键入您的域名，如果安装成功的话，将出现类似于以下的屏幕：</p>
+<p><img src="redmine-login.jpg" alt=""></p>
+<p>Redmine 的默认登录凭据为：</p>
+<ul>
+<li>用户名： admin</li>
+<li>密码： admin</li>
+</ul>
+<p>首次登录时，将提示您更改密码，如下所示：</p>
+<p><img src="redmine-change-password.jpg" alt=""></p>
+<p>更改密码后，您将被重定向到用户帐户页面。</p>
+<p>如果无法访问该页面，则可能是<a href="/linux/how-to-configure-and-manage-firewall-on-centos-8/">防火墙</a>阻止了 Apache 端口。</p>
+<p>使用以下命令打开必要的端口：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo firewall-cmd --permanent --zone=public --add-port=443/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=80/tcp
+sudo firewall-cmd --reload
+</code></pre></div><h2 id="结论">结论</h2>
+<p>您已在 CentOS 系统上成功安装 Redmine 。现在，您应该查看 <a href="https://www.redmine.org/guide">Redmine 文档</a>，并了解有关如何配置和使用 Redmine 的更多信息。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/redmine" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">redmine</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/ruby" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">ruby</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/mysql" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mysql</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/mariadb" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">mariadb</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-7/">如何在CentOS 7上安装和配置Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mariadb-on-centos-8/">在 CentOS 8 上安装 MariaDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-debian-9/">如何在 Debian 9 上安装和配置 Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-mysql-master-slave-replication-on-centos-7/">如何在 CentOS 7 上配置 MySQL 主从复制</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-ubuntu-18-04/">如何在 Ubuntu 18.04 上使用 Apache 安装和保护 phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-nginx-on-centos-7/">如何在CentOS 7上使用Nginx安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-phpmyadmin-with-nginx-on-centos-7/">如何在CentOS 7上安装带有Nginx的phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-debian-9/">如何在Debian 9上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建一个-mysql-数据库">创建一个 MySQL 数据库</a></li>
+    <li><a href="#安装-passenger--apache-和-ruby">安装 Passenger ， Apache 和 Ruby</a></li>
+    <li><a href="#创建新的系统用户">创建新的系统用户</a></li>
+    <li><a href="#安装-redmine">安装 Redmine</a>
+      <ul>
+        <li><a href="#1下载-redmine">1.下载 Redmine</a></li>
+        <li><a href="#2配置-redmine-数据库">2.配置 Redmine 数据库</a></li>
+        <li><a href="#3安装-ruby-依赖项">3.安装 Ruby 依赖项</a></li>
+        <li><a href="#4生成密钥并迁移数据库">4.生成密钥并迁移数据库</a></li>
+      </ul>
+    </li>
+    <li><a href="#配置-apache">配置 Apache</a>
+      <ul>
+        <li><a href="#使用-ssl-配置-apache">使用 SSL 配置 Apache</a></li>
+      </ul>
+    </li>
+    <li><a href="#访问-redmine">访问 Redmine</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
