@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上设置 Apache 虚拟主机 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上设置 Apache 虚拟主机" />
+<meta property="og:description" content="本文介绍了如何在 CentOS 8 服务器上设置 Apache 虚拟主机。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-set-up-apache-virtual-hosts-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-set-up-apache-virtual-hosts-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-05T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-05T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上设置 Apache 虚拟主机">
+<meta itemprop="description" content="本文介绍了如何在 CentOS 8 服务器上设置 Apache 虚拟主机。">
+<meta itemprop="datePublished" content="2020-03-05T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-05T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1078">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-set-up-apache-virtual-hosts-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="apache,centos," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-set-up-apache-virtual-hosts-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上设置 Apache 虚拟主机"/>
+<meta name="twitter:description" content="本文介绍了如何在 CentOS 8 服务器上设置 Apache 虚拟主机。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上设置 Apache 虚拟主机</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-05T12:00:00&#43;08:00">2020年3月5日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1100 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Apache 虚拟主机允许您在一台计算机上运行多个网站。使用虚拟主机，您可以指定站点文档的根目录(包含网站文件的目录)，为每个站点创建单独的安全策略，使用不同的 SSL 证书等等。</p>
+<p>本文介绍了如何在 CentOS 8 服务器上设置 Apache 虚拟主机。</p>
+<h2 id="先决条件">先决条件</h2>
+<p>在继续本教程之前，请确保满足以下要求：</p>
+<ul>
+<li>指向您的公共服务器 IP 的域名。</li>
+<li>您已经<a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 系统上安装了 Apache</a> 。</li>
+<li>您以 root 用户或<a href="/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份登录。</li>
+</ul>
+<h2 id="创建目录结构">创建目录结构</h2>
+<p>文档根目录是用于存储域名网站文件并为响应请求提供服务的目录。可以将文档根目录设置在所需的任何位置。</p>
+<p>我们将使用以下目录结构：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">/var/www/
+├── example.com
+│   └── public_html
+├── example2.com
+│   └── public_html
+├── example3.com
+│   └── public_html
+</code></pre></div><p>我们将在 <code>/var/www</code> 中创建一个单独的目录，对应将在服务器上托管的每个域名。在域名目录中，我们将创建一个 <code>public_html</code> 目录，该目录将成为域文档的根目录，并将存储网站文件。</p>
+<p>现在，我们从创建域 <code>example.com</code> 的根目录开始：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo mkdir -p /var/www/example.com/public_html
+</code></pre></div><p>为了进行测试，请在域的文档根目录内创建一个 <code>index.html</code> 文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo nano /var/www/example.com/public_html/index.html
+</code></pre></div><p>将以下代码复制并粘贴到 <code>/var/www/example.com/public_html/index.html</code> 文件中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span> <span class="na">dir</span><span class="o">=</span><span class="s">&#34;ltr&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Welcome to example.com<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Success! example.com home page!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><p>为了避免任何权限问题，请<a href="/linux/linux-chown-command/">更改域文档根目录的所有权</a>为 <code>apache</code> 用户：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo chown -R apache: /var/www/example.com
+</code></pre></div><h2 id="创建虚拟主机文件">创建虚拟主机文件</h2>
+<p>有几种设置虚拟主机的方法。您可以将所有虚拟主机指令添加到一个文件中，也可以为每个虚拟主机指令创建一个新的配置文件。通常，您应该首选第二种方法，这种方法更易于维护。</p>
+<p>默认情况下， Apache 会从 <code>/etc/httpd/conf.d/</code> 目录加载以 <code>.conf</code> 结尾的所有配置文件。</p>
+<p>要为特定网站创建虚拟主机，请打开您选择的编辑器并创建以下基本虚拟主机配置文件 <code>/etc/httpd/conf.d/example.com.conf</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> example.com
+    <span class="nb">ServerAlias</span> www.example.com
+    <span class="nb">ServerAdmin</span> webmaster@example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com/public_html</span>
+
+    <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com/public_html</span><span class="nt">&gt;</span>
+        <span class="nb">Options</span> -Indexes +FollowSymLinks
+        <span class="nb">AllowOverride</span> <span class="k">All</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+    <span class="nb">ErrorLog</span> <span class="sx">/var/log/httpd/example.com-error.log</span>
+    <span class="nb">CustomLog</span> <span class="sx">/var/log/httpd/example.com-access.log</span> combined
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre></div><ul>
+<li><code>ServerName</code>：使用虚拟主机配置的域名。这是您的域名。</li>
+<li><code>ServerAlias</code>：使用虚拟主机配置的所有其他域名，例如 <code>www</code> 子域。</li>
+<li><code>DocumentRoot</code>： Apache 从中提供网站文件的目录。</li>
+<li><code>Options</code>：<a href="https://httpd.apache.org/docs/2.4/mod/core.html#options">此伪指令</a>控制每个目录服务器的功能。
+<ul>
+<li><code>-Indexes</code>：防止目录列表。</li>
+<li><code>FollowSymLinks</code>：此选项告诉 Web 服务器遵循符号链接。</li>
+</ul>
+</li>
+<li><code>AllowOverride</code>：指定 <code>.htaccess</code> 文件中声明的指令可以覆盖配置指令。</li>
+<li><code>ErrorLog</code>， <code>CustomLog</code> ：日志文件的位置。</li>
+</ul>
+<p>根据需要编辑文件并保存。</p>
+<p>配置文件名必须以 <code>.conf</code> 结尾。您可以根据需要命名配置文件。最佳实践是将域名用作虚拟主机配置文件的名称。</p>
+<p>使用以下命令测试配置文件语法：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apachectl configtest
+</code></pre></div><p>如果没有错误，输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Syntax OK
+</code></pre></div><p>要激活新创建的虚拟主机，请使用以下命令重新启动 Apache 服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl restart httpd
+</code></pre></div><p>打开 <code>http://example.com</code> 以确认一切正常。</p>
+<p><img src="apache-welcome-page.jpg" alt=""></p>
+<h2 id="结论">结论</h2>
+<p>在本教程中，我们向您展示了如何在 CentOS 8 上创建 Apache 虚拟主机配置。您可以重复上面概述的步骤，并为所有网站创建其他虚拟主机。</p>
+<p>如果要使用 SSL 证书保护网站的安全，可以生成并安装免费的 <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">Letsencrypt SSL 证书</a>。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/apache" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">apache</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-8/">在 CentOS 8 上安装和配置 Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-owncloud-on-centos-8/">在 CentOS 8 上安装和配置 OwnCloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-8/">在 CentOS 8 上为 Apache 配置 Let&#39;s Encrypt SSL 证书</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-8/">在 CentOS 8 上安装 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/secure-apache-with-let-s-encrypt-on-centos-7/">使用 CentOS 7 上使用 Let&#39;s Encrypt 来保护 Apache</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-wordpress-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装WordPress</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-secure-phpmyadmin-with-apache-on-centos-7/">如何在CentOS 7上使用Apache安装和保护phpMyAdmin</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-nextcloud-on-centos-7/">如何在CentOS 7上使用Apache安装和配置Nextcloud</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-7/">如何在 CentOS 7 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-on-centos-7/">如何在 CentOS 7 上安装 Apache</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#先决条件">先决条件</a></li>
+    <li><a href="#创建目录结构">创建目录结构</a></li>
+    <li><a href="#创建虚拟主机文件">创建虚拟主机文件</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何提取(解压缩) tar.xz 文件 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何提取(解压缩) tar.xz 文件" />
+<meta property="og:description" content="本文介绍了如何使用 tar 命令提取(或解压缩 ) .tar.xz 或 .txz 文件。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-extract-unzip-tar-xz-file/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-extract-unzip-tar-xz-file/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-05T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-05T12:00:00+08:00" />
+<meta itemprop="name" content="如何提取(解压缩) tar.xz 文件">
+<meta itemprop="description" content="本文介绍了如何使用 tar 命令提取(或解压缩 ) .tar.xz 或 .txz 文件。">
+<meta itemprop="datePublished" content="2020-03-05T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-05T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="955">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-extract-unzip-tar-xz-file/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="tar,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-extract-unzip-tar-xz-file/featured.jpg"/>
+<meta name="twitter:title" content="如何提取(解压缩) tar.xz 文件"/>
+<meta name="twitter:description" content="本文介绍了如何使用 tar 命令提取(或解压缩 ) .tar.xz 或 .txz 文件。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何提取(解压缩) tar.xz 文件</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-05T12:00:00&#43;08:00">2020年3月5日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1000 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>tar</code> 命令允许您创建和提取 tar 归档文件。它支持各种压缩程序，例如 gzip ， bzip2 ， lzip ， lzma ， lzop ， xz 和 compress 。</p>
+<p>xz 是基于 LZMA 算法的一种流行的文件压缩算法。按照约定，用 <strong>xz</strong> 压缩的 tar 归档文件的名称以 <strong>.tar.xz</strong> 或 <strong>.txz结尾</strong>。</p>
+<p>本文介绍了如何使用 <code>tar</code> 命令提取(或解压缩 ) <strong>.tar.xz</strong> 或 <strong>.txz</strong> 档案。</p>
+<h2 id="提取-tarxz-文件">提取 tar.xz 文件</h2>
+<p>默认情况下，所有 Linux 发行版和 MacOS 实用程序预装 <code>tar</code> 。</p>
+<p>要提取 tar.xz 文件，请在调用 <code>tar</code> 命令时使用 <code>--extract</code> (<code>-x</code>) 选项，并在 <code>-f</code> 选项后跟上存档文件名：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xf archive.tar.xz
+</code></pre></div><p><code>tar</code> 自动检测压缩类型并提取存档。可以使用同一命令来提取使用其他算法压缩的 tar 存档(例如 <a href="/linux/how-to-extract-unzip-tar-gz-file/"><strong>.tar.gz</strong></a> 或 <a href="/linux/how-to-extract-unzip-tar-bz2-file/"><strong>.tar.bz2)</strong></a>。</p>
+<p>如果您不需要使用命令行，则可以使用 GUI 文件管理器。要提取(解压缩 )tar.xz 文件，只需右键单击要提取的文件，然后选择“解压缩”。 Windows 用户需要一个名为 <a href="https://www.7-zip.org/download.html">7zip</a> 的工具来提取 tar.xz 文件。</p>
+<p>要获得更详细的输出，请使用该 <code>-v</code> 选项。此选项告诉 <code>tar</code> 您在终端上显示正在提取的文件的名称。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xvf archive.tar.xz
+</code></pre></div><p>默认情况下， <code>tar</code> 将归档内容提取到<a href="/linux/current-working-directory/">当前工作目录中</a>。要提取特定目录中的存档文件，请使用 <code>--directory</code> (<code>-C</code>) 。</p>
+<p>以下示例显示了如何将归档内容提取到 <code>/home/linuxize/files</code> 目录中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xf archive.tar.xz -C /home/linuxize/files
+</code></pre></div><h2 id="从-tarxz-文件中提取特定文件">从 tar.xz 文件中提取特定文件</h2>
+<p>要从 tar.xz 文件中提取特定文件，请在归档文件名称后附加要提取的文件名，多个文件请使用空格分隔：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xf archive.tar.xz file1 file2
+</code></pre></div><p>提取文件时，必须提供其确切名称，包括路径(您可以使用 <code>tar</code> 带上 <code>--list</code>(<code>-t</code>) 选项显示路径)。</p>
+<p>从存档中提取一个或多个目录与提取多个文件相同：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xf archive.tar.xz dir1 dir2
+</code></pre></div><p>如果您尝试解压缩档案中不存在的文件，将显示类似于以下内容的错误消息：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xf archive.tar.xz README
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">tar: README: Not found in archive
+tar: Exiting with failure status due to previous errors
+</code></pre></div><p>选项 <code>--wildcards</code> 使您可以基于通配符模式从 tar.xz 文件中提取文件。该模式必须加引号，以防止 shell 程序解释它。</p>
+<p>例如，要仅提取名称以结尾的文件 <code>.png</code> ，可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -xf archive.tar.xz --wildcards <span class="s1">&#39;*.png&#39;</span>
+</code></pre></div><h2 id="从标准输入中提取-tarxz-文件">从标准输入中提取 tar.xz 文件</h2>
+<p>通过从标准输入(通常通过管道)读取档案来提取压缩的 tar.xz 文件时，必须指定解压缩选项。 <code>tar</code> 使用 <code>-J</code> 选项指明该文件已使用 xz 压缩。</p>
+<p>在下面的示例中，我们使用 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令下载 Linux 内核，并将其输出传递给 <code>tar</code> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">wget -c https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.5.3.tar.xz -O - | sudo tar -xj
+</code></pre></div><p>如果您未指定解压缩选项， <code>tar</code> 则会显示您应使用的选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">tar: Archive is compressed. Use -J option
+tar: Error is not recoverable: exiting now
+</code></pre></div><h2 id="列出-tarxz-文件内容">列出 tar.xz 文件内容</h2>
+<p>要列出 tar.xz 文件的内容，请使用 <code>--list</code> (<code>-t</code>) 选项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -tf archive.tar.xz
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">file1
+file2
+file3
+</code></pre></div><p>如果添加 <code>--verbose</code>(<code>-v</code>) 选项， <code>tar</code> 将打印更多信息，例如所有者，文件大小，时间戳等等 ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">tar -tvf archive.tar.xz
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">-rw-r--r-- linuxize/users       0 2020-02-15 01:19 file1
+-rw-r--r-- linuxize/users       0 2020-02-15 01:19 file2
+-rw-r--r-- linuxize/users       0 2020-02-15 01:19 file3
+</code></pre></div><h2 id="结论">结论</h2>
+<p><strong>tar.xz</strong> 文件是使用 xz 压缩的 <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">Tar 归档文件</a>。要提取 tar.xz 文件，请使用 <code>tar -xf</code> 命令。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/tar" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">tar</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-extract-unzip-tar-bz2-file/">如何提取(解压缩) tar bz2 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-create-and-extract-archives-using-the-tar-command-in-linux/">如何在 Linux 中使用 Tar 命令创建和提取存档</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-extract-unzip-tar-gz-file/">如何提取（解压缩）Tar Gz文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pkill-command-in-linux/">Linux中 pkill 命令使用教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/last-command-in-linux/">Linux 中的 last 命令用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pgrep-command-in-linux/">Linux中的 pgrep 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-cron-jobs-in-linux/">在 Linux 中查看 cron 作业</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-if-else-statement/">Python if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-sequence-expression/">Bash 序列表达式的用法</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#提取-tarxz-文件">提取 tar.xz 文件</a></li>
+    <li><a href="#从-tarxz-文件中提取特定文件">从 tar.xz 文件中提取特定文件</a></li>
+    <li><a href="#从标准输入中提取-tarxz-文件">从标准输入中提取 tar.xz 文件</a></li>
+    <li><a href="#列出-tarxz-文件内容">列出 tar.xz 文件内容</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
