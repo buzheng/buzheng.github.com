@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>chmod 777 的含义 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="chmod 777 的含义" />
+<meta property="og:description" content="本文介绍了基本的 Linux 权限模型以及与权限相对应的数字的含义。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/what-does-chmod-777-mean/" />
+<meta property="og:image" content="https://buzheng.org/linux/what-does-chmod-777-mean/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-09T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-09T12:00:00+08:00" />
+<meta itemprop="name" content="chmod 777 的含义">
+<meta itemprop="description" content="本文介绍了基本的 Linux 权限模型以及与权限相对应的数字的含义。">
+<meta itemprop="datePublished" content="2020-03-09T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-09T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1606">
+<meta itemprop="image" content="https://buzheng.org/linux/what-does-chmod-777-mean/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="chmod,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/what-does-chmod-777-mean/featured.jpg"/>
+<meta name="twitter:title" content="chmod 777 的含义"/>
+<meta name="twitter:description" content="本文介绍了基本的 Linux 权限模型以及与权限相对应的数字的含义。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">chmod 777 的含义</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-09T12:00:00&#43;08:00">2020年3月9日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1700 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 6 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>您正在尝试解决 Web 服务器的权限问题，并在 Internet 上找到了信息，说您需要递归地对要访问的 Web 目录执行 <code>chmod 777</code> 命令。在执行此操作之前，请确保您了解 <code>chmod -R 777</code> 操作以及为什么永远不要将权限设置为 777 。</p>
+<p>本文介绍了基本的 Linux 权限模型以及与权限相对应的数字的含义。</p>
+<h2 id="了解-linux-文件权限">了解 Linux 文件权限</h2>
+<p>在 Linux 中，对文件的访问由操作系统使用文件许可权，属性和所有权控制。了解 Linux 文件系统权限模型后，您可以将文件和目录的访问权限限制为仅授权用户和进程访问，从而使系统更安全。</p>
+<p>每个文件均由一个特定用户和一个组拥有，并为三种不同类别的用户分配了权限访问权限：</p>
+<ul>
+<li>文件所有者。</li>
+<li>小组成员。</li>
+<li>其他人(其他所有人)。</li>
+</ul>
+<p>有三种文件许可权类型适用于每个用户类别，并允许您指定允许哪些用户读取文件，写入文件或执行文件。相同的权限属性适用于具有不同含义的文件和目录：</p>
+<ul>
+<li>读取权限。
+<ul>
+<li>该文件是可读的。例如，设置读取权限后，用户可以在文本编辑器中打开文件。</li>
+<li>可以查看目录的内容。用户可以使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令列出目录内的文件。</li>
+</ul>
+</li>
+<li>写入权限。
+<ul>
+<li>可以更改或修改文件。</li>
+<li>目录的内容可以更改。用户可以<a href="/linux/create-a-file-in-linux/">创建新文件</a>，<a href="/linux/how-to-remove-files-and-directories-using-linux-command-line/">删除现有文件</a>，<a href="/linux/how-to-move-files-in-linux-with-mv-command/">移动文件</a>，<a href="/linux/how-to-rename-files-in-linux/">重命名文件</a> 等。</li>
+</ul>
+</li>
+<li>执行权限。
+<ul>
+<li>可以执行该文件。</li>
+<li>可以使用 <a href="/linux/linux-cd-command/"><code>cd</code></a> 命令进入目录。</li>
+</ul>
+</li>
+</ul>
+<p>可以使用 <a href="/linux/how-to-list-files-in-linux-using-the-ls-command/"><code>ls</code></a> 命令查看文件权限。这是一个例子：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">ls -l filename.txt
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">-rw-r--r-- 12 buzheng users 12.0K Apr  8 20:51 filename.txt
+|[-][-][-]-   [-----] [---]
+| |  |  | |      |      |
+| |  |  | |      |      +------------&gt; 7\. Group
+| |  |  | |      +-------------------&gt; 6\. Owner
+| |  |  | +--------------------------&gt; 5\. Alternate Access Method
+| |  |  +----------------------------&gt; 4\. Others Permissions
+| |  +-------------------------------&gt; 3\. Group Permissions
+| +----------------------------------&gt; 2\. Owner Permissions
++------------------------------------&gt; 1\. File Type
+</code></pre></div><p>第一个字符显示文件类型。它可以是常规文件 (<code>-</code>) ，目录 (<code>d</code>) ，<a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">符号链接</a> (<code>l</code>) 或任何其他特殊类型的文件。</p>
+<p>接下来的9个字符代表文件许可权，三个三元组，每个三个字符。第一个三元组显示所有者权限，第二个三元组显示用户组权限，最后一个三元组显示其他所有人权限。</p>
+<h2 id="数字权限">数字权限</h2>
+<p>文件许可权可以数字或符号格式表示。在本文中，我们将重点介绍数字格式。</p>
+<p>许可数字可以包含三到四个数字，范围从 0 到 7。</p>
+<p>当使用3位数字时，第一个数字代表文件所有者的权限，第二个数字代表文件组的权限，最后一个代表其他用户的权限。</p>
+<p>写入，读取和执行权限具有以下数字值：</p>
+<ul>
+<li><code>r</code> (读取 ) = 4</li>
+<li><code>w</code> (写入 ) = 2</li>
+<li><code>x</code> (执行 ) = 1</li>
+<li>没有权限 = 0</li>
+</ul>
+<p>特定用户类别的许可权数字是该类别的许可权值的总和。</p>
+<p>权限编号的每一位可以是4、2、1和0的总和：</p>
+<ul>
+<li>0(0 + 0 + 0) – 无权限。</li>
+<li>1(0 + 0 + 1) – 仅执行许可。</li>
+<li>2(0 + 2 + 0) – 仅写许可。</li>
+<li>3(0 + 2 + 1) – 写入和执行权限。</li>
+<li>4(4 + 0 + 0) – 仅读取权限。</li>
+<li>5(4 + 0 + 1) – 读取并执行权限。</li>
+<li>6(4 + 2 + 0) – 读写权限。</li>
+<li>7(4 + 2 + 1) – 读取，写入和执行权限。</li>
+</ul>
+<p>例如，如果权限号设置为 750 ，则意味着文件的所有者具有读取，写入和执行权限，文件的组具有读取和执行权限，而其他用户则没有权限：</p>
+<ul>
+<li>所有者： rwx = 4 + 2 + 1 = 7</li>
+<li>组： rx = 4 + 0 + 1 = 5</li>
+<li>其他： rx = 0 + 0 + 0 = 0</li>
+</ul>
+<p>使用4位数字时，第一位数字含义如下：</p>
+<ul>
+<li>setuid = 4</li>
+<li>setgid = 2</li>
+<li>粘滞位 = 1</li>
+<li>无变化 = 0</li>
+</ul>
+<p>接下来的三位数字与使用三位数字的含义相同。如果第一个数字为0，则可以省略，并且该模式可以用3个数字表示。数值模式 <code>0755</code> 与<code> 755</code> 相同。</p>
+<p>要以数字(八进制)表示法查看文件的权限，请使用以下 <a href="/linux/stat-command-in-linux/"><code>stat</code></a> 命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">stat -c <span class="s2">&#34;%a&#34;</span> filename
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">644
+</code></pre></div><h2 id="切勿使用-chmod-777">切勿使用 chmod 777</h2>
+<p>为文件或目录设置 777 权限意味着所有用户都可以读取，写入和执行该文件或目录，并且可能会带来巨大的安全风险。</p>
+<p>例如，如果将 <code>/var/www</code> 目录下的所有文件和子目录的权限递归更改为 <code>777</code> ，则系统上的任何用户都可以在该目录中创建，删除或修改文件。</p>
+<p>如果您在 Web 服务器上遇到权限问题，而不是将权限递归设置为 <code>777</code> ，请将文件的所有权更改为运行该应用程序的用户，并将文件的权限设置为 <code>644</code> ，将目录的权限设置为 <code>755</code> 。</p>
+<p>可以使用 <a href="/linux/linux-chown-command/"><code>chown</code></a> 命令和 <a href="/linux/chmod-command-in-linux/"><code>chmod</code></a> 命令的权限来更改文件所有权。</p>
+<p>假设您的服务器上有一个以 “buzheng” 用户身份运行的 PHP 应用程序。要设置正确的权限，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">chown -R buzheng: /var/www
+</code></pre></div><p>只有 root 用户，文件所有者或具有 sudo 特权的用户才能更改文件的权限。使用 <code>chmod</code> 时要格外小心，尤其是在递归更改权限时。</p>
+<h2 id="结论">结论</h2>
+<p>如果要管理 Linux 系统，那么了解 Linux 权限的工作方式至关重要。</p>
+<p>永远不要设置 777 (<code>rwxrwxrwx</code>) 权限文件和目录权限。 777 意味着任何人都可以使用这些文件做任何事情。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/chmod" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">chmod</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/chmod-recursive/">在 Linux 中递归更改文件的权限</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/chmod-command-in-linux/">Linux 中的 chmod 命令用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-extract-unzip-tar-xz-file/">如何提取(解压缩) tar.xz 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pkill-command-in-linux/">Linux中 pkill 命令使用教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/last-command-in-linux/">Linux 中的 last 命令用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pgrep-command-in-linux/">Linux中的 pgrep 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-cron-jobs-in-linux/">在 Linux 中查看 cron 作业</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-if-else-statement/">Python if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-sequence-expression/">Bash 序列表达式的用法</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#了解-linux-文件权限">了解 Linux 文件权限</a></li>
+    <li><a href="#数字权限">数字权限</a></li>
+    <li><a href="#切勿使用-chmod-777">切勿使用 chmod 777</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

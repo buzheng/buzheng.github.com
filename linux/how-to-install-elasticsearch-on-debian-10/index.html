@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>如何在 Debian 10 上安装 Elasticsearch |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="如何在 Debian 10 上安装 Elasticsearch" />
+<meta property="og:description" content="Elasticsearch 是一个开源的分布式全文本搜索和分析引擎，本教程介绍了如何在 Debian 10 上安装 Elasticsearch 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-elasticsearch-on-debian-10/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-elasticsearch-on-debian-10/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-09T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-09T12:00:00+08:00" />
+<meta itemprop="name" content="如何在 Debian 10 上安装 Elasticsearch">
+<meta itemprop="description" content="Elasticsearch 是一个开源的分布式全文本搜索和分析引擎，本教程介绍了如何在 Debian 10 上安装 Elasticsearch 。">
+<meta itemprop="datePublished" content="2020-03-09T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-09T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1052">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-elasticsearch-on-debian-10/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="java,elasticsearch,database,debian," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-elasticsearch-on-debian-10/featured.jpg"/>
+<meta name="twitter:title" content="如何在 Debian 10 上安装 Elasticsearch"/>
+<meta name="twitter:description" content="Elasticsearch 是一个开源的分布式全文本搜索和分析引擎，本教程介绍了如何在 Debian 10 上安装 Elasticsearch 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">如何在 Debian 10 上安装 Elasticsearch</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-09T12:00:00&#43;08:00">2020年3月9日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 1100 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 5 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>Elasticsearch 是一个开源的分布式全文本搜索和分析引擎。它支持 RESTful 操作，并允许您实时存储，搜索和分析大量数据。 Elasticsearch 是最流行的搜索引擎之一，可为具有复杂搜索要求的应用程序提供动力，例如大型电子商务商店和分析应用程序。</p>
+<p>本教程介绍了如何在 Debian 10 上安装 Elasticsearch 。</p>
+<h2 id="安装-java">安装 Java</h2>
+<p>Elasticsearch 是一个 Java 应用程序，因此第一步是<a href="/linux/install-java-on-debian-10/">安装 Java</a> 。</p>
+<p>以超级用户或具有 <a href="/linux/how-to-add-user-to-sudoers-in-debian/">sudo 权限的用户</a> 身份运行以下命令以安装 OpenJDK 软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt install default-jdk
+</code></pre></div><p>通过打印 Java 版本来验证 Java 安装：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">java -version
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">openjdk version &#34;11.0.6&#34; 2020-01-14
+OpenJDK Runtime Environment (build 11.0.6+10-post-Debian-1deb10u1)
+OpenJDK 64-Bit Server VM (build 11.0.6+10-post-Debian-1deb10u1, mixed mode, sharing)
+</code></pre></div><h2 id="安装-elasticsearch">安装 Elasticsearch</h2>
+<p>在标准的 Debian 10 存储库中没有 Elasticsearch 。我们将从 Elasticsearch APT 存储库安装它。</p>
+<p>使用以下 <a href="/linux/wget-command-examples/"><code>wget</code></a> 命令导入存储库的公钥：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch <span class="p">|</span> sudo apt-key add -
+</code></pre></div><p>上面的命令应该输出 <code>OK</code> ，这意味着密钥已成功导入，并且来自此存储库的软件包将被视为受信任的软件包。</p>
+<p>通过运行以下命令将 Elasticsearch 存储库添加到系统中：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo sh -c <span class="s1">&#39;echo &#34;deb https://artifacts.elastic.co/packages/7.x/apt stable main&#34; &gt; /etc/apt/sources.list.d/elastic-7.x.list&#39;</span>
+</code></pre></div><p>在撰写本文时， Elasticsearch 的最新版本是 <code>7.6</code> 。如果要安装 Elasticsearch 的早期版本，请将上面的命令中的 <code>7.x</code> 更改为所需的版本。</p>
+<p>更新 packages 索引并安装 Elasticsearch 引擎：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt update
+sudo apt install elasticsearch
+</code></pre></div><p>安装过程完成后，启动并启用该服务：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl <span class="nb">enable</span> elasticsearch.service --now
+</code></pre></div><p>要验证 Elasticsearch 是否正在运行，请用于 <a href="/linux/curl-command-examples/"><code>curl</code></a> 将 HTTP 请求发送到本地主机上的端口 9200 ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">curl -X GET <span class="s2">&#34;localhost:9200/&#34;</span>
+</code></pre></div><p>输出将如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">{
+  &#34;name&#34; : &#34;debian10.localdomain&#34;,
+  &#34;cluster_name&#34; : &#34;elasticsearch&#34;,
+  &#34;cluster_uuid&#34; : &#34;yCOOHdvYR8mHRs5mNXQdDQ&#34;,
+  &#34;version&#34; : {
+    &#34;number&#34; : &#34;7.6.1&#34;,
+    &#34;build_flavor&#34; : &#34;default&#34;,
+    &#34;build_type&#34; : &#34;deb&#34;,
+    &#34;build_hash&#34; : &#34;aa751e09be0a5072e8570670309b1f12348f023b&#34;,
+    &#34;build_date&#34; : &#34;2020-02-29T00:15:25.529771Z&#34;,
+    &#34;build_snapshot&#34; : false,
+    &#34;lucene_version&#34; : &#34;8.4.0&#34;,
+    &#34;minimum_wire_compatibility_version&#34; : &#34;6.8.0&#34;,
+    &#34;minimum_index_compatibility_version&#34; : &#34;6.0.0-beta1&#34;
+  },
+  &#34;tagline&#34; : &#34;You Know, for Search&#34;
+}
+
+</code></pre></div><p>服务可能需要5到 10 秒才能启动。如果看到 <code>curl: (7) Failed to connect to localhost port 9200: Connection refused</code> ，请等待几秒钟，然后重试。</p>
+<p>要查看 Elasticsearch 服务记录的消息，请使用以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo journalctl -u elasticsearch
+</code></pre></div><p>现在， Elasticsearch 已安装在您的 Debian 服务器上。</p>
+<h2 id="配置-elasticsearch">配置 Elasticsearch</h2>
+<p>Elasticsearch 数据存储在 <code>/var/lib/elasticsearch</code> 目录中。位于配置文件中， <code>/etc/elasticsearch</code> 并且可以在 <code>/etc/default/elasticsearch</code> 文件中配置 Java 启动选项。</p>
+<p>默认情况下， Elasticsearch 配置为仅在本地主机上侦听。如果连接到数据库的客户端也正在同一主机上运行，​​并且您正在设置一个单节点群集，则无需更改默认配置文件。</p>
+<h3 id="远程访问">远程访问</h3>
+<p>开箱即用的 Elasticsearch 不实现身份验证，因此任何可以访问 HTTP API 的人都可以访问它。如果要允许对 Elasticsearch 服务器的远程访问，则需要配置防火墙，并仅允许从受信任的客户端访问 Elasticsearch 端口 9200 。</p>
+<p>例如，如果您使用的是 UFW ，并且只希望允许来自 <code>192.168.121.80</code> 的连接，请输入以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo ufw allow from 192.168.100.20 to any port <span class="m">9200</span>
+</code></pre></div><p>不要忘记将 <code>192.168.100.20</code> 更改为您自己的远程 IP 地址。</p>
+<p>一旦配置了防火墙，下一步就是编辑 Elasticsearch 配置并允许 Elasticsearch 侦听外部连接。</p>
+<p>为此，请打开 <code>elasticsearch.yml</code> 配置文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo nano /etc/elasticsearch/elasticsearch.yml
+</code></pre></div><p>搜索包含 <code>network.host</code> 的行，取消注释，然后将值更改为 <code>0.0.0.0</code> ：</p>
+<p>/etc/elasticsearch/elasticsearch.yml</p>
+<div class="highlight"><pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">network.host: 0.0.0.0</span>
+</code></pre></div><p>如果您的计算机上有多个网络接口，请指定接口 IP 地址以强制 Elasticsearch 仅侦听给定的接口。</p>
+<p>重新启动 Elasticsearch 服务，以使更改生效：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo systemctl restart elasticsearch
+</code></pre></div><p>现在，您可以从远程位置连接到 Elasticsearch 服务器了。</p>
+<h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何在 Debian 10 上安装 Elasticsearch 。</p>
+<p>要了解有关 Elasticsearch 的更多信息，请访问官方<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html">文档</a>页面。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/java" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">java</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/elasticsearch" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">elasticsearch</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/database" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">database</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/debian" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">debian</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-debian-9/">如何在 Debian 9 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tensorflow-on-debian-9/">如何在 Debian 9 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-8/">如何在 CentOS 8 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-10/">在 Debian 10 Linux 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-cassandra-on-debian-9/">如何在 Debian 9 上安装 Apache Cassandra</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-7/">如何在 CentOS 7 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-apache-maven-on-debian-10/">如何在 Debian 10 上安装 Maven</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-debian-10/">在 Debian 10 Linux 上安装 MongoDB</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tomcat-9-on-debian-10/">如何在 Debian 10 Linux 上安装 Tomcat 9</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-postgresql-on-debian-10/">在 Debian 10 上安装 PostgreSQL 11.5</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-java">安装 Java</a></li>
+    <li><a href="#安装-elasticsearch">安装 Elasticsearch</a></li>
+    <li><a href="#配置-elasticsearch">配置 Elasticsearch</a>
+      <ul>
+        <li><a href="#远程访问">远程访问</a></li>
+      </ul>
+    </li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
