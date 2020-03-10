@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装 GCC 开发工具 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装 GCC 开发工具" />
+<meta property="og:description" content="GNU 编译器集合 (GCC) 是多种编程语言的编译器和库的集合, 本文介绍如何在 CentOS 8 上安装 GCC 。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-gcc-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-gcc-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-10T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-10T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装 GCC 开发工具">
+<meta itemprop="description" content="GNU 编译器集合 (GCC) 是多种编程语言的编译器和库的集合, 本文介绍如何在 CentOS 8 上安装 GCC 。">
+<meta itemprop="datePublished" content="2020-03-10T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-10T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="530">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-gcc-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="gcc,centos," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-gcc-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装 GCC 开发工具"/>
+<meta name="twitter:description" content="GNU 编译器集合 (GCC) 是多种编程语言的编译器和库的集合, 本文介绍如何在 CentOS 8 上安装 GCC 。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装 GCC 开发工具</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-10T12:00:00&#43;08:00">2020年3月10日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 600 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p>GNU 编译器集合 (GCC) 是用于C， C ++ ， Objective-C ， Fortran ， Ada ， <a href="/linux/how-to-install-go-on-centos-8/">Go</a> 和 D 编程语言的编译器和库的集合。许多开源项目，包括 Linux 内核和 GNU 工具，都是使用 GCC 编译的。</p>
+<p>本文介绍如何在 CentOS 8 上安装 GCC 。</p>
+<h2 id="在-centos-上安装-gcc">在 CentOS 上安装 GCC</h2>
+<p>默认的 CentOS 存储库包含一个名为 “Development Tools” 的软件包组，其中包括 GNU 编译器集合， GNU 调试器以及编译软件所需的其他开发库和工具。</p>
+<p>要安装开发工具包，请以 root 或<a href="https://www.gobeta.net/linux/create-a-sudo-user-on-centos/">具有 sudo 特权的用户</a>身份运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf group install <span class="s2">&#34;Development Tools&#34;</span>
+</code></pre></div><p>该命令会安装很多软件包，其中包括 <code>gcc</code> ， <code>g++</code> 和 <code>make</code> 。</p>
+<p>您可能还需要安装使用 GNU/Linux 进行开发的帮助手册：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf install man-pages
+</code></pre></div><p>使用 <code>gcc --version</code> 打印 GCC 版本的命令来验证是否成功安装了 GCC 编译器：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">gcc --version
+</code></pre></div><p>CentOS 8 储存库中可用的 GCC 的默认版本是 <code>8.3.1</code> ：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">gcc (GCC) 8.3.1 20190507 (Red Hat 8.3.1-4)
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</code></pre></div><p>现在， GCC 已安装在 CentOS 系统上，您可以开始使用它了。</p>
+<h2 id="编译-hello-world-示例">编译 Hello World 示例</h2>
+<p>在本节中，我们将使用 GCC 编译基本的 C 程序。打开您的<a href="/linux/how-to-install-visual-studio-code-on-centos-7/">文本编辑器</a>并创建以下文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">nano hello.c
+</code></pre></div><p>文件 <code>hello.c</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s">&#34;Hello World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>保存文件，并通过运行以下命令将其编译为可执行文件：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">gcc hello.c -o hello
+</code></pre></div><p>命令会在运行命令的同一目录中创建一个名为 <code>hello</code> 的二进制文件。</p>
+<p>执行 <code>hello</code> 程序：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">./hello
+</code></pre></div><p>该程序将输出：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">Hello World!
+</code></pre></div><h2 id="结论">结论</h2>
+<p>我们已经向您展示了如何在 CentOS 8 上安装 GCC 。您现在可以访问 <a href="https://gcc.gnu.org/onlinedocs/">GCC</a> 官方<a href="https://gcc.gnu.org/onlinedocs/">文档</a>页面，并学习如何使用 GCC 和 G++ 编译 C 和 C++ 程序。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/gcc" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">gcc</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-gcc-compiler-on-centos-7/">如何在CentOS 7上安装GCC编译器</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-set-up-apache-virtual-hosts-on-centos-8/">在 CentOS 8 上设置 Apache 虚拟主机</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-mongodb-on-centos-8/">CentOS 8 上 MongoDB 4.2 安装教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tensorflow-on-centos-8/">在 CentOS 8 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redmine-on-centos-8/">在 CentOS 8 上安装和配置 Redmine</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-configure-git-username-and-email/">Git 用户名和电子邮件配置教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-elasticsearch-on-centos-8/">如何在 CentOS 8 上安装 Elasticsearch</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-8-on-centos-8/">如何在 CentOS 8 上安装 Python 3.8</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-configure-redis-on-centos-8/">在 CentOS 8 上安装和配置 Redis</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#在-centos-上安装-gcc">在 CentOS 上安装 GCC</a></li>
+    <li><a href="#编译-hello-world-示例">编译 Hello World 示例</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
