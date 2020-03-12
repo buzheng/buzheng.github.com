@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Grep 命令中的正则表达式 |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Grep 命令中的正则表达式" />
+<meta property="og:description" content="在本文中，我们将探讨在 GNU 版本的 grep 中如何使用正则表达式的基础知识，大多数 Linux 操作系统默认情况下都提供了正则表达式。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/todo-regular-expressions-in-grep/" />
+<meta property="og:image" content="https://buzheng.org/linux/todo-regular-expressions-in-grep/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-12T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-12T12:00:00+08:00" />
+<meta itemprop="name" content="Grep 命令中的正则表达式">
+<meta itemprop="description" content="在本文中，我们将探讨在 GNU 版本的 grep 中如何使用正则表达式的基础知识，大多数 Linux 操作系统默认情况下都提供了正则表达式。">
+<meta itemprop="datePublished" content="2020-03-12T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-12T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="2365">
+<meta itemprop="image" content="https://buzheng.org/linux/todo-regular-expressions-in-grep/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="grep,terminal," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/todo-regular-expressions-in-grep/featured.jpg"/>
+<meta name="twitter:title" content="Grep 命令中的正则表达式"/>
+<meta name="twitter:description" content="在本文中，我们将探讨在 GNU 版本的 grep 中如何使用正则表达式的基础知识，大多数 Linux 操作系统默认情况下都提供了正则表达式。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">Grep 命令中的正则表达式</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-12T12:00:00&#43;08:00">2020年3月12日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 2400 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 7 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><code>grep</code> 是 Linux 中用于文件处理的最有用和功能最强大的命令之一。 <code>grep</code> 在一个或多个输入文件中搜索与正则表达式匹配的行，并将每个匹配的行写入标准输出。</p>
+<p>在本文中，我们将探讨在 GNU 版本的 <code>grep</code> 中如何使用正则表达式的基础知识， 大多数 Linux 操作系统默认情况下都提供了正则表达式。</p>
+<h2 id="grep-正则表达式">Grep 正则表达式</h2>
+<p>正则表达式或正则表达式是与一组字符串匹配的模式。模式由运算符，构造文字字符和元字符组成，它们具有特殊的含义。 GNU <code>grep</code> 支持三种正则表达式语法， Basic ， Extended 和 Perl 兼容。</p>
+<p>以最简单的形式，当没有给出正则表达式类型时， <code>grep</code> 将搜索模式解释为基本正则表达式。要将模式解释为扩展的正则表达式，请使用 <code>-E</code>( 或 <code>--extended-regexp</code>) 选项。</p>
+<p>在 GNU  <code>grep</code> 的实现中，基本正则表达式和扩展正则表达式语法之间在功能上没有区别。唯一的区别是，在基本的正则表达式的元字符 <code>?</code>， <code>+</code> ，<code>{</code>，<code>|</code>， <code>(</code> ，和 <code>)</code> 被解释为文字字符。为了在使用基本正则表达式时保持元字符的特殊含义，必须使用反斜杠 (<code>\</code>) 对字符进行转义。稍后我们将解释这些和其他元字符的含义。</p>
+<p>通常，您应始终将正则表达式括在单引号中，以避免 shell 解释和扩展元字符。</p>
+<h2 id="文字匹配">文字匹配</h2>
+<p>该 <code>grep</code> 命令最基本的用法是在文件中搜索文字字符或一系列字符。例如，要显示 <a href="/linux/etc-passwd-file/"><code>/etc/passwd</code></a> 文件中包含字符串 “ bash” 的所有行，您将运行以下命令：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep bash /etc/passwd
+</code></pre></div><p>输出应如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">root:x:0:0:root:/root:/bin/bash
+buzheng:x:1000:1000:buzheng:/home/buzheng:/bin/bash
+</code></pre></div><p>在此示例中，字符串 “bash” 是由四个文字字符组成的基本正则表达式。这告诉 <code>grep</code> 您搜索具有紧随其后的 “b” ， “a” ， “s” 和 “h” 的字符串。</p>
+<p>缺省情况下， grep 命令区分大小写。这意味着将大写和小写字符视为不同的字符。要在搜索时忽略大小写，请使用 <code>-i</code> 选项或 <code>--ignore-case</code> 。</p>
+<p>重要的是要注意， <code>grep</code> 将搜索模式视为单词而不是字符串。因此，如果您要搜索 “gnu” ， <code>grep</code> 还将打印以较大的嵌入 “gnu” 的单词(例如 “cygnus” 或 “magnum”)的行。</p>
+<p>如果搜索字符串包含空格，则需要将其用单引号或双引号引起来：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s2">&#34;Gnome Display Manager&#34;</span> /etc/passwd
+</code></pre></div><h2 id="定位符">定位符</h2>
+<p>定位符是元字符，可让您指定必须在该行中找到匹配项的位置。</p>
+<p><code>^</code>(尖)符号匹配一行的开头。在以下示例中，仅当字符串 “linux” 出现在行的开头时才匹配。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;^linux&#39;</span> file.txt
+</code></pre></div><p><code>$</code> (美元)符号匹配一行的结尾。要找到以字符串 “linux” 结尾的行，可以使用：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;linux$&#39;</span> file.txt
+</code></pre></div><p>您还可以使用两个定位符构造一个正则表达式。例如，要查找仅包含 “linux” 的行，请运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;^linux$&#39;</span> file.txt
+</code></pre></div><p>另一个有用的示例是 <code>^$</code> 匹配所有空行的模式。</p>
+<h2 id="匹配单个字符">匹配单个字符</h2>
+<p>元字符 <code>.</code> 点符号匹配任何单个字符。例如，要匹配以 “kan” 开头，然后有两个字符并以字符串 “ roo” 结尾的任何内容，则可以使用以下模式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#39;kan..roo&#39; file.txt
+</code></pre></div><h2 id="方括号表达式">方括号表达式</h2>
+<p>方括号表达式允许将一组字符括在方括号中来匹配它们 <code>[]</code> 。例如，找到包含 “accept” 或 “accent” 的行，可以使用以下表达式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#39;acce[np]t&#39; file.txt
+</code></pre></div><p>如果方括号内的第一个字符是插入符号 <code>^</code>，则它匹配方括号中未包含的任何单个字符。以下模式将匹配以 “co” 开头的字符串的任何组合，后接除 “l” 之外的任何字母(例如 “coca” ， “cobalt” 等)，但不匹配包含 “cola” 的行”：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;co[^l]a&#39;</span> file.txt
+</code></pre></div><p>您可以在方括号内指定一系列字符，而不是一个一个地放置字符。通过指定以连字符分隔的范围的第一个和最后一个字符来构造范围表达式。例如， <code>[a-e]</code> 等效于 <code>[abcde]</code> ， <code>[1-3]</code> 并且等效于 <code>[123]</code> 。</p>
+<p>以下表达式匹配以大写字母开头的每一行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;^[A-Z]&#39;</span> file.txt
+</code></pre></div><p><code>grep</code> 还支持括号内预定义的字符类。下表显示了一些最常见的字符类：</p>
+<table>
+<thead>
+<tr>
+<th>量词</th>
+<th>角色类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[:alnum:]</code></td>
+<td>字母数字字符。</td>
+</tr>
+<tr>
+<td><code>[:alpha:]</code></td>
+<td>字母字符。</td>
+</tr>
+<tr>
+<td><code>[:blank:]</code></td>
+<td>空格和制表符。</td>
+</tr>
+<tr>
+<td><code>[:digit:]</code></td>
+<td>数字。</td>
+</tr>
+<tr>
+<td><code>[:lower:]</code></td>
+<td>小写字母。</td>
+</tr>
+<tr>
+<td><code>[:upper:]</code></td>
+<td>大写字母。</td>
+</tr>
+</tbody>
+</table>
+<p>有关所有字符类的完整列表，请参阅 <a href="https://www.gnu.org/software/grep/manual/grep.html#Character-Classes-and-Bracket-Expressions">Grep 手册</a>。</p>
+<h2 id="量词">量词</h2>
+<p>量词允许您指定要出现的匹配项必须出现的次数。下表显示了 GNU  <code>grep</code> 支持的量词：</p>
+<table>
+<thead>
+<tr>
+<th>量词</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>匹配上一项零次或多次。</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配上一项零或一次。</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>将上一项匹配一次或多次。</td>
+</tr>
+<tr>
+<td><code>{n}</code></td>
+<td>匹配上一项 <code>n</code> 次。</td>
+</tr>
+<tr>
+<td><code>{n,}</code></td>
+<td>匹配前一项至少 <code>n</code> 次。</td>
+</tr>
+<tr>
+<td><code>{,m} </code></td>
+<td>匹配上一项最多 <code>m</code> 次。</td>
+</tr>
+<tr>
+<td><code>{n,m} </code></td>
+<td>匹配前一项匹配 <code>n</code> 到 <code>m</code> 次。</td>
+</tr>
+</tbody>
+</table>
+<p><code>*</code>(星号)的字符前述项零次或多次匹配。以下将匹配 “right”，“sright”，“ssright” 等等。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;s*right&#39;</span>
+</code></pre></div><p>下面是更高级的模式，它匹配所有以大写字母开头，以句点或逗号结尾的行。正则表达式 <code>.*</code> 匹配任何数量的任何字符：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep -E <span class="s1">&#39;^[A-Z].*[.,]$&#39;</span> file.txt
+</code></pre></div><p>该 <code>?</code>(问号)字符使前面的项目可选择的，它只能匹配一次。以下将同时匹配 “bright” 和 “right”。该 <code>?</code> 字符与反斜线，因为我们使用的是基本的正则表达式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep <span class="s1">&#39;b\?right&#39;</span> file.txt
+</code></pre></div><p>这是使用扩展正则表达式的正则表达式：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep -E <span class="s1">&#39;b?right&#39;</span> file.txt
+</code></pre></div><p>的 <code>+</code> (加)字符匹配前述项的一个或多个次。以下将匹配 “sright” 和 “ssright”，但不匹配 “right”：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep -E <span class="s1">&#39;s+right&#39;</span> file.txt
+</code></pre></div><p>大括号字符<code>{}</code>允许您指定确切的数字，上限或下限或发生匹配必须发生的范围。</p>
+<p>以下内容匹配 3 到 9 位之间的所有整数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">grep -E <span class="s1">&#39;[[:digit:]]{3,9}&#39;</span> file.txt
+</code></pre></div><h2 id="或者">或者</h2>
+<p>术语交替是简单的 “或”。交替运算符 <code>| </code> (管道)允许您指定不同的可能匹配项，这些匹配项可以是文字字符串或表达式集。在所有正则表达式运算符中，此运算符的优先级最低。</p>
+<p>在下面的例子中，我们在 <a href="/linux/nginx-log-files/">Nginx 的错误日志</a>文件中寻找的所有 <code>fatal</code> ， <code>error</code> 以及 <code>critical</code> 关键词错先的行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#39;fatal\|error\|critical&#39; /var/log/nginx/error.log
+</code></pre></div><p>如果使用扩展的正则表达式，则不应对 <code>|</code> 运算符进行转义，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -E &#39;fatal|error|critical&#39; /var/log/nginx/error.log
+</code></pre></div><h2 id="分组">分组</h2>
+<p>分组是正则表达式的一项功能，可让您将模式分组在一起并将其作为一项引用。使用括号 <code>()</code> 创建组。</p>
+<p>使用基本正则表达式时，必须使用反斜杠 (<code>\</code>) 对括号进行转义。</p>
+<p>下面的示例同时匹配 “fearless” 和 “less” 。该 <code>?</code> 量词使 <code>(fear)</code> 组可选：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep -E &#39;(fear)?less&#39; file.txt
+</code></pre></div><h2 id="反斜杠特殊表达式">反斜杠特殊表达式</h2>
+<p>GNU <code>grep</code> 包含几个元字符，由反斜杠和常规字符组成。下表显示了一些最常见的特殊反斜杠表达式：</p>
+<table>
+<thead>
+<tr>
+<th>表达</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\b</code></td>
+<td>匹配单词边界。</td>
+</tr>
+<tr>
+<td><code>\&lt;</code></td>
+<td>在单词开头匹配一个空字符串。</td>
+</tr>
+<tr>
+<td><code>\&gt;</code></td>
+<td>在单词末尾匹配一个空字符串。</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>匹配一个单词。</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>匹配一个空格。</td>
+</tr>
+</tbody>
+</table>
+<p>以下模式将匹配单独的单词 “abject” 和 “object” 。如果嵌入较大的单词，它将不匹配单词：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">grep &#39;\b[ao]bject\b&#39; file.txt
+</code></pre></div><h2 id="结论">结论</h2>
+<p>正则表达式广泛使用在文本编辑器，编程语言，以及诸如命令行工具中，比如： <code>grep</code> ， <code>sed</code> 和 <code>awk</code> 。在搜索文本文件，编写脚本或过滤命令输出时，了解如何构造正则表达式将非常有帮助。</p>
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/grep" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">grep</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/terminal" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">terminal</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-use-grep-command-to-search-files-in-linux/">如何使用Grep命令在Linux中搜索文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/what-does-chmod-777-mean/">chmod 777 的含义</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-extract-unzip-tar-xz-file/">如何提取(解压缩) tar.xz 文件</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pkill-command-in-linux/">Linux中 pkill 命令使用教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/last-command-in-linux/">Linux 中的 last 命令用法</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/pgrep-command-in-linux/">Linux中的 pgrep 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-list-cron-jobs-in-linux/">在 Linux 中查看 cron 作业</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-and-use-curl-on-centos-8/">在 CentOS 8 上安装和使用 curl 命令</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/python-if-else-statement/">Python if..else 语句</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/bash-sequence-expression/">Bash 序列表达式的用法</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#grep-正则表达式">Grep 正则表达式</a></li>
+    <li><a href="#文字匹配">文字匹配</a></li>
+    <li><a href="#定位符">定位符</a></li>
+    <li><a href="#匹配单个字符">匹配单个字符</a></li>
+    <li><a href="#方括号表达式">方括号表达式</a></li>
+    <li><a href="#量词">量词</a></li>
+    <li><a href="#或者">或者</a></li>
+    <li><a href="#分组">分组</a></li>
+    <li><a href="#反斜杠特殊表达式">反斜杠特殊表达式</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
