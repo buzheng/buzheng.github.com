@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>在 CentOS 8 上安装 OpenCV |  不争笔记</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.65.1" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.c82345eb542d5eac3fb4abd80d78ec42.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="在 CentOS 8 上安装 OpenCV" />
+<meta property="og:description" content="本文介绍了如何在 CentOS 8 上安装 OpenCV。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://buzheng.org/linux/how-to-install-opencv-on-centos-8/" />
+<meta property="og:image" content="https://buzheng.org/linux/how-to-install-opencv-on-centos-8/featured.jpg"/>
+<meta property="article:published_time" content="2020-03-27T12:00:00+08:00" />
+<meta property="article:modified_time" content="2020-03-27T12:00:00+08:00" />
+<meta itemprop="name" content="在 CentOS 8 上安装 OpenCV">
+<meta itemprop="description" content="本文介绍了如何在 CentOS 8 上安装 OpenCV。">
+<meta itemprop="datePublished" content="2020-03-27T12:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-27T12:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="780">
+<meta itemprop="image" content="https://buzheng.org/linux/how-to-install-opencv-on-centos-8/featured.jpg">
+
+
+
+<meta itemprop="keywords" content="opencv,python,centos," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://buzheng.org/linux/how-to-install-opencv-on-centos-8/featured.jpg"/>
+<meta name="twitter:title" content="在 CentOS 8 上安装 OpenCV"/>
+<meta name="twitter:description" content="本文介绍了如何在 CentOS 8 上安装 OpenCV。"/>
+
+  </head>
+
+  <body class="ma0 sans-serif bg-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="https://buzheng.org" class="f3 fw4 hover-white no-underline white-90 dib">
+      不争笔记
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3 mv0">
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/babylonjs/" title="BabylonJS 教程 page">
+              BabylonJS 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/linux/" title="Linux 教程 page">
+              Linux 教程
+            </a>
+          </li>
+          
+          <li class="list f5 fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="博文 page">
+              博文
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+
+    <header class="mv4 w-100">
+      <h1 class="f2 mb3">在 CentOS 8 上安装 OpenCV</h1>
+      <div class="gray">
+      
+        <time class="f6 dib tracked" datetime="2020-03-27T12:00:00&#43;08:00">2020年3月27日</time>
+        
+        
+          <span class="mh2 f7">•</span>
+          <span class="f6 dib tracked">约 800 字</span>
+          <span class="f6 dib tracked">, 预计阅读时间 4 分钟</span>
+        
+      </div>
+    </header>
+    
+    <section class="nested-copy-line-height lh-copy f4 nested-links nested-img dark-gray w-70-l pr3">
+      <div class="x-md">
+          
+          
+          
+  
+          
+          
+          
+  
+          <p><a href="https://opencv.org/">OpenCV</a>( 开源计算机视觉库)是一个开放源代码计算机视觉库，支持所有主要操作系统。它可以利用多核处理的优势，并具有 GPU 加速功能以实现实时操作。</p>
+<p>OpenCV 的用途非常广泛，包括医学图像分析，拼接街景图像，监视视频，检测和识别面部，跟踪运动对象，提取 3D 模型等等。</p>
+<p>本文介绍了如何在 CentOS 8 上安装 OpenCV。</p>
+<h2 id="从-centos-储存库安装-opencv">从 CentOS 储存库安装 OpenCV</h2>
+<p>可从 CentOS 8 标准存储库中获得 OpenCV 软件包，但是没有针对 Python 的实现。</p>
+<p>通过键入以下命令安装 OpenCV 软件包：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf install opencv opencv-devel opencv-python
+</code></pre></div><p>安装完成后，请运行以下命令验证 OpenCV 库是否存在：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pkg-config --modversion opencv
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">3.4.1
+</code></pre></div><h2 id="从源代码安装-opencv">从源代码安装 OpenCV</h2>
+<p>从源代码构建 OpenCV 库可以使您拥有最新的版本。它会针对您的特定系统进行优化，并且您将完全控制构建的选项。</p>
+<p>执行以下步骤以从源代码安装最新的 OpenCV 版本：</p>
+<ol>
+<li>
+<p>安装必需和可选的依赖项：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo dnf install epel-release git gcc gcc-c++ cmake3 qt5-qtbase-devel <span class="se">\
+</span><span class="se"></span>    python3 python3-devel python3-pip cmake python3-devel python3-numpy <span class="se">\
+</span><span class="se"></span>    gtk2-devel libpng-devel jasper-devel openexr-devel libwebp-devel <span class="se">\
+</span><span class="se"></span>    libjpeg-turbo-devel libtiff-devel tbb-devel libv4l-devel <span class="se">\
+</span><span class="se"></span>    eigen3-devel freeglut-devel mesa-libGL mesa-libGL-devel <span class="se">\
+</span><span class="se"></span>    boost boost-thread boost-devel gstreamer1-plugins-base
+
+</code></pre></div></li>
+<li>
+<p>克隆 OpenCV 和 OpenCV 的代码库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mkdir -p ~/opencv_build <span class="o">&amp;&amp;</span>  <span class="nb">cd</span> ~/opencv_build 
+</code></pre></div><p>在撰写本文时， github 存储库中的默认版本为 4.2.0 。如果要安装旧版本的 OpenCV ，请导航到 <code>opencv</code> 和 <code>opencv_contrib</code> 目录并运行 <code>git checkout &lt;opencv-version&gt;</code></p>
+</li>
+<li>
+<p>下载完成后，创建一个临时构建目录，然后<a href="/linux/linux-cd-command/">切换</a>到该目录：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/opencv_build/opencv &amp;&amp;  mkdir build  &amp;&amp;  cd build 
+git clone https://github.com/opencv/opencv.git
+git clone https://github.com/opencv/opencv_contrib.git
+</code></pre></div><p>使用以下 CMake 命令配置 OpenCV 构建：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">cmake3 -D <span class="nv">CMAKE_BUILD_TYPE</span><span class="o">=</span>RELEASE <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">CMAKE_INSTALL_PREFIX</span><span class="o">=</span>/usr/local <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">INSTALL_C_EXAMPLES</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">INSTALL_PYTHON_EXAMPLES</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_GENERATE_PKGCONFIG</span><span class="o">=</span>ON <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">OPENCV_EXTRA_MODULES_PATH</span><span class="o">=</span>~/opencv_build/opencv_contrib/modules <span class="se">\
+</span><span class="se"></span>    -D <span class="nv">BUILD_EXAMPLES</span><span class="o">=</span>ON ..
+</code></pre></div><p>输出如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/vagrant/opencv_build/opencv/build
+</code></pre></div></li>
+<li>
+<p>通过运行以下命令开始编译过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">make -j8
+</code></pre></div><p>根据您的处理器内核数修改 <code>-j</code> 标志。如果您不知道处理器的内核数，可以通过键入 <code>nproc</code> 来查看。</p>
+<p>编译可能要花费几分钟或更长时间，具体取决于您的系统资源。</p>
+</li>
+<li>
+<p>使用以下方法安装 OpenCV 库：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo make install
+</code></pre></div></li>
+<li>
+<p>将 <a href="/linux/how-to-create-symbolic-links-in-linux-using-the-ln-command/">链接文件</a>  <code>opencv4.pc</code> 文件指向 <code>/usr/share/pkgconfig</code> 目录的文件并运行 <code>ldconfig</code> 以重建库缓存。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo ln -s /usr/local/lib64/pkgconfig/opencv4.pc /usr/share/pkgconfig/
+sudo ldconfig
+</code></pre></div><p>通过键入以下内容检查 OpenCV 版本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">pkg-config --modversion opencv4
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">4.3.0
+</code></pre></div></li>
+<li>
+<p>使用如下命令验证 Python <code>cv2</code> 模块是否运行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">python3 -c <span class="s2">&#34; import cv2; print(cv2.__version__) &#34;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-txt" data-lang="txt">4.3.0-dev
+</code></pre></div></li>
+</ol>
+<h2 id="结论">结论</h2>
+<p>我们向您展示了两种在 CentOS 8 服务器上安装 OpenCV 的方法。您可以根据自己的要求和偏好选择合适的方法。尽管从 CentOS 信息库安装打包版本更容易，但是从源代码构建 OpenCV 可以为您提供更大的灵活性，并且它应该是安装 OpenCV 时的首选。</p>
+
+      </div><ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/opencv" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">opencv</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/python" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">python</a>
+   </li>
+  
+   <li class="list di">
+     <a href="/tags/centos" class="link f5 grow no-underline br2 ba ph3 pv2 mb3 mr2 dib white bg-white sans-serif">centos</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        
+      </div>
+    </section>
+
+    <aside class="w-30-l">
+
+
+
+
+  <div class="x-related bg-near-white pa3 pb1 nested-copy-line-height nested-links mb3">
+    <p class="f5 mb3 mt0">相关阅读</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-opencv-on-centos-7/">如何在CentOS 7上安装OpenCV</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-tensorflow-on-centos-8/">在 CentOS 8 上安装 TensorFlow</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-3-8-on-centos-8/">如何在 CentOS 8 上安装 Python 3.8</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-pip-on-centos-8/">在 CentOS 8 安装 pip</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-opencv-on-debian-10/">在 Debian 10 Linux 上安装 OpenCV 教程</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-odoo-13-on-centos-8/">在 CentOS 8 上安装 Odoo 13</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-python-on-centos-8/">如何在 CentOS 8 上安装 Python</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-opencv-on-raspberry-pi/">如何在 Raspberry Pi 上安装 OpenCV</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/install-odoo-12-on-centos-7/">在CentOS 7上安装Odoo 12</a>
+        </li>
+	    
+	     <li  class="mv1 truncate">
+          <a href="/linux/how-to-install-django-on-centos-7/">如何在CentOS 7上安装Django</a>
+        </li>
+	    
+    </ul>
+</div>
+
+<div class="sticky">
+  <div class="x-toc bg-near-white pa3 pb1 nested-list-reset nested-links f5">
+    <p class="f5 mb3 mt0">文章目录</p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#从-centos-储存库安装-opencv">从 CentOS 储存库安装 OpenCV</a></li>
+    <li><a href="#从源代码安装-opencv">从源代码安装 OpenCV</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ul>
+</nav>
+  </div>
+  </div></aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://buzheng.org" >
+    &copy; 2020 不争笔记
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
